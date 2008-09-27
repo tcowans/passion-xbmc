@@ -7,102 +7,146 @@ import xbmc
 print "****************************************************************"
 print "                 Script de mise a jour auto                     "
 print "****************************************************************"
-print "version de PassionXBMC Installeur = ",version
 
-def zipextraction (archive,pathdst):
-    zfile = zipfile.ZipFile(archive, 'r')
-    for i in zfile.namelist():  ## On parcourt l'ensemble des fichiers de l'archive
-        print i
+class CheckMAJ:
+    def __init__(self):
 
-        if i.endswith('/'): #Creation des repertoires avant extraction
-            dossier = pathdst + os.sep + i
-            try:
-                os.makedirs(dossier)
-                print "dossier = ",dossier
-            except Exception, e:
-                print "Erreur creation dossier de l'archive = ",e
+        self.rootdir = os.getcwd().replace(';','')
 
-        else:
-            print "File Case"
-            data = zfile.read(i)                   ## lecture du fichier compresse
-            fp = open(pathdst + os.sep + i, "wb")  ## creation en local du nouveau fichier
-            fp.write(data)                         ## ajout des donnees du fichier compresse dans le fichier local
-            fp.close()
-    zfile.close()
+        ##############################################################################
+        #                   Initialisation conf.cfg                                  #
+        ##############################################################################
+        self.fichier = os.path.join(self.rootdir, "conf.cfg")
+        self.localConfParser = ConfigParser.ConfigParser()
+        self.localConfParser.read(self.fichier)
+
+        ##############################################################################
+        #                   Initialisation parametres locaux                         #
+        ##############################################################################
+        self.cacheDir   = self.localConfParser.get('InstallPath','CacheDir')
+        self.scriptDir  = self.localConfParser.get('InstallPath','ScriptsDir')
+        self.curversion = self.localConfParser.get('Version','version')
+
+        ##############################################################################
+        #                   Initialisation parametres serveur                        #
+        ##############################################################################
+        self.host        = self.localConfParser.get('ServeurID','host')
+        self.user        = self.localConfParser.get('ServeurID','user')
+        self.password    = self.localConfParser.get('ServeurID','password')
+        self.remoteversionDir  = "/.passionxbmc/Installeur-Passion/"
+
+        self.filetodl = ""
+        self.newversionfile = ""
+        self.newversion = ""
+        self.filedst = ""
+        self.completedfile = ""
+        self.versiontodl = ""
+        self.confmaj = os.path.join(self.cacheDir, "confmaj.cfg")
+        self.archive = ""
+        self.scripttolaunch = os.path.join(self.rootdir, "default.py")
+
+        #########################################################
+        # DEMARRAGE DE LA CONNEXION                             #
+        #########################################################
+        self.ftp = ftplib.FTP(self.host,self.user,self.password)
+        self.remoteDirLst = self.ftp.nlst(self.remoteversionDir)
+        
 
 
-def download(filesrc, filedst):
-        pathfiledst = os.path.join(ROOTDIR, "Cache" + os.sep + filedst)
-        localFile = open(pathfiledst, "wb")
-        self.ftp.retrbinary('RETR ' + filesrc, localFile.write)
-        localFile.close()
+    def download(self):
+            self.filedst = self.filetodl[len(self.remoteversionDir):]
+            self.completedfile = os.path.join(self.cacheDir, self.filedst)
+            localFile = open(self.completedfile, "wb")
+            self.ftp.retrbinary('RETR ' + self.filetodl, localFile.write)
+            localFile.close()
 
-def orientation():
+    def orientation(self):
 
-    for i in remoteDirLst: #On isole le script qu'il faudra telecharger
-        if i.endswith('zip'):
-            newscript = i
+        self.delFiles(self.cacheDir) # on vide le cache pour etre sur d'etre plus propre
 
-    if newversion in remoteDirLst:
+        for file in self.remoteDirLst:
+        #On isole les fichiers qu'il faudra telecharger
+            if file.endswith('zip'):
+                self.newscript = file
+            elif file.endswith('py'):
+                self.installmaj = file
+            elif file.endswith('cfg'):
+                self.versiontodl = file
 
         #Telechargement du nouveau fichier de version
-        print "telecharge version"
-        filetodl = installeurdir + '/' + file
-        download(filetodl,newversion)
+        print "telecharge version", self.versiontodl
+        self.filetodl = self.versiontodl
+        self.download()
 
         #Lecture des parametres du nouveau fichier de version
         print "lecture fichier"
-        newversionfile = os.path.join(ROOTDIR, "Cache" + os.sep + newversion)
-        config.read(newversionfile)
-        remoteversion = config.get('Version','version')
+        print 'self.completedfile = ',self.completedfile
+        remoteConfParser = ConfigParser.ConfigParser()
+        #self.newversionfile = open(self.completedfile,'r')
+        remoteConfParser.read(self.completedfile)
+        print remoteConfParser.read(self.newversionfile)
+        self.newversion = remoteConfParser.get('Lastversion','lastversion')
+        #print self.newversion
+        #open(self.newversionfile,'r')
+        #self.newversion = self.newversionfile.read()
+        print self.newversion
+        print self.curversion
+        
+        # Suppression de l'instance du config parser de remoteConf
+        del remoteConfParser
 
-        if remoteversion == newversion:
+        if self.newversion == self.curversion:
             print "version a jour"
-
+            #self.config = ConfigParser.ConfigParser()
+            #self.config.read(self.fichier)
+            #self.config.remove_section('Lastversion')
+            self.localConfParser.set("Version", "UPDATING", False)
+            self.localConfParser.write(open(self.fichier,'w'))
         else:
             print "version non a jour"
+            #self.config = ConfigParser.ConfigParser()
+            #self.config.read(self.fichier)
             #Telechargement de la nouvelle archive
-            filetodl = installeurdir + '/' + file
-            download(filetodl, newscript)
-            print "download version ok"
-            #extraction de la nouvelle archive du script
-            archive = os.path.join(ROOTDIR, "Cache" + os.sep + pathdst)
-            zipextraction (archive,pathdst)
-            print "extraction ok"
-            script = 'default.py'
-            xbmc.executebuiltin(XBMC.RunScript(script))
+            self.filetodl = self.newscript
+            self.download()
+            self.archive = self.completedfile
+            #Telechargement du script d'extraction
+            self.filetodl = self.installmaj
+            self.download()
+            scriptmaj = self.completedfile
+
+            self.localConfParser.set("Version", "UPDATING", True)
+            self.localConfParser.set("Version", "scriptMAJ", scriptmaj)
+            self.localConfParser.write(open(self.fichier,'w'))
+            self.configmaj()
 
 
+    def configmaj(self):
+        configMAJParser = ConfigParser.ConfigParser()
+        configMAJParser.add_section('Localparam')
+        configMAJParser.set('Localparam', 'PassionDir', self.rootdir)
+        configMAJParser.set('Localparam', 'Archive', self.archive)
+        configMAJParser.set('Localparam','Scripttolaunch',self.scripttolaunch)
+        configMAJParser.set("Localparam", "scriptDir", self.scriptDir)
+        configMAJParser.write(open(self.confmaj,'w'))
+        print "configMAJParser = ",configMAJParser
+        # Suppression de configMAJParser
+        del configMAJParser
 
-#########################################################
-# INITIALISATION DES PARAMETRES SERVEUR                 #
-#########################################################
-host = "stock.passionxbmc.org"  # adresse du serveur FTP
-user = "anonymous"              # votre identifiant
-password = "xxxx"               # votre mot de passe
-installeurdir = "/.passionxbmc/Installeur-Passion"
 
-#########################################################
-# INITIALISATION DES PARAMETRES LOCAUX                  #
-#########################################################
-ROOTDIR = os.getcwd().replace(';','')
+    def delFiles(self,folder):
+        print "Effacement des fichiers du repertoire: %s"%folder
+        for root, dirs, files in os.walk(folder , topdown=False):
+            for name in files:
+                print "Effaccement de %s en cours ..."%name
+                try:
+                    os.remove(os.path.join(root, name))
+                except Exception, e:
+                    print e
 
-#LECTURE DU FICHIER LOCAL DE VERSION
-oldversionfile = os.path.join(ROOTDIR, "conf.cfg")
-config = ConfigParser.ConfigParser()
-config.read(oldversionfile)
-oldversion = config.get('Version','version')
 
-#POSTULAT DU NOUVEAU FICHIER DE VERSION DISTANT
-newversionfile = 'version.cfg'
+def start():
+    CkMAJ = CheckMAJ()
+    CkMAJ.orientation()
+    del CkMAJ
 
-#########################################################
-# DEMARRAGE DE LA CONNEXION                             #
-#########################################################
-ftp = ftplib.FTP(host,user,password)
-remoteDirLst = ftp.nlst(installeurdir)
-
-#########################################################
-# DEMARRAGE DU TRAITEMENT                               #
-#########################################################
-orientation()
