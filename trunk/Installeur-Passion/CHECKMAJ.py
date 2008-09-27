@@ -28,6 +28,11 @@ class CheckMAJ:
         self.curversion = self.localConfParser.get('Version','version')
 
         ##############################################################################
+        #                   Verification des repertoires et creation si besoin
+        ##############################################################################
+        self.verifrep(self.cacheDir)
+
+        ##############################################################################
         #                   Initialisation parametres serveur                        #
         ##############################################################################
         self.host        = self.localConfParser.get('ServeurID','host')
@@ -51,6 +56,21 @@ class CheckMAJ:
         self.ftp = ftplib.FTP(self.host,self.user,self.password)
         self.remoteDirLst = self.ftp.nlst(self.remoteversionDir)
         
+    def verifrep(self,folder):
+        """
+        verifrep (de myCine)
+        verifie que le repertoire existe et le cree si besoin
+        """
+        try:
+            print("verifrep check if directory: " + folder + " exists")
+            if not os.path.exists(folder):
+                print("verifrep Impossible to find the directory - trying to create the directory: " + folder)
+                os.makedirs(folder)
+
+        except Exception, e:
+            print("Exception while creating folder " + folder)
+            print(e)
+            pass
 
 
     def download(self):
