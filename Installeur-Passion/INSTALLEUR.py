@@ -9,6 +9,8 @@ import xbmcgui, xbmc
 import traceback
 import time
 import urllib2
+from BeautifulSoup import BeautifulStoneSoup #librairie de traitement XML
+import htmlentitydefs
 
 
 try: Emulating = xbmcgui.Emulating
@@ -86,26 +88,63 @@ class rssReader:
         # return the RSS page
         return the_page
 
-
+    def unescape(self,text):
+        """
+        credit : Fredrik Lundh
+        found : http://effbot.org/zone/re-sub.htm#unescape-html"""
+        def fixup(m):# m est un objet match
+            text = m.group(0)#on récupère le texte correspondant au match
+            if text[:2] == "&#":# dans le cas où le match ressemble à &#
+                # character reference
+                try:
+                    if text[:3] == "&#x":#si plus précisément le texte ressemble à &#38;#x (donc notation hexa)
+                        return unichr(int(text[3:-1], 16))#alors on retourne le unicode du caractère en base 16 ( hexa)
+                    else:
+                        return unichr(int(text[2:-1]))#sinon on retourne le unicode du caractère en base 10 (donc notation décimale)
+                except ValueError: #si le caractère n'est pas unicode, on le passe simplement
+                    pass
+            else: #sinon c'est un caractère nommé (htmlentities)
+                # named entity
+                try:
+                    text = unichr(htmlentitydefs.name2codepoint[text[1:-1]])#on renvoi le unicode de la correspondance pour le caractère nommé
+                except KeyError:
+                    pass #si le caractère nommé n'est pas défini dans les htmlentities alors on passe
+            return text # leave as is #dans tous les autres cas, le match n'était pas un caractère d'échapement html on le retourne tel quel
+     
+        #par un texte issu de la fonction fixup
+        return re.sub("&#?\w+;", fixup,   text)    
+    
     def GetRssInfo(self):
+        """
+        Recupere les information du FLux RSS de passion XBMC
+        Merci a Alexsolex
+        """
         print "GetRssInfo"
-        reVideo  = re.compile(r"<channel>.+?<title>(?P<maintitle>.+?)</title>.+?<title>.+?\[.+?\[(?P<title>.+?)].+?</title>.+?<description>.+?<.+?>(?P<description>.+?)</description>.+?<pubDate>(?P<pubDate>.+?)</pubDate>.+?</channel>", re.DOTALL)
-
-        for i in reVideo.finditer(self.rssPage):
-            # Copy each item found in a list
-            maintitle = i.group("maintitle")
-            title = i.group("title")
-            description = i.group("description")
-            pubDate = i.group("pubDate")
-
-        # Print results
-        print"maintitle: %s"%maintitle
-        print"title: %s"%title
-        print"description: %s"%description
-        print"pubDate: %s"%pubDate
-
+        soup = BeautifulStoneSoup(self.rssPage)
+        print "titre du flux :"
+        print "\t"+soup.find("title").string.encode('ASCII', 'xmlcharrefreplace')
+        print "description du flux :"
+        #maintitle = "\t"+soup.find("description").string.encode('ASCII', 'xmlcharrefreplace').replace("&#224;","à").replace("&#160;","  -  ") # Note: &#160;=&
+        maintitle = soup.find("description").string.encode('ASCII', 'xmlcharrefreplace').replace("&#224;","à").replace("&#234;","ê").replace("&#232;","è").replace("&#233;","é").replace("&#160;","  ***  ") # Note: &#160;=&
+        items = ""
+        for item in soup.findAll("item"): #boucle si plusieurs items dans le rss
+            print "Titre de l'Item :"
+            #itemsTitle = "\t"+item.find("title").string.encode('ASCII', 'xmlcharrefreplace').replace("&#224;","à").replace("&#160;","  -  ") # Note: &#160;=&
+            itemsTitle = item.find("title").string.encode('ASCII', 'xmlcharrefreplace').replace("&#224;","à").replace("&#234;","ê").replace("&#232;","è").replace("&#233;","é").replace("&#160;","  ***  ") # Note: &#160;=&
+            print itemsTitle
+            items = items + itemsTitle + ":  "
+            #la ligne suivante supprime toutes les balises au sein de l'info "description"
+            clean_desc = re.sub(r"<.*?>", r"", "".join(item.find("description").contents))
+            #on imprime le texte sans les caract&#232;res d'&#233;chappements html
+            print "description de l'item :"
+            #itemDesc = "\t"+self.unescape(clean_desc).strip().encode('ASCII', 'xmlcharrefreplace').replace("&#224;","à").replace("&#160;","  -  ") # Note: &#160;=&
+            itemDesc = self.unescape(clean_desc).strip().encode('ASCII', 'xmlcharrefreplace').replace("&#224;","à").replace("&#234;","ê").replace("&#232;","è").replace("&#233;","é").replace("&#160;","  ***  ") # Note: &#160;=&
+            print itemDesc
+            items = items + " " + itemDesc
         #TODO: Faire une convertion au bon format afin d'eviter l'affichage incorrecte de caracteres
-        return maintitle,title,description,pubDate
+        print "ITEMS:"
+        print items
+        return maintitle,items
 
 
 
@@ -417,7 +456,7 @@ class MainWindow(xbmcgui.Window):
         self.CacheDir           = CACHEDIR
         self.targetDir          = ""
         self.delCache           = ""
-        self.scrollingSizeMax   = 260
+        self.scrollingSizeMax   = 480
 
         # Display Loading Window while we are loading the information from the website
         dialogUI = xbmcgui.DialogProgress()
@@ -472,11 +511,13 @@ class MainWindow(xbmcgui.Window):
             print "Flux RSS page:"
             print self.passionRssReader.rssPage
             print "Flux RSS infos:"
-            maintitle,title,description,pubDate = self.passionRssReader.GetRssInfo()
+            maintitle,title = self.passionRssReader.GetRssInfo()
 
         except Exception, e:
             print "Window::__init__: Exception durant la recuperation du Flux RSS",e
             print ("error/MainWindow __init__: " + str(sys.exc_info()[0]))
+            title = "Impossible de recuperer le flux RSS"
+            self.scrollingSizeMax = 260 # On reduit la taille du scrolling text car le message d'erruer est plus court
             traceback.print_exc()
 
         # Scrolling message
@@ -486,14 +527,11 @@ class MainWindow(xbmcgui.Window):
         # Afin d'avoir un message assez long pour defiler, on va ajouter des espaces afin d'atteindre la taille max de self.scrollingSizeMax
         print "scrollStripTextSize = %d"%scrollStripTextSize
         print "self.scrollingSizeMax = %d"%self.scrollingSizeMax
-        scrollingLabel = title
-        if scrollStripTextSize < self.scrollingSizeMax:
-            fillingSpacesNumber = self.scrollingSizeMax - scrollStripTextSize
-            for i in range(fillingSpacesNumber):
-                scrollingLabel = ' ' + scrollingLabel
+        scrollingLabel = title.rjust(self.scrollingSizeMax)
+        print "scrollingLabel:"
+        print scrollingLabel
         scrollingLabelSize = len(scrollingLabel)
         print "scrollingLabelSize = %d"%scrollingLabelSize
-        #self.scrollingText.addLabel('                                                                                                                                                                                                                                   This is a line of text that can scroll.')
         self.scrollingText.addLabel(scrollingLabel)
         #self.scrollingText.setVisible(False)
 
