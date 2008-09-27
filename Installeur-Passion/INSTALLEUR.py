@@ -14,10 +14,6 @@ import urllib2
 try: Emulating = xbmcgui.Emulating
 except: Emulating = False
 
-#version  = 'version 1.0'
-version  = 'Beta-2-Dev04'
-author   = 'Seb & Temhil'
-designer = 'Jahnrik'
 
 ############################################################################
 # Get actioncodes from keymap.xml
@@ -66,7 +62,7 @@ class rssReader:
         """
         self.rssURL = rssUrl
         self.rssPage = self.get_rss_page(self.rssURL)
-    
+
     def get_rss_page(self,rssUrl):
         """
         télécharge et renvoi la page RSS
@@ -82,23 +78,18 @@ class rssReader:
 #            request.add_header('Keep-Alive','300')
 #            request.add_header('Connection','keep-alive')
             response = urllib2.urlopen(request)
-            the_page = response.read()    
+            the_page = response.read()
         except Exception, e:
             print("Exception get_rss_page")
             print(e)
-            the_page = ""    
+            the_page = ""
         # return the RSS page
         return the_page
-
-    def GetRssXMLInfo(self):
-        print "GetRssXMLInfo"
-  
-
 
 
     def GetRssInfo(self):
         print "GetRssInfo"
-        reVideo  = re.compile(r"<channel>.+?<title>(?P<maintitle>.+?)</title>.+?<title>.+?\[.+?\[(?P<title>.+?)].+?</title>.+?<description>.+?<.+?>(?P<description>.+?)</description>.+?<pubDate>(?P<pubDate>.+?)</pubDate>.+?</channel>", re.DOTALL) 
+        reVideo  = re.compile(r"<channel>.+?<title>(?P<maintitle>.+?)</title>.+?<title>.+?\[.+?\[(?P<title>.+?)].+?</title>.+?<description>.+?<.+?>(?P<description>.+?)</description>.+?<pubDate>(?P<pubDate>.+?)</pubDate>.+?</channel>", re.DOTALL)
 
         for i in reVideo.finditer(self.rssPage):
             # Copy each item found in a list
@@ -112,7 +103,7 @@ class rssReader:
         print"title: %s"%title
         print"description: %s"%description
         print"pubDate: %s"%pubDate
-        
+
         #TODO: Faire une convertion au bon format afin d'eviter l'affichage incorrecte de caracteres
         return maintitle,title,description,pubDate
 
@@ -138,20 +129,20 @@ class scriptextracter:
                     print "Erreur creation dossier de l'archive = ",e
             else:
                 print "File Case"
-                
+
         # On ferme l'archive
         self.zfile.close()
 
     def  extract(self,archive,TargetDir):
         self.pathdst = TargetDir
         self.archive = archive
-        if archive.endswith('zip'): 
+        if archive.endswith('zip'):
             self.zipfolder() #generation des dossiers dans le cas d'un zip
 
         print "Extraction de l'archive ", self.archive
         print "Dans le repertoire ",self.pathdst
         #extraction de l'archive
-        xbmc.executebuiltin('XBMC.Extract(%s,%s)'%(self.archive,self.pathdst) ) 
+        xbmc.executebuiltin('XBMC.Extract(%s,%s)'%(self.archive,self.pathdst) )
 
         #TODO: Probleme de timing, il semble que os.remove arrive avant la fin de l'extraction      ce qui genere un exception
         #Solution definitive trouvee, on delete le cache a la sortie du script
@@ -193,29 +184,21 @@ class ftpDownloadCtrl:
             print "ftpDownloadCtrl: __init__: Exception durant la connection FTP",e
             print "ftpDownloadCtrl: Impossible de se connecter au serveur FTP: %s"%self.host
             pass
-        
+
     def closeConnection(self):
         """
         Close FTP conenction
         """
         #on se deconnecte du serveur pour etre plus propre
         self.ftp.quit()
-        
+
     def getDirList(self,remotedir):
         """
         Close FTP conenction
         """
         curDirList = self.ftp.nlst(remotedir)
-        print "curDirList avant tri:"
-        print curDirList
-        
-        # Tri de la liste
-        curDirList.sort(key=str.lower)
-        print "curDirList avant tri:"
-        print curDirList
-        
         return curDirList
-        
+
 
     def download(self,pathsrc,rootdirsrc,typeIndex,progressbar_cb=None,dialogProgressWin=None):
         """
@@ -453,7 +436,7 @@ class MainWindow(xbmcgui.Window):
         self.listborder = xbmcgui.ControlImage(19,120,681,446, os.path.join(IMAGEDIR, "list-border.png"))
         self.addControl(self.listborder)
         self.listborder.setVisible(True)
-        
+
         # Set List background image
         self.listbackground = xbmcgui.ControlImage(20, 163, 679, 402, os.path.join(IMAGEDIR, "list-white.png"))
         self.addControl(self.listbackground)
@@ -487,7 +470,7 @@ class MainWindow(xbmcgui.Window):
             print self.passionRssReader.rssPage
             print "Flux RSS infos:"
             maintitle,title,description,pubDate = self.passionRssReader.GetRssInfo()
-            
+
         except Exception, e:
             print "Window::__init__: Exception durant la recuperation du Flux RSS",e
             print ("error/MainWindow __init__: " + str(sys.exc_info()[0]))
@@ -497,29 +480,27 @@ class MainWindow(xbmcgui.Window):
         self.scrollingText = xbmcgui.ControlFadeLabel(20, 87, 680, 30, 'font12', '0xFFFFFFFF')
         self.addControl(self.scrollingText)
         scrollStripTextSize = len(title)
-        # Afin d'avoir un message assez long pour defiler, on va ajouter des espaces afin d'atteindre la taille max de self.scrollingSizeMax via la fonction rjust
+        # Afin d'avoir un message assez long pour defiler, on va ajouter des espaces afin d'atteindre la taille max de self.scrollingSizeMax
         print "scrollStripTextSize = %d"%scrollStripTextSize
         print "self.scrollingSizeMax = %d"%self.scrollingSizeMax
-        scrollingLabel = title.rjust(self.scrollingSizeMax)
-        print "scrollingLabel:"
-        print scrollingLabel
-#        if scrollStripTextSize < self.scrollingSizeMax:
-#            fillingSpacesNumber = self.scrollingSizeMax - scrollStripTextSize
-#            for i in range(fillingSpacesNumber):
-#                scrollingLabel = ' ' + scrollingLabel
+        scrollingLabel = title
+        if scrollStripTextSize < self.scrollingSizeMax:
+            fillingSpacesNumber = self.scrollingSizeMax - scrollStripTextSize
+            for i in range(fillingSpacesNumber):
+                scrollingLabel = ' ' + scrollingLabel
         scrollingLabelSize = len(scrollingLabel)
         print "scrollingLabelSize = %d"%scrollingLabelSize
         #self.scrollingText.addLabel('                                                                                                                                                                                                                                   This is a line of text that can scroll.')
         self.scrollingText.addLabel(scrollingLabel)
         #self.scrollingText.setVisible(False)
-            
+
         # Connection au serveur FTP
         try:
             #self.ftp = ftplib.FTP(self.host,self.user,self.password) # on se connecte
             self.passionFTPCtrl = ftpDownloadCtrl(self.host,self.user,self.password,self.remotedirList,self.localdirList,self.downloadTypeList)
 
             self.connected = True
-            
+
             # Get the list of items
             self.updateList()
 
@@ -547,7 +528,7 @@ class MainWindow(xbmcgui.Window):
                 #on se deconnecte du serveur pour etre plus propre
                 #self.ftp.quit()
                 self.passionFTPCtrl.closeConnection()
-                
+
                 #On vide le cache
                 if self.delCache == True:
                     self.delFiles(CACHEDIR)
@@ -820,7 +801,7 @@ class MainWindow(xbmcgui.Window):
             if not os.path.exists(folder):
                 print("verifrep Impossible to find the directory - trying to create the directory: " + folder)
                 os.makedirs(folder)
-                
+
             #if not os.path.exists(os.path.join(IMAGEDIR,"noImageAvailable.jpg")):
             #    print "Error: " + os.path.join(IMAGEDIR,"noImageAvailable.jpg") + "n'existe pas!"
             #    return # TODO: Le fichier par defaut n'existe pas -> pb
@@ -864,13 +845,7 @@ class MainWindow(xbmcgui.Window):
 #
 ########
 
-print("===================================================================")
-print("")
-print("        Passion XBMC Installeur " + version + " STARTS")
-print("        Auteurs : "+ author)
-print("        Graphic Design by : "+ designer)
-print("")
-print("===================================================================")
+
 
 def start():
     #Fonction de demarrage
@@ -913,10 +888,23 @@ remoteDirLst  = ["/.passionxbmc/Themes/","/.passionxbmc/Scraper/","/.passionxbmc
 localDirLst   = [themesDir,scraperDir,scriptDir]
 
 ##############################################################################
+#                   Version et auteurs                                       #
+##############################################################################
+version  = config.get('Version','version')
+author   = 'Seb & Temhil'
+designer = 'Jahnrik'
+
+##############################################################################
 #                   Verification parametres locaux et serveur                #
 ##############################################################################
 print "FTP host: %s"%host
 print "Chemin ou les themes seront telecharges: %s"%themesDir
 
-
+print("===================================================================")
+print("")
+print("        Passion XBMC Installeur " + version + " STARTS")
+print("        Auteurs : "+ author)
+print("        Graphic Design by : "+ designer)
+print("")
+print("===================================================================")
 

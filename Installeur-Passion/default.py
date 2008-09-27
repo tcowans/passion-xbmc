@@ -1,33 +1,61 @@
 import os
 import ConfigParser
 import xbmc
+import xbmcgui
 
-
-ROOTDIR = os.getcwd().replace(';','')
-fichier = os.path.join(ROOTDIR, "conf.cfg")
-print "fichier = ",fichier
-config = ConfigParser.ConfigParser()
-config.read(fichier)
 
 print "****************************************************************"
 print "                      Lanceur                                   "
 print "****************************************************************"
 
-#print "dans fichier", config.get(
+
+##############################################################################
+#               Initialisation chemins de fichier locaux                     #
+##############################################################################
+ROOTDIR = os.getcwd().replace(';','')
+
+fichier = os.path.join(ROOTDIR, "conf.cfg")
+config = ConfigParser.ConfigParser()
+config.read(fichier)
+
 pathok = config.getboolean('InstallPath','pathok')
 
-print "lancement du script de mise a jour"
-script = os.path.join(ROOTDIR, 'CHECKMAJ.py')
-xbmc.executebuiltin('XBMC.RunScript(%s)'%script)
+if pathok == False:
+    ##########################################################################
+    #               Generation des informations locales                      #
+    ##########################################################################
+    dp = xbmcgui.DialogProgress()
+    dp.create("Configuration","Configuration du systeme","Veuillez patienter...")
+    import CONF
+    CONF.SetConfiguration()
+    dp.close()
 
-if pathok == True:
+
+##############################################################################
+#                   Verification de la mise a jour                           #
+##############################################################################
+dp = xbmcgui.DialogProgress()
+dp.create("Mise a jour automatique","Verification de la mise a jour","Veuillez patienter...")
+import CHECKMAJ
+CHECKMAJ.start()
+dp.close()
+
+config.read(fichier)
+updating = config.getboolean('Version','UPDATING')
+
+if updating == False:
+    ##########################################################################
+    #               Lancement du script                                      #
+    ##########################################################################
     import INSTALLEUR
-    #Les parametres d'installation sont definis
     INSTALLEUR.start()
 
 else:
-    #Les parametres d'installation sont a definir
-    import CONF
-    CONF.SetConfiguration()
-    import INSTALLEUR
-    INSTALLEUR.start()
+    ##########################################################################
+    #               Lancement de la mise a jour                              #
+    ##########################################################################
+    scriptmaj = updating = config.get('Version','SCRIPTMAJ')
+    import INSTALLMAJ2
+    #exec("import " + scriptmaj)
+    #xbmc.executebuiltin('XBMC.RunScript(%s)'%scriptmaj)
+    INSTALLMAJ2.start()
