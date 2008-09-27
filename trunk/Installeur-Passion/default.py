@@ -2,7 +2,7 @@ import os
 import ConfigParser
 import xbmc
 import xbmcgui
-
+import shutil
 
 print "****************************************************************"
 print "                      Lanceur                                   "
@@ -55,6 +55,16 @@ else:
     #               Lancement de la mise a jour                              #
     ##########################################################################
     scriptmaj = updating = config.get('Version','SCRIPTMAJ')
+    
+    #On copie the fichier du repertoire cache dans le repertoire principal
+    fileName = os.path.basename(scriptmaj)
+    print "Fichier a copier de cache dans root : %s"%fileName
+    print "Fichier Source : %s"%scriptmaj
+    print "Fichier Destination : %s"%os.path.join(ROOTDIR, fileName)
+
+    shutil.copyfile(scriptmaj,os.path.join(ROOTDIR, fileName))
+
+    #import cache.INSTALLMAJ2
     import INSTALLMAJ2
     #exec("import " + scriptmaj)
     #xbmc.executebuiltin('XBMC.RunScript(%s)'%scriptmaj)
