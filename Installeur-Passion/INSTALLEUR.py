@@ -7,12 +7,16 @@ import ftplib
 import ConfigParser
 import xbmcgui, xbmc
 import traceback
+import time
+import urllib2
+
 
 try: Emulating = xbmcgui.Emulating
 except: Emulating = False
 
-version = 'Beta 1'
-author  = 'Seb & Temhil'
+#version  = 'version 1.0'
+version  = 'Beta-2-Dev04'
+author   = 'Seb & Temhil'
 designer = 'Jahnrik'
 
 ############################################################################
@@ -32,7 +36,7 @@ ACTION_PREVIOUS_MENU             = 10
 ACTION_SHOW_INFO                 = 11
 
 ACTION_PAUSE                     = 12
-ACTION_STOP                         = 13
+ACTION_STOP                      = 13
 ACTION_NEXT_ITEM                 = 14
 ACTION_PREV_ITEM                 = 15
 
@@ -52,7 +56,74 @@ PAL60_4x3       = 8 #(720x480, 4:3, pixels are 4320:4739)
 PAL60_16x9      = 9 #(720x480, 16:9, pixels are 5760:4739)
 
 ############################################################################
+class rssReader:
+    """
+    Class responsable de la recuperation du flux RSS et de l'extraction des infos RSS
+    """
+    def __init__(self,rssUrl):
+        """
+        Init de rssReader
+        """
+        self.rssURL = rssUrl
+        self.rssPage = self.get_rss_page(self.rssURL)
+    
+    def get_rss_page(self,rssUrl):
+        """
+        télécharge et renvoi la page RSS
+        """
+        print "get_rss_page"
+        try:
+            #request = urllib2.Request("http://passion-xbmc.org/service-importation/?action=.xml;type=rss2;limit=1")
+            request = urllib2.Request(rssUrl)
+            request.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9) Gecko/2008052906 Firefox/3.0')
+            request.add_header('Accept','text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8')
+            request.add_header('Accept-Language','fr,fr-fr;q=0.8,en-us;q=0.5,en;q=0.3')
+            request.add_header('Accept-Charset','ISO-8859-1,utf-8;q=0.7,*;q=0.7')
+#            request.add_header('Keep-Alive','300')
+#            request.add_header('Connection','keep-alive')
+            response = urllib2.urlopen(request)
+            the_page = response.read()    
+        except Exception, e:
+            print("Exception get_rss_page")
+            print(e)
+            the_page = ""    
+        # return the RSS page
+        return the_page
+
+    def GetRssXMLInfo(self):
+        print "GetRssXMLInfo"
+  
+
+
+
+    def GetRssInfo(self):
+        print "GetRssInfo"
+        reVideo  = re.compile(r"<channel>.+?<title>(?P<maintitle>.+?)</title>.+?<title>.+?\[.+?\[(?P<title>.+?)].+?</title>.+?<description>.+?<.+?>(?P<description>.+?)</description>.+?<pubDate>(?P<pubDate>.+?)</pubDate>.+?</channel>", re.DOTALL) 
+
+        for i in reVideo.finditer(self.rssPage):
+            # Copy each item found in a list
+            maintitle = i.group("maintitle")
+            title = i.group("title")
+            description = i.group("description")
+            pubDate = i.group("pubDate")
+
+        # Print results
+        print"maintitle: %s"%maintitle
+        print"title: %s"%title
+        print"description: %s"%description
+        print"pubDate: %s"%pubDate
+        
+        #TODO: Faire une convertion au bon format afin d'eviter l'affichage incorrecte de caracteres
+        return maintitle,title,description,pubDate
+
+
+
+
 class scriptextracter:
+    """
+    Extracteur de script, dezip ou derar une archive et l'efface
+
+    """
     def zipfolder (self):
         import zipfile
         self.zfile = zipfile.ZipFile(self.archive, 'r')
@@ -67,23 +138,23 @@ class scriptextracter:
                     print "Erreur creation dossier de l'archive = ",e
             else:
                 print "File Case"
+                
+        # On ferme l'archive
+        self.zfile.close()
 
-    def  extract(self,archive,scriptDir):
-        self.pathdst = scriptDir
+    def  extract(self,archive,TargetDir):
+        self.pathdst = TargetDir
         self.archive = archive
-        if archive.endswith('zip'):
+        if archive.endswith('zip'): 
             self.zipfolder() #generation des dossiers dans le cas d'un zip
 
         print "Extraction de l'archive ", self.archive
         print "Dans le repertoire ",self.pathdst
         #extraction de l'archive
-        try:
-            xbmc.executebuiltin('XBMC.Extract(%s,%s)'%(self.archive,self.pathdst, ), )
-            #os.remove(self.archive)
-        except Exception, e:
-            print "erreur lors de l'extraction"
-            print e
+        xbmc.executebuiltin('XBMC.Extract(%s,%s)'%(self.archive,self.pathdst) ) 
 
+        #TODO: Probleme de timing, il semble que os.remove arrive avant la fin de l'extraction      ce qui genere un exception
+        #Solution definitive trouvee, on delete le cache a la sortie du script
 
 class ftpDownloadCtrl:
     """
@@ -119,8 +190,32 @@ class ftpDownloadCtrl:
             self.ftp.cwd(self.remotedirList)# va au chemin specifie
             self.connected = True
         except Exception, e:
-            print "ftpDownloadCtrl::__init__: Exception durant la connection FTP",e
-            print "Impossible de se connecter au serveur FTP: %s"%self.host
+            print "ftpDownloadCtrl: __init__: Exception durant la connection FTP",e
+            print "ftpDownloadCtrl: Impossible de se connecter au serveur FTP: %s"%self.host
+            pass
+        
+    def closeConnection(self):
+        """
+        Close FTP conenction
+        """
+        #on se deconnecte du serveur pour etre plus propre
+        self.ftp.quit()
+        
+    def getDirList(self,remotedir):
+        """
+        Close FTP conenction
+        """
+        curDirList = self.ftp.nlst(remotedir)
+        print "curDirList avant tri:"
+        print curDirList
+        
+        # Tri de la liste
+        curDirList.sort(key=str.lower)
+        print "curDirList avant tri:"
+        print curDirList
+        
+        return curDirList
+        
 
     def download(self,pathsrc,rootdirsrc,typeIndex,progressbar_cb=None,dialogProgressWin=None):
         """
@@ -313,8 +408,12 @@ class MainWindow(xbmcgui.Window):
         if not Emulating:
             self.setCoordinateResolution(PAL_4x3) # Set coordinate resolution to PAL 4:3
 
+        #TODO: TOUTES ces varibales devraient etre passees en parametre du constructeur de la classe (__init__ si tu preferes)
+        # On ne devraient pas utiliser de variables globale ou rarement en prog objet
+
         self.host               = host
         self.user               = user
+        self.rssfeed            = rssfeed
         self.password           = password
         self.remotedirList      = remoteDirLst
         self.localdirList       = localDirLst
@@ -325,60 +424,104 @@ class MainWindow(xbmcgui.Window):
         self.scraperDir         = scraperDir
         self.type               = "racine"
         self.numindex           = ""
-        self.USRPath             = USRPath
+        self.USRPath            = USRPath
         self.rightstest         = ""
         self.scriptDir          = scriptDir
-        if self.USRPath == True:
-           self.PMIIIDir           = PMIIIDir
+        self.extracter          = scriptextracter() # On cree un instance d'extracter
+        self.CacheDir           = CACHEDIR
+        self.targetDir          = ""
+        self.delCache           = ""
+        self.scrollingSizeMax   = 260
 
+        # Display Loading Window while we are loading the information from the website
+        dialogUI = xbmcgui.DialogProgress()
+        dialogUI.create("Installeur Passion XBMC", "Creation de l'interface Graphique", "Veuillez patienter...")
+
+        # Verifie si les repertoires cache et imagedir existent et les cree s'il n'existent pas encore
+        self.verifrep(CACHEDIR)
+        self.verifrep(IMAGEDIR)
+
+        #TODO: A nettoyer, ton PMIIIDir n'est pas defini pour XBOX sans le test si dessous
+        if self.USRPath == True:
+            self.PMIIIDir = PMIIIDir
+
+
+        # Background image
+        self.addControl(xbmcgui.ControlImage(0,0,720,576, os.path.join(IMAGEDIR,"background.png")))
+
+        # Set List border image
+        self.listborder = xbmcgui.ControlImage(19,120,681,446, os.path.join(IMAGEDIR, "list-border.png"))
+        self.addControl(self.listborder)
+        self.listborder.setVisible(True)
+        
+        # Set List background image
+        self.listbackground = xbmcgui.ControlImage(20, 163, 679, 402, os.path.join(IMAGEDIR, "list-white.png"))
+        self.addControl(self.listbackground)
+        self.listbackground.setVisible(True)
+
+        # Set List hearder image
+        # print ("Get Logo image from : " + os.path.join(IMAGEDIR,"logo.gif"))
+        self.header = xbmcgui.ControlImage(20,121,679,41, os.path.join(IMAGEDIR, "list-header.png"))
+        self.addControl(self.header)
+        self.header.setVisible(True)
+
+        # Title of the current pages
+        self.strMainTitle = xbmcgui.ControlLabel(35, 130, 200, 40, "Sélection", 'special13')
+        self.addControl(self.strMainTitle)
+
+        # item Control List
+        self.list = xbmcgui.ControlList(22, 166, 674 , 420,'font14','0xFF000000', buttonTexture = os.path.join(IMAGEDIR,"list-background.png"),buttonFocusTexture = os.path.join(IMAGEDIR,"list-focus.png"), imageWidth=40, imageHeight=32, itemTextXOffset=0, itemHeight=55)
+        self.addControl(self.list)
+
+        # Version and author(s):
+        #self.strVersion = xbmcgui.ControlLabel(370, 30, 350, 30, version, 'font12')
+        #self.strVersion = xbmcgui.ControlLabel(690, 87, 350, 30, version, 'font10','0xFF000000', alignment=1)
+        self.strVersion = xbmcgui.ControlLabel(621, 69, 350, 30, version, 'font10','0xFF000000', alignment=1)
+        self.addControl(self.strVersion)
+
+        # Get RSS Feed
+        try:
+            #fluxRSS = get_rss_page()
+            self.passionRssReader = rssReader(self.rssfeed)
+            print "Flux RSS page:"
+            print self.passionRssReader.rssPage
+            print "Flux RSS infos:"
+            maintitle,title,description,pubDate = self.passionRssReader.GetRssInfo()
+            
+        except Exception, e:
+            print "Window::__init__: Exception durant la recuperation du Flux RSS",e
+            print ("error/MainWindow __init__: " + str(sys.exc_info()[0]))
+            traceback.print_exc()
+
+        # Scrolling message
+        self.scrollingText = xbmcgui.ControlFadeLabel(20, 87, 680, 30, 'font12', '0xFFFFFFFF')
+        self.addControl(self.scrollingText)
+        scrollStripTextSize = len(title)
+        # Afin d'avoir un message assez long pour defiler, on va ajouter des espaces afin d'atteindre la taille max de self.scrollingSizeMax via la fonction rjust
+        print "scrollStripTextSize = %d"%scrollStripTextSize
+        print "self.scrollingSizeMax = %d"%self.scrollingSizeMax
+        scrollingLabel = title.rjust(self.scrollingSizeMax)
+        print "scrollingLabel:"
+        print scrollingLabel
+#        if scrollStripTextSize < self.scrollingSizeMax:
+#            fillingSpacesNumber = self.scrollingSizeMax - scrollStripTextSize
+#            for i in range(fillingSpacesNumber):
+#                scrollingLabel = ' ' + scrollingLabel
+        scrollingLabelSize = len(scrollingLabel)
+        print "scrollingLabelSize = %d"%scrollingLabelSize
+        #self.scrollingText.addLabel('                                                                                                                                                                                                                                   This is a line of text that can scroll.')
+        self.scrollingText.addLabel(scrollingLabel)
+        #self.scrollingText.setVisible(False)
+            
         # Connection au serveur FTP
         try:
-            self.ftp = ftplib.FTP(self.host,self.user,self.password) # on se connecte
+            #self.ftp = ftplib.FTP(self.host,self.user,self.password) # on se connecte
+            self.passionFTPCtrl = ftpDownloadCtrl(self.host,self.user,self.password,self.remotedirList,self.localdirList,self.downloadTypeList)
+
             self.connected = True
-
-            # Display Loading Window while we are loading the information from the website
-            dialogUI = xbmcgui.DialogProgress()
-            dialogUI.create("Nabbox", "Creation de l'interface Graphique", "Veuillez patienter...")
-
-            # Background image
-            print ("Get Background image from : " + os.path.join(IMAGEDIR,"background.png"))
-            self.addControl(xbmcgui.ControlImage(0,0,720,576, os.path.join(IMAGEDIR,"background.png")))
-
-            # Set List border image
-            self.listborder = xbmcgui.ControlImage(19,120,681,446, os.path.join(IMAGEDIR, "list-border.png"))
-            self.addControl(self.listborder)
-
-            self.listborder.setVisible(True)
-            # Set List background image
-            self.listbackground = xbmcgui.ControlImage(20, 163, 679, 402, os.path.join(IMAGEDIR, "list-white.png"))
-            self.addControl(self.listbackground)
-            self.listbackground.setVisible(True)
-
-            # Set List hearder image
-            # print ("Get Logo image from : " + os.path.join(IMAGEDIR,"logo.gif"))
-            self.header = xbmcgui.ControlImage(20,121,679,41, os.path.join(IMAGEDIR, "list-header.png"))
-            self.addControl(self.header)
-            self.header.setVisible(True)
-
-            # Title of the current pages
-
-            self.strMainTitle = xbmcgui.ControlLabel(35, 130, 200, 40, "passion-xbmc.org", 'special13')
-            self.addControl(self.strMainTitle)
-
-            # item Control List
-            self.list = xbmcgui.ControlList(22, 166, 674 , 420,'font14','0xFF000000', buttonTexture = os.path.join(IMAGEDIR,"list-background.png"),buttonFocusTexture = os.path.join(IMAGEDIR,"list-focus.png"), imageWidth=40, imageHeight=32, itemTextXOffset=0, itemHeight=55)
-            self.addControl(self.list)
-
-            # Version and author(s):
-            #self.strVersion = xbmcgui.ControlLabel(370, 30, 350, 30, version, 'font12')
-            self.strVersion = xbmcgui.ControlLabel(690, 87, 350, 30, version, 'font10','0xFF000000', alignment=1)
-            self.addControl(self.strVersion)
-
+            
             # Get the list of items
             self.updateList()
-
-            # Close the Loading Window
-            dialogUI.close()
 
         except Exception, e:
             print "Window::__init__: Exception durant la connection FTP",e
@@ -388,15 +531,30 @@ class MainWindow(xbmcgui.Window):
             print ("error/MainWindow __init__: " + str(sys.exc_info()[0]))
             traceback.print_exc()
 
+        # Close the Loading Window
+        dialogUI.close()
+
     def onAction(self, action):
         """
         Remonte l'arborescence et quitte le script
         """
         try:
             if action == ACTION_PREVIOUS_MENU:
+
                 #sortie du script
                 print('action recieved: previous')
+
+                #on se deconnecte du serveur pour etre plus propre
+                #self.ftp.quit()
+                self.passionFTPCtrl.closeConnection()
+                
+                #On vide le cache
+                if self.delCache == True:
+                    self.delFiles(CACHEDIR)
+
+                #on ferme tout
                 self.close()
+
             if action == ACTION_PARENT_DIR:
                 #remonte l'arborescence
                 print ("Previous page requested")
@@ -419,11 +577,12 @@ class MainWindow(xbmcgui.Window):
                     self.racine = False
                     self.index = self.list.getSelectedPosition()
                     self.type = self.downloadTypeList[self.list.getSelectedPosition()]
-                    self.updateList()#on raffraichit la page pour afficher le contenu
+                    self.updateList() #on raffraichit la page pour afficher le contenu
 
                 else:
 
                     downloadOK = True
+                    correctionPM3bidon = False
                     self.index = self.list.getSelectedPosition()
                     print "type = ",self.type
                     source = self.curDirList[self.index]
@@ -441,24 +600,30 @@ class MainWindow(xbmcgui.Window):
                         if 'Project Mayhem III' in source and self.USRPath == True:
                             self.linux_chmod(self.PMIIIDir)
                             if self.rightstest == True:
-                               self.localdirList[0]= self.PMIIIDir
-                               downloadOK = True
-                               correctionPM3bidon = True
+                                self.localdirList[0]= self.PMIIIDir
+                                downloadOK = True
+                                correctionPM3bidon = True
                             else:
-                               dialog = xbmcgui.Dialog()
-                               dialog.ok('Action impossible', "Vous ne pouvez installer ce theme sans les droits", "d'administrateur")
-                               downloadOK = False
+                                dialog = xbmcgui.Dialog()
+                                dialog.ok('Action impossible', "Vous ne pouvez installer ce theme sans les droits", "d'administrateur")
+                                downloadOK = False
 
 
                     elif self.type == self.downloadTypeList[1] and self.USRPath == True:   #Linux Scrapers
-                       self.linux_chmod(self.scraperDir)
-                       print "linux scraper case"
-                       if self.rightstest == True :
-                          downloadOK = True
-                       else:
-                          dialog = xbmcgui.Dialog()
-                          dialog.ok('Action impossible', "Vous ne pouvez installer le scraper sans les droits", "d'administrateur")
-                          downloadOK = False
+                        self.linux_chmod(self.scraperDir)
+                        print "linux scraper case"
+                        if self.rightstest == True :
+                            downloadOK = True
+                        else:
+                            dialog = xbmcgui.Dialog()
+                            dialog.ok('Action impossible', "Vous ne pouvez installer le scraper sans les droits", "d'administrateur")
+                            downloadOK = False
+
+                    if source.endswith('zip') or source.endswith('rar'):
+                        self.delCache = True
+                        self.targetDir = self.localdirList[self.numindex]
+                        print "self.targetDir = ",self.targetDir
+                        self.localdirList[self.numindex]= self.CacheDir
 
 
                     if downloadOK == True:
@@ -469,23 +634,36 @@ class MainWindow(xbmcgui.Window):
                         dp.create("Téléchargement en cours ...", "%s %s en cours de téléchargement"%(self.type,downloadItem))
                         # Type est desormais reellement le type dee download, on utlise alros les liste pour recuperer le chemin que l'on doit toujours passer
                         #on appel la classe passionFTPCtrl avec la source a telecharger
-                        self.passionFTPCtrl = ftpDownloadCtrl(self.host,self.user,self.password,self.remotedirList,self.localdirList,self.downloadTypeList)
+                        #self.passionFTPCtrl = ftpDownloadCtrl(self.host,self.user,self.password,self.remotedirList,self.localdirList,self.downloadTypeList)
                         downloadStatus = self.passionFTPCtrl.download(source, self.remotedirList[self.downloadTypeList.index(self.type)], self.numindex,progressbar_cb=self.updateProgress_cb,dialogProgressWin = dp)
                         dp.close()
                         print "downloadStatus %d"%downloadStatus
 
-                        if self.type == self.downloadTypeList[2]:
-                           #Appel de la classe d'extraction des archives scripts
-                           remoteDirPath = self.remotedirList[self.downloadTypeList.index(self.type)]#chemin ou a ete telecharge le script
-                           localDirPath = self.localdirList[self.downloadTypeList.index(self.type)]
-                           archive = source.replace(remoteDirPath,localDirPath + os.sep)#remplacement du chemin de l'archive distante par le chemin local temporaire
-                           scriptfinal0 = archive.replace(localDirPath,self.scriptDir)
-                           if scriptfinal0.endswith('.zip'):
-                                scriptfinal = scriptfinal0.replace('.zip','')
-                           elif scriptfinal0.endswith('.rar'):
-                                scriptfinal = scriptfinal0.replace('.rar','')
-                           extracter = scriptextracter()
-                           extracter.extract(archive,self.scriptDir)
+                        #TODO: pourquoi ne serait que les script qui sont des archives? Je pense que l'on devrait faire le test sur .zip et .rar dans tous les cas
+                        # Cas du scraper par exemple
+                        #C'est bon c'est fait, maintenant on se base sur l'extension pour determiner si on doit telecharger dans le cache.
+                        #Un tour de passe passe est fait plus haut pour echanger les chemins de destination avec le cache, le chemin de destination
+                        #est retabli ici 'il s'agit de targetDir'
+                        #if self.type == self.downloadTypeList[2]:
+                        if downloadItem.endswith('zip') or downloadItem.endswith('rar'):
+                            #Appel de la classe d'extraction des archives
+                            remoteDirPath = self.remotedirList[self.downloadTypeList.index(self.type)]#chemin ou a ete telecharge le script
+                            localDirPath = self.localdirList[self.downloadTypeList.index(self.type)]
+                            archive = source.replace(remoteDirPath,localDirPath + os.sep)#remplacement du chemin de l'archive distante par le chemin local temporaire
+                            print "archive = ",archive
+                            self.localdirList[self.numindex]= self.targetDir
+                            print " self.localdirList[self.numindex]= ",self.localdirList[self.numindex]
+                            fichierfinal0 = archive.replace(localDirPath,self.localdirList[self.numindex])
+                            if fichierfinal0.endswith('.zip'):
+                                fichierfinal = fichierfinal0.replace('.zip','')
+                            elif fichierfinal0.endswith('.rar'):
+                                fichierfinal = fichierfinal0.replace('.rar','')
+
+
+                            # On n'a besoin d'ue d'un instance d'extracteur sinon on va avoir une memory leak ici car on ne le desalloue jamais
+                            # Je l'ai donc creee dans l'init comem attribut de la classe
+                            #extracter = scriptextracter()
+                            self.extracter.extract(archive,self.localdirList[self.numindex])
 
                         if downloadStatus == -1:
                             # Telechargment annule par l'utilisateur
@@ -497,19 +675,18 @@ class MainWindow(xbmcgui.Window):
                             title    = "Téléchargement terminé"
                             message1 = "%s: %s"%(self.type,downloadItem)
                             message2 = "a été téléchargé dans le repertoire:"
-                            if self.type == self.downloadTypeList[2]:
-
-                                message3 = "%s"%scriptfinal
-                            else:
-                                message3 = "%s"%self.localdirList[self.downloadTypeList.index(self.type)]
+                            message3 = "%s"%self.localdirList[self.downloadTypeList.index(self.type)]
 
                         dialogInfo = xbmcgui.Dialog()
                         dialogInfo.ok(title, message1, message2,message3)
 
 
+                        #TODO: Attention correctionPM3bidon n'est pa defini dans le cas d'un scraper ou script
+                        #      Je l;ai donc defini a False au debut
+                        # On remet a la bonne valeur initiale self.localdirList[0]
                         if correctionPM3bidon == True:
-                           self.localdirList[0] = themesDir
-                           correctionPM3bidon = False
+                            self.localdirList[0] = themesDir
+                            correctionPM3bidon = False
 
 
         except:
@@ -538,7 +715,8 @@ class MainWindow(xbmcgui.Window):
             self.curDirList = self.remotedirList
         else:
             #liste physique d'une section sur le ftp
-            self.curDirList = self.ftp.nlst(self.remotedirList[self.index])
+            #self.curDirList = self.ftp.nlst(self.remotedirList[self.index])
+            self.curDirList = self.passionFTPCtrl.getDirList(self.remotedirList[self.index])
 
         print "update list de : "
         print self.curDirList
@@ -546,8 +724,11 @@ class MainWindow(xbmcgui.Window):
         # Clear all ListItems in this control list
         self.list.reset()
 
+        # Calcul du mobre d'elements de la liste
+        itemnumber = len(self.curDirList)
+
         # On utilise la fonction range pour faire l'iteration sur index
-        for j in range(len(self.curDirList)):
+        for j in range(itemnumber):
             #print "j = %d"%j
             ItemListPath = self.curDirList[j]
             #!!Q!!: est-ce que cela ne serait pas mieux d'utiliser une liste de string qui mappe plutot que de faire un filtre sur un path qui peut chmager dans le futur
@@ -560,13 +741,13 @@ class MainWindow(xbmcgui.Window):
 
                 # Met a jour le titre et les icones:
                 if self.type == self.downloadTypeList[0]:   #Themes
-                    self.strMainTitle.setLabel("Themes")
+                    self.strMainTitle.setLabel(str(itemnumber) + " Themes")
                     imagePath = os.path.join(IMAGEDIR,"icone_theme.png")
                 elif self.type == self.downloadTypeList[1]: #Scrapers
-                    self.strMainTitle.setLabel("Scrapers")
+                    self.strMainTitle.setLabel(str(itemnumber) + " Scrapers")
                     imagePath = os.path.join(IMAGEDIR,"icone_scrapper.png")
                 elif self.type == self.downloadTypeList[2]: #Scripts
-                    self.strMainTitle.setLabel("Scripts")
+                    self.strMainTitle.setLabel(str(itemnumber) + " Scripts")
                     imagePath = os.path.join(IMAGEDIR,"icone_script.png")
                 else:
                     # Image par defaut (ou aucune si = "")
@@ -578,7 +759,7 @@ class MainWindow(xbmcgui.Window):
                 self.list.addItem(displayListItem)
             else:
                 # Met a jour le titre:
-                self.strMainTitle.setLabel("passion-xbmc.org")
+                self.strMainTitle.setLabel("Sélection")
                 # Affichage de la liste des sections
                 # -> On compare avec la liste affichee dans l'interface
                 self.section = self.downloadTypeList[j]
@@ -600,6 +781,53 @@ class MainWindow(xbmcgui.Window):
         xbmcgui.unlock()
         # Set Focus on list
         self.setFocus(self.list)
+
+    ######################################################################
+    # Function delFiles from Joox
+    # Description: Deletes all files in a given folder and sub-folders.
+    #              Note that the sub-folders itself are not deleted.
+    # Parameters : folder=path to local folder
+    # Return     : -
+    ######################################################################
+    #TODO move this function in a class
+    #By Seb : un peu remaniee
+#    def delFiles(self,folder):
+#
+#        #for root, dirs, files in os.walk(folder , topdown=False):
+#            for name in os.walk(self.CacheDir):
+#                try:
+#                    os.remove(self.CacheDir)
+#                except Exception, e:
+#                    print e
+
+    def delFiles(self,folder):
+        print "Effacement des fichiers du repertoire: %s"%folder
+        for root, dirs, files in os.walk(folder , topdown=False):
+            for name in files:
+                print "Effaccement de %s en cours ..."%name
+                try:
+                    os.remove(os.path.join(root, name))
+                except Exception, e:
+                    print e
+
+    #########################################################################
+    # Function verifrep (from myCine)
+    # Description: Check a folder exists and make it if necessary
+    #########################################################################
+    def verifrep(self,folder):
+        try:
+            print("verifrep check if directory: " + folder + " exists")
+            if not os.path.exists(folder):
+                print("verifrep Impossible to find the directory - trying to create the directory: " + folder)
+                os.makedirs(folder)
+                
+            #if not os.path.exists(os.path.join(IMAGEDIR,"noImageAvailable.jpg")):
+            #    print "Error: " + os.path.join(IMAGEDIR,"noImageAvailable.jpg") + "n'existe pas!"
+            #    return # TODO: Le fichier par defaut n'existe pas -> pb
+        except Exception, e:
+            print("Exception while creating folder " + folder)
+            print(e)
+            pass
 
     def linux_chmod(self,path):
         print 'chemin a chmoder = ',path
@@ -646,7 +874,7 @@ print("===================================================================")
 
 def start():
     #Fonction de demarrage
-    passionFTPCtrl = ftpDownloadCtrl(host,user,password,remoteDirLst,localDirLst,downloadTypeLst)
+    #passionFTPCtrl = ftpDownloadCtrl(host,user,password,remoteDirLst,localDirLst,downloadTypeLst)
     w = MainWindow()
     w.doModal()
     del w
@@ -668,7 +896,6 @@ CACHEDIR = config.get('InstallPath','CacheDir')
 themesDir   = config.get('InstallPath','ThemesDir')
 scriptDir   = config.get('InstallPath','ScriptsDir')
 scraperDir  = config.get('InstallPath','ScraperDir')
-TempscriptDir = config.get('InstallPath','TempscriptDir')
 USRPath = config.getboolean('InstallPath','USRPath')
 if USRPath == True:
     PMIIIDir = config.get('InstallPath','PMIIIDir')
@@ -677,12 +904,13 @@ RACINE = True
 ##############################################################################
 #                   Initialisation parametres serveur                        #
 ##############################################################################
-host = config.get('ServeurID','host')
-user = config.get('ServeurID','user')
-password = config.get('ServeurID','password')
+host        = config.get('ServeurID','host')
+user        = config.get('ServeurID','user')
+rssfeed     = config.get('ServeurID','rssfeed')
+password    = config.get('ServeurID','password')
 downloadTypeLst = ["Themes","Scrapers","Scripts"]
 remoteDirLst  = ["/.passionxbmc/Themes/","/.passionxbmc/Scraper/","/.passionxbmc/Scripts/"]
-localDirLst   = [themesDir,scraperDir,TempscriptDir]
+localDirLst   = [themesDir,scraperDir,scriptDir]
 
 ##############################################################################
 #                   Verification parametres locaux et serveur                #

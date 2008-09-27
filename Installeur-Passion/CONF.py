@@ -1,5 +1,6 @@
 import os
 import ConfigParser
+import xbmcgui, xbmc
 
 def SetConfiguration ():
 
@@ -56,17 +57,17 @@ def SetConfiguration ():
 
         if os.path.isdir("Q:"+os.sep) == True:
 
-           # Xbox and Windows normal case
+            # Xbox and Windows normal case
             XBMC = "Q:"+os.sep
             config.set("InstallPath", "path", XBMC)
 
         else:
 
-           # Xbox and Windows other case
-           dialog = xbmcgui.Dialog()
-           XBMC = dialog.browse(0, "Choisissez le dossier d'installation d'XBMC","files")
-           print "win other case, XBMC = ",XBMC
-           config.set("InstallPath", "path", XBMC)
+            # Xbox and Windows other case
+            dialog = xbmcgui.Dialog()
+            XBMC = dialog.browse(0, "Choisissez le dossier d'installation d'XBMC","files")
+            print "win other case, XBMC = ",XBMC
+            config.set("InstallPath", "path", XBMC)
 
         #Set Win ScraperDir
         scraperDir  = os.path.join(XBMC, "system"+os.sep+"scrapers"+os.sep+"video")
@@ -79,9 +80,6 @@ def SetConfiguration ():
     ThemesDir   = os.path.join(XBMC, "skin")
     config.set("InstallPath", "ThemesDir", ThemesDir)
 
-    #Set TempscriptDir
-    TempscriptDir = os.path.join(ROOTDIR, "download")
-    config.set("InstallPath","TempscriptDir",TempscriptDir)
 
     #Set ScriptsDir
     ScriptsDir   = os.path.join(XBMC, "scripts")
