@@ -197,6 +197,9 @@ class ftpDownloadCtrl:
         Close FTP conenction
         """
         curDirList = self.ftp.nlst(remotedir)
+        
+        # Tri de la liste
+        curDirList.sort(key=str.lower)
         return curDirList
 
 
