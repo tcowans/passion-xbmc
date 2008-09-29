@@ -81,8 +81,8 @@ def start():
     dp.close()
     del config #On supprime le config parser
 
-    import CONF
-    CONF.SetConfiguration()
+#    import CONF
+#    CONF.SetConfiguration()
     dp.close()
 
     
