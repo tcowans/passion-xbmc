@@ -83,7 +83,7 @@ def start():
 
 #    import CONF
 #    CONF.SetConfiguration()
-    dp.close()
+#    dp.close()
 
     
     #import INSTALLEUR
@@ -91,6 +91,8 @@ def start():
     #exec("import " + script)
 
     xbmc.executebuiltin('XBMC.RunScript(%s)'%script)
+    print "Sortie de INSTALLMAJ2"
+    #sys.exit(0)
 
 if __name__ == "__main__":
     #ici on pourrait faire des action si le script était lancé en tant que programme
