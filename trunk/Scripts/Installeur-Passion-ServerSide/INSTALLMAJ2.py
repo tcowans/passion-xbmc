@@ -5,6 +5,7 @@ import zipfile
 import xbmc
 import xbmcgui
 import string
+import sys
 
 print "****************************************************************"
 print "                      Mise  a jour du script                   "
@@ -53,8 +54,11 @@ def zipextraction (archive,pathdst):
 def start():
     rootdir = os.getcwd().replace(';','')
     curdir = os.path.join(rootdir, "cache")
+    
+    print "curdir : %s"%curdir
 
     confmaj = os.path.join(curdir, "confmaj.cfg")
+    print "Lecture du fichier de conf: %s"%confmaj
     config = ConfigParser.ConfigParser()
     config.read(confmaj)
 
@@ -62,6 +66,13 @@ def start():
     installDir  = config.get('Localparam', 'scriptDir')
     archive     = config.get('Localparam', 'Archive')
     script      = config.get('Localparam', 'Scripttolaunch')
+    
+    print "passiondir : %s"%passiondir
+    print "installDir : %s"%passiondir
+    print "archive : %s"%passiondir
+    print "archive : %s"%passiondir
+    
+    sys.path.append(passiondir)
 
     dp = xbmcgui.DialogProgress()
     dp.create("Mise a jour","Mise a jour du script","Veuillez patienter...")
@@ -74,9 +85,17 @@ def start():
     dp.close()
 
     
-    import INSTALLEUR
-    INSTALLEUR.start()
+    #import INSTALLEUR
+    #INSTALLEUR.start()
     #exec("import " + script)
 
-    #xbmc.executebuiltin('XBMC.RunScript(%s)'%script)
+    xbmc.executebuiltin('XBMC.RunScript(%s)'%script)
+
+if __name__ == "__main__":
+    #ici on pourrait faire des action si le script était lancé en tant que programme
+    print "demarrage du script en tant que programme"
+    start()
+else:
+    #ici on est en mode librairie importée depuis un programme
+    pass
 
