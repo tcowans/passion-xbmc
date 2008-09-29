@@ -69,9 +69,9 @@ def start():
     script      = config.get('Localparam', 'Scripttolaunch')
     
     print "passiondir : %s"%passiondir
-    print "installDir : %s"%passiondir
-    print "archive : %s"%passiondir
-    print "archive : %s"%passiondir
+    print "installDir : %s"%installDir
+    print "archive : %s"%archive
+    print "Scripttolaunch : %s"%script
     
     sys.path.append(passiondir)
 
