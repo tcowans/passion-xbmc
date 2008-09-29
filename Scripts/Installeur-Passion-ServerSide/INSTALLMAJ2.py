@@ -52,7 +52,8 @@ def zipextraction (archive,pathdst):
 
 
 def start():
-    rootdir = os.getcwd().replace(';','')
+    rootdir = os.path.dirname(os.getcwd().replace(';',''))
+    print "rootdir: %s"%rootdir
     curdir = os.path.join(rootdir, "cache")
     
     print "curdir : %s"%curdir
