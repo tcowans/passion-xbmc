@@ -3,6 +3,7 @@ import ConfigParser
 import xbmc
 import xbmcgui
 import shutil
+import sys
 
 print "****************************************************************"
 print "                      Lanceur                                   "
@@ -56,16 +57,13 @@ else:
     ##########################################################################
     scriptmaj = updating = config.get('Version','SCRIPTMAJ')
     
-    #On copie the fichier du repertoire cache dans le repertoire principal
+    # Ajout au sys PATH le chemin du script d'install
+    dirLibName = os.path.dirname(scriptmaj) # recuperation du chemin du repertoire script
+    sys.path.append(dirLibName)
     fileName = os.path.basename(scriptmaj)
-    print "Fichier a copier de cache dans root : %s"%fileName
-    print "Fichier Source : %s"%scriptmaj
-    print "Fichier Destination : %s"%os.path.join(ROOTDIR, fileName)
-
-    shutil.copyfile(scriptmaj,os.path.join(ROOTDIR, fileName))
-
-    #import cache.INSTALLMAJ2
-    import INSTALLMAJ2
-    #exec("import " + scriptmaj)
-    #xbmc.executebuiltin('XBMC.RunScript(%s)'%scriptmaj)
-    INSTALLMAJ2.start()
+    libName  = fileName.replace(".py","")
+    
+    mon_module_import = "passion"
+    exec("import %s"%libName)
+    exec("%s.start()"%libName)
+        
