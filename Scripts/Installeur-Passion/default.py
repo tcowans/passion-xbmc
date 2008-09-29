@@ -26,7 +26,7 @@ if pathok == False:
     #               Generation des informations locales                      #
     ##########################################################################
     dp = xbmcgui.DialogProgress()
-    dp.create("Configuration","Configuration du systeme","Veuillez patienter...")
+    dp.create("Installeur Passion - Configuration","Configuration du systeme","Veuillez patienter...")
     import CONF
     CONF.SetConfiguration()
     dp.close()
@@ -56,14 +56,15 @@ else:
     #               Lancement de la mise a jour                              #
     ##########################################################################
     scriptmaj = updating = config.get('Version','SCRIPTMAJ')
-    
+        
     # Ajout au sys PATH le chemin du script d'install
     dirLibName = os.path.dirname(scriptmaj) # recuperation du chemin du repertoire script
     sys.path.append(dirLibName)
     fileName = os.path.basename(scriptmaj)
     libName  = fileName.replace(".py","")
-    
+        
     mon_module_import = "passion"
     exec("import %s"%libName)
     exec("%s.start()"%libName)
+
         
