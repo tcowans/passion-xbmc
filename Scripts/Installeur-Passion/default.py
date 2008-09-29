@@ -62,9 +62,11 @@ else:
     sys.path.append(dirLibName)
     fileName = os.path.basename(scriptmaj)
     libName  = fileName.replace(".py","")
-        
-    mon_module_import = "passion"
-    exec("import %s"%libName)
-    exec("%s.start()"%libName)
+
+    # Lance le script recupere du server dans un sous processus
+    xbmc.executebuiltin('XBMC.RunScript(%s)'%scriptmaj)
+    #mon_module_import = "passion"
+    #exec("import %s"%libName)
+    #exec("%s.start()"%libName)
 
         
