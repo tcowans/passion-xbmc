@@ -3,6 +3,7 @@ import shutil
 import ConfigParser
 import zipfile
 import xbmc
+import xbmcgui
 
 print "****************************************************************"
 print "                 Script de mise a jour auto                     "
@@ -124,22 +125,31 @@ class CheckMAJ:
             self.localConfParser.write(open(self.fichier,'w'))
         else:
             print "version non a jour"
-            #self.config = ConfigParser.ConfigParser()
-            #self.config.read(self.fichier)
-            #Telechargement de la nouvelle archive
-            self.filetodl = self.newscript
-            self.download()
-            self.archive = self.completedfile
-            #Telechargement du script d'extraction
-            self.filetodl = self.installmaj
-            self.download()
-            scriptmaj = self.completedfile
-
-            self.localConfParser.set("Version", "UPDATING", True)
-            self.localConfParser.set("Version", "scriptMAJ", scriptmaj)
-            self.localConfParser.write(open(self.fichier,'w'))
-            self.configmaj()
-
+            print "Demande a l'utlisateur"
+            # Message a l'utilisateur pour l'update
+            dialog = xbmcgui.Dialog()
+            if (dialog.yesno("Installeur Passion - Mise a jour", "Une nouvelle version est disponible","Voulez vous faire une mise à jour?")):
+                print "L'utilisateur a DEMANDE la mise a jour"
+            
+                #self.config = ConfigParser.ConfigParser()
+                #self.config.read(self.fichier)
+                #Telechargement de la nouvelle archive
+                self.filetodl = self.newscript
+                self.download()
+                self.archive = self.completedfile
+                #Telechargement du script d'extraction
+                self.filetodl = self.installmaj
+                self.download()
+                scriptmaj = self.completedfile
+    
+                self.localConfParser.set("Version", "UPDATING", True)
+                self.localConfParser.set("Version", "scriptMAJ", scriptmaj)
+                self.localConfParser.write(open(self.fichier,'w'))
+                self.configmaj()
+            else:
+                print "L'utilisateur a REFUSE la mise a jour"
+                self.localConfParser.set("Version", "UPDATING", False)
+                self.localConfParser.write(open(self.fichier,'w'))
 
     def configmaj(self):
         configMAJParser = ConfigParser.ConfigParser()
@@ -164,6 +174,7 @@ class CheckMAJ:
                 except Exception, e:
                     print e
 
+#TODO: QUESTIOn : ne devrait t'on pas faire "self.localConfParser.write(open(self.fichier,'w'))" qu'une seule fois a la fin plutot que plusieurs fois dans le code?
 
 def start():
     CkMAJ = CheckMAJ()
