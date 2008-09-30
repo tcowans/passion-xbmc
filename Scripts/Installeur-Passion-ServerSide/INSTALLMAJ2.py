@@ -80,17 +80,17 @@ def start():
     zipextraction(archive,passiondir)
     dp.close()
     del config #On supprime le config parser
-
-#    import CONF
-#    CONF.SetConfiguration()
-#    dp.close()
+    
+    import CONF
+    CONF.SetConfiguration()
+    dp.close()
 
     
-    #import INSTALLEUR
-    #INSTALLEUR.start()
-    #exec("import " + script)
+    import INSTALLEUR
+    INSTALLEUR.start()
+    exec("import " + script)
 
-    xbmc.executebuiltin('XBMC.RunScript(%s)'%script)
+    #xbmc.executebuiltin('XBMC.RunScript(%s)'%script)
     print "Sortie de INSTALLMAJ2"
     #sys.exit(0)
 
