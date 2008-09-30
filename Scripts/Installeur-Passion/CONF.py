@@ -15,6 +15,7 @@ def SetConfiguration ():
     config = ConfigParser.ConfigParser()
     config.read(fichier)
     USRPath = False
+    print "fichier = ",fichier
 
     if os.name=='posix':
 
