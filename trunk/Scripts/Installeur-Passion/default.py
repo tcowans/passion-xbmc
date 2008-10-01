@@ -45,6 +45,11 @@ config.read(fichier)
 updating = config.getboolean('Version','UPDATING')
 
 if updating == False:
+    #del sys.modules['os']
+    #del sys.modules['main']
+    #del sys.modules['shutil']
+    del sys.modules['CONF']
+    del sys.modules['CHECKMAJ']
     ##########################################################################
     #               Lancement du script                                      #
     ##########################################################################
