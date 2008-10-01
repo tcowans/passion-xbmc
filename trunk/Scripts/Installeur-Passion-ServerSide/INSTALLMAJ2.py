@@ -81,16 +81,22 @@ def start():
     dp.close()
     del config #On supprime le config parser
     
-    import CONF
-    CONF.SetConfiguration()
-    dp.close()
+    #import CONF
+    #CONF.SetConfiguration()
+    #dp.close()
 
     
-    import INSTALLEUR
-    INSTALLEUR.start()
-    exec("import " + script)
-
-    #xbmc.executebuiltin('XBMC.RunScript(%s)'%script)
+    #import INSTALLEUR
+    #INSTALLEUR.start()
+    #exec("import " + script)
+    del sys.modules['ftplib']
+    del sys.modules['os']
+    del sys.modules['shutil']
+    del sys.modules['zipfile']
+    del sys.modules['xbmcgui']
+    del sys.modules['string']
+    del sys.modules['ConfigParser']
+    xbmc.executebuiltin('XBMC.RunScript(%s)'%script)
     print "Sortie de INSTALLMAJ2"
     #sys.exit(0)
 
