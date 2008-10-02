@@ -5,6 +5,20 @@ import xbmcgui
 import shutil
 import sys
 
+try:
+    del sys.modules['CONF']
+except:
+    pass 
+try:
+    del sys.modules['CHECKMAJ']
+except:
+    pass 
+try:
+    del sys.modules['INSTALLEUR']
+except:
+    pass 
+
+
 print "****************************************************************"
 print "                      Lanceur                                   "
 print "****************************************************************"

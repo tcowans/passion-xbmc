@@ -9,6 +9,10 @@ import xbmcgui, xbmc
 import traceback
 import time
 import urllib2
+try:
+    del sys.modules['BeautifulSoup']
+except:
+    pass 
 from BeautifulSoup import BeautifulStoneSoup #librairie de traitement XML
 import htmlentitydefs
 
