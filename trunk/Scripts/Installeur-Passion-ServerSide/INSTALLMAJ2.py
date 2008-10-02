@@ -6,6 +6,7 @@ import xbmc
 import xbmcgui
 import string
 import sys
+import traceback
 
 print "****************************************************************"
 print "                      Mise  a jour du script                   "
@@ -52,54 +53,63 @@ def zipextraction (archive,pathdst):
 
 
 def start():
-    rootdir = os.path.dirname(os.getcwd().replace(';',''))
-    print "rootdir: %s"%rootdir
-    curdir = os.path.join(rootdir, "cache")
+    try:
+        rootdir = os.path.dirname(os.getcwd().replace(';',''))
+        print "rootdir: %s"%rootdir
+        curdir = os.path.join(rootdir, "cache")
+        
+        print "curdir : %s"%curdir
     
-    print "curdir : %s"%curdir
-
-    confmaj = os.path.join(curdir, "confmaj.cfg")
-    print "Lecture du fichier de conf: %s"%confmaj
-    config = ConfigParser.ConfigParser()
-    config.read(confmaj)
-
-    passiondir  = config.get('Localparam', 'passiondir')
-    installDir  = config.get('Localparam', 'scriptDir')
-    archive     = config.get('Localparam', 'Archive')
-    script      = config.get('Localparam', 'Scripttolaunch')
+        confmaj = os.path.join(curdir, "confmaj.cfg")
+        print "Lecture du fichier de conf: %s"%confmaj
+        config = ConfigParser.ConfigParser()
+        config.read(confmaj)
     
-    print "passiondir : %s"%passiondir
-    print "installDir : %s"%installDir
-    print "archive : %s"%archive
-    print "Scripttolaunch : %s"%script
+        passiondir  = config.get('Localparam', 'passiondir')
+        installDir  = config.get('Localparam', 'scriptDir')
+        archive     = config.get('Localparam', 'Archive')
+        script      = config.get('Localparam', 'Scripttolaunch')
+        
+        print "passiondir : %s"%passiondir
+        print "installDir : %s"%installDir
+        print "archive : %s"%archive
+        print "Scripttolaunch : %s"%script
+        
+        sys.path.append(passiondir)
     
-    sys.path.append(passiondir)
-
-    dp = xbmcgui.DialogProgress()
-    dp.create("Mise a jour","Mise a jour du script","Veuillez patienter...")
-    zipextraction(archive,passiondir)
-    dp.close()
-    del config #On supprime le config parser
+        dp = xbmcgui.DialogProgress()
+        dp.create("Mise a jour","Mise a jour du script","Veuillez patienter...")
+        zipextraction(archive,passiondir)
+        dp.close()
+        del config #On supprime le config parser
+        
+        #import CONF
+        #CONF.SetConfiguration()
+        #dp.close()
     
-    #import CONF
-    #CONF.SetConfiguration()
-    #dp.close()
-
-    
-    #import INSTALLEUR
-    #INSTALLEUR.start()
-    #exec("import " + script)
-    # -> pas besoin de retirer les libs standard, ce sont nos modules qui doivent etre retires
-#    del sys.modules['ftplib']
-#    del sys.modules['os']
-#    del sys.modules['shutil']
-#    del sys.modules['zipfile']
-#    del sys.modules['xbmcgui']
-#    del sys.modules['string']
-#    del sys.modules['ConfigParser']
-    xbmc.executebuiltin('XBMC.RunScript(%s)'%script)
-    print "Sortie de INSTALLMAJ2"
-    #sys.exit(0)
+        
+        #import INSTALLEUR
+        #INSTALLEUR.start()
+        #exec("import " + script)
+        # -> pas besoin de retirer les libs standard, ce sont nos modules qui doivent etre retires
+    #    del sys.modules['ftplib']
+    #    del sys.modules['os']
+    #    del sys.modules['shutil']
+    #    del sys.modules['zipfile']
+    #    del sys.modules['xbmcgui']
+    #    del sys.modules['string']
+    #    del sys.modules['ConfigParser']
+        print "Lancement du script %s"%script
+        #xbmc.executebuiltin('XBMC.RunScript(%s)'%script)
+        xbmc.executescript(script)
+        print "Sortie de INSTALLMAJ2"
+        #sys.exit(0)
+    except Exception, e:
+        print "INSTALLMAJ : start(): Exception",e
+        #dialogError = xbmcgui.Dialog()
+        #dialogError.ok("Erreur", "Exception durant l'initialisation")
+        print ("error/INSTALLMAJ start: " + str(sys.exc_info()[0]))
+        traceback.print_exc()
 
 if __name__ == "__main__":
     #ici on pourrait faire des action si le script était lancé en tant que programme

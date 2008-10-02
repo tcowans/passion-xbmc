@@ -4,6 +4,7 @@ import xbmc
 import xbmcgui
 import shutil
 import sys
+import traceback
 
 try:
     del sys.modules['CONF']
@@ -59,33 +60,49 @@ config.read(fichier)
 updating = config.getboolean('Version','UPDATING')
 
 if updating == False:
-    #del sys.modules['os']
-    #del sys.modules['main']
-    #del sys.modules['shutil']
-#    del sys.modules['CONF']
-#    del sys.modules['CHECKMAJ']
-    ##########################################################################
-    #               Lancement du script                                      #
-    ##########################################################################
-    import INSTALLEUR
-    INSTALLEUR.start()
+    try:
+        #del sys.modules['os']
+        #del sys.modules['main']
+        #del sys.modules['shutil']
+        #del sys.modules['CONF']
+        #del sys.modules['CHECKMAJ']
+        ##########################################################################
+        #               Lancement du script                                      #
+        ##########################################################################
+        import INSTALLEUR
+        INSTALLEUR.start()
+    except Exception, e:
+        print "default : Exception pendant le chargement et/ou l'utilisation de l'INSTALLEUR",e
+        #dialogError = xbmcgui.Dialog()
+        #dialogError.ok("Erreur", "Exception durant l'initialisation")
+        print ("error/default: " + str(sys.exc_info()[0]))
+        traceback.print_exc()
 
 else:
     ##########################################################################
     #               Lancement de la mise a jour                              #
     ##########################################################################
-    scriptmaj = updating = config.get('Version','SCRIPTMAJ')
-        
-    # Ajout au sys PATH le chemin du script d'install
-    dirLibName = os.path.dirname(scriptmaj) # recuperation du chemin du repertoire script
-    sys.path.append(dirLibName)
-    fileName = os.path.basename(scriptmaj)
-    libName  = fileName.replace(".py","")
-
-    # Lance le script recupere du server dans un sous processus
-    xbmc.executebuiltin('XBMC.RunScript(%s)'%scriptmaj)
-    #mon_module_import = "passion"
-    #exec("import %s"%libName)
-    #exec("%s.start()"%libName)
+    try:
+        scriptmaj = updating = config.get('Version','SCRIPTMAJ')
+            
+        # Ajout au sys PATH le chemin du script d'install
+        dirLibName = os.path.dirname(scriptmaj) # recuperation du chemin du repertoire script
+        sys.path.append(dirLibName)
+        fileName = os.path.basename(scriptmaj)
+        libName  = fileName.replace(".py","")
+    
+        # Lance le script recupere du server dans un sous processus
+        #xbmc.executebuiltin('XBMC.RunScript(%s)'%scriptmaj)
+        xbmc.executescript(scriptmaj)
+        #mon_module_import = "passion"
+        #exec("import %s"%libName)
+        #exec("%s.start()"%libName)
+    except Exception, e:
+        print "default : Exception pendant le chargement et/ou La mise a jour",e
+        #dialogError = xbmcgui.Dialog()
+        #dialogError.ok("Erreur", "Exception durant l'initialisation")
+        print ("error/default: " + str(sys.exc_info()[0]))
+        traceback.print_exc()
+print "default : FIN DU SCRIPT"
 
         
