@@ -89,13 +89,14 @@ def start():
     #import INSTALLEUR
     #INSTALLEUR.start()
     #exec("import " + script)
-    del sys.modules['ftplib']
-    del sys.modules['os']
-    del sys.modules['shutil']
-    del sys.modules['zipfile']
-    del sys.modules['xbmcgui']
-    del sys.modules['string']
-    del sys.modules['ConfigParser']
+    # -> pas besoin de retirer les libs standard, ce sont nos modules qui doivent etre retires
+#    del sys.modules['ftplib']
+#    del sys.modules['os']
+#    del sys.modules['shutil']
+#    del sys.modules['zipfile']
+#    del sys.modules['xbmcgui']
+#    del sys.modules['string']
+#    del sys.modules['ConfigParser']
     xbmc.executebuiltin('XBMC.RunScript(%s)'%script)
     print "Sortie de INSTALLMAJ2"
     #sys.exit(0)
