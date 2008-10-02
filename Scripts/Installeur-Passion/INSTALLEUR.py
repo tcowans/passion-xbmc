@@ -579,6 +579,11 @@ class MainWindow(xbmcgui.Window):
                     self.delFiles(CACHEDIR)
 
                 #on ferme tout
+                winId = xbmcgui.getCurrentWindowId()
+                print "Current Main Windows ID = "
+                print winId
+
+                print "Fermeture de la Window principale"
                 self.close()
 
             if action == ACTION_PARENT_DIR:
@@ -895,9 +900,14 @@ class MainWindow(xbmcgui.Window):
 def start():
     #Fonction de demarrage
     #passionFTPCtrl = ftpDownloadCtrl(host,user,password,remoteDirLst,localDirLst,downloadTypeLst)
+    wid = xbmcgui.getCurrentWindowId()
+    print "Current Windows ID = "
+    print wid
     w = MainWindow()
     w.doModal()
+    print "Delete Window"
     del w
+    print "INSTALLEUR - Fin start"
 
 ROOTDIR = os.getcwd().replace(';','')
 
@@ -953,3 +963,10 @@ print("        Graphic Design by : "+ designer)
 print("")
 print("===================================================================")
 
+if __name__ == "__main__":
+    #ici on pourrait faire des action si le script était lancé en tant que programme
+    print "demarrage du script INSTALLEUR.py en tant que programme"
+    start()
+else:
+    #ici on est en mode librairie importée depuis un programme
+    pass
