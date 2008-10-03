@@ -6,18 +6,12 @@ import shutil
 import sys
 import traceback
 
-try:
+if sys.modules.has_key("CONF"):
     del sys.modules['CONF']
-except:
-    pass 
-try:
+if sys.modules.has_key("CHECKMAJ"):
     del sys.modules['CHECKMAJ']
-except:
-    pass 
-try:
+if sys.modules.has_key("INSTALLEUR"):
     del sys.modules['INSTALLEUR']
-except:
-    pass 
 
 
 print "****************************************************************"
@@ -61,11 +55,6 @@ updating = config.getboolean('Version','UPDATING')
 
 if updating == False:
     try:
-        #del sys.modules['os']
-        #del sys.modules['main']
-        #del sys.modules['shutil']
-        #del sys.modules['CONF']
-        #del sys.modules['CHECKMAJ']
         ##########################################################################
         #               Lancement du script                                      #
         ##########################################################################
