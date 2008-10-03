@@ -63,26 +63,28 @@ class CheckMAJ:
         verifie que le repertoire existe et le cree si besoin
         """
         try:
-            print("verifrep check if directory: " + folder + " exists")
             if not os.path.exists(folder):
-                print("verifrep Impossible to find the directory - trying to create the directory: " + folder)
                 os.makedirs(folder)
 
         except Exception, e:
-            print("Exception while creating folder " + folder)
+            print("verifrep - Exception while creating folder " + folder)
             print(e)
             pass
 
-
     def download(self):
-            self.filedst = self.filetodl[len(self.remoteversionDir):]
-            self.completedfile = os.path.join(self.cacheDir, self.filedst)
-            localFile = open(self.completedfile, "wb")
-            self.ftp.retrbinary('RETR ' + self.filetodl, localFile.write)
-            localFile.close()
-
+        """
+        """
+        self.ftp = ftplib.FTP(self.host,self.user,self.password)
+        self.filedst = self.filetodl[len(self.remoteversionDir):]
+        self.completedfile = os.path.join(self.cacheDir, self.filedst)
+        localFile = open(str(self.completedfile), "wb")
+        self.ftp.retrbinary('RETR ' + self.filetodl, localFile.write)
+        localFile.close()
+        self.ftp.quit()
+        
     def orientation(self):
-
+        """
+        """
         self.delFiles(self.cacheDir) # on vide le cache pour etre sur d'etre plus propre
 
         for file in self.remoteDirLst:
@@ -124,15 +126,12 @@ class CheckMAJ:
             self.localConfParser.set("Version", "UPDATING", False)
             self.localConfParser.write(open(self.fichier,'w'))
         else:
-            print "version non a jour"
-            print "Demande a l'utlisateur"
+            print "version non a jour - Demande a l'utlisateur"
             # Message a l'utilisateur pour l'update
             dialog = xbmcgui.Dialog()
             if (dialog.yesno("Installeur Passion - Mise a jour", "Une nouvelle version est disponible","Voulez vous faire une mise à jour?")):
                 print "L'utilisateur a DEMANDE la mise a jour"
             
-                #self.config = ConfigParser.ConfigParser()
-                #self.config.read(self.fichier)
                 #Telechargement de la nouvelle archive
                 self.filetodl = self.newscript
                 self.download()
