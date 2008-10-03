@@ -44,7 +44,7 @@ def SetConfiguration ():
             print "linux other case, XBMC = ", XBMC
             config.set("InstallPath", "path", XBMC)
             #Set Linux other case ScraperDir
-            scraperDir  = os.path.join(XBMC, "system"+os.sep+"scrapers"+os.sep+"video")
+            ScraperDir  = os.path.join(XBMC, "system"+os.sep+"scrapers"+os.sep+"video")
             config.set("InstallPath", "ScraperDir", ScraperDir)
 
         #Set Linux ScraperDir
