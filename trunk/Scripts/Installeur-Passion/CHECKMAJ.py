@@ -164,7 +164,7 @@ class CheckMAJ:
 
 #TODO: QUESTIOn : ne devrait t'on pas faire "self.localConfParser.write(open(self.fichier,'w'))" qu'une seule fois a la fin plutot que plusieurs fois dans le code?
 
-def start():
+def go():
     CkMAJ = CheckMAJ()
     CkMAJ.orientation()
     del CkMAJ

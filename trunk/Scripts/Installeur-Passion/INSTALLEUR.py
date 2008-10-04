@@ -836,7 +836,7 @@ class MainWindow(xbmcgui.Window):
 
 
 
-def start():
+def go():
     #Fonction de demarrage
     wid = xbmcgui.getCurrentWindowId()
     print "Current Windows ID = "
@@ -845,7 +845,7 @@ def start():
     w.doModal()
     print "Delete Window"
     del w
-    print "INSTALLEUR - Fin start"
+    print "INSTALLEUR - Fin go"
 
 ROOTDIR = os.getcwd().replace(';','')
 
@@ -904,7 +904,7 @@ print("===================================================================")
 if __name__ == "__main__":
     #ici on pourrait faire des action si le script était lancé en tant que programme
     print "demarrage du script INSTALLEUR.py en tant que programme"
-    start()
+    go()
 else:
     #ici on est en mode librairie importée depuis un programme
     pass

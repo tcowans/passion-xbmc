@@ -47,7 +47,7 @@ if pathok == False:
 dp = xbmcgui.DialogProgress()
 dp.create("Mise a jour automatique","Verification de la mise a jour","Veuillez patienter...")
 import CHECKMAJ
-CHECKMAJ.start()
+CHECKMAJ.go()
 dp.close()
 
 config.read(fichier)
@@ -59,7 +59,7 @@ if updating == False:
         #               Lancement du script                                      #
         ##########################################################################
         import INSTALLEUR
-        INSTALLEUR.start()
+        INSTALLEUR.go()
     except Exception, e:
         print "default : Exception pendant le chargement et/ou l'utilisation de l'INSTALLEUR",e
         #dialogError = xbmcgui.Dialog()
@@ -79,19 +79,20 @@ else:
         sys.path.append(dirLibName)
         fileName = os.path.basename(scriptmaj)
         libName  = fileName.replace(".py","")
-    
         # Lance le script recupere du server dans un sous processus
         #xbmc.executebuiltin('XBMC.RunScript(%s)'%scriptmaj)
-        xbmc.executescript(scriptmaj)
+        #xbmc.executescript(scriptmaj)
+        import INSTALLEUR
+        INSTALLEUR.go()
         #mon_module_import = "passion"
         #exec("import %s"%libName)
-        #exec("%s.start()"%libName)
+        #exec("%s.go()"%libName)
     except Exception, e:
         print "default : Exception pendant le chargement et/ou La mise a jour",e
         #dialogError = xbmcgui.Dialog()
         #dialogError.ok("Erreur", "Exception durant l'initialisation")
         print ("error/default: " + str(sys.exc_info()[0]))
         traceback.print_exc()
-print "default : FIN DU SCRIPT"
+#print "default : FIN DU SCRIPT"
 
         
