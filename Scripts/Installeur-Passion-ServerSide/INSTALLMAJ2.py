@@ -50,7 +50,7 @@ def zipextraction (archive,pathdst):
     zfile.close()
 
 
-def start():
+def go():
     try:
         rootdir = os.path.dirname(os.getcwd().replace(';',''))
         curdir = os.path.join(rootdir, "cache")
@@ -78,24 +78,24 @@ def start():
     
         
         #import INSTALLEUR
-        #INSTALLEUR.start()
+        #INSTALLEUR.go()
         #exec("import " + script)
-        print "Lancement du script %s"%script
+        #print "Lancement du script %s"%script
         #xbmc.executebuiltin('XBMC.RunScript(%s)'%script)
-        xbmc.executescript(script)
-        print "Sortie de INSTALLMAJ2"
+        #xbmc.executescript(script)
+        #print "Sortie de INSTALLMAJ2"
         #sys.exit(0)
     except Exception, e:
-        print "INSTALLMAJ : start(): Exception",e
+        print "INSTALLMAJ : go(): Exception",e
         #dialogError = xbmcgui.Dialog()
         #dialogError.ok("Erreur", "Exception durant l'initialisation")
-        print ("error/INSTALLMAJ start: " + str(sys.exc_info()[0]))
+        print ("error/INSTALLMAJ go: " + str(sys.exc_info()[0]))
         traceback.print_exc()
 
 if __name__ == "__main__":
     #ici on pourrait faire des action si le script était lancé en tant que programme
     print "demarrage du script en tant que programme"
-    start()
+    go()
 else:
     #ici on est en mode librairie importée depuis un programme
     pass
