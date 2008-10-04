@@ -3,6 +3,9 @@ import ConfigParser
 import xbmcgui, xbmc
 
 def SetConfiguration ():
+    """
+    Definit les repertoires locaux de l'utilisateur
+    """
 
     print("===================================================================")
     print("")
@@ -15,7 +18,6 @@ def SetConfiguration ():
     config = ConfigParser.ConfigParser()
     config.read(fichier)
     USRPath = False
-    print "fichier = ",fichier
 
     if os.name=='posix':
 
@@ -47,9 +49,6 @@ def SetConfiguration ():
             ScraperDir  = os.path.join(XBMC, "system"+os.sep+"scrapers"+os.sep+"video")
             config.set("InstallPath", "ScraperDir", ScraperDir)
 
-        #Set Linux ScraperDir
-        #ScraperDir  = os.path.join(ROOTDIR, "download")
-        #config.set("InstallPath", "ScraperDir", ScraperDir)
 
     else:
 

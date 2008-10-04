@@ -73,6 +73,7 @@ class CheckMAJ:
 
     def download(self):
         """
+        Fonction de telechargement commune : version, archive, script de mise a jour
         """
         self.ftp = ftplib.FTP(self.host,self.user,self.password)
         self.filedst = self.filetodl[len(self.remoteversionDir):]
@@ -84,6 +85,7 @@ class CheckMAJ:
         
     def orientation(self):
         """
+        Oriente le script vers une mise a jour ou non
         """
         self.delFiles(self.cacheDir) # on vide le cache pour etre sur d'etre plus propre
 
@@ -97,40 +99,26 @@ class CheckMAJ:
                 self.versiontodl = file
 
         #Telechargement du nouveau fichier de version
-        print "telecharge version", self.versiontodl
         self.filetodl = self.versiontodl
         self.download()
 
         #Lecture des parametres du nouveau fichier de version
-        print "lecture fichier"
-        print 'self.completedfile = ',self.completedfile
         remoteConfParser = ConfigParser.ConfigParser()
-        #self.newversionfile = open(self.completedfile,'r')
         remoteConfParser.read(self.completedfile)
-        print remoteConfParser.read(self.newversionfile)
         self.newversion = remoteConfParser.get('Lastversion','lastversion')
-        #print self.newversion
-        #open(self.newversionfile,'r')
-        #self.newversion = self.newversionfile.read()
-        print self.newversion
-        print self.curversion
         
         # Suppression de l'instance du config parser de remoteConf
         del remoteConfParser
 
         if self.newversion == self.curversion:
-            print "version a jour"
-            #self.config = ConfigParser.ConfigParser()
-            #self.config.read(self.fichier)
-            #self.config.remove_section('Lastversion')
+            #version a jour
             self.localConfParser.set("Version", "UPDATING", False)
             self.localConfParser.write(open(self.fichier,'w'))
         else:
-            print "version non a jour - Demande a l'utlisateur"
+            # version non a jour - Demande a l'utlisateur
             # Message a l'utilisateur pour l'update
             dialog = xbmcgui.Dialog()
             if (dialog.yesno("Installeur Passion - Mise a jour", "Une nouvelle version est disponible","Voulez vous faire une mise à jour?")):
-                print "L'utilisateur a DEMANDE la mise a jour"
             
                 #Telechargement de la nouvelle archive
                 self.filetodl = self.newscript
@@ -146,11 +134,14 @@ class CheckMAJ:
                 self.localConfParser.write(open(self.fichier,'w'))
                 self.configmaj()
             else:
-                print "L'utilisateur a REFUSE la mise a jour"
+                #L'utilisateur a REFUSE la mise a jour
                 self.localConfParser.set("Version", "UPDATING", False)
                 self.localConfParser.write(open(self.fichier,'w'))
 
     def configmaj(self):
+        """
+        Creation du fichier de conf qui servira au script de mise a jour
+        """
         configMAJParser = ConfigParser.ConfigParser()
         configMAJParser.add_section('Localparam')
         configMAJParser.set('Localparam', 'PassionDir', self.rootdir)
@@ -158,13 +149,11 @@ class CheckMAJ:
         configMAJParser.set('Localparam','Scripttolaunch',self.scripttolaunch)
         configMAJParser.set("Localparam", "scriptDir", self.scriptDir)
         configMAJParser.write(open(self.confmaj,'w'))
-        print "configMAJParser = ",configMAJParser
-        # Suppression de configMAJParser
+        # Suppression de l'instance de configMAJParser
         del configMAJParser
 
 
     def delFiles(self,folder):
-        print "Effacement des fichiers du repertoire: %s"%folder
         for root, dirs, files in os.walk(folder , topdown=False):
             for name in files:
                 print "Effaccement de %s en cours ..."%name

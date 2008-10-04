@@ -163,11 +163,10 @@ class scriptextracter:
         self.zfile = zipfile.ZipFile(self.archive, 'r')
         for i in self.zfile.namelist():  ## On parcourt l'ensemble des fichiers de l'archive
             print i
-            if i.endswith('/'): #TODO : faire des tests sur plusieurs plateformes pour savoir si le '/' de fin depend de l'os sur lequel on est ou est constant
+            if i.endswith('/'):
                 dossier = self.pathdst + os.sep + i
                 try:
                     os.makedirs(dossier)
-                    print "dossier = ",dossier
                 except Exception, e:
                     print "Erreur creation dossier de l'archive = ",e
             else:
@@ -181,14 +180,10 @@ class scriptextracter:
         self.archive = archive
         if archive.endswith('zip'):
             self.zipfolder() #generation des dossiers dans le cas d'un zip
-
-        print "Extraction de l'archive ", self.archive
-        print "Dans le repertoire ",self.pathdst
         #extraction de l'archive
         xbmc.executebuiltin('XBMC.Extract(%s,%s)'%(self.archive,self.pathdst) )
 
-        #TODO: Probleme de timing, il semble que os.remove arrive avant la fin de l'extraction      ce qui genere un exception
-        #Solution definitive trouvee, on delete le cache a la sortie du script
+        #On delete le cache a la sortie du script
 
 class ftpDownloadCtrl:
     """
@@ -320,7 +315,6 @@ class ftpDownloadCtrl:
                 print "=================================="
 
                 try :
-                    print "_download: dossier, i = ",i
                     self._downloaddossier(i,dialogProgressWin=dialogProgressWin,curPercent=percent,coeff=coeff*curDirListSize)
                     percent = int((float(curDirList.index(i)+1)*100)/(curDirListSize * coeff))
 
@@ -347,16 +341,9 @@ class ftpDownloadCtrl:
         Note: fait un appel recursif sur _download
         """
         emptydir = False
-        print "_downloaddossier STARTS"
-        print "self.curLocalDirRoot: %s"%self.curLocalDirRoot
-        print "self.curRemoteDirRoot: %s"%self.curRemoteDirRoot
-        print "dirsrc: %s"%dirsrc
-        print "ftp.cwd(dirsrc)"
         self.ftp.cwd(dirsrc) # c'est cette commande qui genere l'exception dans le cas d'un fichier
-        print "l = ftp.nlst(i)"
         try:
             dirContent = self.ftp.nlst(dirsrc)
-            print "_downloaddossier: Contenu du repertoire i: %s :"%dirsrc
             print dirContent
         except Exception, e:
             print "_downloaddossier: Exception ftp.nlst(i)",e
@@ -366,25 +353,21 @@ class ftpDownloadCtrl:
         # Cree le chemin du repertorie local
         # Extrait le chemin relatif: soustrait au chemin remote le chemin de base: par exemple on veut retirer du chemin; /.passionxbmc/Themes
         remoteRelDirPath = dirsrc.replace(self.curRemoteDirRoot,'')
-        print "_downloaddossier: Chemin remote relatif extrait: %s"%remoteRelDirPath
+
         # On remplace dans le chemin sur le serveur FTP les '/' par le separateur de l'OS sur lequel on est
         localRelDirPath = remoteRelDirPath.replace('/',os.sep)
-        print "_downloaddossier: Chemin local RELATIF extrait: %s"%localRelDirPath
 
         # Cree le chemin local (ou on va sauver)
         localAbsDirPath = os.path.join(self.curLocalDirRoot, localRelDirPath)
-        print "_downloaddossier: local = %s (ABSOLU)"%localAbsDirPath
 
         try:
             os.makedirs(localAbsDirPath)
-            print "_downloaddossier: repertoire OK (repertoire cree)"
         except Exception, e:
             print "_downloaddossier: Exception dossier",e
             print "_downloaddossier: repertoire KO"
         if (emptydir == True):
             print "_downloaddossier: Repertoire %s VIDE"%dirsrc
         else:
-            print "_downloaddossier: Repertoire %s NON vide"%dirsrc
             self._download(dirsrc,dialogProgressWin=dialogProgressWin,curPercent=curPercent,coeff=coeff)
 
     def _downloadfichier(self, filesrc):
@@ -392,31 +375,21 @@ class ftpDownloadCtrl:
         Fonction privee (ne pouvant etre appelee que par la classe ftpDownloadCtrl elle meme)
         Telecharge un fichier sur le server FTP
         """
-        print "_downloadfichier STARTS"
-        print "_downloadfichier: self.curLocalDirRoot: %s"%self.curLocalDirRoot
         # Cree le chemin du repertorie local
         # Extrait le chemin relatif: soustrait au chemin remote le chemin de base: par exemple on veut retirer du chemin; /.passionxbmc/Themes
         remoteRelFilePath = filesrc.replace(self.curRemoteDirRoot,'')
-        print "_downloadfichier: Chemin remote relatif extrait: %s"%remoteRelFilePath
-
-        #Mise a jour de la fentetre de telechargement
-        #TODO: Solution temporaraire -> bien crado de le faire entierment la
-        #dialogProgressWin.update(0,line2=remoteRelFilePath)
 
         # On remplace dans le chemin sur le serveur FTP les '/' par le separateur de l'OS sur lequel on est
         localRelFilePath = remoteRelFilePath.replace('/',os.sep)
-        print "_downloadfichier: Chemin local RELATIF extrait: %s"%localRelFilePath
 
         # Cree le chemin local (ou on va sauver)
         localAbsFilePath = os.path.join(self.curLocalDirRoot, localRelFilePath)
-        print "_downloadfichier: Fichier local = %s (ABSOLU)"%localAbsFilePath
 
         try:
             # On ferme le fichier que l'on ouvre histoire d'etre plus clean (pas sur que ce soit vraiment indispensable, mais bon ...)
             localFile = open(localAbsFilePath, "wb")
             self.ftp.retrbinary('RETR ' + filesrc, localFile.write)
             localFile.close()
-            print "_downloadfichier: fichier OK"
         except Exception, e:
             print e
             print "_downloadfichier: fichier KO"
@@ -503,8 +476,6 @@ class MainWindow(xbmcgui.Window):
         self.addControl(self.list)
 
         # Version and author(s):
-        #self.strVersion = xbmcgui.ControlLabel(370, 30, 350, 30, version, 'font12')
-        #self.strVersion = xbmcgui.ControlLabel(690, 87, 350, 30, version, 'font10','0xFF000000', alignment=1)
         self.strVersion = xbmcgui.ControlLabel(621, 69, 350, 30, version, 'font10','0xFF000000', alignment=1)
         self.addControl(self.strVersion)
 
@@ -541,7 +512,6 @@ class MainWindow(xbmcgui.Window):
 
         # Connection au serveur FTP
         try:
-            #self.ftp = ftplib.FTP(self.host,self.user,self.password) # on se connecte
             self.passionFTPCtrl = ftpDownloadCtrl(self.host,self.user,self.password,self.remotedirList,self.localdirList,self.downloadTypeList)
 
             self.connected = True
@@ -615,14 +585,11 @@ class MainWindow(xbmcgui.Window):
                     downloadOK = True
                     correctionPM3bidon = False
                     self.index = self.list.getSelectedPosition()
-                    print "type = ",self.type
                     source = self.curDirList[self.index]
 
                     if self.type == self.downloadTypeList[0]:   #Themes
                         # Verifions le themes en cours d'utilisation
                         mySkinInUse = xbmc.getSkinDir()
-                        print "Skin en cours d'utilisation est : %s"%mySkinInUse
-                        print "Skin a telechrger est : %s"%source
                         if mySkinInUse in source:
                             # Impossible de telecharger une skin en cours d'utlisation
                             dialog = xbmcgui.Dialog()
@@ -642,7 +609,6 @@ class MainWindow(xbmcgui.Window):
 
                     elif self.type == self.downloadTypeList[1] and self.USRPath == True:   #Linux Scrapers
                         self.linux_chmod(self.scraperDir)
-                        print "linux scraper case"
                         if self.rightstest == True :
                             downloadOK = True
                         else:
@@ -653,7 +619,6 @@ class MainWindow(xbmcgui.Window):
                     if source.endswith('zip') or source.endswith('rar'):
                         self.delCache = True
                         self.targetDir = self.localdirList[self.numindex]
-                        print "self.targetDir = ",self.targetDir
                         self.localdirList[self.numindex]= self.CacheDir
 
 
@@ -665,25 +630,20 @@ class MainWindow(xbmcgui.Window):
                         dp.create("Téléchargement en cours ...", "%s %s en cours de téléchargement"%(self.type,downloadItem))
                         # Type est desormais reellement le type dee download, on utlise alros les liste pour recuperer le chemin que l'on doit toujours passer
                         #on appel la classe passionFTPCtrl avec la source a telecharger
-                        #self.passionFTPCtrl = ftpDownloadCtrl(self.host,self.user,self.password,self.remotedirList,self.localdirList,self.downloadTypeList)
                         downloadStatus = self.passionFTPCtrl.download(source, self.remotedirList[self.downloadTypeList.index(self.type)], self.numindex,progressbar_cb=self.updateProgress_cb,dialogProgressWin = dp)
                         dp.close()
                         print "downloadStatus %d"%downloadStatus
 
-                        #TODO: pourquoi ne serait que les script qui sont des archives? Je pense que l'on devrait faire le test sur .zip et .rar dans tous les cas
-                        # Cas du scraper par exemple
-                        #C'est bon c'est fait, maintenant on se base sur l'extension pour determiner si on doit telecharger dans le cache.
+
+                        #On se base sur l'extension pour determiner si on doit telecharger dans le cache.
                         #Un tour de passe passe est fait plus haut pour echanger les chemins de destination avec le cache, le chemin de destination
                         #est retabli ici 'il s'agit de targetDir'
-                        #if self.type == self.downloadTypeList[2]:
                         if downloadItem.endswith('zip') or downloadItem.endswith('rar'):
                             #Appel de la classe d'extraction des archives
                             remoteDirPath = self.remotedirList[self.downloadTypeList.index(self.type)]#chemin ou a ete telecharge le script
                             localDirPath = self.localdirList[self.downloadTypeList.index(self.type)]
                             archive = source.replace(remoteDirPath,localDirPath + os.sep)#remplacement du chemin de l'archive distante par le chemin local temporaire
-                            print "archive = ",archive
                             self.localdirList[self.numindex]= self.targetDir
-                            print " self.localdirList[self.numindex]= ",self.localdirList[self.numindex]
                             fichierfinal0 = archive.replace(localDirPath,self.localdirList[self.numindex])
                             if fichierfinal0.endswith('.zip'):
                                 fichierfinal = fichierfinal0.replace('.zip','')
@@ -749,7 +709,6 @@ class MainWindow(xbmcgui.Window):
             #self.curDirList = self.ftp.nlst(self.remotedirList[self.index])
             self.curDirList = self.passionFTPCtrl.getDirList(self.remotedirList[self.index])
 
-        print "update list de : "
         print self.curDirList
         xbmcgui.lock()
         # Clear all ListItems in this control list
@@ -762,9 +721,7 @@ class MainWindow(xbmcgui.Window):
         for j in range(itemnumber):
             #print "j = %d"%j
             ItemListPath = self.curDirList[j]
-            #!!Q!!: est-ce que cela ne serait pas mieux d'utiliser une liste de string qui mappe plutot que de faire un filtre sur un path qui peut chmager dans le futur
-            # Plutot que d'utiliser une valeur num, faire comem tu fais apres avec la commande len serait ideal, genre len(path) avec path=/.passionxbmc/
-            #self.remoteroot = i[:14]
+
             if (self.racine == False):
                 #affichage de l'interieur d'une section
                 self.numindex = self.index
@@ -803,10 +760,7 @@ class MainWindow(xbmcgui.Window):
                 else:
                     # Image par defaut (ou aucune si = "")
                     imagePath = ""
-                print "ItemListPath = %s"%ItemListPath
-                print "imagePath = %s"%imagePath
-                #self.section = self.section0.replace("/","")
-                #displayListItem = xbmcgui.ListItem(label = self.section, thumbnailImage = os.path.join(IMAGEDIR,"passionxbmc_scripts_right.png"))
+
                 displayListItem = xbmcgui.ListItem(label = self.section, thumbnailImage = imagePath)
                 self.list.addItem(displayListItem)
         xbmcgui.unlock()
@@ -821,21 +775,9 @@ class MainWindow(xbmcgui.Window):
     # Return     : -
     ######################################################################
     #TODO move this function in a class
-    #By Seb : un peu remaniee
-#    def delFiles(self,folder):
-#
-#        #for root, dirs, files in os.walk(folder , topdown=False):
-#            for name in os.walk(self.CacheDir):
-#                try:
-#                    os.remove(self.CacheDir)
-#                except Exception, e:
-#                    print e
-
     def delFiles(self,folder):
-        print "Effacement des fichiers du repertoire: %s"%folder
         for root, dirs, files in os.walk(folder , topdown=False):
             for name in files:
-                print "Effaccement de %s en cours ..."%name
                 try:
                     os.remove(os.path.join(root, name))
                 except Exception, e:
@@ -852,16 +794,15 @@ class MainWindow(xbmcgui.Window):
                 print("verifrep Impossible to find the directory - trying to create the directory: " + folder)
                 os.makedirs(folder)
 
-            #if not os.path.exists(os.path.join(IMAGEDIR,"noImageAvailable.jpg")):
-            #    print "Error: " + os.path.join(IMAGEDIR,"noImageAvailable.jpg") + "n'existe pas!"
-            #    return # TODO: Le fichier par defaut n'existe pas -> pb
         except Exception, e:
             print("Exception while creating folder " + folder)
             print(e)
             pass
 
     def linux_chmod(self,path):
-        print 'chemin a chmoder = ',path
+        """
+        Effectue un chmod sur un repertoire pour ne plus etre bloque par les droits root sur plateforme linux
+        """
         Wtest = os.access(path,os.W_OK)
         if Wtest == True:
             self.rightstest = True
@@ -870,13 +811,11 @@ class MainWindow(xbmcgui.Window):
             dialog = xbmcgui.Dialog()
             dialog.ok('Demande de mot de passe', "Vous devez saisir votre mot de passe administrateur", "systeme")
             keyboard = xbmc.Keyboard("","Mot de passe Administrateur", True)
-            #keyboard = xbmc.Keyboard("")
             keyboard.doModal()
             if (keyboard.isConfirmed()):
                 password = keyboard.getText()
                 PassStr = "echo %s | "%password
                 ChmodStr = "sudo -S chmod 777 -R %s"%path
-                print "commande = ",PassStr + ChmodStr
                 try:
                     os.system(PassStr + ChmodStr)
                     self.rightstest = True
@@ -899,7 +838,6 @@ class MainWindow(xbmcgui.Window):
 
 def start():
     #Fonction de demarrage
-    #passionFTPCtrl = ftpDownloadCtrl(host,user,password,remoteDirLst,localDirLst,downloadTypeLst)
     wid = xbmcgui.getCurrentWindowId()
     print "Current Windows ID = "
     print wid
