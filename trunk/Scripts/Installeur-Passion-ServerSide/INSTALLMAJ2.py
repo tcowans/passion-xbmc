@@ -1,5 +1,4 @@
 import ftplib, os
-import shutil
 import ConfigParser
 import zipfile
 import xbmc
@@ -26,25 +25,24 @@ def zipextraction (archive,pathdst):
 
         print filedst
 
-        if i.endswith('/'): #Creation des repertoires avant extraction
+        if i.endswith('/'): 
+            #Creation des repertoires avant extraction
             compteurdossier = compteurdossier + 1
 
             if compteurdossier == 1 and compteurfichier == 0:
-                print "id racine true"
+            #On determine le repertoire racine s'il existe pour le retirer du chemin d'extraction
                 idracine = True
                 root = i
 
             else:
                 try:
                     os.makedirs(filedtst)
-                    print "dossier = ",filedtst
                 except Exception, e:
                     print "Erreur creation dossier de l'archive = ",e
 
         else:
+            #Extraction des fichiers
             compteurfichier = compteurfichier + 1
-            print "File Case"
-            print "file = ",filedtst
             data = zfile.read(i)                   ## lecture du fichier compresse
             fp = open(filedtst, "wb")  ## creation en local du nouveau fichier
             fp.write(data)                         ## ajout des donnees du fichier compresse dans le fichier local
@@ -55,26 +53,17 @@ def zipextraction (archive,pathdst):
 def start():
     try:
         rootdir = os.path.dirname(os.getcwd().replace(';',''))
-        print "rootdir: %s"%rootdir
         curdir = os.path.join(rootdir, "cache")
-        
-        print "curdir : %s"%curdir
     
         confmaj = os.path.join(curdir, "confmaj.cfg")
-        print "Lecture du fichier de conf: %s"%confmaj
         config = ConfigParser.ConfigParser()
         config.read(confmaj)
     
         passiondir  = config.get('Localparam', 'passiondir')
         installDir  = config.get('Localparam', 'scriptDir')
         archive     = config.get('Localparam', 'Archive')
-        script      = config.get('Localparam', 'Scripttolaunch')
-        
-        print "passiondir : %s"%passiondir
-        print "installDir : %s"%installDir
-        print "archive : %s"%archive
-        print "Scripttolaunch : %s"%script
-        
+        script      = config.get('Localparam', 'Scripttolaunch')       
+
         sys.path.append(passiondir)
     
         dp = xbmcgui.DialogProgress()
@@ -91,14 +80,6 @@ def start():
         #import INSTALLEUR
         #INSTALLEUR.start()
         #exec("import " + script)
-        # -> pas besoin de retirer les libs standard, ce sont nos modules qui doivent etre retires
-    #    del sys.modules['ftplib']
-    #    del sys.modules['os']
-    #    del sys.modules['shutil']
-    #    del sys.modules['zipfile']
-    #    del sys.modules['xbmcgui']
-    #    del sys.modules['string']
-    #    del sys.modules['ConfigParser']
         print "Lancement du script %s"%script
         #xbmc.executebuiltin('XBMC.RunScript(%s)'%script)
         xbmc.executescript(script)
