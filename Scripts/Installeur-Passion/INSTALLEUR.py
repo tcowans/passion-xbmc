@@ -60,7 +60,9 @@ PAL60_16x9      = 9 #(720x480, 16:9, pixels are 5760:4739)
 ############################################################################
 class rssReader:
     """
+    
     Class responsable de la recuperation du flux RSS et de l'extraction des infos RSS
+    
     """
     def __init__(self,rssUrl):
         """
@@ -71,9 +73,8 @@ class rssReader:
 
     def get_rss_page(self,rssUrl):
         """
-        télécharge et renvoi la page RSS
+        Télécharge et renvoi la page RSS
         """
-        print "get_rss_page"
         try:
             #request = urllib2.Request("http://passion-xbmc.org/service-importation/?action=.xml;type=rss2;limit=1")
             request = urllib2.Request(rssUrl)
@@ -89,13 +90,13 @@ class rssReader:
             print("Exception get_rss_page")
             print(e)
             the_page = ""
-        # return the RSS page
+        # renvo a page the RSS
         return the_page
 
     def unescape(self,text):
         """
         credit : Fredrik Lundh
-        found : http://effbot.org/zone/re-sub.htm#unescape-html"""
+        trouve : http://effbot.org/zone/re-sub.htm#unescape-html"""
         def fixup(m):# m est un objet match
             text = m.group(0)#on récupère le texte correspondant au match
             if text[:2] == "&#":# dans le cas où le match ressemble à &#
@@ -123,31 +124,24 @@ class rssReader:
         Recupere les information du FLux RSS de passion XBMC
         Merci a Alexsolex
         """
-        print "GetRssInfo"
         soup = BeautifulStoneSoup(self.rssPage)
-        print "titre du flux :"
-        print "\t"+soup.find("title").string.encode('ASCII', 'xmlcharrefreplace')
-        print "description du flux :"
-        #maintitle = "\t"+soup.find("description").string.encode('ASCII', 'xmlcharrefreplace').replace("&#224;","à").replace("&#160;","  -  ") # Note: &#160;=&
+        #print "titre du flux :"
+        #print "\t"+soup.find("title").string.encode('ASCII', 'xmlcharrefreplace')
+        #print "description du flux :"
         maintitle = soup.find("description").string.encode('ASCII', 'xmlcharrefreplace').replace("&#224;","à").replace("&#234;","ê").replace("&#232;","è").replace("&#233;","é").replace("&#160;","  ***  ") # Note: &#160;=&
         items = ""
         for item in soup.findAll("item"): #boucle si plusieurs items dans le rss
-            print "Titre de l'Item :"
-            #itemsTitle = "\t"+item.find("title").string.encode('ASCII', 'xmlcharrefreplace').replace("&#224;","à").replace("&#160;","  -  ") # Note: &#160;=&
+            # Titre de l'Item 
             itemsTitle = item.find("title").string.encode('ASCII', 'xmlcharrefreplace').replace("&#224;","à").replace("&#234;","ê").replace("&#232;","è").replace("&#233;","é").replace("&#160;","  ***  ") # Note: &#160;=&
-            print itemsTitle
+            #TODO: FINIR une convertion au bon format afin d'eviter l'affichage incorrecte de caracteres
             items = items + itemsTitle + ":  "
-            #la ligne suivante supprime toutes les balises au sein de l'info "description"
+            # la ligne suivante supprime toutes les balises au sein de l'info "description"
             clean_desc = re.sub(r"<.*?>", r"", "".join(item.find("description").contents))
-            #on imprime le texte sans les caract&#232;res d'&#233;chappements html
-            print "description de l'item :"
-            #itemDesc = "\t"+self.unescape(clean_desc).strip().encode('ASCII', 'xmlcharrefreplace').replace("&#224;","à").replace("&#160;","  -  ") # Note: &#160;=&
+            # on imprime le texte sans les caracteres d'echappements html
+            # Description de l'item 
             itemDesc = self.unescape(clean_desc).strip().encode('ASCII', 'xmlcharrefreplace').replace("&#224;","à").replace("&#234;","ê").replace("&#232;","è").replace("&#233;","é").replace("&#160;","  ***  ") # Note: &#160;=&
-            print itemDesc
+            # Concatenation
             items = items + " " + itemDesc
-        #TODO: Faire une convertion au bon format afin d'eviter l'affichage incorrecte de caracteres
-        print "ITEMS:"
-        print items
         return maintitle,items
 
 
@@ -155,6 +149,7 @@ class rssReader:
 
 class scriptextracter:
     """
+    
     Extracteur de script, dezip ou derar une archive et l'efface
 
     """
@@ -183,8 +178,6 @@ class scriptextracter:
         #extraction de l'archive
         xbmc.executebuiltin('XBMC.Extract(%s,%s)'%(self.archive,self.pathdst) )
 
-        #On delete le cache a la sortie du script
-
 class ftpDownloadCtrl:
     """
 
@@ -211,7 +204,7 @@ class ftpDownloadCtrl:
         #self.idcancel           = False
         print "self.host = ",self.host
         print "self.user= ",self.user
-        print "self.password = ",self.password
+        #print "self.password = ",self.password
 
         #Connection au serveur FTP
         try:
@@ -225,18 +218,19 @@ class ftpDownloadCtrl:
 
     def closeConnection(self):
         """
-        Close FTP conenction
+        Ferme la connexion FTP
         """
         #on se deconnecte du serveur pour etre plus propre
         self.ftp.quit()
 
     def getDirList(self,remotedir):
         """
-        Close FTP conenction
+        Retourne la liste des elements d'un repertoire sur le serveur
         """
+        # Recuperation de la liste
         curDirList = self.ftp.nlst(remotedir)
         
-        # Tri de la liste
+        # Tri de la liste et renvoi
         curDirList.sort(key=str.lower)
         return curDirList
 
@@ -248,88 +242,82 @@ class ftpDownloadCtrl:
         pathsrc     : chemin sur le serveur de l'element a telecharger
         rootdirsrc  : Repertoire root sur le server (correspondant a un type de downaload) - Exemple : "/.passionxbmc/Scraper/" pour les scrapers
         typeIndex   : Index correspondant au type de telechargement, permet notamment de definir le repertorie local de telechargement
+        Renvoi le status du download:
+            - (-1) pour telechargement annule
+            - (1)  pour telechargement OK
         """
 
         self.curLocalDirRoot  = self.localdirList[typeIndex]
         self.curRemoteDirRoot = rootdirsrc
-
-        print "download: self.curLocalDirRoot: %s"%self.curLocalDirRoot
-        print "download: self.curRemoteDirRoot: %s"%self.curRemoteDirRoot
-
         try:
             if (progressbar_cb != None) and (dialogProgressWin != None):
-                print "############(progressbar_cb != None) and (dialogProgressWin != None)##############"
                 percent = 0
-                print "=================================="
-                print
-                print "Pourcentage telecharger: %d"%percent
-                print
-                print "=================================="
+                #print "=================================="
+                #print
+                #print "Pourcentage telecharger: %d"%percent
+                #print
+                #print "=================================="
+                # Initialisation de la barre de progression (via callback)
                 progressbar_cb(percent,dialogProgressWin)
         except Exception, e:
-            print("downloadVideo - Exception ProgressBar UI callback for download")
+            print("download - Exception ProgressBar UI callback for download")
             print(e)
             print progressbar_cb
 
-        #on passe en parametre l'index correspondant au type
+        # Appel de la fonction privee en charge du download - on passe en parametre l'index correspondant au type
         status = self._download(pathsrc,progressbar_cb,dialogProgressWin,0,1)
-        print "download Status: %d"%status
-        return  status
+        return  status # retour du status du download recupere
 
     def _download(self, pathsrc,progressbar_cb=None,dialogProgressWin=None,curPercent=0,coeff=1):
         """
         Fonction privee (ne pouvant etre appelee que par la classe ftpDownloadCtrl elle meme)
         Telecharge un element sur le server FTP
+        Renvoi le status du download:
+            - (-1) pour telechargement annule
+            - (1)  pour telechargement OK
         """
 
         # Liste le repertoire
         curDirList     = self.ftp.nlst(pathsrc) #TODO: ajouter try/except
         curDirListSize = len(curDirList) # Defini le nombre d'elements a telecharger correspondant a 100% - pour le moment on ne gere que ce niveau de granularite pour la progressbar
-
-
-
-        print "_download: Contenu du repertoire %s :"%pathsrc
-        print curDirList
-        # On teste le nombre d'element dans la liste : si 0 -> rep vie
+        # On teste le nombre d'element dans la liste : si 0 -> rep vide
         # !!PB!!: la commande NLST dans le cas ou le path est un fichier retourne les details sur le fichier => donc liste non vide
         # donc pour le moment on essaira de telecharger en tant que fichier un rep vide (apres avoir fait un _downloaddossier)
         # mais ca ira ds une exception donc OK mais pas propre
         #TODO: a ameliorer donc
-        print "_download: Nombre d'elements: %d"%curDirListSize
-        #if len(curDirList) > 0:
-        print "_download: Repertoire NON vide - demarrage boucle"
+        #print "_download: Repertoire NON vide - demarrage boucle"
         for i in curDirList:
-            #if (self.idcancel == True):
             if dialogProgressWin.iscanceled():
-                print "Telechargement annulé"
+                print "Telechargement annulé par l'utilisateur"
                 # Sortie de la boucle via return
                 return -1 # -1 pour telechargement annule
             else:
                 # Calcule le pourcentage
                 #TODO: verifier que la formule pour le pourcentage est OK (la ca ette fait un peu trop rapidement)
                 percent = min(curPercent + int((float(curDirList.index(i)+1)*100)/(curDirListSize * coeff)),100)
-                print "=================================="
-                print
-                print "Pourcentage téléchargé: %d"%percent
-                print
-                print "=================================="
+                #print "=================================="
+                #print
+                #print "Pourcentage téléchargé: %d"%percent
+                #print
+                #print "=================================="
 
                 try :
+                    # Telechargement du dossier                    
                     self._downloaddossier(i,dialogProgressWin=dialogProgressWin,curPercent=percent,coeff=coeff*curDirListSize)
                     percent = int((float(curDirList.index(i)+1)*100)/(curDirListSize * coeff))
 
                 except Exception, e:
-                    print "_download: Exception _download",e
-                    print "_download: fichier, i = ",i
+                    #print "_download: Exception _download",e
+                    #print "_download: fichier, i = ",i
                     try:
-                        #Mise a jour de la fentetre de telechargement
+                        #Mise a jour de la barre de progression (via cvallback)
                         #TODO: Solution temporaraire -> on veut afficher le nom du theme/script/skin en cours en plus du fichier
                         dialogProgressWin.update(percent,i)
                     except Exception, e:
                         print("downloadVideo - Exception calling UI callback for download")
                         print(e)
                         print progressbar_cb
-
+                    # Telechargement du fichier
                     self._downloadfichier(i)
 
         return 1 # 1 pour telechargement OK
@@ -338,7 +326,7 @@ class ftpDownloadCtrl:
         """
         Fonction privee (ne pouvant etre appelee que par la classe ftpDownloadCtrl elle meme)
         Telecharge un repertoire sur le server FTP
-        Note: fait un appel recursif sur _download
+        Note: fait un appel RECURSIF sur _download
         """
         emptydir = False
         self.ftp.cwd(dirsrc) # c'est cette commande qui genere l'exception dans le cas d'un fichier
@@ -346,8 +334,6 @@ class ftpDownloadCtrl:
             dirContent = self.ftp.nlst(dirsrc)
             print dirContent
         except Exception, e:
-            print "_downloaddossier: Exception ftp.nlst(i)",e
-            print "_downloaddossier: repertoire VIDE"
             emptydir = True
 
         # Cree le chemin du repertorie local
@@ -363,11 +349,13 @@ class ftpDownloadCtrl:
         try:
             os.makedirs(localAbsDirPath)
         except Exception, e:
-            print "_downloaddossier: Exception dossier",e
-            print "_downloaddossier: repertoire KO"
+            print "_downloaddossier: Exception - Impossible de creer le dossier: %s"%dirsrc
+            print e
         if (emptydir == True):
-            print "_downloaddossier: Repertoire %s VIDE"%dirsrc
+            #print "_downloaddossier: Repertoire %s VIDE"%dirsrc
+            pass
         else:
+            # Repertoire non vide - lancement du download (!!!APPEL RECURSIF!!!)
             self._download(dirsrc,dialogProgressWin=dialogProgressWin,curPercent=curPercent,coeff=coeff)
 
     def _downloadfichier(self, filesrc):
@@ -391,8 +379,8 @@ class ftpDownloadCtrl:
             self.ftp.retrbinary('RETR ' + filesrc, localFile.write)
             localFile.close()
         except Exception, e:
+            print "_downloadfichier: Excpetion lors la recuperation du fichier: %s"%filesrc
             print e
-            print "_downloadfichier: fichier KO"
 
 
 
@@ -434,6 +422,7 @@ class MainWindow(xbmcgui.Window):
         self.targetDir          = ""
         self.delCache           = ""
         self.scrollingSizeMax   = 480
+        self.RssOk              = False
 
         # Display Loading Window while we are loading the information from the website
         dialogUI = xbmcgui.DialogProgress()
@@ -479,44 +468,42 @@ class MainWindow(xbmcgui.Window):
         self.strVersion = xbmcgui.ControlLabel(621, 69, 350, 30, version, 'font10','0xFF000000', alignment=1)
         self.addControl(self.strVersion)
 
-        # Get RSS Feed
+        # Recupeartion du Flux RSS
         try:
-            #fluxRSS = get_rss_page()
+            # Cree une instance de rssReader recuperant ainsi le flux/page RSS
             self.passionRssReader = rssReader(self.rssfeed)
-            print "Flux RSS page:"
-            print self.passionRssReader.rssPage
-            print "Flux RSS infos:"
+            #print "Flux RSS page:"
+            #print self.passionRssReader.rssPage
+            # Extraction des infos du la page RSS
             maintitle,title = self.passionRssReader.GetRssInfo()
+            self.RssOk = True
 
         except Exception, e:
             print "Window::__init__: Exception durant la recuperation du Flux RSS",e
+            # Message a l'utilisateur
+            dialogRssError = xbmcgui.Dialog()
+            dialogRssError.ok("Erreur", "Impossible de recuperer le flux RSS")
             print ("error/MainWindow __init__: " + str(sys.exc_info()[0]))
-            title = "Impossible de recuperer le flux RSS"
-            self.scrollingSizeMax = 260 # On reduit la taille du scrolling text car le message d'erruer est plus court
             traceback.print_exc()
 
-        # Scrolling message
-        self.scrollingText = xbmcgui.ControlFadeLabel(20, 87, 680, 30, 'font12', '0xFFFFFFFF')
-        self.addControl(self.scrollingText)
-        scrollStripTextSize = len(title)
-        # Afin d'avoir un message assez long pour defiler, on va ajouter des espaces afin d'atteindre la taille max de self.scrollingSizeMax
-        print "scrollStripTextSize = %d"%scrollStripTextSize
-        print "self.scrollingSizeMax = %d"%self.scrollingSizeMax
-        scrollingLabel = title.rjust(self.scrollingSizeMax)
-        print "scrollingLabel:"
-        print scrollingLabel
-        scrollingLabelSize = len(scrollingLabel)
-        print "scrollingLabelSize = %d"%scrollingLabelSize
-        self.scrollingText.addLabel(scrollingLabel)
-        #self.scrollingText.setVisible(False)
+        if (self.RssOk == True):
+            # Scrolling message
+            self.scrollingText = xbmcgui.ControlFadeLabel(20, 87, 680, 30, 'font12', '0xFFFFFFFF')
+            self.addControl(self.scrollingText)
+            scrollStripTextSize = len(title)
+
+            # Afin d'avoir un message assez long pour defiler, on va ajouter des espaces afin d'atteindre la taille max de self.scrollingSizeMax
+            scrollingLabel = title.rjust(self.scrollingSizeMax)
+            scrollingLabelSize = len(scrollingLabel)
+            self.scrollingText.addLabel(scrollingLabel)
+            #self.scrollingText.setVisible(False)
 
         # Connection au serveur FTP
         try:
             self.passionFTPCtrl = ftpDownloadCtrl(self.host,self.user,self.password,self.remotedirList,self.localdirList,self.downloadTypeList)
-
             self.connected = True
 
-            # Get the list of items
+            # Recuperation de la liste des elements
             self.updateList()
 
         except Exception, e:
@@ -537,28 +524,23 @@ class MainWindow(xbmcgui.Window):
         try:
             if action == ACTION_PREVIOUS_MENU:
 
-                #sortie du script
-                print('action recieved: previous')
+                # Sortie du script
+                #print('action recieved: previous')
 
-                #on se deconnecte du serveur pour etre plus propre
-                #self.ftp.quit()
+                # On se deconnecte du serveur pour etre plus propre
                 self.passionFTPCtrl.closeConnection()
 
-                #On vide le cache
-                if self.delCache == True:
-                    self.delFiles(CACHEDIR)
+                # On vide le cache
+                #if self.delCache == True:
+                self.delFiles(CACHEDIR)
 
                 #on ferme tout
                 winId = xbmcgui.getCurrentWindowId()
-                print "Current Main Windows ID = "
-                print winId
-
-                print "Fermeture de la Window principale"
                 self.close()
 
             if action == ACTION_PARENT_DIR:
                 #remonte l'arborescence
-                print ("Previous page requested")
+                #print ("Previous page requested")
                 self.racine = True
                 self.type   = "racine"
                 self.updateList()
@@ -617,7 +599,7 @@ class MainWindow(xbmcgui.Window):
                             downloadOK = False
 
                     if source.endswith('zip') or source.endswith('rar'):
-                        self.delCache = True
+                        #self.delCache = True
                         self.targetDir = self.localdirList[self.numindex]
                         self.localdirList[self.numindex]= self.CacheDir
 
@@ -632,7 +614,7 @@ class MainWindow(xbmcgui.Window):
                         #on appel la classe passionFTPCtrl avec la source a telecharger
                         downloadStatus = self.passionFTPCtrl.download(source, self.remotedirList[self.downloadTypeList.index(self.type)], self.numindex,progressbar_cb=self.updateProgress_cb,dialogProgressWin = dp)
                         dp.close()
-                        print "downloadStatus %d"%downloadStatus
+                        #print "downloadStatus %d"%downloadStatus
 
 
                         #On se base sur l'extension pour determiner si on doit telecharger dans le cache.
@@ -652,7 +634,7 @@ class MainWindow(xbmcgui.Window):
 
 
                             # On n'a besoin d'ue d'un instance d'extracteur sinon on va avoir une memory leak ici car on ne le desalloue jamais
-                            # Je l'ai donc creee dans l'init comem attribut de la classe
+                            # Je l'ai donc creee dans l'init comme attribut de la classe
                             #extracter = scriptextracter()
                             self.extracter.extract(archive,self.localdirList[self.numindex])
 
@@ -678,8 +660,6 @@ class MainWindow(xbmcgui.Window):
                         if correctionPM3bidon == True:
                             self.localdirList[0] = themesDir
                             correctionPM3bidon = False
-
-
         except:
             print ("error/onControl: " + str(sys.exc_info()[0]))
             traceback.print_exc()
@@ -688,14 +668,13 @@ class MainWindow(xbmcgui.Window):
         """
         Met a jour la barre de progression
         """
-        #TODO Dans le futur, veut t'on donenr la responsabilite a cette fonction le clacul du pouircentage????
+        #TODO Dans le futur, veut t'on donner la responsabilite a cette fonction le calcul du pourcentage????
         try:
             print percent
             dp.update(percent)
         except:
             percent = 100
             dp.update(percent)
-
 
     def updateList(self):
         """
@@ -767,15 +746,13 @@ class MainWindow(xbmcgui.Window):
         # Set Focus on list
         self.setFocus(self.list)
 
-    ######################################################################
-    # Function delFiles from Joox
-    # Description: Deletes all files in a given folder and sub-folders.
-    #              Note that the sub-folders itself are not deleted.
-    # Parameters : folder=path to local folder
-    # Return     : -
-    ######################################################################
-    #TODO move this function in a class
     def delFiles(self,folder):
+        """
+        Source: Joox
+        Efface tous le fichier d'un repertorie donne ainsi que des sous-repertoires
+        Note: les sous-repertoires eux-memes ne sont pas effaces
+        folder: chemin du repertpoire local
+        """
         for root, dirs, files in os.walk(folder , topdown=False):
             for name in files:
                 try:
@@ -783,19 +760,16 @@ class MainWindow(xbmcgui.Window):
                 except Exception, e:
                     print e
 
-    #########################################################################
-    # Function verifrep (from myCine)
-    # Description: Check a folder exists and make it if necessary
-    #########################################################################
     def verifrep(self,folder):
+        """
+        Source: myCine
+        Verifie l'existance  d'un repertoire et le cree si besoin
+        """
         try:
-            print("verifrep check if directory: " + folder + " exists")
             if not os.path.exists(folder):
-                print("verifrep Impossible to find the directory - trying to create the directory: " + folder)
                 os.makedirs(folder)
-
         except Exception, e:
-            print("Exception while creating folder " + folder)
+            print("verifrep - Exception durant la creation du repertoire: " + folder)
             print(e)
             pass
 
