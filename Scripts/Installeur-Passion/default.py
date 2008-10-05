@@ -81,9 +81,9 @@ else:
         libName  = fileName.replace(".py","")
         # Lance le script recupere du server dans un sous processus
         #xbmc.executebuiltin('XBMC.RunScript(%s)'%scriptmaj)
-        #xbmc.executescript(scriptmaj)
-        import INSTALLEUR
-        INSTALLEUR.go()
+        xbmc.executescript(scriptmaj)
+#        import INSTALLEUR
+#        INSTALLEUR.go()
         #mon_module_import = "passion"
         #exec("import %s"%libName)
         #exec("%s.go()"%libName)
