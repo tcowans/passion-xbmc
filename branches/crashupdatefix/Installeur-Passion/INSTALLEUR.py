@@ -9,10 +9,8 @@ import xbmcgui, xbmc
 import traceback
 import time
 import urllib2
-try:
-    del sys.modules['BeautifulSoup']
-except:
-    pass 
+
+
 from BeautifulSoup import BeautifulStoneSoup #librairie de traitement XML
 import htmlentitydefs
 
@@ -70,7 +68,7 @@ class MainWindow(xbmcgui.Window):
         """
         Initialisation de l'interface
         """
-        if Emulating: xbmcgui.Window.__init__(self)
+        #if Emulating: xbmcgui.Window.__init__(self)
         if not Emulating:
             self.setCoordinateResolution(PAL_4x3) # Set coordinate resolution to PAL 4:3
 
