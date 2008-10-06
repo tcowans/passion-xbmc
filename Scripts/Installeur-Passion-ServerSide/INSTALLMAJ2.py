@@ -67,24 +67,14 @@ def go():
         sys.path.append(passiondir)
     
         dp = xbmcgui.DialogProgress()
-        dp.create("Mise a jour","Mise a jour du script","Veuillez patienter...")
+        dp.create("Installeur passion - Mise a jour","Mise a jour du script en cours","Veuillez patienter...")
         zipextraction(archive,passiondir)
         dp.close()
         del config #On supprime le config parser
         
-        #import CONF
-        #CONF.SetConfiguration()
-        #dp.close()
-    
+        dialogInfo = xbmcgui.Dialog()
+        result = dialogInfo.ok("Installeur passion - Mise a jour", "Mise a jour effectuée", "Vous pouvez desormais relancer le script")
         
-        #import INSTALLEUR
-        #INSTALLEUR.go()
-        #exec("import " + script)
-        #print "Lancement du script %s"%script
-        #xbmc.executebuiltin('XBMC.RunScript(%s)'%script)
-        #xbmc.executescript(script)
-        #print "Sortie de INSTALLMAJ2"
-        #sys.exit(0)
     except Exception, e:
         print "INSTALLMAJ : go(): Exception",e
         #dialogError = xbmcgui.Dialog()
