@@ -67,7 +67,10 @@ class passiongallerie:
     
     def get_image(self,image,imageURL):
         #on telecharge les images selectionnees
-        self.localimage = os.path.join(self.picturedir, image)
+        self.imagedir=image.replace('.jpg','')
+        self.localimagedir=os.path.join(self.picturedir,self.imagedir)
+        os.mkdir(self.localimagedir)
+        self.localimage = os.path.join(self.localimagedir, image)
         f=open(self.localimage,"wb")
         f.write(urllib.urlopen(imageURL).read())
         f.close()
@@ -84,8 +87,9 @@ class passiongallerie:
         #print url
         #item=xbmcgui.ListItem(PictureName)
         #NE FONCTIONNE PAS
-        imagetoshow = xbmcgui.ControlImage(100, 250, 125, 75,self.localimage, aspectRatio=2)
-        imagetoshow.setImage(self.localimage, '0xFFFF3300')
+        xbmc.executebuiltin('XBMC.SlideShow(notrandom,%s)'%self.localimagedir)
+        #imagetoshow = xbmcgui.ControlImage(100, 250, 125, 75,self.localimage, aspectRatio=2)
+        #imagetoshow.setImage(self.localimage, '0xFFFF3300')
         #item.setInfo(type="Video",infoLabels={ "Title": artiste } )
         #ok = ok and xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=url,listitem=item,isFolder=False)
         return ok
