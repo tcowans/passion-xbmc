@@ -1,0 +1,50 @@
+DESCRIPTION:
+
+Ce script vous permet de vous connecter via un compte(gratuit) sur le forum 'www.nabbox.com'qui met en ligne des captures TV de videos en tout genre (émissions TV francaises pour la plupart).
+Le script NABBOX vous permet de naviguer sur le forum et met a disposition les liens des videos que vous pourrez voir et/ou télécharger via XBMC.
+N'oubliez pas d'aller régulierement sur 'www.nabbox.com' et de remercier les Capseurs pour leur formidable travail.
+
+
+COMPTE NABBOX:
+
+* Il vous faut un compte NABBOX (login et mot de passe - que vous pouvez obtenir a www.nabbox.com) si vous voulez utliser ce script. En effet, cela est indispensable afin de pouvoir se connecter au forum de NABBOX.
+
+* Au demarrage du script, la première fois, la connection echouera car votre compte NABBOX n'a pas encore été configuré. 
+  Suivez les instructions affichées. 
+  Allez dans le menu 'Options' et definissez votre Login, mot de passe et message de remerciement (NABBOX requiert vous remerciez les capseurs via un message afin de pouvoir acceder au lien d'un fichier). Le script l'enverra pour vous.
+
+
+INTERFACE:
+
+* Lorsque la taille de la liste réelle est plus grande que celle affichée, un icone représentant une flèche (dirigée vers le haut ou bien le bas selon votre position dnas la liste) vous indique que d'autre entrées de la liste se trouvent en haut ou en bas de la liste.
+
+* Vous pouvez revenir à la page précédente via le bouton 'B' de la manette ou 'Prev' de la télécommande. Attention, cela effacera la page courante de l'historique!
+
+* Vous pouvez aussi revenir à la page précédente via l'historique, dans le menu en haut de la liste.
+
+* Lorsque vous voyez une liste de fichier ou vidéos affichées à l'écran, vous pouvez soit lire directement la vidéo, soit appuyez sur le bouton 'Blanc' de la manette ou 'Info' de la télécommande, un menu contextuel apparaitra alors:. Selon les cas, vous pourrez lire une vidéo, obtenir des informations de bases sur le fichier (nom, taille), télécharger le fichier au premier plan (c.a.d vous ne pourrez rien faire d'autre), télécharger en arrière plan, etc ...
+
+* Lorsque vous affichez la liste des fichiers téléchargés (dans le répertoire download d'installation du script NABBOX), le menu contextuel vous permettra aussi d'effacer un fichier, d'extraire une archive ...
+
+* Lorsque vous affichez l'historique ou la liste des fichiers téléchargés, un appui sur recharger vous ramene a la derniere page visitée.
+
+* Du fait de la conception du forum www.nabbox.com, le script charge les pages disponibles sur le forum comme un navigateur. Aussi il se peut que dans certains topics, des liens apparaissent dans plusieurs messages. Aussi le script offre l'option de naviguer sur les pages suivantes (et précédentes) via les flèches horizontales '<' et '>' en bas au centre de l'interface.
+
+FAQ:
+
+* Qu'est que le téléchargement en arrière plan?
+--> Il s'agit comme son nom l'indique d'un mode de téléchargement en arrière plan, c'est dire que vous serez libre de continuer utiliser l'interface durant le téléchargement (à l'opposé le téléchargement au premier plan lui vous empeche toute action).
+--> !!!ATTENTION!!!: Toutefois, ce mode de téléchargement n'est pas stable sur XBOX, car trop gourand en resource et peut engandrer une instabilité de XBMC selon ce que vous faisez.
+--> Lorsque téléchargez un fichier en arrière plan, il est possible de sortir du script NABBOX et d'avoir le téléchargement se poursuivre en arrière plan (avec un risque d'instabilité). Pour ce faire, sortez du script, il vous sera demandé  si vous souhaitez poursuivre le téléchargement en arrière plan apres la sortie du script. Si vous désirez stopper ce télechargement, relancer le script une fois, le script ne se lancera pas mais le téléchargement en arrière plan sera stoppé.
+--> Sur Mac (Beta2 et précédentes versions), le téléchargement ne vous permet pas d'utiliser l'interface en parallele
+
+* J'ai sélectionné un lien dans liste mais rien ne s'est passé?
+--> Lorsqu'un lien semble ne pas fonctionner, il se peut qu'une erreur se soit produite durant le téléchargement. 
+    Dans ce cas, faites "Recharger", cela devrait resoudre votre problème.
+
+* Je suis sur XBOX et lorsque je télécharge un gros fichier, après un moment j'ai un message d'erreur m'indiqant que le télécharge a échoué, que dois-je faire?
+--> Ce probléme nous est connu et ne semble spécifique qu'à la XBOX, nous travaillons dessus mais n'avons pas encore de solution viable.
+    Toutefois, vous pourrez peut-etre reduire la fréquence de ce problème en allant dans 'Download' puis 'Désactiver la barre de porgression', une autre methode de téléchargement sera alors employée, mais vous n'aurez plus de barre de progression affichée durant le téléchargement. 
+
+* Dans mon répertoire download ou dans la liste des fichiers téléchargés, je vois plusieurs fichiers se terminant par '_part', de quoi s'agit-il?
+--> Il s'agit de fichiers dont le téléchargement n'a pas été terminé pour une raison ou pour une autre (arret par l'utilisateur, coupure reseau, plantage ...). Le script NABBOX ne supportant pas à ce jour la reprise de téléchargement, vous etre libre d'effacer, renommer ou non ces fichiers.
