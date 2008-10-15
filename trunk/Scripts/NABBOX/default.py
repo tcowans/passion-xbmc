@@ -4,6 +4,9 @@ NABBOX UI script
 - NABBOX core made by Alexsolex
 - User interface made by Temhil
 
+14-10-08 Version 1.1 by Temhil
+    - Correct exception handling in case of connection parameters not defined
+    - Fixed bug: we didn't close ini file after updating it
 09-10-08 Version 1.0 by Temhil
     - Added Debug mode support (partially implemented)
     - Added About and Help window
@@ -29,10 +32,9 @@ NABBOX UI script
 """
 
 ############################################################################
-version = 'Version 1.0'
+version     = 'Version 1.0'
 authorUI    = 'Temhil'
 authorCore  = 'Alexsolex'
-
 ############################################################################
 
 
@@ -419,6 +421,7 @@ class browser:
                 cfgfile=open(os.path.join(ROOTDIR,"nabbox.ini"), 'w+')
                 self.config.write(cfgfile)
                 self.is_conf_valid = True
+                cfgfile.close()
         except Exception, e:
             print("Exception while loading configuration file " + "nabbox.ini")
             print(str(e))
@@ -432,15 +435,24 @@ class browser:
         set Nabbox account Login locally and in .ini file
         @param login: account login
         """
+        print "******** setLogin STARTS"
         self.login               = login
         self.currentConnecStatus = False # Will force to reconnect and create a new session ID
         
-        # Set login parameter
-        self.config.set("account", "login", login)
-
-        # Update file
-        cfgfile=open(os.path.join(ROOTDIR,"nabbox.ini"), 'w+')
-        self.config.write(cfgfile)
+        try:
+            # Set login parameter
+            self.config.set("account", "login", login)
+    
+            # Update file
+            cfgfile=open(os.path.join(ROOTDIR,"nabbox.ini"), 'w+')
+            self.config.write(cfgfile)
+            cfgfile.close()
+        except Exception, e:
+            print("Exception during setLogin")
+            print(str(e))
+            print (str(sys.exc_info()[0]))
+            traceback.print_exc()
+        print "******** setLogin ENDS"
         
     def getLogin(self):
         """
@@ -453,15 +465,24 @@ class browser:
         set Nabbox account Password locally and in .ini file
         @param password: account password
         """
+        print "******** setPassword STARTS"
         self.password            = password
         self.currentConnecStatus = False # Will force to reconnect and create a new session ID
 
-        # Set password parameter
-        self.config.set("account", "password", password)
-
-        # Update file
-        cfgfile=open(os.path.join(ROOTDIR,"nabbox.ini"), 'w+')
-        self.config.write(cfgfile)
+        try:
+            # Set password parameter
+            self.config.set("account", "password", password)
+    
+            # Update file
+            cfgfile=open(os.path.join(ROOTDIR,"nabbox.ini"), 'w+')
+            self.config.write(cfgfile)
+            cfgfile.close()
+        except Exception, e:
+            print("Exception during setPassword")
+            print(str(e))
+            print (str(sys.exc_info()[0]))
+            traceback.print_exc()
+        print "******** setPassword ENDS"
         
     def getPassword(self):
         """
@@ -481,6 +502,7 @@ class browser:
         # Update file
         cfgfile=open(os.path.join(ROOTDIR,"nabbox.ini"), 'w+')
         self.config.write(cfgfile)
+        cfgfile.close()
         
     def getThanksMsg(self):
         """
@@ -500,6 +522,7 @@ class browser:
         # Update file
         cfgfile=open(os.path.join(ROOTDIR,"nabbox.ini"), 'w+')
         self.config.write(cfgfile)
+        cfgfile.close()
         
     def getDefaultPlayer(self):
         """
@@ -520,6 +543,7 @@ class browser:
         # Update file
         cfgfile=open(os.path.join(ROOTDIR,"nabbox.ini"), 'w+')
         self.config.write(cfgfile)
+        cfgfile.close()
         
     def getCleanCache(self):
         """
@@ -540,6 +564,7 @@ class browser:
         # Update file
         cfgfile=open(os.path.join(ROOTDIR,"nabbox.ini"), 'w+')
         self.config.write(cfgfile)
+        cfgfile.close()
         
     def getCachePages(self):
         """
@@ -562,6 +587,7 @@ class browser:
         # Update file
         cfgfile=open(os.path.join(ROOTDIR,"nabbox.ini"), 'w+')
         self.config.write(cfgfile)
+        cfgfile.close()
         
     def getDisplayProgBar(self):
         """
@@ -591,6 +617,7 @@ class browser:
         # Update file
         cfgfile=open(os.path.join(ROOTDIR,"nabbox.ini"), 'w+')
         self.config.write(cfgfile)
+        cfgfile.close()
         
     def getDebugMode(self):
         """
@@ -689,16 +716,16 @@ class browser:
             
             # Connection succeeded
             self.currentConnecStatus    = True
+        except NABBOX.ConnectError:
+            print("Exception during connection (NABBOX.ConnectError): Account not set (login and/or password)")
+            self.sessionID              = None
+            self.currentConnecStatus    = False
         except Exception, e:
             # Connection failed
-            if e == NABBOX.ConnectError:
-                print("Exception during connection : Account not set (login and/or password)")
-                print(str(e))
-            else:
-                print("UNXPECTED Exception during connection:")
-                print(str(e))
-                print (str(sys.exc_info()[0]))
-                traceback.print_exc()
+            print("UNXPECTED Exception during connection:")
+            print(str(e))
+            print (str(sys.exc_info()[0]))
+            traceback.print_exc()
             self.sessionID              = None
             self.currentConnecStatus    = False
         return self.currentConnecStatus
@@ -2531,7 +2558,7 @@ class MainWindow(xbmcgui.Window):
                             self.nabboxBrowser.setPassword(inputText)
                             
                             dialogInfo = xbmcgui.Dialog()
-                            dialogInfo.ok("Mot de passe Nabbox", "Votre mot de passe a bien été redéfini")
+                            dialogInfo.ok("Mot de passe Nabbox", "Votre mot de passe a bien été défini")
                         keyboard.setHiddenInput(False) # optional
                         del keyboard
                             
