@@ -4,7 +4,8 @@ NABBOX UI script
 - NABBOX core made by Alexsolex
 - User interface made by Temhil
 
-14-10-08 Version 1.1 by Temhil
+14-10-08 Version 1.1 by Temhil and Seb
+    - Fixed crash on Linux: replaced .ini extention by .cfg (thanks Seb)
     - Correct exception handling in case of connection parameters not defined
     - Fixed bug: we didn't close ini file after updating it
 09-10-08 Version 1.0 by Temhil
@@ -352,9 +353,9 @@ class browser:
             # Create config parser
             self.config = ConfigParser.ConfigParser()
             
-            # Read config from .ini file
+            # Read config from .cfg file
             # - Open config file
-            self.config.read(os.path.join(ROOTDIR,"nabbox.ini"))
+            self.config.read(os.path.join(ROOTDIR,"nabbox.cfg"))
             
             # Check sections exist
             if (self.config.has_section("account") == False):
@@ -418,12 +419,12 @@ class browser:
             if (self.is_conf_valid == False):
                 # Update file
                 print "INI file format wasn't valid: correcting ..."
-                cfgfile=open(os.path.join(ROOTDIR,"nabbox.ini"), 'w+')
+                cfgfile=open(os.path.join(ROOTDIR,"nabbox.cfg"), 'w+')
                 self.config.write(cfgfile)
                 self.is_conf_valid = True
                 cfgfile.close()
         except Exception, e:
-            print("Exception while loading configuration file " + "nabbox.ini")
+            print("Exception while loading configuration file " + "nabbox.cfg")
             print(str(e))
             self.is_conf_valid = False
         
@@ -432,7 +433,7 @@ class browser:
         
     def setLogin(self,login):
         """
-        set Nabbox account Login locally and in .ini file
+        set Nabbox account Login locally and in .cfg file
         @param login: account login
         """
         print "******** setLogin STARTS"
@@ -444,7 +445,7 @@ class browser:
             self.config.set("account", "login", login)
     
             # Update file
-            cfgfile=open(os.path.join(ROOTDIR,"nabbox.ini"), 'w+')
+            cfgfile=open(os.path.join(ROOTDIR,"nabbox.cfg"), 'w+')
             self.config.write(cfgfile)
             cfgfile.close()
         except Exception, e:
@@ -462,7 +463,7 @@ class browser:
         
     def setPassword(self,password):
         """
-        set Nabbox account Password locally and in .ini file
+        set Nabbox account Password locally and in .cfg file
         @param password: account password
         """
         print "******** setPassword STARTS"
@@ -474,7 +475,7 @@ class browser:
             self.config.set("account", "password", password)
     
             # Update file
-            cfgfile=open(os.path.join(ROOTDIR,"nabbox.ini"), 'w+')
+            cfgfile=open(os.path.join(ROOTDIR,"nabbox.cfg"), 'w+')
             self.config.write(cfgfile)
             cfgfile.close()
         except Exception, e:
@@ -492,7 +493,7 @@ class browser:
         
     def setThanksMsg(self,thanku):
         """
-        set Thank You parameter locally and in .ini file
+        set Thank You parameter locally and in .cfg file
         """
         self.thanks = thanku
         
@@ -500,7 +501,7 @@ class browser:
         self.config.set("messages", "remerciement", thanku)
         
         # Update file
-        cfgfile=open(os.path.join(ROOTDIR,"nabbox.ini"), 'w+')
+        cfgfile=open(os.path.join(ROOTDIR,"nabbox.cfg"), 'w+')
         self.config.write(cfgfile)
         cfgfile.close()
         
@@ -512,7 +513,7 @@ class browser:
         
     def setDefaultPlayer(self,playerType):
         """
-        set DefaultPlayerparameter locally and in .ini file
+        set DefaultPlayerparameter locally and in .cfg file
         """
         self.defaultPlayer = playerType
         
@@ -520,7 +521,7 @@ class browser:
         self.config.set("system", "player", playerType)
         
         # Update file
-        cfgfile=open(os.path.join(ROOTDIR,"nabbox.ini"), 'w+')
+        cfgfile=open(os.path.join(ROOTDIR,"nabbox.cfg"), 'w+')
         self.config.write(cfgfile)
         cfgfile.close()
         
@@ -532,7 +533,7 @@ class browser:
 
     def setCleanCache(self,cleanCacheStatus):
         """
-        set clean cache status locally and in .ini file
+        set clean cache status locally and in .cfg file
         @param cleanCacheStatus: clean cache status - define cache directory will be cleaned or not on exit
         """
         self.delCache = cleanCacheStatus
@@ -541,7 +542,7 @@ class browser:
         self.config.set("system", "cleancache", self.delCache)
 
         # Update file
-        cfgfile=open(os.path.join(ROOTDIR,"nabbox.ini"), 'w+')
+        cfgfile=open(os.path.join(ROOTDIR,"nabbox.cfg"), 'w+')
         self.config.write(cfgfile)
         cfgfile.close()
         
@@ -553,7 +554,7 @@ class browser:
         
     def setCachePages(self,cachepagesStatus):
         """
-        set cache pages status locally and in .ini file
+        set cache pages status locally and in .cfg file
         @param cachepages: cachepages status - define if page will be cached or not
         """
         self.cachepages = cachepagesStatus
@@ -562,7 +563,7 @@ class browser:
         self.config.set("system", "cachepages", self.cachepages)
 
         # Update file
-        cfgfile=open(os.path.join(ROOTDIR,"nabbox.ini"), 'w+')
+        cfgfile=open(os.path.join(ROOTDIR,"nabbox.cfg"), 'w+')
         self.config.write(cfgfile)
         cfgfile.close()
         
@@ -574,7 +575,7 @@ class browser:
         
     def setDisplayProgBar(self,displayProgBarStatus):
         """
-        set progress bar status locally and in .ini file
+        set progress bar status locally and in .cfg file
         @param cachepages: progress bar status 
                            -> define progress bar will be displayed or not during download
                            -> define download method used
@@ -585,7 +586,7 @@ class browser:
         self.config.set("system", "progbar", self.displayProgBar)
 
         # Update file
-        cfgfile=open(os.path.join(ROOTDIR,"nabbox.ini"), 'w+')
+        cfgfile=open(os.path.join(ROOTDIR,"nabbox.cfg"), 'w+')
         self.config.write(cfgfile)
         cfgfile.close()
         
@@ -599,7 +600,7 @@ class browser:
         
     def setDebugMode(self,debugModeStatus):
         """
-        set Debug Mode status locally and in .ini file
+        set Debug Mode status locally and in .cfg file
         @param cachepages: Debug Mode status - define if debug mode is active or not
         """
         self.debugMode = debugModeStatus
@@ -615,7 +616,7 @@ class browser:
         self.config.set("system", "debugmode", self.debugMode)
 
         # Update file
-        cfgfile=open(os.path.join(ROOTDIR,"nabbox.ini"), 'w+')
+        cfgfile=open(os.path.join(ROOTDIR,"nabbox.cfg"), 'w+')
         self.config.write(cfgfile)
         cfgfile.close()
         
@@ -2886,7 +2887,7 @@ class MainWindow(xbmcgui.Window):
 
 print("==================================================================================")
 print("")
-print("	    NABBOX " + version + " by " + authorUI + " and " + authorCore+ " HTML parser STARTS")
+print("     NABBOX " + version + " by " + authorUI + " and " + authorCore+ " HTML parser STARTS")
 print("")
 print("==================================================================================")
 
