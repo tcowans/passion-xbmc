@@ -58,6 +58,15 @@ PAL60_4x3       = 8 #(720x480, 4:3, pixels are 4320:4739)
 PAL60_16x9      = 9 #(720x480, 16:9, pixels are 5760:4739)
 
 ############################################################################
+class cancelRequest(Exception):
+    """
+    Exception, merci a Alexsolex 
+    """
+    def __init__(self, value):
+        self.value = value
+    def __str__(self):
+        return repr(self.value)
+    
 class rssReader:
     """
     
@@ -318,7 +327,7 @@ class ftpDownloadCtrl:
                         print(e)
                         print progressbar_cb
                     # Telechargement du fichier
-                    self._downloadfichier(i)
+                    self._downloadfichier(i,dialogProgressWin=dialogProgressWin)
 
         return 1 # 1 pour telechargement OK
 
@@ -358,11 +367,23 @@ class ftpDownloadCtrl:
             # Repertoire non vide - lancement du download (!!!APPEL RECURSIF!!!)
             self._download(dirsrc,dialogProgressWin=dialogProgressWin,curPercent=curPercent,coeff=coeff)
 
-    def _downloadfichier(self, filesrc):
+    def _downloadfichier(self, filesrc,dialogProgressWin=None):
         """
         Fonction privee (ne pouvant etre appelee que par la classe ftpDownloadCtrl elle meme)
         Telecharge un fichier sur le server FTP
         """
+        # Recupere la taille du fichier
+        remoteFileSize = 1
+        block_size = 32768
+        try:
+            self.ftp.sendcmd('TYPE I')
+            remoteFileSize = self.ftp.size(filesrc)
+            print "Taille du fichier %s sur le serveur: %d"%(os.path.basename(filesrc),remoteFileSize)
+        except Exception, e:
+            print "_downloadfichier: Excpetion lors la recuperation de la taille du fichier: %s"%filesrc
+            print e
+            traceback.print_exc(file = sys.stdout)
+        
         # Cree le chemin du repertorie local
         # Extrait le chemin relatif: soustrait au chemin remote le chemin de base: par exemple on veut retirer du chemin; /.passionxbmc/Themes
         remoteRelFilePath = filesrc.replace(self.curRemoteDirRoot,'')
@@ -376,13 +397,65 @@ class ftpDownloadCtrl:
         try:
             # On ferme le fichier que l'on ouvre histoire d'etre plus clean (pas sur que ce soit vraiment indispensable, mais bon ...)
             localFile = open(localAbsFilePath, "wb")
-            self.ftp.retrbinary('RETR ' + filesrc, localFile.write)
+            #self.ftp.retrbinary('RETR ' + filesrc, localFile.write)
+            ftpCB = FtpCallback(remoteFileSize, localFile,dialogProgressWin)
+            self.ftp.sendcmd('TYPE I')
+            self.ftp.retrbinary('RETR ' + filesrc, ftpCB, block_size)
+            # On ferme le fichier
             localFile.close()
+        except cancelRequest:
+            #except IOError, (errno, strerror):
+            #TODO: commmenter la ligne ci-dessous (traceback) pour la release finale
+            traceback.print_exc(file = sys.stdout)
+            print "Downloaded STOPPED by the user"
         except Exception, e:
             print "_downloadfichier: Excpetion lors la recuperation du fichier: %s"%filesrc
             print e
+            traceback.print_exc(file = sys.stdout)
+        # On ferme le fichier
+        #localFile.close()
 
+       
+#    def _pbhook(self,numblocks, blocksize, filesize, url=None,dp=None):
+#        """
+#        Hook function for progress bar
+#        Inspired from the example on xbmc.org wiki
+#        """
+#        try:
+#            percent = min((numblocks*blocksize*100)/filesize, 100)
+#            print "_pbhook - percent = %s%%"%percent
+#            dp.update(percent)
+#        except Exception, e:        
+#            print("_pbhook - Exception during percent computing AND update")
+#            print(e)
+#            percent = 100
+#            dp.update(percent)
+#        if dp.iscanceled(): 
+#            print "_pbhook: DOWNLOAD CANCELLED" # need to get this part working
+#            #dp.close() #-> will be calose in calling function
+#            #raise IOError
+#            raise cancelRequest,"User pressed CANCEL button"
 
+class FtpCallback(object):
+    """
+    Inspired from source Justin Ezequiel (Thanks)
+    http://coding.derkeiler.com/pdf/Archive/Python/comp.lang.python/2006-09/msg02008.pdf
+    """
+    def __init__(self, filesize, localfile, dp=None):
+        self.filesize  = filesize
+        self.localfile = localfile
+        self.received  = 0
+        self.dp= dp
+        
+    def __call__(self, data):
+        if self.dp.iscanceled(): 
+            print "FtpCallback: DOWNLOAD CANCELLED" # need to get this part working
+            #dp.close() #-> will be calose in calling function
+            #raise IOError
+            raise cancelRequest,"User pressed CANCEL button"
+        self.localfile.write(data)
+        self.received += len(data)
+        print '\r%.3f%%' % (100.0*self.received/self.filesize)
 
 class MainWindow(xbmcgui.Window):
     """
