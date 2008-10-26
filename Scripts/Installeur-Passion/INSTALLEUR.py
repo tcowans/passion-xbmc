@@ -1,3 +1,4 @@
+# -*- coding: cp1252 -*-
 from string import *
 import sys#, os.path
 import re
@@ -9,6 +10,8 @@ import xbmcgui, xbmc
 import traceback
 import time
 import urllib2
+import socket
+
 try:
     del sys.modules['BeautifulSoup']
 except:
@@ -134,21 +137,19 @@ class rssReader:
         Merci a Alexsolex
         """
         soup = BeautifulStoneSoup(self.rssPage)
-        #print "titre du flux :"
-        #print "\t"+soup.find("title").string.encode('ASCII', 'xmlcharrefreplace')
-        #print "description du flux :"
-        maintitle = soup.find("description").string.encode('ASCII', 'xmlcharrefreplace').replace("&#224;","à").replace("&#234;","ê").replace("&#232;","è").replace("&#233;","é").replace("&#160;","  ***  ") # Note: &#160;=&
+        maintitle = soup.find("description").string.encode("cp1252", 'xmlcharrefreplace').replace("&#224;","à").replace("&#234;","ê").replace("&#232;","è").replace("&#233;","é").replace("&#160;","  ***  ") # Note: &#160;=&
         items = ""
         for item in soup.findAll("item"): #boucle si plusieurs items dans le rss
             # Titre de l'Item 
-            itemsTitle = item.find("title").string.encode('ASCII', 'xmlcharrefreplace').replace("&#224;","à").replace("&#234;","ê").replace("&#232;","è").replace("&#233;","é").replace("&#160;","  ***  ") # Note: &#160;=&
-            #TODO: FINIR une convertion au bon format afin d'eviter l'affichage incorrecte de caracteres
+            itemsTitle = item.find("title").string.encode("cp1252", 'xmlcharrefreplace').replace("&#224;","à").replace("&#234;","ê").replace("&#232;","è").replace("&#233;","é").replace("&#160;","  ***  ") # Note: &#160;=&
             items = items + itemsTitle + ":  "
             # la ligne suivante supprime toutes les balises au sein de l'info "description"
             clean_desc = re.sub(r"<.*?>", r"", "".join(item.find("description").contents))
             # on imprime le texte sans les caracteres d'echappements html
             # Description de l'item 
-            itemDesc = self.unescape(clean_desc).strip().encode('ASCII', 'xmlcharrefreplace').replace("&#224;","à").replace("&#234;","ê").replace("&#232;","è").replace("&#233;","é").replace("&#160;","  ***  ") # Note: &#160;=&
+            itemDesc = self.unescape(clean_desc).strip().encode("cp1252", 'xmlcharrefreplace').replace("&#224;","à").replace("&#234;","ê").replace("&#232;","è").replace("&#233;","é").replace("&#160;","  ***  ") # Note: &#160;=&
+            itemDesc = itemDesc.replace("-Plus d'info","").replace("-Voir la suite...","") # on supprime "-Plus d'info" et "-Voir la suite..."
+            #TODO: supprimer balise link plutot que remplacer les chaines -Voir la suite...
             # Concatenation
             items = items + " " + itemDesc
         return maintitle,items
@@ -216,15 +217,29 @@ class ftpDownloadCtrl:
         #print "self.password = ",self.password
 
         #Connection au serveur FTP
+        self.openConnection()
+
+    def openConnection(self):
+        """
+        Ouvre la connexion FTP
+        """
+        #Connection au serveur FTP
         try:
             self.ftp = ftplib.FTP(self.host,self.user,self.password) # on se connecte
-            self.ftp.cwd(self.remotedirList)# va au chemin specifie
+            #self.ftp.cwd(self.remotedirList)# va au chemin specifie
+            
+            # DEBUG: Seulement pour le dev
+            #self.ftp.set_debuglevel(2)
+            
             self.connected = True
+            #self.ftp.sendcmd('PASV')
+
         except Exception, e:
             print "ftpDownloadCtrl: __init__: Exception durant la connection FTP",e
             print "ftpDownloadCtrl: Impossible de se connecter au serveur FTP: %s"%self.host
-            pass
-
+            print ("error/MainWindow __init__: " + str(sys.exc_info()[0]))
+            traceback.print_exc()
+            
     def closeConnection(self):
         """
         Ferme la connexion FTP
@@ -236,12 +251,64 @@ class ftpDownloadCtrl:
         """
         Retourne la liste des elements d'un repertoire sur le serveur
         """
+        curDirList = []
+        
         # Recuperation de la liste
-        curDirList = self.ftp.nlst(remotedir)
+        try:
+            #self.ftp.sendcmd('PASV')
+            curDirList = self.ftp.nlst(remotedir)
+        except Exception, e:
+            print "getDirList: __init__: Exception durant la recuperation de la liste des fichiers du repertoire: %s"%remotedir,e
+            print ("error/MainWindow __init__: " + str(sys.exc_info()[0]))
+            traceback.print_exc()
         
         # Tri de la liste et renvoi
         curDirList.sort(key=str.lower)
         return curDirList
+
+
+    def isDir(self,pathsrc):
+        """
+        Verifie si le chemin sur le serveur correspond a un repertoire
+        """
+        isDir = True
+        # Verifie se on telecharge un repertoire ou d'un fichier
+        try:
+            self.ftp.cwd(pathsrc) # c'est cette commande qui genere l'exception dans le cas d'un fichier
+            # Pas d'excpetion => il s'agit d'un dossier
+            print "isDir: %s EST un DOSSIER"%pathsrc
+        except Exception, e:
+            print "isDir: %s EST PAS un FICHIER"%pathsrc
+            isDir = False
+        return isDir
+
+    
+    def isDirAlreadyDownloaded(self,pathsrc,rootdirsrc,typeIndex):
+        """
+        """
+        isDownloaded     = False
+        curLocalDirRoot  = self.localdirList[typeIndex]
+        curRemoteDirRoot = rootdirsrc
+        localAbsDirPath  = None
+        
+        # Verifie se on telecharge un repertoire ou d'un fichier
+        if self.isDir(pathsrc):
+            # Cree le chemin du repertorie local
+            # Extrait le chemin relatif: soustrait au chemin remote le chemin de base: par exemple on veut retirer du chemin; /.passionxbmc/Themes
+            remoteRelDirPath = pathsrc.replace(curRemoteDirRoot,'')
+    
+            # On remplace dans le chemin sur le serveur FTP les '/' par le separateur de l'OS sur lequel on est
+            localRelDirPath = remoteRelDirPath.replace('/',os.sep)
+    
+            # Cree le chemin local (ou on va sauver)
+            localAbsDirPath = os.path.join(curLocalDirRoot, localRelDirPath)
+    
+            isDownloaded = os.path.isdir(localAbsDirPath)
+        else:
+            print "isDirAlreadyDownloaded: ERREUR %s n'est pas un repertoire!!!"%pathsrc
+        return isDownloaded,localAbsDirPath
+
+
 
 
     def download(self,pathsrc,rootdirsrc,typeIndex,progressbar_cb=None,dialogProgressWin=None):
@@ -249,15 +316,16 @@ class ftpDownloadCtrl:
         Telecharge les elements a un chemin specifie (repertoires, sous repertoires et fichiers)
         a dans un repertorie local dependant du type de telechargement (theme, scraper, script ...)
         pathsrc     : chemin sur le serveur de l'element a telecharger
-        rootdirsrc  : Repertoire root sur le server (correspondant a un type de downaload) - Exemple : "/.passionxbmc/Scraper/" pour les scrapers
+        rootdirsrc  : Repertoire root sur le server (correspondant a un type de download) - Exemple : "/.passionxbmc/Scraper/" pour les scrapers
         typeIndex   : Index correspondant au type de telechargement, permet notamment de definir le repertorie local de telechargement
         Renvoi le status du download:
             - (-1) pour telechargement annule
             - (1)  pour telechargement OK
         """
-
+            
         self.curLocalDirRoot  = self.localdirList[typeIndex]
         self.curRemoteDirRoot = rootdirsrc
+
         try:
             if (progressbar_cb != None) and (dialogProgressWin != None):
                 percent = 0
@@ -277,12 +345,13 @@ class ftpDownloadCtrl:
         status = self._download(pathsrc,progressbar_cb,dialogProgressWin,0,1)
         return  status # retour du status du download recupere
 
+
     def _download(self, pathsrc,progressbar_cb=None,dialogProgressWin=None,curPercent=0,coeff=1):
         """
         Fonction privee (ne pouvant etre appelee que par la classe ftpDownloadCtrl elle meme)
         Telecharge un element sur le server FTP
         Renvoi le status du download:
-            - (-1) pour telechargement annule
+            - (0) pour telechargement annule
             - (1)  pour telechargement OK
         """
 
@@ -299,35 +368,51 @@ class ftpDownloadCtrl:
             if dialogProgressWin.iscanceled():
                 print "Telechargement annulé par l'utilisateur"
                 # Sortie de la boucle via return
-                return -1 # -1 pour telechargement annule
+                return 0 # 0 pour telechargement annule
             else:
-                # Calcule le pourcentage
-                #TODO: verifier que la formule pour le pourcentage est OK (la ca ette fait un peu trop rapidement)
-                percent = min(curPercent + int((float(curDirList.index(i)+1)*100)/(curDirListSize * coeff)),100)
+                # Calcule le pourcentage avant download
+                #TODO: verifier que la formule pour le pourcentage est OK (la ca ette fait un peu trop rapidement) 
+                #percent = min(curPercent + int((float(curDirList.index(i)+1)*100)/(curDirListSize * coeff)),100)
+                percent = min(curPercent + int((float(curDirList.index(i)+0)*100)/(curDirListSize * coeff)),100)
                 #print "=================================="
                 #print
-                #print "Pourcentage téléchargé: %d"%percent
+                print "Pourcentage téléchargé: %d"%percent
                 #print
                 #print "=================================="
-
+                # Verifie si le chemin correspond a un repertoire
+                
                 try :
-                    # Telechargement du dossier                    
+
+                    #Mise a jour de la barre de progression (via callback)
+                    #TODO: Solution temporaraire -> on veut afficher le nom du theme/script/skin en cours en plus du fichier
+                    dialogProgressWin.update(0,"Téléchargement Total: %d%%"%percent, "%s"%i)
+                except Exception, e:
+                    print("downloadVideo - Exception calling UI callback for download")
+                    print(e)
+                    print progressbar_cb
+                    
+                if self.isDir(i):
+                    # pathsrc est un repertoire
+                    # Telechargement du dossier
+                    print "Telechargement du dossier %s"%pathsrc               
                     self._downloaddossier(i,dialogProgressWin=dialogProgressWin,curPercent=percent,coeff=coeff*curDirListSize)
                     percent = int((float(curDirList.index(i)+1)*100)/(curDirListSize * coeff))
-
-                except Exception, e:
-                    #print "_download: Exception _download",e
-                    #print "_download: fichier, i = ",i
-                    try:
-                        #Mise a jour de la barre de progression (via cvallback)
-                        #TODO: Solution temporaraire -> on veut afficher le nom du theme/script/skin en cours en plus du fichier
-                        dialogProgressWin.update(percent,i)
-                    except Exception, e:
-                        print("downloadVideo - Exception calling UI callback for download")
-                        print(e)
-                        print progressbar_cb
+                    
+                else:
+                    # pathsrc est un fichier
+                    print "Telechargement du fichier %s"%pathsrc               
                     # Telechargement du fichier
-                    self._downloadfichier(i,dialogProgressWin=dialogProgressWin)
+                    self._downloadfichier(i,dialogProgressWin=dialogProgressWin,curPercent=percent,coeff=coeff*curDirListSize)
+                    
+                try :
+
+                    #Mise a jour de la barre de progression (via callback)
+                    #TODO: Solution temporaraire -> on veut afficher le nom du theme/script/skin en cours en plus du fichier
+                    dialogProgressWin.update(100,"Téléchargement Total: %d%%"%percent, "%s"%i)
+                except Exception, e:
+                    print("downloadVideo - Exception calling UI callback for download")
+                    print(e)
+                    print progressbar_cb
 
         return 1 # 1 pour telechargement OK
 
@@ -337,12 +422,16 @@ class ftpDownloadCtrl:
         Telecharge un repertoire sur le server FTP
         Note: fait un appel RECURSIF sur _download
         """
+        print "_downloaddossier: %s"%dirsrc
         emptydir = False
-        self.ftp.cwd(dirsrc) # c'est cette commande qui genere l'exception dans le cas d'un fichier
+        
+#        self.ftp.cwd(dirsrc) # c'est cette commande qui genere l'exception dans le cas d'un fichier
+#        print "_downloaddossier: %s est un repertoire"%dirsrc
         try:
             dirContent = self.ftp.nlst(dirsrc)
             print dirContent
         except Exception, e:
+            # Repertoire non vide -> il faut telecharger les elementss de ce repertoire
             emptydir = True
 
         # Cree le chemin du repertorie local
@@ -367,18 +456,21 @@ class ftpDownloadCtrl:
             # Repertoire non vide - lancement du download (!!!APPEL RECURSIF!!!)
             self._download(dirsrc,dialogProgressWin=dialogProgressWin,curPercent=curPercent,coeff=coeff)
 
-    def _downloadfichier(self, filesrc,dialogProgressWin=None):
+    def _downloadfichier(self, filesrc,dialogProgressWin=None,curPercent=0,coeff=1):
         """
         Fonction privee (ne pouvant etre appelee que par la classe ftpDownloadCtrl elle meme)
         Telecharge un fichier sur le server FTP
         """
         # Recupere la taille du fichier
+        print "_downloadfichier: %s"%filesrc
         remoteFileSize = 1
-        block_size = 32768
+        #block_size = 4096
+        block_size = 2048
         try:
             self.ftp.sendcmd('TYPE I')
-            remoteFileSize = self.ftp.size(filesrc)
+            remoteFileSize = int(self.ftp.size(filesrc))
             print "Taille du fichier %s sur le serveur: %d"%(os.path.basename(filesrc),remoteFileSize)
+            #self.ftp.sendcmd('TYPE A')
         except Exception, e:
             print "_downloadfichier: Excpetion lors la recuperation de la taille du fichier: %s"%filesrc
             print e
@@ -392,70 +484,97 @@ class ftpDownloadCtrl:
         localRelFilePath = remoteRelFilePath.replace('/',os.sep)
 
         # Cree le chemin local (ou on va sauver)
-        localAbsFilePath = os.path.join(self.curLocalDirRoot, localRelFilePath)
+        localAbsFilePath = xbmc.translatePath(os.path.join(self.curLocalDirRoot, localRelFilePath))
+        #localFileName = os.path.basename(localAbsFilePath)
 
+        localFile = open(localAbsFilePath, "wb")
         try:
-            # On ferme le fichier que l'on ouvre histoire d'etre plus clean (pas sur que ce soit vraiment indispensable, mais bon ...)
-            localFile = open(localAbsFilePath, "wb")
             #self.ftp.retrbinary('RETR ' + filesrc, localFile.write)
-            ftpCB = FtpCallback(remoteFileSize, localFile,dialogProgressWin)
-            self.ftp.sendcmd('TYPE I')
-            self.ftp.retrbinary('RETR ' + filesrc, ftpCB, block_size)
+            ftpCB = FtpCallback(remoteFileSize, localFile,filesrc,dialogProgressWin,curPercent,coeff*remoteFileSize)
+            #self.ftp.sendcmd('TYPE I')
+            #self.ftp.retrbinary('RETR ' + filesrc, ftpCB, block_size)
+            self.retrbinary('RETR ' + filesrc, ftpCB, block_size)
             # On ferme le fichier
-            localFile.close()
-        except cancelRequest:
-            #except IOError, (errno, strerror):
-            #TODO: commmenter la ligne ci-dessous (traceback) pour la release finale
-            traceback.print_exc(file = sys.stdout)
-            print "Downloaded STOPPED by the user"
         except Exception, e:
-            print "_downloadfichier: Excpetion lors la recuperation du fichier: %s"%filesrc
+            print "_downloadfichier: Exception lors la recuperation du fichier: %s"%filesrc
             print e
             traceback.print_exc(file = sys.stdout)
         # On ferme le fichier
-        #localFile.close()
+        localFile.close()
+        
+    def retrbinary(self, cmd, callback, blocksize=8192,rest=None):
+        """
+        Cette version de retrbinary permet d'interompte un telechargement en cours alors que la version de ftplib ne le permet pas
+        """
+        self.ftp.voidcmd('TYPE I')
+        conn = self.ftp.transfercmd(cmd, rest)
+        fp = conn.makefile('rb')
+        while 1:
+            #data = conn.recv(blocksize)
+            data = fp.read()    #blocksize)
+            if not data:
+                break
+            try:
+                callback(data)
+            except cancelRequest:
+                #except IOError, (errno, strerror):
+                traceback.print_exc(file = sys.stdout)
+                print "retrbinary: Download ARRETE par l'utilisateur"
+                break
+        fp.close()
+        conn.close()
+        return self.ftp.voidresp()
 
-       
-#    def _pbhook(self,numblocks, blocksize, filesize, url=None,dp=None):
-#        """
-#        Hook function for progress bar
-#        Inspired from the example on xbmc.org wiki
-#        """
-#        try:
-#            percent = min((numblocks*blocksize*100)/filesize, 100)
-#            print "_pbhook - percent = %s%%"%percent
-#            dp.update(percent)
-#        except Exception, e:        
-#            print("_pbhook - Exception during percent computing AND update")
-#            print(e)
-#            percent = 100
-#            dp.update(percent)
-#        if dp.iscanceled(): 
-#            print "_pbhook: DOWNLOAD CANCELLED" # need to get this part working
-#            #dp.close() #-> will be calose in calling function
-#            #raise IOError
-#            raise cancelRequest,"User pressed CANCEL button"
-
+        
+        
 class FtpCallback(object):
     """
     Inspired from source Justin Ezequiel (Thanks)
     http://coding.derkeiler.com/pdf/Archive/Python/comp.lang.python/2006-09/msg02008.pdf
     """
-    def __init__(self, filesize, localfile, dp=None):
-        self.filesize  = filesize
-        self.localfile = localfile
-        self.received  = 0
-        self.dp= dp
+    def __init__(self, filesize, localfile, filesrc, dp=None, curPercent=0, coeff=1):
+        self.filesize   = filesize
+        self.localfile  = localfile
+        self.srcName    = filesrc
+        self.received   = 0
+        self.curPercent = curPercent
+        self.coeff      = coeff
+        self.dp         = dp
+        print filesize
+        print self.filesize
+        print  self.localfile
+        print self.received
+        print self.curPercent
+        print self.coeff
+        print self.dp
+
         
     def __call__(self, data):
-        if self.dp.iscanceled(): 
-            print "FtpCallback: DOWNLOAD CANCELLED" # need to get this part working
-            #dp.close() #-> will be calose in calling function
-            #raise IOError
-            raise cancelRequest,"User pressed CANCEL button"
+        if self.dp != None:
+            if self.dp.iscanceled(): 
+                print "FtpCallback: DOWNLOAD CANCELLED" # need to get this part working
+                #dp.close() #-> will be close in calling function
+                #raise IOError
+                raise cancelRequest,"User pressed CANCEL button"
         self.localfile.write(data)
         self.received += len(data)
-        print '\r%.3f%%' % (100.0*self.received/self.filesize)
+        #print '\r%.3f%%' % (100.0*self.received/self.filesize)
+        try:
+            percent = min((self.received*100)/self.filesize, 100)
+            #percent = min(curPercent + int((float(curDirList.index(i)+1)*100)/(curDirListSize * coeff)),100)
+            #percent = min(int(float(self.curPercent) + (float(self.received*100)/(self.filesize * self.coeff))),100)
+            print "FtpCallback - percent = %s%%"%percent
+            if self.dp != None:
+                self.dp.update(percent,"Téléchargement Total: %d%%"%self.curPercent, "%s"%self.srcName)
+        except Exception, e:        
+            print("FtpCallback - Exception during percent computing AND update")
+            print(e)
+            percent = 100
+            traceback.print_exc(file = sys.stdout)
+            if self.dp != None:
+                #TODO: garder le titre principal
+                #self.dp.update(self.curPercent,"%s:"%(self.localFileName),"%d%%"%(percent))
+                self.dp.update(percent,"Téléchargement Total: %d%%"%self.curPercent, "%s"%(self.srcName))
 
 class MainWindow(xbmcgui.Window):
     """
@@ -608,16 +727,23 @@ class MainWindow(xbmcgui.Window):
                 self.delFiles(CACHEDIR)
 
                 #on ferme tout
-                winId = xbmcgui.getCurrentWindowId()
                 self.close()
 
             if action == ACTION_PARENT_DIR:
                 #remonte l'arborescence
-                #print ("Previous page requested")
+                print ("Previous page requested")
                 self.racine = True
                 self.type   = "racine"
-                self.updateList()
-        except:
+                try:
+                    print "Appel updateList()"
+                    self.updateList()
+                except Exception, e:
+                    print "Window::onAction ACTION_PREVIOUS_MENU: Exception durant updateList()",e
+                    print ("error/onaction: " + str(sys.exc_info()[0]))
+                    traceback.print_exc()
+                
+        except Exception, e:
+            print "Window::onAction: Exception",e
             print ("error/onaction: " + str(sys.exc_info()[0]))
             traceback.print_exc()
 
@@ -636,7 +762,6 @@ class MainWindow(xbmcgui.Window):
                     self.updateList() #on raffraichit la page pour afficher le contenu
 
                 else:
-
                     downloadOK = True
                     correctionPM3bidon = False
                     self.index = self.list.getSelectedPosition()
@@ -670,7 +795,7 @@ class MainWindow(xbmcgui.Window):
                             dialog = xbmcgui.Dialog()
                             dialog.ok('Action impossible', "Vous ne pouvez installer le scraper sans les droits", "d'administrateur")
                             downloadOK = False
-
+                    
                     if source.endswith('zip') or source.endswith('rar'):
                         #self.delCache = True
                         self.targetDir = self.localdirList[self.numindex]
@@ -678,61 +803,76 @@ class MainWindow(xbmcgui.Window):
 
 
                     if downloadOK == True:
-                        #fenetre de telechargement
-                        dp = xbmcgui.DialogProgress()
-                        lenbasepath = len(self.remotedirList[self.downloadTypeList.index(self.type)])
-                        downloadItem = source[lenbasepath:]
-                        dp.create("Téléchargement en cours ...", "%s %s en cours de téléchargement"%(self.type,downloadItem))
-                        # Type est desormais reellement le type dee download, on utlise alros les liste pour recuperer le chemin que l'on doit toujours passer
-                        #on appel la classe passionFTPCtrl avec la source a telecharger
-                        downloadStatus = self.passionFTPCtrl.download(source, self.remotedirList[self.downloadTypeList.index(self.type)], self.numindex,progressbar_cb=self.updateProgress_cb,dialogProgressWin = dp)
-                        dp.close()
-                        #print "downloadStatus %d"%downloadStatus
+                        continueDownload = True
+                        
+                        # on verifie le si on a deja telecharge cet element (ou une de ses version anterieures)
+                        isDirDownloaded,localDirPath = self.passionFTPCtrl.isDirAlreadyDownloaded(source, self.remotedirList[self.downloadTypeList.index(self.type)], self.numindex)
+                        print "isDirDownloaded:"
+                        print isDirDownloaded
+                    
+                        if (isDirDownloaded) and  (localDirPath != None):
+                            print "Repertoire deja present localement"
+                            # On traite le repertorie deja present en demandant a l'utilisateur de choisir
+                            continueDownload = self.processOldDownload(localDirPath)
 
-
-                        #On se base sur l'extension pour determiner si on doit telecharger dans le cache.
-                        #Un tour de passe passe est fait plus haut pour echanger les chemins de destination avec le cache, le chemin de destination
-                        #est retabli ici 'il s'agit de targetDir'
-                        if downloadItem.endswith('zip') or downloadItem.endswith('rar'):
-                            #Appel de la classe d'extraction des archives
-                            remoteDirPath = self.remotedirList[self.downloadTypeList.index(self.type)]#chemin ou a ete telecharge le script
-                            localDirPath = self.localdirList[self.downloadTypeList.index(self.type)]
-                            archive = source.replace(remoteDirPath,localDirPath + os.sep)#remplacement du chemin de l'archive distante par le chemin local temporaire
-                            self.localdirList[self.numindex]= self.targetDir
-                            fichierfinal0 = archive.replace(localDirPath,self.localdirList[self.numindex])
-                            if fichierfinal0.endswith('.zip'):
-                                fichierfinal = fichierfinal0.replace('.zip','')
-                            elif fichierfinal0.endswith('.rar'):
-                                fichierfinal = fichierfinal0.replace('.rar','')
-
-
-                            # On n'a besoin d'ue d'un instance d'extracteur sinon on va avoir une memory leak ici car on ne le desalloue jamais
-                            # Je l'ai donc creee dans l'init comme attribut de la classe
-                            #extracter = scriptextracter()
-                            self.extracter.extract(archive,self.localdirList[self.numindex])
-
-                        if downloadStatus == -1:
-                            # Telechargment annule par l'utilisateur
-                            title    = "Téléchargement annulé"
-                            message1 = "%s: %s"%(self.type,downloadItem)
-                            message2 = "Téléchargement annulé alors qu'il etait en cours "
-                            message3 = "Il se peut que des fichiers aient déjà été téléchargés"
-                        else:
-                            title    = "Téléchargement terminé"
-                            message1 = "%s: %s"%(self.type,downloadItem)
-                            message2 = "a été téléchargé dans le repertoire:"
-                            message3 = "%s"%self.localdirList[self.downloadTypeList.index(self.type)]
-
-                        dialogInfo = xbmcgui.Dialog()
-                        dialogInfo.ok(title, message1, message2,message3)
-
-
-                        #TODO: Attention correctionPM3bidon n'est pa defini dans le cas d'un scraper ou script
-                        #      Je l;ai donc defini a False au debut
-                        # On remet a la bonne valeur initiale self.localdirList[0]
-                        if correctionPM3bidon == True:
-                            self.localdirList[0] = themesDir
-                            correctionPM3bidon = False
+                        if continueDownload == True:
+                            #fenetre de telechargement
+                            dp = xbmcgui.DialogProgress()
+                            lenbasepath = len(self.remotedirList[self.downloadTypeList.index(self.type)])
+                            downloadItem = source[lenbasepath:]
+                            percent = 0
+                            dp.create("Téléchargement: %s"%downloadItem,"Téléchargement Total: %d%%"%percent)
+                            
+                            # Type est desormais reellement le type de download, on utlise alors les liste pour recuperer le chemin que l'on doit toujours passer
+                            # on appel la classe passionFTPCtrl avec la source a telecharger                        
+                            downloadStatus = self.passionFTPCtrl.download(source, self.remotedirList[self.downloadTypeList.index(self.type)], self.numindex,progressbar_cb=self.updateProgress_cb,dialogProgressWin = dp)
+                            dp.close()
+                            #print "downloadStatus %d"%downloadStatus
+    
+    
+                            #On se base sur l'extension pour determiner si on doit telecharger dans le cache.
+                            #Un tour de passe passe est fait plus haut pour echanger les chemins de destination avec le cache, le chemin de destination
+                            #est retabli ici 'il s'agit de targetDir'
+                            if downloadItem.endswith('zip') or downloadItem.endswith('rar'):
+                                #Appel de la classe d'extraction des archives
+                                remoteDirPath = self.remotedirList[self.downloadTypeList.index(self.type)]#chemin ou a ete telecharge le script
+                                localDirPath = self.localdirList[self.downloadTypeList.index(self.type)]
+                                archive = source.replace(remoteDirPath,localDirPath + os.sep)#remplacement du chemin de l'archive distante par le chemin local temporaire
+                                self.localdirList[self.numindex]= self.targetDir
+                                fichierfinal0 = archive.replace(localDirPath,self.localdirList[self.numindex])
+                                if fichierfinal0.endswith('.zip'):
+                                    fichierfinal = fichierfinal0.replace('.zip','')
+                                elif fichierfinal0.endswith('.rar'):
+                                    fichierfinal = fichierfinal0.replace('.rar','')
+    
+    
+                                # On n'a besoin d'ue d'un instance d'extracteur sinon on va avoir une memory leak ici car on ne le desalloue jamais
+                                # Je l'ai donc creee dans l'init comme attribut de la classe
+                                #extracter = scriptextracter()
+                                self.extracter.extract(archive,self.localdirList[self.numindex])
+    
+                            if downloadStatus == -1:
+                                # Telechargment annule par l'utilisateur
+                                title    = "Téléchargement annulé"
+                                message1 = "%s: %s"%(self.type,downloadItem)
+                                message2 = "Téléchargement annulé alors qu'il etait en cours "
+                                message3 = "Il se peut que des fichiers aient déjà été téléchargés"
+                            else:
+                                title    = "Téléchargement terminé"
+                                message1 = "%s: %s"%(self.type,downloadItem)
+                                message2 = "a été téléchargé dans le repertoire:"
+                                message3 = "%s"%self.localdirList[self.downloadTypeList.index(self.type)]
+    
+                            dialogInfo = xbmcgui.Dialog()
+                            dialogInfo.ok(title, message1, message2,message3)
+    
+    
+                            #TODO: Attention correctionPM3bidon n'est pa defini dans le cas d'un scraper ou script
+                            #      Je l;ai donc defini a False au debut
+                            # On remet a la bonne valeur initiale self.localdirList[0]
+                            if correctionPM3bidon == True:
+                                self.localdirList[0] = themesDir
+                                correctionPM3bidon = False
         except:
             print ("error/onControl: " + str(sys.exc_info()[0]))
             traceback.print_exc()
@@ -819,6 +959,27 @@ class MainWindow(xbmcgui.Window):
         # Set Focus on list
         self.setFocus(self.list)
 
+    def deleteDir(self,path):
+        """
+        Efface un repertoir et tout son contenu (le repertoire n'a pas besoin d'etre vide)
+        """
+        dirItems=os.listdir(path)
+        for item in dirItems:
+            itemFullPath=os.path.join(path, item)   
+            try:
+                if os.path.isfile(itemFullPath):
+                    # Fichier
+                    os.remove(itemFullPath)
+                elif os.path.isdir(itemFullPath):
+                    # Repertoire
+                    self.deleteDir(itemFullPath)
+            except Exception, e: 
+                print "deleteDir: Exception la suppression du reperoire: %s"%path
+                print e
+                traceback.print_exc(file = sys.stdout)
+        # Suppression du repertoire pere        
+        os.rmdir(path)            
+
     def delFiles(self,folder):
         """
         Source: Joox
@@ -874,6 +1035,51 @@ class MainWindow(xbmcgui.Window):
             else:
                 self.rightstest = False
 
+    def processOldDownload(self,localAbsDirPath):
+        """
+        Traite les ancien download suivant les desirs de l'utilisateur
+        retourne True si le download peut continuer.
+        """
+        continueDownload = True
+        
+        # Verifie se on telecharge un repertoire ou d'un fichier
+        if os.path.isdir(localAbsDirPath):
+            # Repertoire
+            print "processOldDownload: Repertoire : %s"%localAbsDirPath
+            menuList = ["Télécharger et écraser","Supprimer puis télécharger","Renommer puis télécharger","Annuler"]
+            dialog = xbmcgui.Dialog()
+            chosenIndex = dialog.select("%s est deja present, que désirez vous faire?"%(os.path.basename(localAbsDirPath)), menuList)               
+            #if (dialog.yesno("Erreur", "%s est deja present, voulez vous le renommer"%(os.path.basename(localAbsDirPath)),"Sinon il sera écrasé")):
+            if chosenIndex == 0: # Ecraser
+                pass
+            if chosenIndex == 1: # Supprimer
+                print "Suppression du repertoire"
+                self.deleteDir(localAbsDirPath)
+            elif chosenIndex == 2: # Renommer
+                # Suppression du repertoire
+                print "On renomme le repertoire"
+                keyboard = xbmc.Keyboard("", heading = "Saisir le nouveau nom:")
+                keyboard.setHeading('Saisir le nouveau nom:')  # optional
+                keyboard.setDefault(os.path.basename(localAbsDirPath))                    # optional
+
+                keyboard.doModal()
+                if (keyboard.isConfirmed()):
+                    inputText = keyboard.getText()
+                    print"Nouveau nom: %s"%inputText
+                    os.rename(localAbsDirPath,localAbsDirPath.replace(os.path.basename(localAbsDirPath),inputText))
+                    dialogInfo = xbmcgui.Dialog()
+                    dialogInfo.ok("L'element a ete renommé:", localAbsDirPath.replace(os.path.basename(localAbsDirPath),inputText))
+                del keyboard
+            else:
+                print "Annulation"
+                continueDownload = False
+        else:
+            # Fichier archive
+            print "processOldDownload: Fichier archive : %s"%localAbsDirPath
+            
+        return continueDownload
+
+                
 
 ########
 #
