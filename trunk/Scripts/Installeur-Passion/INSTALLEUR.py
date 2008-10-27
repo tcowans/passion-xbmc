@@ -183,6 +183,9 @@ class scriptextracter:
     def  extract(self,archive,TargetDir):
         self.pathdst = TargetDir
         self.archive = archive
+        print "self.pathdst = %s"%self.pathdst
+        print "self.archive = %s"%self.archive
+        
         if archive.endswith('zip'):
             self.zipfolder() #generation des dossiers dans le cas d'un zip
         #extraction de l'archive
@@ -202,12 +205,15 @@ class ftpDownloadCtrl:
         """
 
         #Initialise les attributs de la classe ftpDownloadCtrl avec les parametres donnes au constructeur
-        self.host               = host
-        self.user               = user
-        self.password           = password
-        self.remotedirList      = remotedirList
-        self.localdirList       = localdirList
-        self.downloadTypeList   = typeList
+        self.host                   = host
+        self.user                   = user
+        self.password               = password
+        self.remotedirList          = remotedirList
+        self.localdirList           = localdirList
+        self.downloadTypeList       = typeList
+#        self.remoteplugindirlist    = remoteplugindirlist
+#        self.localplugindirlist     = localplugindirlist   
+        
         self.connected          = False # status de la connection (inutile pour le moment)
         self.curLocalDirRoot    = ""
         self.curRemoteDirRoot   = ""
@@ -505,6 +511,7 @@ class ftpDownloadCtrl:
     def retrbinary(self, cmd, callback, blocksize=8192,rest=None):
         """
         Cette version de retrbinary permet d'interompte un telechargement en cours alors que la version de ftplib ne le permet pas
+        Inspiré du code dispo a http://www.archivum.info/python-bugs-list@python.org/2007-03/msg00465.html
         """
         self.ftp.voidcmd('TYPE I')
         conn = self.ftp.transfercmd(cmd, rest)
@@ -600,12 +607,20 @@ class MainWindow(xbmcgui.Window):
         self.remotedirList      = remoteDirLst
         self.localdirList       = localDirLst
         self.downloadTypeList   = downloadTypeLst
+        
+        self.racineDisplayList  = racineDisplayLst
+        self.pluginDisplayList  = pluginDisplayLst
+         
+#        self.remotePluginDirList    = remotePluginDirLst     
+#        self.localPluginDirList     = localPluginDirLst
+#        self.pluginTypeList         = pluginTypeLst
+        self.curDirList         = []
         self.connected          = False # status de la connection (inutile pour le moment)
-        self.racine             = RACINE
+        #self.racine             = RACINE
         self.index              = ""
         self.scraperDir         = scraperDir
         self.type               = "racine"
-        self.numindex           = ""
+#        self.numindex           = ""
         self.USRPath            = USRPath
         self.rightstest         = ""
         self.scriptDir          = scriptDir
@@ -692,6 +707,7 @@ class MainWindow(xbmcgui.Window):
 
         # Connection au serveur FTP
         try:
+            
             self.passionFTPCtrl = ftpDownloadCtrl(self.host,self.user,self.password,self.remotedirList,self.localdirList,self.downloadTypeList)
             self.connected = True
 
@@ -732,15 +748,31 @@ class MainWindow(xbmcgui.Window):
             if action == ACTION_PARENT_DIR:
                 #remonte l'arborescence
                 print ("Previous page requested")
-                self.racine = True
-                self.type   = "racine"
-                try:
-                    print "Appel updateList()"
-                    self.updateList()
-                except Exception, e:
-                    print "Window::onAction ACTION_PREVIOUS_MENU: Exception durant updateList()",e
-                    print ("error/onaction: " + str(sys.exc_info()[0]))
-                    traceback.print_exc()
+                # On verifie si on est a l'interieur d'un ses sous section plugin 
+                if (self.type == "Plugins Musique") or (self.type == "Plugins Images") or (self.type == "Plugins Programmes") or (self.type == "Plugins Vidéos"):
+                    print "Nous sonnmes dans la sous-section : %s"%self.type
+                    print "Nous sremontons dans la section Plugins"
+                    self.type = "Plugins"
+                    try:
+                        print "Appel updateList()"
+                        self.updateList()
+                    except Exception, e:
+                        print "Window::onAction ACTION_PREVIOUS_MENU: Exception durant updateList()",e
+                        print ("error/onaction: " + str(sys.exc_info()[0]))
+                        traceback.print_exc()
+                else:
+                    # cas standard
+                    print "Nous sonnmes dans la section : %s"%self.type
+                    print "Nous sremontons a la racine"
+                    #self.racine = True
+                    self.type = "racine"
+                    try:
+                        print "Appel updateList()"
+                        self.updateList()
+                    except Exception, e:
+                        print "Window::onAction ACTION_PREVIOUS_MENU: Exception durant updateList()",e
+                        print ("error/onaction: " + str(sys.exc_info()[0]))
+                        traceback.print_exc()
                 
         except Exception, e:
             print "Window::onAction: Exception",e
@@ -754,13 +786,31 @@ class MainWindow(xbmcgui.Window):
         try:
             if control == self.list:
 
-                if (self.racine == True):
-
-                    self.racine = False
+                #if (self.racine == True):
+                if (self.type   == "racine"):
+                    #self.racine = False
                     self.index = self.list.getSelectedPosition()
-                    self.type = self.downloadTypeList[self.list.getSelectedPosition()]
+                    #self.type = self.downloadTypeList[self.list.getSelectedPosition()]
+                    self.type = self.downloadTypeList[self.racineDisplayList[self.list.getSelectedPosition()]] # On utilise le filtre
+                    
+                    print "Type courant est Racine - nouveau type est:%s"%self.type
+                    print "Mise a jour de la liste"
+
                     self.updateList() #on raffraichit la page pour afficher le contenu
 
+                elif (self.type   == "Plugins"):
+                    #self.racine = False
+                    self.index = self.list.getSelectedPosition()
+                    #self.type = self.downloadTypeList[self.list.getSelectedPosition()]
+                    self.type = self.downloadTypeList[self.pluginDisplayList[self.list.getSelectedPosition()]] # On utilise le filtre
+                    
+                    print "Type courant est Plugins - nouveau type est:%s"%self.type
+                    print "Mise a jour de la liste"
+                    
+                    self.updateList() #on raffraichit la page pour afficher le contenu
+
+#                elif (self.type == "Plugins Musique") or (self.type == "Plugins Images") or (self.type == "Plugins Programmes") or (self.type == "Plugins Vidéos"):
+#                    pass
                 else:
                     downloadOK = True
                     correctionPM3bidon = False
@@ -795,18 +845,28 @@ class MainWindow(xbmcgui.Window):
                             dialog = xbmcgui.Dialog()
                             dialog.ok('Action impossible', "Vous ne pouvez installer le scraper sans les droits", "d'administrateur")
                             downloadOK = False
-                    
+                            
+#                    elif (self.type == "Plugins Musique") or (self.type == "Plugins Images") or (self.type == "Plugins Programmes") or (self.type == "Plugins Vidéos"):
+#                        pass
                     if source.endswith('zip') or source.endswith('rar'):
                         #self.delCache = True
-                        self.targetDir = self.localdirList[self.numindex]
-                        self.localdirList[self.numindex]= self.CacheDir
+#                        self.targetDir = self.localdirList[self.numindex]
+#                        self.localdirList[self.numindex]= self.CacheDir
+                        self.targetDir = self.localdirList[self.downloadTypeList.index(self.type)]
+                        self.localdirList[self.downloadTypeList.index(self.type)]= self.CacheDir
+                        
+                        
+                        print "%s remplace par %s"%(self.targetDir,self.localdirList[self.downloadTypeList.index(self.type)])
+                        print "self.downloadTypeList.index(self.type) = %s"%self.downloadTypeList.index(self.type)
+                        print "self.localdirList"
+                        print self.localdirList
 
 
                     if downloadOK == True:
                         continueDownload = True
                         
                         # on verifie le si on a deja telecharge cet element (ou une de ses version anterieures)
-                        isDirDownloaded,localDirPath = self.passionFTPCtrl.isDirAlreadyDownloaded(source, self.remotedirList[self.downloadTypeList.index(self.type)], self.numindex)
+                        isDirDownloaded,localDirPath = self.passionFTPCtrl.isDirAlreadyDownloaded(source, self.remotedirList[self.downloadTypeList.index(self.type)], self.downloadTypeList.index(self.type))
                         print "isDirDownloaded:"
                         print isDirDownloaded
                     
@@ -825,7 +885,7 @@ class MainWindow(xbmcgui.Window):
                             
                             # Type est desormais reellement le type de download, on utlise alors les liste pour recuperer le chemin que l'on doit toujours passer
                             # on appel la classe passionFTPCtrl avec la source a telecharger                        
-                            downloadStatus = self.passionFTPCtrl.download(source, self.remotedirList[self.downloadTypeList.index(self.type)], self.numindex,progressbar_cb=self.updateProgress_cb,dialogProgressWin = dp)
+                            downloadStatus = self.passionFTPCtrl.download(source, self.remotedirList[self.downloadTypeList.index(self.type)], self.downloadTypeList.index(self.type),progressbar_cb=self.updateProgress_cb,dialogProgressWin = dp)
                             dp.close()
                             #print "downloadStatus %d"%downloadStatus
     
@@ -835,21 +895,26 @@ class MainWindow(xbmcgui.Window):
                             #est retabli ici 'il s'agit de targetDir'
                             if downloadItem.endswith('zip') or downloadItem.endswith('rar'):
                                 #Appel de la classe d'extraction des archives
+                                print "self.localdirList"
+                                print self.localdirList
+                                print "Extraction de l'archives: %s"%downloadItem
                                 remoteDirPath = self.remotedirList[self.downloadTypeList.index(self.type)]#chemin ou a ete telecharge le script
                                 localDirPath = self.localdirList[self.downloadTypeList.index(self.type)]
+                                print "localDirPath = %s"%localDirPath
                                 archive = source.replace(remoteDirPath,localDirPath + os.sep)#remplacement du chemin de l'archive distante par le chemin local temporaire
-                                self.localdirList[self.numindex]= self.targetDir
-                                fichierfinal0 = archive.replace(localDirPath,self.localdirList[self.numindex])
+                                print "archive = %s"%archive
+                                self.localdirList[self.downloadTypeList.index(self.type)]= self.targetDir
+                                fichierfinal0 = archive.replace(localDirPath,self.localdirList[self.downloadTypeList.index(self.type)])
                                 if fichierfinal0.endswith('.zip'):
                                     fichierfinal = fichierfinal0.replace('.zip','')
                                 elif fichierfinal0.endswith('.rar'):
                                     fichierfinal = fichierfinal0.replace('.rar','')
     
-    
+                                print "fichierfinal = %s"%fichierfinal
                                 # On n'a besoin d'ue d'un instance d'extracteur sinon on va avoir une memory leak ici car on ne le desalloue jamais
                                 # Je l'ai donc creee dans l'init comme attribut de la classe
                                 #extracter = scriptextracter()
-                                self.extracter.extract(archive,self.localdirList[self.numindex])
+                                self.extracter.extract(archive,self.localdirList[self.downloadTypeList.index(self.type)])
     
                             if downloadStatus == -1:
                                 # Telechargment annule par l'utilisateur
@@ -893,13 +958,47 @@ class MainWindow(xbmcgui.Window):
         """
         Mise a jour de la liste affichee
         """
-        if (self.racine == True):
+        #if (self.racine == True):
+        # On verifie self.type qui correspond au type de liste que l'on veut afficher
+        if (self.type  == "racine"):
             #liste virtuelle des sections
-            self.curDirList = self.remotedirList
+#            del self.curDirList[:] # on vide la liste
+#            
+#            # On utilise le filtre pour creer la liste d'affichage
+#            for idx in self.racineDisplayList:
+#                self.curDirList.append(self.racineDisplayList[idx]) 
+            self.curDirList = self.racineDisplayList
+            
+            print "self.curDirList pour la Racine:"
+            print self.curDirList
+            
+        elif (self.type  == "Plugins"):
+            #liste virtuelle des sections
+#            del self.curDirList[:] # on vide la liste
+#            
+#            # On utilise le filtre pour creer la liste d'affichage
+#            for idx in self.pluginDisplayList:
+#                self.curDirList.append(self.pluginDisplayList[idx]) 
+
+            self.curDirList = self.pluginDisplayList
+
+            print "self.curDirList pour Plugins"
+            print self.curDirList
+            
+        elif (self.type == "Plugins Musique") or (self.type == "Plugins Images") or (self.type == "Plugins Programmes") or (self.type == "Plugins Vidéos"):
+            self.curDirList = self.passionFTPCtrl.getDirList(self.remotedirList[self.pluginDisplayList[self.index]])
+            print "self.curDirList pour une section"
+            print self.curDirList
+            
         else:
+            #liste virtuelle des sections
+            #del self.curDirList[:] # on vide la liste
+
             #liste physique d'une section sur le ftp
             #self.curDirList = self.ftp.nlst(self.remotedirList[self.index])
             self.curDirList = self.passionFTPCtrl.getDirList(self.remotedirList[self.index])
+            print "self.curDirList pour une section"
+            print self.curDirList
 
         print self.curDirList
         xbmcgui.lock()
@@ -911,12 +1010,77 @@ class MainWindow(xbmcgui.Window):
 
         # On utilise la fonction range pour faire l'iteration sur index
         for j in range(itemnumber):
-            #print "j = %d"%j
-            ItemListPath = self.curDirList[j]
+            #if (self.racine == False):
+            if (self.type  == "racine") or (self.type  == "Plugins"):
+                # Element de la liste
+                if (self.type  == "racine"):
+                    sectionName = self.downloadTypeList[self.racineDisplayList[j]] # On utilise le filtre
+                    # Met a jour le titre:
+                    self.strMainTitle.setLabel("Sélection")
+                elif (self.type  == "Plugins"):
+                    sectionName = self.downloadTypeList[self.pluginDisplayList[j]] # On utilise le filtre
+                    # Met a jour le titre:
+                    self.strMainTitle.setLabel("Plugins")
 
-            if (self.racine == False):
+                print "updateList : cas racine et plugins"
+                # Affichage de la liste des sections
+                # -> On compare avec la liste affichee dans l'interface
+                #sectionName = self.downloadTypeList[j]
+                if sectionName == self.downloadTypeList[0]:
+                    imagePath = os.path.join(IMAGEDIR,"icone_theme.png")
+                elif sectionName == self.downloadTypeList[1]:
+                    imagePath = os.path.join(IMAGEDIR,"icone_scrapper.png")
+                elif sectionName == self.downloadTypeList[2]:
+                    imagePath = os.path.join(IMAGEDIR,"icone_script.png")
+                elif sectionName == self.downloadTypeList[3]:
+                    imagePath = os.path.join(IMAGEDIR,"icone_script.png")
+                else:
+                    # Image par defaut (ou aucune si = "")
+                    imagePath = imagePath = os.path.join(IMAGEDIR,"icone_script.png")
+
+                displayListItem = xbmcgui.ListItem(label = sectionName, thumbnailImage = imagePath)
+                self.list.addItem(displayListItem)
+                
+#            elif (self.type  != "Plugins"):
+#                pass
+            elif (self.type == "Plugins Musique") or (self.type == "Plugins Images") or (self.type == "Plugins Programmes") or (self.type == "Plugins Vidéos"):
+                # Element de la liste
+                ItemListPath = self.curDirList[j]
+                
+                #self.numindex = self.index
+                print "updateList : sous-sectipn %s"%self.type
+                lenindex = len(self.remotedirList[self.pluginDisplayList[self.index]]) # on a tjrs besoin de connaitre la taille du chemin de base pour le soustraire/retirer du chemin global plus tard
+                
+                #TODO: creer de nouveau icones pour les sous-sections plugins
+                # Met a jour le titre et les icones:
+                if self.type == self.downloadTypeList[4]:   #Themes
+                    self.strMainTitle.setLabel(str(itemnumber) + " Plugins Musique")
+                    imagePath = os.path.join(IMAGEDIR,"icone_theme.png")
+                elif self.type == self.downloadTypeList[5]: #Scrapers
+                    self.strMainTitle.setLabel(str(itemnumber) + " Plugins Images")
+                    imagePath = os.path.join(IMAGEDIR,"icone_scrapper.png")
+                elif self.type == self.downloadTypeList[6]: #Scripts
+                    self.strMainTitle.setLabel(str(itemnumber) + " Plugins Programmes")
+                    imagePath = os.path.join(IMAGEDIR,"icone_script.png")
+                elif self.type == self.downloadTypeList[7]: #Plugins
+                    self.strMainTitle.setLabel(str(itemnumber) + " Plugins Vidéos")
+                    imagePath = os.path.join(IMAGEDIR,"icone_script.png")
+                else:
+                    # Image par defaut (ou aucune si = "")
+                    imagePath = ""
+
+                item2download = ItemListPath[lenindex:]
+
+                displayListItem = xbmcgui.ListItem(label = item2download, thumbnailImage = imagePath)
+                self.list.addItem(displayListItem)
+                
+            else:
+                # Element de la liste
+                ItemListPath = self.curDirList[j]
+                
+                print "updateList : autres cas"
                 #affichage de l'interieur d'une section
-                self.numindex = self.index
+                #self.numindex = self.index
                 lenindex = len(self.remotedirList[self.index]) # on a tjrs besoin de connaitre la taille du chemin de base pour le soustraire/retirer du chemin global plus tard
 
                 # Met a jour le titre et les icones:
@@ -929,6 +1093,9 @@ class MainWindow(xbmcgui.Window):
                 elif self.type == self.downloadTypeList[2]: #Scripts
                     self.strMainTitle.setLabel(str(itemnumber) + " Scripts")
                     imagePath = os.path.join(IMAGEDIR,"icone_script.png")
+#                elif self.type == self.downloadTypeList[3]: #Plugins
+#                    self.strMainTitle.setLabel(str(itemnumber) + " Plugins")
+#                    imagePath = os.path.join(IMAGEDIR,"icone_script.png")
                 else:
                     # Image par defaut (ou aucune si = "")
                     imagePath = ""
@@ -936,24 +1103,6 @@ class MainWindow(xbmcgui.Window):
                 item2download = ItemListPath[lenindex:]
 
                 displayListItem = xbmcgui.ListItem(label = item2download, thumbnailImage = imagePath)
-                self.list.addItem(displayListItem)
-            else:
-                # Met a jour le titre:
-                self.strMainTitle.setLabel("Sélection")
-                # Affichage de la liste des sections
-                # -> On compare avec la liste affichee dans l'interface
-                self.section = self.downloadTypeList[j]
-                if self.section == self.downloadTypeList[0]:
-                    imagePath = os.path.join(IMAGEDIR,"icone_theme.png")
-                elif self.section == self.downloadTypeList[1]:
-                    imagePath = os.path.join(IMAGEDIR,"icone_scrapper.png")
-                elif self.section == self.downloadTypeList[2]:
-                    imagePath = os.path.join(IMAGEDIR,"icone_script.png")
-                else:
-                    # Image par defaut (ou aucune si = "")
-                    imagePath = ""
-
-                displayListItem = xbmcgui.ListItem(label = self.section, thumbnailImage = imagePath)
                 self.list.addItem(displayListItem)
         xbmcgui.unlock()
         # Set Focus on list
@@ -1046,13 +1195,15 @@ class MainWindow(xbmcgui.Window):
         if os.path.isdir(localAbsDirPath):
             # Repertoire
             print "processOldDownload: Repertoire : %s"%localAbsDirPath
-            menuList = ["Télécharger et écraser","Supprimer puis télécharger","Renommer puis télécharger","Annuler"]
+            menuList = ["Ecraser (sans supprimer)","Supprimer puis     ","Renommer puis télécharger","Annuler"]
             dialog = xbmcgui.Dialog()
             chosenIndex = dialog.select("%s est deja present, que désirez vous faire?"%(os.path.basename(localAbsDirPath)), menuList)               
             #if (dialog.yesno("Erreur", "%s est deja present, voulez vous le renommer"%(os.path.basename(localAbsDirPath)),"Sinon il sera écrasé")):
-            if chosenIndex == 0: # Ecraser
+            if chosenIndex == 0: 
+                # Ecraser
                 pass
-            if chosenIndex == 1: # Supprimer
+            if chosenIndex == 1: 
+                # Supprimer
                 print "Suppression du repertoire"
                 self.deleteDir(localAbsDirPath)
             elif chosenIndex == 2: # Renommer
@@ -1091,9 +1242,6 @@ class MainWindow(xbmcgui.Window):
 
 def go():
     #Fonction de demarrage
-    wid = xbmcgui.getCurrentWindowId()
-    print "Current Windows ID = "
-    print wid
     w = MainWindow()
     w.doModal()
     print "Delete Window"
@@ -1112,12 +1260,17 @@ config.read(fichier)
 ##############################################################################
 #                   Initialisation parametres locaux                         #
 ##############################################################################
-IMAGEDIR = config.get('InstallPath','ImageDir')
-CACHEDIR = config.get('InstallPath','CacheDir')
-themesDir   = config.get('InstallPath','ThemesDir')
-scriptDir   = config.get('InstallPath','ScriptsDir')
-scraperDir  = config.get('InstallPath','ScraperDir')
-USRPath = config.getboolean('InstallPath','USRPath')
+IMAGEDIR        = config.get('InstallPath','ImageDir')
+CACHEDIR        = config.get('InstallPath','CacheDir')
+themesDir       = config.get('InstallPath','ThemesDir')
+scriptDir       = config.get('InstallPath','ScriptsDir')
+scraperDir      = config.get('InstallPath','ScraperDir')
+pluginDir       = config.get('InstallPath','PluginDir')
+pluginMusDir    = config.get('InstallPath','PluginMusDir')
+pluginPictDir   = config.get('InstallPath','PluginPictDir')
+pluginProgDir   = config.get('InstallPath','PluginProgDir')
+pluginVidDir    = config.get('InstallPath','PluginVidDir')
+USRPath         = config.getboolean('InstallPath','USRPath')
 if USRPath == True:
     PMIIIDir = config.get('InstallPath','PMIIIDir')
 RACINE = True
@@ -1125,13 +1278,25 @@ RACINE = True
 ##############################################################################
 #                   Initialisation parametres serveur                        #
 ##############################################################################
-host        = config.get('ServeurID','host')
-user        = config.get('ServeurID','user')
-rssfeed     = config.get('ServeurID','rssfeed')
-password    = config.get('ServeurID','password')
-downloadTypeLst = ["Themes","Scrapers","Scripts"]
-remoteDirLst  = ["/.passionxbmc/Themes/","/.passionxbmc/Scraper/","/.passionxbmc/Scripts/"]
-localDirLst   = [themesDir,scraperDir,scriptDir]
+host                = config.get('ServeurID','host')
+user                = config.get('ServeurID','user')
+rssfeed             = config.get('ServeurID','rssfeed')
+password            = config.get('ServeurID','password')
+
+downloadTypeLst     = ["Themes","Scrapers","Scripts","Plugins","Plugins Musique","Plugins Images","Plugins Programmes","Plugins Vidéos"]
+#TODO: mettre les chemins des rep sur le serveur dans le fichier de conf
+remoteDirLst        = ["/.passionxbmc/Themes/","/.passionxbmc/Scraper/","/.passionxbmc/Scripts/","/.passionxbmc/Plugins/","/.passionxbmc/Plugins/Music/","/.passionxbmc/Plugins/Pictures/","/.passionxbmc/Plugins/Programs/","/.passionxbmc/Plugins/Videos/"]
+localDirLst         = [themesDir,scraperDir,scriptDir,pluginDir,pluginMusDir,pluginPictDir,pluginProgDir,pluginVidDir]
+
+racineDisplayLst    = [0,1,2,3] # Liste de la racine: Cette liste est un filtre (utilisant l'index) sur les listes ci-dessus
+pluginDisplayLst    = [4,5,6,7] # Liste des plugins : Cette liste est un filtre (utilisant l'index) sur les listes ci-dessus
+
+
+## Plugins
+#pluginTypeLst       = ["Plugins Musique","Plugins Images","Plugins Programmes","Plugins Vidéos"]
+##TODO: mettre les chemins des rep sur le serveur dans le fichier de conf
+#remotePluginDirLst  = ["/.passionxbmc/Plugins/Music","/.passionxbmc/Plugins/Pictures","/.passionxbmc/Plugins/Programs","/.passionxbmc/Plugins/Videos"]
+#localPluginDirLst   = [pluginMusDir,pluginPictDir,pluginProgDir,pluginVidDir]
 
 ##############################################################################
 #                   Version et auteurs                                       #

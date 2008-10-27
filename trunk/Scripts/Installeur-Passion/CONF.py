@@ -80,11 +80,22 @@ def SetConfiguration ():
     ThemesDir   = os.path.join(XBMC, "skin")
     config.set("InstallPath", "ThemesDir", ThemesDir)
 
-
     #Set ScriptsDir
     ScriptsDir   = os.path.join(XBMC, "scripts")
     config.set("InstallPath", "ScriptsDir", ScriptsDir)
 
+    #Set PluginDir
+    PluginDir   = os.path.join(XBMC, "plugins")
+    config.set("InstallPath", "PluginDir", PluginDir)
+    PluginMusDir   = os.path.join(XBMC, "plugins" + os.sep + "music")
+    config.set("InstallPath", "PluginMusDir", PluginMusDir)
+    PluginPictDir   = os.path.join(XBMC, "plugins" + os.sep + "pictures")
+    config.set("InstallPath", "PluginPictDir", PluginPictDir)
+    PluginProgDir   = os.path.join(XBMC, "plugins" + os.sep + "programs")
+    config.set("InstallPath", "PluginProgDir", PluginProgDir)
+    PluginVidDir   = os.path.join(XBMC, "plugins" + os.sep + "video")
+    config.set("InstallPath", "PluginVidDir", PluginVidDir)
+    
     #Set ImageDir
     ImageDir = os.path.join(ROOTDIR, "images")
     config.set("InstallPath", "ImageDir", ImageDir)
