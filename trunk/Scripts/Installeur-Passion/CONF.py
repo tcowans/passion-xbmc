@@ -103,6 +103,10 @@ def SetConfiguration ():
     #Set CacheDir
     CacheDir = os.path.join(ROOTDIR, "cache")
     config.set("InstallPath", "CacheDir", CacheDir)
+    
+    #Set UserDataDir
+    UserDataDir = xbmc.translatePath( "Q:\\userdata" )
+    config.set("InstallPath", "UserDataDir", UserDataDir)
 
     #Save configuration
     config.set("InstallPath", "pathok", True)
