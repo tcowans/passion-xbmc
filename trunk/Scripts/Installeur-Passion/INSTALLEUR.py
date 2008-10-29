@@ -584,6 +584,74 @@ class FtpCallback(object):
                 #self.dp.update(self.curPercent,"%s:"%(self.localFileName),"%d%%"%(percent))
                 self.dp.update(percent,"Téléchargement Total: %d%%"%self.curPercent, "%s"%(self.srcName))
 
+class userDataXML:
+    """
+    Cette classe represente le fichier sources.xml dans user data
+    """
+    def __init__(self,filesrc,filedest=None):
+        self.newEntry = False
+        self.filesrc  = filesrc
+        self.filedest = filedest
+        self.soup     =  BeautifulStoneSoup(open(filesrc).read())
+        #print self.soup.prettify()
+        
+        
+    def addPluginEntry(self,plugintype,pluginNameStr,pluginPathStr):        
+        if plugintype == "Plugins Musique":
+            typeTag  = self.soup.find("music")
+            
+        elif plugintype == "Plugins Images":
+            typeTag  = self.soup.find("pictures")
+            
+        elif plugintype == "Plugins Programmes":
+            typeTag  = self.soup.find("programs")
+            
+        elif plugintype == "Plugins Vidéos":
+            typeTag  = self.soup.find("video")
+            
+        sourceTag = Tag(self.soup, "source")
+        typeTag.insert(0, sourceTag)
+        
+        nameTag = Tag(self.soup, "name")
+        sourceTag.insert(0, nameTag)
+        textName = NavigableString(pluginNameStr)
+        nameTag.insert(0, textName)
+        
+        pathTag = Tag(self.soup, "path")
+        sourceTag.insert(1, pathTag)
+        pathText = NavigableString(pluginPathStr)
+        pathTag.insert(0, pathText)
+    
+        print "Plugin entry %s added"%pluginNameStr
+        #print self.soup.prettify()
+        self.newEntry = True
+    def commit(self):
+        """
+        Sauvegarde les modification dans self.filedest
+        retourne True si la sauvegarde s'est bine passee False autrement
+        """
+        # sauvegarde nouveau fichier
+        result = False
+        if self.newEntry == True:
+            print "userDataXML: sauvegarde du fichier modifié %s"%self.filedest
+            try:
+                newFile = open(self.filedest, 'w+')
+                newFile.write(self.soup.prettify())
+                newFile.close()
+                result = True
+            except Exception, e:        
+                print("userDataXML - Exception durant la creation de %s"%self.filedest)
+                print(e)
+                percent = 100
+                traceback.print_exc(file = sys.stdout)
+                result = False
+        else:
+            print "userDataXML: aucun changement de %s"%self.filesrc
+            result = False
+        return result
+
+
+
 class MainWindow(xbmcgui.Window):
     """
 
@@ -611,6 +679,8 @@ class MainWindow(xbmcgui.Window):
         
         self.racineDisplayList  = racineDisplayLst
         self.pluginDisplayList  = pluginDisplayLst
+        self.pluginsInitList    = []
+        self.pluginsExitList    = []
          
 #        self.remotePluginDirList    = remotePluginDirLst     
 #        self.localPluginDirList     = localPluginDirLst
@@ -707,6 +777,7 @@ class MainWindow(xbmcgui.Window):
             self.scrollingText.addLabel(scrollingLabel)
             #self.scrollingText.setVisible(False)
 
+        
         # Connection au serveur FTP
         try:
             
@@ -727,13 +798,27 @@ class MainWindow(xbmcgui.Window):
         # Close the Loading Window
         dialogUI.close()
 
+        # Capturons le contenu des sous-repertoires plugins
+#        musicPlugListInit   = os.listdir(self.localdirList[self.downloadTypeList.index("Plugins Musique")])
+#        picturePlugListInit = os.listdir(self.localdirList[self.downloadTypeList.index("Plugins Images")])
+#        programPlugListInit = os.listdir(self.localdirList[self.downloadTypeList.index("Plugins Programmes")])
+#        videoPlugListInit   = os.listdir(self.localdirList[self.downloadTypeList.index("Plugins Vidéos")])
+        
+        for type in self.downloadTypeList:
+            if type.find("Plugins") != -1:
+                self.pluginsInitList.append(os.listdir(self.localdirList[self.downloadTypeList.index(type)]))
+            else:
+                self.pluginsInitList.append(None)
+        print "self.pluginsInitList:"
+        print self.pluginsInitList
+
     def onAction(self, action):
         """
         Remonte l'arborescence et quitte le script
         """
         try:
             if action == ACTION_PREVIOUS_MENU:
-
+                
                 # Sortie du script
                 #print('action recieved: previous')
 
@@ -743,6 +828,80 @@ class MainWindow(xbmcgui.Window):
                 # On vide le cache
                 #if self.delCache == True:
                 self.delFiles(CACHEDIR)
+
+
+                # Verifions si des plugins on ete ajoutes
+
+                # Capturons le contenu des sous-repertoires plugins a la sortie du script
+                xmlConfFile = userDataXML(os.path.join(self.userDataDir,"sources.xml"),os.path.join(self.userDataDir,"sourcesNew.xml"))
+                for type in self.downloadTypeList:
+                    if type.find("Plugins") != -1:
+                        self.pluginsExitList.append(os.listdir(self.localdirList[self.downloadTypeList.index(type)]))
+                        
+                        # Verifions si on a de nouveau elements:
+                        newPluginList = None
+                        try:
+                            newPluginList = list(set(self.pluginsExitList[self.downloadTypeList.index(type)]).difference(set(self.pluginsInitList[self.downloadTypeList.index(type)])))
+                        except Exception, e: 
+                            print "deleteDir: Exception durant la comparaison des repertoires plugin avant et apres installation"
+                            print e
+                            traceback.print_exc(file = sys.stdout)
+                        if len(newPluginList) > 0:
+                            for newPluginName in newPluginList:
+                                print "newPluginName:"
+                                print newPluginName
+                                # Creation du chemin qui sera ajoute au XML, par ex : "plugin://video/Google video/"
+                                #newPluginPath = xbmc.makeLegalFilename(os.path.join(self.localdirList[self.downloadTypeList.index(self.type)],newPluginName))
+                                # TODO: extraire des chemins local des plugins les strings, 'music', 'video' ... et n'avoir qu'une implementation 
+                                if type == "Plugins Musique":
+                                    categorieStr = "music"
+                                    
+                                elif type == "Plugins Images":
+                                    categorieStr = "pictures"
+                                    
+                                elif type == "Plugins Programmes":
+                                    categorieStr = "programs"
+                                    
+                                elif type == "Plugins Vidéos":
+                                    categorieStr = "video"
+                                newPluginPath = "plugin://" + categorieStr + "/" + newPluginName + "/"
+                                
+                                # Mise a jour de sources.xml
+                                print "adding new plugin entry: %s"%newPluginName
+                                xmlConfFile.addPluginEntry(type,newPluginName,newPluginPath)
+                    else:
+                        self.pluginsExitList.append(None)
+                        
+                newConfFile = xmlConfFile.commit()
+                del xmlConfFile
+                print "self.pluginsExitList:"
+                print self.pluginsExitList
+                
+                # On verifie si on a cree un nouveau XML
+                #if os.path.exists(os.path.join(self.userDataDir,"sourcesNew.xml")):
+                if newConfFile:
+                    currentTimeStr = str(time.time())
+                    # on demande a l'utilisateur s'il veut remplacer l'ancien xml par le nouveau
+                    menuList = ["Mettre a jour la configuation et sortir","Mettre a jour la configuation et redemarrer","Sortir sans rien faire"]
+                    dialog = xbmcgui.Dialog()
+                    chosenIndex = dialog.select("Modifications dans sources.xml, que désirez vous faire?", menuList)               
+                    if chosenIndex == 0: 
+                        # Mettre a jour la configuation et sortir
+                        # On renomme source.xml en ajoutant le timestamp
+                        os.rename(os.path.join(self.userDataDir,"sources.xml"),os.path.join(self.userDataDir,"sources_%s.xml"%currentTimeStr))
+                        # On renomme sourcesNew.xml source.xml
+                        os.rename(os.path.join(self.userDataDir,"sourcesNew.xml"),os.path.join(self.userDataDir,"sources.xml"))
+                        
+                    if chosenIndex == 1: 
+                        # Mettre a jour la configuation et redemarrer
+                        # On renomme source.xml en ajoutant le timestamp
+                        os.rename(os.path.join(self.userDataDir,"sources.xml"),os.path.join(self.userDataDir,"sources_%s.xml"%currentTimeStr))
+                        # On renomme sourcesNew.xml source.xml
+                        os.rename(os.path.join(self.userDataDir,"sourcesNew.xml"),os.path.join(self.userDataDir,"sources.xml"))
+                        # on redemarre
+                        xbmc.restart()
+                    else:
+                        pass
 
                 #on ferme tout
                 self.close()
@@ -896,10 +1055,6 @@ class MainWindow(xbmcgui.Window):
                             #Un tour de passe passe est fait plus haut pour echanger les chemins de destination avec le cache, le chemin de destination
                             #est retabli ici 'il s'agit de targetDir'
                             if downloadItem.endswith('zip') or downloadItem.endswith('rar'):
-                                pluginListBefore = None
-                                
-                                if self.type.find("Plugins") != -1:
-                                    pluginListBefore=os.listdir(self.targetDir)
                                 #Appel de la classe d'extraction des archives
                                 print "self.localdirList"
                                 print self.localdirList
@@ -923,56 +1078,7 @@ class MainWindow(xbmcgui.Window):
                                 self.extracter.extract(archive,self.localdirList[self.downloadTypeList.index(self.type)])
                                 
                                 #TODO: faire un test si l'extraction etait OK
-                                
-                                
-                                # On verifie si on avait affaire a un plugin pour mettre a jour sources.xml
-                                print "Test si on a affaire a un plugin"
-                                print self.type
-                                if self.type.find("Plugins") != -1:
-                                    # On dort le temps de l'extraction
-                                    #TODO: rechercher une meilleure methode plutot que attendre durant plusieurs secondes
-                                    time.sleep(3)
-
-                                    pluginListAfter=os.listdir(self.targetDir)
-                                    print "pluginListBefore:"
-                                    print pluginListBefore
-                                    print "pluginListAfter:"
-                                    print pluginListAfter
-                                    
-                                    # On recuepere la difference sur les 2 listes
-                                    newPluginList = None
-                                    try:
-                                        newPluginList = list(set(pluginListAfter).difference(set(pluginListBefore)))
-                                    except Exception, e: 
-                                        print "deleteDir: Exception durant la comparaison des repertoires plugin avant et apres installation"
-                                        print e
-                                        traceback.print_exc(file = sys.stdout)
-                                    if len(newPluginList) > 0:
-                                        newPluginName = newPluginList[0]
-                                        print "newPluginName:"
-                                        print newPluginName
-                                        # Creation du chemin qui sera ajoute au XML, par ex : "plugin://video/Google video/"
-                                        #newPluginPath = xbmc.makeLegalFilename(os.path.join(self.localdirList[self.downloadTypeList.index(self.type)],newPluginName))
-                                        # TODO: extraire des chemins local des plugins les strings, 'music', 'video' ... et n'avoir qu'une implementation 
-                                        if self.type == "Plugins Musique":
-                                            categorieStr = "music"
-                                            
-                                        elif self.type == "Plugins Images":
-                                            categorieStr = "pictures"
-                                            
-                                        elif self.type == "Plugins Programmes":
-                                            categorieStr = "programs"
-                                            
-                                        elif self.type == "Plugins Vidéos":
-                                            categorieStr = "video"
-                                        newPluginPath = "plugin://" + categorieStr + "/" + newPluginName + "/"
-                                        
-                                        # Mise a jour de sources.xml
-                                        self.updateUserDataXML(self.type,newPluginName,newPluginPath)
-                                        
-                                    else:
-                                        print "Pas de nouveau repertoire dans plugin"
-                                    
+                                                                   
     
                             if downloadStatus == -1:
                                 # Telechargment annule par l'utilisateur
@@ -991,7 +1097,7 @@ class MainWindow(xbmcgui.Window):
     
     
                             #TODO: Attention correctionPM3bidon n'est pa defini dans le cas d'un scraper ou script
-                            #      Je l;ai donc defini a False au debut
+                            #      Je l'ai donc defini a False au debut
                             # On remet a la bonne valeur initiale self.localdirList[0]
                             if correctionPM3bidon == True:
                                 self.localdirList[0] = themesDir
@@ -1000,53 +1106,6 @@ class MainWindow(xbmcgui.Window):
             print ("error/onControl: " + str(sys.exc_info()[0]))
             traceback.print_exc()
             
-    def updateUserDataXML(self,plugintype,pluginNameStr,pluginPathStr):
-#        userDataFile = open(os.path.join(self.userDataDir,"sources.xml"), 'r+')
-#        xml =  userDataFile.read()
-#        soup = BeautifulStoneSoup(xml)
-        soup =  BeautifulStoneSoup(open(os.path.join(self.userDataDir,"sources.xml")).read())
-        print soup.prettify()
-        
-        if self.type == "Plugins Musique":
-            typeTag  = soup.find("music")
-            
-        elif self.type == "Plugins Images":
-            typeTag  = soup.find("pictures")
-            
-        elif self.type == "Plugins Programmes":
-            typeTag  = soup.find("programs")
-            
-        elif self.type == "Plugins Vidéos":
-            typeTag  = soup.find("video")
-
-#        for plugin in typeTag.findAll("source"):
-#            #print plugin
-#            name = plugin.find("name")
-#            print name.string
-#            path = plugin.find("path")
-#            print path.string
-    
-        sourceTag = Tag(soup, "source")
-        typeTag.insert(0, sourceTag)
-        
-        nameTag = Tag(soup, "name")
-        sourceTag.insert(0, nameTag)
-        textName = NavigableString(pluginNameStr)
-        nameTag.insert(0, textName)
-        
-        pathTag = Tag(soup, "path")
-        sourceTag.insert(1, pathTag)
-        pathText = NavigableString(pluginPathStr)
-        pathTag.insert(0, pathText)
-    
-        print soup.prettify()
-        
-        # sauvegarde nouveau fichier
-        newFile = open(os.path.join(self.userDataDir,"sourcesNew.xml"), 'w+')
-        newFile.write(soup.prettify())
-        newFile.close()
-    
-
     def updateProgress_cb(self, percent, dp=None):
         """
         Met a jour la barre de progression
@@ -1068,10 +1127,6 @@ class MainWindow(xbmcgui.Window):
         if (self.type  == "racine"):
             #liste virtuelle des sections
 #            del self.curDirList[:] # on vide la liste
-#            
-#            # On utilise le filtre pour creer la liste d'affichage
-#            for idx in self.racineDisplayList:
-#                self.curDirList.append(self.racineDisplayList[idx]) 
             self.curDirList = self.racineDisplayList
             
             print "self.curDirList pour la Racine:"
@@ -1080,10 +1135,6 @@ class MainWindow(xbmcgui.Window):
         elif (self.type  == "Plugins"):
             #liste virtuelle des sections
 #            del self.curDirList[:] # on vide la liste
-#            
-#            # On utilise le filtre pour creer la liste d'affichage
-#            for idx in self.pluginDisplayList:
-#                self.curDirList.append(self.pluginDisplayList[idx]) 
 
             self.curDirList = self.pluginDisplayList
 
