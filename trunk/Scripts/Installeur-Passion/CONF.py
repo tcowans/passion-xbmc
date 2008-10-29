@@ -105,7 +105,8 @@ def SetConfiguration ():
     config.set("InstallPath", "CacheDir", CacheDir)
     
     #Set UserDataDir
-    UserDataDir = xbmc.translatePath( "Q:\\userdata" )
+    #UserDataDir = xbmc.translatePath( "Q:\\userdata" )
+    UserDataDir = os.path.join(XBMC, "userdata")
     config.set("InstallPath", "UserDataDir", UserDataDir)
 
     #Save configuration
