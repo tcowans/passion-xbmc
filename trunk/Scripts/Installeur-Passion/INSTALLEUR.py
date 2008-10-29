@@ -697,6 +697,7 @@ class MainWindow(xbmcgui.Window):
         # Verifie si les repertoires cache et imagedir existent et les cree s'il n'existent pas encore
         self.verifrep(CACHEDIR)
         self.verifrep(IMAGEDIR)
+        self.verifrep(pluginProgDir)
 
         #TODO: A nettoyer, ton PMIIIDir n'est pas defini pour XBOX sans le test si dessous
         if self.USRPath == True:
