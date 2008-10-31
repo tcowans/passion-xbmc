@@ -285,7 +285,7 @@ class ftpDownloadCtrl:
             # Pas d'excpetion => il s'agit d'un dossier
             print "isDir: %s EST un DOSSIER"%pathsrc
         except Exception, e:
-            print "isDir: %s EST PAS un FICHIER"%pathsrc
+            print "isDir: %s EST un FICHIER"%pathsrc
             isDir = False
         return isDir
 
@@ -333,20 +333,20 @@ class ftpDownloadCtrl:
         self.curLocalDirRoot  = self.localdirList[typeIndex]
         self.curRemoteDirRoot = rootdirsrc
 
-        try:
-            if (progressbar_cb != None) and (dialogProgressWin != None):
-                percent = 0
-                #print "=================================="
-                #print
-                #print "Pourcentage telecharger: %d"%percent
-                #print
-                #print "=================================="
-                # Initialisation de la barre de progression (via callback)
-                progressbar_cb(percent,dialogProgressWin)
-        except Exception, e:
-            print("download - Exception ProgressBar UI callback for download")
-            print(e)
-            print progressbar_cb
+#        try:
+#            if (progressbar_cb != None) and (dialogProgressWin != None):
+#                percent = 0
+#                #print "=================================="
+#                #print
+#                #print "Pourcentage telecharger: %d"%percent
+#                #print
+#                #print "=================================="
+#                # Initialisation de la barre de progression (via callback)
+#                progressbar_cb(percent,dialogProgressWin)
+#        except Exception, e:
+#            print("download - Exception ProgressBar UI callback for download")
+#            print(e)
+#            print progressbar_cb
 
         # Appel de la fonction privee en charge du download - on passe en parametre l'index correspondant au type
         status = self._download(pathsrc,progressbar_cb,dialogProgressWin,0,1)
@@ -380,7 +380,7 @@ class ftpDownloadCtrl:
                 # Calcule le pourcentage avant download
                 #TODO: verifier que la formule pour le pourcentage est OK (la ca ette fait un peu trop rapidement) 
                 #percent = min(curPercent + int((float(curDirList.index(i)+1)*100)/(curDirListSize * coeff)),100)
-                percent = min(curPercent + int((float(curDirList.index(i)+0)*100)/(curDirListSize * coeff)),100)
+                percentBefore = min(curPercent + int((float(curDirList.index(i)+0)*100)/(curDirListSize * coeff)),100)
                 #print "=================================="
                 #print
                 #print "Pourcentage téléchargé: %d"%percent
@@ -390,8 +390,9 @@ class ftpDownloadCtrl:
                 
                 try :
 
-                    #Mise a jour de la barre de progression (via callback)
-                    dialogProgressWin.update(0,"Téléchargement Total: %d%%"%percent, "%s"%i)
+                    # Mise a jour de la barre de progression (via callback)
+                    # percent est le poucentage du FICHIER telecharger et non le pourcentage total
+                    dialogProgressWin.update(0,"Téléchargement Total: %d%%"%percentBefore, "%s"%i)
                 except Exception, e:
                     print("downloadVideo - Exception calling UI callback for download")
                     print(e)
@@ -400,23 +401,38 @@ class ftpDownloadCtrl:
                 if self.isDir(i):
                     # pathsrc est un repertoire
                     # Telechargement du dossier
-                    self._downloaddossier(i,dialogProgressWin=dialogProgressWin,curPercent=percent,coeff=coeff*curDirListSize)
-                    percent = int((float(curDirList.index(i)+1)*100)/(curDirListSize * coeff))
+                    self._downloaddossier(i,dialogProgressWin=dialogProgressWin,curPercent=percentBefore,coeff=coeff*curDirListSize)
+                    #percent = int((float(curDirList.index(i)+1)*100)/(curDirListSize * coeff))
                     
                 else:
                     # pathsrc est un fichier
                     # Telechargement du fichier
-                    self._downloadfichier(i,dialogProgressWin=dialogProgressWin,curPercent=percent,coeff=coeff*curDirListSize)
+                    self._downloadfichier(i,dialogProgressWin=dialogProgressWin,curPercent=percentBefore,coeff=coeff*curDirListSize)
                     
+                percentAfter = min(curPercent + int((float(curDirList.index(i)+1)*100)/(curDirListSize * coeff)),100)
                 try :
 
                     #Mise a jour de la barre de progression (via callback)
-                    #TODO: Solution temporaraire -> on veut afficher le nom du theme/script/skin en cours en plus du fichier
-                    dialogProgressWin.update(100,"Téléchargement Total: %d%%"%percent, "%s"%i)
+                    #TODO: Resoudre le pb que la ligbe ci-dessous est invible (trop rapide)
+                    dialogProgressWin.update(100,"Téléchargement Total: %d%%"%percentAfter, "%s"%i)
+                    #time.sleep(1)
                 except Exception, e:
                     print("downloadVideo - Exception calling UI callback for download")
                     print(e)
                     print progressbar_cb
+        
+
+        # Calcul pourcentage final
+        percent = min(curPercent + int(100/(coeff)),100)
+        try :
+
+            #Mise a jour de la barre de progression (via callback)
+            dialogProgressWin.update(100,"Téléchargement Total: %d%%"%percent, "%s"%i)
+            #time.sleep(3)
+        except Exception, e:
+            print("downloadVideo - Exception calling UI callback for download")
+            print(e)
+            print progressbar_cb
 
         return 1 # 1 pour telechargement OK
 
@@ -426,7 +442,6 @@ class ftpDownloadCtrl:
         Telecharge un repertoire sur le server FTP
         Note: fait un appel RECURSIF sur _download
         """
-        print "_downloaddossier: %s"%dirsrc
         emptydir = False
         
         try:
@@ -457,45 +472,47 @@ class ftpDownloadCtrl:
         else:
             # Repertoire non vide - lancement du download (!!!APPEL RECURSIF!!!)
             self._download(dirsrc,dialogProgressWin=dialogProgressWin,curPercent=curPercent,coeff=coeff)
-
+            
     def _downloadfichier(self, filesrc,dialogProgressWin=None,curPercent=0,coeff=1):
         """
         Fonction privee (ne pouvant etre appelee que par la classe ftpDownloadCtrl elle meme)
         Telecharge un fichier sur le server FTP
         """
         # Recupere la taille du fichier
-        print "_downloadfichier: %s"%filesrc
         remoteFileSize = 1
         #block_size = 4096
         block_size = 2048
+        # Recuperation de la taille du fichier
         try:
             self.ftp.sendcmd('TYPE I')
             remoteFileSize = int(self.ftp.size(filesrc))
-            #self.ftp.sendcmd('TYPE A')
+            if remoteFileSize <= 0:
+                # Dans le cas ou ub fichier n'a pas une taille valide ou corrompue
+                remoteFileSize = 1
         except Exception, e:
             print "_downloadfichier: Excpetion lors la recuperation de la taille du fichier: %s"%filesrc
             print e
             traceback.print_exc(file = sys.stdout)
         
         # Cree le chemin du repertorie local
-        # Extrait le chemin relatif: soustrait au chemin remote le chemin de base: par exemple on veut retirer du chemin; /.passionxbmc/Themes
+        # Extraction du chemin relatif: soustrait au chemin remote le chemin de base: par exemple on veut retirer du chemin; /.passionxbmc/Themes
         remoteRelFilePath = filesrc.replace(self.curRemoteDirRoot,'')
 
         # On remplace dans le chemin sur le serveur FTP les '/' par le separateur de l'OS sur lequel on est
         localRelFilePath = remoteRelFilePath.replace('/',os.sep)
 
-        # Cree le chemin local (ou on va sauver)
+        # Creation du chemin local (ou on va sauver)
         localAbsFilePath = xbmc.translatePath(os.path.join(self.curLocalDirRoot, localRelFilePath))
         #localFileName = os.path.basename(localAbsFilePath)
 
         localFile = open(localAbsFilePath, "wb")
         try:
-            #self.ftp.retrbinary('RETR ' + filesrc, localFile.write)
+            # Creation de la fonction callback appele a chaque block_size telecharge
             ftpCB = FtpCallback(remoteFileSize, localFile,filesrc,dialogProgressWin,curPercent,coeff*remoteFileSize)
-            #self.ftp.sendcmd('TYPE I')
-            #self.ftp.retrbinary('RETR ' + filesrc, ftpCB, block_size)
+            
+            # Telecahrgement (on passe la CB en parametre)
+            # Note on utilise un implemenation locale et non celle de ftplib qui ne supporte pas l'interuption d'un telechargement
             self.retrbinary('RETR ' + filesrc, ftpCB, block_size)
-            # On ferme le fichier
         except Exception, e:
             print "_downloadfichier: Exception lors la recuperation du fichier: %s"%filesrc
             print e
@@ -506,20 +523,18 @@ class ftpDownloadCtrl:
     def retrbinary(self, cmd, callback, blocksize=8192,rest=None):
         """
         Cette version de retrbinary permet d'interompte un telechargement en cours alors que la version de ftplib ne le permet pas
-        Inspiré du code dispo a http://www.archivum.info/python-bugs-list@python.org/2007-03/msg00465.html
+        Inspirée du code dispo a http://www.archivum.info/python-bugs-list@python.org/2007-03/msg00465.html
         """
         self.ftp.voidcmd('TYPE I')
         conn = self.ftp.transfercmd(cmd, rest)
         fp = conn.makefile('rb')
         while 1:
-            #data = conn.recv(blocksize)
-            data = fp.read()    #blocksize)
+            data = fp.read(blocksize)   
             if not data:
                 break
             try:
                 callback(data)
             except cancelRequest:
-                #except IOError, (errno, strerror):
                 traceback.print_exc(file = sys.stdout)
                 print "retrbinary: Download ARRETE par l'utilisateur"
                 break
@@ -539,16 +554,17 @@ class FtpCallback(object):
         self.localfile  = localfile
         self.srcName    = filesrc
         self.received   = 0
-        self.curPercent = curPercent
+        self.curPercent = curPercent # Pourcentage total telecharger (et non du fichier en cours)
         self.coeff      = coeff
         self.dp         = dp
-        print filesize
-        print self.filesize
-        print  self.localfile
-        print self.received
-        print self.curPercent
-        print self.coeff
-        print self.dp
+#        print filesize
+#        print "FtpCallback"
+#        print self.filesize
+#        print  self.localfile
+#        print self.received
+#        print self.curPercent
+#        print self.coeff
+#        print self.dp
 
         
     def __call__(self, data):
@@ -556,16 +572,13 @@ class FtpCallback(object):
             if self.dp.iscanceled(): 
                 print "FtpCallback: DOWNLOAD CANCELLED" # need to get this part working
                 #dp.close() #-> will be close in calling function
-                #raise IOError
                 raise cancelRequest,"User pressed CANCEL button"
         self.localfile.write(data)
         self.received += len(data)
-        #print '\r%.3f%%' % (100.0*self.received/self.filesize)
         try:
             percent = min((self.received*100)/self.filesize, 100)
-            #percent = min(curPercent + int((float(curDirList.index(i)+1)*100)/(curDirListSize * coeff)),100)
-            #percent = min(int(float(self.curPercent) + (float(self.received*100)/(self.filesize * self.coeff))),100)
-            print "FtpCallback - percent = %s%%"%percent
+#            print "FtpCallback - percent = "
+#            print percent
             if self.dp != None:
                 self.dp.update(percent,"Téléchargement Total: %d%%"%self.curPercent, "%s"%self.srcName)
         except Exception, e:        
@@ -575,7 +588,6 @@ class FtpCallback(object):
             traceback.print_exc(file = sys.stdout)
             if self.dp != None:
                 #TODO: garder le titre principal
-                #self.dp.update(self.curPercent,"%s:"%(self.localFileName),"%d%%"%(percent))
                 self.dp.update(percent,"Téléchargement Total: %d%%"%self.curPercent, "%s"%(self.srcName))
 
 class userDataXML:
@@ -1276,7 +1288,7 @@ class MainWindow(xbmcgui.Window):
         # Verifie se on telecharge un repertoire ou d'un fichier
         if os.path.isdir(localAbsDirPath):
             # Repertoire
-            menuList = ["Ecraser (sans supprimer)","Supprimer puis     ","Renommer puis télécharger","Annuler"]
+            menuList = ["Ecraser (sans supprimer)","Supprimer puis télécharger","Renommer puis télécharger","Annuler"]
             dialog = xbmcgui.Dialog()
             chosenIndex = dialog.select("%s est deja present, que désirez vous faire?"%(os.path.basename(localAbsDirPath)), menuList)               
             #if (dialog.yesno("Erreur", "%s est deja present, voulez vous le renommer"%(os.path.basename(localAbsDirPath)),"Sinon il sera écrasé")):
