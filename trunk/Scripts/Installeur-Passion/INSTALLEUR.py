@@ -1081,6 +1081,8 @@ class MainWindow(xbmcgui.Window):
         Mise a jour de la liste affichee
         """
         # On verifie self.type qui correspond au type de liste que l'on veut afficher
+        dialogUI = xbmcgui.DialogProgress()
+        dialogUI.create("Installeur Passion-XBMC", "Chargement des informations", "Veuillez patienter...")
         if (self.type  == "racine"):
             #liste virtuelle des sections
 #            del self.curDirList[:] # on vide la liste
@@ -1201,6 +1203,7 @@ class MainWindow(xbmcgui.Window):
         
         # Set Focus on list
         self.setFocus(self.list)
+        dialogUI.close()
 
     def deleteDir(self,path):
         """
