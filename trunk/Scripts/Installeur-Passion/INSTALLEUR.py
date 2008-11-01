@@ -665,6 +665,47 @@ class userDataXML:
         return result
 
 
+class directorySpy:
+    """
+    Permet d'observer l'ajout suppressuin des elements d'un repertoire
+    """
+    def __init__(self,dirpath):
+        """
+        Capture le contenu d'un repertoire a l'init
+        On s'en servira comme reference dans le future pour observer les modifications dans ce repertoire
+        """
+        self.dirPath            = dirpath
+        self.dirContentInitList = []
+        if os.path.isdir(dirpath):
+            # On capture le contenu du repertoire et on le sauve
+            self.dirContentInitList = os.listdir(dirpath)
+        else:
+            print "directorySpy - __init__: %s n'est pas un repertoire"%self.dirPath
+            #TODO: Lever un exception
+        print "directorySpy - __init__: Liste des nouveaux elements du repertoire %s a l'instanciation"%self.dirPath
+        print self.dirContentInitList
+        
+    def getNewItemList(self):
+        # On capture le contenu courant du repertoire
+        dirContentCurrentList = os.listdir(self.dirPath)
+        try:
+            newItemList = list(set(dirContentCurrentList).difference(set(self.dirContentInitList)))
+        except Exception, e: 
+            print "directorySpy - getNewItemList: Exception durant la comparaison du repertoires %s"%self.dirPath
+            print e
+            traceback.print_exc(file = sys.stdout)
+            newItemList = []
+#        if len(newItemList) > 0:
+#            print "directorySpy - getNewItemList: de nouveaux elementx on ete ajoutés au repertoire %s"%self.dirPath
+#            print newItemList
+#            return newItemList
+#        else:
+#            print "directorySpy - getNewItemList: aucun nouvel element ajouté au repertoire %s"%self.dirPath
+#            return None
+        #print "directorySpy - getNewItemList: Liste des nouveaux elements du repertoire %s"%self.dirPath
+        #print newItemList
+        return newItemList
+
 
 class MainWindow(xbmcgui.Window):
     """
@@ -693,8 +734,8 @@ class MainWindow(xbmcgui.Window):
         
         self.racineDisplayList  = racineDisplayLst
         self.pluginDisplayList  = pluginDisplayLst
-        self.pluginsInitList    = []
-        self.pluginsExitList    = []
+        self.pluginsDirSpyList  = []
+        #self.pluginsExitList    = []
          
         self.curDirList         = []
         self.connected          = False # status de la connection (inutile pour le moment)
@@ -811,11 +852,12 @@ class MainWindow(xbmcgui.Window):
         # Capturons le contenu des sous-repertoires plugins
         for type in self.downloadTypeList:
             if type.find("Plugins") != -1:
-                self.pluginsInitList.append(os.listdir(self.localdirList[self.downloadTypeList.index(type)]))
+                #self.pluginsInitList.append(os.listdir(self.localdirList[self.downloadTypeList.index(type)]))
+                self.pluginsDirSpyList.append(directorySpy(self.localdirList[self.downloadTypeList.index(type)]))
             else:
-                self.pluginsInitList.append(None)
-        print "self.pluginsInitList:"
-        print self.pluginsInitList
+                self.pluginsDirSpyList.append(None)
+        print "self.pluginsDirSpyList:"
+        print self.pluginsDirSpyList
 
     def onAction(self, action):
         """
@@ -841,12 +883,13 @@ class MainWindow(xbmcgui.Window):
                 xmlConfFile = userDataXML(os.path.join(self.userDataDir,"sources.xml"),os.path.join(self.userDataDir,"sourcesNew.xml"))
                 for type in self.downloadTypeList:
                     if type.find("Plugins") != -1:
-                        self.pluginsExitList.append(os.listdir(self.localdirList[self.downloadTypeList.index(type)]))
+                        #self.pluginsExitList.append(os.listdir(self.localdirList[self.downloadTypeList.index(type)]))
                         
                         # Verifions si on a de nouveau elements:
                         newPluginList = None
                         try:
-                            newPluginList = list(set(self.pluginsExitList[self.downloadTypeList.index(type)]).difference(set(self.pluginsInitList[self.downloadTypeList.index(type)])))
+                            #newPluginList = list(set(self.pluginsExitList[self.downloadTypeList.index(type)]).difference(set(self.pluginsInitList[self.downloadTypeList.index(type)])))
+                            newPluginList = self.pluginsDirSpyList[self.downloadTypeList.index(type)].getNewItemList()
                         except Exception, e: 
                             print "deleteDir: Exception durant la comparaison des repertoires plugin avant et apres installation"
                             print e
@@ -874,12 +917,13 @@ class MainWindow(xbmcgui.Window):
                                 print "adding new plugin entry: %s"%newPluginName
                                 xmlConfFile.addPluginEntry(type,newPluginName,newPluginPath)
                     else:
-                        self.pluginsExitList.append(None)
+                        #self.pluginsExitList.append(None)
+                        pass
                         
                 newConfFile = xmlConfFile.commit()
                 del xmlConfFile
-                print "self.pluginsExitList:"
-                print self.pluginsExitList
+                #print "self.pluginsExitList:"
+                #print self.pluginsExitList
                 
                 # On verifie si on a cree un nouveau XML
                 if newConfFile:
@@ -895,7 +939,7 @@ class MainWindow(xbmcgui.Window):
                         # On renomme sourcesNew.xml source.xml
                         os.rename(os.path.join(self.userDataDir,"sourcesNew.xml"),os.path.join(self.userDataDir,"sources.xml"))
                         
-                    if chosenIndex == 1: 
+                    elif chosenIndex == 1: 
                         # Mettre a jour la configuation et redemarrer
                         # On renomme source.xml en ajoutant le timestamp
                         os.rename(os.path.join(self.userDataDir,"sources.xml"),os.path.join(self.userDataDir,"sources_%s.xml"%currentTimeStr))
@@ -904,7 +948,8 @@ class MainWindow(xbmcgui.Window):
                         # on redemarre
                         xbmc.restart()
                     else:
-                        pass
+                        # On supprime le xml que nous avons genere
+                        os.remove(os.path.join(self.userDataDir,"sourcesNew.xml"))
 
                 #on ferme tout
                 self.close()
