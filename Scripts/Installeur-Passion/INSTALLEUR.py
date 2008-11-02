@@ -696,8 +696,8 @@ class directorySpy:
             print e
             traceback.print_exc(file = sys.stdout)
             newItemList = []
-        #print "directorySpy - getNewItemList: Liste des nouveaux elements du repertoire %s"%self.dirPath
-        #print newItemList
+        print "directorySpy - getNewItemList: Liste des nouveaux elements du repertoire %s"%self.dirPath
+        print newItemList
         return newItemList
 
 
@@ -729,7 +729,8 @@ class MainWindow(xbmcgui.Window):
         self.racineDisplayList  = racineDisplayLst
         self.pluginDisplayList  = pluginDisplayLst
         self.pluginsDirSpyList  = []
-        #self.pluginsExitList    = []
+        
+        self.xbmcXmlUpdate      = xbmcxmlupdate
          
         self.curDirList         = []
         self.connected          = False # status de la connection (inutile pour le moment)
@@ -872,78 +873,79 @@ class MainWindow(xbmcgui.Window):
 
                 # Verifions si des plugins on ete ajoutes
 
-                # Capturons le contenu des sous-repertoires plugins a la sortie du script
-                xmlConfFile = userDataXML(os.path.join(self.userDataDir,"sources.xml"),os.path.join(self.userDataDir,"sourcesNew.xml"))
-                for type in self.downloadTypeList:
-                    if type.find("Plugins") != -1:
-                        #self.pluginsExitList.append(os.listdir(self.localdirList[self.downloadTypeList.index(type)]))
-                        
-                        # Verifions si on a de nouveau elements:
-                        newPluginList = None
-                        try:
-                            #newPluginList = list(set(self.pluginsExitList[self.downloadTypeList.index(type)]).difference(set(self.pluginsInitList[self.downloadTypeList.index(type)])))
-                            newPluginList = self.pluginsDirSpyList[self.downloadTypeList.index(type)].getNewItemList()
-                        except Exception, e: 
-                            print "deleteDir: Exception durant la comparaison des repertoires plugin avant et apres installation"
-                            print e
-                            traceback.print_exc(file = sys.stdout)
-                        if len(newPluginList) > 0:
-                            for newPluginName in newPluginList:
-                                print "newPluginName:"
-                                print newPluginName
-                                # Creation du chemin qui sera ajoute au XML, par ex : "plugin://video/Google video/"
-                                # TODO: extraire des chemins local des plugins les strings, 'music', 'video' ... et n'avoir qu'une implementation 
-                                if type == "Plugins Musique":
-                                    categorieStr = "music"
+                if self.xbmcXmlUpdate:
+                    # Capturons le contenu des sous-repertoires plugins a la sortie du script
+                    xmlConfFile = userDataXML(os.path.join(self.userDataDir,"sources.xml"),os.path.join(self.userDataDir,"sourcesNew.xml"))
+                    for type in self.downloadTypeList:
+                        if type.find("Plugins") != -1:
+                            #self.pluginsExitList.append(os.listdir(self.localdirList[self.downloadTypeList.index(type)]))
+                            
+                            # Verifions si on a de nouveau elements:
+                            newPluginList = None
+                            try:
+                                #newPluginList = list(set(self.pluginsExitList[self.downloadTypeList.index(type)]).difference(set(self.pluginsInitList[self.downloadTypeList.index(type)])))
+                                newPluginList = self.pluginsDirSpyList[self.downloadTypeList.index(type)].getNewItemList()
+                            except Exception, e: 
+                                print "deleteDir: Exception durant la comparaison des repertoires plugin avant et apres installation"
+                                print e
+                                traceback.print_exc(file = sys.stdout)
+                            if len(newPluginList) > 0:
+                                for newPluginName in newPluginList:
+                                    print "newPluginName:"
+                                    print newPluginName
+                                    # Creation du chemin qui sera ajoute au XML, par ex : "plugin://video/Google video/"
+                                    # TODO: extraire des chemins local des plugins les strings, 'music', 'video' ... et n'avoir qu'une implementation 
+                                    if type == "Plugins Musique":
+                                        categorieStr = "music"
+                                        
+                                    elif type == "Plugins Images":
+                                        categorieStr = "pictures"
+                                        
+                                    elif type == "Plugins Programmes":
+                                        categorieStr = "programs"
+                                        
+                                    elif type == "Plugins Vidéos":
+                                        categorieStr = "video"
+                                    newPluginPath = "plugin://" + categorieStr + "/" + newPluginName + "/"
                                     
-                                elif type == "Plugins Images":
-                                    categorieStr = "pictures"
-                                    
-                                elif type == "Plugins Programmes":
-                                    categorieStr = "programs"
-                                    
-                                elif type == "Plugins Vidéos":
-                                    categorieStr = "video"
-                                newPluginPath = "plugin://" + categorieStr + "/" + newPluginName + "/"
-                                
-                                # Mise a jour de sources.xml
-                                print "adding new plugin entry: %s"%newPluginName
-                                xmlConfFile.addPluginEntry(type,newPluginName,newPluginPath)
-                    else:
-                        #self.pluginsExitList.append(None)
-                        pass
-                        
-                newConfFile = xmlConfFile.commit()
-                del xmlConfFile
-                #print "self.pluginsExitList:"
-                #print self.pluginsExitList
-                
-                # On verifie si on a cree un nouveau XML
-                if newConfFile:
-                    currentTimeStr = str(time.time())
-                    # on demande a l'utilisateur s'il veut remplacer l'ancien xml par le nouveau
-                    menuList = ["Mettre a jour la configuation et sortir","Mettre a jour la configuation et redemarrer (XBOX)","Sortir sans rien faire"]
-                    dialog = xbmcgui.Dialog()
-                    chosenIndex = dialog.select("Modifications dans sources.xml, que désirez vous faire?", menuList)               
-                    if chosenIndex == 0: 
-                        # Mettre a jour la configuation et sortir
-                        # On renomme source.xml en ajoutant le timestamp
-                        os.rename(os.path.join(self.userDataDir,"sources.xml"),os.path.join(self.userDataDir,"sources_%s.xml"%currentTimeStr))
-                        # On renomme sourcesNew.xml source.xml
-                        os.rename(os.path.join(self.userDataDir,"sourcesNew.xml"),os.path.join(self.userDataDir,"sources.xml"))
-                        
-                    elif chosenIndex == 1: 
-                        # Mettre a jour la configuation et redemarrer
-                        # On renomme source.xml en ajoutant le timestamp
-                        os.rename(os.path.join(self.userDataDir,"sources.xml"),os.path.join(self.userDataDir,"sources_%s.xml"%currentTimeStr))
-                        # On renomme sourcesNew.xml source.xml
-                        os.rename(os.path.join(self.userDataDir,"sourcesNew.xml"),os.path.join(self.userDataDir,"sources.xml"))
-                        # on redemarre
-                        xbmc.restart()
-                    else:
-                        # On supprime le xml que nous avons genere
-                        os.remove(os.path.join(self.userDataDir,"sourcesNew.xml"))
-
+                                    # Mise a jour de sources.xml
+                                    print "adding new plugin entry: %s"%newPluginName
+                                    xmlConfFile.addPluginEntry(type,newPluginName,newPluginPath)
+                        else:
+                            #self.pluginsExitList.append(None)
+                            pass
+                            
+                    newConfFile = xmlConfFile.commit()
+                    del xmlConfFile
+                    #print "self.pluginsExitList:"
+                    #print self.pluginsExitList
+                    
+                    # On verifie si on a cree un nouveau XML
+                    if newConfFile:
+                        currentTimeStr = str(time.time())
+                        # on demande a l'utilisateur s'il veut remplacer l'ancien xml par le nouveau
+                        menuList = ["Mettre a jour la configuation et sortir","Mettre a jour la configuation et redemarrer (XBOX)","Sortir sans rien faire"]
+                        dialog = xbmcgui.Dialog()
+                        chosenIndex = dialog.select("Modifications dans sources.xml, que désirez vous faire?", menuList)               
+                        if chosenIndex == 0: 
+                            # Mettre a jour la configuation et sortir
+                            # On renomme source.xml en ajoutant le timestamp
+                            os.rename(os.path.join(self.userDataDir,"sources.xml"),os.path.join(self.userDataDir,"sources_%s.xml"%currentTimeStr))
+                            # On renomme sourcesNew.xml source.xml
+                            os.rename(os.path.join(self.userDataDir,"sourcesNew.xml"),os.path.join(self.userDataDir,"sources.xml"))
+                            
+                        elif chosenIndex == 1: 
+                            # Mettre a jour la configuation et redemarrer
+                            # On renomme source.xml en ajoutant le timestamp
+                            os.rename(os.path.join(self.userDataDir,"sources.xml"),os.path.join(self.userDataDir,"sources_%s.xml"%currentTimeStr))
+                            # On renomme sourcesNew.xml source.xml
+                            os.rename(os.path.join(self.userDataDir,"sourcesNew.xml"),os.path.join(self.userDataDir,"sources.xml"))
+                            # on redemarre
+                            xbmc.restart()
+                        else:
+                            # On supprime le xml que nous avons genere
+                            os.remove(os.path.join(self.userDataDir,"sourcesNew.xml"))
+    
                 #on ferme tout
                 self.close()
 
@@ -1129,90 +1131,96 @@ class MainWindow(xbmcgui.Window):
                                     elif fichierfinal0.endswith('.rar'):
                                         fichierfinal = fichierfinal0.replace('.rar','')
         
-                                    # On n'a besoin d'ue d'un instance d'extracteur sinon on va avoir une memory leak ici car on ne le desalloue jamais
+                                    # On n'a besoin d'une d'un instance d'extracteur sinon on va avoir une memory leak ici car on ne le desalloue jamais
                                     # Je l'ai donc creee dans l'init comme attribut de la classe
-                                    #self.extracter.extract(archive,self.localdirList[self.downloadTypeList.index(self.type)])
-                                    
-                                    # Capture reperoire cache avant extraction
-                                    cacheDirSpy = directorySpy(self.CacheDir)
-                                    
-                                    # Extraction dans cache
-                                    self.extracter.extract(archive,self.CacheDir)
-                                    
-                                    newCacheItemList = None
-                                    if downloadItem.endswith('rar'):
-                                        # du fait de  xbmc.executebuiltin pour les rar il va falloir attendre avant d'avoir le repertoire dispo
-                                        time.sleep(2)
-                                           
-                                        extraction_attempt=8 #nombre de tentatives maxi
-                                        while extraction_attempt:
+                                    if self.type == "Scrapers":
+                                        # cas des Scrapers
+                                        # ----------------
+                                        self.extracter.extract(archive,self.localdirList[self.downloadTypeList.index(self.type)])
+                                    else:
+                                        # Cas des scripts et plugins
+                                        # --------------------------
+                                        
+                                        # Capture du repertoire cache avant extraction
+                                        cacheDirSpy = directorySpy(self.CacheDir)
+                                        
+                                        # Extraction dans cache
+                                        self.extracter.extract(archive,self.CacheDir)
+                                        
+                                        newCacheItemList = None
+                                        if downloadItem.endswith('rar'):
+                                            # du fait de  xbmc.executebuiltin pour les rar il va falloir attendre avant d'avoir le repertoire dispo
+                                            time.sleep(2)
+                                               
+                                            extraction_attempt=8 #nombre de tentatives maxi
+                                            while extraction_attempt:
+                                                # Recuperation du nom de l'element créé
+                                                newCacheItemList = cacheDirSpy.getNewItemList()
+                                                if len(newCacheItemList) > 0:
+                                                    extraction_attempt = 0
+                                                else:
+                                                    extraction_attempt = extraction_attempt -1 #on décrémente les tentatives....
+                                                    time.sleep(2)
+                                        else:
+                                            # Autre archives
                                             # Recuperation du nom de l'element créé
                                             newCacheItemList = cacheDirSpy.getNewItemList()
-                                            if len(newCacheItemList) > 0:
-                                                extraction_attempt = 0
+                                                                                        
+                                        if len(newCacheItemList) == 1:
+                                           # On verifie si le repertorie suivant existe deja:
+                                            destination = os.path.join(self.localdirList[self.downloadTypeList.index(self.type)],newCacheItemList[0])
+                                            print destination
+                                            if os.path.exists(destination):
+                                                # Repertoire déja présent
+                                                # On demande a l'utilisateur ce qu'il veut faire
+                                                if self.processOldDownload(destination):
+                                                    try:
+                                                        #shutil2.copy2(xbmc.makeLegalFilename(os.path.join(self.CacheDir,newCacheItemList[0])),xbmc.makeLegalFilename(destination),overwrite=True)
+                                                        #shutil2.move(os.path.join(self.CacheDir,newCacheItemList[0]),destination,overwrite=True)
+                                                        if os.path.exists(destination) == False:
+                                                            shutil.move(os.path.join(self.CacheDir,newCacheItemList[0]),destination)
+                                                        else:
+                                                            dialogInfo = xbmcgui.Dialog()
+                                                            dialogInfo.ok("Erreur - Installation impossible", "Le répertoire", destination,"n'a pas été renommé ou supprimé")
+                                                            installError = "%s n'a pas été renommé ou supprimé"%destination
+                                                    except:
+                                                        installError = "Exception durant le deplacement de %s"%destination
+                                                        print ("error/onControl: " + str(sys.exc_info()[0]))
+                                                        traceback.print_exc()
+                                                else:
+                                                    installCancelled = True
+                                                    print "L'installation de %s a été annulée par l'utilisateur"%downloadItem 
                                             else:
-                                                extraction_attempt = extraction_attempt -1 #on décrémente les tentatives....
-                                                time.sleep(2)
-                                    else:
-                                        # Autre archives
-                                        # Recuperation du nom de l'element créé
-                                        newCacheItemList = cacheDirSpy.getNewItemList()
-                                                                                    
-                                    if len(newCacheItemList) == 1:
-                                       # On verifie si le repertorie suivant existe deja:
-                                        destination = os.path.join(self.localdirList[self.downloadTypeList.index(self.type)],newCacheItemList[0])
-                                        print destination
-                                        if os.path.exists(destination):
-                                            # Repertoire déja présent
-                                            # On demande a l'utilisateur ce qu'il veut faire
-                                            if self.processOldDownload(destination):
+                                                # Le Repertoire n'est pas present localement -> on peut deplacer le repertoire depuis cache
                                                 try:
-                                                    #shutil2.copy2(xbmc.makeLegalFilename(os.path.join(self.CacheDir,newCacheItemList[0])),xbmc.makeLegalFilename(destination),overwrite=True)
-                                                    #shutil2.move(os.path.join(self.CacheDir,newCacheItemList[0]),destination,overwrite=True)
-                                                    if os.path.exists(destination) == False:
-                                                        shutil.move(os.path.join(self.CacheDir,newCacheItemList[0]),destination)
-                                                    else:
-                                                        dialogInfo = xbmcgui.Dialog()
-                                                        dialogInfo.ok("Erreur - Installation impossible", "Le répertoire", destination,"n'a pas été renommé ou supprimé")
-                                                        installError = "%s n'a pas été renommé ou supprimé"%destination
+                                                    shutil.move(os.path.join(self.CacheDir,newCacheItemList[0]),destination)
                                                 except:
                                                     installError = "Exception durant le deplacement de %s"%destination
                                                     print ("error/onControl: " + str(sys.exc_info()[0]))
                                                     traceback.print_exc()
-                                            else:
-                                                installCancelled = True
-                                                print "L'installation de %s a été annulée par l'utilisateur"%downloadItem 
+                                                    
+    
+                                        elif len(newCacheItemList) == 0:
+                                            installError = "%s déja décompressé dans cache"%archive
+                                            print "Erreur - Aucun nouveau répertoire n'a été créé a l'extraction de %s"%archive
+                                            print "Merci de verifier s'il n'existait pas deja"
                                         else:
-                                            # Le Repertoire n'est pas present localement -> on peut deplacer le repertoire depuis cache
-                                            try:
-                                                shutil.move(os.path.join(self.CacheDir,newCacheItemList[0]),destination)
-                                            except:
-                                                installError = "Exception durant le deplacement de %s"%destination
-                                                print ("error/onControl: " + str(sys.exc_info()[0]))
-                                                traceback.print_exc()
-                                                
-
-                                    elif len(newCacheItemList) == 0:
-                                        installError = "%s déja décompressé dans cache"%archive
-                                        print "Erreur - Aucun nouveau répertoire n'a été créé a l'extraction de %s"%archive
-                                        print "Merci de verifier s'il n'existait pas deja"
-                                    else:
-                                        installError = "Plus d'un répertoire à la racine de %s"%archive
-                                        print "Erreur: plus d'un nouvel element créé a l'extraction de %s dans le repertoire cache"%archive
-                                    
-                                    # Deplacement de l'element dans le bon repertoire
-                                    #TODO: faire un test si l'extraction etait OK
-                                    
-                                    # On supprime le repertoire decompresse
-                                    if len(newCacheItemList) > 0:
-                                        self.deleteDir(os.path.join(self.CacheDir,newCacheItemList[0]))
-                                    
+                                            installError = "Plus d'un répertoire à la racine de %s"%archive
+                                            print "Erreur: plus d'un nouvel element créé a l'extraction de %s dans le repertoire cache"%archive
+                                        
+                                        # Deplacement de l'element dans le bon repertoire
+                                        #TODO: faire un test si l'extraction etait OK
+                                        
+                                        # On supprime le repertoire decompresse
+                                        if len(newCacheItemList) > 0:
+                                            self.deleteDir(os.path.join(self.CacheDir,newCacheItemList[0]))
+                                        
                                     # Close the Loading Window
                                     dialogUI.close()
                                     
                                     dialogInfo = xbmcgui.Dialog()
                                     if installCancelled == False and installError == None:
-                                        dialogInfo.ok("Installation Terminée", "L'installation de %s est terminée"%downloadItem)
+                                        dialogInfo.ok("Installation Terminée", "L'installation de %s"%downloadItem,"est terminée")
                                     else:
                                         if installError != None:
                                             # Erreur durant l'install (meme si on a annule)
@@ -1557,6 +1565,8 @@ host                = config.get('ServeurID','host')
 user                = config.get('ServeurID','user')
 rssfeed             = config.get('ServeurID','rssfeed')
 password            = config.get('ServeurID','password')
+
+xbmcxmlupdate       = config.getboolean('System','XbmcXmlUpdate')
 
 downloadTypeLst     = ["Themes","Scrapers","Scripts","Plugins","Plugins Musique","Plugins Images","Plugins Programmes","Plugins Vidéos"]
 #TODO: mettre les chemins des rep sur le serveur dans le fichier de conf
