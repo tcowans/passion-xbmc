@@ -12,6 +12,7 @@ import time
 import urllib2
 import socket
 import time
+import shutil
 
 try:
     del sys.modules['BeautifulSoup']
@@ -490,8 +491,8 @@ class ftpDownloadCtrl:
         """
         # Recupere la taille du fichier
         remoteFileSize = 1
-        #block_size = 4096
-        block_size = 2048
+        block_size = 4096
+        #block_size = 2048
         # Recuperation de la taille du fichier
         try:
             self.ftp.sendcmd('TYPE I')
@@ -695,13 +696,6 @@ class directorySpy:
             print e
             traceback.print_exc(file = sys.stdout)
             newItemList = []
-#        if len(newItemList) > 0:
-#            print "directorySpy - getNewItemList: de nouveaux elementx on ete ajoutés au repertoire %s"%self.dirPath
-#            print newItemList
-#            return newItemList
-#        else:
-#            print "directorySpy - getNewItemList: aucun nouvel element ajouté au repertoire %s"%self.dirPath
-#            return None
         #print "directorySpy - getNewItemList: Liste des nouveaux elements du repertoire %s"%self.dirPath
         #print newItemList
         return newItemList
@@ -872,9 +866,8 @@ class MainWindow(xbmcgui.Window):
                 # On se deconnecte du serveur pour etre plus propre
                 self.passionFTPCtrl.closeConnection()
 
-                # On vide le cache
-                #if self.delCache == True:
-                self.delFiles(CACHEDIR)
+                # On efface le repertoire cache
+                self.deleteDir(CACHEDIR)
 
 
                 # Verifions si des plugins on ete ajoutes
@@ -929,7 +922,7 @@ class MainWindow(xbmcgui.Window):
                 if newConfFile:
                     currentTimeStr = str(time.time())
                     # on demande a l'utilisateur s'il veut remplacer l'ancien xml par le nouveau
-                    menuList = ["Mettre a jour la configuation et sortir","Mettre a jour la configuation et redemarrer","Sortir sans rien faire"]
+                    menuList = ["Mettre a jour la configuation et sortir","Mettre a jour la configuation et redemarrer (XBOX)","Sortir sans rien faire"]
                     dialog = xbmcgui.Dialog()
                     chosenIndex = dialog.select("Modifications dans sources.xml, que désirez vous faire?", menuList)               
                     if chosenIndex == 0: 
@@ -1117,6 +1110,13 @@ class MainWindow(xbmcgui.Window):
                             print downloadStatus
                             if downloadItem.endswith('zip') or downloadItem.endswith('rar'):
                                 if downloadStatus != -1:
+                                    installCancelled = False
+                                    installError     = None
+                                    dp = xbmcgui.DialogProgress()
+                                    dp.create("Installation: %s"%downloadItem,"Téléchargement Total: %d%%"%percent)
+                                    dialogUI = xbmcgui.DialogProgress()
+                                    dialogUI.create("Installation en cours ...", "%s est en cours d'installation"%downloadItem, "Veuillez patienter...")
+                                    
                                     #Appel de la classe d'extraction des archives
                                     print "Extraction de l'archives: %s"%downloadItem
                                     remoteDirPath = self.remotedirList[self.downloadTypeList.index(self.type)]#chemin ou a ete telecharge le script
@@ -1131,9 +1131,98 @@ class MainWindow(xbmcgui.Window):
         
                                     # On n'a besoin d'ue d'un instance d'extracteur sinon on va avoir une memory leak ici car on ne le desalloue jamais
                                     # Je l'ai donc creee dans l'init comme attribut de la classe
-                                    self.extracter.extract(archive,self.localdirList[self.downloadTypeList.index(self.type)])
+                                    #self.extracter.extract(archive,self.localdirList[self.downloadTypeList.index(self.type)])
                                     
+                                    # Capture reperoire cache avant extraction
+                                    cacheDirSpy = directorySpy(self.CacheDir)
+                                    
+                                    # Extraction dans cache
+                                    self.extracter.extract(archive,self.CacheDir)
+                                    
+                                    newCacheItemList = None
+                                    if downloadItem.endswith('rar'):
+                                        # du fait de  xbmc.executebuiltin pour les rar il va falloir attendre avant d'avoir le repertoire dispo
+                                        time.sleep(2)
+                                           
+                                        extraction_attempt=8 #nombre de tentatives maxi
+                                        while extraction_attempt:
+                                            # Recuperation du nom de l'element créé
+                                            newCacheItemList = cacheDirSpy.getNewItemList()
+                                            if len(newCacheItemList) > 0:
+                                                extraction_attempt = 0
+                                            else:
+                                                extraction_attempt = extraction_attempt -1 #on décrémente les tentatives....
+                                                time.sleep(2)
+                                    else:
+                                        # Autre archives
+                                        # Recuperation du nom de l'element créé
+                                        newCacheItemList = cacheDirSpy.getNewItemList()
+                                                                                    
+                                    if len(newCacheItemList) == 1:
+                                       # On verifie si le repertorie suivant existe deja:
+                                        destination = os.path.join(self.localdirList[self.downloadTypeList.index(self.type)],newCacheItemList[0])
+                                        print destination
+                                        if os.path.exists(destination):
+                                            # Repertoire déja présent
+                                            # On demande a l'utilisateur ce qu'il veut faire
+                                            if self.processOldDownload(destination):
+                                                try:
+                                                    #shutil2.copy2(xbmc.makeLegalFilename(os.path.join(self.CacheDir,newCacheItemList[0])),xbmc.makeLegalFilename(destination),overwrite=True)
+                                                    #shutil2.move(os.path.join(self.CacheDir,newCacheItemList[0]),destination,overwrite=True)
+                                                    if os.path.exists(destination) == False:
+                                                        shutil.move(os.path.join(self.CacheDir,newCacheItemList[0]),destination)
+                                                    else:
+                                                        dialogInfo = xbmcgui.Dialog()
+                                                        dialogInfo.ok("Erreur - Installation impossible", "Le répertoire", destination,"n'a pas été renommé ou supprimé")
+                                                        installError = "%s n'a pas été renommé ou supprimé"%destination
+                                                except:
+                                                    installError = "Exception durant le deplacement de %s"%destination
+                                                    print ("error/onControl: " + str(sys.exc_info()[0]))
+                                                    traceback.print_exc()
+                                            else:
+                                                installCancelled = True
+                                                print "L'installation de %s a été annulée par l'utilisateur"%downloadItem 
+                                        else:
+                                            # Le Repertoire n'est pas present localement -> on peut deplacer le repertoire depuis cache
+                                            try:
+                                                shutil.move(os.path.join(self.CacheDir,newCacheItemList[0]),destination)
+                                            except:
+                                                installError = "Exception durant le deplacement de %s"%destination
+                                                print ("error/onControl: " + str(sys.exc_info()[0]))
+                                                traceback.print_exc()
+                                                
+
+                                    elif len(newCacheItemList) == 0:
+                                        installError = "%s déja décompressé dans cache"%archive
+                                        print "Erreur - Aucun nouveau répertoire n'a été créé a l'extraction de %s"%archive
+                                        print "Merci de verifier s'il n'existait pas deja"
+                                    else:
+                                        installError = "Plus d'un répertoire à la racine de %s"%archive
+                                        print "Erreur: plus d'un nouvel element créé a l'extraction de %s dans le repertoire cache"%archive
+                                    
+                                    # Deplacement de l'element dans le bon repertoire
                                     #TODO: faire un test si l'extraction etait OK
+                                    
+                                    # On supprime le repertoire decompresse
+                                    if len(newCacheItemList) > 0:
+                                        self.deleteDir(os.path.join(self.CacheDir,newCacheItemList[0]))
+                                    
+                                    # Close the Loading Window
+                                    dialogUI.close()
+                                    
+                                    dialogInfo = xbmcgui.Dialog()
+                                    if installCancelled == False and installError == None:
+                                        dialogInfo.ok("Installation Terminée", "L'installation de %s est terminée"%downloadItem)
+                                    else:
+                                        if installError != None:
+                                            # Erreur durant l'install (meme si on a annule)
+                                            dialogInfo.ok("Erreur - Installation impossible", installError, "Veuillez vérifier les logs")
+                                        elif installCancelled == True:
+                                            # Install annulee
+                                            dialogInfo.ok("Installation annulée", "L'installation de %s a été annulée"%downloadItem)
+                                        else:
+                                            # Install annulee
+                                            dialogInfo.ok("Erreur - Installation impossible", "Erreur inconnue", "Veuillez vérifier les logs")
                                 else:
                                     # On remet a la bonne valeur initiale self.localdirList
                                     self.localdirList[self.downloadTypeList.index(self.type)]= self.targetDir
@@ -1384,20 +1473,17 @@ class MainWindow(xbmcgui.Window):
         # Verifie se on telecharge un repertoire ou d'un fichier
         if os.path.isdir(localAbsDirPath):
             # Repertoire
-            menuList = ["Ecraser (sans supprimer)","Supprimer puis télécharger","Renommer puis télécharger","Annuler"]
+            menuList = ["Supprimer le répertoire","Renommer le repertoire","Annuler"]
             dialog = xbmcgui.Dialog()
             chosenIndex = dialog.select("%s est deja present, que désirez vous faire?"%(os.path.basename(localAbsDirPath)), menuList)               
             #if (dialog.yesno("Erreur", "%s est deja present, voulez vous le renommer"%(os.path.basename(localAbsDirPath)),"Sinon il sera écrasé")):
-            if chosenIndex == 0:
-                # Ecraser
-                print "Ecraser (sans supprimer)"
-            elif chosenIndex == 1: 
+            if chosenIndex == 0: 
                 # Supprimer
-                print "Suppression du repertoire"
+                print "Supprimer le répertoire"
                 self.deleteDir(localAbsDirPath)
-            elif chosenIndex == 2: # Renommer
+            elif chosenIndex == 1: # Renommer
                 # Suppression du repertoire
-                print "On renomme le repertoire"
+                print "Renommer le repertoire"
                 keyboard = xbmc.Keyboard("", heading = "Saisir le nouveau nom:")
                 keyboard.setHeading('Saisir le nouveau nom:')  # optional
                 keyboard.setDefault(os.path.basename(localAbsDirPath))                    # optional
@@ -1408,14 +1494,14 @@ class MainWindow(xbmcgui.Window):
                     print"Nouveau nom: %s"%inputText
                     os.rename(localAbsDirPath,localAbsDirPath.replace(os.path.basename(localAbsDirPath),inputText))
                     dialogInfo = xbmcgui.Dialog()
-                    dialogInfo.ok("L'element a ete renommé:", localAbsDirPath.replace(os.path.basename(localAbsDirPath),inputText))
+                    dialogInfo.ok("L'élément a été renommé:", localAbsDirPath.replace(os.path.basename(localAbsDirPath),inputText))
                 del keyboard
             else:
                 print "Annulation"
                 continueDownload = False
         else:
-            # Fichier archive
-            print "processOldDownload: Fichier archive : %s"%localAbsDirPath
+            # Fichier
+            print "processOldDownload: Fichier : %s - ce cas n'est pas encore traité"%localAbsDirPath
             #TODO: cas a implementer
             
         return continueDownload
