@@ -13,6 +13,8 @@ import urllib2
 import socket
 import time
 import shutil
+import zipfile
+import rarfile
 
 try:
     del sys.modules['BeautifulSoup']
@@ -170,7 +172,6 @@ class scriptextracter:
 
     """
     def zipfolder (self):
-        import zipfile
         self.zfile = zipfile.ZipFile(self.archive, 'r')
         for i in self.zfile.namelist():  ## On parcourt l'ensemble des fichiers de l'archive
             #print i
@@ -180,8 +181,8 @@ class scriptextracter:
                     os.makedirs(dossier)
                 except Exception, e:
                     print "Erreur creation dossier de l'archive = ",e
-            #else:
-            #    print "File Case"
+            else:
+                print "File Case"
 
         # On ferme l'archive
         self.zfile.close()
@@ -189,13 +190,43 @@ class scriptextracter:
     def  extract(self,archive,TargetDir):
         self.pathdst = TargetDir
         self.archive = archive
-        #print "self.pathdst = %s"%self.pathdst
-        #print "self.archive = %s"%self.archive
+        print "self.pathdst = %s"%self.pathdst
+        print "self.archive = %s"%self.archive
         
         if archive.endswith('zip'):
             self.zipfolder() #generation des dossiers dans le cas d'un zip
         #extraction de l'archive
         xbmc.executebuiltin('XBMC.Extract(%s,%s)'%(self.archive,self.pathdst) )
+        
+    def getDirName(self,archive):
+        """
+        Retourne le nom du repertorie root a l'interieur d'un archive 
+        Attention il s'agit du nom et non du chemin du repertoire
+        """
+        dirName = ""
+        if archive.endswith('zip'):
+            #print "zip file case"
+            zfile   = zipfile.ZipFile(archive, 'r')
+            dirName = zfile.namelist()[0].split('/')[0]
+            # On verifie que la chaine de caractere est bien un repertoire 
+            if not (dirName + '/') in zfile.namelist():
+                print "%s n'est pas un repertoire"%dirName
+                dirName = "" 
+            print "Zip dirname:"
+            print dirName
+        elif archive.endswith('rar'):
+            #print "rar file case"
+            rfile   = rarfile.RarFile(archive, 'r') 
+            dirName = rfile.namelist()[0].split("\\")[0]
+            print "Rar dirname:"
+            print dirName
+            # On verifie que la chaine de caractere est bien un repertoire 
+            if rfile.getinfo(dirName).isdir() == False:
+                print "%s n'est pas un repertoire"%dirName
+                dirName = ""
+        else:
+            print "Format d'archive non supporté"
+        return dirName
 
 class ftpDownloadCtrl:
     """
@@ -1260,7 +1291,6 @@ class MainWindow(xbmcgui.Window):
                                     dialogUI.create("Installation en cours ...", "%s est en cours d'installation"%downloadItem, "Veuillez patienter...")
                                     
                                     #Appel de la classe d'extraction des archives
-                                    print "Extraction de l'archives: %s"%downloadItem
                                     remoteDirPath = self.remotedirList[self.downloadTypeList.index(self.type)]#chemin ou a ete telecharge le script
                                     localDirPath = self.localdirList[self.downloadTypeList.index(self.type)]
                                     archive = source.replace(remoteDirPath,localDirPath + os.sep)#remplacement du chemin de l'archive distante par le chemin local temporaire
@@ -1271,8 +1301,6 @@ class MainWindow(xbmcgui.Window):
                                     elif fichierfinal0.endswith('.rar'):
                                         fichierfinal = fichierfinal0.replace('.rar','')
         
-                                    # On n'a besoin d'une d'un instance d'extracteur sinon on va avoir une memory leak ici car on ne le desalloue jamais
-                                    # Je l'ai donc creee dans l'init comme attribut de la classe
                                     if self.type == "Scrapers":
                                         # cas des Scrapers
                                         # ----------------
@@ -1280,51 +1308,25 @@ class MainWindow(xbmcgui.Window):
                                     else:
                                         # Cas des scripts et plugins
                                         # --------------------------
+                                            
+                                        # Recuperons le nom du repertorie a l'interieur de l'archive:
+                                        dirName = self.extracter.getDirName(archive)
                                         
-                                        # Capture du repertoire cache avant extraction
-                                        cacheDirSpy = directorySpy(self.CacheDir)
-                                        
-                                        # Extraction dans cache
-                                        self.extracter.extract(archive,self.CacheDir)
-                                        
-                                        newCacheItemList = None
-                                        if downloadItem.endswith('rar'):
-                                            # du fait de  xbmc.executebuiltin pour les rar il va falloir attendre avant d'avoir le repertoire dispo
-                                            time.sleep(2)
-                                               
-                                            extraction_attempt=8 #nombre de tentatives maxi
-                                            while extraction_attempt:
-                                                # Recuperation du nom de l'element créé
-                                                newCacheItemList = cacheDirSpy.getNewItemList()
-                                                if len(newCacheItemList) > 0:
-                                                    extraction_attempt = 0
-                                                else:
-                                                    extraction_attempt = extraction_attempt -1 #on décrémente les tentatives....
-                                                    time.sleep(2)
+                                        if dirName == "":
+                                            installError = "Erreur durant l'extraction de %s"%archive
+                                            print "Erreur durant l'extraction de %s - impossible d'extraire le nom du repertoire"%archive
                                         else:
-                                            # Autre archives
-                                            # Recuperation du nom de l'element créé
-                                            newCacheItemList = cacheDirSpy.getNewItemList()
-                                                                                        
-                                        if len(newCacheItemList) == 1:
-                                           # On verifie si le repertorie suivant existe deja:
-                                            destination = os.path.join(self.localdirList[self.downloadTypeList.index(self.type)],newCacheItemList[0])
+                                            destination = os.path.join(self.localdirList[self.downloadTypeList.index(self.type)],dirName)
                                             print destination
                                             if os.path.exists(destination):
                                                 # Repertoire déja présent
                                                 # On demande a l'utilisateur ce qu'il veut faire
                                                 if self.processOldDownload(destination):
                                                     try:
-                                                        #shutil2.copy2(xbmc.makeLegalFilename(os.path.join(self.CacheDir,newCacheItemList[0])),xbmc.makeLegalFilename(destination),overwrite=True)
-                                                        #shutil2.move(os.path.join(self.CacheDir,newCacheItemList[0]),destination,overwrite=True)
-                                                        if os.path.exists(destination) == False:
-                                                            shutil.move(os.path.join(self.CacheDir,newCacheItemList[0]),destination)
-                                                        else:
-                                                            dialogInfo = xbmcgui.Dialog()
-                                                            dialogInfo.ok("Erreur - Installation impossible", "Le répertoire", destination,"n'a pas été renommé ou supprimé")
-                                                            installError = "%s n'a pas été renommé ou supprimé"%destination
+                                                        print "Extraction de %s vers %s"%(archive,self.localdirList[self.downloadTypeList.index(self.type)])
+                                                        self.extracter.extract(archive,self.localdirList[self.downloadTypeList.index(self.type)])
                                                     except:
-                                                        installError = "Exception durant le deplacement de %s"%destination
+                                                        installError = "Exception durant l'extraction de %s"%archive
                                                         print ("error/onControl: " + str(sys.exc_info()[0]))
                                                         traceback.print_exc()
                                                 else:
@@ -1333,27 +1335,12 @@ class MainWindow(xbmcgui.Window):
                                             else:
                                                 # Le Repertoire n'est pas present localement -> on peut deplacer le repertoire depuis cache
                                                 try:
-                                                    shutil.move(os.path.join(self.CacheDir,newCacheItemList[0]),destination)
+                                                    print "Extraction de %s vers %s"%(archive,self.localdirList[self.downloadTypeList.index(self.type)])
+                                                    self.extracter.extract(archive,self.localdirList[self.downloadTypeList.index(self.type)])
                                                 except:
-                                                    installError = "Exception durant le deplacement de %s"%destination
+                                                    installError = "Exception durant l'extraction de %s"%archive
                                                     print ("error/onControl: " + str(sys.exc_info()[0]))
                                                     traceback.print_exc()
-                                                    
-    
-                                        elif len(newCacheItemList) == 0:
-                                            installError = "%s déja décompressé dans cache"%archive
-                                            print "Erreur - Aucun nouveau répertoire n'a été créé a l'extraction de %s"%archive
-                                            print "Merci de verifier s'il n'existait pas deja"
-                                        else:
-                                            installError = "Plus d'un répertoire à la racine de %s"%archive
-                                            print "Erreur: plus d'un nouvel element créé a l'extraction de %s dans le repertoire cache"%archive
-                                        
-                                        # Deplacement de l'element dans le bon repertoire
-                                        #TODO: faire un test si l'extraction etait OK
-                                        
-                                        # On supprime le repertoire decompresse
-                                        if len(newCacheItemList) > 0:
-                                            self.deleteDir(os.path.join(self.CacheDir,newCacheItemList[0]))
                                         
                                     # Close the Loading Window
                                     dialogUI.close()
@@ -1409,8 +1396,8 @@ class MainWindow(xbmcgui.Window):
             
         elif (self.type == "Plugins Musique") or (self.type == "Plugins Images") or (self.type == "Plugins Programmes") or (self.type == "Plugins Vidéos"):
             self.curDirList = self.passionFTPCtrl.getDirList(self.remotedirList[self.pluginDisplayList[self.index]])
-            print "self.curDirList pour une section"
-            print self.curDirList
+            #print "self.curDirList pour une section"
+            #print self.curDirList
             
         else:
             #liste virtuelle des sections
@@ -1635,7 +1622,7 @@ class MainWindow(xbmcgui.Window):
         # Verifie se on telecharge un repertoire ou d'un fichier
         if os.path.isdir(localAbsDirPath):
             # Repertoire
-            menuList = ["Supprimer le répertoire","Renommer le repertoire","Annuler"]
+            menuList = ["Supprimer le répertoire","Renommer le repertoire","Ecraser le repertoire","Annuler"]
             dialog = xbmcgui.Dialog()
             chosenIndex = dialog.select("%s est deja present, que désirez vous faire?"%(os.path.basename(localAbsDirPath)), menuList)               
             if chosenIndex == 0: 
@@ -1654,6 +1641,8 @@ class MainWindow(xbmcgui.Window):
                     dialogInfo = xbmcgui.Dialog()
                     dialogInfo.ok("L'élément a été renommé:", localAbsDirPath.replace(os.path.basename(localAbsDirPath),inputText))
                 del keyboard
+            elif chosenIndex == 2: # Ecraser
+                pass
             else:
                 continueDownload = False
         else:
