@@ -208,8 +208,10 @@ class scriptextracter:
             #print "zip file case"
             zfile   = zipfile.ZipFile(archive, 'r')
             dirName = zfile.namelist()[0].split('/')[0]
+            print dirName
+            print zfile.namelist()
             # On verifie que la chaine de caractere est bien un repertoire 
-            if not (dirName + '/') in zfile.namelist():
+            if zfile.namelist()[0].find(dirName + '/') == -1:
                 print "%s n'est pas un repertoire"%dirName
                 dirName = "" 
             print "Zip dirname:"
