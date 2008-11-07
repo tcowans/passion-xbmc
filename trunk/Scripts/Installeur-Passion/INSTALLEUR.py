@@ -1063,9 +1063,14 @@ class MainWindow(xbmcgui.Window):
                 
             if action == ACTION_PREVIOUS_MENU:
                 # Sortie du script
-
+                
                 # On se deconnecte du serveur pour etre plus propre
-                self.passionFTPCtrl.closeConnection()
+                try:
+                    self.passionFTPCtrl.closeConnection()
+                except Exception, e:
+                    print "Window::onAction: Exception durant la fermeture de la connection FTP",e
+                    print ("error/MainWindow onAction: " + str(sys.exc_info()[0]))
+                    traceback.print_exc()
 
                 # On efface le repertoire cache
                 self.deleteDir(CACHEDIR)
