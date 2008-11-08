@@ -5,9 +5,13 @@ import zipfile
 import xbmc
 import xbmcgui
 
-print "****************************************************************"
-print "                 Script de mise a jour auto                     "
-print "****************************************************************"
+import sys
+from script_log import *
+
+LOG( LOG_INFO, "****************************************************************" )
+LOG( LOG_INFO, "                 Script de mise a jour auto                     " )
+LOG( LOG_INFO, "****************************************************************" )
+
 
 class CheckMAJ:
     def __init__(self):
@@ -17,7 +21,7 @@ class CheckMAJ:
         ##############################################################################
         #                   Initialisation conf.cfg                                  #
         ##############################################################################
-        self.fichier = os.path.join(self.rootdir, "conf.cfg")
+        self.fichier = os.path.join(self.rootdir, "resources", "conf.cfg")#os.path.join(self.rootdir, "conf.cfg")
         self.localConfParser = ConfigParser.ConfigParser()
         self.localConfParser.read(self.fichier)
 
@@ -67,8 +71,10 @@ class CheckMAJ:
                 os.makedirs(folder)
 
         except Exception, e:
-            print("verifrep - Exception while creating folder " + folder)
-            print(e)
+            #print("verifrep - Exception while creating folder " + folder)
+            #print(e)
+            LOG( LOG_NOTICE, "verifrep - Exception while creating folder %s", folder )
+            EXC_INFO( LOG_ERROR, sys.exc_info() )
             pass
 
     def download(self):
@@ -156,11 +162,13 @@ class CheckMAJ:
     def delFiles(self,folder):
         for root, dirs, files in os.walk(folder , topdown=False):
             for name in files:
-                print "Effaccement de %s en cours ..."%name
+                #print "Effaccement de %s en cours ..."%name
+                LOG( LOG_WARNING, "Effaccement de %s en cours ...", name )
                 try:
                     os.remove(os.path.join(root, name))
                 except Exception, e:
-                    print e
+                    #print e
+                    EXC_INFO( LOG_ERROR, sys.exc_info() )
 
 #TODO: QUESTIOn : ne devrait t'on pas faire "self.localConfParser.write(open(self.fichier,'w'))" qu'une seule fois a la fin plutot que plusieurs fois dans le code?
 
