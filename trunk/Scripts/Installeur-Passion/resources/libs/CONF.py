@@ -1,20 +1,25 @@
 import os
+import sys
 import ConfigParser
 import xbmcgui, xbmc
 
+from script_log import *
+
+
 def SetConfiguration ():
+    eval( LOG_FUNCTION )
     """
     Definit les repertoires locaux de l'utilisateur
     """
 
-    print("===================================================================")
-    print("")
-    print("        Setting Configuration                                      ")
-    print("")
-    print("===================================================================")
+    LOG( LOG_INFO, "===================================================================")
+    #print("")
+    LOG( LOG_INFO, "        Setting Configuration                                      ")
+    #print("")
+    LOG( LOG_INFO, "===================================================================")
 
     ROOTDIR = os.getcwd().replace(';','')
-    fichier = os.path.join(ROOTDIR, "conf.cfg")
+    fichier = os.path.join(ROOTDIR, "resources", "conf.cfg")
     config = ConfigParser.ConfigParser()
     config.read(fichier)
     USRPath = False
@@ -22,7 +27,7 @@ def SetConfiguration ():
     if os.name=='posix':
 
         #Linux Case
-        print "linux case"
+        LOG( LOG_NOTICE, "linux case" )
 
         if os.path.isdir(".xbmc") == True:
 
@@ -43,7 +48,8 @@ def SetConfiguration ():
             #Linux other case
             dialog = xbmcgui.Dialog()
             XBMC = dialog.browse(0, "Choisissez le dossier d'installation d'XBMC","files")
-            print "linux other case, XBMC = ", XBMC
+            #print "linux other case, XBMC = ", XBMC
+            LOG( LOG_NOTICE, "linux other case, XBMC = %s", XBMC )
             config.set("InstallPath", "path", XBMC)
             #Set Linux other case ScraperDir
             ScraperDir  = os.path.join(XBMC, "system"+os.sep+"scrapers"+os.sep+"video")
@@ -53,7 +59,8 @@ def SetConfiguration ():
     else:
 
         # Xbox and Windows case
-        print "Xbox and Windows case"
+        LOG( LOG_NOTICE, "Xbox and Windows case" )
+        #print "Xbox and Windows case"
 
         if os.path.isdir("Q:"+os.sep) == True:
 
@@ -66,7 +73,8 @@ def SetConfiguration ():
             # Xbox and Windows other case
             dialog = xbmcgui.Dialog()
             XBMC = dialog.browse(0, "Choisissez le dossier d'installation d'XBMC","files")
-            print "win other case, XBMC = ",XBMC
+            #print "win other case, XBMC = ",XBMC
+            LOG( LOG_NOTICE, "win other case, XBMC = %s", XBMC )
             config.set("InstallPath", "path", XBMC)
 
         #Set Win ScraperDir
@@ -97,7 +105,8 @@ def SetConfiguration ():
     config.set("InstallPath", "PluginVidDir", PluginVidDir)
     
     #Set ImageDir
-    ImageDir = os.path.join(ROOTDIR, "images")
+    #ImageDir = os.path.join(ROOTDIR, "images")
+    ImageDir = os.path.join(ROOTDIR, "resources", "skins", "Default", "media")
     config.set("InstallPath", "ImageDir", ImageDir)
 
     #Set CacheDir
