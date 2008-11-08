@@ -18,7 +18,7 @@ réservés à Canal+
 """
 
 ############################################################################
-version     = '1.0'
+version     = '1.1-Dev01'
 author      = 'Temhil'
 ############################################################################
 
@@ -30,6 +30,7 @@ import sys, os.path
 import re
 import urllib, urllib2, cookielib
 import ConfigParser
+import traceback
 from time import gmtime, strptime, strftime
 
 try:
@@ -214,6 +215,41 @@ class bacVideoDescriptWebPage(WebPage):
         
         return videoDate,videoTitle,videoDesciption
 
+    def GetVideoCommentsList(self):
+        """
+        Extract video comments from the AC blog collection webpage
+        Parameters:
+            - [out] Video comments
+        """
+        commentIDList           = []
+        commentDescriptionList  = []
+        commentAuthorList       = []
+        commentDateList         = [] 
+        reVideo = re.compile(r'<a id=\"(?P<commentID>[a-zA-Z0-9]+?)\"></a> <p>(?P<commentDescription>.+?)</p> <p class="posted"> Ecrit par : (<a.+?>(?P<commentAuthor1>.+?)</a>|(?P<commentAuthor2>.+?)) \| (?P<commentDate>.+?) </p>', re.DOTALL) 
+        
+        
+        for i in reVideo.finditer(self.Source):
+            # Copy each item found in a list
+            commentIDList.append(unicode(i.group("commentID"),"utf-8").encode("cp1252"))
+            
+            commentDesRaw       = unicode(i.group("commentDescription"),"utf-8").encode("cp1252")
+            commentDescription  = re.sub(r"<.*?>", r"", commentDesRaw)
+            commentDescriptionList.append(commentDescription)
+            
+            commentAuthor = i.group("commentAuthor1")
+            if commentAuthor == None:
+                commentAuthor = i.group("commentAuthor2")
+            commentAuthorList.append(unicode(commentAuthor,"utf-8").encode("cp1252"))
+            
+            commentDateList.append(unicode(i.group("commentDate"),"utf-8").encode("cp1252"))
+         
+        print commentIDList
+        print commentDescriptionList
+        print commentAuthorList
+        print commentDateList
+        
+        return commentIDList,commentDescriptionList,commentAuthorList,commentDateList
+
 class bacVideoListWebPage(WebPage):
     """
     
@@ -229,7 +265,8 @@ class bacVideoListWebPage(WebPage):
             - [out] dataObj: Data object (bacCollectionData) where data 
               extracted from the Webpage  will be appended 
         """
-        reVideo     = re.compile(r'<h2\ class=\"date\"><span>(?P<videoDate>.+?)</span></h2>.*?<h3><span>(?P<videoTitle>.+?)</span></h3>.*?<div id="playercontent(?P<videoID>[0-9]+?)">.*?\|.*?<a href="http://alaincarraze\.blog\.canal-plus\.com/(?P<videoDescriptURL>.+?)\">Lien permanent</a>', re.DOTALL) 
+        #reVideo = re.compile(r'<h2\ class=\"date\"><span>(?P<videoDate>.+?)</span></h2>.*?<h3><span>(?P<videoTitle>.+?)</span></h3>.*?<div id="playercontent(?P<videoID>[0-9]+?)">.*?\|.*?<a href="http://alaincarraze\.blog\.canal-plus\.com/(?P<videoDescriptURL>.+?)\">Lien permanent</a>', re.DOTALL) 
+        reVideo = re.compile(r"""<h2\ class=\"date\"><span>(?P<videoDate>.+?)</span></h2>.*?<h3><span>(?P<videoTitle>.+?)</span></h3>.*?<div id="playercontent(?P<videoID>[0-9]+?)">.*?<a href="http://alaincarraze\.blog\.canal-plus\.com/(?P<videoDescriptURL>[a-zA-Z0-9+-=._/*(),@'$:;&!?]+?html)\">Lien permanent</a>""", re.DOTALL) 
 
         ##TODO Exception on nothing found !!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -249,7 +286,10 @@ class bacVideoListWebPage(WebPage):
         reStripCat      = re.compile(r'<div\ id=\"box-categories\".*?<ul>(.*?)</ul>', re.DOTALL) 
         reCategories    = re.compile(r'<li><a href="http://alaincarraze\.blog\.canal-plus\.com/(?P<catURL>.+?)\">(?P<catName>.+?)</a></li>', re.DOTALL) 
         
-        stripHtmlCategories = reStripCat.findall(self.Source)[0]
+        stripHtmlCategoriesList = reStripCat.findall(self.Source)
+        stripHtmlCategories     = ""
+        if len(stripHtmlCategoriesList) > 0:
+            stripHtmlCategories = stripHtmlCategoriesList[0]
         categoryListName = []
         categoryListURL = []
         categoryListName.append("Accueil")
@@ -584,10 +624,10 @@ class SettingsWindow(xbmcgui.WindowDialog):
         self.cleanCacheList  = ["Activé","Désactivé"]
         
         # Background image
-        self.addControl(xbmcgui.ControlImage(100,100,445,335, os.path.join(IMAGEDIR,"dialog-panel.png")))
+        self.addControl(xbmcgui.ControlImage(138,120,445,335, os.path.join(IMAGEDIR,"dialog-panel.png")))
 
         # Title label:
-        self.strlist = xbmcgui.ControlLabel(100, 105, 445, 30, 'Options', 'special13',alignment=6)
+        self.strlist = xbmcgui.ControlLabel(138, 125, 445, 30, 'Options', 'special13',alignment=6)
         self.addControl(self.strlist)
 
         # Get settings
@@ -608,11 +648,11 @@ class SettingsWindow(xbmcgui.WindowDialog):
             self.strCleanCacheContent = self.cleanCacheList[1] #Désactivé
             
         self.settingsListData = [self.strDefaultPlayerTitle + self.strDefaultPlayerContent, self.strVideoQualityTitle + self.strVideoQualityContent, self.strCleanCacheTitle + self.strCleanCacheContent]
-        self.settingsList = xbmcgui.ControlList(120, 150, 300 , 400,'font14', buttonTexture = os.path.join(IMAGEDIR,"list-black-nofocus.png"), buttonFocusTexture = os.path.join(IMAGEDIR,"list-black-focus.png"), itemTextXOffset=-10, itemHeight=30)
+        self.settingsList = xbmcgui.ControlList(158, 170, 300 , 400,'font14', buttonTexture = os.path.join(IMAGEDIR,"list-black-nofocus.png"), buttonFocusTexture = os.path.join(IMAGEDIR,"list-black-focus.png"), itemTextXOffset=-10, itemHeight=30)
         self.addControl(self.settingsList)
             
         # OK button:
-        self.buttonOK = xbmcgui.ControlButton(440, 150, 80, 30, "OK",font='font12', focusTexture = os.path.join(IMAGEDIR,"list-black-focus.png"), noFocusTexture  = os.path.join(IMAGEDIR,"list-black-nofocus.png"), alignment=6)
+        self.buttonOK = xbmcgui.ControlButton(478, 170, 80, 30, "OK",font='font12', focusTexture = os.path.join(IMAGEDIR,"list-black-focus.png"), noFocusTexture  = os.path.join(IMAGEDIR,"list-black-nofocus.png"), alignment=6)
         self.addControl(self.buttonOK)
         
         self.settingsList.controlLeft(self.buttonOK)
@@ -812,7 +852,8 @@ class MainWindow(xbmcgui.Window):
         self.Menulist = xbmcgui.ControlList(25, 190, menuListWidth, menuListSize, space=0,font='font12', textColor='0xFF000000',itemTextXOffset=-5, buttonTexture = os.path.join(IMAGEDIR,"list-background.png"), buttonFocusTexture = os.path.join(IMAGEDIR,"list-focus.png"))
 
         # Videos Control List
-        self.list = xbmcgui.ControlList(207, 140, 393, 380, space=8, itemHeight=80, font='font12', textColor='0xFF000000',itemTextXOffset=-1, buttonFocusTexture  = os.path.join(IMAGEDIR,"list-background.png"),imageWidth=107, imageHeight=80)
+        #self.list = xbmcgui.ControlList(207, 140, 393, 380, space=8, itemHeight=80, font='font12', textColor='0xFF000000',itemTextXOffset=0, buttonFocusTexture  = os.path.join(IMAGEDIR,"list-background.png"),imageWidth=107, imageHeight=80)
+        self.list = xbmcgui.ControlList(207, 140, 473, 380, space=8, itemHeight=80, font='font12', textColor='0xFF000000',itemTextXOffset=0, buttonFocusTexture  = os.path.join(IMAGEDIR,"list-background.png"),imageWidth=107, imageHeight=80)
 
         # Title of the current page
         title =  "LE BLOG D'ALAIN CARRAZÉ"
@@ -828,7 +869,7 @@ class MainWindow(xbmcgui.Window):
         self.strItemNb = xbmcgui.ControlLabel(600, 530, 150, 20, '0 Vidéo', 'font12', '0xFFFF0000')
 
         # Version and author:
-        self.strVersion = xbmcgui.ControlLabel(230, 55, 270, 20,"v" + version,'font10', '0xFFFF0000',alignment=6)
+        self.strVersion = xbmcgui.ControlLabel(230, 58, 270, 20,"v" + version,'font10', '0xFFFF0000',alignment=6)
 
 
         self.addControl(self.list)
@@ -1038,8 +1079,11 @@ class MainWindow(xbmcgui.Window):
                     # Download the picture    
                     try:
                         downloadJPG(videoimg, videoimgdest)
-                    except:
+                    except Exception, e:
                         print("Exception on image download")
+                        print(e)
+                        print (str(sys.exc_info()[0]))
+                        traceback.print_exc()
                         videoimgdest=os.path.join(IMAGEDIR,"noImageAvailable.jpg")
                 dialogVideo.update(66)                    
 
@@ -1047,25 +1091,30 @@ class MainWindow(xbmcgui.Window):
                 myVideoDescriptPage=bacVideoDescriptWebPage(bacBasePageURL + self.CollectionSelector.selectCollecData[self.CollectionSelector.selectedMenu].videoPageList[chosenIndex],txdata,txheaders)
                 myVideoDate,myVideoTitle,myVideoDesciption = myVideoDescriptPage.GetVideoDescription()
                 
+                #TODO: Add display of comments:
+                #myVideoDescriptPage.GetVideoCommentsList()
                 
                 dialogVideo.update(100)
                 dialogVideo.close()
+                
+                # Create winInfoVideo
+                winInfoVideo = InfoWindow()
+                # Update image and info and display
+                winInfoVideo.updateInfo(myVideoDate,myVideoTitle,myVideoDesciption)
+                winInfoVideo.updateImage(videoimgdest)
+                winInfoVideo.doModal()   
+                del winInfoVideo
 
             except Exception, e:
                 print("Exception")
                 print(e)
+                print (str(sys.exc_info()[0]))
+                traceback.print_exc()
                 dialogVideo.update(100)
                 dialogVideo.close()
                 dialogError = xbmcgui.Dialog()
                 dialogError.ok("Erreur", "Impossible de charger les informations du à", "- un probleme de connection", "- un changement sur le site distant")
 
-            # Create winInfoVideo
-            winInfoVideo = InfoWindow()
-            # Update image and info and display
-            winInfoVideo.updateInfo(myVideoDate,myVideoTitle,myVideoDesciption)
-            winInfoVideo.updateImage(videoimgdest)
-            winInfoVideo.doModal()   
-            del winInfoVideo
     
     def onControl(self, control):
         if control == self.Menulist:
