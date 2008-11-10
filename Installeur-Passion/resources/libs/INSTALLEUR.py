@@ -1,6 +1,7 @@
 # -*- coding: cp1252 -*-
+
 from string import *
-import sys#, os.path
+import sys
 import re
 from time import gmtime, strptime, strftime
 import os
@@ -29,6 +30,15 @@ except: Emulating = False
 
 
 from script_log import *
+
+
+# INITIALISATION CHEMIN RACINE
+ROOTDIR = os.getcwd().replace( ";", "" )
+
+#FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
+_ = sys.modules[ "__main__" ].__language__
+
+DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
 
 ############################################################################
@@ -849,117 +859,6 @@ class configCtrl:
         return self.xbmcXmlUpdate
 
 
-class SettingsWindow(xbmcgui.WindowDialog):
-    """
-    
-    This window display settings
-    
-    """
-    def __init__(self):
-        if Emulating: xbmcgui.Window.__init__(self)
-        if not Emulating:
-            self.setCoordinateResolution(PAL_4x3) # Set coordinate resolution to PAL 4:3
-
-    def setWindow(self,configManager):
-        self.configManager   = configManager
-        self.strListMaxSize  = 50
-        self.xbmcXmlUpdateList    = ["Activée","Désactivée"]
-        self.xbmcXmlUpdateAction  = ["Activer","Désactiver"]
-        #self.cleanCacheList  = ["Activé","Désactivé"]
-        
-        # Background image
-        self.addControl(xbmcgui.ControlImage(100,100,445,335, os.path.join(IMAGEDIR,"dialog-panel.png")))
-
-        # Title label:
-        self.strlist = xbmcgui.ControlLabel(100, 105, 445, 30, 'Options', 'special13',alignment=6)
-        self.addControl(self.strlist)
-
-        # Get settings
-        self.xbmcXmlUpdate  = self.configManager.getXbmcXmlUpdate()
-        #self.cleanCache     = self.configManager.getCleanCache()
-        
-        
-        # item Control List
-        self.strXmlUpdateTitle   = "Modification sources.xml: "
-        if self.xbmcXmlUpdate:
-            self.strXmlUpdateContent = self.xbmcXmlUpdateList[0] #Activé
-        else:
-            self.strXmlUpdateContent = self.xbmcXmlUpdateList[1] #Désactivé
-#        self.strCleanCacheTitle      = "Nettoyage auto du cache: "
-#        if self.cleanCache:
-#            self.strCleanCacheContent = self.cleanCacheList[0] #Activé
-#        else:
-#            self.strCleanCacheContent = self.cleanCacheList[1] #Désactivé
-            
-        self.settingsListData = [self.strXmlUpdateTitle + self.strXmlUpdateContent]
-        self.settingsList = xbmcgui.ControlList(120, 150, 300 , 400,'font14', buttonTexture = os.path.join(IMAGEDIR,"list-black-nofocus.png"), buttonFocusTexture = os.path.join(IMAGEDIR,"list-black-focus.png"), itemTextXOffset=-10, itemHeight=30)
-        self.addControl(self.settingsList)
-            
-        # OK button:
-        self.buttonOK = xbmcgui.ControlButton(440, 150, 80, 30, "OK",font='font12', focusTexture = os.path.join(IMAGEDIR,"list-black-focus.png"), noFocusTexture  = os.path.join(IMAGEDIR,"list-black-nofocus.png"), alignment=6)
-        self.addControl(self.buttonOK)
-        
-        self.settingsList.controlLeft(self.buttonOK)
-        self.settingsList.controlRight(self.buttonOK)
-        self.buttonOK.controlLeft(self.settingsList)
-        self.buttonOK.controlRight(self.settingsList)
-
-        for labelItem in self.settingsListData:
-            displayListItem = (xbmcgui.ListItem(label = labelItem))
-            # Add list item to the ControlList
-            self.settingsList.addItem(displayListItem)
-        self.setFocus(self.settingsList)
-        
-        # show this menu and wait until it's closed
-        self.doModal()
-
-    #TODO: Create a general update function???
-        
-    def onAction(self, action):
-        if action in CLOSE_CONTEXT_MENU:
-            #close the window
-            self.close()
-            
-    def onControl(self, control):
-        try:
-            if control == self.settingsList:
-                selectedIndex = self.settingsList.getSelectedPosition()
-                #print("selectedIndex = " + str(selectedIndex))
-                LOG( LOG_INFO, "selectedIndex = %i", selectedIndex )
-                if selectedIndex == 0:
-                    dialog = xbmcgui.Dialog()
-                    chosenIndex = dialog.select('Activer la modification du fichier sources.xml', self.xbmcXmlUpdateAction)
-                    if chosenIndex == 0:
-                        self.configManager.setXbmcXmlUpdate(True)
-                        self.xbmcXmlUpdate           = True
-                        self.strXmlUpdateContent = self.xbmcXmlUpdateList[0] #Activé
-                    else:
-                        self.configManager.setXbmcXmlUpdate(False)
-                        self.xbmcXmlUpdate           = False
-                        self.strXmlUpdateContent = self.xbmcXmlUpdateList[1] #Désactivé
-                    self.settingsList.getListItem(selectedIndex).setLabel(self.strXmlUpdateTitle + self.strXmlUpdateContent)                
-                #elif selectedIndex == 1:
-                #    dialog = xbmcgui.Dialog()
-                #    chosenIndex = dialog.select('Selectionner la gestion du cache désirée', self.cleanCacheList)
-                #    if chosenIndex == 0:
-                #        self.configManager.setCleanCache(True)
-                #        self.cleanCache           = True
-                #        self.strCleanCacheContent = self.cleanCacheList[0] #Activé
-                #    else:
-                #        self.configManager.setCleanCache(False)
-                #        self.cleanCache           = False
-                #        self.strCleanCacheContent = self.cleanCacheList[1] #Désactivé
-                #    self.settingsList.getListItem(selectedIndex).setLabel(self.strCleanCacheTitle + self.strCleanCacheContent)
-                else:
-                    #print "SettingsWindow - onControl : Invalid control list index"
-                    LOG( LOG_NOTICE, "SettingsWindow - onControl : Invalid control list index" )
-
-            elif control == self.buttonOK:
-                self.close()
-        except:
-            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
-
-
 class MainWindow(xbmcgui.Window):
     """
 
@@ -973,6 +872,14 @@ class MainWindow(xbmcgui.Window):
         if Emulating: xbmcgui.Window.__init__(self)
         if not Emulating:
             self.setCoordinateResolution(PAL_4x3) # Set coordinate resolution to PAL 4:3
+
+        # Display Loading Window while we are loading the information from the website
+        if xbmc.getCondVisibility( "Window.IsActive(101)" ):
+            #si le dialog PROGRESS est visible update
+            DIALOG_PROGRESS.update( -1, _( 32103 ), _( 32110 ) )
+        else:
+            #si le dialog PROGRESS n'est pas visible affiche le dialog
+            DIALOG_PROGRESS.create( _( 32000 ), _( 32103 ), _( 32110 ) )
 
         #TODO: TOUTES ces varibales devraient etre passees en parametre du constructeur de la classe (__init__ si tu preferes)
         # On ne devraient pas utiliser de variables globale ou rarement en prog objet
@@ -1009,10 +916,6 @@ class MainWindow(xbmcgui.Window):
         self.delCache           = ""
         self.scrollingSizeMax   = 480
         self.RssOk              = False
-
-        # Display Loading Window while we are loading the information from the website
-        dialogUI = xbmcgui.DialogProgress()
-        dialogUI.create("Installeur Passion XBMC", "Creation de l'interface Graphique", "Veuillez patienter...")
 
         # Verifie si les repertoires cache et imagedir existent et les cree s'il n'existent pas encore
         if os.path.exists(CACHEDIR):
@@ -1101,6 +1004,7 @@ class MainWindow(xbmcgui.Window):
             self.connected = True
 
             # Recuperation de la liste des elements
+            DIALOG_PROGRESS.update( -1, _( 32104 ), _( 32110 ) )
             self.updateList()
 
         except Exception, e:
@@ -1115,7 +1019,7 @@ class MainWindow(xbmcgui.Window):
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
 
         # Close the Loading Window
-        dialogUI.close()
+        DIALOG_PROGRESS.close()
 
         # Capturons le contenu des sous-repertoires plugins
         for type in self.downloadTypeList:
@@ -1131,11 +1035,11 @@ class MainWindow(xbmcgui.Window):
         """
         try:
             if action==ACTION_CONTEXT_MENU:
-                #print "Menu contextuel"
-                winSettingsVideo = SettingsWindow()
-                winSettingsVideo.setWindow(self.configManager) # include doModal call
-                del winSettingsVideo
-                
+                import dialog_script_settings
+                dialog_script_settings.show_settings( self )
+                #on a plus besoin du settins, on le delete
+                del dialog_script_settings
+
             if action == ACTION_PREVIOUS_MENU:
                 # Sortie du script
 
@@ -1488,8 +1392,8 @@ class MainWindow(xbmcgui.Window):
         Mise a jour de la liste affichee
         """
         # On verifie self.type qui correspond au type de liste que l'on veut afficher
-        dialogUI = xbmcgui.DialogProgress()
-        dialogUI.create("Installeur Passion-XBMC", "Chargement des informations", "Veuillez patienter...")
+        #dialogUI = xbmcgui.DialogProgress()
+        #dialogUI.create("Installeur Passion-XBMC", "Chargement des informations", "Veuillez patienter...")
         if (self.type  == "racine"):
             #liste virtuelle des sections
 #            del self.curDirList[:] # on vide la liste
@@ -1608,7 +1512,7 @@ class MainWindow(xbmcgui.Window):
         
         # Set Focus on list
         self.setFocus(self.list)
-        dialogUI.close()
+        #dialogUI.close()
 
     def deleteDir(self,path):
         """

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!-- Les strings de 32000 à 32999 sont réservées aux scripts -->
+  <!--GENERAL STRINGS -->
+  <string id="32000">Installateur Passion-XBMC</string>
+
+  <!--DIVERS STRINGS -->
+  <string id="32101">Configuration du système</string>
+  <string id="32102">Vérification de la mise à jour</string>
+  <string id="32103">Création de l'interface Graphique</string>
+  <string id="32104">Chargement des informations</string>
+  <string id="32105">-</string>
+  <string id="32106">-</string>
+  <string id="32107">-</string>
+  <string id="32108">-</string>
+  <string id="32109">-</string>
+  <string id="32110">Veuillez patienter...</string>
+
+  <!--SETTINGS STRINGS -->
+  <string id="32499">Version: %s</string>
+  <string id="32500">Paramètres</string>
+  <string id="32501">Activer la modification du fichier sources.xml</string>
+</strings>
