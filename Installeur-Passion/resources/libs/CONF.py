@@ -1,22 +1,25 @@
+
 import os
 import sys
 import ConfigParser
-import xbmcgui, xbmc
+
+#import xbmc
+from xbmcgui import Dialog
 
 from script_log import *
 
 
+DIALOG_BROWSE = Dialog().browse
+
+
 def SetConfiguration ():
-    eval( LOG_FUNCTION )
     """
     Definit les repertoires locaux de l'utilisateur
     """
 
-    LOG( LOG_INFO, "===================================================================")
-    #print("")
-    LOG( LOG_INFO, "        Setting Configuration                                      ")
-    #print("")
-    LOG( LOG_INFO, "===================================================================")
+    LOG( LOG_INFO, str( "*" * 85 ) )
+    LOG( LOG_INFO, "Setting Configuration".center( 85 ) )
+    LOG( LOG_INFO, str( "*" * 85 ) )
 
     ROOTDIR = os.getcwd().replace(';','')
     fichier = os.path.join(ROOTDIR, "resources", "conf.cfg")
@@ -46,9 +49,7 @@ def SetConfiguration ():
         else:
 
             #Linux other case
-            dialog = xbmcgui.Dialog()
-            XBMC = dialog.browse(0, "Choisissez le dossier d'installation d'XBMC","files")
-            #print "linux other case, XBMC = ", XBMC
+            XBMC = DIALOG_BROWSE(0, "Choisissez le dossier d'installation d'XBMC","files")
             LOG( LOG_NOTICE, "linux other case, XBMC = %s", XBMC )
             config.set("InstallPath", "path", XBMC)
             #Set Linux other case ScraperDir
@@ -60,7 +61,6 @@ def SetConfiguration ():
 
         # Xbox and Windows case
         LOG( LOG_NOTICE, "Xbox and Windows case" )
-        #print "Xbox and Windows case"
 
         if os.path.isdir("Q:"+os.sep) == True:
 
@@ -71,9 +71,7 @@ def SetConfiguration ():
         else:
 
             # Xbox and Windows other case
-            dialog = xbmcgui.Dialog()
-            XBMC = dialog.browse(0, "Choisissez le dossier d'installation d'XBMC","files")
-            #print "win other case, XBMC = ",XBMC
+            XBMC = DIALOG_BROWSE(0, "Choisissez le dossier d'installation d'XBMC","files")
             LOG( LOG_NOTICE, "win other case, XBMC = %s", XBMC )
             config.set("InstallPath", "path", XBMC)
 
