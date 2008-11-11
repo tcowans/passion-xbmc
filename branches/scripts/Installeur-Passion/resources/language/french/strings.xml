@@ -11,6 +11,8 @@
   <string id="32104">Chargement des informations</string>
 
   <string id="32110">Veuillez patienter...</string>
+  <string id="32111">Erreur</string>
+  <string id="32112">Exception durant l'initialisation</string>
 
   <!--SETTINGS STRINGS -->
   <string id="32499">Version: %s</string>
