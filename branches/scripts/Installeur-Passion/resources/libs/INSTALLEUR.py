@@ -786,7 +786,7 @@ class MainWindow(xbmcgui.Window):
         self.setCoordinateResolution(PAL_4x3) # Set coordinate resolution to PAL 4:3
 
         # Display Loading Window while we are loading the information from the website
-        if xbmc.getCondVisibility( "Window.IsActive(101)" ):
+        if xbmc.getCondVisibility( "Window.IsActive(progressdialog)" ):
             #si le dialog PROGRESS est visible update
             DIALOG_PROGRESS.update( -1, _( 32103 ), _( 32110 ) )
         else:
@@ -937,6 +937,14 @@ class MainWindow(xbmcgui.Window):
         Remonte l'arborescence et quitte le script
         """
         try:
+            button_code_F1_keyboard = 61552
+            #methode temporaire "button_code_F1_keyboard", le temps de creer un contextmenu en windowxml. Qui va inclure le dialog_script_settings
+            if action.getButtonCode() == button_code_F1_keyboard:
+                import dialog_direct_infos
+                dialog_direct_infos.show_direct_infos()
+                #on a plus besoin, on le delete
+                del dialog_direct_infos
+
             if action==ACTION_CONTEXT_MENU:
                 import dialog_script_settings
                 dialog_script_settings.show_settings( self )
@@ -1264,11 +1272,11 @@ class MainWindow(xbmcgui.Window):
         Mise a jour de la liste affichee
         """
         # On verifie self.type qui correspond au type de liste que l'on veut afficher
-        #dialogUI = xbmcgui.DialogProgress()
-        #dialogUI.create("Installeur Passion-XBMC", "Chargement des informations", "Veuillez patienter...")
+        if not xbmc.getCondVisibility( "Window.IsActive(progressdialog)" ):
+            DIALOG_PROGRESS.create( _( 32000 ), _( 32104 ), _( 32110 ) )
         if (self.type  == "racine"):
             #liste virtuelle des sections
-#            del self.curDirList[:] # on vide la liste
+            #del self.curDirList[:] # on vide la liste
             self.curDirList = self.racineDisplayList
             
         elif (self.type  == "Plugins"):
@@ -1380,7 +1388,7 @@ class MainWindow(xbmcgui.Window):
         
         # Set Focus on list
         self.setFocus(self.list)
-        #dialogUI.close()
+        DIALOG_PROGRESS.close()
 
     def deleteDir(self,path):
         """
