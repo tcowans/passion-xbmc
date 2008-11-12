@@ -1,8 +1,8 @@
-=[xbmc.wiki xbmc]=
+=[xbmc.html xbmc]=
 
-=[xbmcgui.wiki xbmcgui]=
+=[xbmcgui.html xbmcgui]=
 
-=[xbmcplugin.wiki xbmcplugin]=
+=[xbmcplugin.html xbmcplugin]=
 
 ==Last Updated: 11 November 2008 from Atlantis 8.10==
 
