@@ -1,16 +1,18 @@
-import ftplib, os
-import shutil
+
+import os
+import sys
+import ftplib
 import ConfigParser
-import zipfile
+
 import xbmc
 import xbmcgui
 
-import sys
 from script_log import *
 
-LOG( LOG_INFO, "****************************************************************" )
-LOG( LOG_INFO, "                 Script de mise a jour auto                     " )
-LOG( LOG_INFO, "****************************************************************" )
+
+LOG( LOG_INFO, str( "*" * 85 ) )
+LOG( LOG_INFO, "Script de mise a jour auto".center( 85 ) )
+LOG( LOG_INFO, str( "*" * 85 ) )
 
 
 class CheckMAJ:
@@ -21,7 +23,7 @@ class CheckMAJ:
         ##############################################################################
         #                   Initialisation conf.cfg                                  #
         ##############################################################################
-        self.fichier = os.path.join(self.rootdir, "resources", "conf.cfg")#os.path.join(self.rootdir, "conf.cfg")
+        self.fichier = os.path.join(self.rootdir, "resources", "conf.cfg")
         self.localConfParser = ConfigParser.ConfigParser()
         self.localConfParser.read(self.fichier)
 
@@ -70,12 +72,9 @@ class CheckMAJ:
             if not os.path.exists(folder):
                 os.makedirs(folder)
 
-        except Exception, e:
-            #print("verifrep - Exception while creating folder " + folder)
-            #print(e)
+        except:
             LOG( LOG_NOTICE, "verifrep - Exception while creating folder %s", folder )
             EXC_INFO( LOG_ERROR, sys.exc_info() )
-            pass
 
     def download(self):
         """
@@ -162,12 +161,10 @@ class CheckMAJ:
     def delFiles(self,folder):
         for root, dirs, files in os.walk(folder , topdown=False):
             for name in files:
-                #print "Effaccement de %s en cours ..."%name
                 LOG( LOG_WARNING, "Effaccement de %s en cours ...", name )
                 try:
                     os.remove(os.path.join(root, name))
-                except Exception, e:
-                    #print e
+                except:
                     EXC_INFO( LOG_ERROR, sys.exc_info() )
 
 #TODO: QUESTIOn : ne devrait t'on pas faire "self.localConfParser.write(open(self.fichier,'w'))" qu'une seule fois a la fin plutot que plusieurs fois dans le code?
