@@ -219,13 +219,3 @@ def show_direct_infos():
     w = DirectInfos( file_xml, dir_path, current_skin, force_fallback )
     w.doModal()
     del w
-
-
-if ( __name__ == "__main__" ):
-    root = load_infos( DIRECT_INFOS )
-    for elems in root[ 0 ].findall( "item" ):
-        print elems.findtext( "category" )
-        print elems.findtext( "title" )
-        print elems.findtext( "pubDate" )
-        print ENTITY_OR_CHARREF( strip_off( set_pretty_formatting( elems.findtext( "description" ) ) ).strip( "\t" ).rstrip( "\n" ) ).entity_or_charref
-        print str( "-" * 85 )
