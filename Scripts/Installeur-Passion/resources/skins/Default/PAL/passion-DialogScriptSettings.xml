@@ -1,0 +1,302 @@
+<window id="3001">
+	<defaultcontrol>9001</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+	<animation effect="fade" time="200">WindowOpen</animation>
+	<animation effect="fade" time="200">WindowClose</animation>
+
+	<!-- Important if you don't want to use the WindowLists you still need to remember not to use the ids for other stuff. -->
+	<!-- * id 3 - Button - For the View button (to change between the lists) -->
+	<!-- * id 4/5 - Reserved (Don't actually do anything at the moment) -->
+	<!-- * id 12 - Label - For displaying the number of items in the WindowLists -->
+	<!-- * id 50-59 - Lists/Panels - The actual lists for displaying the information in the window lists -->
+
+	<!-- ** Required ** Do not change any <control type="xxxx" id="XX"> -->
+	<!-- ** Required ** Do not change any skin settings or skin infos -->
+	<!-- ** Infos ** if you not control in your skin, set and add <visible>false</visible>, results no bugs created in scripts. If remove control the bugs or freeze are created. -->
+
+	<controls>
+		<!-- REMARQUE QUE LES "<texture>" COMMANCENT toutes par "passion-blablabla.bla", ceci et pour pas avoir des conflits ou des images pas afficher ou meme des images qui sont pas dans le skin du script "DefaultSkin". Avec le theme en court d'XBMC  -->
+		<!-- BACKGROUNDS DIALOG -->
+		<control type="image" id="0">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>720</width>
+			<height>576</height>
+			<texture>passion-black.png</texture>
+			<animation effect="fade" time="2000">WindowOpen</animation>
+		</control>
+		<control type="image">
+			<description>background image</description>
+			<posx>50</posx>
+			<posy>70</posy>
+			<width>620</width>
+			<height>430</height>
+			<texture>passion-dialog-panel.png</texture>
+		</control>
+
+		<!-- LABELS DIALOG -->
+		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+		<!-- ** Required ** Do not change id's or type's -->
+		<control type="label" id="100">
+			<description>dialog Heading</description>
+			<posx>75</posx>
+			<posy>83</posy>
+			<label>SCRIPT_32500</label>
+			<font>special13</font>
+			<textcolor>DDced8da</textcolor>
+		</control>
+		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+		<!-- ** Required ** Do not change id's or type's -->
+		<control type="label" id="101">
+			<description>script version</description>
+			<posx>655</posx>
+			<posy>83</posy>
+			<label>SCRIPT_32499</label>
+			<font>font12</font>
+			<textcolor>DDced8da</textcolor>
+			<align>right</align>
+		</control>
+
+		<!-- MENU PRINCIPAL -->
+		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+		<!-- ** Required ** Do not change id's or type's -->
+		<control type="grouplist" id="9001">
+			<posx>75</posx>
+			<posy>120</posy>
+			<width>580</width>
+			<height>300</height>
+			<itemgap>0</itemgap>
+			<pagecontrol>-</pagecontrol>
+			<orientation>vertical</orientation>
+			<onleft>9000</onleft>
+			<onright>9000</onright>
+			<onup>9000</onup>
+			<ondown>9000</ondown>
+			<control type="radiobutton" id="160">
+				<description>setting button 1</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>580</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT_32501</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<aligny>center</aligny>
+				<texturefocus>passion-input-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<textureradiofocus>passion-settings-check-box.png</textureradiofocus>
+				<textureradionofocus>passion-settings-check-boxNF.png</textureradionofocus>
+			</control>
+			<control type="button" id="170">
+				<description>setting button 2</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>580</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT_32XXX</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<aligny>center</aligny>
+				<texturefocus>passion-input-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+			</control>
+			<control type="button" id="180">
+				<description>setting button 3</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>580</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT_32XXX</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<aligny>center</aligny>
+				<texturefocus>passion-input-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+			</control>
+			<control type="button" id="190">
+				<description>setting button 4</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>580</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT_32XXX</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<aligny>center</aligny>
+				<texturefocus>passion-input-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+			</control>
+			<control type="button" id="200">
+				<description>setting button 5</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>580</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT_32XXX</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<aligny>center</aligny>
+				<texturefocus>passion-input-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+			</control>
+			<control type="button" id="210">
+				<description>setting button 6</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>580</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT_32XXX</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<aligny>center</aligny>
+				<texturefocus>passion-input-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+			</control>
+			<control type="button" id="220">
+				<description>setting button 7</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>580</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT_32XXX</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<aligny>center</aligny>
+				<texturefocus>passion-input-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+			</control>
+			<control type="button" id="230">
+				<description>setting button 8</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>580</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT_32XXX</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<aligny>center</aligny>
+				<texturefocus>passion-input-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+			</control>
+			<control type="button" id="240">
+				<description>setting button 9</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>580</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT_32XXX</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<aligny>center</aligny>
+				<texturefocus>passion-input-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+			</control>
+		</control>
+
+		<!-- GROUPE OPTION MENU -->
+		<!-- NOTE: CES BOUTONS ONT LE LANGUAGE D'XBMC ET NON DU SCRIPT -->
+		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+		<!-- ** Required ** Do not change id's or type's -->
+		<control type="group" id="9000">
+			<control type="button" id="300">
+				<description>ok</description>
+				<posx>460</posx>
+				<posy>430</posy>
+				<width>90</width>
+				<height>32</height>
+				<align>center</align>
+				<label>186</label>
+				<texturenofocus>passion-keyboard-btn-backspace.png</texturenofocus>
+				<texturefocus>passion-keyboard-btn-backspace-focus.png</texturefocus>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<onleft>302</onleft>
+				<onright>301</onright>
+				<onup>9001</onup>
+				<ondown>9001</ondown>
+			</control>
+			<control type="button" id="301">
+				<description>cancel</description>
+				<posx>560</posx>
+				<posy>430</posy>
+				<width>90</width>
+				<height>32</height>
+				<align>center</align>
+				<label>222</label>
+				<texturenofocus>passion-keyboard-btn-backspace.png</texturenofocus>
+				<texturefocus>passion-keyboard-btn-backspace-focus.png</texturefocus>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<onleft>300</onleft>
+				<onright>302</onright>
+				<onup>9001</onup>
+				<ondown>9001</ondown>
+			</control>
+			<control type="button" id="302">
+				<description>default</description>
+				<posx>360</posx>
+				<posy>430</posy>
+				<width>90</width>
+				<height>32</height>
+				<align>center</align>
+				<label>409</label>
+				<texturenofocus>passion-keyboard-btn-backspace.png</texturenofocus>
+				<texturefocus>passion-keyboard-btn-backspace-focus.png</texturefocus>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<onleft>301</onleft>
+				<onright>303</onright>
+				<onup>9001</onup>
+				<ondown>9001</ondown>
+			</control>
+			<control type="button" id="303">
+				<description>credits</description>
+				<posx>80</posx>
+				<posy>430</posy>
+				<width>90</width>
+				<height>32</height>
+				<align>center</align>
+				<label>470</label>
+				<texturenofocus>passion-keyboard-btn-backspace.png</texturenofocus>
+				<texturefocus>passion-keyboard-btn-backspace-focus.png</texturefocus>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<onleft>302</onleft>
+				<onright>300</onright>
+				<onup>9001</onup>
+				<ondown>9001</ondown>
+			</control>
+		</control>
+	</controls>
+</window>

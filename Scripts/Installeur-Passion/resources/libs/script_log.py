@@ -25,16 +25,13 @@ CURRENT_DATE = time.strftime( "%d-%m-%Y" )
 try: __date__ = sys.modules[ "__main__" ].__date__
 except: __date__ = CURRENT_DATE
 
-try: BOOSTER = sys.modules[ "__main__" ].BOOSTER
-except: BOOSTER = None
-
 LOG_SCRIPT = os.path.join( DIRECTORY_DATA, "%s.log" % ( __script__, ) )
 LOG_OLD = os.path.join( DIRECTORY_DATA, "%s.old.log" % ( __script__, ) )
 
 SEPARATOR = str( "-" * 85 )
 
 # LOG STATUS CODES
-LOG_ERROR, LOG_INFO, LOG_NOTICE, LOG_DEBUG, LOG_WARNING = range( 1, 6 )
+LOG_ERROR, LOG_INFO, LOG_NOTICE, LOG_WARNING, LOG_DEBUG = range( 1, 6 )
 
 #REGEXP FOR FUNCTION, e.g.: eval( LOG_SELF_FUNCTION )
 LOG_SELF_FUNCTION = 'LOG( LOG_INFO, "%s::%s::%s", self.__module__, self.__class__.__name__, sys._getframe( 1 ).f_code.co_name )' #self.__module__.split( "." )[ -1 ]
@@ -46,12 +43,12 @@ def LOG( status, format, *args ):
         dwAvailPhys = str( long( xbmc.getFreeMem() * 1024.0 * 1024.0 ) )
     except:
         dwAvailPhys = "?"
-    status = ( "ERROR", "INFO", "NOTICE", "DEBUG", "WARNING", )[ status - 1 ]
+    status = ( "ERROR", "INFO", "NOTICE", "WARNING", "DEBUG", )[ status - 1 ]
     _pre_line_ = "%s M: %s %s: " % ( time.strftime( "%X" ), dwAvailPhys, status.rjust( 7 ), )
     _write_line_ = "%s\n" % ( format % args, )
     file( LOG_SCRIPT, "a" ).write( _pre_line_ + _write_line_ )
     if ( DEBUG_MODE >= status ):
-        xbmc.output( _write_line_.strip( "\n" ) )
+        xbmc.output( _write_line_.strip( "\n\r" ) )
 
 
 def EXC_INFO( status, infos, _self_=None ):
@@ -122,9 +119,6 @@ def create_log_file():
         LOG( LOG_INFO, "- Current Date is: %s", CURRENT_DATE )
         LOG( LOG_NOTICE, "Checking the System Uptime!" )
         LOG( LOG_INFO, "- System Uptime is: %s", uptime )
-        
-        #booster info
-        if BOOSTER: LOG( LOG_NOTICE, "psyco: script use booster" )
 
 
 # ON IMPORT CREATE OR RECREATE LOG FILE

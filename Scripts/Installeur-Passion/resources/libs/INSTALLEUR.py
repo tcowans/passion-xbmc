@@ -1,34 +1,37 @@
 # -*- coding: cp1252 -*-
-from string import *
-import sys#, os.path
-import re
-from time import gmtime, strptime, strftime
+
 import os
+import re
+import sys
+import time
 import ftplib
-import ConfigParser
-import xbmcgui, xbmc
-import traceback
-import time
 import urllib2
-import socket
-import time
-import shutil
-import zipfile
 import rarfile
+import zipfile
+import ConfigParser
+
+from string import *
+from htmlentitydefs import name2codepoint
+
+import xbmc
+import xbmcgui
+
+from script_log import *
 
 try:
     del sys.modules['BeautifulSoup']
 except:
     pass 
-from BeautifulSoup import BeautifulStoneSoup,Tag, NavigableString  #librairie de traitement XML
-import htmlentitydefs
+from BeautifulSoup import BeautifulStoneSoup, Tag, NavigableString  #librairie de traitement XML
 
 
-try: Emulating = xbmcgui.Emulating
-except: Emulating = False
+# INITIALISATION CHEMIN RACINE
+ROOTDIR = os.getcwd().replace( ";", "" )
 
+#FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
+_ = sys.modules[ "__main__" ].__language__
 
-from script_log import *
+DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
 
 ############################################################################
@@ -109,9 +112,7 @@ class rssReader:
             request.add_header('Accept-Charset','ISO-8859-1,utf-8;q=0.7,*;q=0.7')
             response = urllib2.urlopen(request)
             the_page = response.read()
-        except Exception, e:
-            #print("Exception get_rss_page")
-            #print(e)
+        except:
             LOG( LOG_INFO, "Exception get_rss_page" )
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
             the_page = ""
@@ -136,7 +137,7 @@ class rssReader:
             else: #sinon c'est un caractère nommé (htmlentities)
                 # named entity
                 try:
-                    text = unichr(htmlentitydefs.name2codepoint[text[1:-1]])#on renvoi le unicode de la correspondance pour le caractère nommé
+                    text = unichr(name2codepoint[text[1:-1]])#on renvoi le unicode de la correspondance pour le caractère nommé
                 except KeyError:
                     pass #si le caractère nommé n'est pas défini dans les htmlentities alors on passe
             return text # leave as is #dans tous les autres cas, le match n'était pas un caractère d'échapement html on le retourne tel quel
@@ -181,17 +182,14 @@ class scriptextracter:
     def zipfolder (self):
         self.zfile = zipfile.ZipFile(self.archive, 'r')
         for i in self.zfile.namelist():  ## On parcourt l'ensemble des fichiers de l'archive
-            #print i
             if i.endswith('/'):
                 dossier = self.pathdst + os.sep + i
                 try:
                     os.makedirs(dossier)
-                except Exception, e:
-                    #print "Erreur creation dossier de l'archive = ",e
+                except:
                     LOG( LOG_NOTICE, "Erreur creation dossier de l'archive!" )
                     EXC_INFO( LOG_ERROR, sys.exc_info(), self )
             else:
-                #print "File Case"
                 LOG( LOG_NOTICE, "File Case" )
 
         # On ferme l'archive
@@ -200,8 +198,6 @@ class scriptextracter:
     def  extract(self,archive,TargetDir):
         self.pathdst = TargetDir
         self.archive = archive
-        #print "self.pathdst = %s"%self.pathdst
-        #print "self.archive = %s"%self.archive
         LOG( LOG_NOTICE, "self.pathdst = %s", self.pathdst )
         LOG( LOG_NOTICE, "self.archive = %s", self.archive )
         
@@ -217,37 +213,26 @@ class scriptextracter:
         """
         dirName = ""
         if archive.endswith('zip'):
-            #print "zip file case"
             zfile   = zipfile.ZipFile(archive, 'r')
             dirName = zfile.namelist()[0].split('/')[0]
-            #print dirName
-            #print zfile.namelist()
             LOG( LOG_INFO, "scriptextracter::getDirName: dirName = %s", dirName )
             LOG( LOG_INFO, repr( zfile.namelist() ) )
             # On verifie que la chaine de caractere est bien un repertoire 
             if zfile.namelist()[0].find(dirName + '/') == -1:
-                #print "%s n'est pas un repertoire"%dirName
                 LOG( LOG_NOTICE, "%s n'est pas un repertoire", dirName )
                 dirName = "" 
-            #print "Zip dirname:"
-            #print dirName
             LOG( LOG_INFO, "Zip dirname:" )
             LOG( LOG_INFO, dirName )
         elif archive.endswith('rar'):
-            #print "rar file case"
             rfile   = rarfile.RarFile(archive, 'r') 
             dirName = rfile.namelist()[0].split("\\")[0]
-            #print "Rar dirname:"
-            #print dirName
             LOG( LOG_INFO, "Rar dirname:" )
             LOG( LOG_INFO, dirName )
             # On verifie que la chaine de caractere est bien un repertoire 
             if rfile.getinfo(dirName).isdir() == False:
-                #print "%s n'est pas un repertoire"%dirName
                 LOG( LOG_NOTICE, "%s n'est pas un repertoire", dirName )
                 dirName = ""
         else:
-            #print "Format d'archive non supporté"
             LOG( LOG_NOTICE, "Format d'archive non supporté" )
         return dirName
 
@@ -276,8 +261,6 @@ class ftpDownloadCtrl:
         self.curLocalDirRoot    = ""
         self.curRemoteDirRoot   = ""
 
-        #print "host = ",self.host
-        #print "user= ",self.user
         LOG( LOG_INFO, "host = %s", self.host )
         LOG( LOG_INFO, "user = %s", self.user )
 
@@ -291,28 +274,22 @@ class ftpDownloadCtrl:
         #Connection au serveur FTP
         try:
             self.ftp = ftplib.FTP(self.host,self.user,self.password) # on se connecte
-            
+
             # DEBUG: Seulement pour le dev
             #self.ftp.set_debuglevel(2)
-            
+
             self.connected = True
-            #print "Connecté au serveur FTP"
             LOG( LOG_INFO, "Connecté au serveur FTP" )
-            
-        except Exception, e:
-            #print "ftpDownloadCtrl: __init__: Exception durant la connection FTP",e
-            #print "ftpDownloadCtrl: Impossible de se connecter au serveur FTP: %s"%self.host
-            #print ("error/MainWindow __init__: " + str(sys.exc_info()[0]))
+
+        except:
             LOG( LOG_NOTICE, "Exception durant la connection, mpossible de se connecter au serveur FTP: %s", self.host )
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
-            #traceback.print_exc()
-            
+
     def closeConnection(self):
         """
         Ferme la connexion FTP
         """
         #on se deconnecte du serveur pour etre plus propre
-        #print "Connection avec le serveur FTP fermée"
         LOG( LOG_NOTICE, "Connection avec le serveur FTP fermée" )
         self.ftp.quit()
 
@@ -325,12 +302,9 @@ class ftpDownloadCtrl:
         # Recuperation de la liste
         try:
             curDirList = self.ftp.nlst(remotedir)
-        except Exception, e:
-            #print "getDirList: __init__: Exception durant la recuperation de la liste des fichiers du repertoire: %s"%remotedir,e
-            #print ("error/MainWindow __init__: " + str(sys.exc_info()[0]))
+        except:
             LOG( LOG_NOTICE, "Exception durant la recuperation de la liste des fichiers du repertoire: %s", remotedir )
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
-            #traceback.print_exc()
         
         # Tri de la liste et renvoi
         curDirList.sort(key=str.lower)
@@ -345,10 +319,8 @@ class ftpDownloadCtrl:
         try:
             self.ftp.cwd(pathsrc) # c'est cette commande qui genere l'exception dans le cas d'un fichier
             # Pas d'excpetion => il s'agit d'un dossier
-            #print "isDir: %s EST un DOSSIER"%pathsrc
             LOG( LOG_NOTICE, "isDir: %s EST un DOSSIER", pathsrc )
-        except Exception, e:
-            #print "isDir: %s EST un FICHIER"%pathsrc
+        except:
             LOG( LOG_NOTICE, "isDir: %s EST un FICHIER", pathsrc )
             isDir = False
         return isDir
@@ -421,7 +393,6 @@ class ftpDownloadCtrl:
         
         for i in curDirList:
             if dialogProgressWin.iscanceled():
-                #print "Telechargement annulé par l'utilisateur"
                 LOG( LOG_WARNING, "Telechargement annulé par l'utilisateur" )
                 # Sortie de la boucle via return
                 result = -1 # -1 pour telechargement annule
@@ -432,13 +403,10 @@ class ftpDownloadCtrl:
                 percentBefore = min(curPercent + int((float(curDirList.index(i)+0)*100)/(curDirListSize * coeff)),100)
                 
                 # Mise a jour de la barre de progression (via callback)
-                try :
+                try:
                     # percent est le poucentage du FICHIER telecharger et non le pourcentage total
                     dialogProgressWin.update(0,"Téléchargement Total: %d%%"%percentBefore, "%s"%i)
-                except Exception, e:
-                    #print("downloadVideo - Exception calling UI callback for download")
-                    #print(e)
-                    #print progressbar_cb
+                except:
                     LOG( LOG_ERROR, "downloadVideo - Exception calling UI callback for download" )
                     EXC_INFO( LOG_ERROR, sys.exc_info(), self )
                     
@@ -458,33 +426,25 @@ class ftpDownloadCtrl:
                 percentAfter = min(curPercent + int((float(curDirList.index(i)+1)*100)/(curDirListSize * coeff)),100)
                 
                 #Mise a jour de la barre de progression (via callback)
-                try :
+                try:
                     #TODO: Resoudre le pb que la ligbe ci-dessous est invible (trop rapide)
                     dialogProgressWin.update(100,"Téléchargement Total: %d%%"%percentAfter, "%s"%i)
                     #time.sleep(1)
-                except Exception, e:
-                    #print("downloadVideo - Exception calling UI callback for download")
-                    #print(e)
-                    #print progressbar_cb
+                except:
                     LOG( LOG_ERROR, "downloadVideo - Exception calling UI callback for download" )
                     EXC_INFO( LOG_ERROR, sys.exc_info(), self )
 
         # Calcul pourcentage final
         percent = min(curPercent + int(100/(coeff)),100)
-        try :
-
+        try:
             #Mise a jour de la barre de progression (via callback)
             dialogProgressWin.update(100,"Téléchargement Total: %d%%"%percent, "%s"%i)
-        except Exception, e:
-            #print("downloadVideo - Exception calling UI callback for download")
-            #print(e)
-            #print progressbar_cb
+        except:
             LOG( LOG_ERROR, "downloadVideo - Exception calling UI callback for download" )
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
             
         # verifie si on a annule le telechargement
         if dialogProgressWin.iscanceled():
-            #print "Telechargement annulé par l'utilisateur"
             LOG( LOG_WARNING, "Telechargement annulé par l'utilisateur" )
             
             # Sortie de la boucle via return
@@ -501,7 +461,6 @@ class ftpDownloadCtrl:
         emptydir = False
         try:
             dirContent = self.ftp.nlst(dirsrc)
-            #print dirContent
             LOG( LOG_INFO, "dirContent: %s", repr( dirContent ) )
         except Exception, e:
             # Repertoire non vide -> il faut telecharger les elementss de ce repertoire
@@ -520,9 +479,7 @@ class ftpDownloadCtrl:
         # Créé le dossier
         try:
             os.makedirs(localAbsDirPath)
-        except Exception, e:
-            #print "_downloaddossier: Exception - Impossible de creer le dossier: %s"%localAbsDirPath
-            #print e
+        except:
             LOG( LOG_ERROR, "_downloaddossier: Exception - Impossible de creer le dossier: %s", localAbsDirPath )
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
         if (emptydir == False):
@@ -545,10 +502,7 @@ class ftpDownloadCtrl:
             if remoteFileSize <= 0:
                 # Dans le cas ou un fichier n'a pas une taille valide ou corrompue
                 remoteFileSize = 1
-        except Exception, e:
-            #print "_downloadfichier: Excpetion lors la recuperation de la taille du fichier: %s"%filesrc
-            #print e
-            #traceback.print_exc(file = sys.stdout)
+        except:
             LOG( LOG_ERROR, "_downloaddossier: Exception - Impossible de creer le dossier: %s", localAbsDirPath )
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
         
@@ -571,10 +525,7 @@ class ftpDownloadCtrl:
             # Telecahrgement (on passe la CB en parametre)
             # !!NOTE!!: on utilise un implemenation locale et non celle de ftplib qui ne supporte pas l'interuption d'un telechargement
             self.retrbinary('RETR ' + filesrc, ftpCB, block_size)
-        except Exception, e:
-            #print "_downloadfichier: Exception lors la recuperation du fichier: %s"%filesrc
-            #print e
-            #traceback.print_exc(file = sys.stdout)
+        except:
             LOG( LOG_ERROR, "_downloaddossier: Exception - Impossible de creer le dossier: %s", localAbsDirPath )
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
         # On ferme le fichier
@@ -595,8 +546,6 @@ class ftpDownloadCtrl:
             try:
                 callback(data)
             except cancelRequest:
-                #traceback.print_exc(file = sys.stdout)
-                #print "retrbinary: Download ARRETE par l'utilisateur"
                 LOG( LOG_NOTICE, "retrbinary: Download ARRETE par l'utilisateur" )
                 EXC_INFO( LOG_ERROR, sys.exc_info(), self )
                 break
@@ -625,26 +574,20 @@ class FtpCallback(object):
     def __call__(self, data):
         if self.dp != None:
             if self.dp.iscanceled(): 
-                #print "FtpCallback: DOWNLOAD CANCELLED" # need to get this part working
                 #dp.close() #-> will be close in calling function
                 LOG( LOG_WARNING, "User pressed CANCEL button" )
-                #EXC_INFO( LOG_ERROR, sys.exc_info(), self )
                 raise cancelRequest,"User pressed CANCEL button"
         self.localfile.write(data)
         self.received += len(data)
         try:
             percent = min((self.received*100)/self.filesize, 100)
-            if self.dp != None:
-                self.dp.update(percent,"Téléchargement Total: %d%%"%self.curPercent, "%s"%self.srcName)
-        except Exception, e:        
-            #print("FtpCallback - Exception during percent computing AND update")
-            #print(e)
-            #traceback.print_exc(file = sys.stdout)
+        except:
             LOG( LOG_ERROR, "FtpCallback - Exception during percent computing AND update" )
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
-            #percent = 100
-            if self.dp != None:
-                self.dp.update(100,"Téléchargement Total: %d%%"%self.curPercent, "%s"%(self.srcName))
+            percent = 100
+
+        if self.dp != None:
+            self.dp.update(100,"Téléchargement Total: %d%%"%self.curPercent, "%s"%(self.srcName))
                 
 
 class userDataXML:
@@ -689,8 +632,7 @@ class userDataXML:
         sourceTag.insert(1, pathTag)
         pathText = NavigableString(pluginPathStr)
         pathTag.insert(0, pathText)
-    
-        #print "Plugin entry %s added"%pluginNameStr
+
         LOG( LOG_NOTICE, "Plugin entry %s added", pluginNameStr )
         self.newEntry = True
         
@@ -702,23 +644,18 @@ class userDataXML:
         # sauvegarde nouveau fichier
         result = False
         if self.newEntry == True:
-            #print "userDataXML: sauvegarde du fichier modifié %s"%self.filedest
             LOG( LOG_NOTICE, "userDataXML: sauvegarde du fichier modifié %s", self.filedest )
             try:
                 newFile = open(self.filedest, 'w+')
                 newFile.write(self.soup.prettify())
                 newFile.close()
                 result = True
-            except Exception, e:        
-                #print("userDataXML - Exception durant la creation de %s"%self.filedest)
-                #print(e)
+            except:
                 percent = 100
-                #traceback.print_exc(file = sys.stdout)
                 LOG( LOG_ERROR, "userDataXML - Exception durant la creation de %s", self.filedest )
                 EXC_INFO( LOG_ERROR, sys.exc_info(), self )
                 result = False
         else:
-            #print "userDataXML: aucun changement de %s"%self.filesrc
             LOG( LOG_NOTICE, "userDataXML: aucun changement pour %s", self.filedest )
             result = False
         return result
@@ -739,11 +676,8 @@ class directorySpy:
             # On capture le contenu du repertoire et on le sauve
             self.dirContentInitList = os.listdir(dirpath)
         else:
-            #print "directorySpy - __init__: %s n'est pas un repertoire"%self.dirPath
             LOG( LOG_NOTICE, "directorySpy - __init__: %s n'est pas un repertoire", self.dirPath )
             #TODO: Lever un exception
-        #print "directorySpy - __init__: Liste des nouveaux elements du repertoire %s a l'instanciation"%self.dirPath
-        #print self.dirContentInitList
         
     def getNewItemList(self):
         """
@@ -754,15 +688,11 @@ class directorySpy:
         dirContentCurrentList = os.listdir(self.dirPath)
         try:
             newItemList = list(set(dirContentCurrentList).difference(set(self.dirContentInitList)))
-        except Exception, e: 
-            #print "directorySpy - getNewItemList: Exception durant la comparaison du repertoires %s"%self.dirPath
-            #print e
-            #traceback.print_exc(file = sys.stdout)
+        except:
             LOG( LOG_ERROR, "directorySpy - getNewItemList: Exception durant la comparaison du repertoires %s", self.dirPath )
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
             newItemList = []
-        #print "directorySpy - getNewItemList: Liste des nouveaux elements du repertoire %s"%self.dirPath
-        #print newItemList
+
         LOG( LOG_INFO, "directorySpy - getNewItemList: Liste des nouveaux elements du repertoire %s", self.dirPath )
         LOG( LOG_INFO, "newItemList: %s", repr( newItemList ) )
         
@@ -814,9 +744,7 @@ class configCtrl:
             self.xbmcXmlUpdate       = self.config.getboolean('System','XbmcXmlUpdate')
             
             self.is_conf_valid = True
-        except Exception, e:
-            #print("Exception while loading configuration file conf.cfg")
-            #print(str(e))
+        except:
             LOG( LOG_ERROR, "Exception while loading configuration file conf.cfg" )
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
 
@@ -833,11 +761,7 @@ class configCtrl:
         cfgfile=open(os.path.join(ROOTDIR, "resources", "conf.cfg"), 'w+')
         try:
             self.config.write(cfgfile)
-        except Exception, e:
-            #print("Exception during setXbmcXmlUpdate")
-            #print(str(e))
-            #print (str(sys.exc_info()[0]))
-            #traceback.print_exc()
+        except:
             LOG( LOG_ERROR, "Exception during setXbmcXmlUpdate" )
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
         cfgfile.close()
@@ -847,117 +771,6 @@ class configCtrl:
         """
         #TODO: Creer un classe configuration controleur responsable de la conf et y deplacer cette fonction ainsi que les autres
         return self.xbmcXmlUpdate
-
-
-class SettingsWindow(xbmcgui.WindowDialog):
-    """
-    
-    This window display settings
-    
-    """
-    def __init__(self):
-        if Emulating: xbmcgui.Window.__init__(self)
-        if not Emulating:
-            self.setCoordinateResolution(PAL_4x3) # Set coordinate resolution to PAL 4:3
-
-    def setWindow(self,configManager):
-        self.configManager   = configManager
-        self.strListMaxSize  = 50
-        self.xbmcXmlUpdateList    = ["Activée","Désactivée"]
-        self.xbmcXmlUpdateAction  = ["Activer","Désactiver"]
-        #self.cleanCacheList  = ["Activé","Désactivé"]
-        
-        # Background image
-        self.addControl(xbmcgui.ControlImage(100,100,445,335, os.path.join(IMAGEDIR,"dialog-panel.png")))
-
-        # Title label:
-        self.strlist = xbmcgui.ControlLabel(100, 105, 445, 30, 'Options', 'special13',alignment=6)
-        self.addControl(self.strlist)
-
-        # Get settings
-        self.xbmcXmlUpdate  = self.configManager.getXbmcXmlUpdate()
-        #self.cleanCache     = self.configManager.getCleanCache()
-        
-        
-        # item Control List
-        self.strXmlUpdateTitle   = "Modification sources.xml: "
-        if self.xbmcXmlUpdate:
-            self.strXmlUpdateContent = self.xbmcXmlUpdateList[0] #Activé
-        else:
-            self.strXmlUpdateContent = self.xbmcXmlUpdateList[1] #Désactivé
-#        self.strCleanCacheTitle      = "Nettoyage auto du cache: "
-#        if self.cleanCache:
-#            self.strCleanCacheContent = self.cleanCacheList[0] #Activé
-#        else:
-#            self.strCleanCacheContent = self.cleanCacheList[1] #Désactivé
-            
-        self.settingsListData = [self.strXmlUpdateTitle + self.strXmlUpdateContent]
-        self.settingsList = xbmcgui.ControlList(120, 150, 300 , 400,'font14', buttonTexture = os.path.join(IMAGEDIR,"list-black-nofocus.png"), buttonFocusTexture = os.path.join(IMAGEDIR,"list-black-focus.png"), itemTextXOffset=-10, itemHeight=30)
-        self.addControl(self.settingsList)
-            
-        # OK button:
-        self.buttonOK = xbmcgui.ControlButton(440, 150, 80, 30, "OK",font='font12', focusTexture = os.path.join(IMAGEDIR,"list-black-focus.png"), noFocusTexture  = os.path.join(IMAGEDIR,"list-black-nofocus.png"), alignment=6)
-        self.addControl(self.buttonOK)
-        
-        self.settingsList.controlLeft(self.buttonOK)
-        self.settingsList.controlRight(self.buttonOK)
-        self.buttonOK.controlLeft(self.settingsList)
-        self.buttonOK.controlRight(self.settingsList)
-
-        for labelItem in self.settingsListData:
-            displayListItem = (xbmcgui.ListItem(label = labelItem))
-            # Add list item to the ControlList
-            self.settingsList.addItem(displayListItem)
-        self.setFocus(self.settingsList)
-        
-        # show this menu and wait until it's closed
-        self.doModal()
-
-    #TODO: Create a general update function???
-        
-    def onAction(self, action):
-        if action in CLOSE_CONTEXT_MENU:
-            #close the window
-            self.close()
-            
-    def onControl(self, control):
-        try:
-            if control == self.settingsList:
-                selectedIndex = self.settingsList.getSelectedPosition()
-                #print("selectedIndex = " + str(selectedIndex))
-                LOG( LOG_INFO, "selectedIndex = %i", selectedIndex )
-                if selectedIndex == 0:
-                    dialog = xbmcgui.Dialog()
-                    chosenIndex = dialog.select('Activer la modification du fichier sources.xml', self.xbmcXmlUpdateAction)
-                    if chosenIndex == 0:
-                        self.configManager.setXbmcXmlUpdate(True)
-                        self.xbmcXmlUpdate           = True
-                        self.strXmlUpdateContent = self.xbmcXmlUpdateList[0] #Activé
-                    else:
-                        self.configManager.setXbmcXmlUpdate(False)
-                        self.xbmcXmlUpdate           = False
-                        self.strXmlUpdateContent = self.xbmcXmlUpdateList[1] #Désactivé
-                    self.settingsList.getListItem(selectedIndex).setLabel(self.strXmlUpdateTitle + self.strXmlUpdateContent)                
-                #elif selectedIndex == 1:
-                #    dialog = xbmcgui.Dialog()
-                #    chosenIndex = dialog.select('Selectionner la gestion du cache désirée', self.cleanCacheList)
-                #    if chosenIndex == 0:
-                #        self.configManager.setCleanCache(True)
-                #        self.cleanCache           = True
-                #        self.strCleanCacheContent = self.cleanCacheList[0] #Activé
-                #    else:
-                #        self.configManager.setCleanCache(False)
-                #        self.cleanCache           = False
-                #        self.strCleanCacheContent = self.cleanCacheList[1] #Désactivé
-                #    self.settingsList.getListItem(selectedIndex).setLabel(self.strCleanCacheTitle + self.strCleanCacheContent)
-                else:
-                    #print "SettingsWindow - onControl : Invalid control list index"
-                    LOG( LOG_NOTICE, "SettingsWindow - onControl : Invalid control list index" )
-
-            elif control == self.buttonOK:
-                self.close()
-        except:
-            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
 
 
 class MainWindow(xbmcgui.Window):
@@ -970,9 +783,15 @@ class MainWindow(xbmcgui.Window):
         """
         Initialisation de l'interface
         """
-        if Emulating: xbmcgui.Window.__init__(self)
-        if not Emulating:
-            self.setCoordinateResolution(PAL_4x3) # Set coordinate resolution to PAL 4:3
+        self.setCoordinateResolution(PAL_4x3) # Set coordinate resolution to PAL 4:3
+
+        # Display Loading Window while we are loading the information from the website
+        if xbmc.getCondVisibility( "Window.IsActive(progressdialog)" ):
+            #si le dialog PROGRESS est visible update
+            DIALOG_PROGRESS.update( -1, _( 32103 ), _( 32110 ) )
+        else:
+            #si le dialog PROGRESS n'est pas visible affiche le dialog
+            DIALOG_PROGRESS.create( _( 32000 ), _( 32103 ), _( 32110 ) )
 
         #TODO: TOUTES ces varibales devraient etre passees en parametre du constructeur de la classe (__init__ si tu preferes)
         # On ne devraient pas utiliser de variables globale ou rarement en prog objet
@@ -1010,10 +829,6 @@ class MainWindow(xbmcgui.Window):
         self.scrollingSizeMax   = 480
         self.RssOk              = False
 
-        # Display Loading Window while we are loading the information from the website
-        dialogUI = xbmcgui.DialogProgress()
-        dialogUI.create("Installeur Passion XBMC", "Creation de l'interface Graphique", "Veuillez patienter...")
-
         # Verifie si les repertoires cache et imagedir existent et les cree s'il n'existent pas encore
         if os.path.exists(CACHEDIR):
             # Si le repertoire cache existe on s'assure de le vider (au cas ou on ne serait pas sorti proprement du script)
@@ -1044,7 +859,6 @@ class MainWindow(xbmcgui.Window):
         self.listbackground.setVisible(True)
 
         # Set List hearder image
-        # print ("Get Logo image from : " + os.path.join(IMAGEDIR,"logo.gif"))
         self.header = xbmcgui.ControlImage(20,121,679,41, os.path.join(IMAGEDIR, "list-header.png"))
         #self.header = xbmcgui.ControlImage(20,151,679,41, os.path.join(IMAGEDIR, "list-header.png"))
         self.addControl(self.header)
@@ -1073,13 +887,10 @@ class MainWindow(xbmcgui.Window):
             maintitle,title = self.passionRssReader.GetRssInfo()
             self.RssOk = True
 
-        except Exception, e:
-            #print "Window::__init__: Exception durant la recuperation du Flux RSS",e
+        except:
             # Message a l'utilisateur
             #dialogRssError = xbmcgui.Dialog()
             #dialogRssError.ok("Erreur", "Impossible de recuperer le flux RSS")
-            #print ("error/MainWindow __init__: " + str(sys.exc_info()[0]))
-            #traceback.print_exc()
             LOG( LOG_ERROR, "Window::__init__: Exception durant la recuperation du Flux RSS" )
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
 
@@ -1101,21 +912,17 @@ class MainWindow(xbmcgui.Window):
             self.connected = True
 
             # Recuperation de la liste des elements
+            DIALOG_PROGRESS.update( -1, _( 32104 ), _( 32110 ) )
             self.updateList()
 
-        except Exception, e:
-            #print "Window::__init__: Exception durant la connection FTP",e
-            #print "Impossible de se connecter au serveur FTP: %s"%self.host
-            #dialogError = xbmcgui.Dialog()
+        except:
             xbmcgui.Dialog().ok("Erreur", "Exception durant l'initialisation")
-            #print ("error/MainWindow __init__: " + str(sys.exc_info()[0]))
-            #traceback.print_exc()
             LOG( LOG_NOTICE, "Window::__init__: Exception durant la connection FTP" )
             LOG( LOG_ERROR, "Impossible de se connecter au serveur FTP: %s", self.host )
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
 
         # Close the Loading Window
-        dialogUI.close()
+        DIALOG_PROGRESS.close()
 
         # Capturons le contenu des sous-repertoires plugins
         for type in self.downloadTypeList:
@@ -1130,22 +937,27 @@ class MainWindow(xbmcgui.Window):
         Remonte l'arborescence et quitte le script
         """
         try:
+            button_code_F1_keyboard = 61552
+            #methode temporaire "button_code_F1_keyboard", le temps de creer un contextmenu en windowxml. Qui va inclure le dialog_script_settings
+            if action.getButtonCode() == button_code_F1_keyboard:
+                import dialog_direct_infos
+                dialog_direct_infos.show_direct_infos()
+                #on a plus besoin, on le delete
+                del dialog_direct_infos
+
             if action==ACTION_CONTEXT_MENU:
-                #print "Menu contextuel"
-                winSettingsVideo = SettingsWindow()
-                winSettingsVideo.setWindow(self.configManager) # include doModal call
-                del winSettingsVideo
-                
+                import dialog_script_settings
+                dialog_script_settings.show_settings( self )
+                #on a plus besoin du settins, on le delete
+                del dialog_script_settings
+
             if action == ACTION_PREVIOUS_MENU:
                 # Sortie du script
 
                 # On se deconnecte du serveur pour etre plus propre
                 try:
                     self.passionFTPCtrl.closeConnection()
-                except Exception, e:
-                    #print "Window::onAction: Exception durant la fermeture de la connection FTP",e
-                    #print ("error/MainWindow onAction: " + str(sys.exc_info()[0]))
-                    #traceback.print_exc()
+                except:
                     LOG( LOG_ERROR, "Exception durant la fermeture de la connection FTP" )
                     EXC_INFO( LOG_ERROR, sys.exc_info(), self )
                 # On efface le repertoire cache
@@ -1162,10 +974,7 @@ class MainWindow(xbmcgui.Window):
                             try:
                                 #newPluginList = list(set(self.pluginsExitList[self.downloadTypeList.index(type)]).difference(set(self.pluginsInitList[self.downloadTypeList.index(type)])))
                                 newPluginList = self.pluginsDirSpyList[self.downloadTypeList.index(type)].getNewItemList()
-                            except Exception, e: 
-                                #print "Exception durant la comparaison des repertoires plugin avant et apres installation"
-                                #print e
-                                #traceback.print_exc(file = sys.stdout)
+                            except:
                                 LOG( LOG_ERROR, "Exception durant la comparaison des repertoires plugin avant et apres installation" )
                                 EXC_INFO( LOG_ERROR, sys.exc_info(), self )
                             if len(newPluginList) > 0:
@@ -1226,10 +1035,7 @@ class MainWindow(xbmcgui.Window):
                     self.type = "Plugins"
                     try:
                         self.updateList()
-                    except Exception, e:
-                        #print "Window::onAction ACTION_PREVIOUS_MENU: Exception durant updateList()",e
-                        #print ("error/onaction: " + str(sys.exc_info()[0]))
-                        #traceback.print_exc()
+                    except:
                         LOG( LOG_ERROR, "Window::onAction::ACTION_PREVIOUS_MENU: Exception durant updateList()" )
                         EXC_INFO( LOG_ERROR, sys.exc_info(), self )
                 else:
@@ -1237,17 +1043,11 @@ class MainWindow(xbmcgui.Window):
                     self.type = "racine"
                     try:
                         self.updateList()
-                    except Exception, e:
-                        #print "Window::onAction ACTION_PREVIOUS_MENU: Exception durant updateList()",e
-                        #print ("error/onaction: " + str(sys.exc_info()[0]))
-                        #traceback.print_exc()
+                    except:
                         LOG( LOG_ERROR, "Window::onAction::ACTION_PREVIOUS_MENU: Exception durant updateList()" )
                         EXC_INFO( LOG_ERROR, sys.exc_info(), self )
                 
-        except Exception, e:
-            #print "Window::onAction: Exception",e
-            #print ("error/onaction: " + str(sys.exc_info()[0]))
-            #traceback.print_exc()
+        except:
             LOG( LOG_ERROR, "Window::onAction: Exception" )
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
 
@@ -1312,13 +1112,10 @@ class MainWindow(xbmcgui.Window):
                         isDownloaded,localDirPath = self.passionFTPCtrl.isAlreadyDownloaded(source, self.remotedirList[self.downloadTypeList.index(self.type)], self.downloadTypeList.index(self.type))
                     
                         if (isDownloaded) and (localDirPath != None):
-                            #print "Repertoire deja present localement"
                             LOG( LOG_NOTICE, "Repertoire deja present localement" )
                             # On traite le repertorie deja present en demandant a l'utilisateur de choisir
                             continueDownload = self.processOldDownload(localDirPath)
                         else:
-                            #print localDirPath
-                            #print isDownloaded
                             LOG( LOG_NOTICE, "localDirPath: %s", repr( localDirPath ) )
                             LOG( LOG_NOTICE, "isDownloaded: %s", repr( isDownloaded ) )
 
@@ -1344,7 +1141,6 @@ class MainWindow(xbmcgui.Window):
                                 message3 = "Voulez-vous supprimer les fichiers déjà téléchargés?"
                                 dialogInfo = xbmcgui.Dialog()
                                 if dialogInfo.yesno(title, message1, message2,message3):
-                                    #print "Suppression du repertoire %s"%localDirPath
                                     LOG( LOG_WARNING, "Suppression du repertoire %s", localDirPath )
                                     dialogInfo2 = xbmcgui.Dialog()
                                     if os.path.isdir(localDirPath):
@@ -1409,40 +1205,31 @@ class MainWindow(xbmcgui.Window):
                                         
                                         if dirName == "":
                                             installError = "Erreur durant l'extraction de %s"%archive
-                                            #print "Erreur durant l'extraction de %s - impossible d'extraire le nom du repertoire"%archive
                                             LOG( LOG_ERROR, "Erreur durant l'extraction de %s - impossible d'extraire le nom du repertoire", archive )
                                         else:
                                             destination = os.path.join(self.localdirList[self.downloadTypeList.index(self.type)],dirName)
-                                            #print destination
                                             LOG( LOG_NOTICE, destination )
                                             if os.path.exists(destination):
                                                 # Repertoire déja présent
                                                 # On demande a l'utilisateur ce qu'il veut faire
                                                 if self.processOldDownload(destination):
                                                     try:
-                                                        #print "Extraction de %s vers %s"%(archive,self.localdirList[self.downloadTypeList.index(self.type)])
                                                         LOG( LOG_NOTICE, "Extraction de %s vers %s", archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
                                                         self.extracter.extract(archive,self.localdirList[self.downloadTypeList.index(self.type)])
                                                     except:
                                                         installError = "Exception durant l'extraction de %s"%archive
-                                                        #print ("error/onControl: " + str(sys.exc_info()[0]))
-                                                        #traceback.print_exc()
                                                         LOG( LOG_ERROR, installError )
                                                         EXC_INFO( LOG_ERROR, sys.exc_info(), self )
                                                 else:
                                                     installCancelled = True
-                                                    #print "L'installation de %s a été annulée par l'utilisateur"%downloadItem 
                                                     LOG( LOG_WARNING, "L'installation de %s a été annulée par l'utilisateur", downloadItem  )
                                             else:
                                                 # Le Repertoire n'est pas present localement -> on peut deplacer le repertoire depuis cache
                                                 try:
-                                                    #print "Extraction de %s vers %s"%(archive,self.localdirList[self.downloadTypeList.index(self.type)])
                                                     LOG( LOG_NOTICE, "Extraction de %s vers %s", archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
                                                     self.extracter.extract(archive,self.localdirList[self.downloadTypeList.index(self.type)])
                                                 except:
                                                     installError = "Exception durant l'extraction de %s"%archive
-                                                    #print ("error/onControl: " + str(sys.exc_info()[0]))
-                                                    #traceback.print_exc()
                                                     LOG( LOG_ERROR, installError )
                                                     EXC_INFO( LOG_ERROR, sys.exc_info(), self )
                                         
@@ -1467,17 +1254,14 @@ class MainWindow(xbmcgui.Window):
                                     self.localdirList[self.downloadTypeList.index(self.type)]= self.targetDir
                                 
         except:
-            #print ("error/onControl: " + str(sys.exc_info()[0]))
-            traceback.print_exc()
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
-            
+
     def updateProgress_cb(self, percent, dp=None):
         """
         Met a jour la barre de progression
         """
         #TODO Dans le futur, veut t'on donner la responsabilite a cette fonction le calcul du pourcentage????
         try:
-            #print percent
             dp.update(percent)
         except:
             percent = 100
@@ -1488,22 +1272,18 @@ class MainWindow(xbmcgui.Window):
         Mise a jour de la liste affichee
         """
         # On verifie self.type qui correspond au type de liste que l'on veut afficher
-        dialogUI = xbmcgui.DialogProgress()
-        dialogUI.create("Installeur Passion-XBMC", "Chargement des informations", "Veuillez patienter...")
+        if not xbmc.getCondVisibility( "Window.IsActive(progressdialog)" ):
+            DIALOG_PROGRESS.create( _( 32000 ), _( 32104 ), _( 32110 ) )
         if (self.type  == "racine"):
             #liste virtuelle des sections
-#            del self.curDirList[:] # on vide la liste
+            #del self.curDirList[:] # on vide la liste
             self.curDirList = self.racineDisplayList
             
         elif (self.type  == "Plugins"):
             #liste virtuelle des sections
             self.curDirList = self.pluginDisplayList
-            
         elif (self.type == "Plugins Musique") or (self.type == "Plugins Images") or (self.type == "Plugins Programmes") or (self.type == "Plugins Vidéos"):
             self.curDirList = self.passionFTPCtrl.getDirList(self.remotedirList[self.pluginDisplayList[self.index]])
-            #print "self.curDirList pour une section"
-            #print self.curDirList
-            
         else:
             #liste virtuelle des sections
             #del self.curDirList[:] # on vide la liste
@@ -1608,7 +1388,7 @@ class MainWindow(xbmcgui.Window):
         
         # Set Focus on list
         self.setFocus(self.list)
-        dialogUI.close()
+        DIALOG_PROGRESS.close()
 
     def deleteDir(self,path):
         """
@@ -1627,25 +1407,18 @@ class MainWindow(xbmcgui.Window):
                     elif os.path.isdir(itemFullPath):
                         # Repertoire
                         self.deleteDir(itemFullPath)
-                except Exception, e: 
+                except:
                     result = False
-                    #print "deleteDir: Exception la suppression du reperoire: %s"%path
-                    #print e
-                    #traceback.print_exc(file = sys.stdout)
                     LOG( LOG_ERROR, "deleteDir: Exception la suppression du reperoire: %s", path )
                     EXC_INFO( LOG_ERROR, sys.exc_info(), self )
             # Suppression du repertoire pere
-            try :
+            try:
                 os.rmdir(path)
-            except Exception, e: 
+            except:
                 result = False
-                #print "deleteDir: Exception la suppression du reperoire: %s"%path
-                #print e
-                #traceback.print_exc(file = sys.stdout)
                 LOG( LOG_ERROR, "deleteDir: Exception la suppression du reperoire: %s", path )
                 EXC_INFO( LOG_ERROR, sys.exc_info(), self )
         else:
-            #print "deleteDir: %s n'est pas un repertoire"%path
             LOG( LOG_ERROR, "deleteDir: %s n'est pas un repertoire", path )
             result = False
             
@@ -1669,15 +1442,11 @@ class MainWindow(xbmcgui.Window):
                     elif os.path.isdir(itemFullPath):
                         # Repertoire
                         self.deleteDir(itemFullPath)
-                except Exception, e: 
+                except:
                     result = False
-                    #print "delDirContent: Exception la suppression du contenu du reperoire: %s"%path
-                    #print e
-                    #traceback.print_exc(file = sys.stdout)
                     LOG( LOG_ERROR, "delDirContent: Exception la suppression du contenu du reperoire: %s", path )
                     EXC_INFO( LOG_ERROR, sys.exc_info(), self )
         else:
-            #print "delDirContent: %s n'est pas un repertoire"%path
             LOG( LOG_ERROR, "delDirContent: %s n'est pas un repertoire", path )
             result = False
             
@@ -1692,9 +1461,7 @@ class MainWindow(xbmcgui.Window):
         try:
             if not os.path.exists(folder):
                 os.makedirs(folder)
-        except Exception, e:
-            #print("verifrep - Exception durant la creation du repertoire: " + folder)
-            #print(e)
+        except:
             LOG( LOG_ERROR, "verifrep - Exception durant la creation du repertoire: %s", folder )
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
             pass
@@ -1706,7 +1473,6 @@ class MainWindow(xbmcgui.Window):
         Wtest = os.access(path,os.W_OK)
         if Wtest == True:
             self.rightstest = True
-            #print "rightest OK"
             LOG( LOG_NOTICE, "rightest OK" )
         else:
             dialog = xbmcgui.Dialog()
@@ -1720,10 +1486,7 @@ class MainWindow(xbmcgui.Window):
                 try:
                     os.system(PassStr + ChmodStr)
                     self.rightstest = True
-
-                except Exception, e:
-                    #print "erreur CHMOD %s"%path
-                    #print e
+                except:
                     self.rightstest = False
                     LOG( LOG_ERROR, "erreur CHMOD %s", path )
                     EXC_INFO( LOG_ERROR, sys.exc_info(), self )
@@ -1765,7 +1528,6 @@ class MainWindow(xbmcgui.Window):
                 continueDownload = False
         else:
             # Fichier
-            #print "processOldDownload: Fichier : %s - ce cas n'est pas encore traité"%localAbsDirPath
             LOG( LOG_ERROR, "processOldDownload: Fichier : %s - ce cas n'est pas encore traité", localAbsDirPath )
             #TODO: cas a implementer
             
@@ -1843,31 +1605,18 @@ graphicdesigner = 'Jahnrik'
 ##############################################################################
 #                   Verification parametres locaux et serveur                #
 ##############################################################################
-"""
-print "FTP host: %s"%host
-print "Chemin ou les themes seront telecharges: %s"%themesDir
-
-print("===================================================================")
-print("")
-print("        Passion XBMC Installeur " + version + " STARTS")
-print("        Auteurs : "+ author)
-print("        Graphic Design by : "+ graphicdesigner)
-print("")
-print("===================================================================")
-"""
-
-LOG( LOG_INFO, "===================================================================" )
-LOG( LOG_INFO, "        Passion XBMC Installeur %s STARTS", version )
-LOG( LOG_INFO, "        Auteurs : %s", author )
-LOG( LOG_INFO, "        Graphic Design by : %s", graphicdesigner )
-LOG( LOG_INFO, "===================================================================" )
+#les infos auteur, version et graphic , etc sont deja dans le LOG et dans le future dans le "dialog_credits.py + passion-dialog_credits.xml"
+#LOG( LOG_INFO, "===================================================================" )
+#LOG( LOG_INFO, "        Passion XBMC Installeur %s STARTS", version )
+#LOG( LOG_INFO, "        Auteurs : %s", author )
+#LOG( LOG_INFO, "        Graphic Design by : %s", graphicdesigner )
+#LOG( LOG_INFO, "===================================================================" )
 
 LOG( LOG_INFO, "FTP host: %s", host )
 LOG( LOG_INFO, "Chemin ou les themes seront telecharges: %s", themesDir )
 
 if __name__ == "__main__":
     #ici on pourrait faire des action si le script était lancé en tant que programme
-    #print "demarrage du script INSTALLEUR.py en tant que programme"
     LOG( LOG_INFO, "demarrage du script INSTALLEUR.py en tant que programme" )
     go()
 else:
