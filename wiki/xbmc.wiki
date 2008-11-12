@@ -1,0 +1,314 @@
+{| summary="heading" width="100%" cellpadding="2"
+|- bgcolor="#7799ee"
+| valign="bottom" | <br /><font color="#ffffff" face="helvetica, arial"><br /><big><big>'''xbmc'''</big></big> (version 1.3, 15 November 2005)</font>
+| align="right" valign="bottom" | <font color="#ffffff" face="helvetica, arial">[. index]<br />(built-in)</font>
+|}
+
+{| summary="section" width="100%" cellpadding="2"
+|- bgcolor="#ee77aa"
+| colspan="3" valign="bottom" | <br /><font color="#ffffff" face="helvetica, arial"><big>'''Classes'''</big></font>
+|-
+| bgcolor="#ee77aa" |
+| width="100%" |
+; <font face="helvetica, arial">[__builtin__.html#object __builtin__.object] </font>
+: ;; <font face="helvetica, arial">[xbmc.html#InfoTagMusic InfoTagMusic] </font>
+;; <font face="helvetica, arial">[xbmc.html#InfoTagVideo InfoTagVideo] </font>
+;; <font face="helvetica, arial">[xbmc.html#Keyboard Keyboard] </font>
+;; <font face="helvetica, arial">[xbmc.html#Language Language] </font>
+;; <font face="helvetica, arial">[xbmc.html#PlayList PlayList] </font>
+;; <font face="helvetica, arial">[xbmc.html#PlayListItem PlayListItem] </font>
+;; <font face="helvetica, arial">[xbmc.html#Player Player] </font>{| summary="section" width="100%" cellpadding="2"
+|- bgcolor="#ffc8d8"
+| colspan="3" valign="bottom" | <br /><font color="#000000" face="helvetica, arial">class '''InfoTagMusic'''([__builtin__.html#object __builtin__.object])</font>
+|- bgcolor="#ffc8d8"
+| rowspan="2" |
+| colspan="2" | <tt>[#InfoTagMusic InfoTagMusic] class.<br /></tt>
+|-
+| width="100%" |
+Methods defined here:<br />
+; '''getAlbum'''(...)
+: <tt>[#InfoTagMusic-getAlbum getAlbum]() -- returns a string.</tt>
+; '''getArtist'''(...)
+: <tt>[#InfoTagMusic-getArtist getArtist]() -- returns a string.</tt>
+; '''getDisc'''(...)
+: <tt>[#InfoTagMusic-getDisc getDisc]() -- returns an integer.</tt>
+; '''getDuration'''(...)
+: <tt>[#InfoTagMusic-getDuration getDuration]() -- returns an integer.</tt>
+; '''getGenre'''(...)
+: <tt>[#InfoTagMusic-getAlbum getAlbum]() -- returns a string.</tt>
+; '''getReleaseDate'''(...)
+: <tt>[#InfoTagMusic-getReleaseDate getReleaseDate]() -- returns a string.</tt>
+; '''getTitle'''(...)
+: <tt>[#InfoTagMusic-getTitle getTitle]() -- returns a string.</tt>
+; '''getTrack'''(...)
+: <tt>[#InfoTagMusic-getTrack getTrack]() -- returns an integer.</tt>
+; '''getURL'''(...)
+: <tt>[#InfoTagMusic-getURL getURL]() -- returns a string.</tt>
+|}{| summary="section" width="100%" cellpadding="2"
+|- bgcolor="#ffc8d8"
+| colspan="3" valign="bottom" | <br /><font color="#000000" face="helvetica, arial">class '''InfoTagVideo'''([__builtin__.html#object __builtin__.object])</font>
+|- bgcolor="#ffc8d8"
+| rowspan="2" |
+| colspan="2" | <tt>[#InfoTagVideo InfoTagVideo] class.<br /></tt>
+|-
+| width="100%" |
+Methods defined here:<br />
+; '''getCast'''(...)
+: <tt>[#InfoTagVideo-getCast getCast]() -- returns a string.</tt>
+; '''getDirector'''(...)
+: <tt>[#InfoTagVideo-getDirector getDirector]() -- returns a string.</tt>
+; '''getFile'''(...)
+: <tt>[#InfoTagVideo-getFile getFile]() -- returns a string.</tt>
+; '''getGenre'''(...)
+: <tt>[#InfoTagVideo-getGenre getGenre]() -- returns a string.</tt>
+; '''getIMDBNumber'''(...)
+: <tt>[#InfoTagVideo-getIMDBNumber getIMDBNumber]() -- returns a string.</tt>
+; '''getPath'''(...)
+: <tt>[#InfoTagVideo-getPath getPath]() -- returns a string.</tt>
+; '''getPictureURL'''(...)
+: <tt>[#InfoTagVideo-getPictureURL getPictureURL]() -- returns a string.</tt>
+; '''getPlot'''(...)
+: <tt>[#InfoTagVideo-getPlot getPlot]() -- returns a string.</tt>
+; '''getPlotOutline'''(...)
+: <tt>[#InfoTagVideo-getPlotOutline getPlotOutline]() -- returns a string.</tt>
+; '''getRating'''(...)
+: <tt>[#InfoTagVideo-getRating getRating]() -- returns a float.</tt>
+; '''getTagLine'''(...)
+: <tt>[#InfoTagVideo-getTagLine getTagLine]() -- returns a string.</tt>
+; '''getTitle'''(...)
+: <tt>[#InfoTagVideo-getTitle getTitle]() -- returns a string.</tt>
+; '''getVotes'''(...)
+: <tt>[#InfoTagVideo-getVotes getVotes]() -- returns a string.</tt>
+; '''getWritingCredits'''(...)
+: <tt>[#InfoTagVideo-getWritingCredits getWritingCredits]() -- returns a string.</tt>
+; '''getYear'''(...)
+: <tt>[#InfoTagVideo-getYear getYear]() -- returns a integer.</tt>
+|}{| summary="section" width="100%" cellpadding="2"
+|- bgcolor="#ffc8d8"
+| colspan="3" valign="bottom" | <br /><font color="#000000" face="helvetica, arial">class '''Keyboard'''([__builtin__.html#object __builtin__.object])</font>
+|- bgcolor="#ffc8d8"
+| rowspan="2" |
+| colspan="2" | <tt>[#Keyboard Keyboard] class.<br /><br />[#Keyboard Keyboard]([default, heading, hidden]) -- Creates a new [#Keyboard Keyboard] [__builtin__.html#object object] with default text<br /> heading and hidden input flag if supplied.<br /><br /> default : [opt] string - default text entry.<br /> heading : [opt] string - keyboard heading.<br /> hidden : [opt] boolean - True for hidden text entry.<br /><br /> example:<br /> - kb = xbmc.[#Keyboard Keyboard]('default', 'heading', True)<br /> - kb.[#Keyboard-setDefault setDefault]('password') # optional<br /> - kb.[#Keyboard-setHeading setHeading]('Enter password') # optional<br /> - kb.[#Keyboard-setHiddenInput setHiddenInput](True) # optional<br /> - kb.[#Keyboard-doModal doModal]()<br /> - if (kb.[#Keyboard-isConfirmed isConfirmed]()):<br /> - text = kb.[#Keyboard-getText getText]()<br /></tt>
+|-
+| width="100%" |
+Methods defined here:<br />
+; '''doModal'''(...)
+: <tt>[#Keyboard-doModal doModal]() -- Show keyboard and wait for user action.<br /><br /> example:<br /> - kb.[#Keyboard-doModal doModal]()</tt>
+; '''getText'''(...)
+: <tt>[#Keyboard-getText getText]() -- Returns the user input as a string.<br /><br /> *Note, This will always return the text entry even if you cancel the keyboard.<br /> Use the [#Keyboard-isConfirmed isConfirmed]() method to check if user cancelled the keyboard.<br /><br /> example:<br /> - text = kb.[#Keyboard-getText getText]()</tt>
+; '''isConfirmed'''(...)
+: <tt>[#Keyboard-isConfirmed isConfirmed]() -- Returns False if the user cancelled the input.<br /><br /> example:<br /> - if (kb.[#Keyboard-isConfirmed isConfirmed]()):</tt>
+; '''setDefault'''(...)
+: <tt>[#Keyboard-setDefault setDefault](default) -- Set the default text entry.<br /><br /> default : string - default text entry.<br /><br /> example:<br /> - kb.[#Keyboard-setDefault setDefault]('password')</tt>
+; '''setHeading'''(...)
+: <tt>[#Keyboard-setHeading setHeading](heading) -- Set the keyboard heading.<br /><br /> heading : string - keyboard heading.<br /><br /> example:<br /> - kb.[#Keyboard-setHeading setHeading]('Enter password')</tt>
+; '''setHiddenInput'''(...)
+: <tt>[#Keyboard-setHiddenInput setHiddenInput](hidden) -- Allows hidden text entry.<br /><br /> hidden : boolean - True for hidden text entry.<br /> example:<br /> - kb.[#Keyboard-setHiddenInput setHiddenInput](True)</tt>
+----
+ Data and other attributes defined here:<br />
+; '''__new__''' = <built-in method __new__ of type object>
+: <tt>T.[#Keyboard-__new__ __new__](S, ...) -> a new [__builtin__.html#object object] with type S, a subtype of T</tt>
+|}{| summary="section" width="100%" cellpadding="2"
+|- bgcolor="#ffc8d8"
+| colspan="3" valign="bottom" | <br /><font color="#000000" face="helvetica, arial">class '''Language'''([__builtin__.html#object __builtin__.object])</font>
+|- bgcolor="#ffc8d8"
+| rowspan="2" |
+| colspan="2" | <tt>[#Language Language] class.<br /><br />[#Language Language](scriptPath, defaultLanguage) -- Creates a new [#Language Language] class.<br /><br /> scriptPath : string - path to script. (eg os.getcwd())<br /> defaultLanguage : [opt] string - default language to fallback to. (default=English)<br /><br /> *Note, language folder structure is eg(language/English/strings.xml)<br /><br /> You can use the above as keywords for arguments and skip certain optional arguments.<br /> Once you use a keyword, all following arguments require the keyword.<br /><br /> example:<br /> - self.'''Language''' = xbmc.[#Language Language](os.getcwd())<br /></tt>
+|-
+| width="100%" |
+Methods defined here:<br />
+; '''getLocalizedString'''(...)
+: <tt>[#Language-getLocalizedString getLocalizedString](id) -- Returns a localized 'unicode string'.<br /><br /> id : integer - id# for string you want to localize.<br /><br /> *Note, [#Language-getLocalizedString getLocalizedString]() will fallback to XBMC strings if no string found.<br /><br /> You can use the above as keywords for arguments and skip certain optional arguments.<br /> Once you use a keyword, all following arguments require the keyword.<br /><br /> example:<br /> - locstr = self.'''Language'''.[#Language-getLocalizedString getLocalizedString](id=6)</tt>
+----
+ Data and other attributes defined here:<br />
+; '''__new__''' = <built-in method __new__ of type object>
+: <tt>T.[#Language-__new__ __new__](S, ...) -> a new [__builtin__.html#object object] with type S, a subtype of T</tt>
+|}{| summary="section" width="100%" cellpadding="2"
+|- bgcolor="#ffc8d8"
+| colspan="3" valign="bottom" | <br /><font color="#000000" face="helvetica, arial">class '''PlayList'''([__builtin__.html#object __builtin__.object])</font>
+|- bgcolor="#ffc8d8"
+| rowspan="2" |
+| colspan="2" | <tt>[#PlayList PlayList] class.<br /><br />[#PlayList PlayList](int playlist) -- retrieve a reference from a valid xbmc playlist<br /><br /> int playlist can be one of the next values:<br /><br /> 0 : xbmc.PLAYLIST_MUSIC<br /> 1 : xbmc.PLAYLIST_VIDEO<br /><br /> Use [#PlayList PlayList][int position] or [#PlayList-__getitem__ __getitem__](int position) to get a [#PlayListItem PlayListItem].<br /></tt>
+|-
+| width="100%" |
+Methods defined here:<br />
+; '''__getitem__'''(...)
+: <tt>x.[#PlayList-__getitem__ __getitem__](y) <==> x[y]</tt>
+; '''__len__'''(...)
+: <tt>x.[#PlayList-__len__ __len__]() <==> len(x)</tt>
+; '''add'''(...)
+: <tt>[#PlayList-add add](url[, title, duration]) -- Add's a new file to the playlist.(Depreciated)<br />[#PlayList-add add](url[, listitem]) -- Add's a new file to the playlist.(Preferred method)<br /><br /> url : string - filename or url to add.<br /> listitem : [opt] listitem - used with setInfo() to set different infolabels.<br /><br /> example:<br /> - playlist = xbmc.[#PlayList PlayList]( 1 )<br /> - listitem = xbmcgui.ListItem('Ironman', thumbnailImage='F:\\movies\\Ironman.tbn')<br /> - listitem.setInfo('video', {'Title': 'Ironman', 'Genre': 'Science Fiction'})<br /> - playlist.[#PlayList-add add](url, listitem)</tt>
+; '''clear'''(...)
+: <tt>[#PlayList-clear clear]() -- clear all items in the playlist.</tt>
+; '''getposition'''(...)
+: <tt>[#PlayList-getposition getposition]() -- returns the position of the current song in this playlist.</tt>
+; '''load'''(...)
+: <tt>[#PlayList-load load](filename) -- Load a playlist.<br /><br /> clear current playlist and copy items from the file to this Playlist<br /> filename can be like .pls or .m3u ...<br /> returns False if unable to load playlist</tt>
+; '''remove'''(...)
+: <tt>[#PlayList-remove remove](filename) -- remove an item with this filename from the playlist.</tt>
+; '''shuffle'''(...)
+: <tt>[#PlayList-shuffle shuffle]() -- shuffle the playlist.</tt>
+; '''size'''(...)
+: <tt>[#PlayList-size size]() -- returns the total number of PlayListItems in this playlist.</tt>
+; '''unshuffle'''(...)
+: <tt>[#PlayList-unshuffle unshuffle]() -- unshuffle the playlist.</tt>
+----
+ Data and other attributes defined here:<br />
+; '''__new__''' = <built-in method __new__ of type object>
+: <tt>T.[#PlayList-__new__ __new__](S, ...) -> a new [__builtin__.html#object object] with type S, a subtype of T</tt>
+|}{| summary="section" width="100%" cellpadding="2"
+|- bgcolor="#ffc8d8"
+| colspan="3" valign="bottom" | <br /><font color="#000000" face="helvetica, arial">class '''PlayListItem'''([__builtin__.html#object __builtin__.object])</font>
+|- bgcolor="#ffc8d8"
+| rowspan="2" |
+| colspan="2" | <tt>[#PlayListItem PlayListItem] class.<br /><br />[#PlayListItem PlayListItem]() -- Creates a new PlaylistItem which can be added to a [#PlayList PlayList].<br /></tt>
+|-
+| width="100%" |
+Methods defined here:<br />
+; '''getdescription'''(...)
+: <tt>[#PlayListItem-getdescription getdescription]() -- Returns the description of this [#PlayListItem PlayListItem].</tt>
+; '''getduration'''(...)
+: <tt>[#PlayListItem-getduration getduration]() -- Returns the duration of this [#PlayListItem PlayListItem].</tt>
+; '''getfilename'''(...)
+: <tt>[#PlayListItem-getfilename getfilename]() -- Returns the filename of this [#PlayListItem PlayListItem].</tt>
+----
+ Data and other attributes defined here:<br />
+; '''__new__''' = <built-in method __new__ of type object>
+: <tt>T.[#PlayListItem-__new__ __new__](S, ...) -> a new [__builtin__.html#object object] with type S, a subtype of T</tt>
+|}{| summary="section" width="100%" cellpadding="2"
+|- bgcolor="#ffc8d8"
+| colspan="3" valign="bottom" | <br /><font color="#000000" face="helvetica, arial">class '''Player'''([__builtin__.html#object __builtin__.object])</font>
+|- bgcolor="#ffc8d8"
+| rowspan="2" |
+| colspan="2" | <tt>[#Player Player] class.<br /><br />[#Player Player]([core]) -- Creates a new [#Player Player] with as default the xbmc music playlist.<br /><br /> core : (optional) Use a specified playcore instead of letting xbmc decide the playercore to use.<br /> : - xbmc.PLAYER_CORE_AUTO<br /> : - xbmc.PLAYER_CORE_DVDPLAYER<br /> : - xbmc.PLAYER_CORE_MPLAYER<br /> : - xbmc.PLAYER_CORE_PAPLAYER<br /></tt>
+|-
+| width="100%" |
+Methods defined here:<br />
+; '''getMusicInfoTag'''(...)
+: <tt>[#Player-getMusicInfoTag getMusicInfoTag]() -- returns the MusicInfoTag of the current playing 'Song'.<br /><br /> Throws: Exception, if player is not playing a file or current file is not a music file.</tt>
+; '''getPlayingFile'''(...)
+: <tt>[#Player-getPlayingFile getPlayingFile]() -- returns the current playing file as a string.<br /><br /> Throws: Exception, if player is not playing a file.</tt>
+; '''getTime'''(...)
+: <tt>[#Player-getTime getTime]() -- Returns the current time of the current playing media as fractional seconds.<br /><br /> Throws: Exception, if player is not playing a file.</tt>
+; '''getTotalTime'''(...)
+: <tt>[#Player-getTotalTime getTotalTime]() -- Returns the total time of the current playing media in<br /> seconds. This is only accurate to the full second.<br /><br /> Throws: Exception, if player is not playing a file.</tt>
+; '''getVideoInfoTag'''(...)
+: <tt>[#Player-getVideoInfoTag getVideoInfoTag]() -- returns the VideoInfoTag of the current playing Movie.<br /><br /> Throws: Exception, if player is not playing a file or current file is not a movie file.<br /><br /> Note, this doesn't work yet, it's not tested</tt>
+; '''isPlaying'''(...)
+: <tt>[#Player-isPlayingAudio isPlayingAudio]() -- returns True is xbmc is playing a file.</tt>
+; '''isPlayingAudio'''(...)
+: <tt>[#Player-isPlayingAudio isPlayingAudio]() -- returns True is xbmc is playing an audio file.</tt>
+; '''isPlayingVideo'''(...)
+: <tt>[#Player-isPlayingVideo isPlayingVideo]() -- returns True if xbmc is playing a video.</tt>
+; '''onPlayBackEnded'''(...)
+: <tt>[#Player-onPlayBackEnded onPlayBackEnded]() -- onPlayBackEnded method.<br /><br /> Will be called when xbmc stops playing a file</tt>
+; '''onPlayBackStarted'''(...)
+: <tt>[#Player-onPlayBackStarted onPlayBackStarted]() -- onPlayBackStarted method.<br /><br /> Will be called when xbmc starts playing a file</tt>
+; '''onPlayBackStopped'''(...)
+: <tt>[#Player-onPlayBackStopped onPlayBackStopped]() -- onPlayBackStopped method.<br /><br /> Will be called when user stops xbmc playing a file</tt>
+; '''pause'''(...)
+: <tt>[#Player-pause pause]() -- Pause playing.</tt>
+; '''play'''(...)
+: <tt>[#Player-play play]([item, listitem]) -- Play this item.<br /><br /> item : [opt] string - filename, url or playlist.<br /> listitem : [opt] listitem - used with setInfo() to set different infolabels.<br /><br /> *Note, If item is not given then the [#Player Player] will try to play the current item<br /> in the current playlist.<br /><br /> example:<br /> - listitem = xbmcgui.ListItem('Ironman')<br /> - listitem.setInfo('video', {'Title': 'Ironman', 'Genre': 'Science Fiction'})<br /> - xbmc.[#Player Player]( xbmc.PLAYER_CORE_MPLAYER ).[#Player-play play](url, listitem)</tt>
+; '''playnext'''(...)
+: <tt>[#Player-playnext playnext]() -- Play next item in playlist.</tt>
+; '''playprevious'''(...)
+: <tt>[#Player-playprevious playprevious]() -- Play previous item in playlist.</tt>
+; '''playselected'''(...)
+: <tt>[#Player-playselected playselected]() -- Play a certain item from the current playlist.</tt>
+; '''seekTime'''(...)
+: <tt>[#Player-seekTime seekTime]() -- Seeks the specified amount of time as fractional seconds.<br /> The time specified is relative to the beginning of the<br /> currently playing media file.<br /><br /> Throws: Exception, if player is not playing a file.</tt>
+; '''stop'''(...)
+: <tt>[#Player-stop stop]() -- Stop playing.</tt>
+----
+ Data and other attributes defined here:<br />
+; '''__new__''' = <built-in method __new__ of type object>
+: <tt>T.[#Player-__new__ __new__](S, ...) -> a new [__builtin__.html#object object] with type S, a subtype of T</tt>
+|}
+|}
+
+{| summary="section" width="100%" cellpadding="2"
+|- bgcolor="#eeaa77"
+| colspan="3" valign="bottom" | <br /><font color="#ffffff" face="helvetica, arial"><big>'''Functions'''</big></font>
+|-
+| bgcolor="#eeaa77" |
+| width="100%" |
+; '''dashboard'''(...)
+: <tt>[#-dashboard dashboard]() -- Boot to dashboard as set in My Pograms/General.<br /><br /> example:<br /> - xbmc.[#-dashboard dashboard]()</tt>
+; '''enableNavSounds'''(...)
+: <tt>[#-enableNavSounds enableNavSounds](yesNo) -- Enables/Disables nav sounds<br /><br /> yesNo : integer - enable (True) or disable (False) nav sounds<br /><br /> example:<br /> - xbmc.[#-enableNavSounds enableNavSounds](True)</tt>
+; '''executebuiltin'''(...)
+: <tt>[#-executebuiltin executebuiltin](function) -- Execute a built in XBMC function.<br /><br /> function : string - builtin function to execute.<br /><br /> List of functions - http://xbmc.org/wiki/?title=List_of_Built_In_Functions<br /><br /> example:<br /> - xbmc.[#-executebuiltin executebuiltin]('XBMC.RunXBE(c:\\avalaunch.xbe)')</tt>
+; '''executehttpapi'''(...)
+: <tt>[#-executehttpapi executehttpapi](httpcommand) -- Execute an HTTP API command.<br /><br /> httpcommand : string - http command to execute.<br /><br /> List of commands - http://xbmc.org/wiki/?title=WebServerHTTP-API#The_Commands<br /><br /> example:<br /> - response = xbmc.[#-executehttpapi executehttpapi]('TakeScreenShot(q:\\test.jpg,0,false,200,-1,90)')</tt>
+; '''executescript'''(...)
+: <tt>[#-executescript executescript](script) -- Execute a python script.<br /><br /> script : string - script filename to execute.<br /><br /> example:<br /> - xbmc.[#-executescript executescript]('q:\\scripts\\update.py')</tt>
+; '''getCacheThumbName'''(...)
+: <tt>[#-getCacheThumbName getCacheThumbName](path) -- Returns a thumb cache filename.<br /><br /> path : string or unicode - path to file<br /><br /> example:<br /> - thumb = xbmc.[#-getCacheThumbName getCacheThumbName]('f:\\videos\\movie.avi')</tt>
+; '''getCondVisibility'''(...)
+: <tt>[#-getCondVisibility getCondVisibility](condition) -- Returns True (1) or False (0) as a bool.<br /><br /> condition : string - condition to check.<br /><br /> List of Conditions - http://xbmc.org/wiki/?title=List_of_Boolean_Conditions<br /><br /> *Note, You can combine two (or more) of the above settings by using "+" as an AND operator,<br /> "|" as an OR operator, "!" as a NOT operator, and "[" and "]" to bracket expressions.<br /><br /> example:<br /> - visible = xbmc.[#-getCondVisibility getCondVisibility]('[Control.IsVisible(41) + !Control.IsVisible(12)]')</tt>
+; '''getDVDState'''(...)
+: <tt>[#-getDVDState getDVDState]() -- Returns the dvd state as an integer.<br /><br /> return values are:<br /> 1 : xbmc.DRIVE_NOT_READY<br /> 16 : xbmc.TRAY_OPEN<br /> 64 : xbmc.TRAY_CLOSED_NO_MEDIA<br /> 96 : xbmc.TRAY_CLOSED_MEDIA_PRESENT<br /><br /> example:<br /> - dvdstate = xbmc.[#-getDVDState getDVDState]()</tt>
+; '''getFreeMem'''(...)
+: <tt>[#-getFreeMem getFreeMem]() -- Returns the amount of free memory in MB as an integer.<br /><br /> example:<br /> - freemem = xbmc.[#-getFreeMem getFreeMem]()</tt>
+; '''getGlobalIdleTime'''(...)
+: <tt>[#-getGlobalIdleTime getGlobalIdleTime]() -- Returns the elapsed idle time in seconds as an integer.<br /><br /> example:<br /> - t = xbmc.[#-getGlobalIdleTime getGlobalIdleTime]()</tt>
+; '''getIPAddress'''(...)
+: <tt>[#-getIPAddress getIPAddress]() -- Returns the current ip address as a string.<br /><br /> example:<br /> - ip = xbmc.[#-getIPAddress getIPAddress]()</tt>
+; '''getInfoImage'''(...)
+: <tt>[#-getInfoImage getInfoImage](infotag) -- Returns a filename including path to the InfoImage's<br /> thumbnail as a string.<br /><br /> infotag : string - infotag for value you want returned.<br /><br /> List of InfoTags - http://xbmc.org/wiki/?title=InfoLabels<br /><br /> example:<br /> - filename = xbmc.[#-getInfoImage getInfoImage]('Weather.Conditions')</tt>
+; '''getInfoLabel'''(...)
+: <tt>[#-getInfoLabel getInfoLabel](infotag) -- Returns an InfoLabel as a string.<br /><br /> infotag : string - infoTag for value you want returned.<br /><br /> List of InfoTags - http://xbmc.org/wiki/?title=InfoLabels<br /><br /> example:<br /> - label = xbmc.[#-getInfoLabel getInfoLabel]('Weather.Conditions')</tt>
+; '''getLanguage'''(...)
+: <tt>[#-getLanguage getLanguage]() -- Returns the active language as a string.<br /><br /> example:<br /> - language = xbmc.[#-getLanguage getLanguage]()</tt>
+; '''getLocalizedString'''(...)
+: <tt>[#-getLocalizedString getLocalizedString](id) -- Returns a localized 'unicode string'.<br /><br /> id : integer - id# for string you want to localize.<br /><br /> *Note, See strings.xml in \language\{yourlanguage}\ for which id<br /> you need for a string.<br /><br /> example:<br /> - locstr = xbmc.[#-getLocalizedString getLocalizedString](6)</tt>
+; '''getRegion'''(...)
+: <tt>[#-getRegion getRegion](id) -- Returns your regions setting as a string for the specified id.<br /><br /> id : string - id of setting to return<br /><br /> *Note, choices are (dateshort, datelong, time, meridiem, tempunit, speedunit)<br /><br /> example:<br /> - date_long_format = xbmc.[#-getRegion getRegion]('datelong')</tt>
+; '''getSkinDir'''(...)
+: <tt>[#-getSkinDir getSkinDir]() -- Returns the active skin directory as a string.<br /><br /> *Note, This is not the full path like 'q:\skins\MediaCenter', but only 'MediaCenter'.<br /><br /> example:<br /> - skindir = xbmc.[#-getSkinDir getSkinDir]()</tt>
+; '''getSupportedMedia'''(...)
+: <tt>[#-getSupportedMedia getSupportedMedia](media) -- Returns the supported file types for the specific media as a string.<br /><br /> media : string - media type<br /><br /> *Note, media type can be (video, music, picture).<br /><br /> The return value is a pipe separated string of filetypes (eg. '.mov|.avi').<br /><br /> You can use the above as keywords for arguments and skip certain optional arguments.<br /> Once you use a keyword, all following arguments require the keyword.<br /><br /> example:<br /> - mTypes = xbmc.[#-getSupportedMedia getSupportedMedia]('video')</tt>
+; '''log'''(...)
+: <tt>[#-log log](msg[, level]) -- Write a string to XBMC's log file.<br /><br /> msg : string - text to output.<br /> level : [opt] integer - log level to ouput at. (default=LOGNOTICE)<br /><br /> *Note, You can use the above as keywords for arguments.<br /><br /> Text is written to the log for the following conditions.<br /> XBMC loglevel == -1 (NONE, nothing at all is logged) XBMC loglevel == 0 (NORMAL, shows LOGNOTICE, LOGERROR, LOGSEVERE and LOGFATAL) XBMC loglevel == 1 (DEBUG, shows all) See pydocs for valid values for level.<br /><br /> example:<br /> - xbmc.[#-log log](msg='This is a test string.', level=xbmc.LOGDEBUG)</tt>
+; '''makeLegalFilename'''(...)
+: <tt>[#-makeLegalFilename makeLegalFilename](filename[, fatX]) -- Returns a legal filename or path as a string.<br /><br /> filename : string - filename/path to make legal<br /> fatX : [opt] bool - True=Xbox file system(Default)<br /><br /> *Note, If fatX is true you should pass a full path. If fatX is false only pass<br /> the basename of the path.<br /><br /> example:<br /> - filename = xbmc.[#-makeLegalFilename makeLegalFilename]('F:\Trailers\Ice Age: The Meltdown.avi')</tt>
+; '''output'''(...)
+: <tt>[#-output output](msg[, level]) -- Write a string to XBMC's log file and the debug window.<br /><br /> msg : string - text to output.<br /> level : [opt] integer - log level to ouput at. (default=LOGNOTICE)<br /><br /> *Note, You can use the above as keywords for arguments.<br /><br /> Text is written to the log for the following conditions.<br /> XBMC loglevel == -1 (NONE, nothing at all is logged) XBMC loglevel == 0 (NORMAL, shows LOGNOTICE, LOGERROR, LOGSEVERE and LOGFATAL) XBMC loglevel == 1 (DEBUG, shows all) See pydocs for valid values for level.<br /><br /> example:<br /> - xbmc.[#-output output](msg='This is a test string.', level=xbmc.LOGDEBUG)</tt>
+; '''playSFX'''(...)
+: <tt>[#-playSFX playSFX](filename) -- Plays a wav file by filename<br /><br /> filename : string - filename of the wav file to play.<br /><br /> example:<br /> - xbmc.[#-playSFX playSFX]('Q:\\scripts\\dingdong.wav')</tt>
+; '''restart'''(...)
+: <tt>[#-restart restart]() -- Restart the xbox.<br /><br /> example:<br /> - xbmc.[#-restart restart]()</tt>
+; '''shutdown'''(...)
+: <tt>[#-shutdown shutdown]() -- Shutdown the xbox.<br /><br /> example:<br /> - xbmc.[#-shutdown shutdown]()</tt>
+; '''skinHasImage'''(...)
+: <tt>[#-skinHasImage skinHasImage](image) -- Returns True if the image file exists in the skin.<br /><br /> image : string - image filename<br /><br /> *Note, If the media resides in a subfolder include it. (eg. home-myfiles\\home-myfiles2.png)<br /><br /> You can use the above as keywords for arguments and skip certain optional arguments.<br /> Once you use a keyword, all following arguments require the keyword.<br /><br /> example:<br /> - exists = xbmc.[#-skinHasImage skinHasImage]('ButtonFocusedTexture.png')</tt>
+; '''sleep'''(...)
+: <tt>[#-sleep sleep](time) -- Sleeps for 'time' msec.<br /><br /> time : integer - number of msec to sleep.<br /><br /> *Note, This is useful if you have for example a [#Player Player] class that is waiting<br /> for onPlayBackEnded() calls.<br /><br /> Throws: PyExc_TypeError, if time is not an integer.<br /><br /> example:<br /> - xbmc.[#-sleep sleep](2000) # sleeps for 2 seconds</tt>
+; '''translatePath'''(...)
+: <tt>[#-translatePath translatePath](path) -- Returns the translated path.<br /><br /> path : string or unicode - Path to format<br /><br /> *Note, Only useful if you are coding for both Linux and the Xbox.<br /> e.g. Converts 'T:\script_data' -> '/home/user/XBMC/UserData/script_data'<br /> on Linux. Would return 'T:\script_data' on the Xbox.<br /><br /> example:<br /> - fpath = xbmc.[#-translatePath translatePath]('T:\script_data')</tt>
+|}
+
+{| summary="section" width="100%" cellpadding="2"
+|- bgcolor="#55aa55"
+| colspan="3" valign="bottom" | <br /><font color="#ffffff" face="helvetica, arial"><big>'''Data'''</big></font>
+|-
+| bgcolor="#55aa55" |
+| width="100%" | '''DRIVE_NOT_READY''' = 1<br />'''LOGDEBUG''' = 0<br />'''LOGERROR''' = 4<br />'''LOGFATAL''' = 6<br />'''LOGINFO''' = 1<br />'''LOGNONE''' = 7<br />'''LOGNOTICE''' = 2<br />'''LOGSEVERE''' = 5<br />'''LOGWARNING''' = 3<br />'''PLAYER_CORE_AUTO''' = 0<br />'''PLAYER_CORE_DVDPLAYER''' = 1<br />'''PLAYER_CORE_MPLAYER''' = 2<br />'''PLAYER_CORE_PAPLAYER''' = 3<br />'''PLAYLIST_MUSIC''' = 0<br />'''PLAYLIST_VIDEO''' = 1<br />'''TRAY_CLOSED_MEDIA_PRESENT''' = 96<br />'''TRAY_CLOSED_NO_MEDIA''' = 64<br />'''TRAY_OPEN''' = 16<br />'''__author__''' = 'J. Mulder <darkie@xbmc.org>'<br />'''__credits__''' = 'XBMC TEAM.'<br />'''__date__''' = '15 November 2005'<br />'''__platform__''' = 'XBOX'<br />'''__version__''' = '1.3'
+|}
+
+{| summary="section" width="100%" cellpadding="2"
+|- bgcolor="#7799ee"
+| colspan="3" valign="bottom" | <br /><font color="#ffffff" face="helvetica, arial"><big>'''Author'''</big></font>
+|-
+| bgcolor="#7799ee" |
+| width="100%" | J. Mulder <darkie@xbmc.org>
+|}
+
+{| summary="section" width="100%" cellpadding="2"
+|- bgcolor="#7799ee"
+| colspan="3" valign="bottom" | <br /><font color="#ffffff" face="helvetica, arial"><big>'''Credits'''</big></font>
+|-
+| bgcolor="#7799ee" |
+| width="100%" | XBMC TEAM.
+|}

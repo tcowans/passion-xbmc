@@ -1,0 +1,53 @@
+{| summary="heading" width="100%" cellpadding="2"
+|- bgcolor="#7799ee"
+| valign="bottom" | <br /><font color="#ffffff" face="helvetica, arial"><br /><big><big>'''xbmcplugin'''</big></big> (version 1.0, 20 August 2007)</font>
+| align="right" valign="bottom" | <font color="#ffffff" face="helvetica, arial">[. index]<br />(built-in)</font>
+|}
+
+{| summary="section" width="100%" cellpadding="2"
+|- bgcolor="#eeaa77"
+| colspan="3" valign="bottom" | <br /><font color="#ffffff" face="helvetica, arial"><big>'''Functions'''</big></font>
+|-
+| bgcolor="#eeaa77" |
+| width="100%" |
+; '''addDirectoryItem'''(...)
+: <tt>[#-addDirectoryItem addDirectoryItem](handle, url, listitem [,isFolder, totalItems]) -- Callback function to pass directory contents back to XBMC.<br /> - Returns a bool for successful completion.<br /><br /> handle : integer - handle the plugin was started with.<br /> url : string - url of the entry. would be plugin:// for another virtual directory<br /> listitem : ListItem - item to add.<br /> isFolder : [opt] bool - True=folder / False=not a folder(default).<br /> totalItems : [opt] integer - total number of items that will be passed.(used for progressbar)<br /><br /> *Note, You can use the above as keywords for arguments and skip certain optional arguments.<br /> Once you use a keyword, all following arguments require the keyword.<br /><br /> example:<br /> - if not xbmcplugin.[#-addDirectoryItem addDirectoryItem](int(sys.argv[1]), 'F:\\Trailers\\300.mov', listitem, totalItems=50): break</tt>
+; '''addSortMethod'''(...)
+: <tt>[#-addSortMethod addSortMethod](handle, sortMethod) -- Adds a sorting method for the media list.<br /><br /> handle : integer - handle the plugin was started with.<br /> sortMethod : integer - number for sortmethod see FileItem.h.<br /><br /> *Note, You can use the above as keywords for arguments and skip certain optional arguments.<br /> Once you use a keyword, all following arguments require the keyword.<br /><br /> example:<br /> - xbmcplugin.[#-addSortMethod addSortMethod](int(sys.argv[1]), xbmcplugin.SORT_METHOD_TITLE)</tt>
+; '''endOfDirectory'''(...)
+: <tt>[#-endOfDirectory endOfDirectory](handle[, succeeded, updateListing, cacheToDisc]) -- Callback function to tell XBMC that the end of the directory listing in a virtualPythonFolder module is reached.<br /><br /> handle : integer - handle the plugin was started with.<br /> succeeded : [opt] bool - True=script completed successfully(Default)/False=Script did not.<br /> updateListing : [opt] bool - True=this folder should update the current listing/False=Folder is a subfolder(Default).<br /> cacheToDisc : [opt] bool - True=Folder will cache if extended time(default)/False=this folder will never cache to disc.<br /><br /> *Note, You can use the above as keywords for arguments and skip certain optional arguments.<br /> Once you use a keyword, all following arguments require the keyword.<br /><br /> example:<br /> - xbmcplugin.[#-endOfDirectory endOfDirectory](int(sys.argv[1]), cacheToDisc=False)</tt>
+; '''getSetting'''(...)
+: <tt>[#-getSetting getSetting](id) -- Returns the value of a setting as a string.<br /><br /> id : string - id of the setting that the module needs to access.<br /><br /> *Note, You can use the above as a keyword.<br /><br /> example:<br /> - apikey = xbmcplugin.[#-getSetting getSetting]('apikey')</tt>
+; '''setContent'''(...)
+: <tt>[#-setContent setContent](handle, content) -- Sets the plugins content.<br /><br /> handle : integer - handle the plugin was started with.<br /> content : string - content type (eg. movies)<br /><br /> *Note, You can use the above as keywords for arguments.<br /> content: files, songs, artists, albums, movies, tvshows, episodes, musicvideos<br /><br /> example:<br /> - xbmcplugin.[#-setContent setContent](int(sys.argv[1]), 'movies')</tt>
+; '''setPluginCategory'''(...)
+: <tt>[#-setPluginCategory setPluginCategory](handle, category) -- Sets the plugins name for skins to display.<br /><br /> handle : integer - handle the plugin was started with.<br /> category : string or unicode - plugins sub category.<br /><br /> *Note, You can use the above as keywords for arguments.<br /><br /> example:<br /> - xbmcplugin.[#-setPluginCategory setPluginCategory](int(sys.argv[1]), 'Comedy')</tt>
+; '''setPluginFanart'''(...)
+: <tt>[#-setPluginFanart setPluginFanart](handle, image, color1, color2, color3) -- Sets the plugins fanart and color for skins to display.<br /><br /> handle : integer - handle the plugin was started with.<br /> image : [opt] string - path to fanart image.<br /> color1 : [opt] hexstring - color1. (e.g. '0xFFFFFFFF')<br /> color2 : [opt] hexstring - color2. (e.g. '0xFFFF3300')<br /> color3 : [opt] hexstring - color3. (e.g. '0xFF000000')<br /><br /> *Note, You can use the above as keywords for arguments.<br /><br /> example:<br /> - xbmcplugin.[#-setPluginFanart setPluginFanart](int(sys.argv[1]), 'q:\\plugins\\Apple movie trailers II\\fanart.png', color2='0xFFFF3300')</tt>
+; '''setProperty'''(...)
+: <tt>[#-setProperty setProperty](handle, key, value) -- Sets a container property for this plugin.<br /><br /> handle : integer - handle the plugin was started with.<br /> key : string - property name.<br /> value : string or unicode - value of property.<br /><br /> *Note, Key is NOT case sensitive.<br /> You can use the above as keywords for arguments.<br /><br /> example:<br /> - xbmcplugin.[#-setProperty setProperty](int(sys.argv[1]), 'Emulator', 'M.A.M.E.')</tt>
+|}
+
+{| summary="section" width="100%" cellpadding="2"
+|- bgcolor="#55aa55"
+| colspan="3" valign="bottom" | <br /><font color="#ffffff" face="helvetica, arial"><big>'''Data'''</big></font>
+|-
+| bgcolor="#55aa55" |
+| width="100%" | '''SORT_METHOD_ALBUM''' = 13<br />'''SORT_METHOD_ALBUM_IGNORE_THE''' = 14<br />'''SORT_METHOD_ARTIST''' = 11<br />'''SORT_METHOD_ARTIST_IGNORE_THE''' = 12<br />'''SORT_METHOD_DATE''' = 3<br />'''SORT_METHOD_DRIVE_TYPE''' = 6<br />'''SORT_METHOD_DURATION''' = 8<br />'''SORT_METHOD_EPISODE''' = 20<br />'''SORT_METHOD_FILE''' = 5<br />'''SORT_METHOD_GENRE''' = 15<br />'''SORT_METHOD_LABEL''' = 1<br />'''SORT_METHOD_LABEL_IGNORE_THE''' = 2<br />'''SORT_METHOD_MPAA_RATING''' = 24<br />'''SORT_METHOD_NONE''' = 0<br />'''SORT_METHOD_PLAYLIST_ORDER''' = 19<br />'''SORT_METHOD_PRODUCTIONCODE''' = 22<br />'''SORT_METHOD_PROGRAM_COUNT''' = 18<br />'''SORT_METHOD_SIZE''' = 4<br />'''SORT_METHOD_SONG_RATING''' = 23<br />'''SORT_METHOD_STUDIO''' = 26<br />'''SORT_METHOD_STUDIO_IGNORE_THE''' = 27<br />'''SORT_METHOD_TITLE''' = 9<br />'''SORT_METHOD_TITLE_IGNORE_THE''' = 10<br />'''SORT_METHOD_TRACKNUM''' = 7<br />'''SORT_METHOD_UNSORTED''' = 29<br />'''SORT_METHOD_VIDEO_RATING''' = 17<br />'''SORT_METHOD_VIDEO_RUNTIME''' = 25<br />'''SORT_METHOD_VIDEO_TITLE''' = 21<br />'''SORT_METHOD_VIDEO_YEAR''' = 16<br />'''__author__''' = 'J. Mulder <darkie@xbmc.org>'<br />'''__credits__''' = 'XBMC TEAM.'<br />'''__date__''' = '20 August 2007'<br />'''__platform__''' = 'XBOX'<br />'''__version__''' = '1.0'
+|}
+
+{| summary="section" width="100%" cellpadding="2"
+|- bgcolor="#7799ee"
+| colspan="3" valign="bottom" | <br /><font color="#ffffff" face="helvetica, arial"><big>'''Author'''</big></font>
+|-
+| bgcolor="#7799ee" |
+| width="100%" | J. Mulder <darkie@xbmc.org>
+|}
+
+{| summary="section" width="100%" cellpadding="2"
+|- bgcolor="#7799ee"
+| colspan="3" valign="bottom" | <br /><font color="#ffffff" face="helvetica, arial"><big>'''Credits'''</big></font>
+|-
+| bgcolor="#7799ee" |
+| width="100%" | XBMC TEAM.
+|}

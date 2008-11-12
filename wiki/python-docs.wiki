@@ -1,0 +1,10 @@
+=[xbmc.wiki xbmc]=
+
+=[xbmcgui.wiki xbmcgui]=
+
+=[xbmcplugin.wiki xbmcplugin]=
+
+==Last Updated: 11 November 2008 from Atlantis 8.10==
+
+
+=[http://diberri.dyndns.org/wikipedia/html2wiki/index.html html2wiki - Convert HTML text to wiki markup]=
