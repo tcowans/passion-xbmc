@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+    <!-- Les strings de 32000 à 32999 sont réservées aux scripts -->
+    <!--GENERAL STRINGS -->
+    <string id="32000">Tetesaclaques.tv</string>
+
+    <!-- Dialog Messages -->
+	<string id="32100">Creation de l'interface Graphique</string>
+    <string id="32101">Configuration du système</string>
+    <string id="32102">Chargement des informations</string>
+    <string id="32103">Vérification de la mise à jour</string>
+    <string id="32104">Chargement des images</string>
+
+    <string id="32110">Veuillez patienter...</string>
+    <string id="32111">Erreur</string>
+    <string id="32112">Exception durant l'initialisation</string>
+    <string id="32113">Impossible de charger la page Tetesaclaques.tv</string>
+    <string id="32114">Un probleme de connexion?</string>
+    <string id="32115">Un changement sur le site Tetesaclaques.tv?</string>
+    
+    
+    <!-- UI Strings -->
+    <string id="32300">Français</string>
+    <string id="32301">English</string>
+    <string id="32302">SELECTIONNEZ</string>
+    <string id="32303">Options</string>
+    <string id="32304">A propos</string>
+    <string id="32305">Vidéo(s)</string>
+    <string id="32306">Collection</string>
+    <string id="32307">Séries</string>
+    <string id="32308">Extras</string>
+    <string id="32309">Pubs</string>
+    <string id="32310">Vote</string>
+    <string id="32311">Date</string>
+           
+    <!-- Settings -->
+    <string id="32500">Player vidéo: </string>
+    <string id="32501">Auto</string>
+    <string id="32502">DVD Player</string>
+    <string id="32503">MPlayer</string>
+    <string id="32504">Langue: </string>
+    <string id="32505">Français</string>
+    <string id="32506">English</string>
+    <string id="32507">Nettoyage auto du cache: </string>
+    <string id="32508">Activé</string>
+    <string id="32509">Désactivé</string>
+    <string id="32510">Selectionner le Player désiré</string>
+    <string id="32511">Selectionner la langue par défaut désirée</string>
+    <string id="32512">Selectionner le nettoyage du cache désiré</string>
+    <string id="32513">Activer</string>
+    <string id="32514">Désactiver</string>
+    
+    <!-- Settings buttons -->
+    <string id="32600">Ok</string>
+    <string id="32601">Annuler</string>
+    <string id="32602">Mise à jour</string>
+    <string id="32603">Credits</string>
+	<string id="32604">Défaut</string>
+
+    <!-- Settings messages -->
+    <string id="32701">Enregistrement de vos paramètres ...</string>
+    <string id="32702">Une erreur est survenue lors de la sauvegarde de vos paramètres!</string>
+
+    <!-- Settings restart required message -->
+    <string id="32703">Les changements seront appliqués au prochain redémarrage.</string>
+    <string id="32704">Souhaitez-vous relancer le script maintenant ?</string>
+        
+    <!-- Credits -->
+    <string id="32800">Version: </string>
+    <string id="32801">Auteur: </string>
+    <string id="32802">Description: </string>
+    <string id="32803">Ce script permet de visionner les vidéos sur le site www.tetesaclaques.tv que je vous le recommande fortement. Attention rires en vue!
+On y découvre chaque semaine un nouveau clip de quelques minutes qui vaut vraiment le détour.
+Si vous aimez les Têtes à claques, merci d'encourager leur createurs
+en visitant leur site web et/ou en achetant le DVD</string>
+    <string id="32804">Les droits des diffusions et des images utilisées sont exclusivement réservés à
+Salambo productions inc (www.tetesaclaques.tv)</string>
+    
+    <!-- Images -->
+    <string id="32900">logo-fr.png</string>
+    
+    
+</strings>
