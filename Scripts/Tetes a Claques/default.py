@@ -30,6 +30,7 @@ en visitant leur site web et/ou en achetant le DVD
 
 ############################################################################
 version     = '1.0-Dev04'
+#version     = '1.0'
 author      = 'Temhil'
 ############################################################################
 
@@ -311,7 +312,7 @@ class configCtrl:
             print("Exception while loading configuration file " + "TAC.cfg")
             print(str(e))
         
-    def setDefaultPlayer(self,playerType):
+    def setDefaultPlayer(self,playerType,save=True):
         """
         set DefaultPlayerparameter locally and in .cfg file
         """
@@ -320,16 +321,17 @@ class configCtrl:
         # Set player parameter
         self.config.set("system", "player", playerType)
         
-        # Update file
-        cfgfile=open(os.path.join(ROOTDIR,"TAC.cfg"), 'w+')
-        try:
-            self.config.write(cfgfile)
-        except Exception, e:
-            print("Exception during setDefaultPlayer")
-            print(str(e))
-            print (str(sys.exc_info()[0]))
-            traceback.print_exc()
-        cfgfile.close()
+        if save:
+            # Update file
+            cfgfile=open(os.path.join(ROOTDIR,"TAC.cfg"), 'w+')
+            try:
+                self.config.write(cfgfile)
+            except Exception, e:
+                print("Exception during setDefaultPlayer")
+                print(str(e))
+                print (str(sys.exc_info()[0]))
+                traceback.print_exc()
+            cfgfile.close()
         
     def getDefaultPlayer(self):
         """
@@ -337,7 +339,7 @@ class configCtrl:
         """
         return self.defaultPlayer
         
-    def setLanguage(self,language):
+    def setLanguage(self,language,save=True):
         """
         set language parameter locally and in .cfg file
         """
@@ -346,16 +348,17 @@ class configCtrl:
         # Set player parameter
         self.config.set("user", "language", language)
         
-        # Update file
-        cfgfile=open(os.path.join(ROOTDIR,"TAC.cfg"), 'w+')
-        try:
-            self.config.write(cfgfile)
-        except Exception, e:
-            print("Exception during setLanguage")
-            print(str(e))
-            print (str(sys.exc_info()[0]))
-            traceback.print_exc()
-        cfgfile.close()
+        if save:
+            # Update file
+            cfgfile=open(os.path.join(ROOTDIR,"TAC.cfg"), 'w+')
+            try:
+                self.config.write(cfgfile)
+            except Exception, e:
+                print("Exception during setLanguage")
+                print(str(e))
+                print (str(sys.exc_info()[0]))
+                traceback.print_exc()
+            cfgfile.close()
         
     def getLanguage(self):
         """
@@ -363,7 +366,7 @@ class configCtrl:
         """
         return self.language
 
-    def setCleanCache(self,cleanCacheStatus):
+    def setCleanCache(self,cleanCacheStatus,save=True):
         """
         set clean cache status locally and in .cfg file
         @param cleanCacheStatus: clean cache status - define cache directory will be cleaned or not on exit
@@ -373,6 +376,25 @@ class configCtrl:
         # Set cachepages parameter
         self.config.set("system", "cleancache", self.delCache)
 
+        if save:
+            # Update file
+            cfgfile=open(os.path.join(ROOTDIR,"TAC.cfg"), 'w+')
+            try:
+                self.config.write(cfgfile)
+            except Exception, e:
+                print("Exception during setCleanCache")
+                print(str(e))
+                print (str(sys.exc_info()[0]))
+                traceback.print_exc()
+            cfgfile.close()
+        
+    def getCleanCache(self):
+        """
+        return current clean cache status - define cache directory will be cleaned or not on exit
+        """
+        return self.delCache
+
+    def saveConfFile(self):
         # Update file
         cfgfile=open(os.path.join(ROOTDIR,"TAC.cfg"), 'w+')
         try:
@@ -384,13 +406,6 @@ class configCtrl:
             traceback.print_exc()
         cfgfile.close()
         
-    def getCleanCache(self):
-        """
-        return current clean cache status - define cache directory will be cleaned or not on exit
-        """
-        return self.delCache
-
-
 
 
 class WebPage:
@@ -970,41 +985,48 @@ class SettingsWindow(xbmcgui.WindowDialog):
             self.setCoordinateResolution(PAL_4x3) # Set coordinate resolution to PAL 4:3
 
     def setWindow(self,configManager):
-        self.configManager   = configManager
-        self.strListMaxSize  = 50
-        self.playerMenuList  = ["Auto","DVD Player","MPlayer"]
-        self.languageMenuList = ["Francais","English"]
-        self.languageList = ["french","english"]
-        self.cleanCacheList  = ["Activé","Désactivé"]
+        self.configManager          = configManager
+        self.strListMaxSize         = 50
+        self.languageList           = ["french","english"] # Languages - strings used in conf file
+        #self.playerMenuList  = ["Auto","DVD Player","MPlayer"]
+        self.playerMenuList         = [ __language__(32501), __language__(32502),__language__(32503)]
+        #self.languageMenuList = ["Francais","English"]
+        self.languageMenuList       = [__language__(32505),__language__(32506)]
+        #self.cleanCacheList  = ["Activé","Désactivé"]
+        self.cleanCacheList         = [__language__(32508),__language__(32509)]
+        self.cleanCacheActionList   = [__language__(32513),__language__(32514)]
         
         # Background image
         self.addControl(xbmcgui.ControlImage(100,100,445,335, os.path.join(IMAGEDIR,"dialog-panel.png")))
 
         # Title label:
-        self.strlist = xbmcgui.ControlLabel(100, 105, 445, 30, 'Options', 'special13',alignment=6)
+        #self.strlist = xbmcgui.ControlLabel(100, 105, 445, 30, 'Options', 'special13',alignment=6)
+        self.strlist = xbmcgui.ControlLabel(100, 105, 445, 30, __language__(32303), 'special13',alignment=6)
         self.addControl(self.strlist)
 
-        # Get settings
-        self.defaultPlayer  = self.configManager.getDefaultPlayer()
-        self.language       = self.configManager.getLanguage()
-        self.cleanCache     = self.configManager.getCleanCache()
+        # Get settings and flag indicating on exit if they have been modified
+        self.defaultPlayer  = (self.configManager.getDefaultPlayer(), False) 
+        self.language       = (self.configManager.getLanguage(), False)
+        self.cleanCache     = (self.configManager.getCleanCache(), False)
         
         
         # item Control List
-        self.strDefaultPlayerTitle   = "Player vidéo: "
-        self.strDefaultPlayerContent = self.playerMenuList[self.defaultPlayer]
-        self.strLanguageTitle    = "Langue: "
-        
+        #self.strDefaultPlayerTitle   = "Player vidéo: "
+        self.strDefaultPlayerTitle   = __language__(32500)
+        self.strDefaultPlayerContent = self.playerMenuList[self.defaultPlayer[0]]
+        #self.strLanguageTitle    = "Langue: "
+        self.strLanguageTitle    = __language__(32504)
         for lang in self.languageList:
-            if str(self.language) == lang:
+            if str(self.language[0]) == lang:
                 self.strLanguageContent  = self.languageMenuList[self.languageList.index(lang)]
                 break
         #self.strLanguageContent  = str(self.language)
-        self.strCleanCacheTitle      = "Nettoyage auto du cache: "
-        if self.cleanCache:
-            self.strCleanCacheContent = self.cleanCacheList[0] #Activé
+        #self.strCleanCacheTitle      = "Nettoyage auto du cache: "
+        self.strCleanCacheTitle      = __language__(32507)
+        if self.cleanCache[0]:
+            self.strCleanCacheContent = self.cleanCacheList[0] #Activated
         else:
-            self.strCleanCacheContent = self.cleanCacheList[1] #Désactivé
+            self.strCleanCacheContent = self.cleanCacheList[1] #Deactiated
             
         self.settingsListData = [self.strDefaultPlayerTitle + self.strDefaultPlayerContent, self.strLanguageTitle + self.strLanguageContent, self.strCleanCacheTitle + self.strCleanCacheContent]
         self.settingsList = xbmcgui.ControlList(120, 150, 300 , 400,'font14', buttonTexture = os.path.join(IMAGEDIR,"list-black-nofocus.png"), buttonFocusTexture = os.path.join(IMAGEDIR,"list-black-focus.png"), itemTextXOffset=-10, itemHeight=30)
@@ -1041,35 +1063,56 @@ class SettingsWindow(xbmcgui.WindowDialog):
             print("selectedIndex = " + str(selectedIndex))
             if selectedIndex == 0:
                 dialog = xbmcgui.Dialog()
-                chosenIndex = dialog.select('Selectionner le Player désiré', self.playerMenuList)
-                self.configManager.setDefaultPlayer(chosenIndex)
-                self.defaultPlayer           = chosenIndex
-                self.strDefaultPlayerContent = self.playerMenuList[self.defaultPlayer]
+                #chosenIndex = dialog.select('Selectionner le Player désiré', self.playerMenuList)
+                chosenIndex = dialog.select(__language__(32510), self.playerMenuList)
+                #self.configManager.setDefaultPlayer(chosenIndex)
+                self.defaultPlayer           = (chosenIndex, True)
+                self.strDefaultPlayerContent = self.playerMenuList[self.defaultPlayer[0]]
                 self.settingsList.getListItem(selectedIndex).setLabel(self.strDefaultPlayerTitle + self.strDefaultPlayerContent)
             elif selectedIndex == 1:
                 dialog = xbmcgui.Dialog()
-                chosenIndex = dialog.select('Selectionner la langue désirée au démarrage', self.languageMenuList)
-                self.configManager.setLanguage(self.languageList[chosenIndex])
-                self.language           = self.languageList[chosenIndex]
+                #chosenIndex = dialog.select('Selectionner la langue désirée au démarrage', self.languageMenuList)
+                chosenIndex = dialog.select(__language__(32511), self.languageMenuList)
+                #self.configManager.setLanguage(self.languageList[chosenIndex])
+                self.language           = (self.languageList[chosenIndex], True)
                 self.strLanguageContent = self.languageMenuList[chosenIndex]
                 self.settingsList.getListItem(selectedIndex).setLabel(self.strLanguageTitle + self.strLanguageContent)
                 
             elif selectedIndex == 2:
                 dialog = xbmcgui.Dialog()
-                chosenIndex = dialog.select('Selectionner la gestion du cache désirée', self.cleanCacheList)
+                #chosenIndex = dialog.select('Selectionner la gestion du cache désirée', self.cleanCacheList)
+                chosenIndex = dialog.select(__language__(32512), self.cleanCacheActionList)
                 if chosenIndex == 0:
-                    self.configManager.setCleanCache(True)
-                    self.cleanCache           = True
+                    #self.configManager.setCleanCache(True)
+                    self.cleanCache           = (True,True)
                     self.strCleanCacheContent = self.cleanCacheList[0] #Activé
                 else:
-                    self.configManager.setCleanCache(False)
-                    self.cleanCache           = False
+                    #self.configManager.setCleanCache(False)
+                    self.cleanCache           = (False,True)
                     self.strCleanCacheContent = self.cleanCacheList[1] #Désactivé
+                    
                 self.settingsList.getListItem(selectedIndex).setLabel(self.strCleanCacheTitle + self.strCleanCacheContent)
             else:
                 print "SettingsWindow - onControl : Invalid control list index"
 
         elif control == self.buttonOK:
+            # Saving modification and close
+            
+            # Check change flag on each property
+            save = False
+            if self.defaultPlayer[1]:
+                self.configManager.setDefaultPlayer(self.defaultPlayer[0], False)
+                save = True
+            if self.language[1]:
+                self.configManager.setLanguage(self.language[0], False)
+                save = True
+            if self.cleanCache[1]:
+                self.configManager.setCleanCache(self.cleanCache[0], False)
+                save = True
+            if save == True:
+                # Save conf file
+                self.configManager.saveConfFile()
+            # close current window
             self.close()
 
     
@@ -1095,14 +1138,36 @@ class AboutWindow(xbmcgui.WindowDialog):
         #self.strDesTitle = xbmcgui.ControlLabel(130, 200, 350, 30, "Description: ")
         self.strDesTitle = xbmcgui.ControlLabel(130, 200, 350, 30, __language__( 32802 )) # Description:
         self.addControl(self.strDesTitle)        
-        strContent = __language__( 32803 )
-#        """Ce script permet de visionner les vidéos sur le site www.tetesaclaques.tv que je vous le recommande fortement. Attention rires en vue!
-#On y découvre chaque semaine un nouveau clip de quelques minutes qui vaut vraiment le détour.
-#Si vous aimez les Têtes à claques, merci d'encourager leur createurs
-#en visitant leur site web et/ou en achetant le DVD
-#"""
-        self.strDesContent = xbmcgui.ControlLabel(130, 225, 490, 100, strContent, "font12", textColor='0xFFD3D3D3')
-        self.addControl(self.strDesContent)
+
+        
+        self.desContentTextBox = xbmcgui.ControlTextBox(130, 225, 500, 200, font="font12", textColor='0xFFD3D3D3')
+        self.addControl(self.desContentTextBox)
+        self.desContentTextBox.setVisible(True)
+
+        #strContent = __language__( 32803 )
+        strContentRaw = __language__( 32803 )
+        #print strContentRaw
+
+        # Code inspired from Navix-X - Thanks!
+        #we check each line if it exceeds 70 characters and does not contain
+        #any space characters (e.g. long URLs). The textbox widget does not
+        #split up these strings. In this case we add a space characters ourself.
+        strContent=""
+        lines = strContentRaw.split("\n")
+        #print lines
+        for m in lines:
+##            if (len(m) > 60) and (m.find(" ") == -1):
+##                m = m[:60] + " " + m[60:]
+#            if (len(m) > 70):
+#                m = m[:70] + "\n" + m[70:]
+            strContent = strContent + m + "\n"
+        #self.helpTextBox.setText(strContent)
+        
+        #print strContent
+
+#        self.strDesContent = xbmcgui.ControlLabel(130, 225, 500, 140, strContent, "font12", textColor='0xFFD3D3D3',alignment=16)
+#        self.addControl(self.strDesContent)
+        self.desContentTextBox.setText(strContent)
         
 #        strCopyRight = """Les droits des diffusions et des images utilisées sont exclusivement réservés à
 #Salambo productions inc (www.tetesaclaques.tv)"""
@@ -1160,9 +1225,13 @@ class FirstStartWindow(xbmcgui.Window):
     def onControl(self, control):
         if control == self.buttonEn:
             self.configManager.setLanguage('english')
+            self.language = 'english'
+            xbmc.sleep( 100 )
             self.close()
         if control == self.buttonFr:
             self.configManager.setLanguage('french')
+            self.language = 'french'
+            xbmc.sleep( 100 )
             self.close()
             
     def onAction(self, action):
@@ -1276,10 +1345,11 @@ class Window(xbmcgui.Window):
         self.list = xbmcgui.ControlList(300, 100, 370, 470, imageWidth=143, space=5, itemHeight=80, font='font12', textColor='0xFFFFFF00',buttonTexture = os.path.join(IMAGEDIR,"blueButton.png"),buttonFocusTexture  = os.path.join(IMAGEDIR,"blueButtonFocus.png"))
 
         # Number of Video in the list:
-        self.strItemNb = xbmcgui.ControlLabel(600, 520, 150, 20, '0 Vidéo', 'font12', '0xFFFFFF00')
+        #self.strItemNb = xbmcgui.ControlLabel(535, 525, 150, 20, '0 ' + __language__(32305), 'font12', '0xFFFFFF00',alignment=0x00000001) # Videos
+        self.strItemNb = xbmcgui.ControlLabel(680, 525, 120, 20, '0 ' + __language__(32305), 'font12', '0xFFFFFF00',alignment=1) # Videos + align right of 680 pos
 
-        # Version and author:
-        self.strVersion = xbmcgui.ControlLabel(40, 520, 250, 30, "Version " + version, 'font12', textColor='0xFFFFFFFF')
+        # Version:
+        self.strVersion = xbmcgui.ControlLabel(255,45,120,20, "[B]%s%s[/B]"%(__language__(32312),version), 'font101', textColor='0xFFFFFF00',alignment=1) # Version
         
         # Title image background
         self.list_back = xbmcgui.ControlImage(285,20,400,40, os.path.join(IMAGEDIR,"TitleBg.png"))
@@ -1287,39 +1357,44 @@ class Window(xbmcgui.Window):
         self.list_back.setVisible(True)
 
         # Title of list
-        self.strButton = xbmcgui.ControlLabel(285, 30, 400, 20, __language__(self.CollectionSelector.selectionNameList[self.CollectionSelector.getSelectedMenu()]) + ' - ' + currentLanguageLabel, 'special13', textColor='0xFFFFFF00',alignment=6)
+        self.strButton = xbmcgui.ControlLabel(285, 30, 400, 20, "[B]%s[/B]"%__language__(self.CollectionSelector.selectionNameList[self.CollectionSelector.getSelectedMenu()]) + "[COLOR=0xFFFFFFFF] - %s[/COLOR]"%currentLanguageLabel, 'special13', textColor='0xFFFFFF00',alignment=6)
         
         self.addControl(self.list)      
         self.addControl(self.strItemNb)
         self.addControl(self.strVersion)
         self.addControl(self.strButton)
         
-#        # Menu image background
-#        self.menu_back = xbmcgui.ControlImage(35,195,160,315, os.path.join(IMAGEDIR,"blueButton.png"))
-#        self.addControl(self.menu_back)
-#        self.menu_back.setVisible(True)
+        # Menu image background
+        # Top
+        self.menu_back_top = xbmcgui.ControlImage(70,190+10,150,170, os.path.join(IMAGEDIR,"menuBackTop.png"))
+        self.addControl(self.menu_back_top)
+        self.menu_back_top.setVisible(True)
+        # Bottom
+        self.menu_back_bottom = xbmcgui.ControlImage(70,410,150,140, os.path.join(IMAGEDIR,"menuBackBottom.png"))
+        self.addControl(self.menu_back_bottom)
+        self.menu_back_bottom.setVisible(True)
         
         # Info for menu
-        self.strAction = xbmcgui.ControlLabel(40, 200, 150, 20, menuInfoLabel, 'font12', textColor='0xFFFFFFFF')
-        self.addControl(self.strAction)
+#        self.strAction = xbmcgui.ControlLabel(40, 200, 150, 20, menuInfoLabel, 'font12', textColor='0xFFFFFFFF')
+#        self.addControl(self.strAction)
         
         
         # Buttons               
-        self.button0 = xbmcgui.ControlButton(50, 240, 150, 30, __language__(self.CollectionSelector.selectionNameList[0]), textColor='0xFFFFFFFF',focusedColor='0xFFFFFF00', focusTexture = os.path.join(IMAGEDIR,"list-focus.png"),noFocusTexture = os.path.join(IMAGEDIR,"list-focus.png"))
+        self.button0 = xbmcgui.ControlButton(50+50, 240-40+10, 150, 30, __language__(self.CollectionSelector.selectionNameList[0]), textColor='0xFFFFFFFF',focusedColor='0xFFFFFF00', focusTexture = os.path.join(IMAGEDIR,"list-focus.png"),noFocusTexture = os.path.join(IMAGEDIR,"list-focus.png"))
         self.addControl(self.button0)
-        self.button1 = xbmcgui.ControlButton(50, 280, 150, 30, __language__(self.CollectionSelector.selectionNameList[1]), textColor='0xFFFFFFFF',focusedColor='0xFFFFFF00', focusTexture = os.path.join(IMAGEDIR,"list-focus.png"),noFocusTexture = os.path.join(IMAGEDIR,"list-focus.png"))
+        self.button1 = xbmcgui.ControlButton(50+50, 280-40+10, 150, 30, __language__(self.CollectionSelector.selectionNameList[1]), textColor='0xFFFFFFFF',focusedColor='0xFFFFFF00', focusTexture = os.path.join(IMAGEDIR,"list-focus.png"),noFocusTexture = os.path.join(IMAGEDIR,"list-focus.png"))
         self.addControl(self.button1)
-        self.button2 = xbmcgui.ControlButton(50, 320, 150, 30, __language__(self.CollectionSelector.selectionNameList[2]), textColor='0xFFFFFFFF',focusedColor='0xFFFFFF00', focusTexture = os.path.join(IMAGEDIR,"list-focus.png"),noFocusTexture = os.path.join(IMAGEDIR,"list-focus.png"))
+        self.button2 = xbmcgui.ControlButton(50+50, 320-40+10, 150, 30, __language__(self.CollectionSelector.selectionNameList[2]), textColor='0xFFFFFFFF',focusedColor='0xFFFFFF00', focusTexture = os.path.join(IMAGEDIR,"list-focus.png"),noFocusTexture = os.path.join(IMAGEDIR,"list-focus.png"))
         self.addControl(self.button2)
-        self.button3 = xbmcgui.ControlButton(50, 360, 150, 30, __language__(self.CollectionSelector.selectionNameList[3]), textColor='0xFFFFFFFF',focusedColor='0xFFFFFF00', focusTexture = os.path.join(IMAGEDIR,"list-focus.png"),noFocusTexture = os.path.join(IMAGEDIR,"list-focus.png"))
+        self.button3 = xbmcgui.ControlButton(50+50, 360-40+10, 150, 30, __language__(self.CollectionSelector.selectionNameList[3]), textColor='0xFFFFFFFF',focusedColor='0xFFFFFF00', focusTexture = os.path.join(IMAGEDIR,"list-focus.png"),noFocusTexture = os.path.join(IMAGEDIR,"list-focus.png"))
         self.addControl(self.button3)
 
             
-        self.butLanguage = xbmcgui.ControlButton(50, 400, 150, 30, buttonlanguageLabel, textColor='0xFFFFFFFF',focusedColor='0xFFFFFF00', focusTexture = os.path.join(IMAGEDIR,"list-focus.png"),noFocusTexture = os.path.join(IMAGEDIR,"list-focus.png"))
+        self.butLanguage = xbmcgui.ControlButton(50+50, 400+25, 150, 30, buttonlanguageLabel, textColor='0xFFFFFFFF',focusedColor='0xFFFFFF00', focusTexture = os.path.join(IMAGEDIR,"list-focus.png"),noFocusTexture = os.path.join(IMAGEDIR,"list-focus.png"))
         self.addControl(self.butLanguage)
-        self.butOptions = xbmcgui.ControlButton(50, 440, 150, 30, optionLabel, textColor='0xFFFFFFFF',focusedColor='0xFFFFFF00', focusTexture = os.path.join(IMAGEDIR,"list-focus.png"),noFocusTexture = os.path.join(IMAGEDIR,"list-focus.png"))
+        self.butOptions = xbmcgui.ControlButton(50+50, 440+25, 150, 30, optionLabel, textColor='0xFFFFFFFF',focusedColor='0xFFFFFF00', focusTexture = os.path.join(IMAGEDIR,"list-focus.png"),noFocusTexture = os.path.join(IMAGEDIR,"list-focus.png"))
         self.addControl(self.butOptions)
-        self.butAPropos = xbmcgui.ControlButton(50, 480, 150, 30, aboutLabel,textColor='0xFFFFFFFF',focusedColor='0xFFFFFF00', focusTexture = os.path.join(IMAGEDIR,"list-focus.png"),noFocusTexture = os.path.join(IMAGEDIR,"list-focus.png"))
+        self.butAPropos = xbmcgui.ControlButton(50+50, 480+25, 150, 30, aboutLabel,textColor='0xFFFFFFFF',focusedColor='0xFFFFFF00', focusTexture = os.path.join(IMAGEDIR,"list-focus.png"),noFocusTexture = os.path.join(IMAGEDIR,"list-focus.png"))
         self.addControl(self.butAPropos)
         
         self.button0.controlDown(self.button1)
@@ -1388,7 +1463,8 @@ class Window(xbmcgui.Window):
             # pass the exception
  
             dialogError = xbmcgui.Dialog()
-            dialogError.ok("Erreur", "Impossible de charger la page Têtes à claques.tv", "probleme de connection?", "un changement sur le site distant?")
+            #dialogError.ok("Erreur", "Impossible de charger la page Têtes à claques.tv", "probleme de connection?", "un changement sur le site distant?")
+            dialogError.ok(__language__( 32111 ), __language__( 32113 ), __language__( 32114 ), __language__( 32115 ))
 
     def updateDataOnMenu(self, menuSelectIndex):
         """
@@ -1404,6 +1480,7 @@ class Window(xbmcgui.Window):
             
 
             # Close the Loading Window 
+            xbmc.sleep( 100 )
             dialogLoading.close()
         except Exception, e:
             print("Exception during list update")
@@ -1457,7 +1534,7 @@ class Window(xbmcgui.Window):
 #                videoLabel = " Vidéo"
         videoLabel = __language__(32305)
             
-        self.strItemNb.setLabel(str(numberOfPictures) + videoLabel ) # Update number of video at the bottom of the page
+        self.strItemNb.setLabel(str(numberOfPictures) + ' ' + videoLabel ) # Update number of video at the bottom of the page
 
         # Lock the UI in order to update the list
         xbmcgui.lock()    
@@ -1487,6 +1564,10 @@ class Window(xbmcgui.Window):
         # Go back on 1st button (even if overwritten later)
         self.setFocus(self.button0)
                 
+        # Set 1st item in the list
+        if self.list:
+            self.list.selectItem(0)
+            
         # Unlock the UI and close the popup
         xbmcgui.unlock()
         dialogimg.update(100)
@@ -1552,7 +1633,8 @@ class Window(xbmcgui.Window):
 #            elif currentLanguage == 'en':
 #                    currentLanguageLabel = 'English'
             currentLanguageLabel = __language__(32300)
-            self.strButton.setLabel(__language__(self.CollectionSelector.selectionNameList[0]) + ' - ' + currentLanguageLabel)
+            #self.strButton.setLabel(__language__(self.CollectionSelector.selectionNameList[0]) + ' - ' + currentLanguageLabel)
+            self.strButton.setLabel("[B]%s[/B]"%__language__(self.CollectionSelector.selectionNameList[0]) + "[COLOR=0xFFFFFFFF] - %s[/COLOR]"%currentLanguageLabel)
             
             #self.updateControlList(0)
             self.updateDataOnMenu(0)
@@ -1569,7 +1651,8 @@ class Window(xbmcgui.Window):
 #            elif currentLanguage == 'en':
 #                    currentLanguageLabel = 'English'
             currentLanguageLabel = __language__(32300)
-            self.strButton.setLabel(__language__(self.CollectionSelector.selectionNameList[1]) + ' - ' + currentLanguageLabel)
+            #self.strButton.setLabel(__language__(self.CollectionSelector.selectionNameList[1]) + ' - ' + currentLanguageLabel)
+            self.strButton.setLabel("[B]%s[/B]"%__language__(self.CollectionSelector.selectionNameList[1]) + "[COLOR=0xFFFFFFFF] - %s[/COLOR]"%currentLanguageLabel)
             
             #self.updateControlList(1)
             self.updateDataOnMenu(1)
@@ -1586,7 +1669,8 @@ class Window(xbmcgui.Window):
 #            elif currentLanguage == 'en':
 #                    currentLanguageLabel = 'English'
             currentLanguageLabel = __language__(32300)
-            self.strButton.setLabel(__language__(self.CollectionSelector.selectionNameList[2]) + ' - ' + currentLanguageLabel)
+            #self.strButton.setLabel(__language__(self.CollectionSelector.selectionNameList[2]) + ' - ' + currentLanguageLabel)
+            self.strButton.setLabel("[B]%s[/B]"%__language__(self.CollectionSelector.selectionNameList[2]) + "[COLOR=0xFFFFFFFF] - %s[/COLOR]"%currentLanguageLabel)
             
             #self.updateControlList(2)
             self.updateDataOnMenu(2)
@@ -1603,7 +1687,8 @@ class Window(xbmcgui.Window):
 #            elif currentLanguage == 'en':
 #                    currentLanguageLabel = 'English'
             currentLanguageLabel = __language__(32300)
-            self.strButton.setLabel(__language__(self.CollectionSelector.selectionNameList[3]) + ' - ' + currentLanguageLabel)
+            #self.strButton.setLabel(__language__(self.CollectionSelector.selectionNameList[3]) + ' - ' + currentLanguageLabel)
+            self.strButton.setLabel("[B]%s[/B]"%__language__(self.CollectionSelector.selectionNameList[3]) + "[COLOR=0xFFFFFFFF] - %s[/COLOR]"%currentLanguageLabel)
             
             #self.updateControlList(3)
             self.updateDataOnMenu(3)
@@ -1672,8 +1757,8 @@ class Window(xbmcgui.Window):
             adsLabel                = __language__(self.CollectionSelector.selectionNameList[3]) # Pubs
             
             self.butLanguage.setLabel(buttonlanguageLabel)
-            self.strAction.setLabel(menuInfoLabel)
-            self.strButton.setLabel(__language__(self.CollectionSelector.selectionNameList[self.CollectionSelector.getSelectedMenu()]) + ' - ' + currentLanguageLabel)
+#            self.strAction.setLabel(menuInfoLabel)
+            self.strButton.setLabel("[B]%s[/B]"%__language__(self.CollectionSelector.selectionNameList[self.CollectionSelector.getSelectedMenu()]) + "[COLOR=0xFFFFFFFF] - %s[/COLOR]"%currentLanguageLabel)
             self.butOptions.setLabel(optionLabel)
             self.butAPropos.setLabel(aboutLabel)
             self.button0.setLabel(collectionLabel)
@@ -1720,6 +1805,8 @@ def startup():
         print "Language not set"
         selectLangWin = FirstStartWindow()
         language = selectLangWin.getLanguage(configManager)
+        print "New language:"
+        print language
         del selectLangWin
         del configManager
         if language != None:
