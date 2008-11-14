@@ -32,15 +32,16 @@
     <string id="32309">Pubs</string>
     <string id="32310">Vote</string>
     <string id="32311">Date</string>
+    <string id="32312">v</string>
            
     <!-- Settings -->
     <string id="32500">Player vidéo: </string>
     <string id="32501">Auto</string>
     <string id="32502">DVD Player</string>
     <string id="32503">MPlayer</string>
-    <string id="32504">Langue: </string>
+    <string id="32504">Langue au démarrage: </string>
     <string id="32505">Français</string>
-    <string id="32506">English</string>
+    <string id="32506">Anglais</string>
     <string id="32507">Nettoyage auto du cache: </string>
     <string id="32508">Activé</string>
     <string id="32509">Désactivé</string>
@@ -72,8 +73,8 @@
     <string id="32803">Ce script permet de visionner les vidéos sur le site www.tetesaclaques.tv que je vous le recommande fortement. Attention rires en vue!
 On y découvre chaque semaine un nouveau clip de quelques minutes qui vaut vraiment le détour.
 Si vous aimez les Têtes à claques, merci d'encourager leur createurs
-en visitant leur site web et/ou en achetant le DVD</string>
-    <string id="32804">Les droits des diffusions et des images utilisées sont exclusivement réservés à
+en visitant leur site web www.tetesaclaques.tv et/ou en achetant le DVD(s)</string>
+    <string id="32804">Les droits de diffusions et des images utilisées sont exclusivement réservés à
 Salambo productions inc (www.tetesaclaques.tv)</string>
     
     <!-- Images -->

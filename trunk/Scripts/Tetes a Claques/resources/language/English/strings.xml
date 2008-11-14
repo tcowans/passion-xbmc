@@ -17,6 +17,7 @@
     <string id="32113">Impossible to load TAC.tv webpage</string>
     <string id="32114">Connection problem?</string>
     <string id="32115">Changes on TAC.tv website?</string>
+    <string id="32312">v</string>
 
     <!-- UI Strings -->
     <string id="32300">English</string>
@@ -31,7 +32,7 @@
     <string id="32309">TV Ads</string>
     <string id="32310">Vote</string>
     <string id="32311">Date</string>
-    <string id="32312"></string>
+    <string id="32312">v</string>
 
 
     <!-- Settings -->
@@ -39,8 +40,8 @@
     <string id="32501">Auto</string>
     <string id="32502">DVD Player</string>
     <string id="32503">MPlayer</string>
-    <string id="32504">Language: </string>
-    <string id="32505">Français</string>
+    <string id="32504">Startup language: </string>
+    <string id="32505">French</string>
     <string id="32506">English</string>
     <string id="32507">Automatic cache cleaning: </string>
     <string id="32508">Activated</string>
@@ -70,11 +71,11 @@
     <string id="32800">Version: </string>
     <string id="32801">Author: </string>
     <string id="32802">Description: </string>
-    <string id="32803">This script allow to watch videos sur le site www.tac.tv which I highly recommand you to do. Watch out, laughts have to be expected!
-Each week a short new video clips is available for watching.
-If you like and enjoy TAC.tv, please support their creator by visiting their website  and/or buying their DVD</string>
-    <string id="32804">Les droits des diffusions et des images utilisées sont exclusivement réservés à
-Salambo productions inc (www.tetesaclaques.tv)</string>
+    <string id="32803">This script allow to watch videos sur le site www.tac.tv which I highly recommand you to do. 
+Each week a new short video clips is available for watching. Watch out! A lot of laughs can generate belly pain!
+If you like and enjoy TAC.tv, please support their creators by visiting their website www.tac.tv and/or buying their DVD(s)</string>
+    <string id="32804">Distribution rights and pictures used rights are the property of Salambo 
+productions inc (www.tac.tv)</string>
     
     <!-- Images -->
     <string id="32900">logo-en.png</string>
