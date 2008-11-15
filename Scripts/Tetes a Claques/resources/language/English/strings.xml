@@ -10,15 +10,16 @@
     <string id="32102">Loading information</string>
     <string id="32103">Checking update</string>
     <string id="32104">Loading pictures</string>
-
     <string id="32110">Please wait...</string>
     <string id="32111">Error</string>
     <string id="32112">Exception during initialization</string>
     <string id="32113">Impossible to load TAC.tv webpage</string>
     <string id="32114">Connection problem?</string>
     <string id="32115">Changes on TAC.tv website?</string>
-    <string id="32312">v</string>
-
+    <string id="32116">You need to select a language the fisrt time</string>
+    <string id="32117">in order to use this script</string>
+    <string id="32118">You will be able to change it later on if necessary</string>
+    
     <!-- UI Strings -->
     <string id="32300">English</string>
     <string id="32301">Français</string>
@@ -33,7 +34,6 @@
     <string id="32310">Vote</string>
     <string id="32311">Date</string>
     <string id="32312">v</string>
-
 
     <!-- Settings -->
     <string id="32500">Video Player: </string>
@@ -71,11 +71,11 @@
     <string id="32800">Version: </string>
     <string id="32801">Author: </string>
     <string id="32802">Description: </string>
-    <string id="32803">This script allow to watch videos sur le site www.tac.tv which I highly recommand you to do. 
-Each week a new short video clips is available for watching. Watch out! A lot of laughs can generate belly pain!
+    <string id="32803">This script allows to watch videos on www.tac.tv website which I highly recommend. 
+Each week a new short video is added. Watch out! Laughing too much can cause belly pain!
 If you like and enjoy TAC.tv, please support their creators by visiting their website www.tac.tv and/or buying their DVD(s)</string>
-    <string id="32804">Distribution rights and pictures used rights are the property of Salambo 
-productions inc (www.tac.tv)</string>
+    <string id="32804">Distribution rights and pictures are property of Salambo productions Inc
+(www.tac.tv)</string>
     
     <!-- Images -->
     <string id="32900">logo-en.png</string>
