@@ -71,7 +71,6 @@ Distribution rights and pictures are property of Salambo productions Inc (www.ta
 
 History:
 -------
-
 14-11-08 Version 1.0 by Temhil:
   - Renammed script to TAC.TV in order to support english and french user (following waht already has been done on the website) 
   - GUI improvment

@@ -1,6 +1,10 @@
 # -*- coding: cp1252 -*-
 """
 Têtes à claques HTML parser with GUI by Temhil (temhil@gmail.com)
+
+Ce script permet de visionner les vidéos sur le site www.tetesaclaques.tv que je vous le recommande fortement. 
+Attention rires en vue!
+On y découvre chaque semaine un nouveau clip de quelques minutes qui vaut vraiment le détour.
  
 14-11-08 Version 1.0 par Temhil:
   - Amelioration de l'interface
@@ -1459,7 +1463,6 @@ class Window(xbmcgui.Window):
             
         elif control == self.butLanguage:
             currentLanguage = self.CollectionSelector.getCollectionLanguage()
-            logoImage = os.path.join(IMAGEDIR,__language__( 32900 ))    
                     
             if currentLanguage == 'french':
                 # Go to English
@@ -1469,6 +1472,9 @@ class Window(xbmcgui.Window):
                 # Go to French
                 self.CollectionSelector.setCollectionLanguage('french')
                 lang.setLanguage("french")
+            
+            # Logo
+            logoImage = os.path.join(IMAGEDIR,__language__( 32900 ))    
                 
             # Menu labels
             optionLabel             = __language__(32303) # "Options"
