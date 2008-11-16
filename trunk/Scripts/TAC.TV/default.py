@@ -42,7 +42,7 @@ en visitant leur site web et/ou en achetant le DVD
 
 
 ############################################################################
-version     = '1.0'
+version     = '1.1-Dev01'
 author      = 'Temhil'
 ############################################################################
 
@@ -61,6 +61,8 @@ try:
 except ImportError:
     raise ImportError, 'This program requires the XBMC extensions for Python.'
 
+from resources.libs import language # Cutom language lib
+from resources.libs.BeautifulSoup import BeautifulStoneSoup # XML parsing lib
 
 ############################################################################
 # emulator
@@ -78,19 +80,19 @@ except:
 # Set paths
 ROOTDIR = os.getcwd().replace( ";", "" ) # Create a path with valid format
 
-IMAGEDIR    = os.path.join(ROOTDIR, "images")
+IMAGEDIR    = os.path.join(ROOTDIR, "resources", "skins", "Default", "media")
 CACHEDIR    = os.path.join(ROOTDIR, "cache")
-LIBDIR      = os.path.join(ROOTDIR, "lib")
+#LIBDIR      = os.path.join(ROOTDIR, "resources", "lib")
 
 # List of directories to check at startup
 dirCheckList   = (CACHEDIR,) #Tuple - Singleton (Note Extra ,)
 
 # Adding to sys PATH lib path
-sys.path.append(LIBDIR)
+#sys.path.append(LIBDIR)
 
 # Import lib
-from BeautifulSoup import BeautifulStoneSoup #librairie de traitement XML
-import language # Custom lnaguage lib
+#from BeautifulSoup import BeautifulStoneSoup #librairie de traitement XML
+#import language # Custom lnaguage lib
 
 ############################################################################
 #get actioncodes from keymap.xml
@@ -271,7 +273,7 @@ class configCtrl:
             
             # Read config from .cfg file
             # - Open config file
-            self.config.read(os.path.join(ROOTDIR,"TAC.cfg"))
+            self.config.read(os.path.join(ROOTDIR, "resources", "TAC.cfg"))
             
             # Check sections exist
             if (self.config.has_section("system") == False):
@@ -300,7 +302,7 @@ class configCtrl:
             if (self.is_conf_valid == False):
                 # Update file
                 print "CFG file format wasn't valid: correcting ..."
-                cfgfile=open(os.path.join(ROOTDIR,"TAC.cfg"), 'w+')
+                cfgfile=open(os.path.join(ROOTDIR, "resources", "TAC.cfg"), 'w+')
                 try:
                     self.config.write(cfgfile)
                     self.is_conf_valid = True
@@ -325,7 +327,7 @@ class configCtrl:
         
         if save:
             # Update file
-            cfgfile=open(os.path.join(ROOTDIR,"TAC.cfg"), 'w+')
+            cfgfile=open(os.path.join(ROOTDIR, "resources", "TAC.cfg"), 'w+')
             try:
                 self.config.write(cfgfile)
             except Exception, e:
@@ -352,7 +354,7 @@ class configCtrl:
         
         if save:
             # Update file
-            cfgfile=open(os.path.join(ROOTDIR,"TAC.cfg"), 'w+')
+            cfgfile=open(os.path.join(ROOTDIR, "resources", "TAC.cfg"), 'w+')
             try:
                 self.config.write(cfgfile)
             except Exception, e:
@@ -380,7 +382,7 @@ class configCtrl:
 
         if save:
             # Update file
-            cfgfile=open(os.path.join(ROOTDIR,"TAC.cfg"), 'w+')
+            cfgfile=open(os.path.join(ROOTDIR, "resources", "TAC.cfg"), 'w+')
             try:
                 self.config.write(cfgfile)
             except Exception, e:
@@ -398,7 +400,7 @@ class configCtrl:
 
     def saveConfFile(self):
         # Update file
-        cfgfile=open(os.path.join(ROOTDIR,"TAC.cfg"), 'w+')
+        cfgfile=open(os.path.join(ROOTDIR, "resources", "TAC.cfg"), 'w+')
         try:
             self.config.write(cfgfile)
         except Exception, e:
@@ -891,6 +893,11 @@ class SelectCollectionWebpage:
             
             # Play the selected video
             xbmc.Player(self.configManager.getDefaultPlayer()).play(video2playURL)
+#            myPlayer = xbmc.Player(self.configManager.getDefaultPlayer())
+#            print "setSubtitles"
+#            myPlayer.setSubtitles(os.path.join(CACHEDIR, "1071.txt")) # Seems to be only for Linux
+#            print "play"
+#            myPlayer.play(video2playURL)
             
         return result 
 
