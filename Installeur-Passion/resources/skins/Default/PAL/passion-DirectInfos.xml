@@ -1,69 +1,113 @@
 <window>
 	<defaultcontrol>5</defaultcontrol>
+
 	<controls>
+		<!-- BACKGROUNDS -->
 		<control type="image">
 			<description>background image</description>
 			<posx>0</posx>
 			<posy>0</posy>
 			<width>720</width>
-			<height>88</height>
-			<texture>background-apps.png</texture>
+			<height>576</height>
+			<texture>passion-background-plain.png</texture>
 		</control>
 		<control type="image">
 			<description>background image</description>
-			<posx>0</posx>
-			<posy>88</posy>
-			<width>720</width>
-			<height>488</height>
-			<texture>background-bottom.png</texture>
+			<posx>21</posx>
+			<posy>11</posy>
+			<width>250</width>
+			<height>74</height>
+			<aspectratio>keep</aspectratio>
+			<texture>passion-logo.png</texture>
 		</control>
-		<control type="image" id="0">
-			<description>contentpanel slice</description>
-			<posx>-64</posx>
-			<posy>88</posy>
-			<width>64</width>
-			<height>510</height>
-			<texture>contentpanel_left.png</texture>
-			<animation effect="slide" time="200" start="204,0" end="0,0" acceleration="-1" condition="!Skin.HasSetting(animated)">WindowOpen</animation>
-			<animation effect="slide" time="200" start="0,0" end="204,0" acceleration="1.1" condition="!Skin.HasSetting(animated)">WindowClose</animation>
+        <control type="multiimage">
+			<posx>580</posx>
+			<posy>11</posy>
+			<width>150</width>
+			<height>74</height>
+			<aspectratio>keep</aspectratio>
+			<imagepath>passion-plasma</imagepath>
+			<timeperimage>4000</timeperimage>
+			<fadetime>1000</fadetime>
+			<animation effect="fade" time="200">VisibleChange</animation>
 		</control>
-		<control type="image" id="0">
-			<description>contentpanel slice</description>
-			<posx>0</posx>
-			<posy>88</posy>
-			<width>720</width>
-			<height>510</height>
-			<texture>contentpanel.png</texture>
-			<animation effect="slide" time="200" start="204,0" end="0,0" acceleration="-1" condition="!Skin.HasSetting(animated)">WindowOpen</animation>
-			<animation effect="slide" time="200" start="0,0" end="204,0" acceleration="1.1" condition="!Skin.HasSetting(animated)">WindowClose</animation>
+		<control type="group">
+			<animation effect="slide" time="200" start="720,0" end="0,0" acceleration="-1" condition="!Skin.HasSetting(animated)">WindowOpen</animation>
+			<animation effect="slide" time="200" start="0,0" end="720,0" acceleration="1.1" condition="!Skin.HasSetting(animated)">WindowClose</animation>
+			<control type="image" id="0">
+				<description>contentpanel slice</description>
+				<posx>19</posx>
+				<posy>120</posy>
+				<width>681</width>
+				<height>446</height>
+				<texture>list-border.png</texture>
+			</control>
+			<control type="image" id="0">
+				<description>contentpanel slice</description>
+				<posx>20</posx>
+				<posy>163</posy>
+				<width>679</width>
+				<height>402</height>
+				<texture>list-white.png</texture>
+			</control>
+			<control type="image" id="0">
+				<description>contentpanel slice</description>
+				<posx>20</posx>
+				<posy>121</posy>
+				<width>679</width>
+				<height>41</height>
+				<texture>list-header.png</texture>
+			</control>
 		</control>
-		<control type="label">
-			<description>XBMC label</description>
-			<posx>200</posx>
-			<posy>43</posy>
-			<align>right</align>
-			<label>Xbmc Passion</label>
-			<font>special12</font>
-		</control>
-		<control type="label">
-			<description>description label</description>
-			<posx>207</posx>
-			<posy>43</posy>
-			<align>left</align>
-			<label>Informations en direct de Xbmc Passion</label>
-			<font>special13</font>
-		</control>
-		<control type="textbox" id="5">
-			<description>textarea</description>
-			<posx>30</posx>
-			<posy>100</posy>
-			<width>660</width>
-			<height>440</height>
-			<font>font12</font>
-			<spinposx>600</spinposx>
-			<spinposy>445</spinposy>
+
+		<control type="group">
 			<animation effect="fade" start="0" end="100" delay="200" time="100" condition="!Skin.HasSetting(animated)">WindowOpen</animation>
 			<animation effect="fade" start="100" end="0" delay="0" time="100" condition="!Skin.HasSetting(animated)">WindowClose</animation>
+
+			<!-- LABELS -->
+			<control type="label">
+				<description>date label</description>
+				<posx>680</posx>
+				<posy>86</posy>
+				<label>$INFO[System.Date] [COLOR=60ffffff] |  $INFO[System.Time][/COLOR]</label>
+				<align>right</align>
+				<aligy>center</aligy>
+				<font>special12</font>
+			</control>
+			<control type="label"id="100">
+				<description>description label</description>
+				<posx>35</posx>
+				<posy>130</posy>
+				<width>679</width>
+				<height>30</height>
+				<align>left</align>
+				<label>SCRIPT_32200</label>
+				<font>special13</font>
+			</control>
+
+			<!-- TEXTBOX -->
+			<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+			<!-- ** Required ** Do not change id's or type's -->
+			<control type="textbox" id="5">
+				<description>textarea</description>
+				<posx>27</posx>
+				<posy>166</posy>
+				<width>666</width>
+				<height>395</height>
+				<spinwidth>18</spinwidth>
+				<spinheight>16</spinheight>
+				<spinposx>626</spinposx>
+				<spinposy>-32</spinposy>
+				<spincolor>FFffffff</spincolor>
+				<spinfont>font10</spinfont>
+				<textureup>scroll-up.png</textureup>
+				<texturedown>scroll-down.png</texturedown>
+				<textureupfocus>scroll-up-focus.png</textureupfocus>
+				<texturedownfocus>scroll-down-focus.png</texturedownfocus>
+				<image>icon-folder.png</image>
+				<font>font13</font>
+				<textcolor>FF000000</textcolor>
+			</control>
 		</control>
 	</controls>
 </window>

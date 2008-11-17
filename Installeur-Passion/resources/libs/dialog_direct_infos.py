@@ -29,6 +29,9 @@ CWD = os.getcwd().rstrip( ";" )
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
 _ = sys.modules[ "__main__" ].__language__
 
+#COULEUR POUR TITRE DES TOPICS
+TITLE_COLOR = "FFFFCC00"
+
 
 #FONCTION POUR RECUPERER LE THEME UTILISE PAR L'UTILISATEUR.
 def getUserSkin():
@@ -36,6 +39,35 @@ def getUserSkin():
     force_fallback = os.path.exists( os.path.join( CWD, "resources", "skins", current_skin ) )
     if not force_fallback: current_skin = "Default"
     return current_skin, force_fallback
+
+
+def add_pretty_color( word, start="all", end=None, color=None ):
+    try:
+        if color and start == "all":
+            pretty_word = "[COLOR=" + color + "]" + word + "[/COLOR]"
+        else:
+            pretty_word = []
+            for letter in word:
+                if color and letter == start:
+                    pretty_word.append( "[COLOR=" + color + "]" )
+                elif color and letter == end:
+                    pretty_word.append( letter )
+                    pretty_word.append( "[/COLOR]" )
+                    continue
+                pretty_word.append( letter )
+            pretty_word = "".join( pretty_word )
+        return pretty_word
+    except:
+        EXC_INFO( LOG_ERROR, sys.exc_info() )
+        return word
+
+
+def bold_text( text ):
+    return "[B]%s[/B]" % ( text, )
+
+
+def italic_text( text ):
+    return "[I]%s[/I]" % ( text, )
 
 
 def set_pretty_formatting( text ):
@@ -140,27 +172,6 @@ class ENTITY_OR_CHARREF:
             return
 
 
-def add_pretty_color( word, start=None, end=None, color=None ):
-    try:
-        if color and start == "all":
-            pretty_word = "[COLOR=" + color + "]" + word + "[/COLOR]"
-        else:
-            pretty_word = []
-            for letter in word:
-                if color and letter == start:
-                    pretty_word.append( "[COLOR=" + color + "]" )
-                elif color and letter == end:
-                    pretty_word.append( letter )
-                    pretty_word.append( "[/COLOR]" )
-                    continue
-                pretty_word.append( letter )
-            pretty_word = "".join( pretty_word )
-        return pretty_word
-    except:
-        EXC_INFO( LOG_ERROR, sys.exc_info() )
-        return word
-
-
 class DirectInfos( xbmcgui.WindowXML ):
     def __init__( self, *args, **kwargs ):
         pass
@@ -171,6 +182,7 @@ class DirectInfos( xbmcgui.WindowXML ):
     def _set_text( self ):
         xbmcgui.lock()
         try: 
+            self.getControl( 100 ).setLabel( _( 32200 ) )
             self.getControl( 5 ).reset()
             self.getControl( 5 ).setText( self._get_text() )
         except:
@@ -183,11 +195,11 @@ class DirectInfos( xbmcgui.WindowXML ):
             root = load_infos( DIRECT_INFOS )
             for elems in root[ 0 ].findall( "item" ):
                 category = elems.findtext( "category" )
-                title = add_pretty_color( elems.findtext( "title" ), "all", "", "FFe2ff43" )
+                title = bold_text( add_pretty_color( elems.findtext( "title" ), color=TITLE_COLOR ) )
                 pubDate = elems.findtext( "pubDate" )
                 description = ENTITY_OR_CHARREF( strip_off( set_pretty_formatting( elems.findtext( "description" ) ) ).strip( "\t" ).strip( "\n" ) ).entity_or_charref
                 # "[CR]" est le retour de ligne d'xbmc
-                full_text += "[CR]".join( [ title, category, pubDate, description ] ).replace( "\n", "[CR]" ).replace( "\r", "[CR]" )
+                full_text += "[CR]".join( [ title, category, pubDate, description ] ).replace( "\n\n", "[CR]" ).replace( "\n", "[CR]" ).replace( "\r\r", "[CR]" ).replace( "\r", "[CR]" )
                 full_text += "[CR][CR]"
         except:
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )

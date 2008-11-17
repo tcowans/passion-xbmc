@@ -10,9 +10,13 @@
   <string id="32103">Création de l'interface Graphique</string>
   <string id="32104">Chargement des informations</string>
 
+  <!--DIVERS STRINGS -->
   <string id="32110">Veuillez patienter...</string>
   <string id="32111">Erreur</string>
   <string id="32112">Exception durant l'initialisation</string>
+
+  <!--DIRECT INFOS STRINGS -->
+  <string id="32200">Informations en direct</string>
 
   <!--SETTINGS STRINGS -->
   <string id="32499">Version: %s</string>
