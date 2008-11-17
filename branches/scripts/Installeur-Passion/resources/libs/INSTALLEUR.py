@@ -266,6 +266,7 @@ class GDDFTP(ftplib.FTP):
         try: return command(*args)
         except:
             self.Reconnect()
+            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
             return command(*args)
 
 
@@ -325,8 +326,14 @@ class ftpDownloadCtrl:
         Ferme la connexion FTP
         """
         #on se deconnecte du serveur pour etre plus propre
-        LOG( LOG_NOTICE, "Connection avec le serveur FTP fermée" )
-        self.ftp.quit()
+        try:
+            self.ftp.quit
+        except:
+            LOG( LOG_ERROR, "Exception durant la fermeture de la connection FTP" )
+            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+        else:
+            # la fermeture a reussi avec succes
+            LOG( LOG_NOTICE, "Connection avec le serveur FTP fermée" )
 
     def getDirList(self,remotedir):
         """
@@ -920,6 +927,8 @@ class MainWindow(xbmcgui.Window):
         # Help button a the top
         self.buttonHelp = xbmcgui.ControlButton(200, 117, 85, 25, _( 32003 ), focusTexture = os.path.join(IMAGEDIR,"list-focus.png"), noFocusTexture  = os.path.join(IMAGEDIR,"list-header.png"), alignment=6)
         self.addControl(self.buttonHelp)
+        #desactivrer le bouton help le temps de faire un dialog xml
+        self.buttonHelp.setEnabled( 0 )
 
         # Title of the current pages
         #self.strMainTitle = xbmcgui.ControlLabel(35, 130, 200, 40, "Sélection", 'special13')
@@ -1005,34 +1014,38 @@ class MainWindow(xbmcgui.Window):
             else:
                 self.pluginsDirSpyList.append(None)
 
-    def onAction(self, action):
-        """
-        Remonte l'arborescence et quitte le script
-        """
+    def _on_action_control( self, act_ctrl_id ):
         try:
-            button_code_F1_keyboard = 61552
-            #methode temporaire "button_code_F1_keyboard", le temps de creer un contextmenu en windowxml. Qui va inclure le dialog_script_settings
-            if action.getButtonCode() == button_code_F1_keyboard:
+            #button_code_F1_keyboard = 61552
+            if ( act_ctrl_id in ( self.buttonForum, 61552, ) ):
                 import dialog_direct_infos
                 dialog_direct_infos.show_direct_infos()
                 #on a plus besoin, on le delete
                 del dialog_direct_infos
 
-            if action==ACTION_CONTEXT_MENU:
+            elif ( act_ctrl_id in ( ACTION_CONTEXT_MENU, self.buttonOptions, ) ):
                 import dialog_script_settings
                 dialog_script_settings.show_settings( self )
                 #on a plus besoin du settins, on le delete
                 del dialog_script_settings
+            else:
+                pass
+        except:
+            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
 
+    def onAction(self, action):
+        """
+        Remonte l'arborescence et quitte le script
+        """
+        self._on_action_control( action )
+        self._on_action_control( action.getButtonCode() )
+        try:
             if action == ACTION_PREVIOUS_MENU:
                 # Sortie du script
 
                 # On se deconnecte du serveur pour etre plus propre
-                try:
-                    self.passionFTPCtrl.closeConnection()
-                except:
-                    LOG( LOG_ERROR, "Exception durant la fermeture de la connection FTP" )
-                    EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+                self.passionFTPCtrl.closeConnection()
+
                 # On efface le repertoire cache
                 self.deleteDir(CACHEDIR)
 
@@ -1128,6 +1141,7 @@ class MainWindow(xbmcgui.Window):
         """
         Traitement si selection d'un element de la liste
         """
+        self._on_action_control( control )
         try:
             if control == self.list:
 
@@ -1326,18 +1340,6 @@ class MainWindow(xbmcgui.Window):
                                     # On remet a la bonne valeur initiale self.localdirList
                                     self.localdirList[self.downloadTypeList.index(self.type)]= self.targetDir
 
-            
-            if control == self.buttonForum:
-                import dialog_direct_infos
-                dialog_direct_infos.show_direct_infos()
-                #on a plus besoin, on le delete
-                del dialog_direct_infos
-            if control == self.buttonOptions:
-                import dialog_script_settings
-                dialog_script_settings.show_settings( self )
-                #on a plus besoin du settins, on le delete
-                del dialog_script_settings
-                                
         except:
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
 
