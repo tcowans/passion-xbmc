@@ -236,6 +236,39 @@ class scriptextracter:
             LOG( LOG_NOTICE, "Format d'archive non supporté" )
         return dirName
 
+
+
+class GDDFTP(ftplib.FTP):
+    """
+    Gère la reconnexion au serveur FTP quand la connexion est perdu au moment de l'exécution de la requête. 
+    Cette classe hérite de ftplib.FTP qui gère le client FTP. 
+    Crédit: Guigui_ 
+    Source: http://python.developpez.com/faq/?page=FTP#FTPAllTimeConnect
+    """
+    def __init__(self, adresse, port, user, password):
+        ftplib.FTP.__init__(self, '')
+        self.adresse = adresse
+        self.port = port
+        self.user = user
+        self.password = password
+        
+    def Reconnect(self):
+        """
+        Permet la (re)connexion au serveur
+        """
+        self.connect(self.adresse, self.port) # Recherche FTP
+        self.login(self.user, self.password)  # Connexion
+        
+    def Command(self, command, *args):
+        """
+        Exécute la requête command avec la liste de paramètres donnés par *args en se reconnectant si nécessaire au serveur
+        """
+        try: return command(*args)
+        except:
+            self.Reconnect()
+            return command(*args)
+
+
 class ftpDownloadCtrl:
     """
 
@@ -252,6 +285,7 @@ class ftpDownloadCtrl:
         #Initialise les attributs de la classe ftpDownloadCtrl avec les parametres donnes au constructeur
         self.host                   = host
         self.user                   = user
+        self.port                   = 21
         self.password               = password
         self.remotedirList          = remotedirList
         self.localdirList           = localdirList
@@ -273,7 +307,8 @@ class ftpDownloadCtrl:
         """
         #Connection au serveur FTP
         try:
-            self.ftp = ftplib.FTP(self.host,self.user,self.password) # on se connecte
+            #self.ftp = ftplib.FTP(self.host,self.user,self.password) # on se connecte
+            self.ftp = GDDFTP(self.host,self.port, self.user,self.password) # on se connecte
 
             # DEBUG: Seulement pour le dev
             #self.ftp.set_debuglevel(2)
@@ -301,7 +336,8 @@ class ftpDownloadCtrl:
         
         # Recuperation de la liste
         try:
-            curDirList = self.ftp.nlst(remotedir)
+            #curDirList = self.ftp.nlst(remotedir)
+            curDirList = self.ftp.Command(self.ftp.nlst,remotedir)
         except:
             LOG( LOG_NOTICE, "Exception durant la recuperation de la liste des fichiers du repertoire: %s", remotedir )
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
@@ -317,7 +353,9 @@ class ftpDownloadCtrl:
         isDir = True
         # Verifie se on telecharge un repertoire ou d'un fichier
         try:
-            self.ftp.cwd(pathsrc) # c'est cette commande qui genere l'exception dans le cas d'un fichier
+            #self.ftp.cwd(pathsrc) # c'est cette commande qui genere l'exception dans le cas d'un fichier
+            self.ftp.Command(self.ftp.cwd,pathsrc) # c'est cette commande qui genere l'exception dans le cas d'un fichier
+            
             # Pas d'excpetion => il s'agit d'un dossier
             LOG( LOG_NOTICE, "isDir: %s EST un DOSSIER", pathsrc )
         except:
@@ -388,7 +426,8 @@ class ftpDownloadCtrl:
         """
         result = 1 # 1 pour telechargement OK
         # Liste le repertoire
-        curDirList     = self.ftp.nlst(pathsrc) #TODO: ajouter try/except
+        #curDirList     = self.ftp.nlst(pathsrc) #TODO: ajouter try/except
+        curDirList     = self.ftp.Command(self.ftp.nlst, pathsrc) #TODO: ajouter try/except
         curDirListSize = len(curDirList) # Defini le nombre d'elements a telecharger correspondant a 100% - pour le moment on ne gere que ce niveau de granularite pour la progressbar
         
         for i in curDirList:
@@ -460,7 +499,8 @@ class ftpDownloadCtrl:
         """
         emptydir = False
         try:
-            dirContent = self.ftp.nlst(dirsrc)
+            #dirContent = self.ftp.nlst(dirsrc)
+            dirContent = self.ftp.Command(self.ftp.nlst, dirsrc)
             LOG( LOG_INFO, "dirContent: %s", repr( dirContent ) )
         except Exception, e:
             # Repertoire non vide -> il faut telecharger les elementss de ce repertoire
@@ -497,8 +537,10 @@ class ftpDownloadCtrl:
         
         # Recuperation de la taille du fichier
         try:
-            self.ftp.sendcmd('TYPE I')
-            remoteFileSize = int(self.ftp.size(filesrc))
+            #self.ftp.sendcmd('TYPE I')
+            self.ftp.Command(self.ftp.sendcmd, 'TYPE I')
+            #remoteFileSize = int(self.ftp.size(filesrc))
+            remoteFileSize = int( self.ftp.Command(self.ftp.size, filesrc))
             if remoteFileSize <= 0:
                 # Dans le cas ou un fichier n'a pas une taille valide ou corrompue
                 remoteFileSize = 1
@@ -536,8 +578,10 @@ class ftpDownloadCtrl:
         Cette version de retrbinary permet d'interompte un telechargement en cours alors que la version de ftplib ne le permet pas
         Inspirée du code dispo a http://www.archivum.info/python-bugs-list@python.org/2007-03/msg00465.html
         """
-        self.ftp.voidcmd('TYPE I')
-        conn = self.ftp.transfercmd(cmd, rest)
+        #self.ftp.voidcmd('TYPE I')
+        self.ftp.Command(self.ftp.voidcmd, 'TYPE I')
+        #conn = self.ftp.transfercmd(cmd, rest)
+        conn = self.ftp.Command(self.ftp.transfercmd, cmd, rest)
         fp = conn.makefile('rb')
         while 1:
             data = fp.read(blocksize)   
@@ -551,7 +595,8 @@ class ftpDownloadCtrl:
                 break
         fp.close()
         conn.close()
-        return self.ftp.voidresp()
+        #return self.ftp.voidresp()
+        return self.ftp.Command(self.ftp.voidresp)
 
         
         
