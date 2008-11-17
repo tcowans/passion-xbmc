@@ -40,6 +40,8 @@ ECHO Desktop.ini>>"BUILD\exclude.txt"
 
 ECHO .pyo>>"BUILD\exclude.txt"
 ECHO .pyc>>"BUILD\exclude.txt"
+:: remove file created by WinMerge
+ECHO .bak>>"BUILD\exclude.txt"
 
 :MakeReleaseBuild
 :: Create release build
