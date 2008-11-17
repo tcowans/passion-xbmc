@@ -236,6 +236,39 @@ class scriptextracter:
             LOG( LOG_NOTICE, "Format d'archive non supporté" )
         return dirName
 
+
+
+class GDDFTP(ftplib.FTP):
+    """
+    Gère la reconnexion au serveur FTP quand la connexion est perdu au moment de l'exécution de la requête. 
+    Cette classe hérite de ftplib.FTP qui gère le client FTP. 
+    Crédit: Guigui_ 
+    Source: http://python.developpez.com/faq/?page=FTP#FTPAllTimeConnect
+    """
+    def __init__(self, adresse, port, user, password):
+        ftplib.FTP.__init__(self, '')
+        self.adresse = adresse
+        self.port = port
+        self.user = user
+        self.password = password
+        
+    def Reconnect(self):
+        """
+        Permet la (re)connexion au serveur
+        """
+        self.connect(self.adresse, self.port) # Recherche FTP
+        self.login(self.user, self.password)  # Connexion
+        
+    def Command(self, command, *args):
+        """
+        Exécute la requête command avec la liste de paramètres donnés par *args en se reconnectant si nécessaire au serveur
+        """
+        try: return command(*args)
+        except:
+            self.Reconnect()
+            return command(*args)
+
+
 class ftpDownloadCtrl:
     """
 
@@ -252,6 +285,7 @@ class ftpDownloadCtrl:
         #Initialise les attributs de la classe ftpDownloadCtrl avec les parametres donnes au constructeur
         self.host                   = host
         self.user                   = user
+        self.port                   = 21
         self.password               = password
         self.remotedirList          = remotedirList
         self.localdirList           = localdirList
@@ -273,7 +307,8 @@ class ftpDownloadCtrl:
         """
         #Connection au serveur FTP
         try:
-            self.ftp = ftplib.FTP(self.host,self.user,self.password) # on se connecte
+            #self.ftp = ftplib.FTP(self.host,self.user,self.password) # on se connecte
+            self.ftp = GDDFTP(self.host,self.port, self.user,self.password) # on se connecte
 
             # DEBUG: Seulement pour le dev
             #self.ftp.set_debuglevel(2)
@@ -301,7 +336,8 @@ class ftpDownloadCtrl:
         
         # Recuperation de la liste
         try:
-            curDirList = self.ftp.nlst(remotedir)
+            #curDirList = self.ftp.nlst(remotedir)
+            curDirList = self.ftp.Command(self.ftp.nlst,remotedir)
         except:
             LOG( LOG_NOTICE, "Exception durant la recuperation de la liste des fichiers du repertoire: %s", remotedir )
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
@@ -317,7 +353,9 @@ class ftpDownloadCtrl:
         isDir = True
         # Verifie se on telecharge un repertoire ou d'un fichier
         try:
-            self.ftp.cwd(pathsrc) # c'est cette commande qui genere l'exception dans le cas d'un fichier
+            #self.ftp.cwd(pathsrc) # c'est cette commande qui genere l'exception dans le cas d'un fichier
+            self.ftp.Command(self.ftp.cwd,pathsrc) # c'est cette commande qui genere l'exception dans le cas d'un fichier
+            
             # Pas d'excpetion => il s'agit d'un dossier
             LOG( LOG_NOTICE, "isDir: %s EST un DOSSIER", pathsrc )
         except:
@@ -388,7 +426,8 @@ class ftpDownloadCtrl:
         """
         result = 1 # 1 pour telechargement OK
         # Liste le repertoire
-        curDirList     = self.ftp.nlst(pathsrc) #TODO: ajouter try/except
+        #curDirList     = self.ftp.nlst(pathsrc) #TODO: ajouter try/except
+        curDirList     = self.ftp.Command(self.ftp.nlst, pathsrc) #TODO: ajouter try/except
         curDirListSize = len(curDirList) # Defini le nombre d'elements a telecharger correspondant a 100% - pour le moment on ne gere que ce niveau de granularite pour la progressbar
         
         for i in curDirList:
@@ -460,7 +499,8 @@ class ftpDownloadCtrl:
         """
         emptydir = False
         try:
-            dirContent = self.ftp.nlst(dirsrc)
+            #dirContent = self.ftp.nlst(dirsrc)
+            dirContent = self.ftp.Command(self.ftp.nlst, dirsrc)
             LOG( LOG_INFO, "dirContent: %s", repr( dirContent ) )
         except Exception, e:
             # Repertoire non vide -> il faut telecharger les elementss de ce repertoire
@@ -497,8 +537,10 @@ class ftpDownloadCtrl:
         
         # Recuperation de la taille du fichier
         try:
-            self.ftp.sendcmd('TYPE I')
-            remoteFileSize = int(self.ftp.size(filesrc))
+            #self.ftp.sendcmd('TYPE I')
+            self.ftp.Command(self.ftp.sendcmd, 'TYPE I')
+            #remoteFileSize = int(self.ftp.size(filesrc))
+            remoteFileSize = int( self.ftp.Command(self.ftp.size, filesrc))
             if remoteFileSize <= 0:
                 # Dans le cas ou un fichier n'a pas une taille valide ou corrompue
                 remoteFileSize = 1
@@ -536,8 +578,10 @@ class ftpDownloadCtrl:
         Cette version de retrbinary permet d'interompte un telechargement en cours alors que la version de ftplib ne le permet pas
         Inspirée du code dispo a http://www.archivum.info/python-bugs-list@python.org/2007-03/msg00465.html
         """
-        self.ftp.voidcmd('TYPE I')
-        conn = self.ftp.transfercmd(cmd, rest)
+        #self.ftp.voidcmd('TYPE I')
+        self.ftp.Command(self.ftp.voidcmd, 'TYPE I')
+        #conn = self.ftp.transfercmd(cmd, rest)
+        conn = self.ftp.Command(self.ftp.transfercmd, cmd, rest)
         fp = conn.makefile('rb')
         while 1:
             data = fp.read(blocksize)   
@@ -551,7 +595,8 @@ class ftpDownloadCtrl:
                 break
         fp.close()
         conn.close()
-        return self.ftp.voidresp()
+        #return self.ftp.voidresp()
+        return self.ftp.Command(self.ftp.voidresp)
 
         
         
@@ -847,37 +892,65 @@ class MainWindow(xbmcgui.Window):
         self.addControl(xbmcgui.ControlImage(0,0,720,576, os.path.join(IMAGEDIR,"background.png")))
 
         # Set List border image
-        self.listborder = xbmcgui.ControlImage(19,120,681,446, os.path.join(IMAGEDIR, "list-border.png"))
-        #self.listborder = xbmcgui.ControlImage(19,150,681,416, os.path.join(IMAGEDIR, "list-border.png"))
+        #self.listborder = xbmcgui.ControlImage(19,120,681,446, os.path.join(IMAGEDIR, "list-border.png"))
+        self.listborder = xbmcgui.ControlImage(19,150,681,390, os.path.join(IMAGEDIR, "list-border.png"))
         self.addControl(self.listborder)
         self.listborder.setVisible(True)
 
         # Set List background image
-        self.listbackground = xbmcgui.ControlImage(20, 163, 679, 402, os.path.join(IMAGEDIR, "list-white.png"))
-        #self.listbackground = xbmcgui.ControlImage(20, 193, 679, 340, os.path.join(IMAGEDIR, "list-white.png"))
+        #self.listbackground = xbmcgui.ControlImage(20, 163, 679, 402, os.path.join(IMAGEDIR, "list-white.png"))
+        self.listbackground = xbmcgui.ControlImage(20, 193, 679, 346, os.path.join(IMAGEDIR, "list-white.png"))
         self.addControl(self.listbackground)
         self.listbackground.setVisible(True)
 
         # Set List hearder image
-        self.header = xbmcgui.ControlImage(20,121,679,41, os.path.join(IMAGEDIR, "list-header.png"))
-        #self.header = xbmcgui.ControlImage(20,151,679,41, os.path.join(IMAGEDIR, "list-header.png"))
+        #self.header = xbmcgui.ControlImage(20,121,679,41, os.path.join(IMAGEDIR, "list-header.png"))
+        self.header = xbmcgui.ControlImage(20,151,679,41, os.path.join(IMAGEDIR, "list-header.png"))
         self.addControl(self.header)
         self.header.setVisible(True)
+        
+        # Menu Forum button
+        self.buttonForum = xbmcgui.ControlButton(20, 117, 85, 25, _( 32001 ), focusTexture = os.path.join(IMAGEDIR,"list-focus.png"), noFocusTexture  = os.path.join(IMAGEDIR,"list-header.png"), alignment=6)
+        self.addControl(self.buttonForum)
+
+        # Menu option buttons a the top
+        self.buttonOptions = xbmcgui.ControlButton(110, 117, 85, 25, _( 32002 ), focusTexture = os.path.join(IMAGEDIR,"list-focus.png"), noFocusTexture  = os.path.join(IMAGEDIR,"list-header.png"), alignment=6)
+        self.addControl(self.buttonOptions)
+        
+        # Help button a the top
+        self.buttonHelp = xbmcgui.ControlButton(200, 117, 85, 25, _( 32003 ), focusTexture = os.path.join(IMAGEDIR,"list-focus.png"), noFocusTexture  = os.path.join(IMAGEDIR,"list-header.png"), alignment=6)
+        self.addControl(self.buttonHelp)
 
         # Title of the current pages
-        self.strMainTitle = xbmcgui.ControlLabel(35, 130, 200, 40, "Sélection", 'special13')
-        #self.strMainTitle = xbmcgui.ControlLabel(35, 150, 200, 40, "Sélection", 'special13')
+        #self.strMainTitle = xbmcgui.ControlLabel(35, 130, 200, 40, "Sélection", 'special13')
+        self.strMainTitle = xbmcgui.ControlLabel(35, 160, 200, 40, _( 32010 ), 'special13') # Sélection
         self.addControl(self.strMainTitle)
 
         # item Control List
-        self.list = xbmcgui.ControlList(22, 166, 674 , 420,'font14','0xFF000000', buttonTexture = os.path.join(IMAGEDIR,"list-background.png"),buttonFocusTexture = os.path.join(IMAGEDIR,"list-focus.png"), imageWidth=40, imageHeight=32, itemTextXOffset=0, itemHeight=55)
-        #self.list = xbmcgui.ControlList(22, 196, 674 , 390,'font14','0xFF000000', buttonTexture = os.path.join(IMAGEDIR,"list-background.png"),buttonFocusTexture = os.path.join(IMAGEDIR,"list-focus.png"), imageWidth=40, imageHeight=32, itemTextXOffset=0, itemHeight=55)
+        #self.list = xbmcgui.ControlList(22, 166, 674 , 420,'font14','0xFF000000', buttonTexture = os.path.join(IMAGEDIR,"list-background.png"),buttonFocusTexture = os.path.join(IMAGEDIR,"list-focus.png"), imageWidth=40, imageHeight=32, itemTextXOffset=0, itemHeight=55)
+        self.list = xbmcgui.ControlList(23, 196, 674 , 390,'font14','0xFF000000', buttonTexture = os.path.join(IMAGEDIR,"list-background.png"),buttonFocusTexture = os.path.join(IMAGEDIR,"list-focus.png"), imageWidth=40, imageHeight=32, itemTextXOffset=0, itemHeight=55)
         self.addControl(self.list)
 
         # Version and author(s):
         self.strVersion = xbmcgui.ControlLabel(621, 69, 350, 30, version, 'font10','0xFF000000', alignment=1)
         self.addControl(self.strVersion)
 
+        # Set navigation between control
+        self.buttonForum.controlDown(self.list)
+        self.buttonForum.controlRight(self.buttonOptions)
+        
+        self.buttonOptions.controlDown(self.list)
+        self.buttonOptions.controlLeft(self.buttonForum)
+        self.buttonOptions.controlRight(self.buttonHelp)
+        
+        self.buttonHelp.controlDown(self.list)
+        self.buttonHelp.controlLeft(self.buttonOptions)
+
+        self.list.controlUp(self.buttonForum)
+        
+        # Set focus on the list
+        self.setFocus(self.list)
+        
         # Recupeartion du Flux RSS
         try:
             # Cree une instance de rssReader recuperant ainsi le flux/page RSS
@@ -1252,6 +1325,18 @@ class MainWindow(xbmcgui.Window):
                                 else:
                                     # On remet a la bonne valeur initiale self.localdirList
                                     self.localdirList[self.downloadTypeList.index(self.type)]= self.targetDir
+
+            
+            if control == self.buttonForum:
+                import dialog_direct_infos
+                dialog_direct_infos.show_direct_infos()
+                #on a plus besoin, on le delete
+                del dialog_direct_infos
+            if control == self.buttonOptions:
+                import dialog_script_settings
+                dialog_script_settings.show_settings( self )
+                #on a plus besoin du settins, on le delete
+                del dialog_script_settings
                                 
         except:
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
