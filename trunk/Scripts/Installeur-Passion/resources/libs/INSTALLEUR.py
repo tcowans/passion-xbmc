@@ -892,37 +892,65 @@ class MainWindow(xbmcgui.Window):
         self.addControl(xbmcgui.ControlImage(0,0,720,576, os.path.join(IMAGEDIR,"background.png")))
 
         # Set List border image
-        self.listborder = xbmcgui.ControlImage(19,120,681,446, os.path.join(IMAGEDIR, "list-border.png"))
-        #self.listborder = xbmcgui.ControlImage(19,150,681,416, os.path.join(IMAGEDIR, "list-border.png"))
+        #self.listborder = xbmcgui.ControlImage(19,120,681,446, os.path.join(IMAGEDIR, "list-border.png"))
+        self.listborder = xbmcgui.ControlImage(19,150,681,390, os.path.join(IMAGEDIR, "list-border.png"))
         self.addControl(self.listborder)
         self.listborder.setVisible(True)
 
         # Set List background image
-        self.listbackground = xbmcgui.ControlImage(20, 163, 679, 402, os.path.join(IMAGEDIR, "list-white.png"))
-        #self.listbackground = xbmcgui.ControlImage(20, 193, 679, 340, os.path.join(IMAGEDIR, "list-white.png"))
+        #self.listbackground = xbmcgui.ControlImage(20, 163, 679, 402, os.path.join(IMAGEDIR, "list-white.png"))
+        self.listbackground = xbmcgui.ControlImage(20, 193, 679, 346, os.path.join(IMAGEDIR, "list-white.png"))
         self.addControl(self.listbackground)
         self.listbackground.setVisible(True)
 
         # Set List hearder image
-        self.header = xbmcgui.ControlImage(20,121,679,41, os.path.join(IMAGEDIR, "list-header.png"))
-        #self.header = xbmcgui.ControlImage(20,151,679,41, os.path.join(IMAGEDIR, "list-header.png"))
+        #self.header = xbmcgui.ControlImage(20,121,679,41, os.path.join(IMAGEDIR, "list-header.png"))
+        self.header = xbmcgui.ControlImage(20,151,679,41, os.path.join(IMAGEDIR, "list-header.png"))
         self.addControl(self.header)
         self.header.setVisible(True)
+        
+        # Menu Forum button
+        self.buttonForum = xbmcgui.ControlButton(20, 117, 85, 25, _( 32001 ), focusTexture = os.path.join(IMAGEDIR,"list-focus.png"), noFocusTexture  = os.path.join(IMAGEDIR,"list-header.png"), alignment=6)
+        self.addControl(self.buttonForum)
+
+        # Menu option buttons a the top
+        self.buttonOptions = xbmcgui.ControlButton(110, 117, 85, 25, _( 32002 ), focusTexture = os.path.join(IMAGEDIR,"list-focus.png"), noFocusTexture  = os.path.join(IMAGEDIR,"list-header.png"), alignment=6)
+        self.addControl(self.buttonOptions)
+        
+        # Help button a the top
+        self.buttonHelp = xbmcgui.ControlButton(200, 117, 85, 25, _( 32003 ), focusTexture = os.path.join(IMAGEDIR,"list-focus.png"), noFocusTexture  = os.path.join(IMAGEDIR,"list-header.png"), alignment=6)
+        self.addControl(self.buttonHelp)
 
         # Title of the current pages
-        self.strMainTitle = xbmcgui.ControlLabel(35, 130, 200, 40, "Sélection", 'special13')
-        #self.strMainTitle = xbmcgui.ControlLabel(35, 150, 200, 40, "Sélection", 'special13')
+        #self.strMainTitle = xbmcgui.ControlLabel(35, 130, 200, 40, "Sélection", 'special13')
+        self.strMainTitle = xbmcgui.ControlLabel(35, 160, 200, 40, _( 32010 ), 'special13') # Sélection
         self.addControl(self.strMainTitle)
 
         # item Control List
-        self.list = xbmcgui.ControlList(22, 166, 674 , 420,'font14','0xFF000000', buttonTexture = os.path.join(IMAGEDIR,"list-background.png"),buttonFocusTexture = os.path.join(IMAGEDIR,"list-focus.png"), imageWidth=40, imageHeight=32, itemTextXOffset=0, itemHeight=55)
-        #self.list = xbmcgui.ControlList(22, 196, 674 , 390,'font14','0xFF000000', buttonTexture = os.path.join(IMAGEDIR,"list-background.png"),buttonFocusTexture = os.path.join(IMAGEDIR,"list-focus.png"), imageWidth=40, imageHeight=32, itemTextXOffset=0, itemHeight=55)
+        #self.list = xbmcgui.ControlList(22, 166, 674 , 420,'font14','0xFF000000', buttonTexture = os.path.join(IMAGEDIR,"list-background.png"),buttonFocusTexture = os.path.join(IMAGEDIR,"list-focus.png"), imageWidth=40, imageHeight=32, itemTextXOffset=0, itemHeight=55)
+        self.list = xbmcgui.ControlList(23, 196, 674 , 390,'font14','0xFF000000', buttonTexture = os.path.join(IMAGEDIR,"list-background.png"),buttonFocusTexture = os.path.join(IMAGEDIR,"list-focus.png"), imageWidth=40, imageHeight=32, itemTextXOffset=0, itemHeight=55)
         self.addControl(self.list)
 
         # Version and author(s):
         self.strVersion = xbmcgui.ControlLabel(621, 69, 350, 30, version, 'font10','0xFF000000', alignment=1)
         self.addControl(self.strVersion)
 
+        # Set navigation between control
+        self.buttonForum.controlDown(self.list)
+        self.buttonForum.controlRight(self.buttonOptions)
+        
+        self.buttonOptions.controlDown(self.list)
+        self.buttonOptions.controlLeft(self.buttonForum)
+        self.buttonOptions.controlRight(self.buttonHelp)
+        
+        self.buttonHelp.controlDown(self.list)
+        self.buttonHelp.controlLeft(self.buttonOptions)
+
+        self.list.controlUp(self.buttonForum)
+        
+        # Set focus on the list
+        self.setFocus(self.list)
+        
         # Recupeartion du Flux RSS
         try:
             # Cree une instance de rssReader recuperant ainsi le flux/page RSS
@@ -1297,6 +1325,18 @@ class MainWindow(xbmcgui.Window):
                                 else:
                                     # On remet a la bonne valeur initiale self.localdirList
                                     self.localdirList[self.downloadTypeList.index(self.type)]= self.targetDir
+
+            
+            if control == self.buttonForum:
+                import dialog_direct_infos
+                dialog_direct_infos.show_direct_infos()
+                #on a plus besoin, on le delete
+                del dialog_direct_infos
+            if control == self.buttonOptions:
+                import dialog_script_settings
+                dialog_script_settings.show_settings( self )
+                #on a plus besoin du settins, on le delete
+                del dialog_script_settings
                                 
         except:
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )

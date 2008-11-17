@@ -3,10 +3,22 @@
   <!-- strings 32000 thru 32999 reserved for scripts -->
   <!--GENERAL STRINGS -->
   <string id="32000">Installer Passion-XBMC</string>
+  <string id="32001">Forum</string>
+  <string id="32002">Settings</string>
+  <string id="32003">Help</string>
+  <string id="32010">Selection</string>
+  <string id="32011">Skins</string>
+  <string id="32012">Scrapers</string>
+  <string id="32013">Scripts</string>
+  <string id="32014">Plugins</string>
+  <string id="32015">Music Plugins</string>
+  <string id="32016">Pictures Plugins</string>
+  <string id="32017">Programs Plugins</string>
+  <string id="32018">Video Plugins</string>
 
   <!--MISC STRINGS -->
   <string id="32101">System Configuration</string>
-  <string id="32102">Checking the updated</string>
+  <string id="32102">Checking the update</string>
   <string id="32103">Creating the GUI</string>
   <string id="32104">Loading information</string>
 

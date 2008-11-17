@@ -3,6 +3,22 @@
   <!-- Les strings de 32000 à 32999 sont réservées aux scripts -->
   <!--GENERAL STRINGS -->
   <string id="32000">Installateur Passion-XBMC</string>
+  <string id="32001">Forum</string>
+  <string id="32002">Options</string>
+  <string id="32003">Aide</string>
+  <string id="32010">Sélection</string>
+  <string id="32011">Thèmes</string>
+  <string id="32012">Scrapers</string>
+  <string id="32013">Scripts</string>
+  <string id="32014">Plugins</string>
+  <string id="32011">Thèmes</string>
+  <string id="32012">Scrapers</string>
+  <string id="32013">Scripts</string>
+  <string id="32014">Plugins</string>
+  <string id="32015">Plugins Musique</string>
+  <string id="32016">Plugins Images</string>
+  <string id="32017">Plugins Programmes</string>
+  <string id="32018">Plugins Vidéos</string>
 
   <!--DIVERS STRINGS -->
   <string id="32101">Configuration du système</string>
