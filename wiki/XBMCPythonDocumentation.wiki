@@ -1,4 +1,4 @@
-= Python Documentation: module xbmc, xbmcgui and xbmcplugin =
+*= Python Documentation: module xbmc, xbmcgui and xbmcplugin =*
 
 = [http://passion-xbmc.googlecode.com/svn/wiki/xbmc.html xbmc] =
 
