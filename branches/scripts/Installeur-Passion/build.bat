@@ -130,7 +130,7 @@ IF EXIST "%XBMC_EXE%" (
     ECHO.
     ECHO Final build is located in the \BUILD\ folder.
     ECHO.
-    ECHO copy: \%ScriptName%\ folder from the \BUILD\ folder.
+    ECHO copy: \%ScriptName%\ folder from the \BUILD\ folder
     ECHO to: /XBMC/scripts/ folder.
     ECHO.
     ECHO ======================================================================
