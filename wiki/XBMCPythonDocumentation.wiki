@@ -2,9 +2,9 @@
 
 == [http://passion-xbmc.googlecode.com/svn/wiki/xbmc.html xbmc] ==
 
-== [http://passion-xbmc.googlecode.com/svn/wiki/xbmc.html xbmcgui] ==
+== [http://passion-xbmc.googlecode.com/svn/wiki/xbmcgui.html xbmcgui] ==
 
-== [http://passion-xbmc.googlecode.com/svn/wiki/xbmc.html xbmcplugin] ==
+== [http://passion-xbmc.googlecode.com/svn/wiki/xbmcplugin.html xbmcplugin] ==
 
 
 === Dernière MAJ: 17 Novembre 2008 avec [http://xbmc.svn.sourceforge.net/viewvc/xbmc/branches/linuxport/?pathrev=16207 XBMC rev 16207] ===
