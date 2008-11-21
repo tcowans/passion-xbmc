@@ -611,7 +611,7 @@ class FtpCallback(object):
     """
     
     Inspired from source Justin Ezequiel (Thanks)
-    http://coding.derkeiler.com/pdf/Archive/Python/comp.lang.python/2006-09/msg02008.pdf assion-list-border.png assion-list-white.png assion-list-header.png
+    http://coding.derkeiler.com/pdf/Archive/Python/comp.lang.python/2006-09/msg02008.pdf
     
     """
     def __init__(self, filesize, localfile, filesrc, dp=None, curPercent=0, coeff=1):
