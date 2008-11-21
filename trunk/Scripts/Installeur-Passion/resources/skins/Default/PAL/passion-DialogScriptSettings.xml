@@ -14,8 +14,12 @@
 	<!-- ** Required ** Do not change any skin settings or skin infos -->
 	<!-- ** Infos ** if you not control in your skin, set and add <visible>false</visible>, results no bugs created in scripts. If remove control the bugs or freeze are created. -->
 
+	<!-- REMARQUE QUE LES "<texture>" COMMANCENT toutes par "passion-blablabla.bla", -->
+	<!-- ceci et pour pas avoir des conflits ou des images pas afficher, -->
+	<!-- que meme des images qui font pas partie du theme du script "Default". -->
+	<!-- Avec le theme d'XBMC qui est en fonction -->
+
 	<controls>
-		<!-- REMARQUE QUE LES "<texture>" COMMANCENT toutes par "passion-blablabla.bla", ceci et pour pas avoir des conflits ou des images pas afficher ou meme des images qui sont pas dans le skin du script "DefaultSkin". Avec le theme en court d'XBMC  -->
 		<!-- BACKGROUNDS DIALOG -->
 		<control type="image" id="0">
 			<posx>0</posx>

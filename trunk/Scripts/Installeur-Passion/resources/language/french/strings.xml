@@ -30,6 +30,42 @@
   <string id="32111">Erreur</string>
   <string id="32112">Exception durant l'initialisation</string>
 
+  <!--FORUM DIRECT INFOS STRINGS -->
+  <string id="32199">Informations en direct</string>
+  <string id="32200">Général</string>
+  <string id="32201">Releases et Nouvelles</string>
+  <string id="32202">XBMC</string>
+  <string id="32203">Skins</string>
+  <string id="32204">Fiches des Skins</string>
+  <string id="32205">Le coin des utilisateurs</string>
+  <string id="32206">Le coin des développeurs</string>
+  <string id="32207">Télécharger des scripts - plugins</string>
+  <string id="32208">Xbmc Live</string>
+  <string id="32209">Télécharger Xbmc Live</string>
+  <string id="32210">Ubuntu</string>
+  <string id="32211">Tutos Ubuntu et Xbmc</string>
+  <string id="32212">USB Creator pour Ubuntu</string>
+  <string id="32213">Windows</string>
+  <string id="32214">USB Creator pour Windows</string>
+  <string id="32215">Télécharger Xbmc pour Windows</string>
+  <string id="32216">Xbox</string>
+  <string id="32217">Support Modifications des Consoles</string>
+  <string id="32218">Télécharger Xbmc pour XBox</string>
+  <string id="32219">Mac OSX (Leopard et Tiger)</string>
+  <string id="32220">USB Creator pour Mac Intel</string>
+  <string id="32221">USB Creator pour Apple TV</string>
+  <string id="32222">Télécharger Xbmc pour Mac</string>
+  <string id="32223">Forks</string>
+  <string id="32224">Le site</string>
+  <string id="32225">Café avec southbox au plafond</string>
+  <string id="32226">Membres</string>
+  <string id="32227">Vos Configs</string>
+  <string id="32228">Films et Musique</string>
+  <string id="32229">Livres et BD</string>
+  <string id="32230">Corbeille</string>
+  <string id="32231">Infos non disponible!</string>
+  <string id="32232">Impossible de récupérer les informations!</string>
+
   <!--SETTINGS STRINGS -->
   <string id="32499">Version: %s</string>
   <string id="32500">Paramètres</string>
