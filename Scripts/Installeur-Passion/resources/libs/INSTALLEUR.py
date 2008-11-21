@@ -266,6 +266,7 @@ class GDDFTP(ftplib.FTP):
         try: return command(*args)
         except:
             self.Reconnect()
+            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
             return command(*args)
 
 
@@ -325,8 +326,14 @@ class ftpDownloadCtrl:
         Ferme la connexion FTP
         """
         #on se deconnecte du serveur pour etre plus propre
-        LOG( LOG_NOTICE, "Connection avec le serveur FTP fermée" )
-        self.ftp.quit()
+        try:
+            self.ftp.quit
+        except:
+            LOG( LOG_ERROR, "Exception durant la fermeture de la connection FTP" )
+            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+        else:
+            # la fermeture a reussi avec succes
+            LOG( LOG_NOTICE, "Connection avec le serveur FTP fermée" )
 
     def getDirList(self,remotedir):
         """
@@ -604,7 +611,7 @@ class FtpCallback(object):
     """
     
     Inspired from source Justin Ezequiel (Thanks)
-    http://coding.derkeiler.com/pdf/Archive/Python/comp.lang.python/2006-09/msg02008.pdf
+    http://coding.derkeiler.com/pdf/Archive/Python/comp.lang.python/2006-09/msg02008.pdf assion-list-border.png assion-list-white.png assion-list-header.png
     
     """
     def __init__(self, filesize, localfile, filesrc, dp=None, curPercent=0, coeff=1):
@@ -892,34 +899,36 @@ class MainWindow(xbmcgui.Window):
         self.addControl(xbmcgui.ControlImage(0,0,720,576, os.path.join(IMAGEDIR,"background.png")))
 
         # Set List border image
-        #self.listborder = xbmcgui.ControlImage(19,120,681,446, os.path.join(IMAGEDIR, "list-border.png"))
-        self.listborder = xbmcgui.ControlImage(19,150,681,390, os.path.join(IMAGEDIR, "list-border.png"))
+        #self.listborder = xbmcgui.ControlImage(19,120,681,446, os.path.join(IMAGEDIR, ""))
+        self.listborder = xbmcgui.ControlImage(19,150,681,390, os.path.join(IMAGEDIR, "passion-list-border.png"))
         self.addControl(self.listborder)
         self.listborder.setVisible(True)
 
         # Set List background image
-        #self.listbackground = xbmcgui.ControlImage(20, 163, 679, 402, os.path.join(IMAGEDIR, "list-white.png"))
-        self.listbackground = xbmcgui.ControlImage(20, 193, 679, 346, os.path.join(IMAGEDIR, "list-white.png"))
+        #self.listbackground = xbmcgui.ControlImage(20, 163, 679, 402, os.path.join(IMAGEDIR, ""))
+        self.listbackground = xbmcgui.ControlImage(20, 193, 679, 346, os.path.join(IMAGEDIR, "passion-list-white.png"))
         self.addControl(self.listbackground)
         self.listbackground.setVisible(True)
 
         # Set List hearder image
-        #self.header = xbmcgui.ControlImage(20,121,679,41, os.path.join(IMAGEDIR, "list-header.png"))
-        self.header = xbmcgui.ControlImage(20,151,679,41, os.path.join(IMAGEDIR, "list-header.png"))
+        #self.header = xbmcgui.ControlImage(20,121,679,41, os.path.join(IMAGEDIR, ""))
+        self.header = xbmcgui.ControlImage(20,151,679,41, os.path.join(IMAGEDIR, "passion-list-header.png"))
         self.addControl(self.header)
         self.header.setVisible(True)
         
         # Menu Forum button
-        self.buttonForum = xbmcgui.ControlButton(20, 117, 85, 25, _( 32001 ), focusTexture = os.path.join(IMAGEDIR,"list-focus.png"), noFocusTexture  = os.path.join(IMAGEDIR,"list-header.png"), alignment=6)
+        self.buttonForum = xbmcgui.ControlButton(20, 117, 85, 25, _( 32001 ), focusTexture = os.path.join(IMAGEDIR,"passion-list-focus.png"), noFocusTexture  = os.path.join(IMAGEDIR,"passion-list-header.png"), alignment=6)
         self.addControl(self.buttonForum)
 
         # Menu option buttons a the top
-        self.buttonOptions = xbmcgui.ControlButton(110, 117, 85, 25, _( 32002 ), focusTexture = os.path.join(IMAGEDIR,"list-focus.png"), noFocusTexture  = os.path.join(IMAGEDIR,"list-header.png"), alignment=6)
+        self.buttonOptions = xbmcgui.ControlButton(110, 117, 85, 25, _( 32002 ), focusTexture = os.path.join(IMAGEDIR,"passion-list-focus.png"), noFocusTexture  = os.path.join(IMAGEDIR,"passion-list-header.png"), alignment=6)
         self.addControl(self.buttonOptions)
         
         # Help button a the top
-        self.buttonHelp = xbmcgui.ControlButton(200, 117, 85, 25, _( 32003 ), focusTexture = os.path.join(IMAGEDIR,"list-focus.png"), noFocusTexture  = os.path.join(IMAGEDIR,"list-header.png"), alignment=6)
+        self.buttonHelp = xbmcgui.ControlButton(200, 117, 85, 25, _( 32003 ), focusTexture = os.path.join(IMAGEDIR,"passion-list-focus.png"), noFocusTexture  = os.path.join(IMAGEDIR,"passion-list-header.png"), alignment=6)
         self.addControl(self.buttonHelp)
+        #desactivrer le bouton help le temps de faire un dialog xml
+        self.buttonHelp.setEnabled( 0 )
 
         # Title of the current pages
         #self.strMainTitle = xbmcgui.ControlLabel(35, 130, 200, 40, "Sélection", 'special13')
@@ -927,8 +936,8 @@ class MainWindow(xbmcgui.Window):
         self.addControl(self.strMainTitle)
 
         # item Control List
-        #self.list = xbmcgui.ControlList(22, 166, 674 , 420,'font14','0xFF000000', buttonTexture = os.path.join(IMAGEDIR,"list-background.png"),buttonFocusTexture = os.path.join(IMAGEDIR,"list-focus.png"), imageWidth=40, imageHeight=32, itemTextXOffset=0, itemHeight=55)
-        self.list = xbmcgui.ControlList(23, 196, 674 , 390,'font14','0xFF000000', buttonTexture = os.path.join(IMAGEDIR,"list-background.png"),buttonFocusTexture = os.path.join(IMAGEDIR,"list-focus.png"), imageWidth=40, imageHeight=32, itemTextXOffset=0, itemHeight=55)
+        #self.list = xbmcgui.ControlList(22, 166, 674 , 420,'font14','0xFF000000', buttonTexture = os.path.join(IMAGEDIR,"passion-list-nofocus.png"),buttonFocusTexture = os.path.join(IMAGEDIR,"passion-list-focus.png"), imageWidth=40, imageHeight=32, itemTextXOffset=0, itemHeight=55)
+        self.list = xbmcgui.ControlList(23, 196, 674 , 390,'font14','0xFF000000', buttonTexture = os.path.join(IMAGEDIR,"passion-list-nofocus.png"),buttonFocusTexture = os.path.join(IMAGEDIR,"passion-list-focus.png"), imageWidth=40, imageHeight=32, itemTextXOffset=0, itemHeight=55)
         self.addControl(self.list)
 
         # Version and author(s):
@@ -1005,34 +1014,38 @@ class MainWindow(xbmcgui.Window):
             else:
                 self.pluginsDirSpyList.append(None)
 
-    def onAction(self, action):
-        """
-        Remonte l'arborescence et quitte le script
-        """
+    def _on_action_control( self, act_ctrl_id ):
         try:
-            button_code_F1_keyboard = 61552
-            #methode temporaire "button_code_F1_keyboard", le temps de creer un contextmenu en windowxml. Qui va inclure le dialog_script_settings
-            if action.getButtonCode() == button_code_F1_keyboard:
+            #button_code_F1_keyboard = 61552
+            if ( act_ctrl_id in ( self.buttonForum, 61552, ) ):
                 import dialog_direct_infos
                 dialog_direct_infos.show_direct_infos()
                 #on a plus besoin, on le delete
                 del dialog_direct_infos
 
-            if action==ACTION_CONTEXT_MENU:
+            elif ( act_ctrl_id in ( ACTION_CONTEXT_MENU, self.buttonOptions, ) ):
                 import dialog_script_settings
                 dialog_script_settings.show_settings( self )
                 #on a plus besoin du settins, on le delete
                 del dialog_script_settings
+            else:
+                pass
+        except:
+            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
 
+    def onAction(self, action):
+        """
+        Remonte l'arborescence et quitte le script
+        """
+        self._on_action_control( action )
+        self._on_action_control( action.getButtonCode() )
+        try:
             if action == ACTION_PREVIOUS_MENU:
                 # Sortie du script
 
                 # On se deconnecte du serveur pour etre plus propre
-                try:
-                    self.passionFTPCtrl.closeConnection()
-                except:
-                    LOG( LOG_ERROR, "Exception durant la fermeture de la connection FTP" )
-                    EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+                self.passionFTPCtrl.closeConnection()
+
                 # On efface le repertoire cache
                 self.deleteDir(CACHEDIR)
 
@@ -1128,6 +1141,7 @@ class MainWindow(xbmcgui.Window):
         """
         Traitement si selection d'un element de la liste
         """
+        self._on_action_control( control )
         try:
             if control == self.list:
 
@@ -1326,18 +1340,6 @@ class MainWindow(xbmcgui.Window):
                                     # On remet a la bonne valeur initiale self.localdirList
                                     self.localdirList[self.downloadTypeList.index(self.type)]= self.targetDir
 
-            
-            if control == self.buttonForum:
-                import dialog_direct_infos
-                dialog_direct_infos.show_direct_infos()
-                #on a plus besoin, on le delete
-                del dialog_direct_infos
-            if control == self.buttonOptions:
-                import dialog_script_settings
-                dialog_script_settings.show_settings( self )
-                #on a plus besoin du settins, on le delete
-                del dialog_script_settings
-                                
         except:
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
 

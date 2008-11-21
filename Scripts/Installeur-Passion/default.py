@@ -1,3 +1,5 @@
+# Installeur-Passion script revision: 148 - built with build.bat version 1.0 #
+
 
 # script constants
 __script__ = "Installeur-Passion"
@@ -7,18 +9,21 @@ __url__    = "http://passion-xbmc.org/index.php"
 __svn_url__ = "http://code.google.com/p/passion-xbmc/source/browse/#svn/trunk/Scripts/Installeur-Passion"
 __credits__ = "Team XBMC, http://xbmc.org/"
 __platform__  = "xbmc media center"
-__date__    = "11-11-2008"
+__date__    = "19-11-2008"
 __version__ = "1.0.0dev"
-__svn_revision__ = 0
+__svn_revision__ = "148"
 
 
+#Modules general
 import os
 import sys
-import ConfigParser
+from ConfigParser import ConfigParser
 
+#modules XBMC
 import xbmc
 import xbmcgui
 
+#modules custom
 from resources.libs.script_log import *
 
 
@@ -38,7 +43,7 @@ def MAIN():
 
     # INITIALISATION CHEMINS DE FICHIER LOCAUX
     fichier = os.path.join(ROOTDIR, "resources", "conf.cfg")
-    config = ConfigParser.ConfigParser()
+    config = ConfigParser()
     config.read(fichier)
 
     if not config.getboolean('InstallPath','pathok'):

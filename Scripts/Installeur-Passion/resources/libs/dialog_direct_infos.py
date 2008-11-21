@@ -1,7 +1,6 @@
 
 #Modules general
 import os
-import re
 import sys
 import urllib
 
@@ -12,16 +11,10 @@ import xbmc
 import xbmcgui
 
 #modules custom
-try: from script_log import *
-except:
-    LOG_ERROR = 0
-    from traceback import print_exc
-    def EXC_INFO( *args ): print_exc()
-    LOG = EXC_INFO
-    #EXC_INFO( LOG_ERROR, sys.exc_info() )
+from utilities import *
 
 
-DIRECT_INFOS = "http://passion-xbmc.org/.xml/?type=rss"
+DIRECT_INFOS = "http://passion-xbmc.org%s/?action=.xml;type=rss"
 
 #REPERTOIRE RACINE ( default.py )
 CWD = os.getcwd().rstrip( ";" )
@@ -29,27 +22,8 @@ CWD = os.getcwd().rstrip( ";" )
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
 _ = sys.modules[ "__main__" ].__language__
 
-
-#FONCTION POUR RECUPERER LE THEME UTILISE PAR L'UTILISATEUR.
-def getUserSkin():
-    current_skin = xbmc.getSkinDir()
-    force_fallback = os.path.exists( os.path.join( CWD, "resources", "skins", current_skin ) )
-    if not force_fallback: current_skin = "Default"
-    return current_skin, force_fallback
-
-
-def set_pretty_formatting( text ):
-    text = text.replace( "<br />", "\n" )
-    text = text.replace( "<i>", "[I]" ).replace( "</i>", "[/I]" )
-    text = text.replace( "<b>", "[B]" ).replace( "</b>", "[/B]" )
-    #text = re.sub( "(?s)</[^>]*>", "[/B]", text )
-    #text = re.sub( "(?s)<[^>]*>", "[B]", text )
-    return text
-
-
-def strip_off( text, by="" ):
-    #text = text.replace( "[", "<" ).replace( "]", ">" )
-    return re.sub( "(?s)<[^>]*>", by, text )
+#COULEUR POUR TITRE DES TOPICS
+TITLE_COLOR = "FFFFCC00"
 
 
 def load_infos( filename ):
@@ -68,137 +42,112 @@ def load_infos( filename ):
         EXC_INFO( LOG_ERROR, sys.exc_info() )
 
 
-class ENTITY_OR_CHARREF:
-    def __init__( self, strvalue="" ):
-        # Internal -- convert entity or character reference
-        # http://www.toutimages.com/codes_caracteres.htm
-        strvalue = self._replace_html_to_iso( strvalue )
-
-        self.entitydefs = { 'lt': '<', 'gt': '>', 'amp': '&', 'quot': '"', 'apos': '\'' }
-
-        self.entity_or_charref = re.compile( '&(?:'
-            '([a-zA-Z][-.a-zA-Z0-9]*)|#([0-9]+)'
-            ')(;?)' ).sub( self._convert_ref, strvalue )
-
-    def _replace_html_to_iso( self, strvalue ):
-        # NO CONFORM
-        html_to_iso = {
-            '&#8211;': "-",
-            '&#8217;': "'",
-            '&euro;': "&#128;",
-            '&ldquo;': "&#147;",
-            '&rdquo;': "&#148;",
-            '&nbsp;': "&#32;", #'&nbsp;':   "&#160;",
-            '&hellip;': "&#133;", '&Hellip;': "&#133;",
-            '&agrave;': "&#224;", '&Agrave;': "&#192;",
-            '&acirc;':  "&#226;", '&Acirc;':  "&#194;",
-            '&ccedil;': "&#231;", '&Ccedil;': "&#199;",
-            '&egrave;': "&#232;", '&Egrave;': "&#200;",
-            '&eacute;': "&#233;", '&Eacute;': "&#201;",
-            '&ecirc;':  "&#234;", '&Ecirc;':  "&#202;",
-            '&icirc;':  "&#238;", '&Icirc;':  "&#206;",
-            '&iuml;':   "&#239;", '&Iuml;':   "&#207;",
-            '&ocirc;':  "&#244;", '&Ocirc;':  "&#212;",
-            '&ugrave;': "&#249;", '&Ugrave;': "&#217;",
-            '&ucirc;':  "&#251;", '&Ucirc;':  "&#219;"
-            }
-        for key, value in html_to_iso.items():
-            strvalue = strvalue.replace( key, value )
-        return strvalue
-
-    def _convert_ref( self, match ):
-        if match.group( 2 ):
-            return self.convert_charref( match.group( 2 ) ) or ( '&#%s%s' % match.groups( )[ 1: ] )
-        elif match.group( 3 ):
-            return self.convert_entityref( match.group( 1 ) ) or ( '&%s;' % match.group( 1 ) )
-        else:
-            return '&%s' % match.group( 1 )
-
-    def convert_charref( self, name ):
-        """Convert character reference, may be overridden."""
-        try:
-            n = int( name )
-        except ValueError:
-            return
-        if not 0 <= n <= 255:
-            return
-        return self.convert_codepoint( n )
-
-    def convert_codepoint( self, codepoint ):
-        return chr( codepoint )
-
-    def convert_entityref( self, name ):
-        """Convert entity references.
-
-        As an alternative to overriding this method; one can tailor the
-        results by setting up the self.entitydefs mapping appropriately.
-        """
-        table = self.entitydefs
-        if name in table:
-            return table[ name ]
-        else:
-            return
-
-
-def add_pretty_color( word, start=None, end=None, color=None ):
-    try:
-        if color and start == "all":
-            pretty_word = "[COLOR=" + color + "]" + word + "[/COLOR]"
-        else:
-            pretty_word = []
-            for letter in word:
-                if color and letter == start:
-                    pretty_word.append( "[COLOR=" + color + "]" )
-                elif color and letter == end:
-                    pretty_word.append( letter )
-                    pretty_word.append( "[/COLOR]" )
-                    continue
-                pretty_word.append( letter )
-            pretty_word = "".join( pretty_word )
-        return pretty_word
-    except:
-        EXC_INFO( LOG_ERROR, sys.exc_info() )
-        return word
+class LIST_CONTAINER_150( dict ):
+    def __init__( self ):
+        self[ 0 ]  = DIRECT_INFOS % ( "", )
+        self[ 1 ]  = DIRECT_INFOS % ( "/releases-et-nouvelles", )
+        self[ 2 ]  = DIRECT_INFOS % ( "/xbmc", )
+        self[ 3 ]  = DIRECT_INFOS % ( "/skins", )
+        self[ 4 ]  = DIRECT_INFOS % ( "/fiches-des-skins", )
+        self[ 5 ]  = DIRECT_INFOS % ( "/le-coin-des-utilisateurs", )
+        self[ 6 ]  = DIRECT_INFOS % ( "/le-coin-des-developpeurs", )
+        self[ 7 ]  = DIRECT_INFOS % ( "/telechargement-download", )#
+        self[ 8 ]  = DIRECT_INFOS % ( "/xbmc-live-cd", )
+        self[ 9 ]  = DIRECT_INFOS % ( "/b121", )#
+        self[ 10 ] = DIRECT_INFOS % ( "/ubuntu", )
+        self[ 11 ] = DIRECT_INFOS % ( "/tutos-ubuntu-et-xbmc", )
+        self[ 12 ] = DIRECT_INFOS % ( "/usb-creator-pour-ubuntu", )
+        self[ 13 ] = DIRECT_INFOS % ( "/windows", )
+        self[ 14 ] = DIRECT_INFOS % ( "/usb-creator-pour-windows", )
+        self[ 15 ] = DIRECT_INFOS % ( "/telechargement-download-118", )#
+        self[ 16 ] = DIRECT_INFOS % ( "/xbox", )
+        self[ 17 ] = DIRECT_INFOS % ( "/support-modification-consoles", )
+        self[ 18 ] = DIRECT_INFOS % ( "/telechargement-download-119", )#
+        self[ 19 ] = DIRECT_INFOS % ( "/mac-osx-(-leopard-et-tiger)", )
+        self[ 20 ] = DIRECT_INFOS % ( "/usb-creator-pour-mac-intel", )
+        self[ 21 ] = DIRECT_INFOS % ( "/usb-creator-pour-apple-tv", )
+        self[ 22 ] = DIRECT_INFOS % ( "/telechargement-download-120", )#
+        self[ 23 ] = DIRECT_INFOS % ( "/forks", )
+        self[ 24 ] = DIRECT_INFOS % ( "/le-site", )
+        self[ 25 ] = DIRECT_INFOS % ( "/cafe", )
+        self[ 26 ] = DIRECT_INFOS % ( "/membres", )
+        self[ 27 ] = DIRECT_INFOS % ( "/vos-configs", )
+        self[ 28 ] = DIRECT_INFOS % ( "/films-et-musique", )
+        self[ 29 ] = DIRECT_INFOS % ( "/livres-et-bd", )
+        self[ 30 ] = DIRECT_INFOS % ( "/corbeille", )
 
 
 class DirectInfos( xbmcgui.WindowXML ):
     def __init__( self, *args, **kwargs ):
-        pass
+        self.list_container_150 = LIST_CONTAINER_150()
 
     def onInit( self ):
-        self._set_text()
+        try: 
+            self.getControl( 100 ).setLabel( _( 32199 ) )
+            self.set_list_container_150()
+            self.text = self._get_text()
+            self._set_text()
+        except:
+            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
 
     def _set_text( self ):
         xbmcgui.lock()
-        try: 
+        try:
             self.getControl( 5 ).reset()
-            self.getControl( 5 ).setText( self._get_text() )
+            self.getControl( 5 ).setText( self.text )
         except:
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
         xbmcgui.unlock()
+        self.getControl( 9000 ).setVisible( 0 )
 
-    def _get_text( self ):
+    def _get_text( self, rss=0 ):
+        self.getControl( 9000 ).setVisible( 1 )
         full_text = ""
         try:
-            root = load_infos( DIRECT_INFOS )
+            root = load_infos( self.list_container_150[ rss ] )
             for elems in root[ 0 ].findall( "item" ):
-                category = elems.findtext( "category" )
-                title = add_pretty_color( elems.findtext( "title" ), "all", "", "FFe2ff43" )
-                pubDate = elems.findtext( "pubDate" )
-                description = ENTITY_OR_CHARREF( strip_off( set_pretty_formatting( elems.findtext( "description" ) ) ).strip( "\t" ).strip( "\n" ) ).entity_or_charref
-                # "[CR]" est le retour de ligne d'xbmc
-                full_text += "[CR]".join( [ title, category, pubDate, description ] ).replace( "\n", "[CR]" ).replace( "\r", "[CR]" )
-                full_text += "[CR][CR]"
+                category = CONVERT( elems.findtext( "category" ) ).entity_or_charref
+                title = CONVERT( bold_text( add_pretty_color( elems.findtext( "title" ), color=TITLE_COLOR ) ) ).entity_or_charref
+                pubDate = CONVERT( elems.findtext( "pubDate" ) ).entity_or_charref
+                description = strip_off( set_pretty_formatting( elems.findtext( "description" ) ) ).strip( "\n\t" )
+                description = CONVERT( description ).entity_or_charref
+                try:
+                    # "[CR]" est le retour de ligne d'xbmc
+                    full_text += "\n".join( [ title, category, pubDate, description ] )
+                    full_text += "[CR][CR]".replace( "\n\n", "[CR]" ).replace( "\n", "[CR]" ).replace( "\r\r", "[CR]" ).replace( "\r", "[CR]" )
+                except:
+                    #EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+                    pass
+            self.getControl( 100 ).setLabel( "%s - %s" % ( _( 32199 ), _( 32200 + rss ), ) )
+            if not root or not full_text:
+                return bold_text( _( 32231 ) )
         except:
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+            return bold_text( _( 32232 ) )
         return full_text
+
+    def set_list_container_150( self ):
+        list_container = sorted( self.list_container_150.items(), key=lambda id: id[ 0 ] )
+        label2 = ""#not used
+        for key, value in list_container:
+            label1 = _( 32200 + key )
+            self.getControl( 150 ).addItem( xbmcgui.ListItem( label1, label2, "", "" ) )
 
     def onFocus( self, controlID ):
         #cette fonction n'est pas utiliser ici, mais dans les XML si besoin
         pass
 
     def onClick( self, controlID ):
-        pass
+        try:
+            if controlID == 150:
+                pos = self.getControl( 150 ).getSelectedPosition()
+                if pos >= 0:
+                    self.text = self._get_text( pos )
+                    self._set_text()
+            else:
+                pass
+        except:
+            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
 
     def onAction( self, action ):
         #( ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, ACTION_CONTEXT_MENU, )

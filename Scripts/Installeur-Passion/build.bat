@@ -40,6 +40,8 @@ ECHO Desktop.ini>>"BUILD\exclude.txt"
 
 ECHO .pyo>>"BUILD\exclude.txt"
 ECHO .pyc>>"BUILD\exclude.txt"
+:: remove file created by WinMerge
+ECHO .bak>>"BUILD\exclude.txt"
 
 :MakeReleaseBuild
 :: Create release build
@@ -128,7 +130,7 @@ IF EXIST "%XBMC_EXE%" (
     ECHO.
     ECHO Final build is located in the \BUILD\ folder.
     ECHO.
-    ECHO copy: \%ScriptName%\ folder from the \BUILD\ folder.
+    ECHO copy: \%ScriptName%\ folder from the \BUILD\ folder
     ECHO to: /XBMC/scripts/ folder.
     ECHO.
     ECHO ======================================================================

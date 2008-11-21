@@ -1,69 +1,251 @@
 <window>
-	<defaultcontrol>5</defaultcontrol>
+	<defaultcontrol>150</defaultcontrol>
+
 	<controls>
+		<!-- BACKGROUNDS -->
 		<control type="image">
 			<description>background image</description>
 			<posx>0</posx>
 			<posy>0</posy>
 			<width>720</width>
-			<height>88</height>
-			<texture>background-apps.png</texture>
+			<height>576</height>
+			<texture>passion-background-plain.png</texture>
 		</control>
 		<control type="image">
 			<description>background image</description>
-			<posx>0</posx>
-			<posy>88</posy>
-			<width>720</width>
-			<height>488</height>
-			<texture>background-bottom.png</texture>
+			<posx>21</posx>
+			<posy>11</posy>
+			<width>250</width>
+			<height>74</height>
+			<aspectratio>keep</aspectratio>
+			<texture>passion-logo.png</texture>
 		</control>
-		<control type="image" id="0">
-			<description>contentpanel slice</description>
-			<posx>-64</posx>
-			<posy>88</posy>
-			<width>64</width>
-			<height>510</height>
-			<texture>contentpanel_left.png</texture>
-			<animation effect="slide" time="200" start="204,0" end="0,0" acceleration="-1" condition="!Skin.HasSetting(animated)">WindowOpen</animation>
-			<animation effect="slide" time="200" start="0,0" end="204,0" acceleration="1.1" condition="!Skin.HasSetting(animated)">WindowClose</animation>
+		<control type="multiimage">
+			<posx>580</posx>
+			<posy>11</posy>
+			<width>150</width>
+			<height>74</height>
+			<aspectratio>keep</aspectratio>
+			<imagepath>passion-plasma</imagepath>
+			<timeperimage>4000</timeperimage>
+			<fadetime>1000</fadetime>
+			<animation effect="fade" time="200">VisibleChange</animation>
 		</control>
-		<control type="image" id="0">
-			<description>contentpanel slice</description>
-			<posx>0</posx>
-			<posy>88</posy>
-			<width>720</width>
-			<height>510</height>
-			<texture>contentpanel.png</texture>
-			<animation effect="slide" time="200" start="204,0" end="0,0" acceleration="-1" condition="!Skin.HasSetting(animated)">WindowOpen</animation>
-			<animation effect="slide" time="200" start="0,0" end="204,0" acceleration="1.1" condition="!Skin.HasSetting(animated)">WindowClose</animation>
+
+		<!-- IMAGE BUSY FOR FETCHING RSS FEEDS -->
+		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+		<!-- ** Required ** Do not change id's or type's -->
+		<control type="group" id="9000">
+			<animation effect="fade" time="200">VisibleChange</animation>
+			<posx>350</posx>
+			<posy>23</posy>
+			<control type="image">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>50</width>
+				<height>50</height>
+				<texture border="4">osd_menu_bg.png</texture>
+				<visible>false</visible>
+			</control>
+			<control type="multiimage">
+				<description>Busy animation</description>
+				<posx>5</posx>
+				<posy>5</posy>
+				<width>40</width>
+				<height>40</height>
+				<imagepath>passion-busy</imagepath>
+				<timeperimage>100</timeperimage>
+				<fadetime>0</fadetime>
+			</control>
 		</control>
-		<control type="label">
-			<description>XBMC label</description>
-			<posx>200</posx>
-			<posy>43</posy>
-			<align>right</align>
-			<label>Xbmc Passion</label>
-			<font>special12</font>
+
+		<!-- CONTENT PANEL -->
+		<control type="group">
+			<animation effect="slide" time="200" start="720,0" end="0,0" acceleration="-1" condition="!Skin.HasSetting(animated)">WindowOpen</animation>
+			<animation effect="slide" time="200" start="0,0" end="720,0" acceleration="1.1" condition="!Skin.HasSetting(animated)">WindowClose</animation>
+			<control type="image" id="0">
+				<description>contentpanel slice</description>
+				<posx>19</posx>
+				<posy>150</posy>
+				<width>681</width>
+				<height>416</height>
+				<texture>passion-list-border.png</texture>
+			</control>
+			<control type="image" id="0">
+				<description>contentpanel slice</description>
+				<posx>20</posx>
+				<posy>193</posy>
+				<width>679</width>
+				<height>372</height>
+				<texture>passion-list-white.png</texture>
+			</control>
+			<control type="image" id="0">
+				<description>contentpanel slice</description>
+				<posx>20</posx>
+				<posy>151</posy>
+				<width>679</width>
+				<height>41</height>
+				<texture>passion-list-header.png</texture>
+			</control>
 		</control>
-		<control type="label">
-			<description>description label</description>
-			<posx>207</posx>
-			<posy>43</posy>
-			<align>left</align>
-			<label>Informations en direct de Xbmc Passion</label>
-			<font>special13</font>
-		</control>
-		<control type="textbox" id="5">
-			<description>textarea</description>
-			<posx>30</posx>
-			<posy>100</posy>
-			<width>660</width>
-			<height>440</height>
-			<font>font12</font>
-			<spinposx>600</spinposx>
-			<spinposy>445</spinposy>
+
+		<control type="group">
 			<animation effect="fade" start="0" end="100" delay="200" time="100" condition="!Skin.HasSetting(animated)">WindowOpen</animation>
 			<animation effect="fade" start="100" end="0" delay="0" time="100" condition="!Skin.HasSetting(animated)">WindowClose</animation>
+
+			<!-- LABELS -->
+			<control type="label">
+				<description>date label</description>
+				<posx>680</posx>
+				<posy>86</posy>
+				<label>$INFO[System.Date] [COLOR=60ffffff] |  $INFO[System.Time][/COLOR]</label>
+				<align>right</align>
+				<aligy>center</aligy>
+				<font>special12</font>
+			</control>
+			<control type="label" id="100">
+				<description>description label</description>
+				<posx>27</posx>
+				<posy>160</posy>
+				<width>679</width>
+				<height>30</height>
+				<align>left</align>
+				<label>SCRIPT32199</label>
+				<font>special13</font>
+			</control>
+
+			<!-- TEXTBOX -->
+			<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+			<!-- ** Required ** Do not change id's or type's -->
+			<control type="textbox" id="5">
+				<description>textarea</description>
+				<posx>27</posx>
+				<posy>196</posy>
+				<width>666</width>
+				<height>365</height>
+				<spinwidth>18</spinwidth>
+				<spinheight>16</spinheight>
+				<spinposx>626</spinposx>
+				<spinposy>-32</spinposy>
+				<spincolor>FFffffff</spincolor>
+				<spinfont>font10</spinfont>
+				<textureup>passion-scroll-up.png</textureup>
+				<texturedown>passion-scroll-down.png</texturedown>
+				<textureupfocus>passion-scroll-up-focus.png</textureupfocus>
+				<texturedownfocus>passion-scroll-down-focus.png</texturedownfocus>
+				<image>icon-folder.png</image>
+				<font>font13</font>
+				<textcolor>FF000000</textcolor>
+				<onleft>5</onleft>
+				<onright>5</onright>
+				<onup>150</onup>
+				<ondown>150</ondown>
+			</control>
+
+			<!-- CONTROL LIST, BACKGROUND AND SCROLLBAR CONTROLS -->
+			<control type="image">
+				<description>scrollbar background image</description>
+				<posx>190</posx>
+				<posy>117</posy>
+				<width>340</width>
+				<height>25</height>
+				<texture border="4">passion-scrollbar_background_hor.png</texture>
+			</control>
+			<control type="button">
+				<posx>170</posx>
+				<posy>117</posy>
+				<width>20</width>
+				<height>25</height>
+				<onclick>PageUp(250)</onclick>
+				<texturefocus border="4">passion-scrollbar_arrow_up_focus_hor.png</texturefocus>
+				<texturenofocus border="4">passion-scrollbar_arrow_up_hor.png</texturenofocus>
+			</control>
+			<control type="button">
+				<posx>530</posx>
+				<posy>117</posy>
+				<width>20</width>
+				<height>25</height>
+				<onclick>PageDown(250)</onclick>
+				<texturefocus border="4">passion-scrollbar_arrow_down_focus_hor.png</texturefocus>
+				<texturenofocus border="4">passion-scrollbar_arrow_down_hor.png</texturenofocus>
+			</control>
+			<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+			<!-- ** Required ** Do not change id's or type's -->
+			<control type="wraplist" id="150">
+				<description>Base List Container</description>
+				<posx>190</posx>
+				<posy>117</posy>
+				<width>340</width>
+				<height>25</height>
+				<onleft>150</onleft>
+				<onright>150</onright>
+				<onup>5</onup>
+				<ondown>5</ondown>
+				<orientation>horizontal</orientation>
+				<pagecontrol>250</pagecontrol>
+				<scrolltime>200</scrolltime>
+				<focusposition>0</focusposition>
+				<itemlayout width="340" height="25">
+					<control type="image">
+						<width>340</width>
+						<height>25</height>
+						<posx>0</posx>
+						<posy>0</posy>
+						<visible>!Control.HasFocus(150)</visible>
+						<texture>passion-list-header.png</texture>
+					</control>
+					<control type="label">
+						<posx>170</posx>
+						<posy>0</posy>
+						<width>340</width>
+						<height>22</height>
+						<font>font11</font>
+						<aligny>center</aligny>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<textcolor>ffffffff</textcolor>
+						<align>center</align>
+						<info>ListItem.Label</info>
+					</control>
+				</itemlayout>
+				<focusedlayout height="25" width="340">
+					<control type="image">
+						<width>340</width>
+						<height>25</height>
+						<posx>0</posx>
+						<posy>0</posy>
+						<visible>Control.HasFocus(150)</visible>
+						<texture>passion-list-focus.png</texture>
+					</control>
+					<control type="label">
+						<posx>170</posx>
+						<posy>0</posy>
+						<width>340</width>
+						<height>22</height>
+						<font>font11</font>
+						<aligny>center</aligny>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<textcolor>ffffffff</textcolor>
+						<align>center</align>
+						<info>ListItem.Label</info>
+					</control>
+				</focusedlayout>
+			</control>
+			<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+			<!-- ** Required ** Do not change id's or type's -->
+			<control type="scrollbar" id="250">
+				<posx>190</posx>
+				<posy>117</posy>
+				<width>340</width>
+				<height>5</height>
+				<texturesliderbackground>-</texturesliderbackground>
+				<texturesliderbar border="4">passion-progress_mid.png</texturesliderbar>
+				<texturesliderbarfocus border="4">passion-progress_mid.png</texturesliderbarfocus>
+				<textureslidernib>-</textureslidernib>
+				<textureslidernibfocus>-</textureslidernibfocus>
+				<showonepage>false</showonepage>
+				<orientation>horizontal</orientation>
+			</control>
 		</control>
 	</controls>
 </window>

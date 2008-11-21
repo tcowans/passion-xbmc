@@ -8,7 +8,7 @@ import xbmc
 import xbmcgui
 
 #modules custom
-from script_log import *
+from utilities import *
 
 
 #REPERTOIRE RACINE ( default.py )
@@ -23,14 +23,6 @@ try: __svn_revision__ = sys.modules[ "__main__" ].__svn_revision__
 except: __svn_revision__ = 0
 if not __svn_revision__: __svn_revision__ = "0"
 __version__ = "%s.%s" % ( sys.modules[ "__main__" ].__version__, __svn_revision__ )
-
-
-#FONCTION POUR RECUPERER LE THEME UTILISE PAR L'UTILISATEUR.
-def getUserSkin():
-    current_skin = xbmc.getSkinDir()
-    force_fallback = os.path.exists( os.path.join( CWD, "resources", "skins", current_skin ) )
-    if not force_fallback: current_skin = "Default"
-    return current_skin, force_fallback
 
 
 class ScriptSettings( xbmcgui.WindowXMLDialog ):
