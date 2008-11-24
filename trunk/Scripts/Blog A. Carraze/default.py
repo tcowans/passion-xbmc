@@ -3,7 +3,11 @@
 """
 Le Blog d'Alain Carrazé Video HTML parser with GUI by Temhil (temhil@gmail.com)
  
-18-10-08 Version 1.0-Dev05 by Temhil
+24-11-08 Version 1.1 by Temhil
+    - Fixed crash on video info since html code is not alwyas identical depending
+      on the entry
+    - Created regex for getting comment on video (not used yet)
+18-10-08 Version 1.0 by Temhil
     - Created info window for videos
     - Fixed regex after changes on the website
     - Major update of the UI
@@ -18,7 +22,7 @@ réservés à Canal+
 """
 
 ############################################################################
-version     = '1.1-Dev01'
+version     = '1.1'
 author      = 'Temhil'
 ############################################################################
 
@@ -1092,7 +1096,7 @@ class MainWindow(xbmcgui.Window):
                 myVideoDate,myVideoTitle,myVideoDesciption = myVideoDescriptPage.GetVideoDescription()
                 
                 #TODO: Add display of comments:
-                #myVideoDescriptPage.GetVideoCommentsList()
+                myVideoDescriptPage.GetVideoCommentsList()
                 
                 dialogVideo.update(100)
                 dialogVideo.close()
