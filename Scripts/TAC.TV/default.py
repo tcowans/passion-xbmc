@@ -5,6 +5,10 @@ Têtes à claques HTML parser with GUI by Temhil (temhil@gmail.com)
 Ce script permet de visionner les vidéos sur le site www.tetesaclaques.tv que je vous le recommande fortement. 
 Attention rires en vue!
 On y découvre chaque semaine un nouveau clip de quelques minutes qui vaut vraiment le détour.
+
+21-11-08 Version 1.1-Dev05 par Temhil:
+  - Correction bug ou aucune image s'affichait lorsque l'on n'a pas d'url d'images dans le XML
+  - Passage a WindowXML 
  
 14-11-08 Version 1.0 par Temhil:
   - Amelioration de l'interface
@@ -42,7 +46,7 @@ en visitant leur site web et/ou en achetant le DVD
 
 
 ############################################################################
-version     = '1.1-Dev01'
+version     = '1.1-Dev05'
 author      = 'Temhil'
 ############################################################################
 
@@ -76,6 +80,10 @@ except:
 ############################################################################
 # Get current working directory and update internal vars with it  
 ############################################################################
+
+
+#REPERTOIRE RACINE ( default.py )
+CWD = os.getcwd().rstrip( ";" )
 
 # Set paths
 ROOTDIR = os.getcwd().replace( ";", "" ) # Create a path with valid format
@@ -1518,8 +1526,416 @@ class Window(xbmcgui.Window):
                 self.updateDataOnList(chosenIndex)
                 self.updateControlListFromData()
                 self.updateIcons()
+
+
+
+#FONCTION POUR RECUPERER LE THEME UTILISE PAR L'UTILISATEUR.
+def getUserSkin():
+    print "getUserSkin"
+    current_skin = xbmc.getSkinDir()
+    print "current_skin = %s"%current_skin
+    force_fallback = os.path.exists( os.path.join( CWD, "resources", "skins", current_skin ) )
+    print "force_fallback = %s"%force_fallback
+    if not force_fallback: current_skin = "Default"
+    print "current_skin = %s"%current_skin
+    return current_skin, force_fallback
+
+
+KEY_BUTTON_BACK = 275
+KEY_KEYBOARD_ESC = 61467
+
  
+class TacMainWindow( xbmcgui.WindowXML ):
+    def __init__( self, *args, **kwargs ):
+        """
+        The Idea for this function is to be used to put the inital data 
+        """
+        if Emulating: xbmcgui.Window.__init__(self)
+        if not Emulating:
+            self.setCoordinateResolution(PAL_4x3) # Set coordinate resolution to PAL 4:3
+        print "TacMainWindow __init__"
+        # Check conf file
+        print "TacMainWindow creating configManager"
+        self.configManager = configCtrl()
+
+        if (self.configManager.getLanguage() == 'french'):
+            lang.setLanguage("french")
+            print "french"
+        else:
+            lang.setLanguage("english")
+            print "english"
+            
+        # Create a file manager and check directory
+        print "TacMainWindow creating fileMgr"
+        self.fileMgr = fileMgr(dirCheckList)
+        print "TacMainWindow __init__ DONE"
+
+        # Display Loading Window while we are loading the information from the website
+        #self.dialogUI = xbmcgui.DialogProgress()        
+
+        # Check conf file
+        print "TacMainWindow creating configManager"
+        self.configManager = configCtrl()
+        
+        if (self.configManager.getLanguage() == 'french'):
+            lang.setLanguage("french")
+            print "french"
+        else:
+            lang.setLanguage("english")
+            print "english"
+            
+        #self.dialogUI.create(__language__( 32000 ), __language__( 32100 ),__language__( 32110 ) ) # "Têtes à claques", "Creation de l'interface Graphique", "Veuillez patienter..."
+
+        #xbmcgui.lock()
+
+        # Create selectCollectionWebpage instance in order to display choice of video collection
+        self.CollectionSelector = SelectCollectionWebpage(tacBasePageURL, tacNameSelectList, tacUrlSelectList,self.configManager)
+        print ("self.CollectionSelector.selectionNameList")
+        print(self.CollectionSelector.selectionNameList)
+        print ("self.CollectionSelector.selectionURLList")
+        print(self.CollectionSelector.selectionURLList)
+        
+        # Update language variable at startup
+        self.CollectionSelector.setCollectionLanguage(self.configManager.getLanguage())
+
+    def onInit( self ):
+        #self.setCoordinateResolution(PAL_4x3) # Set coordinate resolution to PAL 4:3
+        #print "TacMainWindow onInit"
+        print "onInit(): Window Initalized"
+
+
+
+        
+        # User logo paths
+        logoImage = os.path.join(IMAGEDIR,__language__( 32900 )) # "logo-fr.png" or "logo-en.png"
+            
+        # Menu labels
+        optionLabel             = __language__(32303) # Options
+        buttonlanguageLabel     = __language__(32301) # English
+        aboutLabel              = __language__(32304) # A propos
+        currentLanguageLabel    = __language__(32300) # Francais
+        menuInfoLabel           = __language__(32302) # SELECTIONNEZ:
+
+#        xbmcgui.lock()
+        try: 
+            self._reset_views()
+            self.setProperty( "view-Collection", "activated" )
+
+            print "TacMainWindow setting control WIndowXML"
+            self.getControl( 30 ).setImage(logoImage)
+#            self.getControl( 100 ).setLabel("CCH CCH CCH" )
+
+            
+#            self.getControl( 1 ).reset()
+#            self.getControl( 1 ).setImage(logoImage)
+#            self.getControl( 2 ).reset()
+#            self.getControl( 2 ).setLabel("Vue" )
+#            self.getControl( 100 ).reset()
+            self.getControl( 100 ).setLabel("[B]%s[/B]"%__language__(self.CollectionSelector.selectionNameList[self.CollectionSelector.getSelectedMenu()]) + "[COLOR=0xFFFFFFFF] - %s[/COLOR]"%currentLanguageLabel)
+            self.getControl( 150 ).setLabel(__language__( 32306 ))
+            self.getControl( 160 ).setLabel(__language__( 32307 ))
+            self.getControl( 170 ).setLabel(__language__( 32308 ))
+            self.getControl( 180 ).setLabel(__language__( 32309 ))
+            self.getControl( 190 ).setLabel(__language__( 32303 ))
+            #self.getControl( 5 ).reset()
+        except:
+            #EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+            print "Error setting comtrol with windowXML"
+            print (str(sys.exc_info()[0]))
+            traceback.print_exc()
+        #xbmcgui.unlock()
+
+        
+        
+#        # Set the TAC logo at top-left position
+#        self.user_logo = xbmcgui.ControlImage(20,25,235,144, logoImage)
+#        self.addControl(self.user_logo)
+#        self.user_logo.setVisible(True)
+
+        
+        
+        # Close the Loading Window 
+        #self.dialogUI.close()
+           
+        # Update the list of video 
+        self.updateDataOnMenu(self.CollectionSelector.getSelectedMenu())
+        self.updateControlListFromData()
+        #self.updateIcons()
+
+        # Start to diplay the window before doModal call
+        #self.show()
+        
+        # No UI is displayed, continue to get and display the picture (would be too long to wait if we were waiting doModla call)
+        self.updateIcons()
+        
+    def onAction(self, action):
+        """"
+            onAction in WindowXML works same as on a Window or WindowDialog its for keypress/controller buttons etc
+            Handle user input events.
+        """
+        buttonCode =  action.getButtonCode()
+        actionID   =  action.getId()
+        print "onAction(): actionID=%i buttonCode=%i" % (actionID,buttonCode)
+        if (buttonCode == KEY_BUTTON_BACK or buttonCode == KEY_KEYBOARD_ESC or buttonCode == 61467):
+            self.close()
+
+    def onClick(self, controlID):
+        """
+            onClick(self, controlID) is the replacement for onControl. It gives an interger.
+            Handle widget events
+        """
+        print "onclick(): control %i" % controlID
+#        if (controlID == 7):
+#            #xbmcgui.Dialog().ok(__title__ + ": About","Example Script coded by Donno :D","WindowXML Class coded by Donno","With help from Spiff and jmarshall :)")
+#            dialog = WindowXMLDialogExample("DialogOK.xml",os.path.join(scriptPath,'DefaultSkin'))
+#            dialog.setHeading(__title__ + ": About")
+#            dialog.setLines("Example Script coded by Donno :D","WindowXML Class coded by Donno","With help from Spiff and jmarshall :)")
+#            dialog.doModal()
+#            del dialog
+
+        if (controlID == 13):
+            pass
+#            self.clearList()
+#        elif (controlID == 99):
+#            for x in range(0,10):
+#                self.addItem(xbmcgui.ListItem(("Hello %i" % x),("World %i" % x), "defaultVideo.png", "defaultVideoBig.png"))
+#                self.addItem(xbmcgui.ListItem(("Test %i"  % x),("Hey %i"   % x), "defaultVideo.png", "defaultVideoBig.png"))
+        elif controlID == 150:
+            # Collection
+            self._reset_views()
+            self.setProperty( "view-Collection", "activated" )
+            
+            currentLanguageLabel = __language__(32300) # 'Francais' or 'English'
+            self.getControl( 100 ).setLabel("[B]%s[/B]"%__language__(self.CollectionSelector.selectionNameList[0]) + "[COLOR=0xFFFFFFFF] - %s[/COLOR]"%currentLanguageLabel)
+            
+            self.updateDataOnMenu(0)
+            self.updateControlListFromData()
+            #self.setFocus(self.button0)
+            self.updateIcons()
+            
+        elif controlID == 160:
+            # Serie
+            self._reset_views()
+            self.setProperty( "view-Series", "activated" )
+            
+            currentLanguageLabel = __language__(32300)  # 'Francais' or 'English'
+            self.getControl( 100 ).setLabel("[B]%s[/B]"%__language__(self.CollectionSelector.selectionNameList[1]) + "[COLOR=0xFFFFFFFF] - %s[/COLOR]"%currentLanguageLabel)
+            
+            self.updateDataOnMenu(1)
+            self.updateControlListFromData()
+            #self.setFocus(self.button1)
+            self.updateIcons()
+            
+        elif controlID == 170:
+            # Extras
+            self._reset_views()
+            self.setProperty( "view-Extras", "activated" )
+            
+            currentLanguageLabel = __language__(32300)  # 'Francais' or 'English'
+            self.getControl( 100 ).setLabel("[B]%s[/B]"%__language__(self.CollectionSelector.selectionNameList[2]) + "[COLOR=0xFFFFFFFF] - %s[/COLOR]"%currentLanguageLabel)
+            
+            self.updateDataOnMenu(2)
+            self.updateControlListFromData()
+            #self.setFocus(self.button1)
+            self.updateIcons()
+
+        elif controlID == 180:
+            # Ads
+            self._reset_views()
+            self.setProperty( "view-Ads", "activated" )
+            
+            currentLanguageLabel = __language__(32300)  # 'Francais' or 'English'
+            self.getControl( 100 ).setLabel("[B]%s[/B]"%__language__(self.CollectionSelector.selectionNameList[3]) + "[COLOR=0xFFFFFFFF] - %s[/COLOR]"%currentLanguageLabel)
+            
+            self.updateDataOnMenu(3)
+            self.updateControlListFromData()
+            #self.setFocus(self.button1)
+            self.updateIcons()
+
+        elif (50 <= controlID <= 59):
+#            print "CurrentListPosition: %i" % self.getCurrentListPosition()
+#            selItem = self.getListItem(self.getCurrentListPosition())
+#            print "Selected List Item: Label: %s  Label 2 %s" % (selItem.getLabel(),selItem.getLabel2())
+#            print "List Item 2: Label: %s   Label 2: %s" % (self.getListItem(2).getLabel(),self.getListItem(2).getLabel2())
+            chosenIndex = self.getCurrentListPosition()
+            
+            # Play the video or load sub-serie list depending on the type of list we are
+            if self.CollectionSelector.isSubCollec(chosenIndex): # this function will play the video if the list item was a video
+                self._reset_views()
+                self.setProperty( "view-Sub-Serie", "activated" )
+                self.updateDataOnList(chosenIndex)
+                self.updateControlListFromData()
+                self.updateIcons()
+
+    def onFocus( self, controlID ):
+        #cette fonction n'est pas utiliser ici, mais dans les XML si besoin
+        pass
+    
+    def updateDataOnMenu(self, menuSelectIndex):
+        """
+        Update tacData objet for a specific index in the menu 
+        """
+        # Display Loading Window while we are loading the information from the website
+        dialogLoading = xbmcgui.DialogProgress()
+        dialogLoading.create(__language__( 32000 ), __language__( 32102 ),__language__( 32110 ) ) # "Têtes à claques", "Chargement des informations", "Veuillez patienter..."
+        try:
+            curLanguage = self.CollectionSelector.getCollectionLanguage()
+            #self.CollectionSelector.updateCollectionData(menuSelectIndex,language=curLanguage,progressBar=dialogLoading)
+            self.CollectionSelector.updateCollectionData(menuSelectIndex,language=curLanguage)
+            
+            # Close the Loading Window 
+            xbmc.sleep( 100 )
+            dialogLoading.close()
+        except Exception, e:
+            print("Exception during list update")
+            print(str(e))
+            print (str(sys.exc_info()[0]))
+            traceback.print_exc()
+        
+            # Close the Loading Window 
+            dialogLoading.close()
+ 
+            dialogError = xbmcgui.Dialog()
+            dialogError.ok(__language__( 32111), __language__( 32113), __language__( 32114), __language__( 32115)) # "Erreur", "Impossible de charger la page Têtes à claques.tv", "probleme de connection?", "un changement sur le site distant?"
+        
+    def updateDataOnList(self, listItemIndex):
+        """
+        Update tacData objet for a specific index in the main list
+        """
+        # Display Loading Window while we are loading the information from the website
+        dialogLoading = xbmcgui.DialogProgress()
+        dialogLoading.create(__language__( 32000 ), __language__( 32102 ),__language__( 32110 ) ) # "Têtes à claques", "Chargement des informations", "Veuillez patienter..."
+        
+        try:
+            curLanguage = self.CollectionSelector.getCollectionLanguage()
+            self.CollectionSelector.updateSubCollectionData(listItemIndex,language=curLanguage,progressBar=dialogLoading)
+            
+            # Close the Loading Window 
+            xbmc.sleep( 100 )
+            dialogLoading.close()
+        except Exception, e:
+            print("Exception during list update")
+            print(str(e))
+            print (str(sys.exc_info()[0]))
+            traceback.print_exc()
+        
+            # Close the Loading Window 
+            dialogLoading.close()
+ 
+            dialogError = xbmcgui.Dialog()
+            dialogError.ok(__language__( 32111 ), __language__( 32113 ), __language__( 32114 ), __language__( 32115 )) #"Erreur", "Impossible de charger la page Têtes à claques.tv", "probleme de connection?", "un changement sur le site distant?"
+
+    def updateControlListFromData(self):
+        """
+        Update ControlList objet 
+        """
+        # Create loading windows after updateData
+        dialogimg = xbmcgui.DialogProgress()
+        dialogimg.create(__language__( 32000 ), __language__( 32104 ),__language__( 32110 ) ) # "Têtes à claques", "Chargement des images", "Veuillez patienter..."
+        dialogimg.update(0)
+
+        print "updateControlListFromData"
+
+        menuSelectIndex  = self.CollectionSelector.getSelectedMenu()
+        numberOfPictures = self.CollectionSelector.selectCollecData[menuSelectIndex].getNumberofItem()
+        language         = self.CollectionSelector.getCollectionLanguage()
+        videoLabel       = __language__(32305) # " Vidéos"
+            
+        #self.strItemNb.setLabel(str(numberOfPictures) + ' ' + videoLabel ) # Update number of video at the bottom of the page
+        print self.CollectionSelector.selectCollecData[menuSelectIndex].titleList
+
+        # Lock the UI in order to update the list
+        xbmcgui.lock()    
+
+        # Clear all ListItems in this control list 
+        self.clearList()
+        
+        numberOfItem = len(self.CollectionSelector.selectCollecData[menuSelectIndex].titleList)
+            
+        # add a few items to the list
+        for name in self.CollectionSelector.selectCollecData[menuSelectIndex].titleList:
+            index      = self.CollectionSelector.selectCollecData[menuSelectIndex].titleList.index(name)
+            image2load = os.path.join(CACHEDIR, os.path.basename(self.CollectionSelector.selectCollecData[menuSelectIndex].imageFilenameList[index]))
+            print "updateControlListFromData - image2load = %s"%image2load              
+            if not os.path.exists(image2load) or os.path.isdir(image2load):
+                # images not here use default
+                image2load = os.path.join(IMAGEDIR,"noImageAvailable.jpg")
+                    
+            # Adding to the List picture image2load
+            self.addItem(xbmcgui.ListItem(label = name, thumbnailImage = image2load))
+
+            # Compute % of Image proceeded
+            percent = int(((index+1)*100)/numberOfItem)
+#            dialogimg.update(percent)
+
+        print "updateControlListFromData END"
+        # Go back on 1st button (even if overwritten later)
+        #self.setFocus(self.button0)
                 
+#        # Set 1st item in the list
+#        if self.list:
+#            self.list.selectItem(0)
+            
+        # Unlock the UI and close the popup
+        xbmcgui.unlock()
+        dialogimg.update(100)
+        dialogimg.close()
+            
+    def updateIcons(self):
+        """
+        Retrieve images and update list
+        """
+        # Now get the images:
+        menuSelectIndex = self.CollectionSelector.getSelectedMenu()
+        print "updateIcons"
+        try:       
+            for name in self.CollectionSelector.selectCollecData[menuSelectIndex].titleList:
+                index           = self.CollectionSelector.selectCollecData[menuSelectIndex].titleList.index(name)
+                image2load      = os.path.join(CACHEDIR, os.path.basename(self.CollectionSelector.selectCollecData[menuSelectIndex].imageFilenameList[index]))                        
+                image2download  = self.CollectionSelector.selectCollecData[menuSelectIndex].imageFilenameList[index]
+                image2save      = os.path.join(CACHEDIR,os.path.basename(self.CollectionSelector.selectCollecData[menuSelectIndex].imageFilenameList[index]))
+                
+                # Downloading image
+                try:
+                    downloadJPG(image2download, image2save)
+                except:
+                    print("Exception on image downloading: " + image2download)
+
+                # Display the picture
+                print "image2save = %s"%image2save
+                print "image2download = %s"%image2download
+                if os.path.exists(image2save) and not image2download.endswith('/'):
+                    print "set image %s"%image2save
+                    self.getListItem(index).setThumbnailImage(image2save)
+                else:
+                    print "%s does NOT exist"%image2save
+        except Exception, e:
+            print("Exception")
+            print(e)
+            print (str(sys.exc_info()[0]))
+            traceback.print_exc()
+
+    def _reset_views( self ):
+        self.setProperty( "view-Collection", "")
+        self.setProperty( "view-Series", "")
+        self.setProperty( "view-Sub-Serie", "")
+        self.setProperty( "view-Extras", "")
+        self.setProperty( "view-Ads", "")
+        self.setProperty( "view-Settings", "")
+        
+def show_tac_main_window():
+    file_xml = "tac-MainWindow.xml"
+    #file_xml = "Script_WindowXMLExample.xml"
+    #depuis la revision 14811 on a plus besoin de mettre le chemin complet, la racine suffit
+    dir_path = CWD #xbmc.translatePath( os.path.join( CWD, "resources" ) ) 
+    #recupere le nom du skin et si force_fallback est vrai, il va chercher les images du defaultSkin.
+    current_skin, force_fallback = getUserSkin()
+    
+    print "Creating TacMainWindow"
+    w = TacMainWindow( file_xml, dir_path, current_skin, force_fallback )
+    w.doModal()
+    del w
+                        
 
 def startup():
     """
@@ -1572,7 +1988,8 @@ if __name__ == "__main__":
     print("CACHEDIR" + CACHEDIR)
     
     # Calling startup function
-    startup()
+    show_tac_main_window()
+    #startup()
 else:
     # Library case
     pass
