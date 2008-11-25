@@ -6,7 +6,7 @@ Ce script permet de visionner les vidéos sur le site www.tetesaclaques.tv que je
 Attention rires en vue!
 On y découvre chaque semaine un nouveau clip de quelques minutes qui vaut vraiment le détour.
 
-21-11-08 Version 1.1-Dev05 par Temhil:
+21-11-08 Version 1.1-Dev07 par Temhil:
   - Correction bug ou aucune image s'affichait lorsque l'on n'a pas d'url d'images dans le XML
   - Passage a WindowXML 
  
@@ -46,7 +46,7 @@ en visitant leur site web et/ou en achetant le DVD
 
 
 ############################################################################
-version     = '1.1-Dev05'
+version     = '1.1-Dev07'
 author      = 'Temhil'
 ############################################################################
 
@@ -509,7 +509,7 @@ class tacSeriesWebPage(WebPage):
 #        print(seriedataObj.imageFilenameList)
 #        print(seriedataObj.nbrvotesList)
         
-    def GetSerieVideoList(self, idserie, dataObj):
+    def GetSerieVideoList(self, idserie, dataObj, reverseList = True):
         soup = BeautifulStoneSoup(self.Source)
         try:
             for serie in soup.findAll("serie"):
@@ -527,6 +527,14 @@ class tacSeriesWebPage(WebPage):
                         dataObj.imageFilenameList.append(imageURL)
                     # We exit the loop since we foud the serie with our ID
                     break
+            if (reverseList == True):
+                # Reverse the list on order to be from oldest to newest video
+                dataObj.titleList.reverse()
+                dataObj.idList.reverse()
+                dataObj.videoFilenameList.reverse()
+                dataObj.votesList.reverse()
+                dataObj.nbrvotesList.reverse()
+                dataObj.imageFilenameList.reverse()
             
         except Exception, e:
             print("GetSerieVideoList: Exception during XMl parsing")
@@ -1616,6 +1624,13 @@ class TacMainWindow( xbmcgui.WindowXML ):
         currentLanguageLabel    = __language__(32300) # Francais
         menuInfoLabel           = __language__(32302) # SELECTIONNEZ:
 
+        menuInfoLabel           = __language__(32302) # "SELECTIONNEZ:"
+        collectionLabel         = __language__(self.CollectionSelector.selectionNameList[0]) # Collection
+        seriesLabel             = __language__(self.CollectionSelector.selectionNameList[1]) # Séries
+        extrasLabel             = __language__(self.CollectionSelector.selectionNameList[2]) # Extras
+        adsLabel                = __language__(self.CollectionSelector.selectionNameList[3]) # Pubs
+
+
 #        xbmcgui.lock()
         try: 
             self._reset_views()
@@ -1632,12 +1647,20 @@ class TacMainWindow( xbmcgui.WindowXML ):
 #            self.getControl( 2 ).setLabel("Vue" )
 #            self.getControl( 100 ).reset()
             self.getControl( 100 ).setLabel("[B]%s[/B]"%__language__(self.CollectionSelector.selectionNameList[self.CollectionSelector.getSelectedMenu()]) + "[COLOR=0xFFFFFFFF] - %s[/COLOR]"%currentLanguageLabel)
-            self.getControl( 150 ).setLabel(__language__( 32306 ))
-            self.getControl( 160 ).setLabel(__language__( 32307 ))
-            self.getControl( 170 ).setLabel(__language__( 32308 ))
-            self.getControl( 180 ).setLabel(__language__( 32309 ))
-            self.getControl( 190 ).setLabel(__language__( 32303 ))
+#            self.getControl( 150 ).setLabel(__language__( 32306 ))
+#            self.getControl( 160 ).setLabel(__language__( 32307 ))
+#            self.getControl( 170 ).setLabel(__language__( 32308 ))
+#            self.getControl( 180 ).setLabel(__language__( 32309 ))
+#            self.getControl( 190 ).setLabel(__language__( 32303 ))
+            self.getControl( 140 ).setLabel(buttonlanguageLabel)
+            self.getControl( 150 ).setLabel(collectionLabel)
+            self.getControl( 160 ).setLabel(seriesLabel)
+            self.getControl( 170 ).setLabel(extrasLabel)
+            self.getControl( 180 ).setLabel(adsLabel)
+            self.getControl( 190 ).setLabel(optionLabel)
+            self.getControl( 400 ).setLabel(__language__( 32507 ))
             #self.getControl( 5 ).reset()
+        
         except:
             #EXC_INFO( LOG_ERROR, sys.exc_info(), self )
             print "Error setting comtrol with windowXML"
@@ -1676,7 +1699,12 @@ class TacMainWindow( xbmcgui.WindowXML ):
         buttonCode =  action.getButtonCode()
         actionID   =  action.getId()
         print "onAction(): actionID=%i buttonCode=%i" % (actionID,buttonCode)
-        if (buttonCode == KEY_BUTTON_BACK or buttonCode == KEY_KEYBOARD_ESC or buttonCode == 61467):
+#        if (buttonCode == KEY_BUTTON_BACK or buttonCode == KEY_KEYBOARD_ESC or buttonCode == 61467):
+#            self.close()
+        if action == ACTION_PREVIOUS_MENU:
+            if self.configManager.getCleanCache() == True:
+                print "Deleting cache"
+                #self.fileMgr.delFiles(CACHEDIR)
             self.close()
 
     def onClick(self, controlID):
@@ -1700,6 +1728,52 @@ class TacMainWindow( xbmcgui.WindowXML ):
 #            for x in range(0,10):
 #                self.addItem(xbmcgui.ListItem(("Hello %i" % x),("World %i" % x), "defaultVideo.png", "defaultVideoBig.png"))
 #                self.addItem(xbmcgui.ListItem(("Test %i"  % x),("Hey %i"   % x), "defaultVideo.png", "defaultVideoBig.png"))
+        elif controlID == 140:
+            # Language
+            currentLanguage = self.CollectionSelector.getCollectionLanguage()
+                    
+            if currentLanguage == 'french':
+                # Go to English
+                self.CollectionSelector.setCollectionLanguage('english')
+                lang.setLanguage("english")
+            else:
+                # Go to French
+                self.CollectionSelector.setCollectionLanguage('french')
+                lang.setLanguage("french")
+            
+            # Logo
+            logoImage = os.path.join(IMAGEDIR,__language__( 32900 ))    
+                
+            # Menu labels
+            optionLabel             = __language__(32303) # "Options"
+            buttonlanguageLabel     = __language__(32301) # "English"
+            aboutLabel              = __language__(32304) # "A propos"
+            currentLanguageLabel    = __language__(32300) # "Francais"
+            menuInfoLabel           = __language__(32302) # "SELECTIONNEZ:"
+            collectionLabel         = __language__(self.CollectionSelector.selectionNameList[0]) # Collection
+            seriesLabel             = __language__(self.CollectionSelector.selectionNameList[1]) # Séries
+            extrasLabel             = __language__(self.CollectionSelector.selectionNameList[2]) # Extras
+            adsLabel                = __language__(self.CollectionSelector.selectionNameList[3]) # Pubs
+            
+            # Set the labels
+            self.getControl( 30 ).setImage(logoImage)
+            self.getControl( 100 ).setLabel("[B]%s[/B]"%__language__(self.CollectionSelector.selectionNameList[self.CollectionSelector.getSelectedMenu()]) + "[COLOR=0xFFFFFFFF] - %s[/COLOR]"%currentLanguageLabel)
+            self.getControl( 140 ).setLabel(buttonlanguageLabel)
+            self.getControl( 150 ).setLabel(collectionLabel)
+            self.getControl( 160 ).setLabel(seriesLabel)
+            self.getControl( 170 ).setLabel(extrasLabel)
+            self.getControl( 180 ).setLabel(adsLabel)
+            self.getControl( 190 ).setLabel(optionLabel)
+            self.getControl( 400 ).setLabel(__language__( 32507 ))
+            
+            #self.butAPropos.setLabel(aboutLabel)
+            
+            # Update display
+            self.updateDataOnMenu(self.CollectionSelector.getSelectedMenu())
+            self.updateControlListFromData()
+            self.setFocus(self.getControl( 140 )) # Set focus on language button
+            self.updateIcons()
+        
         elif controlID == 150:
             # Collection
             self._reset_views()
@@ -1751,6 +1825,11 @@ class TacMainWindow( xbmcgui.WindowXML ):
             self.updateControlListFromData()
             #self.setFocus(self.button1)
             self.updateIcons()
+            
+        elif controlID == 190:
+            # Settings
+            self._reset_views()
+            self.setProperty( "view-Settings", "activated" )
 
         elif (50 <= controlID <= 59):
 #            print "CurrentListPosition: %i" % self.getCurrentListPosition()

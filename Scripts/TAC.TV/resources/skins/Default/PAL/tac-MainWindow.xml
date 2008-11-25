@@ -100,6 +100,27 @@
 			<textcolor>FFFFFF00</textcolor>
 		</control>
 
+		<!-- START: General Buttons -->
+        <control type="button" id="140">
+            <description>Language button</description>
+            <posx>285</posx>
+            <posy>100</posy>
+            <width>110</width>
+            <height>30</height>
+            <ondown>50</ondown>
+            <textoffsetx>7</textoffsetx>
+            <label>SCRIPT_32301</label>
+            <font>font13</font>
+            <textcolor>ffffffff</textcolor>
+            <focusedcolor>ffffff00</focusedcolor>
+            <align>center</align>
+            <aligny>center</aligny>
+            <texturefocus>tac_blueButtonFocus.png</texturefocus>
+            <texturenofocus>tac_solid.png</texturenofocus>
+        </control>
+
+		<!-- END: General Buttons -->
+        
 		<!-- START: Main menu -->
 		<!-- ** Required ** Do not change id's or type's -->
         <control type="button" id="150">
@@ -110,6 +131,7 @@
             <height>30</height>
             <onright>160</onright>
             <ondown>50</ondown>
+			<onup>140</onup>
             <textoffsetx>7</textoffsetx>
             <label>SCRIPT_32306</label>
             <font>font13</font>
@@ -128,6 +150,7 @@
             <height>30</height>
             <onleft>150</onleft>
             <onright>170</onright>
+			<onup>140</onup>
             <ondown>50</ondown>
             <textoffsetx>7</textoffsetx>
             <label>SCRIPT_32307</label>
@@ -147,6 +170,7 @@
             <height>30</height>
             <onleft>160</onleft>
             <onright>180</onright>
+			<onup>140</onup>
             <ondown>50</ondown>
             <textoffsetx>7</textoffsetx>
             <label>SCRIPT_32308</label>
@@ -166,6 +190,7 @@
             <height>30</height>
             <onleft>170</onleft>
             <onright>190</onright>
+			<onup>140</onup>
             <ondown>50</ondown>
             <textoffsetx>7</textoffsetx>
             <label>SCRIPT_32309</label>
@@ -185,6 +210,7 @@
             <width>109</width>
             <height>30</height>
             <onleft>180</onleft>
+			<onup>140</onup>
             <ondown>50</ondown>
             <textoffsetx>7</textoffsetx>
             <label>SCRIPT_32303</label>
@@ -227,7 +253,7 @@
             <height>2</height>
             <texture>tac_solid.png</texture>
             <aspectratio>stretch</aspectratio>
-            <visible>!IsEmpty(Container(50).Property(view-Series))</visible>
+            <visible>!IsEmpty(Container(50).Property(view-Series)) | !IsEmpty(Container(50).Property(view-Sub-Serie))</visible> 
         </control>
         <control type="image">
             <description>tab3 selected</description>
@@ -267,7 +293,7 @@
 			<posy>200</posy>
 			<width>560</width>
 			<height>360</height>
-			<onleft>9000</onleft>
+			<onleft>150</onleft>
 			<onright>60</onright>
 			<onup>150</onup>
 			<scrolltime>200</scrolltime>
@@ -321,7 +347,7 @@
 					<width>125</width>
 					<height>90</height>
 					<font>font10</font>
-					<textcolor>ffffff00</textcolor>
+					<textcolor>FFFFFF00</textcolor>
 					<align>left</align>
 					<aligny>top</aligny>
 					<info>ListItem.Label</info>
@@ -349,7 +375,7 @@
 			<posy>200</posy>
 			<width>560</width>
 			<height>360</height>
-			<onleft>9000</onleft>
+			<onleft>150</onleft>
 			<onright>60</onright>
 			<onup>150</onup>
 			<scrolltime>200</scrolltime>
@@ -415,6 +441,34 @@
 				<onclick>PageDown(60)</onclick>
 			</control>
 		</control>
-        
+
+        <!-- Settings section ** Required ** -->
+        <control type="group">
+            <posx>75</posx>
+            <posy>300</posy>
+            <visible>!IsEmpty(Container(50).Property(view-Settings))</visible>
+            <animation effect="fade" reversible="true" time="300">VisibleChange</animation>
+            <!-- Settings 1 -->
+            <control type="radiobutton" id="400">
+                <description>Clean cache</description>
+                <posx>0</posx>
+                <posy>0</posy>
+                <width>560</width>
+                <height>30</height>
+                <font>font13</font>
+                <textcolor>FFFFFFFF</textcolor>
+                <label>SCRIPT_32507</label>
+                <align>left</align>
+                <aligny>center</aligny>
+                <textoffsetx>7</textoffsetx>
+                <textureradiofocus>tac_radiobutton-focus.png</textureradiofocus>
+                <textureradionofocus>tac_radiobutton-nofocus.png</textureradionofocus>
+                <texturefocus border="3">tac_input-focus.png</texturefocus>
+                <texturenofocus>-</texturenofocus>
+                <onup>160</onup>
+            </control>
+            <!-- Settings 2 -->
+       </control>
+
 	</controls>
 </window>
