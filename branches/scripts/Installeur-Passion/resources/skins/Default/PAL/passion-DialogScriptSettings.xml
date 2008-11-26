@@ -1,5 +1,5 @@
 <window id="3001">
-	<defaultcontrol>9001</defaultcontrol>
+	<defaultcontrol>9003</defaultcontrol>
 	<allowoverlay>no</allowoverlay>
 	<animation effect="fade" time="200">WindowOpen</animation>
 	<animation effect="fade" time="200">WindowClose</animation>
@@ -45,7 +45,7 @@
 			<description>dialog Heading</description>
 			<posx>75</posx>
 			<posy>83</posy>
-			<label>SCRIPT_32500</label>
+			<label>$LOCALIZE[SCRIPT0] - $LOCALIZE[SCRIPT500]</label>
 			<font>special13</font>
 			<textcolor>DDced8da</textcolor>
 		</control>
@@ -55,10 +55,140 @@
 			<description>script version</description>
 			<posx>655</posx>
 			<posy>83</posy>
-			<label>SCRIPT_32499</label>
+			<label>$LOCALIZE[SCRIPT499]</label>
 			<font>font12</font>
 			<textcolor>DDced8da</textcolor>
 			<align>right</align>
+		</control>
+
+		<!-- Feeds List Limit Decrease/Increase -->
+		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+		<!-- ** Required ** Do not change id's or type's -->
+		<control type="group" id="9003">
+			<description>button setting 1</description>
+			<posx>75</posx>
+			<posy>120</posy>
+			<control type="image" id="1">
+				<description>Limit background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>580</width>
+				<height>34</height>
+				<texture>passion-input-focus.png</texture>
+				<visible>ControlGroup(9003).HasFocus()</visible>
+			</control>
+			<control type="button" id="141">
+				<description>Decrease Limit button</description>
+				<posx>535</posx>
+				<posy>9</posy>
+				<width>18</width>
+				<height>16</height>
+				<texturenofocus>passion-scroll-down.png</texturenofocus>
+				<texturefocus>passion-scroll-down-focus.png</texturefocus>
+				<onleft>9000</onleft>
+				<onright>142</onright>
+				<ondown>9002</ondown>
+				<onup>9000</onup>
+			</control>
+			<control type="button" id="142">
+				<description>Increase Limit button</description>
+				<posx>553</posx>
+				<posy>9</posy>
+				<width>18</width>
+				<height>16</height>
+				<texturenofocus>passion-scroll-up.png</texturenofocus>
+				<texturefocus>passion-scroll-up-focus.png</texturefocus>
+				<onleft>141</onleft>
+				<onright>9000</onright>
+				<ondown>9002</ondown>
+				<onup>9000</onup>
+			</control>
+			<control type="button" id="140">
+				<description>Limit label</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>535</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT502</label>
+				<label2>SCRIPT503</label2>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<aligny>center</aligny>
+				<texturefocus>-</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<onleft>142</onleft>
+				<onright>141</onright>
+				<ondown>9002</ondown>
+				<onup>9000</onup>
+			</control>
+		</control>
+
+		<!-- theme colours List Decrease/Increase -->
+		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+		<!-- ** Required ** Do not change id's or type's -->
+		<control type="image" id="1">
+			<description>colour background image</description>
+			<posx>75</posx>
+			<posy>154</posy>
+			<width>580</width>
+			<height>34</height>
+			<texture>passion-input-focus.png</texture>
+			<visible>ControlGroup(9002).HasFocus()</visible>
+		</control>
+		<control type="group" id="9002">
+			<description>button setting 2</description>
+			<posx>75</posx>
+			<posy>154</posy>
+			<control type="button" id="131">
+				<description>Decrease colour button</description>
+				<posx>535</posx>
+				<posy>9</posy>
+				<width>18</width>
+				<height>16</height>
+				<texturenofocus>passion-scroll-down.png</texturenofocus>
+				<texturefocus>passion-scroll-down-focus.png</texturefocus>
+				<onleft>9000</onleft>
+				<onright>132</onright>
+				<ondown>160</ondown>
+				<onup>9003</onup>
+			</control>
+			<control type="button" id="132">
+				<description>Increase colour button</description>
+				<posx>553</posx>
+				<posy>9</posy>
+				<width>18</width>
+				<height>16</height>
+				<texturenofocus>passion-scroll-up.png</texturenofocus>
+				<texturefocus>passion-scroll-up-focus.png</texturefocus>
+				<onleft>131</onleft>
+				<onright>9000</onright>
+				<ondown>160</ondown>
+				<onup>9003</onup>
+			</control>
+			<control type="button" id="130">
+				<description>colour label</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>535</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT505</label>
+				<label2>SCRIPT506</label2>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<aligny>center</aligny>
+				<texturefocus>-</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<onleft>132</onleft>
+				<onright>131</onright>
+				<ondown>160</ondown>
+				<onup>9003</onup>
+			</control>
 		</control>
 
 		<!-- MENU PRINCIPAL -->
@@ -66,7 +196,7 @@
 		<!-- ** Required ** Do not change id's or type's -->
 		<control type="grouplist" id="9001">
 			<posx>75</posx>
-			<posy>120</posy>
+			<posy>188</posy>
 			<width>580</width>
 			<height>300</height>
 			<itemgap>0</itemgap>
@@ -74,16 +204,25 @@
 			<orientation>vertical</orientation>
 			<onleft>9000</onleft>
 			<onright>9000</onright>
-			<onup>9000</onup>
+			<onup>9002</onup>
 			<ondown>9000</ondown>
+			<!-- <usecontrolcoords>true</usecontrolcoords> -->
+			<control type="image" id="159">
+				<description>separator image</description>
+				<posx>-5</posx>
+				<posy>0</posy>
+				<width>580</width>
+				<height>5</height>
+				<texture>passion-separator.png</texture>
+			</control>
 			<control type="radiobutton" id="160">
-				<description>setting button 1</description>
+				<description>button setting 3</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>580</width>
 				<height>34</height>
 				<textoffsetx>7</textoffsetx>
-				<label>SCRIPT_32501</label>
+				<label>SCRIPT501</label>
 				<font>font13</font>
 				<textcolor>ffffffff</textcolor>
 				<colordiffuse>ffffffff</colordiffuse>
@@ -95,13 +234,13 @@
 				<textureradionofocus>passion-settings-check-boxNF.png</textureradionofocus>
 			</control>
 			<control type="button" id="170">
-				<description>setting button 2</description>
+				<description>button setting 4</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>580</width>
 				<height>34</height>
 				<textoffsetx>7</textoffsetx>
-				<label>SCRIPT_32XXX</label>
+				<label>SCRIPT510</label>
 				<font>font13</font>
 				<textcolor>ffffffff</textcolor>
 				<colordiffuse>ffffffff</colordiffuse>
@@ -111,13 +250,13 @@
 				<texturenofocus>-</texturenofocus>
 			</control>
 			<control type="button" id="180">
-				<description>setting button 3</description>
+				<description>button setting 5</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>580</width>
 				<height>34</height>
 				<textoffsetx>7</textoffsetx>
-				<label>SCRIPT_32XXX</label>
+				<label>SCRIPT511</label>
 				<font>font13</font>
 				<textcolor>ffffffff</textcolor>
 				<colordiffuse>ffffffff</colordiffuse>
@@ -127,13 +266,13 @@
 				<texturenofocus>-</texturenofocus>
 			</control>
 			<control type="button" id="190">
-				<description>setting button 4</description>
+				<description>button setting 6</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>580</width>
 				<height>34</height>
 				<textoffsetx>7</textoffsetx>
-				<label>SCRIPT_32XXX</label>
+				<label>SCRIPT512</label>
 				<font>font13</font>
 				<textcolor>ffffffff</textcolor>
 				<colordiffuse>ffffffff</colordiffuse>
@@ -143,13 +282,13 @@
 				<texturenofocus>-</texturenofocus>
 			</control>
 			<control type="button" id="200">
-				<description>setting button 5</description>
+				<description>button setting 7</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>580</width>
 				<height>34</height>
 				<textoffsetx>7</textoffsetx>
-				<label>SCRIPT_32XXX</label>
+				<label>SCRIPT513</label>
 				<font>font13</font>
 				<textcolor>ffffffff</textcolor>
 				<colordiffuse>ffffffff</colordiffuse>
@@ -159,13 +298,13 @@
 				<texturenofocus>-</texturenofocus>
 			</control>
 			<control type="button" id="210">
-				<description>setting button 6</description>
+				<description>button setting 8</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>580</width>
 				<height>34</height>
 				<textoffsetx>7</textoffsetx>
-				<label>SCRIPT_32XXX</label>
+				<label>SCRIPT514</label>
 				<font>font13</font>
 				<textcolor>ffffffff</textcolor>
 				<colordiffuse>ffffffff</colordiffuse>
@@ -175,13 +314,13 @@
 				<texturenofocus>-</texturenofocus>
 			</control>
 			<control type="button" id="220">
-				<description>setting button 7</description>
+				<description>button setting 9</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>580</width>
 				<height>34</height>
 				<textoffsetx>7</textoffsetx>
-				<label>SCRIPT_32XXX</label>
+				<label>SCRIPT515</label>
 				<font>font13</font>
 				<textcolor>ffffffff</textcolor>
 				<colordiffuse>ffffffff</colordiffuse>
@@ -190,14 +329,25 @@
 				<texturefocus>passion-input-focus.png</texturefocus>
 				<texturenofocus>-</texturenofocus>
 			</control>
-			<control type="button" id="230">
-				<description>setting button 8</description>
+			<control type="image" id="229">
+				<description>separator image</description>
+				<posx>-5</posx>
+				<posy>0</posy>
+				<width>580</width>
+				<height>5</height>
+				<texture>passion-separator.png</texture>
+				<visible>Control.IsVisible(230) | Control.IsVisible(240)</visible>
+			</control>
+			<control type="radiobutton" id="230">
+				<description>button setting 10</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>580</width>
 				<height>34</height>
 				<textoffsetx>7</textoffsetx>
-				<label>SCRIPT_32XXX</label>
+				<label>SCRIPT507</label>
+				<onclick>Skin.ToggleSetting(use_passion_custom_background)</onclick>
+				<selected>Skin.HasSetting(use_passion_custom_background)</selected>
 				<font>font13</font>
 				<textcolor>ffffffff</textcolor>
 				<colordiffuse>ffffffff</colordiffuse>
@@ -205,15 +355,20 @@
 				<aligny>center</aligny>
 				<texturefocus>passion-input-focus.png</texturefocus>
 				<texturenofocus>-</texturenofocus>
+				<textureradiofocus>passion-settings-check-box.png</textureradiofocus>
+				<textureradionofocus>passion-settings-check-boxNF.png</textureradionofocus>
 			</control>
 			<control type="button" id="240">
-				<description>setting button 9</description>
+				<description>button setting 11</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>580</width>
 				<height>34</height>
 				<textoffsetx>7</textoffsetx>
-				<label>SCRIPT_32XXX</label>
+				<label>SCRIPT508</label>
+				<label2>$INFO[Skin.String(passion_custom_background)]</label2>
+				<onclick>Skin.SetImage(passion_custom_background)</onclick>
+				<enable>Skin.HasSetting(use_passion_custom_background)</enable>
 				<font>font13</font>
 				<textcolor>ffffffff</textcolor>
 				<colordiffuse>ffffffff</colordiffuse>
@@ -244,8 +399,8 @@
 				<disabledcolor>60d0d0d0</disabledcolor>
 				<onleft>302</onleft>
 				<onright>301</onright>
-				<onup>9001</onup>
-				<ondown>9001</ondown>
+				<onup>240</onup>
+				<ondown>9003</ondown>
 			</control>
 			<control type="button" id="301">
 				<description>cancel</description>
@@ -261,12 +416,12 @@
 				<colordiffuse>ffffffff</colordiffuse>
 				<disabledcolor>60d0d0d0</disabledcolor>
 				<onleft>300</onleft>
-				<onright>302</onright>
-				<onup>9001</onup>
-				<ondown>9001</ondown>
+				<onright>303</onright>
+				<onup>240</onup>
+				<ondown>9003</ondown>
 			</control>
 			<control type="button" id="302">
-				<description>default</description>
+				<description>default settings (reset)</description>
 				<posx>360</posx>
 				<posy>430</posy>
 				<width>90</width>
@@ -280,8 +435,8 @@
 				<disabledcolor>60d0d0d0</disabledcolor>
 				<onleft>301</onleft>
 				<onright>303</onright>
-				<onup>9001</onup>
-				<ondown>9001</ondown>
+				<onup>240</onup>
+				<ondown>9003</ondown>
 			</control>
 			<control type="button" id="303">
 				<description>credits</description>
@@ -298,8 +453,8 @@
 				<disabledcolor>60d0d0d0</disabledcolor>
 				<onleft>302</onleft>
 				<onright>300</onright>
-				<onup>9001</onup>
-				<ondown>9001</ondown>
+				<onup>240</onup>
+				<ondown>9003</ondown>
 			</control>
 		</control>
 	</controls>

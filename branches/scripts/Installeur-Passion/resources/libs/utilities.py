@@ -7,6 +7,8 @@ Module de partage des fonctions et des constantes
 import os
 import re
 import sys
+import urllib
+import urllib2
 
 #modules XBMC
 import xbmc
@@ -15,7 +17,7 @@ import xbmcgui
 #modules custom
 try: from script_log import *
 except:
-    LOG_ERROR = 0
+    LOG_ERROR, LOG_INFO, LOG_NOTICE, LOG_WARNING, LOG_DEBUG = range( 1, 6 )
     from traceback import print_exc
     def EXC_INFO( *args ): print_exc()
     LOG = EXC_INFO
@@ -25,6 +27,37 @@ except:
 #REPERTOIRE RACINE ( default.py )
 CWD = os.getcwd().rstrip( ";" )
 
+try: __script__ = sys.modules[ "__main__" ].__script__
+except: __script__ = os.path.basename( CWD )
+BASE_SETTINGS_PATH = os.path.join( xbmc.translatePath( "P:\\script_data" ), __script__, "settings.txt" )
+
+# we use "U:\\" for linux, windows and osx for platform mode and "Q:\\" for xbox
+XBMC_ROOT = ( "U:\\", "Q:\\", )[ ( os.environ.get( "OS", "xbox" ) == "xbox" ) ]
+
+
+def get_html_source( url ):
+    """ fetch the html source """
+    try:
+        if os.path.isfile( url ):
+            sock = open( url, "r" )
+        else:
+            try:
+                request = urllib2.Request( url )
+                request.add_header( 'User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9) Gecko/2008052906 Firefox/3.0' )
+                request.add_header( 'Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' )
+                request.add_header( 'Accept-Language', 'fr,fr-fr;q=0.8,en-us;q=0.5,en;q=0.3' )
+                request.add_header( 'Accept-Charset', 'ISO-8859-1,utf-8;q=0.7,*;q=0.7' )
+                sock = urllib2.urlopen( request )
+            except:
+                sock = urllib.urlopen( url )
+        htmlsource = sock.read()
+        sock.close()
+        htmlsource = htmlsource#.replace( "\r", "" )
+        return htmlsource
+    except:
+        EXC_INFO( LOG_ERROR, sys.exc_info() )
+        return ""
+
 
 def getUserSkin():
     """ FONCTION POUR RECUPERER LE THEME UTILISE PAR L'UTILISATEUR """
@@ -32,6 +65,19 @@ def getUserSkin():
     force_fallback = os.path.exists( os.path.join( CWD, "resources", "skins", current_skin ) )
     if not force_fallback: current_skin = "Default"
     return current_skin, force_fallback
+
+
+def getSkinColors():
+    """ FONCTION POUR RECUPERER LES COULEURS THEME """
+    try:
+        current_skin, force_fallback = getUserSkin()
+        current_skin = os.path.join( CWD, "resources", "skins", current_skin )
+        colors_file = os.path.join( current_skin, "colors", "colors.xml" )
+        if os.path.exists( colors_file ):
+            colors = re.compile( '<color name="(.*?)">(.*?)</color>' ).findall( file( colors_file, "r" ).read() )
+            return colors
+    except:
+        EXC_INFO( LOG_ERROR, sys.exc_info() )
 
 
 #NOTE: CE CODE PEUT ETRE REMPLACER PAR UN CODE MIEUX FAIT
@@ -67,20 +113,30 @@ def italic_text( text ):
     return "[I]%s[/I]" % ( text, )
 
 
+def set_xbmc_carriage_return( text ):
+    """ only for xbmc """
+    text = text.replace( "\n\n", "[CR]" )
+    text = text.replace( "\n", "[CR]" )
+    text = text.replace( "\r\r", "[CR]" )
+    text = text.replace( "\r", "[CR]" )
+    return text
+
+
 def set_pretty_formatting( text, bold_links=False ):
     """ FONCTION POUR RENDRE COMPATIBLE LES TAGS HTML POUR XBMC """
     text = text.replace( "<br />", "\n" )#.replace( "<br />", "[CR]" )
     text = text.replace( "<i>", "[I]" ).replace( "</i>", "[/I]" )
     text = text.replace( "<b>", "[B]" ).replace( "</b>", "[/B]" )
+    text = re.sub( "(?s)</[^>]*>", "\n", text )
     if bold_links:
         text = re.sub( "(?s)</[^>]*>", "[/B]", text )
         text = re.sub( "(?s)<[^>]*>", "[B]", text )
     return text
 
 
-def strip_off( text, by="", xbmc_labes_formatting=False ):
+def strip_off( text, by="", xbmc_labels_formatting=False ):
     """ FONCTION POUR RECUPERER UN TEXTE D'UN TAG """
-    if xbmc_labes_formatting:
+    if xbmc_labels_formatting:
         text = text.replace( "[", "<" ).replace( "]", ">" )
     return re.sub( "(?s)<[^>]*>", by, text )
 
@@ -156,3 +212,53 @@ class CONVERT:
             return table[ name ]
         else:
             return
+
+
+class Settings:
+    """ this function comes from apple movie trailer """
+    def get_settings( self, defaults=False ):
+        """ read settings """
+        try:
+            settings = {}
+            if ( defaults ): raise
+            settings_file = open( BASE_SETTINGS_PATH, "r" )
+            settings = eval( settings_file.read() )
+            settings_file.close()
+            #if ( settings[ "version" ] not in SETTINGS_VERSIONS ):
+            #    raise
+        except:
+            settings = self._use_defaults( settings, save=( defaults == False ) )
+        return settings
+
+    def _use_defaults( self, current_settings=None, save=True ):
+        """ setup default values if none obtained """
+        LOG( LOG_NOTICE, "[used default settings]" )
+        settings = {}
+        defaults = {  
+            "updating": False,
+            "feeds_limit": "5",
+            "skin_colours_path": "default",
+            "skin_colours": "",
+            "xbmc_xml_update": False,
+            "host": "stock.passionxbmc.org",
+            "user": "anonymous",
+            "password": "xxxx",
+            }
+        for key, value in defaults.items():
+            # add default values for missing settings
+            settings[ key ] = current_settings.get( key, defaults[ key ] )
+        #settings[ "version" ] = __version__
+        if ( save ):
+            ok = self.save_settings( settings )
+        return settings
+
+    def save_settings( self, settings ):
+        """ save settings """
+        try:
+            settings_file = open( BASE_SETTINGS_PATH, "w" )
+            settings_file.write( repr( settings ) )
+            settings_file.close()
+            return True
+        except:
+            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+            return False

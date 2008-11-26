@@ -7,8 +7,8 @@ __url__    = "http://passion-xbmc.org/index.php"
 __svn_url__ = "http://code.google.com/p/passion-xbmc/source/browse/#svn/trunk/Scripts/Installeur-Passion"
 __credits__ = "Team XBMC, http://xbmc.org/"
 __platform__  = "xbmc media center"
-__date__    = "19-11-2008"
-__version__ = "1.0.0dev"
+__date__    = "26-11-2008"
+__version__ = "pre-1.0.0"
 __svn_revision__ = 0
 
 
@@ -28,7 +28,7 @@ from resources.libs.script_log import *
 # INITIALISATION CHEMIN RACINE
 ROOTDIR = os.getcwd().replace( ";", "" )
 
-#FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
+#FONCTION POUR RECUPERER LES LABELS DE LA LANGUE. ( ex: __language__( 0 ) = id="0" du fichier strings.xml )
 __language__ = xbmc.Language( ROOTDIR, "french" ).getLocalizedString
 
 DIALOG_PROGRESS = xbmcgui.DialogProgress()
@@ -46,12 +46,12 @@ def MAIN():
 
     if not config.getboolean('InstallPath','pathok'):
         # GENERATION DES INFORMATIONS LOCALES
-        DIALOG_PROGRESS.update( -1, __language__( 32101 ), __language__( 32110 ) )
+        DIALOG_PROGRESS.update( -1, __language__( 101 ), __language__( 110 ) )
         from resources.libs import CONF
         CONF.SetConfiguration()
 
     # VERIFICATION DE LA MISE A JOUR 
-    DIALOG_PROGRESS.update( -1, __language__( 32102 ), __language__( 32110 ) )
+    DIALOG_PROGRESS.update( -1, __language__( 102 ), __language__( 110 ) )
     from resources.libs import CHECKMAJ
     CHECKMAJ.go()
 
@@ -81,12 +81,12 @@ def MAIN():
 
     DIALOG_PROGRESS.close()
 
-    if dialog_error: xbmcgui.Dialog().ok( __language__( 32111 ), __language__( 32112 ) )
+    if dialog_error: xbmcgui.Dialog().ok( __language__( 111 ), __language__( 112 ) )
 
 
 if __name__ == "__main__":
     try:
-        DIALOG_PROGRESS.create( __language__( 32000 ), "", "" )
+        DIALOG_PROGRESS.create( __language__( 0 ), "", "" )
         MAIN()
     except:
         EXC_INFO( LOG_ERROR, sys.exc_info() )

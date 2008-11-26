@@ -1,73 +1,91 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <strings>
-  <!-- Les strings de 32000 à 32999 sont réservées aux scripts -->
   <!--GENERAL STRINGS -->
-  <string id="32000">Installateur Passion-XBMC</string>
-  <string id="32001">Forum</string>
-  <string id="32002">Options</string>
-  <string id="32003">Aide</string>
-  <string id="32010">Sélection</string>
-  <string id="32011">Thèmes</string>
-  <string id="32012">Scrapers</string>
-  <string id="32013">Scripts</string>
-  <string id="32014">Plugins</string>
-  <string id="32011">Thèmes</string>
-  <string id="32012">Scrapers</string>
-  <string id="32013">Scripts</string>
-  <string id="32014">Plugins</string>
-  <string id="32015">Plugins Musique</string>
-  <string id="32016">Plugins Images</string>
-  <string id="32017">Plugins Programmes</string>
-  <string id="32018">Plugins Vidéos</string>
+  <string id="0">Installateur Passion-XBMC</string>
+  <string id="1">Forum</string>
+  <string id="2">Options</string>
+  <string id="3">Aide</string>
+
+  <string id="10">Sélection</string>
+  <string id="11">Thèmes</string>
+  <string id="12">Scrapers</string>
+  <string id="13">Scripts</string>
+  <string id="14">Plugins</string>
+  <string id="11">Thèmes</string>
+  <string id="12">Scrapers</string>
+  <string id="13">Scripts</string>
+  <string id="14">Plugins</string>
+  <string id="15">Plugins Musique</string>
+  <string id="16">Plugins Images</string>
+  <string id="17">Plugins Programmes</string>
+  <string id="18">Plugins Vidéos</string>
 
   <!--DIVERS STRINGS -->
-  <string id="32101">Configuration du système</string>
-  <string id="32102">Vérification de la mise à jour</string>
-  <string id="32103">Création de l'interface Graphique</string>
-  <string id="32104">Chargement des informations</string>
+  <string id="101">Configuration du système</string>
+  <string id="102">Vérification de la mise à jour</string>
+  <string id="103">Création de l'interface Graphique</string>
+  <string id="104">Chargement des informations</string>
 
-  <string id="32110">Veuillez patienter...</string>
-  <string id="32111">Erreur</string>
-  <string id="32112">Exception durant l'initialisation</string>
+  <string id="110">Veuillez patienter...</string>
+  <string id="111">Erreur</string>
+  <string id="112">Exception durant l'initialisation</string>
 
   <!--FORUM DIRECT INFOS STRINGS -->
-  <string id="32199">Informations en direct</string>
-  <string id="32200">Général</string>
-  <string id="32201">Releases et Nouvelles</string>
-  <string id="32202">XBMC</string>
-  <string id="32203">Skins</string>
-  <string id="32204">Fiches des Skins</string>
-  <string id="32205">Le coin des utilisateurs</string>
-  <string id="32206">Le coin des développeurs</string>
-  <string id="32207">Télécharger des scripts - plugins</string>
-  <string id="32208">Xbmc Live</string>
-  <string id="32209">Télécharger Xbmc Live</string>
-  <string id="32210">Ubuntu</string>
-  <string id="32211">Tutos Ubuntu et Xbmc</string>
-  <string id="32212">USB Creator pour Ubuntu</string>
-  <string id="32213">Windows</string>
-  <string id="32214">USB Creator pour Windows</string>
-  <string id="32215">Télécharger Xbmc pour Windows</string>
-  <string id="32216">Xbox</string>
-  <string id="32217">Support Modifications des Consoles</string>
-  <string id="32218">Télécharger Xbmc pour XBox</string>
-  <string id="32219">Mac OSX (Leopard et Tiger)</string>
-  <string id="32220">USB Creator pour Mac Intel</string>
-  <string id="32221">USB Creator pour Apple TV</string>
-  <string id="32222">Télécharger Xbmc pour Mac</string>
-  <string id="32223">Forks</string>
-  <string id="32224">Le site</string>
-  <string id="32225">Café avec southbox au plafond</string>
-  <string id="32226">Membres</string>
-  <string id="32227">Vos Configs</string>
-  <string id="32228">Films et Musique</string>
-  <string id="32229">Livres et BD</string>
-  <string id="32230">Corbeille</string>
-  <string id="32231">Infos non disponible!</string>
-  <string id="32232">Impossible de récupérer les informations!</string>
+  <string id="199">Informations en direct</string>
+  <string id="200">Général</string>
+  <string id="201">Releases et Nouvelles</string>
+  <string id="202">XBMC</string>
+  <string id="203">Scraper Allociné</string>
+  <string id="204">Pilotage - Telecommande </string>
+  <string id="205">Skins</string>
+  <string id="206">Service Importation</string>
+  <string id="207">Fiches des Skins</string>
+  <string id="208">Skins en Projets et Skins Abandonnés</string>
+  <string id="209">Le coin des utilisateurs</string>
+  <string id="210">Le coin des développeurs</string>
+  <string id="211">Xbmc Live</string>
+  <string id="212">Ubuntu</string>
+  <string id="213">Tutos Ubuntu et Xbmc</string>
+  <string id="214">USB Creator pour Ubuntu</string>
+  <string id="215">Windows</string>
+  <string id="216">USB Creator pour Windows</string>
+  <string id="217">Xbox</string>
+  <string id="218">Support Modifications des Consoles</string>
+  <string id="219">Mac OSX (Leopard et Tiger)</string>
+  <string id="220">USB Creator pour Mac Intel</string>
+  <string id="221">USB Creator pour Apple TV</string>
+  <string id="222">Forks</string>
+  <string id="223">(Fork) Plex pour Mac</string>
+  <string id="224">(Alternative) Boxeetv</string>
+  <string id="225">Le site</string>
+  <string id="226">Charte - A lire obligatoirement, ne dites pas qu'on ne vous avait pas prévenu :)</string>
+  <string id="227">Café avec southbox au plafond</string>
+  <string id="228">Membres</string>
+  <string id="229">Vos Configs</string>
+  <string id="230">Films et Musique</string>
+  <string id="231">Livres et BD</string>
+  <string id="232">Corbeille</string>
+  <string id="233">Trac Passion-Xbmc</string>
+
+  <string id="240">Infos non disponible!</string>
+  <string id="241">Impossible de récupérer les informations!</string>
 
   <!--SETTINGS STRINGS -->
-  <string id="32499">Version: %s</string>
-  <string id="32500">Paramètres</string>
-  <string id="32501">Activer la modification du fichier sources.xml</string>
+  <string id="499">Version: %s</string>
+  <string id="500">Paramètres</string>
+  <string id="501">Activer la modification du fichier sources.xml (obsolète)</string>
+  <string id="502">Limite des flux rss par page dans le direct infos</string>
+  <string id="503">[B]&#126;&#126;[/B]</string><!--illimited symbol -->
+  <string id="504">00|5|10|25|50|100</string><!--LIST LIMIT FOR FEEDS RSS: 00=illimited -->
+  <string id="505">Couleur du thème</string>
+  <string id="506">Aucun</string>
+  <string id="507">Activer l'arrière-plan personnel</string>
+  <string id="508">Chemin:</string>
+
+  <string id="510">button setting 4</string>
+  <string id="511">button setting 5</string>
+  <string id="512">button setting 6</string>
+  <string id="513">button setting 7</string>
+  <string id="514">button setting 8</string>
+  <string id="515">button setting 9</string>
 </strings>
