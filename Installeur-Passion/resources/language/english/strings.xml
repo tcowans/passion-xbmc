@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
 <strings>
-  <!-- strings 32000 thru 32999 reserved for scripts -->
   <!--GENERAL STRINGS -->
-  <string id="32000">Installer Passion-XBMC</string>
-  <string id="32001">Forum</string>
-  <string id="32002">Settings</string>
-  <string id="32003">Help</string>
-  <string id="32010">Selection</string>
-  <string id="32011">Skins</string>
-  <string id="32012">Scrapers</string>
-  <string id="32013">Scripts</string>
-  <string id="32014">Plugins</string>
-  <string id="32015">Music Plugins</string>
-  <string id="32016">Pictures Plugins</string>
-  <string id="32017">Programs Plugins</string>
-  <string id="32018">Video Plugins</string>
+  <string id="0">Installer Passion-XBMC</string>
+  <string id="1">Forum</string>
+  <string id="2">Settings</string>
+  <string id="3">Help</string>
+
+  <string id="10">Selection</string>
+  <string id="11">Skins</string>
+  <string id="12">Scrapers</string>
+  <string id="13">Scripts</string>
+  <string id="14">Plugins</string>
+  <string id="15">Music Plugins</string>
+  <string id="16">Pictures Plugins</string>
+  <string id="17">Programs Plugins</string>
+  <string id="18">Video Plugins</string>
 
   <!--MISC STRINGS -->
-  <string id="32101">System Configuration</string>
-  <string id="32102">Checking the update</string>
-  <string id="32103">Creating the GUI</string>
-  <string id="32104">Loading information</string>
+  <string id="101">System Configuration</string>
+  <string id="102">Checking the update</string>
+  <string id="103">Creating the GUI</string>
+  <string id="104">Loading information</string>
 
-  <string id="32110">Please wait...</string>
+  <string id="110">Please wait...</string>
 
   <!--SETTINGS STRINGS -->
-  <string id="32499">Version: %s</string>
-  <string id="32500">Settings</string>
-  <string id="32501">Enable modifying the file sources.xml</string>
+  <string id="499">Version: %s</string>
+  <string id="500">Settings</string>
+  <string id="501">Enable modifying the file sources.xml (obsolete)</string>
 </strings>

@@ -12,7 +12,7 @@ DEBUG_MODE = 0
 
 try: __script__ = sys.modules[ "__main__" ].__script__
 except: __script__ = "Installeur-Passion"
-DIRECTORY_DATA = xbmc.translatePath( os.path.join( "T:\\script_data", __script__ ) )
+DIRECTORY_DATA = os.path.join( xbmc.translatePath( "T:\\script_data" ), __script__ )
 if not os.path.isdir( DIRECTORY_DATA ): os.makedirs( DIRECTORY_DATA )
 
 try: __svn_revision__ = sys.modules[ "__main__" ].__svn_revision__
@@ -113,6 +113,8 @@ def create_log_file():
         platform = os.environ.get( "OS", "" ).lower().replace( "xbox", "XBox" ).replace( "win32", "Windows" ).replace( "linux", "GNU/Linux" ).replace( "osx", "Mac OS X" )
         if not platform: platform = "Unknown"
         LOG( LOG_NOTICE, "XBMC, Platform: %s.  Built on %s", platform, xbmc.getInfoLabel( "System.BuildDate" ) )
+        LOG( LOG_NOTICE, "Q is mapped to: %s", xbmc.translatePath( ( "U:\\", "Q:\\", )[ ( platform == "XBox" ) ] ) )
+        LOG( LOG_NOTICE, "The executable script running is: %s", os.path.join( os.getcwd().rstrip( ";" ), sys.modules[ "__main__" ].__file__ ) )
         LOG( LOG_NOTICE, "Log File is located: %s", LOG_SCRIPT )
         LOG( LOG_NOTICE, SEPARATOR )
         LOG( LOG_NOTICE, "Checking the Date!" )
@@ -120,6 +122,14 @@ def create_log_file():
         LOG( LOG_NOTICE, "Checking the System Uptime!" )
         LOG( LOG_INFO, "- System Uptime is: %s", uptime )
 
+        try:
+            from utilities import getUserSkin
+            current_skin, force_fallback = getUserSkin()
+            LOG( LOG_NOTICE, "load default skin:[%s]", current_skin )
+            LOG( LOG_NOTICE, "default skin use force fallback: %s", repr( force_fallback ) )
+            del getUserSkin
+        except:
+            pass
 
 # ON IMPORT CREATE OR RECREATE LOG FILE
 create_log_file()

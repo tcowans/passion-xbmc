@@ -2,6 +2,7 @@
 
 import os
 import re
+import md5
 import sys
 import time
 import ftplib
@@ -16,7 +17,8 @@ from htmlentitydefs import name2codepoint
 import xbmc
 import xbmcgui
 
-from script_log import *
+#modules custom
+from utilities import *
 
 try:
     del sys.modules['BeautifulSoup']
@@ -93,11 +95,13 @@ class rssReader:
     Class responsable de la recuperation du flux RSS et de l'extraction des infos RSS
     
     """
-    def __init__(self,rssUrl):
+    def __init__(self, rssUrl, titlecolor="ffffffff", textcolor="ffffffff" ):
         """
         Init de rssReader
         """
         self.rssURL = rssUrl
+        self.titlecolor = titlecolor
+        self.textcolor = textcolor
         self.rssPage = self.get_rss_page(self.rssURL)
 
     def get_rss_page(self,rssUrl):
@@ -122,7 +126,8 @@ class rssReader:
     def unescape(self,text):
         """
         credit : Fredrik Lundh
-        trouvé : http://effbot.org/zone/re-sub.htm#unescape-html"""
+        trouvé : http://effbot.org/zone/re-sub.htm#unescape-html
+        """
         def fixup(m):# m est un objet match
             text = m.group(0)#on récupère le texte correspondant au match
             if text[:2] == "&#":# dans le cas où le match ressemble à &#
@@ -150,27 +155,44 @@ class rssReader:
         Recupere les information du FLux RSS de passion XBMC
         Merci a Alexsolex
         """
-        soup = BeautifulStoneSoup(self.rssPage)
-        maintitle = soup.find("description").string.encode("cp1252", 'xmlcharrefreplace').replace("&#224;","à").replace("&#234;","ê").replace("&#232;","è").replace("&#233;","é").replace("&#160;","  ***  ") # Note: &#160;=&
-        items = ""
-        for item in soup.findAll("item"): #boucle si plusieurs items dans le rss
-            # Titre de l'Item 
-            itemsTitle = item.find("title").string.encode("cp1252", 'xmlcharrefreplace').replace("&#224;","à").replace("&#234;","ê").replace("&#232;","è").replace("&#233;","é").replace("&#160;","  ***  ") # Note: &#160;=&
-            items = items + itemsTitle + ":  "
-            
-            # la ligne suivante supprime toutes les balises au sein de l'info "description"
-            clean_desc = re.sub(r"<.*?>", r"", "".join(item.find("description").contents))
-            
-            # on imprime le texte sans les caracteres d'echappements html
-            # Description de l'item 
-            itemDesc = self.unescape(clean_desc).strip().encode("cp1252", 'xmlcharrefreplace').replace("&#224;","à").replace("&#234;","ê").replace("&#232;","è").replace("&#233;","é").replace("&#160;","  ***  ") # Note: &#160;=&
-            itemDesc = itemDesc.replace("-Plus d'info","").replace("-Voir la suite...","") # on supprime "-Plus d'info" et "-Voir la suite..."
-            
-            #TODO: supprimer balise link plutot que remplacer les chaines "-Voir la suite..."
-            
-            # Concatenation
-            items = items + " " + itemDesc
-        return maintitle,items
+        try:
+            soup = BeautifulStoneSoup(self.rssPage)
+            maintitle = soup.find("description").string.encode("cp1252", 'xmlcharrefreplace').replace("&#224;","à").replace("&#234;","ê").replace("&#232;","è").replace("&#233;","é").replace("&#160;","  ***  ") # Note: &#160;=&
+            items = add_pretty_color( maintitle + ": ", color=self.titlecolor )
+            item_sep = add_pretty_color( " - ", color=self.textcolor )
+            items_listed = soup.findAll("item")
+            item_end = len( items_listed ) 
+            for count, item in enumerate( items_listed ): #boucle si plusieurs items dans le rss
+                # Titre de l'Item 
+                try:
+                    itemsTitle = item.find("title").string.encode("cp1252", 'xmlcharrefreplace').replace("&#224;","à").replace("&#234;","ê").replace("&#232;","è").replace("&#233;","é").replace("&#160;","  ***  ") # Note: &#160;=&
+                    items += itemsTitle
+                except:
+                    #possible error:
+                    #ERROR: INSTALLEUR::rssReader::GetRssInfo (167), 'itemsTitle = item.find("title").string.encode("cp1252", \'xmlcharrefreplace\').replace("&#224;","\xe0").replace("&#234;","\xea").replace("&#232;","\xe8").replace("&#233;","\xe9").replace("&#160;","  ***  ") # Note: &#160;=&' - 'NoneType' object has no attribute 'encode'
+                    EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+                    continue
+                if ( ( count + 1 ) < item_end ):
+                    items += item_sep
+                #items = items + add_pretty_color( itemsTitle + ":  ", color="FFFF0000" )
+                '''
+                # la ligne suivante supprime toutes les balises au sein de l'info "description"
+                clean_desc = re.sub(r"<.*?>", r"", "".join(item.find("description").contents))
+                
+                # on imprime le texte sans les caracteres d'echappements html
+                # Description de l'item 
+                itemDesc = self.unescape(clean_desc).strip().encode("cp1252", 'xmlcharrefreplace').replace("&#224;","à").replace("&#234;","ê").replace("&#232;","è").replace("&#233;","é").replace("&#160;","  ***  ") # Note: &#160;=&
+                itemDesc = itemDesc.replace("-Plus d'info","").replace("-Voir la suite...","") # on supprime "-Plus d'info" et "-Voir la suite..."
+                
+                #TODO: supprimer balise link plutot que remplacer les chaines "-Voir la suite..."
+                
+                # Concatenation
+                items = items + " " + itemDesc + " - "
+                '''
+            return maintitle, items
+        except:
+            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+            return "", ( add_pretty_color( "RSS Feed:", color=self.titlecolor ) + " Not available!" )
 
 
 class scriptextracter:
@@ -181,7 +203,7 @@ class scriptextracter:
     """
     def zipfolder (self):
         self.zfile = zipfile.ZipFile(self.archive, 'r')
-        for i in self.zfile.namelist():  ## On parcourt l'ensemble des fichiers de l'archive
+        for i in self.zfile.namelist():  # On parcourt l'ensemble des fichiers de l'archive
             if i.endswith('/'):
                 dossier = self.pathdst + os.sep + i
                 try:
@@ -189,8 +211,8 @@ class scriptextracter:
                 except:
                     LOG( LOG_NOTICE, "Erreur creation dossier de l'archive!" )
                     EXC_INFO( LOG_ERROR, sys.exc_info(), self )
-            else:
-                LOG( LOG_NOTICE, "File Case" )
+            #else:
+            #    LOG( LOG_NOTICE, "File Case" )
 
         # On ferme l'archive
         self.zfile.close()
@@ -266,7 +288,7 @@ class GDDFTP(ftplib.FTP):
         try: return command(*args)
         except:
             self.Reconnect()
-            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+            #EXC_INFO( LOG_ERROR, sys.exc_info(), self )
             return command(*args)
 
 
@@ -525,7 +547,8 @@ class ftpDownloadCtrl:
         
         # Créé le dossier
         try:
-            os.makedirs(localAbsDirPath)
+            if not os.path.isdir( localAbsDirPath ):
+                os.makedirs(localAbsDirPath)
         except:
             LOG( LOG_ERROR, "_downloaddossier: Exception - Impossible de creer le dossier: %s", localAbsDirPath )
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
@@ -611,7 +634,7 @@ class FtpCallback(object):
     """
     
     Inspired from source Justin Ezequiel (Thanks)
-    http://coding.derkeiler.com/pdf/Archive/Python/comp.lang.python/2006-09/msg02008.pdf assion-list-border.png assion-list-white.png assion-list-header.png
+    http://coding.derkeiler.com/pdf/Archive/Python/comp.lang.python/2006-09/msg02008.pdf
     
     """
     def __init__(self, filesize, localfile, filesrc, dp=None, curPercent=0, coeff=1):
@@ -825,25 +848,28 @@ class configCtrl:
         return self.xbmcXmlUpdate
 
 
-class MainWindow(xbmcgui.Window):
+#class MainWindow(xbmcgui.Window):
+class MainWindow( xbmcgui.WindowXML ):
     """
 
     Interface graphique
 
     """
-    def __init__(self):
+    #def __init__(self):
+    def __init__( self, *args, **kwargs ):
+        xbmcgui.WindowXML.__init__( self, *args, **kwargs )
         """
         Initialisation de l'interface
         """
-        self.setCoordinateResolution(PAL_4x3) # Set coordinate resolution to PAL 4:3
+        #self.setCoordinateResolution(PAL_4x3) # Set coordinate resolution to PAL 4:3
 
         # Display Loading Window while we are loading the information from the website
         if xbmc.getCondVisibility( "Window.IsActive(progressdialog)" ):
             #si le dialog PROGRESS est visible update
-            DIALOG_PROGRESS.update( -1, _( 32103 ), _( 32110 ) )
+            DIALOG_PROGRESS.update( -1, _( 103 ), _( 110 ) )
         else:
             #si le dialog PROGRESS n'est pas visible affiche le dialog
-            DIALOG_PROGRESS.create( _( 32000 ), _( 32103 ), _( 32110 ) )
+            DIALOG_PROGRESS.create( _( 0 ), _( 103 ), _( 110 ) )
 
         #TODO: TOUTES ces varibales devraient etre passees en parametre du constructeur de la classe (__init__ si tu preferes)
         # On ne devraient pas utiliser de variables globale ou rarement en prog objet
@@ -894,140 +920,209 @@ class MainWindow(xbmcgui.Window):
         if self.USRPath == True:
             self.PMIIIDir = PMIIIDir
 
+        self.is_started = True
 
+
+    def onInit( self ):
         # Background image
-        self.addControl(xbmcgui.ControlImage(0,0,720,576, os.path.join(IMAGEDIR,"background.png")))
+        #self.addControl(xbmcgui.ControlImage(0,0,720,576, os.path.join(IMAGEDIR,"background.png")))
 
         # Set List border image
         #self.listborder = xbmcgui.ControlImage(19,120,681,446, os.path.join(IMAGEDIR, ""))
-        self.listborder = xbmcgui.ControlImage(19,150,681,390, os.path.join(IMAGEDIR, "passion-list-border.png"))
-        self.addControl(self.listborder)
-        self.listborder.setVisible(True)
+        #self.listborder = xbmcgui.ControlImage(19,150,681,390, os.path.join(IMAGEDIR, "passion-list-border.png"))
+        #self.addControl(self.listborder)
+        #self.listborder.setVisible(True)
 
         # Set List background image
         #self.listbackground = xbmcgui.ControlImage(20, 163, 679, 402, os.path.join(IMAGEDIR, ""))
-        self.listbackground = xbmcgui.ControlImage(20, 193, 679, 346, os.path.join(IMAGEDIR, "passion-list-white.png"))
-        self.addControl(self.listbackground)
-        self.listbackground.setVisible(True)
+        #self.listbackground = xbmcgui.ControlImage(20, 193, 679, 346, os.path.join(IMAGEDIR, "default", "mainpage.gif"))
+        #self.addControl(self.listbackground)
+        #self.listbackground.setVisible(True)
 
         # Set List hearder image
         #self.header = xbmcgui.ControlImage(20,121,679,41, os.path.join(IMAGEDIR, ""))
-        self.header = xbmcgui.ControlImage(20,151,679,41, os.path.join(IMAGEDIR, "passion-list-header.png"))
-        self.addControl(self.header)
-        self.header.setVisible(True)
+        #self.header = xbmcgui.ControlImage(20,151,679,41, os.path.join(IMAGEDIR, "default", "passion-list-header.png"))
+        #self.addControl(self.header)
+        #self.header.setVisible(True)
         
         # Menu Forum button
-        self.buttonForum = xbmcgui.ControlButton(20, 117, 85, 25, _( 32001 ), focusTexture = os.path.join(IMAGEDIR,"passion-list-focus.png"), noFocusTexture  = os.path.join(IMAGEDIR,"passion-list-header.png"), alignment=6)
-        self.addControl(self.buttonForum)
+        self.buttonForum = 300 #xbmcgui.ControlButton(20, 117, 85, 25, _( 1 ), focusTexture = os.path.join(IMAGEDIR,"passion-list-focus.png"), noFocusTexture  = os.path.join(IMAGEDIR, "default", "passion-list-header.png"), alignment=6)
+        #self.addControl(self.buttonForum)
 
         # Menu option buttons a the top
-        self.buttonOptions = xbmcgui.ControlButton(110, 117, 85, 25, _( 32002 ), focusTexture = os.path.join(IMAGEDIR,"passion-list-focus.png"), noFocusTexture  = os.path.join(IMAGEDIR,"passion-list-header.png"), alignment=6)
-        self.addControl(self.buttonOptions)
+        self.buttonOptions = 310 #xbmcgui.ControlButton(110, 117, 85, 25, _( 2 ), focusTexture = os.path.join(IMAGEDIR,"passion-list-focus.png"), noFocusTexture  = os.path.join(IMAGEDIR, "default", "passion-list-header.png"), alignment=6)
+        #self.addControl(self.buttonOptions)
         
         # Help button a the top
-        self.buttonHelp = xbmcgui.ControlButton(200, 117, 85, 25, _( 32003 ), focusTexture = os.path.join(IMAGEDIR,"passion-list-focus.png"), noFocusTexture  = os.path.join(IMAGEDIR,"passion-list-header.png"), alignment=6)
-        self.addControl(self.buttonHelp)
+        #self.buttonHelp = xbmcgui.ControlButton(200, 117, 85, 25, _( 3 ), focusTexture = os.path.join(IMAGEDIR,"passion-list-focus.png"), noFocusTexture  = os.path.join(IMAGEDIR, "default", "passion-list-header.png"), alignment=6)
+        #self.addControl(self.buttonHelp)
+        self.buttonHelp = 320 #xbmcgui.ControlButton(200, 117, 85, 25, "Output", focusTexture = os.path.join(IMAGEDIR,"passion-list-focus.png"), noFocusTexture  = os.path.join(IMAGEDIR, "default", "passion-list-header.png"), alignment=6)
+        #self.addControl(self.buttonHelp)
         #desactivrer le bouton help le temps de faire un dialog xml
-        self.buttonHelp.setEnabled( 0 )
+        #self.buttonHelp.setEnabled( 0 )
 
         # Title of the current pages
         #self.strMainTitle = xbmcgui.ControlLabel(35, 130, 200, 40, "Sélection", 'special13')
-        self.strMainTitle = xbmcgui.ControlLabel(35, 160, 200, 40, _( 32010 ), 'special13') # Sélection
-        self.addControl(self.strMainTitle)
+        self.setProperty( "Category", _( 10 ) )
+        #self.strMainTitle = xbmcgui.ControlLabel(35, 160, 200, 40, _( 10 ), 'special13') # Sélection
+        #self.addControl(self.strMainTitle)
 
         # item Control List
         #self.list = xbmcgui.ControlList(22, 166, 674 , 420,'font14','0xFF000000', buttonTexture = os.path.join(IMAGEDIR,"passion-list-nofocus.png"),buttonFocusTexture = os.path.join(IMAGEDIR,"passion-list-focus.png"), imageWidth=40, imageHeight=32, itemTextXOffset=0, itemHeight=55)
-        self.list = xbmcgui.ControlList(23, 196, 674 , 390,'font14','0xFF000000', buttonTexture = os.path.join(IMAGEDIR,"passion-list-nofocus.png"),buttonFocusTexture = os.path.join(IMAGEDIR,"passion-list-focus.png"), imageWidth=40, imageHeight=32, itemTextXOffset=0, itemHeight=55)
-        self.addControl(self.list)
+        self.list = 150 #xbmcgui.ControlList(23, 196, 674 , 390,'font14','0xFF000000', buttonTexture = os.path.join(IMAGEDIR,"passion-list-nofocus.png"),buttonFocusTexture = os.path.join(IMAGEDIR,"passion-list-focus.png"), imageWidth=40, imageHeight=32, itemTextXOffset=0, itemHeight=55)
+        #self.addControl(self.list)
 
         # Version and author(s):
-        self.strVersion = xbmcgui.ControlLabel(621, 69, 350, 30, version, 'font10','0xFF000000', alignment=1)
-        self.addControl(self.strVersion)
+        #self.strVersion = xbmcgui.ControlLabel(621, 69, 350, 30, version, 'font10','0xFF000000', alignment=1)
+        #self.addControl(self.strVersion)
 
         # Set navigation between control
-        self.buttonForum.controlDown(self.list)
-        self.buttonForum.controlRight(self.buttonOptions)
+        #self.buttonForum.controlUp(self.list)
+        #self.buttonForum.controlDown(self.list)
+        #self.buttonForum.controlLeft(self.buttonHelp)
+        #self.buttonForum.controlRight(self.buttonOptions)
         
-        self.buttonOptions.controlDown(self.list)
-        self.buttonOptions.controlLeft(self.buttonForum)
-        self.buttonOptions.controlRight(self.buttonHelp)
+        #self.buttonOptions.controlUp(self.list)
+        #self.buttonOptions.controlDown(self.list)
+        #self.buttonOptions.controlLeft(self.buttonForum)
+        #self.buttonOptions.controlRight(self.buttonHelp)
         
-        self.buttonHelp.controlDown(self.list)
-        self.buttonHelp.controlLeft(self.buttonOptions)
+        #self.buttonHelp.controlUp(self.list)
+        #self.buttonHelp.controlDown(self.list)
+        #self.buttonHelp.controlLeft(self.buttonOptions)
+        #self.buttonHelp.controlRight(self.buttonForum)
 
-        self.list.controlUp(self.buttonForum)
+        #self.list.controlUp(self.buttonForum)
+        #self.list.controlDown(self.buttonForum)
         
         # Set focus on the list
-        self.setFocus(self.list)
+        #self.setFocus(self.list)
         
-        # Recupeartion du Flux RSS
+        self._get_settings()
+        self._set_skin_colours()
+
+        if self.is_started:
+            self.is_started = False
+            self._set_control_rss_feed()
+            # Recupeartion du Flux RSS
+            #try:
+            #    # Cree une instance de rssReader recuperant ainsi le flux/page RSS
+            #    self.passionRssReader = rssReader( self.rssfeed, "FFFF0000", "FFFF0000" )
+            #    
+            #    # Extraction des infos du la page RSS
+            #    maintitle, title = self.passionRssReader.GetRssInfo()
+            #    self.RssOk = True
+
+            #except:
+            #    # Message a l'utilisateur
+            #    #dialogRssError = xbmcgui.Dialog()
+            #    #dialogRssError.ok("Erreur", "Impossible de recuperer le flux RSS")
+            #    LOG( LOG_ERROR, "Window::__init__: Exception durant la recuperation du Flux RSS" )
+            #    EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+
+            #self.rss_feed = ""# for test fadelabel in direct infos only,...
+            #if (self.RssOk == True):
+            #    # Scrolling message
+            #    self.scrollingText = xbmcgui.ControlFadeLabel(20, 87, 680, 30, 'font12', '0xFFFFFFFF')
+            #    self.addControl(self.scrollingText)
+            #    scrollStripTextSize = len(title)
+
+            #    # Afin d'avoir un message assez long pour defiler, on va ajouter des espaces afin d'atteindre la taille max de self.scrollingSizeMax
+            #    scrollingLabel = title#.rjust(self.scrollingSizeMax)
+            #    self.rss_feed = title
+            #    scrollingLabelSize = len(scrollingLabel)
+            #    self.scrollingText.addLabel(scrollingLabel)
+
+            # Connection au serveur FTP
+            try:
+                
+                self.passionFTPCtrl = ftpDownloadCtrl(self.host,self.user,self.password,self.remotedirList,self.localdirList,self.downloadTypeList)
+                self.connected = True
+
+                # Recuperation de la liste des elements
+                DIALOG_PROGRESS.update( -1, _( 104 ), _( 110 ) )
+                self.updateList()
+
+            except:
+                xbmcgui.Dialog().ok("Erreur", "Exception durant l'initialisation")
+                LOG( LOG_NOTICE, "Window::__init__: Exception durant la connection FTP" )
+                LOG( LOG_ERROR, "Impossible de se connecter au serveur FTP: %s", self.host )
+                EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+
+            # Capturons le contenu des sous-repertoires plugins
+            for type in self.downloadTypeList:
+                if type.find("Plugins") != -1:
+                    #self.pluginsInitList.append(os.listdir(self.localdirList[self.downloadTypeList.index(type)]))
+                    self.pluginsDirSpyList.append(directorySpy(self.localdirList[self.downloadTypeList.index(type)]))
+                else:
+                    self.pluginsDirSpyList.append(None)
+
+            # Close the Loading Window
+            DIALOG_PROGRESS.close()
+
+    def _get_settings( self, defaults=False ):
+        """ reads settings """
+        self.settings = Settings().get_settings( defaults=defaults )
+
+    def _set_skin_colours( self ):
+        xbmcgui.lock()
         try:
-            # Cree une instance de rssReader recuperant ainsi le flux/page RSS
-            self.passionRssReader = rssReader(self.rssfeed)
-            
-            # Extraction des infos du la page RSS
-            maintitle,title = self.passionRssReader.GetRssInfo()
-            self.RssOk = True
-
+            self.setProperty( "Skin-Colours-path", self.settings[ "skin_colours_path" ] )
+            self.setProperty( "Skin-Colours", ( self.settings[ "skin_colours" ] or self._get_default_hex_color() ) )
+            #print xbmc.getInfoLabel( "Container.Property(Skin-Colours)" )
         except:
-            # Message a l'utilisateur
-            #dialogRssError = xbmcgui.Dialog()
-            #dialogRssError.ok("Erreur", "Impossible de recuperer le flux RSS")
-            LOG( LOG_ERROR, "Window::__init__: Exception durant la recuperation du Flux RSS" )
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+        xbmcgui.unlock()
 
-        if (self.RssOk == True):
-            # Scrolling message
-            self.scrollingText = xbmcgui.ControlFadeLabel(20, 87, 680, 30, 'font12', '0xFFFFFFFF')
-            self.addControl(self.scrollingText)
-            scrollStripTextSize = len(title)
-
-            # Afin d'avoir un message assez long pour defiler, on va ajouter des espaces afin d'atteindre la taille max de self.scrollingSizeMax
-            scrollingLabel = title.rjust(self.scrollingSizeMax)
-            scrollingLabelSize = len(scrollingLabel)
-            self.scrollingText.addLabel(scrollingLabel)
-
-        # Connection au serveur FTP
+    def _get_default_hex_color( self ):
         try:
-            
-            self.passionFTPCtrl = ftpDownloadCtrl(self.host,self.user,self.password,self.remotedirList,self.localdirList,self.downloadTypeList)
-            self.connected = True
-
-            # Recuperation de la liste des elements
-            DIALOG_PROGRESS.update( -1, _( 32104 ), _( 32110 ) )
-            self.updateList()
-
+            default_hex_color = dict( getSkinColors() ).get( "default", "FFFFFFFF" )
         except:
-            xbmcgui.Dialog().ok("Erreur", "Exception durant l'initialisation")
-            LOG( LOG_NOTICE, "Window::__init__: Exception durant la connection FTP" )
-            LOG( LOG_ERROR, "Impossible de se connecter au serveur FTP: %s", self.host )
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+            default_hex_color = "FFFFFFFF"
+        return default_hex_color
 
-        # Close the Loading Window
-        DIALOG_PROGRESS.close()
-
-        # Capturons le contenu des sous-repertoires plugins
-        for type in self.downloadTypeList:
-            if type.find("Plugins") != -1:
-                #self.pluginsInitList.append(os.listdir(self.localdirList[self.downloadTypeList.index(type)]))
-                self.pluginsDirSpyList.append(directorySpy(self.localdirList[self.downloadTypeList.index(type)]))
-            else:
-                self.pluginsDirSpyList.append(None)
+    def _set_control_rss_feed( self ):
+        #test fadelabel for rssfeed
+        try:
+            title_color = repr( self.getControl( 101 ).getLabel() ).strip( "u'" )
+            text_color = repr( self.getControl( 101 ).getLabel2() ).strip( "u'" )
+            #print repr( title_color ), repr( text_color )
+            self.rss_feed = rssReader( self.rssfeed, title_color, text_color )
+        except:
+            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+            try:
+                self.rss_feed = rssReader( self.rssfeed )
+            except:
+                EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+        try:
+            self.getControl( 100 ).reset()
+            self.getControl( 100 ).addLabel( self.rss_feed.GetRssInfo()[ 1 ] )
+        except:
+            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+            try: self.getControl( 100 ).setVisible( False )
+            except: pass
 
     def _on_action_control( self, act_ctrl_id ):
         try:
             #button_code_F1_keyboard = 61552
             if ( act_ctrl_id in ( self.buttonForum, 61552, ) ):
-                import dialog_direct_infos
-                dialog_direct_infos.show_direct_infos()
+                from dialog_direct_infos import show_direct_infos
+                show_direct_infos( self )
                 #on a plus besoin, on le delete
-                del dialog_direct_infos
+                del show_direct_infos
 
             elif ( act_ctrl_id in ( ACTION_CONTEXT_MENU, self.buttonOptions, ) ):
-                import dialog_script_settings
-                dialog_script_settings.show_settings( self )
+                from dialog_script_settings import show_settings
+                show_settings( self )
                 #on a plus besoin du settins, on le delete
-                del dialog_script_settings
+                del show_settings
+
+            elif ( act_ctrl_id in ( self.buttonHelp, 61553, ) ):
+                from dialog_log_viewer import show_log
+                show_log()
+                #on a plus besoin, on le delete
+                del show_log
             else:
                 pass
         except:
@@ -1137,28 +1232,35 @@ class MainWindow(xbmcgui.Window):
             LOG( LOG_ERROR, "Window::onAction: Exception" )
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
 
-    def onControl(self, control):
+
+    def onFocus( self, controlID ):
+        #cette fonction n'est pas utiliser ici, mais dans les XML si besoin
+        #Note: Mais il faut la declarer :)
+        pass
+
+    def onClick( self, controlID ):
         """
         Traitement si selection d'un element de la liste
         """
-        self._on_action_control( control )
+        self._on_action_control( controlID )
         try:
-            if control == self.list:
+            if controlID == self.list:
 
                 if (self.type   == "racine"):
-                    self.index = self.list.getSelectedPosition()
-                    self.type  = self.downloadTypeList[self.racineDisplayList[self.list.getSelectedPosition()]] # On utilise le filtre
+                    self.index = self.getControl( self.list ).getSelectedPosition()#self.list.getSelectedPosition()
+                    self.type  = self.downloadTypeList[self.racineDisplayList[self.getControl( self.list ).getSelectedPosition()]] # On utilise le filtre
                     self.updateList() #on raffraichit la page pour afficher le contenu
 
                 elif (self.type   == "Plugins"):
-                    self.index = self.list.getSelectedPosition()
-                    self.type  = self.downloadTypeList[self.pluginDisplayList[self.list.getSelectedPosition()]] # On utilise le filtre
+                    self.index = self.getControl( self.list ).getSelectedPosition()
+                    self.type  = self.downloadTypeList[self.pluginDisplayList[self.getControl( self.list ).getSelectedPosition()]] # On utilise le filtre
                     self.updateList() #on raffraichit la page pour afficher le contenu
 
                 else:
                     downloadOK = True
                     correctionPM3bidon = False
-                    self.index = self.list.getSelectedPosition()
+                    self.index = self.getControl( self.list ).getSelectedPosition()
+
                     source = self.curDirList[self.index]
 
                     if self.type == self.downloadTypeList[0]:   #Themes
@@ -1325,6 +1427,7 @@ class MainWindow(xbmcgui.Window):
                                     
                                     dialogInfo = xbmcgui.Dialog()
                                     if installCancelled == False and installError == None:
+                                        self._save_downloaded_property()
                                         dialogInfo.ok("Installation Terminée", "L'installation de %s"%downloadItem,"est terminée")
                                     else:
                                         if installError != None:
@@ -1339,9 +1442,29 @@ class MainWindow(xbmcgui.Window):
                                 else:
                                     # On remet a la bonne valeur initiale self.localdirList
                                     self.localdirList[self.downloadTypeList.index(self.type)]= self.targetDir
-
+                    
         except:
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+
+    def _load_downloaded_property( self ):
+        try:
+            file_path = os.path.join( DIRECTORY_DATA, "downloaded.txt" )
+            self.downloaded_property = eval( file( file_path, "r" ).read() )
+        except:
+            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+            self.downloaded_property = set()
+
+    def _save_downloaded_property( self ):
+        try:
+            self._load_downloaded_property()
+            selected_label = self.getControl( self.list ).getSelectedItem().getLabel()
+            self.downloaded_property.update( [ md5.new( selected_label ).hexdigest() ] )
+            file_path = os.path.join( DIRECTORY_DATA, "downloaded.txt" )
+            file( file_path, "w" ).write( repr( self.downloaded_property ) )
+        except:
+            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+        else:
+            self.getControl( self.list ).getSelectedItem().setProperty( "Downloaded", "isDownloaded" )
 
     def updateProgress_cb(self, percent, dp=None):
         """
@@ -1358,9 +1481,10 @@ class MainWindow(xbmcgui.Window):
         """
         Mise a jour de la liste affichee
         """
-        # On verifie self.type qui correspond au type de liste que l'on veut afficher
+        self._load_downloaded_property()
         if not xbmc.getCondVisibility( "Window.IsActive(progressdialog)" ):
-            DIALOG_PROGRESS.create( _( 32000 ), _( 32104 ), _( 32110 ) )
+            DIALOG_PROGRESS.create( _( 0 ), _( 104 ), _( 110 ) )
+        # On verifie self.type qui correspond au type de liste que l'on veut afficher
         if (self.type  == "racine"):
             #liste virtuelle des sections
             #del self.curDirList[:] # on vide la liste
@@ -1381,7 +1505,7 @@ class MainWindow(xbmcgui.Window):
         xbmcgui.lock()
         
         # Clear all ListItems in this control list
-        self.list.reset()
+        self.getControl( self.list ).reset()
 
         # Calcul du nombre d'elements de la liste
         itemnumber = len(self.curDirList)
@@ -1393,11 +1517,13 @@ class MainWindow(xbmcgui.Window):
                 if (self.type  == "racine"):
                     sectionName = self.downloadTypeList[self.racineDisplayList[j]] # On utilise le filtre
                     # Met a jour le titre:
-                    self.strMainTitle.setLabel("Sélection")
+                    #self.strMainTitle.setLabel( _( 10 ) )
+                    self.setProperty( "Category", _( 10 ) )
                 elif (self.type  == "Plugins"):
                     sectionName = self.downloadTypeList[self.pluginDisplayList[j]] # On utilise le filtre
                     # Met a jour le titre:
-                    self.strMainTitle.setLabel("Plugins")
+                    #self.strMainTitle.setLabel( _( 14 ) )
+                    self.setProperty( "Category", _( 14 ) )
 
                 # Affichage de la liste des sections
                 # -> On compare avec la liste affichee dans l'interface
@@ -1413,8 +1539,9 @@ class MainWindow(xbmcgui.Window):
                     # Image par defaut (ou aucune si = "")
                     imagePath = imagePath = os.path.join(IMAGEDIR,"icone_script.png")
 
-                displayListItem = xbmcgui.ListItem(label = sectionName, thumbnailImage = imagePath)
-                self.list.addItem(displayListItem)
+                displayListItem = xbmcgui.ListItem( sectionName, "", thumbnailImage = imagePath )
+                displayListItem.setProperty( "Downloaded", "" )
+                self.getControl( self.list ).addItem(displayListItem)
                 
             elif (self.type == "Plugins Musique") or (self.type == "Plugins Images") or (self.type == "Plugins Programmes") or (self.type == "Plugins Vidéos"):
                 # Element de la liste
@@ -1425,25 +1552,40 @@ class MainWindow(xbmcgui.Window):
                 #TODO: creer de nouveau icones pour les sous-sections plugins
                 # Met a jour le titre et les icones:
                 if self.type == self.downloadTypeList[4]:   #Themes
-                    self.strMainTitle.setLabel(str(itemnumber) + " Plugins Musique")
+                    title_label = "%i %s" % ( itemnumber, _( 15 ) )
+                    #self.strMainTitle.setLabel( title_label )
+                    self.setProperty( "Category", title_label )
                     imagePath = os.path.join(IMAGEDIR,"icone_theme.png")
                 elif self.type == self.downloadTypeList[5]: #Scrapers
-                    self.strMainTitle.setLabel(str(itemnumber) + " Plugins Images")
+                    title_label = "%i %s" % ( itemnumber, _( 16 ) )
+                    #self.strMainTitle.setLabel( title_label )
+                    self.setProperty( "Category", title_label )
                     imagePath = os.path.join(IMAGEDIR,"icone_scrapper.png")
                 elif self.type == self.downloadTypeList[6]: #Scripts
-                    self.strMainTitle.setLabel(str(itemnumber) + " Plugins Programmes")
+                    title_label = "%i %s" % ( itemnumber, _( 17 ) )
+                    #self.strMainTitle.setLabel( title_label )
+                    self.setProperty( "Category", title_label )
                     imagePath = os.path.join(IMAGEDIR,"icone_script.png")
                 elif self.type == self.downloadTypeList[7]: #Plugins
-                    self.strMainTitle.setLabel(str(itemnumber) + " Plugins Vidéos")
+                    title_label = "%i %s" % ( itemnumber, _( 18 ) )
+                    #self.strMainTitle.setLabel( title_label )
+                    self.setProperty( "Category", title_label )
                     imagePath = os.path.join(IMAGEDIR,"icone_script.png")
                 else:
                     # Image par defaut (ou aucune si = "")
                     imagePath = ""
 
-                item2download = ItemListPath[lenindex:]
+                try: item2download = os.path.splitext( ItemListPath[ lenindex: ] )[ 0 ].replace( "_", " " )
+                except: item2download = ItemListPath[lenindex:]
 
-                displayListItem = xbmcgui.ListItem(label = item2download, thumbnailImage = imagePath)
-                self.list.addItem(displayListItem)
+                if self.downloaded_property.__contains__( md5.new( item2download ).hexdigest() ):
+                    already_downloaded = "true"
+                else:
+                    already_downloaded = ""
+
+                displayListItem = xbmcgui.ListItem( item2download, "", thumbnailImage = imagePath )
+                displayListItem.setProperty( "Downloaded", already_downloaded )
+                self.getControl( self.list ).addItem(displayListItem)
                 
             else:
                 # Element de la liste
@@ -1455,26 +1597,39 @@ class MainWindow(xbmcgui.Window):
 
                 # Met a jour le titre et les icones:
                 if self.type == self.downloadTypeList[0]:   #Themes
-                    self.strMainTitle.setLabel(str(itemnumber) + " Themes")
+                    title_label = "%i %s" % ( itemnumber, _( 11 ) )
+                    #self.strMainTitle.setLabel( title_label )
+                    self.setProperty( "Category", title_label )
                     imagePath = os.path.join(IMAGEDIR,"icone_theme.png")
                 elif self.type == self.downloadTypeList[1]: #Scrapers
-                    self.strMainTitle.setLabel(str(itemnumber) + " Scrapers")
+                    title_label = "%i %s" % ( itemnumber, _( 12 ) )
+                    #self.strMainTitle.setLabel( title_label )
+                    self.setProperty( "Category", title_label )
                     imagePath = os.path.join(IMAGEDIR,"icone_scrapper.png")
                 elif self.type == self.downloadTypeList[2]: #Scripts
-                    self.strMainTitle.setLabel(str(itemnumber) + " Scripts")
+                    title_label = "%i %s" % ( itemnumber, _( 13 ) )
+                    #self.strMainTitle.setLabel( title_label )
+                    self.setProperty( "Category", title_label )
                     imagePath = os.path.join(IMAGEDIR,"icone_script.png")
                 else:
                     # Image par defaut (ou aucune si = "")
                     imagePath = ""
 
-                item2download = ItemListPath[lenindex:]
+                try: item2download = os.path.splitext( ItemListPath[ lenindex: ] )[ 0 ].replace( "_", " " )
+                except: item2download = ItemListPath[lenindex:]
 
-                displayListItem = xbmcgui.ListItem(label = item2download, thumbnailImage = imagePath)
-                self.list.addItem(displayListItem)
+                if self.downloaded_property.__contains__( md5.new( item2download ).hexdigest() ):
+                    already_downloaded = "true"
+                else:
+                    already_downloaded = ""
+
+                displayListItem = xbmcgui.ListItem( item2download, "", thumbnailImage = imagePath )
+                displayListItem.setProperty( "Downloaded", already_downloaded )
+                self.getControl( self.list ).addItem(displayListItem)
         xbmcgui.unlock()
         
         # Set Focus on list
-        self.setFocus(self.list)
+        #self.setFocus(self.list)
         DIALOG_PROGRESS.close()
 
     def deleteDir(self,path):
@@ -1632,7 +1787,14 @@ class MainWindow(xbmcgui.Window):
 
 def go():
     #Fonction de demarrage
-    w = MainWindow()
+    file_xml = "passion-main.xml"
+    #depuis la revision 14811 on a plus besoin de mettre le chemin complet, la racine suffit
+    dir_path = CWD #xbmc.translatePath( os.path.join( CWD, "resources" ) ) 
+    #recupere le nom du skin et si force_fallback est vrai, il va chercher les images du defaultSkin.
+    current_skin, force_fallback = getUserSkin()
+
+    w = MainWindow( file_xml, dir_path, current_skin, force_fallback )
+    #w = MainWindow()
     w.doModal()
     del w
 
