@@ -1067,6 +1067,7 @@ class MainWindow( xbmcgui.WindowXML ):
     def _set_skin_colours( self ):
         xbmcgui.lock()
         try:
+            self.setProperty( "style_PMIII.HD", ( "", "true" )[ ( self.settings[ "skin_colours_path" ] == "style_PMIII.HD" ) ] )
             self.setProperty( "Skin-Colours-path", self.settings[ "skin_colours_path" ] )
             self.setProperty( "Skin-Colours", ( self.settings[ "skin_colours" ] or self._get_default_hex_color() ) )
             #print xbmc.getInfoLabel( "Container.Property(Skin-Colours)" )
@@ -1348,7 +1349,8 @@ class MainWindow( xbmcgui.WindowXML ):
                                 message1 = "%s: %s"%(self.type,downloadItem)
                                 message2 = "a été téléchargé dans le repertoire:"
                                 message3 = "%s"%self.localdirList[self.downloadTypeList.index(self.type)]
-    
+
+                                self._save_downloaded_property()
                                 dialogInfo = xbmcgui.Dialog()
                                 dialogInfo.ok(title, message1, message2,message3)
     
@@ -1554,22 +1556,22 @@ class MainWindow( xbmcgui.WindowXML ):
                 if self.type == self.downloadTypeList[4]:   #Themes
                     title_label = "%i %s" % ( itemnumber, _( 15 ) )
                     #self.strMainTitle.setLabel( title_label )
-                    self.setProperty( "Category", title_label )
+                    self.setProperty( "Category", _( 15 ) )#title_label )
                     imagePath = os.path.join(IMAGEDIR,"icone_theme.png")
                 elif self.type == self.downloadTypeList[5]: #Scrapers
                     title_label = "%i %s" % ( itemnumber, _( 16 ) )
                     #self.strMainTitle.setLabel( title_label )
-                    self.setProperty( "Category", title_label )
+                    self.setProperty( "Category", _( 16 ) )#title_label )
                     imagePath = os.path.join(IMAGEDIR,"icone_scrapper.png")
                 elif self.type == self.downloadTypeList[6]: #Scripts
                     title_label = "%i %s" % ( itemnumber, _( 17 ) )
                     #self.strMainTitle.setLabel( title_label )
-                    self.setProperty( "Category", title_label )
+                    self.setProperty( "Category", _( 17 ) )#title_label )
                     imagePath = os.path.join(IMAGEDIR,"icone_script.png")
                 elif self.type == self.downloadTypeList[7]: #Plugins
                     title_label = "%i %s" % ( itemnumber, _( 18 ) )
                     #self.strMainTitle.setLabel( title_label )
-                    self.setProperty( "Category", title_label )
+                    self.setProperty( "Category", _( 18 ) )#title_label )
                     imagePath = os.path.join(IMAGEDIR,"icone_script.png")
                 else:
                     # Image par defaut (ou aucune si = "")
@@ -1599,17 +1601,17 @@ class MainWindow( xbmcgui.WindowXML ):
                 if self.type == self.downloadTypeList[0]:   #Themes
                     title_label = "%i %s" % ( itemnumber, _( 11 ) )
                     #self.strMainTitle.setLabel( title_label )
-                    self.setProperty( "Category", title_label )
+                    self.setProperty( "Category", _( 11 ) )#title_label )
                     imagePath = os.path.join(IMAGEDIR,"icone_theme.png")
                 elif self.type == self.downloadTypeList[1]: #Scrapers
                     title_label = "%i %s" % ( itemnumber, _( 12 ) )
                     #self.strMainTitle.setLabel( title_label )
-                    self.setProperty( "Category", title_label )
+                    self.setProperty( "Category", _( 12 ) )#title_label )
                     imagePath = os.path.join(IMAGEDIR,"icone_scrapper.png")
                 elif self.type == self.downloadTypeList[2]: #Scripts
                     title_label = "%i %s" % ( itemnumber, _( 13 ) )
                     #self.strMainTitle.setLabel( title_label )
-                    self.setProperty( "Category", title_label )
+                    self.setProperty( "Category", _( 13 ) )#title_label )
                     imagePath = os.path.join(IMAGEDIR,"icone_script.png")
                 else:
                     # Image par defaut (ou aucune si = "")

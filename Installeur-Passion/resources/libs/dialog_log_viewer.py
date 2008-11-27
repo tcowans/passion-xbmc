@@ -1,6 +1,7 @@
 
 #Modules general
 import os
+import re
 import sys
 
 #modules XBMC
@@ -13,12 +14,26 @@ from utilities import *
 #REPERTOIRE RACINE ( default.py )
 CWD = os.getcwd().rstrip( ";" )
 
+DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
-class LogViewer( xbmcgui.WindowXMLDialog ):
+
+# Set WindowXMLDialog if not current skin is Project Mayhem III
+WIN_XML = ( "xbmcgui.WindowXMLDialog", "xbmcgui.WindowXML", )[ ( xbmc.getSkinDir() == "Project Mayhem III" ) ]
+
+class LogViewer( eval( WIN_XML ) ):
     CONTROL_TEXT_BOX = 5
+
+    COLOR_ERROR   = "[COLOR=FFFF0000]ERROR[/COLOR]"
+    COLOR_WARNING = "[COLOR=FFFFFF3D]WARNING[/COLOR]"
+    COLOR_DEBUG   = "[COLOR=FF80FF00]DEBUG[/COLOR]"
+    #COLOR_INFO    = "[COLOR=FFFFFFFF]INFO[/COLOR]"
+    #COLOR_NOTICE  = "[COLOR=FFFFFFFF]NOTICE[/COLOR]"
 
     def __init__( self, *args, **kwargs ):
         xbmcgui.WindowXMLDialog.__init__( self, *args, **kwargs )
+        # Maximum lines set for Xbox 10,000 and 20,000 for the others.
+        # because more than 10,000 it takes much memory. "about: 1 Mb for 1000 lines"
+        self.max_lines = ( 20000, 10000, )[ ( os.environ.get( "OS", "xbox" ) == "xbox" ) ]
 
     def onInit( self ):
         # onInit est pour le windowXML seulement
@@ -28,13 +43,49 @@ class LogViewer( xbmcgui.WindowXMLDialog ):
                 xbmc_log = os.path.join( XBMC_ROOT, "xbmc.log" )
                 if not os.path.isfile( xbmc_log ):
                     xbmc_log = os.path.join( os.path.dirname( os.path.dirname( xbmc.translatePath( "T:\\" ) ) ), "xbmc.log" )
-                if os.path.isfile( xbmc_log ):
-                    self.text = file( xbmc_log, "r" ).read()
+                file_path = xbmc_log
             else:
-                self.text = file( LOG_SCRIPT, "r" ).read()
+                file_path = LOG_SCRIPT
+            DIALOG_PROGRESS.create( "Output", "Reading the lines...", file_path, "Please wait..." )
+            self._set_lines_color( file_path )
+            DIALOG_PROGRESS.close()
             self._set_controls_values()
         except:
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+
+    def _set_lines_color( self, file_path ):
+        try:
+            text = list()
+            f = open( file_path )
+            lines = f.readlines()
+            f.close()
+            percent = 0
+            total_lines = len( lines ) or 1
+            diff = ( 100.0 / total_lines )
+            for count, line in enumerate( lines ):
+                percent += diff
+                if ( ( count + 1 ) == self.max_lines ):
+                    DIALOG_PROGRESS.update( 100, "Line: %i / %i" % ( count + 1, self.max_lines, ) )
+                    text.append( "[CR][COLOR=FFFF0000]***FOR MORE INFOS WATCH LOG IN YOUR PC***[/COLOR]" )
+                    break
+                DIALOG_PROGRESS.update( int( percent ), "Line: %i / %i" % ( count + 1, total_lines, ) )
+                if " ERROR:" in line:
+                    #line = re.sub( "\\bERROR\\b", self.COLOR_ERROR, line )
+                    line = "[COLOR=FFFF0000]%s[/COLOR]" % ( line, )
+                elif " WARNING:" in line:
+                    #line = re.sub( "\\bWARNING\\b", self.COLOR_WARNING, line )
+                    line = "[COLOR=FFFFFF3D]%s[/COLOR]" % ( line, )
+                #note: plus que deux couleurs sa marche pas, les couleurs se melange!!!
+                #elif " DEBUG:" in line:
+                #    #line = re.sub( "\\bDEBUG\\b", self.COLOR_DEBUG, line )
+                #    line = "[COLOR=FF80FF00]%s[/COLOR]" % ( line, )
+                else:
+                    pass
+                text.append( line )#.strip( "\n\r" ) )
+            self.text = "".join( text )
+        except:
+            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+            self.text = "Output not available!"
 
     def _set_controls_values( self ):
         xbmcgui.lock()
@@ -56,7 +107,7 @@ class LogViewer( xbmcgui.WindowXMLDialog ):
 
     def onAction( self, action ):
         #( ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, ACTION_CONTEXT_MENU, )
-        if action in ( 9, 10, 117 ): self._close_dialog()
+        if action in ( 9, 10, 117, ): self._close_dialog()
 
     def _close_dialog( self ):
         xbmc.sleep( 100 )

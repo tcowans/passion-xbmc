@@ -46,6 +46,8 @@
 			<imagepath>passion-plasma</imagepath>
 			<timeperimage>4000</timeperimage>
 			<fadetime>2000</fadetime>
+			<visible>IsEmpty(Container.Property(style_PMIII.HD))</visible>
+			<!-- <animation effect="fade" time="0">VisibleChange</animation> -->
 		</control>
 
 		<!-- CONTENT PANEL -->
@@ -94,6 +96,7 @@
 			<description>rss feed</description>
 			<posx>20</posx>
 			<posy>86</posy>
+			<animation effect="slide" start="0,0" end="0,-24" time="0" condition="!IsEmpty(Container.Property(style_PMIII.HD))">conditional</animation>
 			<animation effect="fade" start="0" end="100" delay="200" time="100" condition="!Skin.HasSetting(animated)">WindowOpen</animation>
 			<animation effect="fade" start="100" end="0" delay="0" time="100" condition="!Skin.HasSetting(animated)">WindowClose</animation>
 			<control type="fadelabel" id="100">
@@ -143,8 +146,20 @@
 				<label>$INFO[Container.Property(Category)]</label>
 				<font>special13</font>
 			</control>
+			<control type="label">
+				<description>Page Count Label</description>
+				<posx>693</posx>
+				<posy>160</posy>
+				<width>679</width>
+				<height>30</height>
+				<font>font12</font>
+				<textcolor>ffffffff</textcolor>
+				<scroll>false</scroll>
+				<align>right</align>
+				<label>($INFO[Container(150).NumItems]) $LOCALIZE[SCRIPT25] - $LOCALIZE[SCRIPT24] ($INFO[Container(150).CurrentPage]/$INFO[Container(150).NumPages])</label>
+			</control>
 
-			<!-- BASE LIST AND TEXTBOX FOR DESCRIPTION OF TOPIC AND ICON-->
+			<!-- BASE LIST -->
 			<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
 			<!-- ** Required ** Do not change id's or type's -->
 			<control type="list" id="150">
