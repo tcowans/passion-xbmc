@@ -52,7 +52,7 @@ def load_infos( url, general=False ):
     items = re.compile( "<item>(.*?)</item>", re.DOTALL ).findall( html )
     total_items = len( items ) or 1
     percent = 0
-    diff = int( 100.0 / total_items )
+    diff = ( 100.0 / total_items )
     for count, item in enumerate( items ):
         try:
             title = re.findall( "<title>.*\\[(.*?)\\].*</title>", item )[ 0 ]
@@ -63,7 +63,7 @@ def load_infos( url, general=False ):
         except:
             EXC_INFO( LOG_ERROR, sys.exc_info() )
         else:
-            DIALOG_PROGRESS.update( percent, "RSS: %i / %i" % ( count + 1, total_items, ), title )
+            DIALOG_PROGRESS.update( int( percent ), "RSS: %i / %i" % ( count + 1, total_items, ), title )
             try:
                 category = bold_text( CONVERT( category ).entity_or_charref ) + "[CR]"
                 title = CONVERT( title ).entity_or_charref #bold_text( )
@@ -145,7 +145,7 @@ class DirectInfos( xbmcgui.WindowXML ):
     def _set_skin_colours( self ):
         xbmcgui.lock()
         try:
-            #sa marche lol :o trop cool on pourra faire une fonction dans les settings pour couleurs du theme
+            self.setProperty( "style_PMIII.HD", ( "", "true" )[ ( self.settings[ "skin_colours_path" ] == "style_PMIII.HD" ) ] )
             self.setProperty( "Skin-Colours-path", self.settings[ "skin_colours_path" ] )
             self.setProperty( "Skin-Colours", ( self.settings[ "skin_colours" ] or self._get_default_hex_color() ) )
             #print xbmc.getInfoLabel( "Container.Property(Skin-Colours)" )

@@ -31,6 +31,8 @@
 			<imagepath>passion-plasma</imagepath>
 			<timeperimage>4000</timeperimage>
 			<fadetime>2000</fadetime>
+			<visible>IsEmpty(Container.Property(style_PMIII.HD))</visible>
+			<!-- <animation effect="fade" time="0">VisibleChange</animation> -->
 		</control>
 
 		<!-- CONTENT PANEL -->
@@ -97,6 +99,7 @@
 				<align>right</align>
 				<aligy>center</aligy>
 				<font>special12</font>
+                <animation effect="slide" start="0,0" end="0,-50" time="0" condition="!IsEmpty(Container.Property(style_PMIII.HD))">conditional</animation>
 			</control>
 			<control type="label">
 				<description>tilte - category label</description>
@@ -234,7 +237,7 @@
 				<posy>320</posy>
 				<width>100</width>
 				<height>50</height>
-				<texture flipy="true" diffuse="diffuse_mirror.png">$INFO[Container(150).ListItem.ActualIcon,icones\]</texture>
+				<texture flipy="true" diffuse="passion-diffuse_mirror.png">$INFO[Container(150).ListItem.ActualIcon,icones\]</texture>
 				<aspectratio align="center" aligny="top">stretch</aspectratio>
 				<visible>Control.HasFocus(150)</visible>
 				<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
@@ -388,7 +391,7 @@
 				<posy>320</posy>
 				<width>100</width>
 				<height>50</height>
-				<texture flipy="true" diffuse="diffuse_mirror.png">$INFO[Container(191).ListItem.ActualIcon,icones\]</texture>
+				<texture flipy="true" diffuse="passion-diffuse_mirror.png">$INFO[Container(191).ListItem.ActualIcon,icones\]</texture>
 				<aspectratio align="center" aligny="top">stretch</aspectratio>
 				<visible>!Control.HasFocus(150)</visible>
 				<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
