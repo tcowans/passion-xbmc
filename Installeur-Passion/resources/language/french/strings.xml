@@ -91,4 +91,9 @@
   <string id="513">button setting 7</string>
   <string id="514">button setting 8</string>
   <string id="515">button setting 9</string>
+
+  <string id="518">Navigateur Web</string>
+  <string id="519">Activer l'état d'attente</string>
+  <string id="520">Sélectionnez le navigateur Web</string>
+  <string id="521">Entrer le nom du navigateur Web</string>
 </strings>

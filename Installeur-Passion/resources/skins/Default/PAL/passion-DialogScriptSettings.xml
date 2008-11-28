@@ -214,6 +214,7 @@
 				<width>580</width>
 				<height>5</height>
 				<texture>passion-separator.png</texture>
+				<visible>Control.IsVisible(160)</visible>
 			</control>
 			<control type="radiobutton" id="160">
 				<description>button setting 3</description>
@@ -377,6 +378,50 @@
 				<texturefocus>passion-input-focus.png</texturefocus>
 				<texturenofocus>-</texturenofocus>
 			</control>
+			<control type="image" id="249">
+				<description>separator image</description>
+				<posx>-5</posx>
+				<posy>0</posy>
+				<width>580</width>
+				<height>5</height>
+				<texture>passion-separator.png</texture>
+				<visible>Control.IsVisible(240) | Control.IsVisible(250)</visible>
+			</control>
+			<control type="button" id="250">
+				<description>button setting 12</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>580</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT518</label>
+				<label2>SCRIPT506</label2>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<aligny>center</aligny>
+				<texturefocus>passion-input-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+			</control>
+			<control type="radiobutton" id="260">
+				<description>button setting 13</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>580</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT519</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<aligny>center</aligny>
+				<texturefocus>passion-input-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<textureradiofocus>passion-settings-check-box.png</textureradiofocus>
+				<textureradionofocus>passion-settings-check-boxNF.png</textureradionofocus>
+			</control>
 		</control>
 
 		<!-- GROUPE OPTION MENU -->
@@ -399,7 +444,7 @@
 				<disabledcolor>60d0d0d0</disabledcolor>
 				<onleft>302</onleft>
 				<onright>301</onright>
-				<onup>240</onup>
+				<onup>260</onup>
 				<ondown>9003</ondown>
 			</control>
 			<control type="button" id="301">
@@ -417,7 +462,7 @@
 				<disabledcolor>60d0d0d0</disabledcolor>
 				<onleft>300</onleft>
 				<onright>303</onright>
-				<onup>240</onup>
+				<onup>260</onup>
 				<ondown>9003</ondown>
 			</control>
 			<control type="button" id="302">
@@ -435,7 +480,7 @@
 				<disabledcolor>60d0d0d0</disabledcolor>
 				<onleft>301</onleft>
 				<onright>303</onright>
-				<onup>240</onup>
+				<onup>260</onup>
 				<ondown>9003</ondown>
 			</control>
 			<control type="button" id="303">
@@ -453,7 +498,7 @@
 				<disabledcolor>60d0d0d0</disabledcolor>
 				<onleft>302</onleft>
 				<onright>300</onright>
-				<onup>240</onup>
+				<onup>260</onup>
 				<ondown>9003</ondown>
 			</control>
 		</control>
