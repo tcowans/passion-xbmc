@@ -70,18 +70,35 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
     def _set_controls_values( self ):
         xbmcgui.lock()
         try:
+            # boutons pour la limitation des topics
             self._set_control_limit_feeds()
+            # boutons pour la couleur du theme
             self._set_control_colors()
             #bouton pour activer desactiver la modification du fichier sources.xml
             #selon l'etat de self.settings[ "xbmc_xml_update" ], l'image du radiobutton sera blanc ou non visible
             self.getControl( 160 ).setSelected( self.settings[ "xbmc_xml_update" ] )
+            # cache le bouton activer desactiver la modification du fichier sources.xml, sy la version d'xbmc est compatible atlantis
+            atlantis = not bool( re.search( "\\b(pre-8.10|8.10)\\b", xbmc.getInfoLabel( "System.BuildVersion" ) ) )
+            self.getControl( 160 ).setEnabled( atlantis )
+            self.getControl( 160 ).setVisible( atlantis ) 
             #le bouton valider les changements ont le desactive, il va etre reactiver seulement s'il y a un changement dans les settings
-            self.getControl( 300 ).setEnabled( 0 )
+            self.getControl( 300 ).setEnabled( False ) 
             #le bouton credits est desactiver, le temps d'implanter cette fonction
-            self.getControl( 303 ).setEnabled( 0 )
+            self.getControl( 303 ).setEnabled( False ) 
+            # boutons pour le web
+            self._set_control_web_visibility()
         except:
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
         xbmcgui.unlock()
+
+    def _set_control_web_visibility( self ):
+        platform = os.environ.get( "OS", "xbox" )
+        self.getControl( 250 ).setLabel( _( 518 ), label2=self.settings.get( "web_title", _( 506 ) ) )
+        self.getControl( 250 ).setEnabled( ( platform in ( "win32", "linux" ) ) )
+        self.getControl( 250 ).setVisible( ( platform in ( "win32", "linux" ) ) )
+        self.getControl( 260 ).setSelected( self.settings[ "win32_exec_wait" ] )
+        self.getControl( 260 ).setEnabled( bool( self.settings[ "web_navigator" ] ) )
+        self.getControl( 260 ).setVisible( ( platform == "win32" ) )
 
     def _set_control_limit_feeds( self ):
         try:
@@ -154,9 +171,9 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
 
     def onClick( self, controlID ):
         try:
-            if controlID in (141, 142):
+            if controlID in ( 141, 142 ):
                 self.toggle_feed_control( controlID )
-            elif controlID in (131, 132):
+            elif controlID in ( 131, 132 ):
                 self.toggle_color_control( controlID )
             elif controlID == 160:
                 #bouton pour activer desactiver la modification du fichier sources.xml
@@ -174,10 +191,34 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
                 #bouton custom background a ete activer depuis le xml
                 #balise utiliser: <onclick>Skin.ToggleSetting(use_passion_custom_background)</onclick>
                 self.getControl( 300 ).setEnabled( True )
+            elif controlID == 250:
+                #bouton pour choisir le navigateur web
+                self._set_web_navigator()
+            elif controlID == 260:
+                #bouton pour activer desactiver wait state win32 seulement
+                self._set_wait_state()
             else:
                 pass
         except:
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+
+    def _set_web_navigator( self ):
+        web_navigator = set_web_navigator( self.settings[ "web_navigator" ] )
+        if web_navigator:
+            self.settings[ "web_title" ] = web_navigator[ 0 ]
+            self.settings[ "web_navigator" ] = web_navigator[ 1 ]
+            self.getControl( 250 ).setLabel( _( 518 ), label2=self.settings[ "web_title" ] )
+            self.getControl( 260 ).setEnabled( True )
+            self.getControl( 300 ).setEnabled( True )
+
+    def _set_wait_state( self ):
+        if not self.settings[ "win32_exec_wait" ]:
+            #Active
+            self.settings[ "win32_exec_wait" ] = True
+        else:
+            #Desactive
+            self.settings[ "win32_exec_wait" ] = False
+        self.getControl( 300 ).setEnabled( True )
 
     def _set_xml_update( self ):
         # fonction plus tres utile depuis xbmc atlantis

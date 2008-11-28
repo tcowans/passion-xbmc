@@ -59,6 +59,7 @@ def load_infos( url, general=False ):
             pubDate = re.findall( "<pubDate>(.*?)</pubDate>", item )[ 0 ]
             category = re.findall( "<category>.*\\[(.*?)\\].*</category>", item )[ 0 ]
             description = re.findall( "<description>.*\\[(.*?)\\].*</description>", item, re.DOTALL )[ 0 ]
+            guid = re.findall( "<guid>(.*?)</guid>", item )[ 0 ]
             percent += diff
         except:
             EXC_INFO( LOG_ERROR, sys.exc_info() )
@@ -70,8 +71,8 @@ def load_infos( url, general=False ):
                 pubDate = CONVERT( pubDate ).entity_or_charref
                 description = strip_off( set_pretty_formatting( description ) ).strip( "\n\t" )
                 description = CONVERT( description ).entity_or_charref
-                if not general: item = ( title, pubDate, description )
-                else:  item = ( title, pubDate, category + description )
+                if not general: item = ( title, pubDate, description, guid )
+                else:  item = ( title, pubDate, category + description, guid )
                 list_infos.append( item )
             except:
                 EXC_INFO( LOG_ERROR, sys.exc_info() )
@@ -173,9 +174,9 @@ class DirectInfos( xbmcgui.WindowXML ):
         try:
             url, icone = self.list_container_150[ rss ]
             url += self.feeds_limit
-            list_infos = load_infos( url, ( rss == 0 ) )
+            self.list_infos = load_infos( url, ( rss == 0 ) )
             self.getControl( self.CONTROL_FEEDS_LIST ).reset()
-            for title, pubDate, description in list_infos:
+            for title, pubDate, description, guid in self.list_infos:
                 title = self._unicode( set_xbmc_carriage_return( title ) )
                 pubDate = set_local_time( pubDate )
                 description = self._unicode( set_xbmc_carriage_return( description ) )
@@ -211,14 +212,66 @@ class DirectInfos( xbmcgui.WindowXML ):
                 pos = self.getControl( self.CONTROL_RSS_LIST ).getSelectedPosition()
                 if pos >= 0:
                     self.set_list_container_191( pos )
+            elif controlID == self.CONTROL_FEEDS_LIST:
+                pos = self.getControl( self.CONTROL_FEEDS_LIST ).getSelectedPosition()
+                if pos >= 0:
+                    self._url_launcher( self.list_infos[ pos ][ 3 ] )
             else:
                 pass
         except:
             EXC_INFO( LOG_ERROR, sys.exc_info(), self )
 
+    def _url_launcher( self, url ):
+        platform = os.environ.get( "OS", "" )
+        if ( not platform ) or ( not platform in ( "win32", "linux" ) ):
+            LOG( LOG_INFO, "Unsupported platform: %s", platform )
+            return
+        try:
+            if not self.settings[ "web_navigator" ]:
+                web_navigator = set_web_navigator( self.settings[ "web_navigator" ] )
+                if web_navigator:
+                    self.settings[ "web_title" ] = web_navigator[ 0 ] # utiliser dans le dialog settings
+                    self.settings[ "web_navigator" ] = web_navigator[ 1 ]
+                    OK = Settings().save_settings( self.settings )
+
+            # INSPIRER DU PLUGIN LAUNCHER
+            if ( platform == "win32" ):
+                if self.settings[ "win32_exec_wait" ]:
+                    cmd = "System.ExecWait"
+                else: cmd = "System.Exec"
+                xbmc.executebuiltin( "%s(\"%s\" %s\")" % ( cmd, self.settings[ "web_navigator" ], url ) )
+            elif ( platform == "linux" ):
+                # NON TESTER SUR LINUX
+                os.system( "%s %s" % ( self.settings[ "web_navigator" ], url ) )
+            else:
+                LOG( LOG_INFO, "Unsupported platform: %s", platform )
+            """
+            REMARQUE: avec cette description de os.system cela devrait marcher sur "mac", tester sur win32
+            marche pas pour os.system.
+
+            system(command)
+            Execute the command (a string) in a subshell. This is implemented by calling the Standard C function
+            system(), and has the same limitations. Changes to posix.environ, sys.stdin, etc. are not reflected
+            in the environment of the executed command.
+
+            On Unix, the return value is the exit status of the process encoded in the format specified for 
+            wait(). Note that POSIX does not specify the meaning of the return value of the C system() function, 
+            so the return value of the Python function is system-dependent.
+
+            On Windows, the return value is that returned by the system shell after running command, given by 
+            the Windows environment variable COMSPEC: on command.com systems (Windows 95, 98 and ME) this is 
+            always 0; on cmd.exe systems (Windows NT, 2000 and XP) this is the exit status of the command run; 
+            on systems using a non-native shell, consult your shell documentation.
+
+            Availability: Macintosh, Unix, Windows. 
+            Source: http://python.org/doc/2.5/lib/os-process.html or http://python.org/doc/2.4/lib/os-process.html
+            """
+        except:
+            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+
     def onAction( self, action ):
         #( ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, ACTION_CONTEXT_MENU, )
-        if action in ( 9, 10, 117 ): self._close_dialog()
+        if action in ( 9, 10, 117, ): self._close_dialog()
 
     def _close_dialog( self ):
         xbmc.sleep( 100 )

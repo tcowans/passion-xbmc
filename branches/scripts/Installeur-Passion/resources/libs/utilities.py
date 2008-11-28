@@ -35,6 +35,18 @@ BASE_SETTINGS_PATH = os.path.join( xbmc.translatePath( "P:\\script_data" ), __sc
 XBMC_ROOT = ( "U:\\", "Q:\\", )[ ( os.environ.get( "OS", "xbox" ) == "xbox" ) ]
 
 
+def set_web_navigator( navigator="" ):
+    mask = ( "", ".bat|.exe", )[ ( os.environ.get( "OS", "" ) == "win32" ) ]
+    browser_path = xbmcgui.Dialog().browse( 1, sys.modules[ "__main__" ].__language__( 520 ), "files", mask, False, False, navigator )
+    if browser_path:
+        title = os.path.basename( browser_path ).split( "." )[ 0 ].title()
+        keyboard = xbmc.Keyboard( title, sys.modules[ "__main__" ].__language__( 521 ) )
+        keyboard.doModal()
+        if keyboard.isConfirmed():
+            title = keyboard.getText()
+        return title, browser_path
+
+
 def get_html_source( url ):
     """ fetch the html source """
     try:
@@ -243,6 +255,8 @@ class Settings:
             "host": "stock.passionxbmc.org",
             "user": "anonymous",
             "password": "xxxx",
+            "web_navigator": "",
+            "win32_exec_wait": False,
             }
         for key, value in defaults.items():
             # add default values for missing settings
