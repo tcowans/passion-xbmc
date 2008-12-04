@@ -1514,18 +1514,11 @@ class MainWindow( xbmcgui.WindowXML ):
 
         # On utilise la fonction range pour faire l'iteration sur index
         for j in range(itemnumber):
-            if (self.type  == "racine") or (self.type  == "Plugins"):
-                # Element de la liste
-                if (self.type  == "racine"):
-                    sectionName = self.downloadTypeList[self.racineDisplayList[j]] # On utilise le filtre
-                    # Met a jour le titre:
-                    #self.strMainTitle.setLabel( _( 10 ) )
-                    self.setProperty( "Category", _( 10 ) )
-                elif (self.type  == "Plugins"):
-                    sectionName = self.downloadTypeList[self.pluginDisplayList[j]] # On utilise le filtre
-                    # Met a jour le titre:
-                    #self.strMainTitle.setLabel( _( 14 ) )
-                    self.setProperty( "Category", _( 14 ) )
+            if (self.type  == "racine"):
+                # Nom de la section
+                sectionName = self.downloadTypeList[self.racineDisplayList[j]] # On utilise le filtre
+                # Met a jour le titre:
+                self.setProperty( "Category", _( 10 ) )
 
                 # Affichage de la liste des sections
                 # -> On compare avec la liste affichee dans l'interface
@@ -1539,40 +1532,62 @@ class MainWindow( xbmcgui.WindowXML ):
                     imagePath = os.path.join(IMAGEDIR,"icone_script.png")
                 else:
                     # Image par defaut (ou aucune si = "")
-                    imagePath = imagePath = os.path.join(IMAGEDIR,"icone_script.png")
+                    imagePath = ""
 
                 displayListItem = xbmcgui.ListItem( sectionName, "", thumbnailImage = imagePath )
                 displayListItem.setProperty( "Downloaded", "" )
                 self.getControl( self.list ).addItem(displayListItem)
                 
+            elif (self.type  == "Plugins"):
+                # Nom de la section
+                sectionName = self.downloadTypeList[self.pluginDisplayList[j]] # On utilise le filtre
+                # Met a jour le titre:
+                self.setProperty( "Category", _( 14 ) )
+            
+                if sectionName == self.downloadTypeList[4]:  
+                    # Music
+                    imagePath = os.path.join(IMAGEDIR,"passion-icone-music.png")
+                elif sectionName == self.downloadTypeList[5]: 
+                    # Pictures
+                    imagePath = os.path.join(IMAGEDIR,"passion-icone-pictures.png")
+                elif sectionName == self.downloadTypeList[6]: 
+                    # Programs
+                    imagePath = os.path.join(IMAGEDIR,"passion-icone-programs.png")
+                elif sectionName == self.downloadTypeList[7]: 
+                    # Video
+                    imagePath = os.path.join(IMAGEDIR,"passion-icone-video.png")
+                displayListItem = xbmcgui.ListItem( sectionName, "", thumbnailImage = imagePath )
+                displayListItem.setProperty( "Downloaded", "" )
+                self.getControl( self.list ).addItem(displayListItem)
+            
+            
             elif (self.type == "Plugins Musique") or (self.type == "Plugins Images") or (self.type == "Plugins Programmes") or (self.type == "Plugins Vidéos"):
                 # Element de la liste
                 ItemListPath = self.curDirList[j]
                 
                 lenindex = len(self.remotedirList[self.pluginDisplayList[self.index]]) # on a tjrs besoin de connaitre la taille du chemin de base pour le soustraire/retirer du chemin global plus tard
                 
-                #TODO: creer de nouveau icones pour les sous-sections plugins
                 # Met a jour le titre et les icones:
-                if self.type == self.downloadTypeList[4]:   #Themes
+                if self.type == self.downloadTypeList[4]:  
                     title_label = "%i %s" % ( itemnumber, _( 15 ) )
-                    #self.strMainTitle.setLabel( title_label )
+                    # Music
                     self.setProperty( "Category", _( 15 ) )#title_label )
-                    imagePath = os.path.join(IMAGEDIR,"icone_theme.png")
-                elif self.type == self.downloadTypeList[5]: #Scrapers
+                    imagePath = os.path.join(IMAGEDIR,"passion-icone-music.png")
+                elif self.type == self.downloadTypeList[5]: 
                     title_label = "%i %s" % ( itemnumber, _( 16 ) )
-                    #self.strMainTitle.setLabel( title_label )
+                    # Pictures
                     self.setProperty( "Category", _( 16 ) )#title_label )
-                    imagePath = os.path.join(IMAGEDIR,"icone_scrapper.png")
-                elif self.type == self.downloadTypeList[6]: #Scripts
+                    imagePath = os.path.join(IMAGEDIR,"passion-icone-pictures.png")
+                elif self.type == self.downloadTypeList[6]:
                     title_label = "%i %s" % ( itemnumber, _( 17 ) )
-                    #self.strMainTitle.setLabel( title_label )
+                    # Programs
                     self.setProperty( "Category", _( 17 ) )#title_label )
-                    imagePath = os.path.join(IMAGEDIR,"icone_script.png")
-                elif self.type == self.downloadTypeList[7]: #Plugins
+                    imagePath = os.path.join(IMAGEDIR,"passion-icone-programs.png")
+                elif self.type == self.downloadTypeList[7]:
                     title_label = "%i %s" % ( itemnumber, _( 18 ) )
-                    #self.strMainTitle.setLabel( title_label )
+                    # Video
                     self.setProperty( "Category", _( 18 ) )#title_label )
-                    imagePath = os.path.join(IMAGEDIR,"icone_script.png")
+                    imagePath = os.path.join(IMAGEDIR,"passion-icone-video.png")
                 else:
                     # Image par defaut (ou aucune si = "")
                     imagePath = ""
