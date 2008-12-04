@@ -1523,18 +1523,26 @@ class MainWindow( xbmcgui.WindowXML ):
                 # Affichage de la liste des sections
                 # -> On compare avec la liste affichee dans l'interface
                 if sectionName == self.downloadTypeList[0]:
-                    imagePath = os.path.join(IMAGEDIR,"icone_theme.png")
+                    # Theme
+                    imagePath       = os.path.join(IMAGEDIR,"icone_theme.png")
+                    sectionLocTitle = _( 11 )
                 elif sectionName == self.downloadTypeList[1]:
-                    imagePath = os.path.join(IMAGEDIR,"icone_scrapper.png")
+                    # Scraper
+                    imagePath       = os.path.join(IMAGEDIR,"icone_scrapper.png")
+                    sectionLocTitle = _( 12 )
                 elif sectionName == self.downloadTypeList[2]:
-                    imagePath = os.path.join(IMAGEDIR,"icone_script.png")
+                    # Script
+                    imagePath       = os.path.join(IMAGEDIR,"icone_script.png")
+                    sectionLocTitle = _( 13 )
                 elif sectionName == self.downloadTypeList[3]:
-                    imagePath = os.path.join(IMAGEDIR,"icone_script.png")
+                    # Plugin
+                    imagePath       = os.path.join(IMAGEDIR,"icone_script.png")
+                    sectionLocTitle = _( 14 )
                 else:
                     # Image par defaut (ou aucune si = "")
                     imagePath = ""
 
-                displayListItem = xbmcgui.ListItem( sectionName, "", thumbnailImage = imagePath )
+                displayListItem = xbmcgui.ListItem( sectionLocTitle, "", thumbnailImage = imagePath )
                 displayListItem.setProperty( "Downloaded", "" )
                 self.getControl( self.list ).addItem(displayListItem)
                 
@@ -1546,17 +1554,21 @@ class MainWindow( xbmcgui.WindowXML ):
             
                 if sectionName == self.downloadTypeList[4]:  
                     # Music
-                    imagePath = os.path.join(IMAGEDIR,"passion-icone-music.png")
+                    imagePath       = os.path.join(IMAGEDIR,"passion-icone-music.png")
+                    sectionLocTitle = _( 15 )
                 elif sectionName == self.downloadTypeList[5]: 
                     # Pictures
-                    imagePath = os.path.join(IMAGEDIR,"passion-icone-pictures.png")
+                    imagePath       = os.path.join(IMAGEDIR,"passion-icone-pictures.png")
+                    sectionLocTitle = _( 16 )
                 elif sectionName == self.downloadTypeList[6]: 
                     # Programs
-                    imagePath = os.path.join(IMAGEDIR,"passion-icone-programs.png")
+                    imagePath       = os.path.join(IMAGEDIR,"passion-icone-programs.png")
+                    sectionLocTitle = _( 17 )
                 elif sectionName == self.downloadTypeList[7]: 
                     # Video
-                    imagePath = os.path.join(IMAGEDIR,"passion-icone-video.png")
-                displayListItem = xbmcgui.ListItem( sectionName, "", thumbnailImage = imagePath )
+                    imagePath       = os.path.join(IMAGEDIR,"passion-icone-video.png")
+                    sectionLocTitle = _( 18 )
+                displayListItem = xbmcgui.ListItem( sectionLocTitle, "", thumbnailImage = imagePath )
                 displayListItem.setProperty( "Downloaded", "" )
                 self.getControl( self.list ).addItem(displayListItem)
             
