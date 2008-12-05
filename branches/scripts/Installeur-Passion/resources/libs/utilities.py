@@ -9,19 +9,17 @@ import re
 import sys
 import urllib
 import urllib2
+import elementtree.ElementTree as ET
 
 #modules XBMC
 import xbmc
 import xbmcgui
 
-#modules custom
-try: from script_log import *
+#module logger
+try:
+    logger = sys.modules[ "__main__" ].logger
 except:
-    LOG_ERROR, LOG_INFO, LOG_NOTICE, LOG_WARNING, LOG_DEBUG = range( 1, 6 )
-    from traceback import print_exc
-    def EXC_INFO( *args ): print_exc()
-    LOG = EXC_INFO
-    EXC_INFO( LOG_ERROR, sys.exc_info() )
+    import script_log as logger
 
 
 #REPERTOIRE RACINE ( default.py )
@@ -29,14 +27,54 @@ CWD = os.getcwd().rstrip( ";" )
 
 try: __script__ = sys.modules[ "__main__" ].__script__
 except: __script__ = os.path.basename( CWD )
-BASE_SETTINGS_PATH = os.path.join( xbmc.translatePath( "P:\\script_data" ), __script__, "settings.txt" )
 
+BASE_SETTINGS_PATH = os.path.join( xbmc.translatePath( "P:\\script_data" ), __script__, "settings.txt" )
+RSS_FEEDS_XML = os.path.join( CWD, "resources", "RssFeeds.xml" )
+
+
+def get_system_platform():
+    platform = "unknown"
+    if xbmc.getCondVisibility( "system.platform.linux" ):
+        platform = "linux"
+    elif xbmc.getCondVisibility( "system.platform.xbox" ):
+        platform = "xbox"
+    elif xbmc.getCondVisibility( "system.platform.windows" ):
+        platform = "windows"
+    elif xbmc.getCondVisibility( "system.platform.osx" ):
+        platform = "osx"
+    return platform
+
+SYSTEM_PLATFORM = get_system_platform()
 # we use "U:\\" for linux, windows and osx for platform mode and "Q:\\" for xbox
-XBMC_ROOT = ( "U:\\", "Q:\\", )[ ( os.environ.get( "OS", "xbox" ) == "xbox" ) ]
+XBMC_ROOT = xbmc.translatePath( ( "U:\\", "Q:\\", )[ ( SYSTEM_PLATFORM == "xbox" ) ] )
+
+
+def parse_rss_xml( xml_path=RSS_FEEDS_XML ):
+    feeds = {}
+    try:
+        feed = open( xml_path )
+        tree = ET.parse( feed )
+        feed.close()
+        for elems in tree.getroot():
+            try:
+                urlset, title, feed = elems.getiterator()
+                urlset = urlset.attrib.get( "id" )
+                if urlset:
+                    feeds[ urlset ] = {
+                        "updateinterval": int( feed.attrib.get( "updateinterval", "30" ) ),
+                        "title": title.text,
+                        "feed": feed.text,
+                        }
+            except:
+                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+        del tree
+    except:
+        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+    return feeds
 
 
 def set_web_navigator( navigator="" ):
-    mask = ( "", ".bat|.exe", )[ ( os.environ.get( "OS", "" ) == "win32" ) ]
+    mask = ( "", ".bat|.exe", )[ ( SYSTEM_PLATFORM == "windows" ) ]
     browser_path = xbmcgui.Dialog().browse( 1, sys.modules[ "__main__" ].__language__( 520 ), "files", mask, False, False, navigator )
     if browser_path:
         title = os.path.basename( browser_path ).split( "." )[ 0 ].title()
@@ -67,7 +105,7 @@ def get_html_source( url ):
         htmlsource = htmlsource#.replace( "\r", "" )
         return htmlsource
     except:
-        EXC_INFO( LOG_ERROR, sys.exc_info() )
+        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
         return ""
 
 
@@ -89,7 +127,7 @@ def getSkinColors():
             colors = re.compile( '<color name="(.*?)">(.*?)</color>' ).findall( file( colors_file, "r" ).read() )
             return colors
     except:
-        EXC_INFO( LOG_ERROR, sys.exc_info() )
+        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
 
 
 #NOTE: CE CODE PEUT ETRE REMPLACER PAR UN CODE MIEUX FAIT
@@ -111,7 +149,7 @@ def add_pretty_color( word, start="all", end=None, color=None ):
             pretty_word = "".join( pretty_word )
         return pretty_word
     except:
-        EXC_INFO( LOG_ERROR, sys.exc_info() )
+        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
         return word
 
 
@@ -228,6 +266,28 @@ class CONVERT:
 
 class Settings:
     """ this function comes from apple movie trailer """
+    def _settings_defaults_values( self ):
+        defaults = {
+            # GENERAL
+            "updating": False,
+            "update_startup": True,
+            "xbmc_xml_update": False,
+            "rss_feed": "1",
+            # SKINS
+            "skin_colours_path": "default",
+            "skin_colours": "",
+            # SERVEUR FTP
+            "host": "stock.passionxbmc.org",
+            "user": "anonymous",
+            "password": "xxxx",
+            # FORUM
+            "topics_limit": "5",
+            "web_title": "",
+            "web_navigator": "",
+            "win32_exec_wait": False,
+            }
+        return defaults
+
     def get_settings( self, defaults=False ):
         """ read settings """
         try:
@@ -236,32 +296,29 @@ class Settings:
             settings_file = open( BASE_SETTINGS_PATH, "r" )
             settings = eval( settings_file.read() )
             settings_file.close()
-            #if ( settings[ "version" ] not in SETTINGS_VERSIONS ):
-            #    raise
+            if settings:
+                settings = self._check_compatibility( settings )
         except:
             settings = self._use_defaults( settings, save=( defaults == False ) )
         return settings
 
+    def _check_compatibility( self, current_settings={} ):
+        try:
+            if sorted( current_settings.keys() ) != sorted( self._settings_defaults_values().keys() ):
+                logger.LOG( logger.LOG_WARNING, "Settings: [added default values for missing settings]" )
+                return self._use_defaults( current_settings )
+        except:
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+        return current_settings
+
     def _use_defaults( self, current_settings=None, save=True ):
         """ setup default values if none obtained """
-        LOG( LOG_NOTICE, "[used default settings]" )
+        logger.LOG( logger.LOG_NOTICE, "Settings: [used default settings]" )
         settings = {}
-        defaults = {  
-            "updating": False,
-            "feeds_limit": "5",
-            "skin_colours_path": "default",
-            "skin_colours": "",
-            "xbmc_xml_update": False,
-            "host": "stock.passionxbmc.org",
-            "user": "anonymous",
-            "password": "xxxx",
-            "web_navigator": "",
-            "win32_exec_wait": False,
-            }
+        defaults = self._settings_defaults_values()
         for key, value in defaults.items():
             # add default values for missing settings
             settings[ key ] = current_settings.get( key, defaults[ key ] )
-        #settings[ "version" ] = __version__
         if ( save ):
             ok = self.save_settings( settings )
         return settings
@@ -274,5 +331,5 @@ class Settings:
             settings_file.close()
             return True
         except:
-            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
             return False

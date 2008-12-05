@@ -5,7 +5,7 @@ import re
 import sys
 import urllib
 
-import elementtree.ElementTree as ET
+#import elementtree.ElementTree as ET
 
 #modules XBMC
 import xbmc
@@ -14,6 +14,12 @@ import xbmcgui
 #modules custom
 from utilities import *
 from convert_utc_time import set_local_time
+
+#module logger
+try:
+    logger = sys.modules[ "__main__" ].logger
+except:
+    import script_log as logger
 
 
 DIALOG_PROGRESS = xbmcgui.DialogProgress()
@@ -44,7 +50,7 @@ def load_infos( url ):
         del tree
         return root
     except:
-        EXC_INFO( LOG_ERROR, sys.exc_info() )
+        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
 '''
 def load_infos( url, general=False ):
     list_infos = list()
@@ -62,9 +68,11 @@ def load_infos( url, general=False ):
             guid = re.findall( "<guid>(.*?)</guid>", item )[ 0 ]
             percent += diff
         except:
-            EXC_INFO( LOG_ERROR, sys.exc_info() )
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
         else:
-            DIALOG_PROGRESS.update( int( percent ), "RSS: %i / %i" % ( count + 1, total_items, ), title )
+            try: title = unicode( title, "utf-8" )
+            except: pass
+            DIALOG_PROGRESS.update( int( percent ), "Topic: %i / %i" % ( count + 1, total_items, ), title )
             try:
                 category = bold_text( CONVERT( category ).entity_or_charref ) + "[CR]"
                 title = CONVERT( title ).entity_or_charref #bold_text( )
@@ -75,7 +83,7 @@ def load_infos( url, general=False ):
                 else:  item = ( title, pubDate, category + description, guid )
                 list_infos.append( item )
             except:
-                EXC_INFO( LOG_ERROR, sys.exc_info() )
+                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
     return list_infos
 
 
@@ -124,9 +132,9 @@ class DirectInfos( xbmcgui.WindowXML ):
 
     def __init__( self, *args, **kwargs ):
         xbmcgui.WindowXML.__init__( self, *args, **kwargs )
-        self.rss_feed = kwargs[ "mainwin" ].rss_feed
         self.list_container_150 = LIST_CONTAINER_150()
-        self.feeds_limit = "5"
+        self.mainwin = kwargs[ "mainwin" ]
+        self.topics_limit = "5"
 
     def onInit( self ):
         try:
@@ -135,13 +143,13 @@ class DirectInfos( xbmcgui.WindowXML ):
             self.set_list_container_150()
             self.set_list_container_191()
         except:
-            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def _get_settings( self, defaults=False ):
         """ reads settings """
         self.settings = Settings().get_settings( defaults=defaults )
-        self.feeds_limit = self.settings[ "feeds_limit" ]
-        if self.feeds_limit == "00": self.feeds_limit = "500"
+        self.topics_limit = self.settings[ "topics_limit" ]
+        if self.topics_limit == "00": self.topics_limit = "500"
 
     def _set_skin_colours( self ):
         xbmcgui.lock()
@@ -151,14 +159,14 @@ class DirectInfos( xbmcgui.WindowXML ):
             self.setProperty( "Skin-Colours", ( self.settings[ "skin_colours" ] or self._get_default_hex_color() ) )
             #print xbmc.getInfoLabel( "Container.Property(Skin-Colours)" )
         except:
-            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         xbmcgui.unlock()
 
     def _get_default_hex_color( self ):
         try:
             default_hex_color = dict( getSkinColors() ).get( "default", "FFFFFFFF" )
         except:
-            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
             default_hex_color = "FFFFFFFF"
         return default_hex_color
 
@@ -170,10 +178,10 @@ class DirectInfos( xbmcgui.WindowXML ):
     def set_list_container_191( self, rss=0 ):
         #xbmcgui.lock()
         self.category = _( 200 + rss )
-        DIALOG_PROGRESS.create( _( 0 ), "RSS: 0 / %s" % ( self.feeds_limit, ), self.category )
+        DIALOG_PROGRESS.create( _( 0 ), "Topic: 0 / %s" % ( self.topics_limit, ), self.category )
         try:
             url, icone = self.list_container_150[ rss ]
-            url += self.feeds_limit
+            url += self.topics_limit
             self.list_infos = load_infos( url, ( rss == 0 ) )
             self.getControl( self.CONTROL_FEEDS_LIST ).reset()
             for title, pubDate, description, guid in self.list_infos:
@@ -186,11 +194,11 @@ class DirectInfos( xbmcgui.WindowXML ):
                     listitem.setProperty( "Topic", description )
                     self.getControl( self.CONTROL_FEEDS_LIST ).addItem( listitem )
                 except:
-                    #EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+                    #logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
                     pass
             self.setProperty( "Category", self.category )
         except:
-            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         #xbmcgui.unlock()
         DIALOG_PROGRESS.close()
 
@@ -219,12 +227,11 @@ class DirectInfos( xbmcgui.WindowXML ):
             else:
                 pass
         except:
-            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def _url_launcher( self, url ):
-        platform = os.environ.get( "OS", "" )
-        if ( not platform ) or ( not platform in ( "win32", "linux" ) ):
-            LOG( LOG_INFO, "Unsupported platform: %s", platform )
+        if ( not SYSTEM_PLATFORM in ( "windows", "linux", "osx" ) ):
+            logger.LOG( logger.LOG_INFO, "Unsupported platform: %s", SYSTEM_PLATFORM )
             return
         try:
             if not self.settings[ "web_navigator" ]:
@@ -234,54 +241,54 @@ class DirectInfos( xbmcgui.WindowXML ):
                     self.settings[ "web_navigator" ] = web_navigator[ 1 ]
                     OK = Settings().save_settings( self.settings )
 
-            # INSPIRER DU PLUGIN LAUNCHER
-            if ( platform == "win32" ):
-                if self.settings[ "win32_exec_wait" ]:
-                    cmd = "System.ExecWait"
-                else: cmd = "System.Exec"
-                xbmc.executebuiltin( "%s(\"%s\" %s\")" % ( cmd, self.settings[ "web_navigator" ], url ) )
-            elif ( platform == "linux" ):
-                # NON TESTER SUR LINUX
-                os.system( "%s %s" % ( self.settings[ "web_navigator" ], url ) )
+            if self.settings[ "win32_exec_wait" ] and ( SYSTEM_PLATFORM == "windows" ):
+                # Execute shell commands and freezes XBMC until shell is closed
+                cmd = "System.ExecWait"
             else:
-                LOG( LOG_INFO, "Unsupported platform: %s", platform )
-            """
-            REMARQUE: avec cette description de os.system cela devrait marcher sur "mac", tester sur win32
-            marche pas pour os.system.
+                # cette commande semble fonctionel pour linux, osx, windows
+                # Execute shell commands
+                cmd = "System.Exec"
 
-            system(command)
-            Execute the command (a string) in a subshell. This is implemented by calling the Standard C function
-            system(), and has the same limitations. Changes to posix.environ, sys.stdin, etc. are not reflected
-            in the environment of the executed command.
+            command = None
+            if ( SYSTEM_PLATFORM == "windows" ):
+                command = '%s("%s" "%s")' % ( cmd, self.settings[ "web_navigator" ], url, )
+            else:#if ( SYSTEM_PLATFORM == "linux" ):
+                # sous linux la vigule pose probleme. pas trouver de solution e.g.:
+                # original: http://passion-xbmc.org/index.php/topic,1491.msg10804.html#msg10804
+                # ouvert avec linux: http://passion-xbmc.org/index.php/topic
+                command = '%s(%s %s)' % ( cmd, self.settings[ "web_navigator" ], url, )
 
-            On Unix, the return value is the exit status of the process encoded in the format specified for 
-            wait(). Note that POSIX does not specify the meaning of the return value of the C system() function, 
-            so the return value of the Python function is system-dependent.
+            if command is not None:
+                #print command
+                logger.LOG( logger.LOG_INFO, "Url Launcher: %s", command )
+                selected_label = self._unicode( self.getControl( self.CONTROL_FEEDS_LIST ).getSelectedItem().getLabel() )
+                if xbmcgui.Dialog().yesno( self.settings[ "web_title" ], "Confirmer le lancement du topic:", selected_label, url.split( "/" )[ -1 ], "Skip", "Lancer" ):
+                    try:
+                        xbmc.executebuiltin( command )
+                    except:
+                        os.system( "%s %s" % ( web_navigator, url, ) )
 
-            On Windows, the return value is that returned by the system shell after running command, given by 
-            the Windows environment variable COMSPEC: on command.com systems (Windows 95, 98 and ME) this is 
-            always 0; on cmd.exe systems (Windows NT, 2000 and XP) this is the exit status of the command run; 
-            on systems using a non-native shell, consult your shell documentation.
+            #self._close_dialog()
+            #self.mainwin._close_script()
 
-            Availability: Macintosh, Unix, Windows. 
-            Source: http://python.org/doc/2.5/lib/os-process.html or http://python.org/doc/2.4/lib/os-process.html
-            """
         except:
-            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def onAction( self, action ):
         #( ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, ACTION_CONTEXT_MENU, )
         if action in ( 9, 10, 117, ): self._close_dialog()
+        # show settings dialog
+        if action == 117: self.mainwin._on_action_control( action )
 
     def _close_dialog( self ):
-        xbmc.sleep( 100 )
+        #xbmc.sleep( 100 )
         self.close()
 
 
 def show_direct_infos( mainwin ):
     file_xml = "passion-DirectInfos.xml"
     #depuis la revision 14811 on a plus besoin de mettre le chemin complet, la racine suffit
-    dir_path = CWD #xbmc.translatePath( os.path.join( CWD, "resources" ) ) 
+    dir_path = CWD #xbmc.translatePath( os.path.join( CWD, "resources" ) )
     #recupere le nom du skin et si force_fallback est vrai, il va chercher les images du defaultSkin.
     current_skin, force_fallback = getUserSkin()
 

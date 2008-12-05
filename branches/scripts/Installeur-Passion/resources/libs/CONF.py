@@ -6,7 +6,11 @@ import ConfigParser
 #import xbmc
 from xbmcgui import Dialog
 
-from script_log import *
+#module logger
+try:
+    logger = sys.modules[ "__main__" ].logger
+except:
+    import script_log as logger
 
 
 DIALOG_BROWSE = Dialog().browse
@@ -17,9 +21,9 @@ def SetConfiguration ():
     Definit les repertoires locaux de l'utilisateur
     """
 
-    LOG( LOG_INFO, str( "*" * 85 ) )
-    LOG( LOG_INFO, "Setting Configuration".center( 85 ) )
-    LOG( LOG_INFO, str( "*" * 85 ) )
+    logger.LOG( logger.LOG_INFO, str( "*" * 85 ) )
+    logger.LOG( logger.LOG_INFO, "Setting Configuration".center( 85 ) )
+    logger.LOG( logger.LOG_INFO, str( "*" * 85 ) )
 
     ROOTDIR = os.getcwd().replace(';','')
     fichier = os.path.join(ROOTDIR, "resources", "conf.cfg")
@@ -30,7 +34,7 @@ def SetConfiguration ():
     if os.name=='posix':
 
         #Linux Case
-        LOG( LOG_NOTICE, "linux case" )
+        logger.LOG( logger.LOG_NOTICE, "linux case" )
 
         if os.path.isdir(".xbmc") == True:
 
@@ -50,7 +54,7 @@ def SetConfiguration ():
 
             #Linux other case
             XBMC = DIALOG_BROWSE(0, "Choisissez le dossier d'installation d'XBMC","files")
-            LOG( LOG_NOTICE, "linux other case, XBMC = %s", XBMC )
+            logger.LOG( logger.LOG_NOTICE, "linux other case, XBMC = %s", XBMC )
             config.set("InstallPath", "path", XBMC)
             #Set Linux other case ScraperDir
             ScraperDir  = os.path.join(XBMC, "system"+os.sep+"scrapers"+os.sep+"video")
@@ -60,7 +64,7 @@ def SetConfiguration ():
     else:
 
         # Xbox and Windows case
-        LOG( LOG_NOTICE, "Xbox and Windows case" )
+        logger.LOG( logger.LOG_NOTICE, "Xbox and Windows case" )
 
         if os.path.isdir("Q:"+os.sep) == True:
 
@@ -72,7 +76,7 @@ def SetConfiguration ():
 
             # Xbox and Windows other case
             XBMC = DIALOG_BROWSE(0, "Choisissez le dossier d'installation d'XBMC","files")
-            LOG( LOG_NOTICE, "win other case, XBMC = %s", XBMC )
+            logger.LOG( logger.LOG_NOTICE, "win other case, XBMC = %s", XBMC )
             config.set("InstallPath", "path", XBMC)
 
         #Set Win ScraperDir

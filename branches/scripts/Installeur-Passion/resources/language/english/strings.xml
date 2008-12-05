@@ -27,5 +27,5 @@
   <!--SETTINGS STRINGS -->
   <string id="499">Version: %s</string>
   <string id="500">Settings</string>
-  <string id="501">Enable modifying the file sources.xml (obsolete)</string>
+  <string id="501">Enable modifying the file sources.xml</string>
 </strings>

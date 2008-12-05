@@ -134,6 +134,7 @@
 				<align>right</align>
 				<aligy>center</aligy>
 				<font>special12</font>
+                <animation effect="slide" start="0,0" end="0,-50" time="0" condition="!IsEmpty(Container.Property(style_PMIII.HD))">conditional</animation>
 				<visible>!Control.IsVisible(100)</visible>
 			</control>
 			<control type="label">
@@ -456,8 +457,9 @@
 				<width>85</width>
 				<height>25</height>
 				<texture>$INFO[Container.Property(Skin-Colours-path),,\passion-list-header.png]</texture>
-				<visible>!Control.HasFocus(320)</visible>
+				<visible>!Control.HasFocus(320) + Control.IsVisible(320)</visible>
 			</control>
+            <!--moved in settings xml-->
 			<control type="button" id="320">
 				<description>help button</description>
 				<posx>270</posx>
@@ -465,8 +467,7 @@
 				<width>85</width>
 				<height>25</height>
 				<align>center</align>
-				<!--<label>SCRIPT3</label>-->
-				<label>Output</label>
+				<label>SCRIPT0</label>
 				<texturenofocus>-</texturenofocus>
 				<texturefocus>passion-list-focus.png</texturefocus>
 				<textcolor>ffffffff</textcolor>
@@ -476,6 +477,7 @@
 				<onright>300</onright>
 				<onup>150</onup>
 				<ondown>150</ondown>
+				<visible>false</visible>
 			</control>
 		</control>
 

@@ -7,7 +7,7 @@ __url__    = "http://passion-xbmc.org/index.php"
 __svn_url__ = "http://code.google.com/p/passion-xbmc/source/browse/#svn/trunk/Scripts/Installeur-Passion"
 __credits__ = "Team XBMC, http://xbmc.org/"
 __platform__  = "xbmc media center"
-__date__    = "27-11-2008"
+__date__    = "05-12-2008"
 __version__ = "pre-1.0.0"
 __svn_revision__ = 0
 
@@ -22,7 +22,7 @@ import xbmc
 import xbmcgui
 
 #modules custom
-from resources.libs.script_log import *
+import resources.libs.script_log as logger
 
 
 # INITIALISATION CHEMIN RACINE
@@ -35,24 +35,31 @@ DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
 
 def MAIN():
-    LOG( LOG_INFO, str( "*" * 85 ) )
-    LOG( LOG_INFO, "Lanceur".center( 85 ) )
-    LOG( LOG_INFO, str( "*" * 85 ) )
+    logger.LOG( logger.LOG_INFO, str( "*" * 85 ) )
+    logger.LOG( logger.LOG_INFO, "Lanceur".center( 85 ) )
+    logger.LOG( logger.LOG_INFO, str( "*" * 85 ) )
 
     # INITIALISATION CHEMINS DE FICHIER LOCAUX
     fichier = os.path.join(ROOTDIR, "resources", "conf.cfg")
     config = ConfigParser()
     config.read(fichier)
 
+    DIALOG_PROGRESS.update( -1, __language__( 101 ), __language__( 110 ) )
     if not config.getboolean('InstallPath','pathok'):
         # GENERATION DES INFORMATIONS LOCALES
-        DIALOG_PROGRESS.update( -1, __language__( 101 ), __language__( 110 ) )
         from resources.libs import CONF
         CONF.SetConfiguration()
 
     # VERIFICATION DE LA MISE A JOUR 
-    DIALOG_PROGRESS.update( -1, __language__( 102 ), __language__( 110 ) )
     from resources.libs import CHECKMAJ
+    try:
+        from resources.libs.utilities import Settings
+        CHECKMAJ.UPDATE_STARTUP = Settings().get_settings().get( "update_startup", True)
+        del Settings
+    except:
+        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+    if CHECKMAJ.UPDATE_STARTUP:
+        DIALOG_PROGRESS.update( -1, __language__( 102 ), __language__( 110 ) )
     CHECKMAJ.go()
 
     config.read(fichier)
@@ -64,7 +71,7 @@ def MAIN():
             from resources.libs import INSTALLEUR
             INSTALLEUR.go()
         except:
-            EXC_INFO( LOG_ERROR, sys.exc_info() )
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
             dialog_error = True
     else:
         # LANCEMENT DE LA MISE A JOUR
@@ -75,8 +82,8 @@ def MAIN():
             #from resources.libs import INSTALLEUR
             #INSTALLEUR.go()
         except:
-            LOG( LOG_ERROR, "default : Exception pendant le chargement et/ou La mise a jour" )
-            EXC_INFO( LOG_ERROR, sys.exc_info() )
+            logger.LOG( logger.LOG_ERROR, "default : Exception pendant le chargement et/ou La mise a jour" )
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
             dialog_error = True
 
     DIALOG_PROGRESS.close()
@@ -89,5 +96,5 @@ if __name__ == "__main__":
         DIALOG_PROGRESS.create( __language__( 0 ), "", "" )
         MAIN()
     except:
-        EXC_INFO( LOG_ERROR, sys.exc_info() )
+        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
         DIALOG_PROGRESS.close()
