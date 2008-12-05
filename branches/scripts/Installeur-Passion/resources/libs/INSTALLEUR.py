@@ -43,6 +43,13 @@ _ = sys.modules[ "__main__" ].__language__
 
 DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
+# script constants
+__script__ = sys.modules[ "__main__" ].__script__
+try: __svn_revision__ = sys.modules[ "__main__" ].__svn_revision__
+except: __svn_revision__ = 0
+if not __svn_revision__: __svn_revision__ = "0"
+__version__ = "%s.%s" % ( sys.modules[ "__main__" ].__version__, __svn_revision__ )
+__author__  = sys.modules[ "__main__" ].__author__
 
 ############################################################################
 # Get actioncodes from keymap.xml
@@ -59,7 +66,7 @@ DIALOG_PROGRESS = xbmcgui.DialogProgress()
 #ACTION_HIGHLIGHT_ITEM            = 8
 ACTION_PARENT_DIR                = 9
 ACTION_PREVIOUS_MENU             = 10
-#ACTION_SHOW_INFO                 = 11
+ACTION_SHOW_INFO                 = 11
 
 #ACTION_PAUSE                     = 12
 #ACTION_STOP                      = 13
@@ -822,18 +829,46 @@ class configCtrl:
 #            self.USRPath         = self.config.getboolean('InstallPath','USRPath')
 #            if self.USRPath == True:
 #                self.PMIIIDir = self.config.get('InstallPath','PMIIIDir')
-#
-#            self.host                = self.config.get('ServeurID','host')
-#            self.user                = self.config.get('ServeurID','user')
-#            self.rssfeed             = self.config.get('ServeurID','rssfeed')
-#            self.password            = self.config.get('ServeurID','password')
-
+#            
+            self.host                = self.config.get('ServeurID','host')
+            self.user                = self.config.get('ServeurID','user')
+            self.rssfeed             = self.config.get('ServeurID','rssfeed')
+            self.password            = self.config.get('ServeurID','password')
+            self.itemDescripDir     = self.config.get('ServeurID','contentdescriptorDir')
+            self.itemDescripFile    = self.config.get('ServeurID','contentdescriptor')
+            
             self.xbmcXmlUpdate       = self.config.getboolean('System','XbmcXmlUpdate')
 
             self.is_conf_valid = True
         except:
             logger.LOG( logger.LOG_ERROR, "Exception while loading configuration file conf.cfg" )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+
+    def getSrvHost(self):
+        """
+        """
+        return self.host
+
+    def getSrvPassword(self):
+        """
+        """
+        return self.password
+
+    def getSrvUser(self):
+        """
+        """
+        return self.user
+
+    def getSrvItemDescripDir(self):
+        """
+        """
+        return self.itemDescripDir
+    
+    def getSrvItemDescripFile(self):
+        """
+        Renvoi le nom du fichier de description sur le serveur
+        """
+        return self.itemDescripFile
 
     def setXbmcXmlUpdate(self,xbmcxmlupdateStatus):
         """
@@ -1084,6 +1119,15 @@ class MainWindow( xbmcgui.WindowXML ):
                 show_log()
                 #on a plus besoin, on le delete
                 del show_log
+
+            elif ( act_ctrl_id in ( ACTION_SHOW_INFO, 61554, ) ):
+                if (self.type   != "racine") and (self.type   != "Plugins"):
+                    from dialog_item_descript import show_descript
+                    currentListIndex = self.getControl( self.list ).getSelectedPosition()
+                    selectedItem = os.path.basename(self.curDirList[currentListIndex])
+                    show_descript( self , selectedItem , self.type)
+                    #on a plus besoin du descript, on le delete
+                    del show_descript
             else:
                 pass
         except:
@@ -1096,6 +1140,17 @@ class MainWindow( xbmcgui.WindowXML ):
         self._on_action_control( action )
         self._on_action_control( action.getButtonCode() )
         try:
+            #if action == ACTION_SHOW_INFO:
+            #    from dialog_item_descript import show_descript
+            #    if (self.type   != "racine") and (self.type   != "Plugins"):
+            #        currentListIndex = self.getControl( self.list ).getSelectedPosition()
+            #        selectedItem = os.path.basename(self.curDirList[currentListIndex])
+
+            #        show_descript( self , selectedItem , self.type)
+            #        #on a plus besoin du descript, on le delete
+            #        del show_descript
+            
+            
             if action == ACTION_PREVIOUS_MENU:
                 # Sortie du script
 
@@ -1848,11 +1903,10 @@ graphicdesigner = 'Jahnrik'
 #                   Verification parametres locaux et serveur                #
 ##############################################################################
 #les infos auteur, version et graphic , etc sont deja dans le LOG et dans le future dans le "dialog_credits.py + passion-dialog_credits.xml"
-#logger.LOG( logger.LOG_INFO, "===================================================================" )
-#logger.LOG( logger.LOG_INFO, "        Passion XBMC Installeur %s STARTS", version )
-#logger.LOG( logger.LOG_INFO, "        Auteurs : %s", author )
-#logger.LOG( logger.LOG_INFO, "        Graphic Design by : %s", graphicdesigner )
-#logger.LOG( logger.LOG_INFO, "===================================================================" )
+logger.LOG( logger.LOG_INFO, "===================================================================" )
+logger.LOG( logger.LOG_INFO, "        Passion XBMC Installeur %s STARTS", __version__ )
+logger.LOG( logger.LOG_INFO, "        Auteurs : %s", __author__ )
+logger.LOG( logger.LOG_INFO, "===================================================================" )
 
 logger.LOG( logger.LOG_INFO, "FTP host: %s", host )
 logger.LOG( logger.LOG_INFO, "Chemin ou les themes seront telecharges: %s", themesDir )
