@@ -1,0 +1,229 @@
+<window>
+	<defaultcontrol>301</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+	<animation effect="fade" time="200">WindowOpen</animation>
+	<animation effect="fade" time="200">WindowClose</animation>
+
+	<!-- Important if you don't want to use the WindowLists you still need to remember not to use the ids for other stuff. -->
+	<!-- * id 2 - Button - For the View button (to change between the lists) so if you don't want the view button or to use multi views simply do not use id 2, 3,4, 12 or 50-59 for any controls. -->
+	<!-- * id 3 - Button - For the Sort button (to change between the lists) -->
+	<!-- * id 4/5 - Reserved (Don't actually do anything at the moment) -->
+	<!-- * id 12 - Label - For displaying the number of items in the WindowLists -->
+	<!-- * id 50-59 - Lists/Panels - The actual lists for displaying the information in the window lists -->
+
+	<!-- ** Required ** Do not change any <control type="xxxx" id="XX"> -->
+	<!-- ** Required ** Do not change any skin settings or skin infos -->
+	<!-- ** Infos ** if you not control in your skin, set and add <visible>false</visible>, results no bugs created in scripts. If remove control the bugs or freeze are created. -->
+
+	<!-- REMARQUE QUE LES "<texture>" COMMANCENT toutes par "passion-blablabla.bla", -->
+	<!-- ceci et pour pas avoir des conflits ou des images pas afficher, -->
+	<!-- que meme des images qui font pas partie du theme du script "Default". -->
+	<!-- Avec le theme d'XBMC qui est en fonction -->
+
+	<controls>
+		<!-- BACKGROUNDS DIALOG -->
+		<control type="image" id="0">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>720</width>
+			<height>576</height>
+			<texture>passion-black.png</texture>
+			<animation effect="fade" time="2000">WindowOpen</animation>
+		</control>
+		<control type="image">
+			<description>background image</description>
+			<posx>30</posx>
+			<posy>45</posy>
+			<width>660</width>
+			<height>490</height>
+			<texture>passion-dialog-panel.png</texture>
+		</control>
+
+		<!-- LABELS DIALOG -->
+		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+		<!-- ** Required ** Do not change id's or type's -->
+		<control type="label" id="100">
+			<description>dialog Heading</description>
+			<posx>75</posx>
+			<posy>70</posy>
+			<label>item dialog Heading</label>
+			<font>special13</font>
+			<textcolor>DDced8da</textcolor>
+		</control>
+		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+		<!-- ** Required ** Do not change id's or type's -->
+		<control type="label" id="101">
+			<description>item version</description>
+			<posx>655</posx>
+			<posy>70</posy>
+			<label></label>
+			<font>font12</font>
+			<textcolor>DDced8da</textcolor>
+			<align>right</align>
+		</control>
+
+		<!-- ITEM DESCRIPTION -->
+		<control type="label">
+			<description>language title</description>
+			<posx>75</posx>
+			<posy>250</posy>
+			<width>100</width>
+			<height>30</height>
+			<label>[B]$LOCALIZE[SCRIPT608]:[/B]</label>
+			<font>special13</font>
+			<textcolor>DDced8da</textcolor>
+		</control>
+		<control type="label" id="110">
+			<description>language content</description>
+			<posx>165</posx>
+			<posy>250</posy>
+			<width>200</width>
+			<height>30</height>
+			<label>$LOCALIZE[SCRIPT612]</label>
+			<font>font13</font>
+			<textcolor>ffffffff</textcolor>
+		</control>
+		<control type="label">
+			<description>description title</description>
+			<posx>75</posx>
+			<posy>280</posy>
+			<width>150</width>
+			<height>30</height>
+			<label>[B]$LOCALIZE[SCRIPT600]:[/B]</label>
+			<font>special13</font>
+			<textcolor>DDced8da</textcolor>
+		</control>
+		<control type="textbox" id="250">
+			<description>Item description</description>
+			<posx>75</posx>
+			<posy>310</posy>
+			<width>570</width>
+			<height>140</height>
+			<ondown>9000</ondown>
+			<pagecontrol>251</pagecontrol>
+			<textcolor>ffffffff</textcolor>
+			<font>font13</font>
+			<align>justify</align>
+			<label>$LOCALIZE[SCRIPT604]</label>
+			<autoscroll time="2000" delay="3000">Skin.HasSetting(AutoScroll)</autoscroll>
+		</control>
+		<control type="group">
+			<posx>660</posx>
+			<posy>310</posy>
+			<control type="button">
+				<description>Page Up for text of topic</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>20</width>
+				<height>20</height>
+				<onclick>PageUp(251)</onclick>
+				<texturefocus border="4">passion-scrollbar_arrow_up_focus.png</texturefocus>
+				<texturenofocus border="4">passion-scrollbar_arrow_up.png</texturenofocus>
+				<visible>Control.IsVisible(251)</visible>
+			</control>
+			<control type="button">
+				<description>Page Down for text of topic</description>
+				<posx>0</posx>
+				<posy>128</posy>
+				<width>20</width>
+				<height>20</height>
+				<onclick>PageDown(251)</onclick>
+				<texturefocus border="4">passion-scrollbar_arrow_down_focus.png</texturefocus>
+				<texturenofocus border="4">passion-scrollbar_arrow_down.png</texturenofocus>
+				<visible>Control.IsVisible(251)</visible>
+			</control>
+			<control type="scrollbar" id="251">
+				<description>Scroll Bar for text of topic</description>
+				<posx>0</posx>
+				<posy>20</posy>
+				<width>20</width>
+				<height>115</height>
+				<texturesliderbackground border="4">passion-scrollbar_background.png</texturesliderbackground>
+				<texturesliderbar border="4">passion-scrollbar_bar.png</texturesliderbar>
+				<texturesliderbarfocus border="4">passion-scrollbar_bar_focus.png</texturesliderbarfocus>
+				<textureslidernib>-</textureslidernib>
+				<textureslidernibfocus>-</textureslidernibfocus>
+				<ondown>9000</ondown>
+				<onleft>9000</onleft>
+				<onright>9000</onright>
+				<showonepage>false</showonepage>
+				<orientation>vertical</orientation>
+			</control>
+		</control>
+	
+		<!-- ITEM PICTURES -->
+		<control type="image" id="200">
+			<description>Item picture</description>
+			<posx>210</posx>
+			<posy>100</posy>
+			<width>300</width>
+			<height>150</height>
+			<aspectratio>keep</aspectratio>
+			<texture>passion-noImageAvailable.jpg</texture>
+			<animation condition="Control.HasFocus(300)" effect="zoom" reversible="false" center="auto" start="100" end="220" time="100">Conditional</animation>
+			<animation condition="!Control.HasFocus(300)" effect="zoom" reversible="false" center="auto" start="220" end="100" time="100">Conditional</animation>
+		</control>
+
+		<!-- GROUPE OPTION MENU -->
+		<!-- NOTE: CES BOUTONS ONT LE LANGUAGE D'XBMC ET NON DU SCRIPT -->
+		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+		<!-- ** Required ** Do not change id's or type's -->
+		<control type="group" id="9000">
+			<control type="button" id="300">
+				<description>zoom image</description>
+				<posx>460</posx>
+				<posy>460</posy>
+				<width>90</width>
+				<height>32</height>
+				<align>center</align>
+				<label>$LOCALIZE[SCRIPT606]</label>
+				<texturenofocus>passion-keyboard-btn-backspace.png</texturenofocus>
+				<texturefocus>passion-keyboard-btn-backspace-focus.png</texturefocus>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<onleft>302</onleft>
+				<onright>301</onright>
+				<onup>251</onup>
+				<ondown>251</ondown>
+			</control>
+			<control type="button" id="301">
+				<description>quit</description>
+				<posx>560</posx>
+				<posy>460</posy>
+				<width>90</width>
+				<height>32</height>
+				<align>center</align>
+				<label>$LOCALIZE[SCRIPT605]</label>
+				<texturenofocus>passion-keyboard-btn-backspace.png</texturenofocus>
+				<texturefocus>passion-keyboard-btn-backspace-focus.png</texturefocus>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<onleft>300</onleft>
+				<onright>251</onright>
+				<onup>251</onup>
+				<ondown>251</ondown>
+			</control>
+			<control type="button" id="302">
+				<description>download</description>
+				<posx>80</posx>
+				<posy>460</posy>
+				<width>90</width>
+				<height>32</height>
+				<align>center</align>
+				<label>$LOCALIZE[SCRIPT607]</label>
+				<texturenofocus>passion-keyboard-btn-backspace.png</texturenofocus>
+				<texturefocus>passion-keyboard-btn-backspace-focus.png</texturefocus>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<onleft>302</onleft>
+				<onright>300</onright>
+				<onup>251</onup>
+				<ondown>251</ondown>
+				<animation effect="zoom" reversible="false" center="auto" start="100" end="130" time="100">focus</animation>
+			</control>
+		</control>
+	</controls>
+</window>

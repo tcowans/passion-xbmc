@@ -17,7 +17,7 @@
   <string id="18">Plugins Vidéos</string>
 
   <string id="24">Page</string>
-  <string id="25">Objets</string>
+  <string id="25">Objet(s)</string>
 
   <!--DIVERS STRINGS -->
   <string id="101">Configuration du système</string>
@@ -89,4 +89,19 @@
   <string id="519">Bloquer XBMC jusqu'à ce que le navigateur Web est été fermé</string>
   <string id="520">Sélectionnez le navigateur Web</string>
   <string id="521">Entrer le nom du navigateur Web</string>
+  
+  <!--DESCRIPTION STRINGS -->
+  <string id="600">Description</string>
+  <string id="601">Genre</string>
+  <string id="602">Version</string>
+  <string id="603">Date</string>
+  <string id="604">Aucune description disponible</string>
+  <string id="605">Quitter</string>
+  <string id="606">Zoom image</string>
+  <string id="607">Télécharger</string>
+  <string id="608">Langue</string>
+  <string id="609">Francais</string>
+  <string id="610">Anglais</string>
+  <string id="611">Multilangues</string>
+  <string id="612">Inconnu</string>
 </strings>
