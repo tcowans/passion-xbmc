@@ -2,13 +2,14 @@
 import os
 import sys
 import time
+import thread
 import linecache
 from re import findall
 
 import xbmc
 
-
-DEBUG_MODE = 0
+#for use DEBUG_MODE change value [ 0 ] to [ 1 ], and all LOG(...) will be written in the xbmc.log
+DEBUG_MODE = ( None, "DEBUG", )[ 0 ]
 
 try: __script__ = sys.modules[ "__main__" ].__script__
 except: __script__ = "Installeur-Passion"
@@ -31,23 +32,25 @@ LOG_OLD = os.path.join( DIRECTORY_DATA, "%s.old.log" % ( __script__, ) )
 SEPARATOR = str( "-" * 85 )
 
 # LOG STATUS CODES
-LOG_ERROR, LOG_INFO, LOG_NOTICE, LOG_WARNING, LOG_DEBUG = range( 1, 6 )
+LOG_ERROR, LOG_INFO, LOG_NOTICE, LOG_WARNING, LOG_DEBUG, LOG_FATAL = range( 1, 7 )
 
 #REGEXP FOR FUNCTION, e.g.: eval( LOG_SELF_FUNCTION )
-LOG_SELF_FUNCTION = 'LOG( LOG_INFO, "%s::%s::%s", self.__module__, self.__class__.__name__, sys._getframe( 1 ).f_code.co_name )' #self.__module__.split( "." )[ -1 ]
-LOG_FUNCTION = 'LOG( LOG_INFO, "%s::%s", globals()[ "__name__" ], sys._getframe( 1 ).f_code.co_name )'
+try:
+    LOG_SELF_FUNCTION = 'LOG( LOG_INFO, "%s::%s::%s", self.__module__, self.__class__.__name__, sys._getframe( 1 ).f_code.co_name )' #self.__module__.split( "." )[ -1 ]
+    LOG_FUNCTION = 'LOG( LOG_INFO, "%s::%s", globals()[ "__name__" ], sys._getframe( 1 ).f_code.co_name )'
+except:
+    LOG_SELF_FUNCTION = 'logger.LOG( logger.LOG_INFO, "%s::%s::%s", self.__module__, self.__class__.__name__, sys._getframe( 1 ).f_code.co_name )' #self.__module__.split( "." )[ -1 ]
+    LOG_FUNCTION = 'logger.LOG( logger.LOG_INFO, "%s::%s", globals()[ "__name__" ], sys._getframe( 1 ).f_code.co_name )'
 
 
 def LOG( status, format, *args ):
-    try:
-        dwAvailPhys = str( long( xbmc.getFreeMem() * 1024.0 * 1024.0 ) )
-    except:
-        dwAvailPhys = "?"
-    status = ( "ERROR", "INFO", "NOTICE", "WARNING", "DEBUG", )[ status - 1 ]
-    _pre_line_ = "%s M: %s %s: " % ( time.strftime( "%X" ), dwAvailPhys, status.rjust( 7 ), )
+    try: dwAvailPhys = str( long( xbmc.getFreeMem() * 1024.0 * 1024.0 ) )
+    except: dwAvailPhys = "?"
+    status = ( "ERROR", "INFO", "NOTICE", "WARNING", "DEBUG", "FATAL ERROR", )[ status - 1 ]
+    _pre_line_ = "%s T:%s M:%s %s: " % ( time.strftime( "%X" ), str( thread.get_ident() ).rjust( 4 ), dwAvailPhys, status.rjust( 7 ), )
     _write_line_ = "%s\n" % ( format % args, )
-    file( LOG_SCRIPT, "a" ).write( _pre_line_ + _write_line_ )
-    if ( DEBUG_MODE >= status ):
+    WRITABLE_LOG.write( _pre_line_ + _write_line_ )
+    if ( DEBUG_MODE == "DEBUG" ):
         xbmc.output( _write_line_.strip( "\n\r" ) )
 
 
@@ -90,10 +93,10 @@ def get_system_uptime():
     if os.path.isfile( LOG_SCRIPT ):
         # XBOX PLATFORM
         try: old_uptime = int( findall( "System Uptime is[:] (\d{1,10})", file( LOG_SCRIPT, "r" ).read() )[ 0 ] )
-        except: EXC_INFO( LOG_ERROR, sys.exc_info() )
+        except: pass #EXC_INFO( LOG_ERROR, sys.exc_info() )
         # OTHER PLATFORM
         try: same_date = CURRENT_DATE == findall( "- Current Date is[:] (\d{1,2}-\d{1,2}-\d{1,4})", file( LOG_SCRIPT, "r" ).read() )[ 0 ]
-        except: EXC_INFO( LOG_ERROR, sys.exc_info() )
+        except: pass #EXC_INFO( LOG_ERROR, sys.exc_info() )
 
     create = ( cur_uptime < ( old_uptime + 1 ) )#<= old_uptime )
     if not same_date: create = True
@@ -102,16 +105,18 @@ def get_system_uptime():
 
 
 def create_log_file():
-    # create if uptime in log is less of current uptime of xbmc for xbox or not same date
+    # create if uptime in log is less of current uptime of xbmc for xbox or not same date for other platform
     uptime, create = get_system_uptime()
     #print uptime, create
+    globals()[ "WRITABLE_LOG" ] = None
     if create or not os.path.isfile( LOG_SCRIPT ):
         if os.path.isfile( LOG_OLD ): os.unlink( LOG_OLD )
         if os.path.isfile( LOG_SCRIPT ): os.rename( LOG_SCRIPT, LOG_OLD )
+        globals()[ "WRITABLE_LOG" ] = open( LOG_SCRIPT, "w+" )
         LOG( LOG_NOTICE, SEPARATOR )
         LOG( LOG_NOTICE, "Starting %s (version: %s).  Built on %s", __script__, __version__, __date__ )
-        platform = os.environ.get( "OS", "" ).lower().replace( "xbox", "XBox" ).replace( "win32", "Windows" ).replace( "linux", "GNU/Linux" ).replace( "osx", "Mac OS X" )
-        if not platform: platform = "Unknown"
+        platform = ( os.environ.get( "OS", "" ).lower() or "Unknown" )
+        platform = platform.replace( "linux", "GNU/Linux" ).replace( "osx", "Mac OS X" ).replace( "win32", "Windows" ).replace( "xbox", "XBox" )
         LOG( LOG_NOTICE, "XBMC, Platform: %s.  Built on %s", platform, xbmc.getInfoLabel( "System.BuildDate" ) )
         LOG( LOG_NOTICE, "Q is mapped to: %s", xbmc.translatePath( ( "U:\\", "Q:\\", )[ ( platform == "XBox" ) ] ) )
         LOG( LOG_NOTICE, "The executable script running is: %s", os.path.join( os.getcwd().rstrip( ";" ), sys.modules[ "__main__" ].__file__ ) )
@@ -130,6 +135,34 @@ def create_log_file():
             del getUserSkin
         except:
             pass
+
+    if WRITABLE_LOG is None:
+        old_log = ""
+        if os.path.isfile( LOG_SCRIPT ):
+            f = open( LOG_SCRIPT, "r" )
+            old_log = f.read()
+            f.close()
+        globals()[ "WRITABLE_LOG" ] = open( LOG_SCRIPT, "w+" )
+        if old_log != "":
+            WRITABLE_LOG.write( old_log )
+
+
+class LogErr:
+    def write( self, data ):
+        error_line = "%s" % ( data.strip( "\r\n" ), )
+        if error_line.strip( " " ) != "":
+            print error_line
+            self._log_sys_stderr( error_line )
+
+    def _log_sys_stderr( self, error_line ):
+        LOG( LOG_FATAL, error_line )
+
+
+try:
+    sys.stderr = LogErr()
+except:
+    pass
+
 
 # ON IMPORT CREATE OR RECREATE LOG FILE
 create_log_file()

@@ -11,6 +11,13 @@ import xbmcgui
 #modules custom
 from utilities import *
 
+#module logger
+try:
+    logger = sys.modules[ "__main__" ].logger
+except:
+    import script_log as logger
+
+
 #REPERTOIRE RACINE ( default.py )
 CWD = os.getcwd().rstrip( ";" )
 
@@ -33,25 +40,25 @@ class LogViewer( eval( WIN_XML ) ):
         xbmcgui.WindowXMLDialog.__init__( self, *args, **kwargs )
         # Maximum lines set for Xbox 10,000 and 20,000 for the others.
         # because more than 10,000 it takes much memory. "about: 1 Mb for 1000 lines"
-        self.max_lines = ( 20000, 10000, )[ ( os.environ.get( "OS", "xbox" ) == "xbox" ) ]
+        self.max_lines = ( 20000, 10000, )[ ( os.environ.get( "OS", "xbox" ).lower() == "xbox" ) ]
 
     def onInit( self ):
         # onInit est pour le windowXML seulement
         self.text = "Output not available!"
         try:
-            if xbmcgui.Dialog().yesno( "XBMC Output - Select your choice!", "[B]-A- : [/B]" + os.path.basename( LOG_SCRIPT ), "[B]-B- : [/B]xbmc.log", "", "[B]-A-[/B]", "[B]-B-[/B]" ):
+            if xbmcgui.Dialog().yesno( "XBMC Output - Select your choice!", "[B]-A- : [/B]" + os.path.basename( logger.LOG_SCRIPT ), "[B]-B- : [/B]xbmc.log", "", "[B]-A-[/B]", "[B]-B-[/B]" ):
                 xbmc_log = os.path.join( XBMC_ROOT, "xbmc.log" )
                 if not os.path.isfile( xbmc_log ):
                     xbmc_log = os.path.join( os.path.dirname( os.path.dirname( xbmc.translatePath( "T:\\" ) ) ), "xbmc.log" )
                 file_path = xbmc_log
             else:
-                file_path = LOG_SCRIPT
+                file_path = logger.LOG_SCRIPT
             DIALOG_PROGRESS.create( "Output", "Reading the lines...", file_path, "Please wait..." )
             self._set_lines_color( file_path )
             DIALOG_PROGRESS.close()
             self._set_controls_values()
         except:
-            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def _set_lines_color( self, file_path ):
         try:
@@ -84,7 +91,7 @@ class LogViewer( eval( WIN_XML ) ):
                 text.append( line )#.strip( "\n\r" ) )
             self.text = "".join( text )
         except:
-            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
             self.text = "Output not available!"
 
     def _set_controls_values( self ):
@@ -93,7 +100,7 @@ class LogViewer( eval( WIN_XML ) ):
             self.getControl( self.CONTROL_TEXT_BOX ).reset()
             self.getControl( self.CONTROL_TEXT_BOX ).setText( self.text )
         except:
-            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
             self._close_dialog()
         xbmcgui.unlock()
 
