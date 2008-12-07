@@ -4,7 +4,7 @@ ARTE Plus7 video plugin for XBMC
 
 Place in Q:\plugins\video\artePLUS7
 
-13-10-05 Version Alpha Release by Lolol (cf. http://xbmc.org/forum/showthread.php?t=29100)
+13-10-07 Version Alpha Release by Lolol (cf. http://xbmc.org/forum/showthread.php?t=29100)
     - Creation
 29-11-08 Version Alpha2 by Temhil and Seb
     - Fixed issue with icons
@@ -22,6 +22,8 @@ Place in Q:\plugins\video\artePLUS7
     - Conf file is generated automatically during 1st startup:
       -> default video language is French
       -> default proxy is empty (no proxy)
+07-12-08 Version Beta1.1 by Seb
+    - Corrected progress bar update issue
 """
 import xml.dom.minidom, urllib, os, string, traceback, time, re
 import xbmc, xbmcgui, xbmcplugin
@@ -344,7 +346,7 @@ class SearchParser:
 
 #                liz=xbmcgui.ListItem(index.zfill(2)+' - '+self.titles[i],'',localimg)
                 liz=xbmcgui.ListItem(index.zfill(2)+' - '+self.titles[i], iconImage = localimg, thumbnailImage = localimg)
-                ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=videoUrl,listitem=liz)
+                ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=videoUrl,listitem=liz,isFolder=False,totalItems=len(items))
             except:
                 error=1
                 print "Something was wrong during __parseItems!"
