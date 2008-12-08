@@ -24,6 +24,9 @@ Place in Q:\plugins\video\artePLUS7
       -> default proxy is empty (no proxy)
 07-12-08 Version Beta1.1 by Seb
     - Corrected progress bar update issue
+07-12-08 Version Beta2 by Temhil
+    - Improved algorithm with proxy use, no proxy is use only for a video (not all of them)
+    - few UI improvment
 """
 import xml.dom.minidom, urllib, os, string, traceback, time, re
 import xbmc, xbmcgui, xbmcplugin
@@ -153,9 +156,6 @@ class SearchParser:
         else:
             # French videos
             video_feed_url = "http://plus7.arte.tv/fr/streaming-home/1698112,templateId=renderCarouselXml,CmPage=1697480,CmPart=com.arte-tv.streaming.xml"
-            
-        self.feed(video_feed_url)
-        self.parse()
                                            
     def verifrep(self, folder):
         """
@@ -196,7 +196,7 @@ class SearchParser:
         f.close()
         self.dom = xml.dom.minidom.parseString(xmlDocument)
 
-    def getVideoURL(self, videoPage):
+    def loadVideo(self, videoPage):
         print "getVideoURL - videoPage = %s"%videoPage
         opener              = None
         videoUrl            = ""
@@ -245,44 +245,16 @@ class SearchParser:
             if matchVideoURL:
                 videoUrl = matchVideoURL.group(1)
                 
+
+        player_type = {0:xbmc.PLAYER_CORE_AUTO, 1:xbmc.PLAYER_CORE_MPLAYER, 2:xbmc.PLAYER_CORE_DVDPLAYER}[int(xbmcplugin.getSetting("player_type"))]
+        xbmc.Player(player_type).play(videoUrl)
+        xbmc.sleep(200)
+        
+        
         print "videoContainerUrl = %s"%videoContainerUrl
         print "videoUrl = %s"%videoUrl
         return videoUrl
-
-    def createVideoURL(self, previewVideoUrl):
-        """
-        Convert previewVideoUrl to real video URL
-        Obsolete and replaced by getVideoURL
-        This function is faster and more efficient than getVideoURL, but unfortunately does not cover all the case
-        """
-        print "createVideoURL - BEFORE previewVideoUrl = %s"%previewVideoUrl
-        
-        #videoUrl_step1 = previewVideoUrl.replace("http://dl.plus7.arte.tv/","mms://a255.v39759c.c39759.g.vm.akamaistream.net/7/255/39759/v0001/artegeie.download.akamai.com/39759/mfile/").replace("21","06").replace("TE","PG").replace("LQ","MQ")
-        #self.videoUrl = videoUrl_step1.split("flv")[0] + "wmv"
-        videoUrl_step1 = previewVideoUrl.replace("http://dl.plus7.arte.tv/","mms://a255.v39759c.c39759.g.vm.akamaistream.net/7/255/39759/v0001/artegeie.download.akamai.com/39759/mfile/").replace("21","08").replace("TE","PG").replace("LQ","HQ")
-        self.videoUrl = videoUrl_step1.split("flv")[0] + "wmv"
-        print "createVideoURL - AFTER videoUrl = %s"%self.videoUrl
-        return self.videoUrl
-        
-    def old_downloadFile(self, URL, localfile):
-        """
-        Download file
-        Obsolete and replaced by downloadFile
-        """
-        print "URL = %s"%URL
-        print "localfile = %s"%localfile
-        newURL = xbmc.makeLegalFilename(URL)
-        print "newURL = %s"%newURL
-        try:
-            loc = urllib.URLopener()
-            #loc.retrieve(URL, localfile)
-            loc.retrieve("http://www.gstatic.com/codesite/ph/images/code_sm.png", localfile)
-        except IOError:
-            print (str(sys.exc_info()[0]))
-            traceback.print_exc(file=sys.stdout)
-            return -1
-        return 0
-
+       
     def downloadFile(self, source, destination):
         """
         Source MyCine (thanks!)
@@ -312,7 +284,6 @@ class SearchParser:
     # parses RSS document items and returns an list containing RSSItem objects
     def __parseItems(self):
         items = self.dom.getElementsByTagName("video")
-        print items
         self.urls={}
         self.thumbs={}
         self.titles={}
@@ -334,58 +305,73 @@ class SearchParser:
                 self.index[i] = item.getElementsByTagName("index")[0].childNodes[0].data
                 self.previewVideoUrl[i] = item.getElementsByTagName("previewVideoURL")[0].childNodes[0].data
                 
-                #videoUrl = self.createVideoURL(self.previewVideoUrl[i])
-                videoUrl = self.getVideoURL(self.urls[i])
                 index = self.index[i]
                 localimg = xbmc.makeLegalFilename(os.path.join(cacheDir,self.index[i]+".jpg"))
                 #localimg.replace('\\\\','\\')
                 print "i = %d"%i
                 print "self.thumbs[i] (URL) = %s"%self.thumbs[i]
+                print "self.urls[i] = %s"%self.urls[i]
                 print "localimg = %s"%localimg
                 self.downloadFile(self.thumbs[i],localimg)
 
 #                liz=xbmcgui.ListItem(index.zfill(2)+' - '+self.titles[i],'',localimg)
                 liz=xbmcgui.ListItem(index.zfill(2)+' - '+self.titles[i], iconImage = localimg, thumbnailImage = localimg)
-                ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=videoUrl,listitem=liz,isFolder=False,totalItems=len(items))
+                print "Adding item %d"%i
+                #ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=videoUrl,listitem=liz,isFolder=False,totalItems=len(items))
+                u=sys.argv[0]+"?url="+urllib.quote_plus(self.urls[i])+"&loadvideo"
+                ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=True,totalItems=len(items))
             except:
                 error=1
                 print "Something was wrong during __parseItems!"
                 print (str(sys.exc_info()[0]))
                 traceback.print_exc()
+                
+        #TODO: Use language localization
+        xbmcplugin.setPluginCategory( handle=int( sys.argv[ 1 ] ), category="Liste des vidéos d'Arte+7" )
+#        path_img = os.path.join(RootDir,"arteFanart.jpg")
+#        fanart_color1 = "ffffff00"
+#        fanart_color2 = ""
+#        fanart_color3 = ""
+#        try:
+#            xbmcplugin.setPluginFanart( handle=int( sys.argv[ 1 ] ), image=path_img, color1=fanart_color1, color2=fanart_color2, color3=fanart_color3 )
+#        except:
+#            error=1
+#            print "Something was wrong during setPluginFanart!"
+#            print (str(sys.exc_info()[0]))
+#            traceback.print_exc()
+ 
         return itemObjects
 
 
-##Il faut parser les paramètres
-#stringparams = sys.argv[2] #les paramètres sont sur le 3ieme argument passé au script
-#try:
-#    if stringparams[0]=="?":#pour enlever le ? si il est en début des paramètres
-#        stringparams=stringparams[1:]
-#except:
-#    pass
-#parametres={}
-#for param in stringparams.split("&"):#on découpe les paramètres sur le '&'
-#    try:
-#        cle,valeur=param.split("=")#on sépare les couples clé/valeur
-#    except:
-#        cle=param
-#        valeur=""
-#    parametres[cle]=valeur #on rempli le dictionnaire des paramètres
-##voilà, 'parametres' contient les paramètres parsés
-#
-#if "loadvideo" in parametres.keys():
-#    #à priori non utilisé !
-#    #on liste les themes
-#    show_themes()
-#else:
-#    # video list
-#    s=SearchParser()
-#    s.feed("http://plus7.arte.tv/fr/streaming-home/1698112,templateId=renderCarouselXml,CmPage=1697480,CmPart=com.arte-tv.streaming.xml")
-#    s.parse()
-#    
-#    xbmcplugin.endOfDirectory(int(sys.argv[1]))
+#Il faut parser les paramètres
+stringparams = sys.argv[2] #les paramètres sont sur le 3ieme argument passé au script
+try:
+    if stringparams[0]=="?":#pour enlever le ? si il est en début des paramètres
+        stringparams=stringparams[1:]
+except:
+    pass
+parametres={}
+for param in stringparams.split("&"):#on découpe les paramètres sur le '&'
+    try:
+        cle,valeur=param.split("=")#on sépare les couples clé/valeur
+    except:
+        cle=param
+        valeur=""
+    parametres[cle]=valeur #on rempli le dictionnaire des paramètres
+#voilà, 'parametres' contient les paramètres parsés
+
 
 s=SearchParser()
-#s.feed("http://plus7.arte.tv/fr/streaming-home/1698112,templateId=renderCarouselXml,CmPage=1697480,CmPart=com.arte-tv.streaming.xml")
-#s.parse()
+if "loadvideo" in parametres.keys():
+    # Play video
+    urlVideoPage=urllib.unquote_plus(parametres["url"])
+    print "urlVideoPage: "
+    print urlVideoPage
+    s.loadVideo(urlVideoPage)
+else:
+    # Video list
+    s.feed("http://plus7.arte.tv/fr/streaming-home/1698112,templateId=renderCarouselXml,CmPage=1697480,CmPart=com.arte-tv.streaming.xml")
+    s.parse()
+    
+    xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
-xbmcplugin.endOfDirectory(int(sys.argv[1]))
