@@ -7,7 +7,7 @@ __url__    = "http://passion-xbmc.org/index.php"
 __svn_url__ = "http://code.google.com/p/passion-xbmc/source/browse/#svn/trunk/Scripts/Installeur-Passion"
 __credits__ = "Team XBMC, http://xbmc.org/"
 __platform__  = "xbmc media center"
-__date__    = "05-12-2008"
+__date__    = "08-12-2008"
 __version__ = "pre-1.0.0"
 __svn_revision__ = 0
 
@@ -35,9 +35,9 @@ DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
 
 def MAIN():
-    logger.LOG( logger.LOG_INFO, str( "*" * 85 ) )
-    logger.LOG( logger.LOG_INFO, "Lanceur".center( 85 ) )
-    logger.LOG( logger.LOG_INFO, str( "*" * 85 ) )
+    logger.LOG( logger.LOG_DEBUG, str( "*" * 85 ) )
+    logger.LOG( logger.LOG_DEBUG, "Lanceur".center( 85 ) )
+    logger.LOG( logger.LOG_DEBUG, str( "*" * 85 ) )
 
     # INITIALISATION CHEMINS DE FICHIER LOCAUX
     fichier = os.path.join(ROOTDIR, "resources", "conf.cfg")
@@ -54,7 +54,7 @@ def MAIN():
     from resources.libs import CHECKMAJ
     try:
         from resources.libs.utilities import Settings
-        CHECKMAJ.UPDATE_STARTUP = Settings().get_settings().get( "update_startup", True)
+        CHECKMAJ.UPDATE_STARTUP = Settings().get_settings().get( "update_startup", True )
         del Settings
     except:
         logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
@@ -82,7 +82,7 @@ def MAIN():
             #from resources.libs import INSTALLEUR
             #INSTALLEUR.go()
         except:
-            logger.LOG( logger.LOG_ERROR, "default : Exception pendant le chargement et/ou La mise a jour" )
+            logger.LOG( logger.LOG_DEBUG, "default : Exception pendant le chargement et/ou La mise a jour" )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
             dialog_error = True
 

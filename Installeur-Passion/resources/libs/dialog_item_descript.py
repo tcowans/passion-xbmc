@@ -61,23 +61,24 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
         self.itemType = kwargs[ "itemType" ]
 
         self._get_settings()
+        self._set_skin_colours()
 
     def onInit( self ):
         # onInit est pour le windowXML seulement
         xbmcgui.lock()
         try:
-            logger.LOG( logger.LOG_INFO, self.itemName)
-            logger.LOG( logger.LOG_INFO, self.itemType)
+            logger.LOG( logger.LOG_DEBUG, self.itemName)
+            logger.LOG( logger.LOG_DEBUG, self.itemType)
             
             self.fileName, self.title, self.version, self.language, self.date , self.previewPicture, self.previewVideoURL, self.description_fr, self.description_en = self._get_info()
-            #logger.LOG( logger.LOG_INFO, self.fileName)
-            #logger.LOG( logger.LOG_INFO, self.title)
-            #logger.LOG( logger.LOG_INFO, self.version)
-            #logger.LOG( logger.LOG_INFO, str(self.date))
-            #logger.LOG( logger.LOG_INFO, self.previewPicture)
-            #logger.LOG( logger.LOG_INFO, self.previewVideoURL)
-            #logger.LOG( logger.LOG_INFO, self.description_fr)
-            #logger.LOG( logger.LOG_INFO, self.description_en)
+            #logger.LOG( logger.LOG_DEBUG, self.fileName)
+            #logger.LOG( logger.LOG_DEBUG, self.title)
+            #logger.LOG( logger.LOG_DEBUG, self.version)
+            #logger.LOG( logger.LOG_DEBUG, str(self.date))
+            #logger.LOG( logger.LOG_DEBUG, self.previewPicture)
+            #logger.LOG( logger.LOG_DEBUG, self.previewVideoURL)
+            #logger.LOG( logger.LOG_DEBUG, self.description_fr)
+            #logger.LOG( logger.LOG_DEBUG, self.description_en)
 
             self._set_controls_labels()
             self._set_controls_visible()
@@ -89,7 +90,12 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
         # Close the Loading Window
         DIALOG_PROGRESS.close()
 
-    
+    def _set_skin_colours( self ):
+        try:
+            xbmc.executebuiltin( "Skin.SetString(PassionSettingsColours,%s)" % ( self.settings[ "skin_colours_path" ], ) )
+        except:
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+
     def _get_info( self, defaults=False  ):
         """ reads info """
         fileName            = None
@@ -105,7 +111,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
         # On recupere le fichier de description des items
         self._downloadFile(self.srvItemDescripDir + self.srvItemDescripFile)
         self.soup =  BeautifulStoneSoup((open(os.path.join(self.mainwin.CacheDir,self.srvItemDescripFile), 'r')).read())
-        #logger.LOG( logger.LOG_INFO,self.soup.prettify())
+        #logger.LOG( logger.LOG_DEBUG,self.soup.prettify())
         cat = None
         
         if self.itemType == "Themes":
@@ -174,6 +180,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
         
     def _get_settings( self, defaults=False  ):
         """ reads settings from conf file """
+        self.settings = Settings().get_settings( defaults=defaults )
         self.srvHost             = self.mainwin.configManager.getSrvHost()
         self.srvPassword         = self.mainwin.configManager.getSrvPassword()
         self.srvUser             = self.mainwin.configManager.getSrvUser()
@@ -194,12 +201,12 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
             localFile.close()
             ftp.quit()
         except:
-            logger.LOG( logger.LOG_ERROR, "_downloaddossier: Exception - Impossible de creer le dossier: %s", localAbsDirPath )
+            logger.LOG( logger.LOG_DEBUG, "_downloaddossier: Exception - Impossible de creer le dossier: %s", localAbsDirPath )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def _set_controls_labels( self ):
         # setlabel pour les controles du dialog qui a comme info exemple: id="100" et pour avoir son controle on fait un getControl( 100 )
-        logger.LOG( logger.LOG_INFO, "**** _set_controls_labels")
+        eval( logger.LOG_SELF_FUNCTION )
         try:
             if self.title != None:
                 self.getControl( 100 ).setLabel( self.title )
@@ -215,11 +222,11 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
                 langList = self.language.split('-')
                 label = ""
                 for lang in langList:
-                    if lang == 'fr':
+                    if lang.lower() == 'fr':
                         label = label +  _( 609 )
-                    elif lang == 'en':
+                    elif lang.lower() == 'en':
                         label = label +  _( 610 )
-                    elif lang == 'multi':
+                    elif lang.lower() == 'multi':
                         label = label +  _( 611 )
                     else:
                         label = label +  _( 612 )
@@ -230,16 +237,16 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
             # Clear all ListItems in this control list
             if self.previewPicture != None:
                 self.getControl( 200 ).setImage(self.previewPicture)
-                logger.LOG( logger.LOG_INFO, "**** image")
+                logger.LOG( logger.LOG_DEBUG, "**** image")
 
-            logger.LOG( logger.LOG_INFO,"Current language")
-            logger.LOG( logger.LOG_INFO,xbmc.getLanguage())
+            logger.LOG( logger.LOG_DEBUG,"Current language")
+            logger.LOG( logger.LOG_DEBUG,xbmc.getLanguage())
             if xbmc.getLanguage() == 'French':
-                logger.LOG( logger.LOG_INFO, "**** French")
+                logger.LOG( logger.LOG_DEBUG, "**** French")
                 if self.description_fr != None:
                     self.getControl( 250 ).setText( self.description_fr )
             else:
-                logger.LOG( logger.LOG_INFO, "**** Other language")
+                logger.LOG( logger.LOG_DEBUG, "**** Other language")
                 if self.description_en != None:
                     self.getControl( 250 ).setText( self.description_en )
         except:

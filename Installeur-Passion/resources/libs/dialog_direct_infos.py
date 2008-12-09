@@ -83,7 +83,7 @@ def load_infos( url, general=False ):
                 else:  item = ( title, pubDate, category + description, guid )
                 list_infos.append( item )
             except:
-                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+                logger.EXC_INFO( logger.LOG_DEBUG, sys.exc_info() )
     return list_infos
 
 
@@ -194,8 +194,7 @@ class DirectInfos( xbmcgui.WindowXML ):
                     listitem.setProperty( "Topic", description )
                     self.getControl( self.CONTROL_FEEDS_LIST ).addItem( listitem )
                 except:
-                    #logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-                    pass
+                    logger.EXC_INFO( logger.LOG_DEBUG, sys.exc_info(), self )
             self.setProperty( "Category", self.category )
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
@@ -259,8 +258,7 @@ class DirectInfos( xbmcgui.WindowXML ):
                 command = '%s(%s %s)' % ( cmd, self.settings[ "web_navigator" ], url, )
 
             if command is not None:
-                #print command
-                logger.LOG( logger.LOG_INFO, "Url Launcher: %s", command )
+                logger.LOG( logger.LOG_DEBUG, "Url Launcher: %s", command )
                 selected_label = self._unicode( self.getControl( self.CONTROL_FEEDS_LIST ).getSelectedItem().getLabel() )
                 if xbmcgui.Dialog().yesno( self.settings[ "web_title" ], "Confirmer le lancement du topic:", selected_label, url.split( "/" )[ -1 ], "Skip", "Lancer" ):
                     try:
