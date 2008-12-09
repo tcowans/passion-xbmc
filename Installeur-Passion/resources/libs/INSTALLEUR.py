@@ -1257,7 +1257,7 @@ class MainWindow( xbmcgui.WindowXML ):
         self.close()
 
     def onFocus( self, controlID ):
-        self.controlID = controlID
+        #self.controlID = controlID
         #cette fonction n'est pas utiliser ici, mais dans les XML si besoin
         #Note: Mais il faut la declarer :)
         pass
