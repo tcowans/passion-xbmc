@@ -8,8 +8,15 @@ from re import findall
 
 import xbmc
 
+try:
+    from utilities import Settings
+except:
+    pass
+
+
 #for use DEBUG_MODE change value [ 0 ] to [ 1 ], and all LOG(...) will be written in the xbmc.log
-DEBUG_MODE = ( None, "DEBUG", )[ 0 ]
+DEBUG_MODE = ( None, "DEBUGS", )[ 0 ]
+
 
 try: __script__ = sys.modules[ "__main__" ].__script__
 except: __script__ = "Installeur-Passion"
@@ -32,26 +39,32 @@ LOG_OLD = os.path.join( DIRECTORY_DATA, "%s.old.log" % ( __script__, ) )
 SEPARATOR = str( "-" * 85 )
 
 # LOG STATUS CODES
-LOG_ERROR, LOG_INFO, LOG_NOTICE, LOG_WARNING, LOG_DEBUG, LOG_FATAL = range( 1, 7 )
+LOG_DEBUG, LOG_INFO, LOG_NOTICE, LOG_WARNING, LOG_ERROR, LOG_FATAL = range( 1, 7 )
 
 #REGEXP FOR FUNCTION, e.g.: eval( LOG_SELF_FUNCTION )
-try:
-    LOG_SELF_FUNCTION = 'LOG( LOG_INFO, "%s::%s::%s", self.__module__, self.__class__.__name__, sys._getframe( 1 ).f_code.co_name )' #self.__module__.split( "." )[ -1 ]
-    LOG_FUNCTION = 'LOG( LOG_INFO, "%s::%s", globals()[ "__name__" ], sys._getframe( 1 ).f_code.co_name )'
-except:
-    LOG_SELF_FUNCTION = 'logger.LOG( logger.LOG_INFO, "%s::%s::%s", self.__module__, self.__class__.__name__, sys._getframe( 1 ).f_code.co_name )' #self.__module__.split( "." )[ -1 ]
-    LOG_FUNCTION = 'logger.LOG( logger.LOG_INFO, "%s::%s", globals()[ "__name__" ], sys._getframe( 1 ).f_code.co_name )'
+#try:
+#    LOG_SELF_FUNCTION = 'LOG( LOG_DEBUG, "%s::%s::%s", self.__module__, self.__class__.__name__, sys._getframe( 1 ).f_code.co_name )' #self.__module__.split( "." )[ -1 ]
+#    LOG_FUNCTION = 'LOG( LOG_DEBUG, "%s::%s", globals()[ "__name__" ], sys._getframe( 1 ).f_code.co_name )'
+#except:
+LOG_SELF_FUNCTION = 'logger.LOG( logger.LOG_DEBUG, "%s::%s::%s", self.__module__, self.__class__.__name__, sys._getframe( 1 ).f_code.co_name )' #self.__module__.split( "." )[ -1 ]
+LOG_FUNCTION = 'logger.LOG( logger.LOG_DEBUG, "%s::%s", globals()[ "__name__" ], sys._getframe( 1 ).f_code.co_name )'
 
 
 def LOG( status, format, *args ):
+    if ( status == 1 ):
+        # utiliser avec le setting script_debug.
+        # si le setting est false tous les "LOG( LOG_DEBUG, ... )" ne seront pas ecrie
+        try: OK = Settings().get_settings().get( "script_debug", False )
+        except: OK = False
+        if not OK: return
     try: dwAvailPhys = str( long( xbmc.getFreeMem() * 1024.0 * 1024.0 ) )
     except: dwAvailPhys = "?"
-    status = ( "ERROR", "INFO", "NOTICE", "WARNING", "DEBUG", "FATAL ERROR", )[ status - 1 ]
+    status = ( "DEBUG", "INFO", "NOTICE", "WARNING", "ERROR", "FATAL ERROR", )[ status - 1 ]
     _pre_line_ = "%s T:%s M:%s %s: " % ( time.strftime( "%X" ), str( thread.get_ident() ).rjust( 4 ), dwAvailPhys, status.rjust( 7 ), )
     _write_line_ = "%s\n" % ( format % args, )
     WRITABLE_LOG.write( _pre_line_ + _write_line_ )
-    if ( DEBUG_MODE == "DEBUG" ):
-        xbmc.output( _write_line_.strip( "\n\r" ) )
+    if ( DEBUG_MODE == "DEBUGS" ):
+        xbmc.output( _write_line_.strip( "\n" ) )
 
 
 def EXC_INFO( status, infos, _self_=None ):

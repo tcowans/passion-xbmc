@@ -133,7 +133,7 @@ class rssReader:
             response = urllib2.urlopen(request)
             the_page = response.read()
         except:
-            logger.LOG( logger.LOG_INFO, "Exception get_rss_page" )
+            logger.LOG( logger.LOG_DEBUG, "Exception get_rss_page" )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
             the_page = ""
         # renvo a page the RSS
@@ -228,10 +228,10 @@ class scriptextracter:
                 try:
                     os.makedirs(dossier)
                 except:
-                    logger.LOG( logger.LOG_NOTICE, "Erreur creation dossier de l'archive!" )
+                    logger.LOG( logger.LOG_DEBUG, "Erreur creation dossier de l'archive!" )
                     logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-            #else:
-            #    logger.LOG( logger.LOG_NOTICE, "File Case" )
+            else:
+                logger.LOG( logger.LOG_DEBUG, "File Case: %s", repr( i ) )
 
         # On ferme l'archive
         self.zfile.close()
@@ -239,8 +239,8 @@ class scriptextracter:
     def  extract(self,archive,TargetDir):
         self.pathdst = TargetDir
         self.archive = archive
-        logger.LOG( logger.LOG_NOTICE, "self.pathdst = %s", self.pathdst )
-        logger.LOG( logger.LOG_NOTICE, "self.archive = %s", self.archive )
+        logger.LOG( logger.LOG_DEBUG, "self.pathdst = %s", self.pathdst )
+        logger.LOG( logger.LOG_DEBUG, "self.archive = %s", self.archive )
 
         if archive.endswith('zip'):
             self.zipfolder() #generation des dossiers dans le cas d'un zip
@@ -256,25 +256,25 @@ class scriptextracter:
         if archive.endswith('zip'):
             zfile   = zipfile.ZipFile(archive, 'r')
             dirName = zfile.namelist()[0].split('/')[0]
-            logger.LOG( logger.LOG_INFO, "scriptextracter::getDirName: dirName = %s", dirName )
-            logger.LOG( logger.LOG_INFO, repr( zfile.namelist() ) )
+            logger.LOG( logger.LOG_DEBUG, "scriptextracter::getDirName: dirName = %s", dirName )
+            logger.LOG( logger.LOG_DEBUG, repr( zfile.namelist() ) )
             # On verifie que la chaine de caractere est bien un repertoire
             if zfile.namelist()[0].find(dirName + '/') == -1:
-                logger.LOG( logger.LOG_NOTICE, "%s n'est pas un repertoire", dirName )
+                logger.LOG( logger.LOG_DEBUG, "%s n'est pas un repertoire", dirName )
                 dirName = ""
-            logger.LOG( logger.LOG_INFO, "Zip dirname:" )
-            logger.LOG( logger.LOG_INFO, dirName )
+            logger.LOG( logger.LOG_DEBUG, "Zip dirname:" )
+            logger.LOG( logger.LOG_DEBUG, dirName )
         elif archive.endswith('rar'):
             rfile   = rarfile.RarFile(archive, 'r')
             dirName = rfile.namelist()[0].split("\\")[0]
-            logger.LOG( logger.LOG_INFO, "Rar dirname:" )
-            logger.LOG( logger.LOG_INFO, dirName )
+            logger.LOG( logger.LOG_DEBUG, "Rar dirname:" )
+            logger.LOG( logger.LOG_DEBUG, dirName )
             # On verifie que la chaine de caractere est bien un repertoire
             if rfile.getinfo(dirName).isdir() == False:
-                logger.LOG( logger.LOG_NOTICE, "%s n'est pas un repertoire", dirName )
+                logger.LOG( logger.LOG_DEBUG, "%s n'est pas un repertoire", dirName )
                 dirName = ""
         else:
-            logger.LOG( logger.LOG_NOTICE, "Format d'archive non supporté" )
+            logger.LOG( logger.LOG_DEBUG, "Format d'archive non supporté" )
         return dirName
 
 
@@ -307,7 +307,7 @@ class GDDFTP(ftplib.FTP):
         try: return command(*args)
         except:
             self.Reconnect()
-            #logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            logger.EXC_INFO( logger.LOG_DEBUG, sys.exc_info(), self )
             return command(*args)
 
 
@@ -359,7 +359,7 @@ class ftpDownloadCtrl:
             logger.LOG( logger.LOG_INFO, "Connecté au serveur FTP" )
 
         except:
-            logger.LOG( logger.LOG_NOTICE, "Exception durant la connection, mpossible de se connecter au serveur FTP: %s", self.host )
+            logger.LOG( logger.LOG_DEBUG, "Exception durant la connection, mpossible de se connecter au serveur FTP: %s", self.host )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def closeConnection(self):
@@ -370,7 +370,7 @@ class ftpDownloadCtrl:
         try:
             self.ftp.quit
         except:
-            logger.LOG( logger.LOG_ERROR, "Exception durant la fermeture de la connection FTP" )
+            logger.LOG( logger.LOG_DEBUG, "Exception durant la fermeture de la connection FTP" )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         else:
             # la fermeture a reussi avec succes
@@ -387,7 +387,7 @@ class ftpDownloadCtrl:
             #curDirList = self.ftp.nlst(remotedir)
             curDirList = self.ftp.Command(self.ftp.nlst,remotedir)
         except:
-            logger.LOG( logger.LOG_NOTICE, "Exception durant la recuperation de la liste des fichiers du repertoire: %s", remotedir )
+            logger.LOG( logger.LOG_DEBUG, "Exception durant la recuperation de la liste des fichiers du repertoire: %s", remotedir )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
         # Tri de la liste et renvoi
@@ -405,9 +405,9 @@ class ftpDownloadCtrl:
             self.ftp.Command(self.ftp.cwd,pathsrc) # c'est cette commande qui genere l'exception dans le cas d'un fichier
 
             # Pas d'excpetion => il s'agit d'un dossier
-            logger.LOG( logger.LOG_NOTICE, "isDir: %s EST un DOSSIER", pathsrc )
+            logger.LOG( logger.LOG_DEBUG, "isDir: %s EST un DOSSIER", pathsrc )
         except:
-            logger.LOG( logger.LOG_NOTICE, "isDir: %s EST un FICHIER", pathsrc )
+            logger.LOG( logger.LOG_DEBUG, "isDir: %s EST un FICHIER", pathsrc )
             isDir = False
         return isDir
 
@@ -494,7 +494,7 @@ class ftpDownloadCtrl:
                     # percent est le poucentage du FICHIER telecharger et non le pourcentage total
                     dialogProgressWin.update(0,"Téléchargement Total: %d%%"%percentBefore, "%s"%i)
                 except:
-                    logger.LOG( logger.LOG_ERROR, "downloadVideo - Exception calling UI callback for download" )
+                    logger.LOG( logger.LOG_DEBUG, "download - Exception calling UI callback for download" )
                     logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
                 # Verifie si le chemin correspond a un repertoire
@@ -518,7 +518,7 @@ class ftpDownloadCtrl:
                     dialogProgressWin.update(100,"Téléchargement Total: %d%%"%percentAfter, "%s"%i)
                     #time.sleep(1)
                 except:
-                    logger.LOG( logger.LOG_ERROR, "downloadVideo - Exception calling UI callback for download" )
+                    logger.LOG( logger.LOG_DEBUG, "download - Exception calling UI callback for download" )
                     logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
         # Calcul pourcentage final
@@ -527,7 +527,7 @@ class ftpDownloadCtrl:
             #Mise a jour de la barre de progression (via callback)
             dialogProgressWin.update(100,"Téléchargement Total: %d%%"%percent, "%s"%i)
         except:
-            logger.LOG( logger.LOG_ERROR, "downloadVideo - Exception calling UI callback for download" )
+            logger.LOG( logger.LOG_DEBUG, "download - Exception calling UI callback for download" )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
         # verifie si on a annule le telechargement
@@ -549,7 +549,7 @@ class ftpDownloadCtrl:
         try:
             #dirContent = self.ftp.nlst(dirsrc)
             dirContent = self.ftp.Command(self.ftp.nlst, dirsrc)
-            logger.LOG( logger.LOG_INFO, "dirContent: %s", repr( dirContent ) )
+            logger.LOG( logger.LOG_DEBUG, "dirContent: %s", repr( dirContent ) )
         except Exception, e:
             # Repertoire non vide -> il faut telecharger les elementss de ce repertoire
             emptydir = True
@@ -569,7 +569,7 @@ class ftpDownloadCtrl:
             if not os.path.isdir( localAbsDirPath ):
                 os.makedirs(localAbsDirPath)
         except:
-            logger.LOG( logger.LOG_ERROR, "_downloaddossier: Exception - Impossible de creer le dossier: %s", localAbsDirPath )
+            logger.LOG( logger.LOG_DEBUG, "_downloaddossier: Exception - Impossible de creer le dossier: %s", localAbsDirPath )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         if (emptydir == False):
             # Repertoire non vide - lancement du download (!!!APPEL RECURSIF!!!)
@@ -594,7 +594,7 @@ class ftpDownloadCtrl:
                 # Dans le cas ou un fichier n'a pas une taille valide ou corrompue
                 remoteFileSize = 1
         except:
-            logger.LOG( logger.LOG_ERROR, "_downloaddossier: Exception - Impossible de creer le dossier: %s", localAbsDirPath )
+            logger.LOG( logger.LOG_DEBUG, "_downloaddossier: Exception - Impossible de creer le dossier: %s", localAbsDirPath )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
         # Créé le chemin du repertorie local
@@ -617,7 +617,7 @@ class ftpDownloadCtrl:
             # !!NOTE!!: on utilise un implemenation locale et non celle de ftplib qui ne supporte pas l'interuption d'un telechargement
             self.retrbinary('RETR ' + filesrc, ftpCB, block_size)
         except:
-            logger.LOG( logger.LOG_ERROR, "_downloaddossier: Exception - Impossible de creer le dossier: %s", localAbsDirPath )
+            logger.LOG( logger.LOG_DEBUG, "_downloaddossier: Exception - Impossible de creer le dossier: %s", localAbsDirPath )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         # On ferme le fichier
         localFile.close()
@@ -676,7 +676,7 @@ class FtpCallback(object):
         try:
             percent = min((self.received*100)/self.filesize, 100)
         except:
-            logger.LOG( logger.LOG_ERROR, "FtpCallback - Exception during percent computing AND update" )
+            logger.LOG( logger.LOG_DEBUG, "FtpCallback - Exception during percent computing AND update" )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
             percent = 100
 
@@ -746,7 +746,7 @@ class userDataXML:
                 result = True
             except:
                 percent = 100
-                logger.LOG( logger.LOG_ERROR, "userDataXML - Exception durant la creation de %s", self.filedest )
+                logger.LOG( logger.LOG_DEBUG, "userDataXML - Exception durant la creation de %s", self.filedest )
                 logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
                 result = False
         else:
@@ -783,12 +783,12 @@ class directorySpy:
         try:
             newItemList = list(set(dirContentCurrentList).difference(set(self.dirContentInitList)))
         except:
-            logger.LOG( logger.LOG_ERROR, "directorySpy - getNewItemList: Exception durant la comparaison du repertoires %s", self.dirPath )
+            logger.LOG( logger.LOG_DEBUG, "directorySpy - getNewItemList: Exception durant la comparaison du repertoires %s", self.dirPath )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
             newItemList = []
 
-        logger.LOG( logger.LOG_INFO, "directorySpy - getNewItemList: Liste des nouveaux elements du repertoire %s", self.dirPath )
-        logger.LOG( logger.LOG_INFO, "newItemList: %s", repr( newItemList ) )
+        logger.LOG( logger.LOG_DEBUG, "directorySpy - getNewItemList: Liste des nouveaux elements du repertoire %s", self.dirPath )
+        logger.LOG( logger.LOG_DEBUG, "newItemList: %s", repr( newItemList ) )
 
         return newItemList
 
@@ -841,7 +841,7 @@ class configCtrl:
 
             self.is_conf_valid = True
         except:
-            logger.LOG( logger.LOG_ERROR, "Exception while loading configuration file conf.cfg" )
+            logger.LOG( logger.LOG_DEBUG, "Exception while loading configuration file conf.cfg" )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def getSrvHost(self):
@@ -884,7 +884,7 @@ class configCtrl:
         try:
             self.config.write(cfgfile)
         except:
-            logger.LOG( logger.LOG_ERROR, "Exception during setXbmcXmlUpdate" )
+            logger.LOG( logger.LOG_DEBUG, "Exception during setXbmcXmlUpdate" )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         cfgfile.close()
 
@@ -1006,8 +1006,8 @@ class MainWindow( xbmcgui.WindowXML ):
 
             except:
                 xbmcgui.Dialog().ok("Erreur", "Exception durant l'initialisation")
-                logger.LOG( logger.LOG_NOTICE, "Window::__init__: Exception durant la connection FTP" )
-                logger.LOG( logger.LOG_ERROR, "Impossible de se connecter au serveur FTP: %s", self.host )
+                logger.LOG( logger.LOG_DEBUG, "Window::__init__: Exception durant la connection FTP" )
+                logger.LOG( logger.LOG_DEBUG, "Impossible de se connecter au serveur FTP: %s", self.host )
                 logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
             # Capturons le contenu des sous-repertoires plugins
@@ -1113,6 +1113,17 @@ class MainWindow( xbmcgui.WindowXML ):
                 #on a plus besoin du settins, on le delete
                 del show_settings
 
+            #button_code_F3_keyboard = 61554
+            elif ( act_ctrl_id in ( ACTION_SHOW_INFO, 61554, ) ):
+                if ( not self.type.lower() in ( "racine", "plugins", ) ) and ( self.getFocusId() == self.list ):
+                    currentListIndex = self.getControl( self.list ).getSelectedPosition()
+                    if currentListIndex >= 0:
+                        selectedItem = os.path.basename( self.curDirList[ currentListIndex ] )
+                        from dialog_item_descript import show_descript
+                        show_descript( self , selectedItem , self.type )
+                        #on a plus besoin du descript, on le delete
+                        del show_descript
+
             #button_code_F2_keyboard = 61553
             elif ( act_ctrl_id in ( 61553, ) ):
                 from dialog_log_viewer import show_log
@@ -1120,14 +1131,6 @@ class MainWindow( xbmcgui.WindowXML ):
                 #on a plus besoin, on le delete
                 del show_log
 
-            elif ( act_ctrl_id in ( ACTION_SHOW_INFO, 61554, ) ):
-                if (self.type   != "racine") and (self.type   != "Plugins"):
-                    from dialog_item_descript import show_descript
-                    currentListIndex = self.getControl( self.list ).getSelectedPosition()
-                    selectedItem = os.path.basename(self.curDirList[currentListIndex])
-                    show_descript( self , selectedItem , self.type)
-                    #on a plus besoin du descript, on le delete
-                    del show_descript
             else:
                 pass
         except:
@@ -1172,7 +1175,7 @@ class MainWindow( xbmcgui.WindowXML ):
                                 #newPluginList = list(set(self.pluginsExitList[self.downloadTypeList.index(type)]).difference(set(self.pluginsInitList[self.downloadTypeList.index(type)])))
                                 newPluginList = self.pluginsDirSpyList[self.downloadTypeList.index(type)].getNewItemList()
                             except:
-                                logger.LOG( logger.LOG_ERROR, "Exception durant la comparaison des repertoires plugin avant et apres installation" )
+                                logger.LOG( logger.LOG_DEBUG, "Exception durant la comparaison des repertoires plugin avant et apres installation" )
                                 logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
                             if len(newPluginList) > 0:
                                 for newPluginName in newPluginList:
@@ -1233,7 +1236,7 @@ class MainWindow( xbmcgui.WindowXML ):
                     try:
                         self.updateList()
                     except:
-                        logger.LOG( logger.LOG_ERROR, "Window::onAction::ACTION_PREVIOUS_MENU: Exception durant updateList()" )
+                        logger.LOG( logger.LOG_DEBUG, "Window::onAction::ACTION_PREVIOUS_MENU: Exception durant updateList()" )
                         logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
                 else:
                     # cas standard
@@ -1241,11 +1244,11 @@ class MainWindow( xbmcgui.WindowXML ):
                     try:
                         self.updateList()
                     except:
-                        logger.LOG( logger.LOG_ERROR, "Window::onAction::ACTION_PREVIOUS_MENU: Exception durant updateList()" )
+                        logger.LOG( logger.LOG_DEBUG, "Window::onAction::ACTION_PREVIOUS_MENU: Exception durant updateList()" )
                         logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
         except:
-            logger.LOG( logger.LOG_ERROR, "Window::onAction: Exception" )
+            logger.LOG( logger.LOG_DEBUG, "Window::onAction: Exception" )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def _close_script( self ):
@@ -1254,6 +1257,7 @@ class MainWindow( xbmcgui.WindowXML ):
         self.close()
 
     def onFocus( self, controlID ):
+        self.controlID = controlID
         #cette fonction n'est pas utiliser ici, mais dans les XML si besoin
         #Note: Mais il faut la declarer :)
         pass
@@ -1325,8 +1329,8 @@ class MainWindow( xbmcgui.WindowXML ):
                             # On traite le repertorie deja present en demandant a l'utilisateur de choisir
                             continueDownload = self.processOldDownload(localDirPath)
                         else:
-                            logger.LOG( logger.LOG_NOTICE, "localDirPath: %s", repr( localDirPath ) )
-                            logger.LOG( logger.LOG_NOTICE, "isDownloaded: %s", repr( isDownloaded ) )
+                            logger.LOG( logger.LOG_DEBUG, "localDirPath: %s", repr( localDirPath ) )
+                            logger.LOG( logger.LOG_DEBUG, "isDownloaded: %s", repr( isDownloaded ) )
 
                         if continueDownload == True:
                             # Fenetre de telechargement
@@ -1699,17 +1703,17 @@ class MainWindow( xbmcgui.WindowXML ):
                         self.deleteDir(itemFullPath)
                 except:
                     result = False
-                    logger.LOG( logger.LOG_ERROR, "deleteDir: Exception la suppression du reperoire: %s", path )
+                    logger.LOG( logger.LOG_DEBUG, "deleteDir: Exception la suppression du reperoire: %s", path )
                     logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
             # Suppression du repertoire pere
             try:
                 os.rmdir(path)
             except:
                 result = False
-                logger.LOG( logger.LOG_ERROR, "deleteDir: Exception la suppression du reperoire: %s", path )
+                logger.LOG( logger.LOG_DEBUG, "deleteDir: Exception la suppression du reperoire: %s", path )
                 logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         else:
-            logger.LOG( logger.LOG_ERROR, "deleteDir: %s n'est pas un repertoire", path )
+            logger.LOG( logger.LOG_DEBUG, "deleteDir: %s n'est pas un repertoire", path )
             result = False
 
         return result
@@ -1734,7 +1738,7 @@ class MainWindow( xbmcgui.WindowXML ):
                         self.deleteDir(itemFullPath)
                 except:
                     result = False
-                    logger.LOG( logger.LOG_ERROR, "delDirContent: Exception la suppression du contenu du reperoire: %s", path )
+                    logger.LOG( logger.LOG_DEBUG, "delDirContent: Exception la suppression du contenu du reperoire: %s", path )
                     logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         else:
             logger.LOG( logger.LOG_ERROR, "delDirContent: %s n'est pas un repertoire", path )
@@ -1752,7 +1756,7 @@ class MainWindow( xbmcgui.WindowXML ):
             if not os.path.exists(folder):
                 os.makedirs(folder)
         except:
-            logger.LOG( logger.LOG_ERROR, "verifrep - Exception durant la creation du repertoire: %s", folder )
+            logger.LOG( logger.LOG_DEBUG, "verifrep - Exception durant la creation du repertoire: %s", folder )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
             pass
 
@@ -1763,7 +1767,7 @@ class MainWindow( xbmcgui.WindowXML ):
         Wtest = os.access(path,os.W_OK)
         if Wtest == True:
             self.rightstest = True
-            logger.LOG( logger.LOG_NOTICE, "rightest OK" )
+            logger.LOG( logger.LOG_NOTICE, "linux chmod rightest OK" )
         else:
             dialog = xbmcgui.Dialog()
             dialog.ok('Demande de mot de passe', "Vous devez saisir votre mot de passe administrateur", "systeme")
@@ -1903,13 +1907,13 @@ graphicdesigner = 'Jahnrik'
 #                   Verification parametres locaux et serveur                #
 ##############################################################################
 #les infos auteur, version et graphic , etc sont deja dans le LOG et dans le future dans le "dialog_credits.py + passion-dialog_credits.xml"
-logger.LOG( logger.LOG_INFO, "===================================================================" )
-logger.LOG( logger.LOG_INFO, "        Passion XBMC Installeur %s STARTS", __version__ )
-logger.LOG( logger.LOG_INFO, "        Auteurs : %s", __author__ )
-logger.LOG( logger.LOG_INFO, "===================================================================" )
+#logger.LOG( logger.LOG_DEBUG, "===================================================================" )
+#logger.LOG( logger.LOG_DEBUG, "        Passion XBMC Installeur %s STARTS", __version__ )
+#logger.LOG( logger.LOG_DEBUG, "        Auteurs : %s", __author__ )
+#logger.LOG( logger.LOG_DEBUG, "===================================================================" )
 
-logger.LOG( logger.LOG_INFO, "FTP host: %s", host )
-logger.LOG( logger.LOG_INFO, "Chemin ou les themes seront telecharges: %s", themesDir )
+#logger.LOG( logger.LOG_DEBUG, "FTP host: %s", host )
+#logger.LOG( logger.LOG_DEBUG, "Chemin ou les themes seront telecharges: %s", themesDir )
 
 if __name__ == "__main__":
     #ici on pourrait faire des action si le script était lancé en tant que programme

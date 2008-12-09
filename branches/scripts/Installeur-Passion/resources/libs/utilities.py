@@ -66,7 +66,7 @@ def parse_rss_xml( xml_path=RSS_FEEDS_XML ):
                         "feed": feed.text,
                         }
             except:
-                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+                logger.EXC_INFO( logger.LOG_DEBUG, sys.exc_info() )
         del tree
     except:
         logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
@@ -183,6 +183,11 @@ def set_pretty_formatting( text, bold_links=False ):
         text = re.sub( "(?s)<[^>]*>", "[B]", text )
     return text
 
+$text = str_replace("<i>", "[I]",$contenu);
+$text = str_replace("</i>", "[/I]",$contenu);
+$text = str_replace("<b>", "[B]",$contenu);
+$text = str_replace("</b>", "[/B]",$contenu);
+
 
 def strip_off( text, by="", xbmc_labels_formatting=False ):
     """ FONCTION POUR RECUPERER UN TEXTE D'UN TAG """
@@ -273,6 +278,7 @@ class Settings:
             "update_startup": True,
             "xbmc_xml_update": False,
             "rss_feed": "1",
+            "script_debug": False,
             # SKINS
             "skin_colours_path": "default",
             "skin_colours": "",
@@ -313,7 +319,7 @@ class Settings:
 
     def _use_defaults( self, current_settings=None, save=True ):
         """ setup default values if none obtained """
-        logger.LOG( logger.LOG_NOTICE, "Settings: [used default settings]" )
+        logger.LOG( logger.LOG_DEBUG, "Settings: [used default settings]" )
         settings = {}
         defaults = self._settings_defaults_values()
         for key, value in defaults.items():

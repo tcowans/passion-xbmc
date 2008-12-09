@@ -20,9 +20,9 @@ except:
 # CHECKMAJ.go()
 UPDATE_STARTUP = True
 
-logger.LOG( logger.LOG_INFO, str( "*" * 85 ) )
-logger.LOG( logger.LOG_INFO, "Script de mise a jour auto".center( 85 ) )
-logger.LOG( logger.LOG_INFO, str( "*" * 85 ) )
+logger.LOG( logger.LOG_DEBUG, str( "*" * 85 ) )
+logger.LOG( logger.LOG_DEBUG, "Script de mise a jour auto".center( 85 ) )
+logger.LOG( logger.LOG_DEBUG, str( "*" * 85 ) )
 
 
 class CheckMAJ:
@@ -87,7 +87,7 @@ class CheckMAJ:
                 os.makedirs(folder)
 
         except:
-            logger.LOG( logger.LOG_NOTICE, "verifrep - Exception while creating folder %s", folder )
+            logger.LOG( logger.LOG_DEBUG, "verifrep - Exception while creating folder %s", folder )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
 
     def download(self):

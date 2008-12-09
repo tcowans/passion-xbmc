@@ -49,7 +49,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             self._set_skin_colours()
             self._set_controls_labels()
             self._set_controls_values()
-            self._set_controls_visible()
+            #self._set_controls_visible()
             # recupere la valeur sur le démarrage, utiliser pour rafraifir en temps reel, si l'etat est pas le meme 
             self.coulour_on_load = self.settings[ "skin_colours_path" ]
             self.rss_on_load = self.settings[ "rss_feed" ]
@@ -101,6 +101,8 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             self.getControl( 130 ).setSelected( self.settings[ "xbmc_xml_update" ] )#atlantis )
             #selon l'etat de self.settings[ "update_startup" ], l'image du radiobutton sera blanc ou non visible
             self.getControl( 140 ).setSelected( self.settings[ "update_startup" ] )
+            #selon l'etat de self.settings[ "update_startup" ], l'image du radiobutton sera blanc ou non visible
+            self.getControl( 150 ).setSelected( self.settings[ "script_debug" ] )
             #le bouton valider les changements ont le desactive, il va etre reactiver seulement s'il y a un changement dans les settings
             self.getControl( 80 ).setEnabled( False )
             #le bouton credits est desactiver, le temps d'implanter cette fonction
@@ -193,21 +195,24 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
                 logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def _set_controls_visible( self ):
+        pass
         """
         ici sa sert a rendre visible les controls qu'on veut voir
         pour le moment il y a 1 parametre, donc les autres sont mis non visible
         pour le futur on pourra les activer au besoin et coder sa fonction
-        penser a retirer les # de bouton_non_visible = [ 140, 150 ] par ordre de grandeur, suivant == 140
+        penser a retirer les # de bouton_non_visible = [  ] par ordre de grandeur, suivant == ?
+        """
         """
         xbmcgui.lock()
         try:
-            #bouton_non_visible = [ 140, 150 ]
+            #bouton_non_visible = [  ]
             #for control_id in bouton_non_visible:
-            self.getControl( 150 ).setEnabled( False )
-            self.getControl( 150 ).setVisible( False )
+            self.getControl( ).setEnabled( False )
+            self.getControl( ).setVisible( False )
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         xbmcgui.unlock()
+        """
 
     def onFocus( self, controlID ):
         #cette fonction n'est pas utiliser ici, mais dans les XML si besoin
@@ -224,10 +229,13 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
                 self.toggle_rss_control( controlID )
             elif controlID == 130:
                 #bouton pour activer desactiver la modification du fichier sources.xml
-                self._set_xml_update()
+                self._set_bool_setting( "xbmc_xml_update" )
             elif controlID == 140:
                 #bouton pour activer desactiver la verification de la mise à jour au demarrage
-                self._set_update_startup()
+                self._set_bool_setting( "update_startup" )
+            elif controlID == 150:
+                #bouton pour activer desactiver la mode debug du script seulement
+                self._set_bool_setting( "script_debug" )
             elif controlID == 80:
                 #bouton ok on save les changements.
                 self._save_settings()
@@ -246,7 +254,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
                 self._set_web_navigator()
             elif controlID == 340:
                 #bouton pour activer desactiver wait state win32 seulement
-                self._set_wait_state()
+                self._set_bool_setting( "win32_exec_wait" )
             else:
                 pass
         except:
@@ -261,33 +269,16 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             self.getControl( 340 ).setEnabled( True )
             self.getControl( 80 ).setEnabled( True )
 
-    def _set_wait_state( self ):
-        if not self.settings[ "win32_exec_wait" ]:
+    def _set_bool_setting( self, str_setting ):
+        if not self.settings[ str_setting ]:
             #Active
-            self.settings[ "win32_exec_wait" ] = True
+            self.settings[ str_setting ] = True
         else:
             #Desactive
-            self.settings[ "win32_exec_wait" ] = False
+            self.settings[ str_setting ] = False
         self.getControl( 80 ).setEnabled( True )
-
-    def _set_xml_update( self ):
-        # fonction plus tres utile depuis xbmc atlantis
-        if not self.settings[ "xbmc_xml_update" ]:
-            #Active
-            self.settings[ "xbmc_xml_update" ] = True
-        else:
-            #Desactive
-            self.settings[ "xbmc_xml_update" ] = False
-        self.getControl( 80 ).setEnabled( True )
-
-    def _set_update_startup( self ):
-        if not self.settings[ "update_startup" ]:
-            #Active
-            self.settings[ "update_startup" ] = True
-        else:
-            #Desactive
-            self.settings[ "update_startup" ] = False
-        self.getControl( 80 ).setEnabled( True )
+        # delete le str
+        del str_setting
 
     def toggle_rss_control( self, controlID ):
         try:

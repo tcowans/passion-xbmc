@@ -36,7 +36,7 @@
 			<posy>45</posy>
 			<width>660</width>
 			<height>490</height>
-			<texture>passion-dialog-panel.png</texture>
+			<texture>$INFO[Skin.String(PassionSettingsColours),,\passion-dialog-panel.png]</texture>
 		</control>
 
 		<!-- LABELS DIALOG -->
@@ -137,7 +137,7 @@
 				<posx>0</posx>
 				<posy>20</posy>
 				<width>20</width>
-				<height>115</height>
+				<height>108</height>
 				<texturesliderbackground border="4">passion-scrollbar_background.png</texturesliderbackground>
 				<texturesliderbar border="4">passion-scrollbar_bar.png</texturesliderbar>
 				<texturesliderbarfocus border="4">passion-scrollbar_bar_focus.png</texturesliderbarfocus>
@@ -163,7 +163,8 @@
 				<width>90</width>
 				<height>32</height>
 				<align>center</align>
-				<label>$LOCALIZE[SCRIPT606]</label>
+				<label>SCRIPT606</label>
+				<font>font10</font>
 				<texturenofocus>passion-keyboard-btn-backspace.png</texturenofocus>
 				<texturefocus>passion-keyboard-btn-backspace-focus.png</texturefocus>
 				<textcolor>ffffffff</textcolor>
@@ -181,7 +182,8 @@
 				<width>90</width>
 				<height>32</height>
 				<align>center</align>
-				<label>$LOCALIZE[SCRIPT605]</label>
+				<label>SCRIPT605</label>
+				<font>font10</font>
 				<texturenofocus>passion-keyboard-btn-backspace.png</texturenofocus>
 				<texturefocus>passion-keyboard-btn-backspace-focus.png</texturefocus>
 				<textcolor>ffffffff</textcolor>
@@ -199,7 +201,8 @@
 				<width>90</width>
 				<height>32</height>
 				<align>center</align>
-				<label>$LOCALIZE[SCRIPT607]</label>
+				<label>SCRIPT607</label>
+				<font>font10</font>
 				<texturenofocus>passion-keyboard-btn-backspace.png</texturenofocus>
 				<texturefocus>passion-keyboard-btn-backspace-focus.png</texturefocus>
 				<textcolor>ffffffff</textcolor>
