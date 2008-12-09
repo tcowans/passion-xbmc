@@ -183,11 +183,6 @@ def set_pretty_formatting( text, bold_links=False ):
         text = re.sub( "(?s)<[^>]*>", "[B]", text )
     return text
 
-$text = str_replace("<i>", "[I]",$contenu);
-$text = str_replace("</i>", "[/I]",$contenu);
-$text = str_replace("<b>", "[B]",$contenu);
-$text = str_replace("</b>", "[/B]",$contenu);
-
 
 def strip_off( text, by="", xbmc_labels_formatting=False ):
     """ FONCTION POUR RECUPERER UN TEXTE D'UN TAG """

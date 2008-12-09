@@ -101,7 +101,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             self.getControl( 130 ).setSelected( self.settings[ "xbmc_xml_update" ] )#atlantis )
             #selon l'etat de self.settings[ "update_startup" ], l'image du radiobutton sera blanc ou non visible
             self.getControl( 140 ).setSelected( self.settings[ "update_startup" ] )
-            #selon l'etat de self.settings[ "update_startup" ], l'image du radiobutton sera blanc ou non visible
+            #selon l'etat de self.settings[ "script_debug" ], l'image du radiobutton sera blanc ou non visible
             self.getControl( 150 ).setSelected( self.settings[ "script_debug" ] )
             #le bouton valider les changements ont le desactive, il va etre reactiver seulement s'il y a un changement dans les settings
             self.getControl( 80 ).setEnabled( False )
