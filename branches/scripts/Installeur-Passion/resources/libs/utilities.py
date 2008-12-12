@@ -85,24 +85,34 @@ def set_web_navigator( navigator="" ):
         return title, browser_path
 
 
+def is_playable_media( filename, media="picture" ):
+    """
+    getSupportedMedia(media) -- Returns the supported file types for the specific media as a string.
+    media          : string - media type
+    *Note, media type can be (video, music, picture).
+           The return value is a pipe separated string of filetypes (eg. '.mov|.avi').
+           You can use the above as keywords for arguments and skip certain optional arguments.
+           Once you use a keyword, all following arguments require the keyword.
+    example:
+      - mTypes = xbmc.getSupportedMedia('video')
+    """
+    media_types = xbmc.getSupportedMedia( media ).split( "|" )
+    try:
+        return os.path.splitext( filename )[ 1 ].lower() in media_types
+    except:
+        logger.EXC_INFO( logger.LOG_DEBUG, sys.exc_info() )
+        # si on arrive ici le retour est automatiquement None
+
+
 def get_html_source( url ):
     """ fetch the html source """
     try:
         if os.path.isfile( url ):
             sock = open( url, "r" )
         else:
-            try:
-                request = urllib2.Request( url )
-                request.add_header( 'User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9) Gecko/2008052906 Firefox/3.0' )
-                request.add_header( 'Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' )
-                request.add_header( 'Accept-Language', 'fr,fr-fr;q=0.8,en-us;q=0.5,en;q=0.3' )
-                request.add_header( 'Accept-Charset', 'ISO-8859-1,utf-8;q=0.7,*;q=0.7' )
-                sock = urllib2.urlopen( request )
-            except:
-                sock = urllib.urlopen( url )
+            sock = urllib.urlopen( url )
         htmlsource = sock.read()
         sock.close()
-        htmlsource = htmlsource#.replace( "\r", "" )
         return htmlsource
     except:
         logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
@@ -165,6 +175,7 @@ def italic_text( text ):
 
 def set_xbmc_carriage_return( text ):
     """ only for xbmc """
+    text = text.replace( "\r\n", "[CR]" )
     text = text.replace( "\n\n", "[CR]" )
     text = text.replace( "\n", "[CR]" )
     text = text.replace( "\r\r", "[CR]" )

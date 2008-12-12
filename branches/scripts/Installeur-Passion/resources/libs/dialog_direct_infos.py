@@ -5,7 +5,9 @@ import re
 import sys
 import urllib
 
-#import elementtree.ElementTree as ET
+import elementtree.HTMLTreeBuilder as HTB
+from StringIO import StringIO
+
 
 #modules XBMC
 import xbmc
@@ -32,59 +34,15 @@ CWD = os.getcwd().rstrip( ";" )
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
 _ = sys.modules[ "__main__" ].__language__
 
-'''
+
 def load_infos( url ):
-    """
-    a verifier plus tard, autre chose a faire :) frost 20-11-08
-    ERROR: in parse, 'tree = ET.parse( feed )' - undefined entity &ecirc;: line XX, column XX
-    """
     try:
-        feed = urllib.urlopen( url )
-        tree = ET.parse( feed )
-        feed.close()
-
-        # if you need the root element, use getroot
-        root = tree.findall( "channel" )#tree.getroot()
-
-        # delete
-        del tree
-        return root
+        html = urllib.urlopen( url )
+        source = re.sub( "<!\[CDATA\[|\]\]>", "", html.read() )
+        html.close()
+        return HTB.parse( StringIO( source ), "utf-8"  ).findall( "channel" )[ 0 ]
     except:
-        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
-'''
-def load_infos( url, general=False ):
-    list_infos = list()
-    html = get_html_source( url )
-    items = re.compile( "<item>(.*?)</item>", re.DOTALL ).findall( html )
-    total_items = len( items ) or 1
-    percent = 0
-    diff = ( 100.0 / total_items )
-    for count, item in enumerate( items ):
-        try:
-            title = re.findall( "<title>.*\\[(.*?)\\].*</title>", item )[ 0 ]
-            pubDate = re.findall( "<pubDate>(.*?)</pubDate>", item )[ 0 ]
-            category = re.findall( "<category>.*\\[(.*?)\\].*</category>", item )[ 0 ]
-            description = re.findall( "<description>.*\\[(.*?)\\].*</description>", item, re.DOTALL )[ 0 ]
-            guid = re.findall( "<guid>(.*?)</guid>", item )[ 0 ]
-            percent += diff
-        except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
-        else:
-            try: title = unicode( title, "utf-8" )
-            except: pass
-            DIALOG_PROGRESS.update( int( percent ), "Topic: %i / %i" % ( count + 1, total_items, ), title )
-            try:
-                category = bold_text( CONVERT( category ).entity_or_charref ) + "[CR]"
-                title = CONVERT( title ).entity_or_charref #bold_text( )
-                pubDate = CONVERT( pubDate ).entity_or_charref
-                description = strip_off( set_pretty_formatting( description ) ).strip( "\n\t" )
-                description = CONVERT( description ).entity_or_charref
-                if not general: item = ( title, pubDate, description, guid )
-                else:  item = ( title, pubDate, category + description, guid )
-                list_infos.append( item )
-            except:
-                logger.EXC_INFO( logger.LOG_DEBUG, sys.exc_info() )
-    return list_infos
+        logger.EXC_INFO( logger.LOG_DEBUG, sys.exc_info() )
 
 
 class LIST_CONTAINER_150( dict ):
@@ -135,21 +93,27 @@ class DirectInfos( xbmcgui.WindowXML ):
         self.list_container_150 = LIST_CONTAINER_150()
         self.mainwin = kwargs[ "mainwin" ]
         self.topics_limit = "5"
+        self.is_started = True
 
     def onInit( self ):
         try:
             self._get_settings()
             self._set_skin_colours()
-            self.set_list_container_150()
-            self.set_list_container_191()
+            if self.is_started:
+                self.is_started = False
+
+                self.set_list_container_150()
+                self.set_list_container_191()
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def _get_settings( self, defaults=False ):
         """ reads settings """
         self.settings = Settings().get_settings( defaults=defaults )
+        #voir les settings il a une erreur avec ~~
         self.topics_limit = self.settings[ "topics_limit" ]
-        if self.topics_limit == "00": self.topics_limit = "500"
+        if ( self.topics_limit == "00"  ) or ( "~" in self.topics_limit ):
+            self.topics_limit = "500"
 
     def _set_skin_colours( self ):
         xbmcgui.lock()
@@ -178,23 +142,59 @@ class DirectInfos( xbmcgui.WindowXML ):
     def set_list_container_191( self, rss=0 ):
         #xbmcgui.lock()
         self.category = _( 200 + rss )
-        DIALOG_PROGRESS.create( _( 0 ), "Topic: 0 / %s" % ( self.topics_limit, ), self.category )
+        DIALOG_PROGRESS.create( _( 0 ), self.category, _( 239 ), _( 110 ) )
         try:
             url, icone = self.list_container_150[ rss ]
             url += self.topics_limit
-            self.list_infos = load_infos( url, ( rss == 0 ) )
+            self.list_infos = list()
+            root = load_infos( url )#, ( rss == 0 ) )
             self.getControl( self.CONTROL_FEEDS_LIST ).reset()
-            for title, pubDate, description, guid in self.list_infos:
-                title = self._unicode( set_xbmc_carriage_return( title ) )
-                pubDate = set_local_time( pubDate )
-                description = self._unicode( set_xbmc_carriage_return( description ) )
+            
+            items = root.findall( "item" )
+            total_items = len( items ) or 1
+            percent = 0
+            diff = ( 100.0 / total_items )
+            for count, item in enumerate( items ):
+                percent += diff
+                imgs = set()
+                slideshow = ""
                 try:
-                    #icone = os.path.join(os.getcwd().replace( ";", "" ), "default.tbn")
-                    listitem = xbmcgui.ListItem( title, pubDate, icone, icone )
-                    listitem.setProperty( "Topic", description )
-                    self.getControl( self.CONTROL_FEEDS_LIST ).addItem( listitem )
+                    title = item.findtext( "title" )
+                    pubdate = set_local_time( item.findtext( "pubdate" ) )
+                    guid = item.findtext( "guid" )
+                    _desc = item.find( "description" )
+                    description = " ".join( [ ( _desc.text or "" ), ( _desc.tail or "" ) ] ).replace( '&nbsp;', "    " ).replace( "\t", "" ).strip()
+
+                    for txt in _desc.getchildren():
+                        _text = " ".join( [ ( txt.text or "" ), ( txt.tail or "" ) ] ).replace( '&nbsp;', "    " ).replace( "\t", "" ).strip()
+                        if txt.tag == "br":
+                            if txt.text == txt.tail: _text = "\n" #continue
+                            else: _text = "\n" + _text
+                        elif txt.tag == "b":
+                            _text = bold_text( _text )
+                        elif txt.tag == "i":
+                            _text = italic_text( _text )
+                        elif txt.tag in ( "img", "a" ):
+                            img = txt.attrib.get( "src", "" ) or txt.attrib.get( "href", "" )
+                            if ( not "smiley" in img ) and is_playable_media( img ):
+                                imgs.update( [ img ] )
+                                slideshow = "true"
+
+                        description += _text
+                    description = set_xbmc_carriage_return( description.strip( "\r\n" ) )
+                    if ( rss == 0 ):
+                        # pour la page general seulement
+                        description = bold_text( item.findtext( "category" ) ) + "[CR]" + description
                 except:
                     logger.EXC_INFO( logger.LOG_DEBUG, sys.exc_info(), self )
+                else:
+                    DIALOG_PROGRESS.update( int( percent ), "Topic: %i / %i" % ( count + 1, total_items, ), title )
+                    listitem = xbmcgui.ListItem( title, pubdate, icone, icone )
+                    listitem.setProperty( "Topic", description )
+                    listitem.setProperty( "Slideshow", slideshow )
+                    self.getControl( self.CONTROL_FEEDS_LIST ).addItem( listitem )
+                    self.list_infos.append( ( guid, list( imgs ) ) )
+
             self.setProperty( "Category", self.category )
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
@@ -222,7 +222,7 @@ class DirectInfos( xbmcgui.WindowXML ):
             elif controlID == self.CONTROL_FEEDS_LIST:
                 pos = self.getControl( self.CONTROL_FEEDS_LIST ).getSelectedPosition()
                 if pos >= 0:
-                    self._url_launcher( self.list_infos[ pos ][ 3 ] )
+                    self._url_launcher( self.list_infos[ pos ][ 0 ] )
             else:
                 pass
         except:
@@ -277,6 +277,15 @@ class DirectInfos( xbmcgui.WindowXML ):
         if action in ( 9, 10, 117, ): self._close_dialog()
         # show settings dialog
         if action == 117: self.mainwin._on_action_control( action )
+        if action == 11:
+            from slideshow import playSlideshow
+            try:
+                pos = self.getControl( self.CONTROL_FEEDS_LIST ).getSelectedPosition()
+                if pos >= 0:
+                    playSlideshow( self.list_infos[ pos ][ 1 ] )
+            except:
+                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            del playSlideshow
 
     def _close_dialog( self ):
         #xbmc.sleep( 100 )
