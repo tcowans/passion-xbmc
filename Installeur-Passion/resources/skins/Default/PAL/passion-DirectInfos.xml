@@ -99,7 +99,7 @@
 				<align>right</align>
 				<aligy>center</aligy>
 				<font>special12</font>
-                <animation effect="slide" start="0,0" end="0,-50" time="0" condition="!IsEmpty(Container.Property(style_PMIII.HD))">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-50" time="0" condition="!IsEmpty(Container.Property(style_PMIII.HD))">conditional</animation>
 			</control>
 			<control type="label">
 				<description>tilte - category label</description>
@@ -241,6 +241,31 @@
 				<aspectratio align="center" aligny="top">stretch</aspectratio>
 				<visible>Control.HasFocus(150)</visible>
 				<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
+			</control>
+			<control type="group">
+				<visible>!IsEmpty(Container(191).ListItem.Property(Slideshow))</visible>
+				<control type="image">
+					<description>icon rss section</description>
+					<posx>543</posx>
+					<posy>299</posy>
+					<width>21</width>
+					<height>21</height>
+					<texture>passion-infoicon.png</texture>
+					<aspectratio aligny="bottom">keep</aspectratio>
+					<colordiffuse>$INFO[Container.Property(Skin-Colours)]</colordiffuse>
+					<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
+				</control>
+				<control type="image">
+					<description>icon rss section</description>
+					<posx>543</posx>
+					<posy>319</posy>
+					<width>21</width>
+					<height>21</height>
+					<texture flipy="true" diffuse="passion-diffuse_mirror.png">passion-infoicon.png</texture>
+					<aspectratio aligny="top">keep</aspectratio>
+					<colordiffuse>$INFO[Container.Property(Skin-Colours)]</colordiffuse>
+					<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
+				</control>
 			</control>
 
 			<!-- LIST OF FEEDS AND TEXTBOX FOR DESCRIPTION OF TOPIC AND ICON-->
