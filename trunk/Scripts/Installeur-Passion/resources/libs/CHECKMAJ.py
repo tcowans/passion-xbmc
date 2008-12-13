@@ -7,12 +7,22 @@ import ConfigParser
 import xbmc
 import xbmcgui
 
-from script_log import *
 
+#module logger
+try:
+    logger = sys.modules[ "__main__" ].logger
+except:
+    import script_log as logger
 
-LOG( LOG_INFO, str( "*" * 85 ) )
-LOG( LOG_INFO, "Script de mise a jour auto".center( 85 ) )
-LOG( LOG_INFO, str( "*" * 85 ) )
+# variable qui peut etre modifie a partir du __main__ e.g.:
+# import CHECKMAJ
+# CHECKMAJ.UPDATE_STARTUP = False
+# CHECKMAJ.go()
+UPDATE_STARTUP = True
+
+logger.LOG( logger.LOG_DEBUG, str( "*" * 85 ) )
+logger.LOG( logger.LOG_DEBUG, "Script de mise a jour auto".center( 85 ) )
+logger.LOG( logger.LOG_DEBUG, str( "*" * 85 ) )
 
 
 class CheckMAJ:
@@ -60,9 +70,13 @@ class CheckMAJ:
         #########################################################
         # DEMARRAGE DE LA CONNEXION                             #
         #########################################################
-        self.ftp = ftplib.FTP(self.host,self.user,self.password)
-        self.remoteDirLst = self.ftp.nlst(self.remoteversionDir)
-        
+        if UPDATE_STARTUP:
+            self.ftp = ftplib.FTP(self.host,self.user,self.password)
+            self.remoteDirLst = self.ftp.nlst(self.remoteversionDir)
+        else:
+            self.ftp = UPDATE_STARTUP
+            self.remoteDirLst = list()
+
     def verifrep(self,folder):
         """
         verifrep (de myCine)
@@ -73,8 +87,8 @@ class CheckMAJ:
                 os.makedirs(folder)
 
         except:
-            LOG( LOG_NOTICE, "verifrep - Exception while creating folder %s", folder )
-            EXC_INFO( LOG_ERROR, sys.exc_info() )
+            logger.LOG( logger.LOG_DEBUG, "verifrep - Exception while creating folder %s", folder )
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
 
     def download(self):
         """
@@ -94,26 +108,29 @@ class CheckMAJ:
         """
         self.delFiles(self.cacheDir) # on vide le cache pour etre sur d'etre plus propre
 
-        for file in self.remoteDirLst:
-        #On isole les fichiers qu'il faudra telecharger
-            if file.endswith('zip'):
-                self.newscript = file
-            elif file.endswith('py'):
-                self.installmaj = file
-            elif file.endswith('cfg'):
-                self.versiontodl = file
+        if UPDATE_STARTUP:
+            for file in self.remoteDirLst:
+                #On isole les fichiers qu'il faudra telecharger
+                if file.endswith('zip'):
+                    self.newscript = file
+                elif file.endswith('py'):
+                    self.installmaj = file
+                elif file.endswith('cfg'):
+                    self.versiontodl = file
 
-        #Telechargement du nouveau fichier de version
-        self.filetodl = self.versiontodl
-        self.download()
+            #Telechargement du nouveau fichier de version
+            self.filetodl = self.versiontodl
+            self.download()
 
-        #Lecture des parametres du nouveau fichier de version
-        remoteConfParser = ConfigParser.ConfigParser()
-        remoteConfParser.read(self.completedfile)
-        self.newversion = remoteConfParser.get('Lastversion','lastversion')
-        
-        # Suppression de l'instance du config parser de remoteConf
-        del remoteConfParser
+            #Lecture des parametres du nouveau fichier de version
+            remoteConfParser = ConfigParser.ConfigParser()
+            remoteConfParser.read(self.completedfile)
+            self.newversion = remoteConfParser.get('Lastversion','lastversion')
+            
+            # Suppression de l'instance du config parser de remoteConf
+            del remoteConfParser
+        else:
+            self.newversion = self.curversion
 
         if self.newversion == self.curversion:
             #version a jour
@@ -161,11 +178,11 @@ class CheckMAJ:
     def delFiles(self,folder):
         for root, dirs, files in os.walk(folder , topdown=False):
             for name in files:
-                LOG( LOG_WARNING, "Effaccement de %s en cours ...", name )
+                logger.LOG( logger.LOG_WARNING, "Effaccement de %s en cours ...", name )
                 try:
                     os.remove(os.path.join(root, name))
                 except:
-                    EXC_INFO( LOG_ERROR, sys.exc_info() )
+                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
 
 #TODO: QUESTIOn : ne devrait t'on pas faire "self.localConfParser.write(open(self.fichier,'w'))" qu'une seule fois a la fin plutot que plusieurs fois dans le code?
 

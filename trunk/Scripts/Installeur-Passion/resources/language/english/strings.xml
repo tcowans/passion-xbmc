@@ -17,7 +17,7 @@
   <string id="18">Video Plugins</string>
 
   <string id="24">Page</string>
-  <string id="25">Object(s)</string>
+  <string id="25">Item(s)</string>
   
   <!--MISC STRINGS -->
   <string id="101">System Configuration</string>
@@ -32,7 +32,7 @@
   <!--SETTINGS STRINGS -->
   <string id="499">Version: %s</string>
   <string id="500">Settings</string>
-  <string id="501">Enable modifying the file sources.xml (obsolete)</string>
+  <string id="501">Enable modifying the file sources.xml</string>
 
   <!--DESCRIPTION STRINGS -->
   <string id="600">Description</string>

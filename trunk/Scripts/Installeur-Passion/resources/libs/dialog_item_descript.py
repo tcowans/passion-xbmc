@@ -15,6 +15,13 @@ import xbmcgui
 #modules custom
 from utilities import *
 
+#module logger
+try:
+    logger = sys.modules[ "__main__" ].logger
+except:
+    import script_log as logger
+
+
 #REPERTOIRE RACINE ( default.py )
 CWD = os.getcwd().rstrip( ";" )
 
@@ -33,8 +40,6 @@ DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
 
 class ItemDescription( xbmcgui.WindowXMLDialog ):
-    FEED_LIMIT = _( 504 ).split( "|" )#[ "00", "5", "10", "25", "50", "100" ]
-
     def __init__( self, *args, **kwargs ):
         xbmcgui.WindowXMLDialog.__init__( self, *args, **kwargs )
 
@@ -54,37 +59,43 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
         self.mainwin  = kwargs[ "mainwin" ]
         self.itemName = kwargs[ "itemName" ]
         self.itemType = kwargs[ "itemType" ]
-        self.use_custom_background = xbmc.getCondVisibility( "!Skin.HasSetting(use_passion_custom_background)" )
+
         self._get_settings()
+        self._set_skin_colours()
 
     def onInit( self ):
         # onInit est pour le windowXML seulement
         xbmcgui.lock()
         try:
-            LOG( LOG_INFO, self.itemName)
-            LOG( LOG_INFO, self.itemType)
+            logger.LOG( logger.LOG_DEBUG, self.itemName)
+            logger.LOG( logger.LOG_DEBUG, self.itemType)
             
             self.fileName, self.title, self.version, self.language, self.date , self.previewPicture, self.previewVideoURL, self.description_fr, self.description_en = self._get_info()
-#            LOG( LOG_INFO, self.fileName)
-#            LOG( LOG_INFO, self.title)
-#            LOG( LOG_INFO, self.version)
-#            LOG( LOG_INFO, str(self.date))
-#            LOG( LOG_INFO, self.previewPicture)
-#            LOG( LOG_INFO, self.previewVideoURL)
-#            LOG( LOG_INFO, self.description_fr)
-#            LOG( LOG_INFO, self.description_en)
+            #logger.LOG( logger.LOG_DEBUG, self.fileName)
+            #logger.LOG( logger.LOG_DEBUG, self.title)
+            #logger.LOG( logger.LOG_DEBUG, self.version)
+            #logger.LOG( logger.LOG_DEBUG, str(self.date))
+            #logger.LOG( logger.LOG_DEBUG, self.previewPicture)
+            #logger.LOG( logger.LOG_DEBUG, self.previewVideoURL)
+            #logger.LOG( logger.LOG_DEBUG, self.description_fr)
+            #logger.LOG( logger.LOG_DEBUG, self.description_en)
 
             self._set_controls_labels()
             self._set_controls_visible()
 
         except:
-            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
-            self._close_dialog()
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            #self._close_dialog()
         xbmcgui.unlock()
         # Close the Loading Window
         DIALOG_PROGRESS.close()
 
-    
+    def _set_skin_colours( self ):
+        try:
+            xbmc.executebuiltin( "Skin.SetString(PassionSettingsColours,%s)" % ( self.settings[ "skin_colours_path" ], ) )
+        except:
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+
     def _get_info( self, defaults=False  ):
         """ reads info """
         fileName            = None
@@ -100,7 +111,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
         # On recupere le fichier de description des items
         self._downloadFile(self.srvItemDescripDir + self.srvItemDescripFile)
         self.soup =  BeautifulStoneSoup((open(os.path.join(self.mainwin.CacheDir,self.srvItemDescripFile), 'r')).read())
-        #LOG( LOG_INFO,self.soup.prettify())
+        #logger.LOG( logger.LOG_DEBUG,self.soup.prettify())
         cat = None
         
         if self.itemType == "Themes":
@@ -111,7 +122,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
             cat = self.soup.find("scripts")
         elif self.itemType == "Plugins Musique":
             cat = self.soup.find("musicplugin")
-            plugins
+            #plugins
         elif self.itemType == "Plugins Images":
             cat = self.soup.find("pictureplugin")
         elif self.itemType == "Plugins Programmes":
@@ -162,13 +173,14 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
                         break
                
         except Exception, e:
-            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         
         return fileName, title, version, language, date , previewPicture, previewVideoURL, description_fr, description_en
         
         
     def _get_settings( self, defaults=False  ):
         """ reads settings from conf file """
+        self.settings = Settings().get_settings( defaults=defaults )
         self.srvHost             = self.mainwin.configManager.getSrvHost()
         self.srvPassword         = self.mainwin.configManager.getSrvPassword()
         self.srvUser             = self.mainwin.configManager.getSrvUser()
@@ -189,12 +201,12 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
             localFile.close()
             ftp.quit()
         except:
-            LOG( LOG_ERROR, "_downloaddossier: Exception - Impossible de creer le dossier: %s", localAbsDirPath )
-            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+            logger.LOG( logger.LOG_DEBUG, "_downloaddossier: Exception - Impossible de creer le dossier: %s", localAbsDirPath )
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def _set_controls_labels( self ):
         # setlabel pour les controles du dialog qui a comme info exemple: id="100" et pour avoir son controle on fait un getControl( 100 )
-        LOG( LOG_INFO, "**** _set_controls_labels")
+        eval( logger.LOG_SELF_FUNCTION )
         try:
             if self.title != None:
                 self.getControl( 100 ).setLabel( self.title )
@@ -210,11 +222,11 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
                 langList = self.language.split('-')
                 label = ""
                 for lang in langList:
-                    if lang == 'fr':
+                    if lang.lower() == 'fr':
                         label = label +  _( 609 )
-                    elif lang == 'en':
+                    elif lang.lower() == 'en':
                         label = label +  _( 610 )
-                    elif lang == 'multi':
+                    elif lang.lower() == 'multi':
                         label = label +  _( 611 )
                     else:
                         label = label +  _( 612 )
@@ -225,20 +237,20 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
             # Clear all ListItems in this control list
             if self.previewPicture != None:
                 self.getControl( 200 ).setImage(self.previewPicture)
-                LOG( LOG_INFO, "**** image")
+                logger.LOG( logger.LOG_DEBUG, "**** image")
 
-            LOG( LOG_INFO,"Current language")
-            LOG( LOG_INFO,xbmc.getLanguage())
+            logger.LOG( logger.LOG_DEBUG,"Current language")
+            logger.LOG( logger.LOG_DEBUG,xbmc.getLanguage())
             if xbmc.getLanguage() == 'French':
-                LOG( LOG_INFO, "**** French")
+                logger.LOG( logger.LOG_DEBUG, "**** French")
                 if self.description_fr != None:
                     self.getControl( 250 ).setText( self.description_fr )
             else:
-                LOG( LOG_INFO, "**** Other language")
+                logger.LOG( logger.LOG_DEBUG, "**** Other language")
                 if self.description_en != None:
                     self.getControl( 250 ).setText( self.description_en )
         except:
-            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
 
     def _set_controls_visible( self ):
@@ -256,7 +268,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
                 self.getControl( control_id ).setVisible( False ) 
         
         except:
-            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         xbmcgui.unlock()
 
     def onFocus( self, controlID ):
@@ -266,29 +278,26 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
 
     def onClick( self, controlID ):
         try:
-            if controlID == 300:
-                #bouton zoom image.
-                self._save_settings()
-            elif controlID == 301:
+            #if controlID == 300:
+            #    #bouton zoom image.
+            #    self._save_settings()
+            if controlID == 301:
                 # bouton quitter, on ferme le dialog
                 self._close_dialog()
-            elif controlID == 302:
-                #bouton downlaod, non utilise pour le moment (desactive)
-                pass
+            #elif controlID == 302:
+            #    #bouton downlaod, non utilise pour le moment (desactive)
+            #    pass
             else:
                 pass
         except:
-            EXC_INFO( LOG_ERROR, sys.exc_info(), self )
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def onAction( self, action ):
         #( ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, ACTION_CONTEXT_MENU, )
         if action in ( 9, 10, 117 ): self._close_dialog()
 
     def _close_dialog( self, OK=False ):
-        # verifie si l'option default a ete utilise, si oui remets l'etat du custom backgroung
-        if not OK and ( self.use_custom_background != xbmc.getCondVisibility( "!Skin.HasSetting(use_passion_custom_background)" ) ):
-            xbmc.executebuiltin( "Skin.ToggleSetting(use_passion_custom_background)" )
-        xbmc.sleep( 100 )
+        #xbmc.sleep( 100 )
         self.close()
 
 
