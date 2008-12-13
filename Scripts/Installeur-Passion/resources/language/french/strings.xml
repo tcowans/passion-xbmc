@@ -66,30 +66,28 @@
   <string id="232">Corbeille</string>
   <string id="233">Trac Passion-Xbmc</string>
 
+  <string id="239">Récupération des topics...</string>
   <string id="240">Infos non disponible!</string>
   <string id="241">Impossible de récupérer les informations!</string>
 
   <!--SETTINGS STRINGS -->
   <string id="499">Version: %s</string>
   <string id="500">Paramètres</string>
-  <string id="501">Activer la modification du fichier sources.xml (obsolète)</string>
-  <string id="502">Limite des flux rss par page dans le direct infos</string>
+  <string id="501">Activer la modification du fichier sources.xml</string>
+  <string id="502">Limite des topics par page</string>
   <string id="503">[B]&#126;&#126;[/B]</string><!--illimited symbol -->
-  <string id="504">00|5|10|25|50|100</string><!--LIST LIMIT FOR FEEDS RSS: 00=illimited -->
+  <string id="504">00|5|10|25|50|100</string><!--LIST LIMIT FOR TOPICS IN DIRECT INFOS: 00=illimited -->
   <string id="505">Couleur du thème</string>
   <string id="506">Aucun</string>
   <string id="507">Activer l'arrière-plan personnel</string>
   <string id="508">Chemin:</string>
 
-  <string id="510">button setting 4</string>
-  <string id="511">button setting 5</string>
-  <string id="512">button setting 6</string>
-  <string id="513">button setting 7</string>
-  <string id="514">button setting 8</string>
-  <string id="515">button setting 9</string>
+  <string id="510">Activer la vérification de la mise à jour au démarrage</string>
+  <string id="511">Flux RSS</string>
+  <string id="512">Activer le mode débogue du [B]*script*[/B]</string>
 
   <string id="518">Navigateur Web</string>
-  <string id="519">Activer l'état d'attente</string>
+  <string id="519">Bloquer XBMC jusqu'à ce que le navigateur Web est été fermé</string>
   <string id="520">Sélectionnez le navigateur Web</string>
   <string id="521">Entrer le nom du navigateur Web</string>
   
@@ -107,5 +105,4 @@
   <string id="610">Anglais</string>
   <string id="611">Multilangues</string>
   <string id="612">Inconnu</string>
-  
 </strings>
