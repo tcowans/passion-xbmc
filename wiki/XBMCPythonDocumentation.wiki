@@ -6,8 +6,6 @@
 
 == [http://passion-xbmc.googlecode.com/svn/wiki/xbmcplugin.html xbmcplugin] ==
 
-== [http://passion-xbmc.googlecode.com/svn/wiki/xbmcclient.html xbmcclient] ==
-=== [http://xbmc.svn.sourceforge.net/viewvc/xbmc/branches/linuxport/XBMC/tools/EventClients/README.txt Pour plus d'infos lisez le readme.txt du EventClients] ===
-=== [http://xbmc.svn.sourceforge.net/viewvc/xbmc/branches/linuxport/XBMC/tools/EventClients/ Download tool EventClients] ===
+== [http://passion-xbmc.googlecode.com/svn/wiki/xbmcclient.html xbmcclient] == === [http://xbmc.svn.sourceforge.net/viewvc/xbmc/branches/linuxport/XBMC/tools/EventClients/README.txt Pour plus d'infos lisez le readme.txt du EventClients] === === [http://xbmc.svn.sourceforge.net/viewvc/xbmc/branches/linuxport/XBMC/tools/EventClients/ Download tool EventClients] ===
 
 === Dernière MAJ: 16 Décembre 2008 avec [http://xbmc.svn.sourceforge.net/viewvc/xbmc/branches/linuxport/?pathrev=16582 XBMC rev 16582] ===
