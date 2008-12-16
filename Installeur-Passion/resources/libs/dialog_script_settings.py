@@ -18,22 +18,38 @@ except:
     import script_log as logger
 
 
-#REPERTOIRE RACINE ( default.py )
-CWD = os.getcwd().rstrip( ";" )
-
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
 _ = sys.modules[ "__main__" ].__language__
 
 # script constants
 __script__ = sys.modules[ "__main__" ].__script__
-try: __svn_revision__ = sys.modules[ "__main__" ].__svn_revision__
-except: __svn_revision__ = 0
-if not __svn_revision__: __svn_revision__ = "0"
+__svn_revision__ = sys.modules[ "__main__" ].__svn_revision__ or "0"
 __version__ = "%s.%s" % ( sys.modules[ "__main__" ].__version__, __svn_revision__ )
 
 
 class ScriptSettings( xbmcgui.WindowXMLDialog ):
-    TOPIC_LIMIT = _( 504 ).split( "|" )#[ "00", "5", "10", "25", "50", "100" ]
+    TOPIC_LIMIT = _( 504 ).split( "|" ) #values[ "00", "5", "10", "25", "50", "100" ]
+
+    # control id's
+    CONTROL_OK_BUTTON = 80
+    CONTROL_CANCEL_BUTTON = 81
+    CONTROL_RESET_BUTTON = 82
+    CONTROL_VERSION_LABEL = 99
+    CONTROL_XML_UPDATE_BUTTON = 130
+    CONTROL_UPDATE_STARTUP_BUTTON = 140
+    CONTROL_SCRIPT_DEBUG_BUTTON = 150
+    CONTROL_DECREASE_COLOR_BUTTON = 200
+    CONTROL_INCREASE_COLOR_BUTTON = 210
+    CONTROL_SKIN_COLOR_LABEL = 220
+    CONTROL_CUSTOM_BACKGROUND_BUTTON = 230
+    CONTROL_DECREASE_RSS_BUTTON = 100
+    CONTROL_INCREASE_RSS_BUTTON = 110
+    CONTROL_RSS_FEEDS_LABEL = 120
+    CONTROL_DECREASE_TOPIC_BUTTON = 300
+    CONTROL_INCREASE_TOPIC_BUTTON = 310
+    CONTROL_LIMIT_TOPIC_LABEL = 320
+    CONTROL_WEB_BUTTON = 330
+    CONTROL_WIN32_WAIT_BUTTON = 340
 
     def __init__( self, *args, **kwargs ):
         xbmcgui.WindowXMLDialog.__init__( self, *args, **kwargs )
@@ -49,7 +65,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             self._set_skin_colours()
             self._set_controls_labels()
             self._set_controls_values()
-            #self._set_controls_visible()
+
             # recupere la valeur sur le démarrage, utiliser pour rafraifir en temps reel, si l'etat est pas le meme 
             self.coulour_on_load = self.settings[ "skin_colours_path" ]
             self.rss_on_load = self.settings[ "rss_feed" ]
@@ -67,7 +83,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             #solution temporaire questionne le user pour le background
             #la bonne solution serai que le bouton reset est ete activer et confirmer avec ok apres.
             custom_path = bool( xbmc.getInfoLabel( "Skin.String(passion_custom_background)" ) )
-            if custom_path and xbmcgui.Dialog().yesno( _( 500 ), "Voulez vous effacer le chemin de l'arrire-plan?" ):
+            if custom_path and xbmcgui.Dialog().yesno( _( 500 ), _( 509 ) ):
                 xbmc.executebuiltin( "Skin.Reset(passion_custom_background)" )
 
     def _set_skin_colours( self ):
@@ -79,8 +95,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
     def _set_controls_labels( self ):
         # setlabel pour les controles du dialog qui a comme info exemple: id="100" et pour avoir son controle on fait un getControl( 100 )
         try:
-            self.getControl( 99 ).setLabel( _( 499 ) % ( __version__, ) )
-            #self.getControl( 130 ).setLabel( _( 501 ) )
+            self.getControl( self.CONTROL_VERSION_LABEL ).setLabel( _( 499 ) % ( __version__, ) )
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
@@ -98,15 +113,13 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             #atlantis = not bool( re.search( "\\b(pre-8.10|8.10)\\b", xbmc.getInfoLabel( "System.BuildVersion" ) ) )
             #bouton pour activer desactiver la modification du fichier sources.xml
             #selon l'etat de self.settings[ "xbmc_xml_update" ], l'image du radiobutton sera blanc ou non visible
-            self.getControl( 130 ).setSelected( self.settings[ "xbmc_xml_update" ] )#atlantis )
+            self.getControl( self.CONTROL_XML_UPDATE_BUTTON ).setSelected( self.settings[ "xbmc_xml_update" ] )#atlantis )
             #selon l'etat de self.settings[ "update_startup" ], l'image du radiobutton sera blanc ou non visible
-            self.getControl( 140 ).setSelected( self.settings[ "update_startup" ] )
+            self.getControl( self.CONTROL_UPDATE_STARTUP_BUTTON ).setSelected( self.settings[ "update_startup" ] )
             #selon l'etat de self.settings[ "script_debug" ], l'image du radiobutton sera blanc ou non visible
-            self.getControl( 150 ).setSelected( self.settings[ "script_debug" ] )
+            self.getControl( self.CONTROL_SCRIPT_DEBUG_BUTTON ).setSelected( self.settings[ "script_debug" ] )
             #le bouton valider les changements ont le desactive, il va etre reactiver seulement s'il y a un changement dans les settings
-            self.getControl( 80 ).setEnabled( False )
-            #le bouton credits est desactiver, le temps d'implanter cette fonction
-            #self.getControl( 40 ).setEnabled( False )
+            self.getControl( self.CONTROL_OK_BUTTON ).setEnabled( False )
             # boutons pour le web
             self._set_control_web_visibility()
         except:
@@ -116,11 +129,11 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
     def _set_control_web_visibility( self ):
         compatible = ( SYSTEM_PLATFORM in ( "windows", "linux", "osx" ) )
         web_title = self.settings.get( "web_title", "" ) or  _( 506 )
-        self.getControl( 330 ).setLabel( _( 518 ), label2=web_title )
-        self.getControl( 330 ).setEnabled( compatible )
-        self.getControl( 330 ).setVisible( compatible )
-        self.getControl( 340 ).setSelected( self.settings[ "win32_exec_wait" ] )
-        self.getControl( 340 ).setEnabled( bool( self.settings[ "web_navigator" ] ) )
+        self.getControl( self.CONTROL_WEB_BUTTON ).setLabel( _( 518 ), label2=web_title )
+        self.getControl( self.CONTROL_WEB_BUTTON ).setEnabled( compatible )
+        self.getControl( self.CONTROL_WEB_BUTTON ).setVisible( compatible )
+        self.getControl( self.CONTROL_WIN32_WAIT_BUTTON ).setSelected( self.settings[ "win32_exec_wait" ] )
+        self.getControl( self.CONTROL_WIN32_WAIT_BUTTON ).setEnabled( bool( self.settings[ "web_navigator" ] ) )
 
     def _set_control_limit_topics( self ):
         try:
@@ -129,17 +142,9 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
                 self.topic_limit.rotate( -( int( self.TOPIC_LIMIT.index( self.topics_limit ) ) ) )
             limit = self.topic_limit[ 0 ]
             if limit == "00": limit = _( 503 )
-            self.getControl( 320 ).setLabel( _( 502 ), label2=limit )
+            self.getControl( self.CONTROL_LIMIT_TOPIC_LABEL ).setLabel( _( 502 ), label2=limit )
         except:
-            self.getControl( 320 ).setLabel( _( 502 ), label2=_( 503 ) )
-
-    def _get_default_hex_color( self ):
-        try:
-            default_hex_color = dict( self.skin_colours ).get( "default", "FFFFFFFF" )
-        except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-            default_hex_color = "FFFFFFFF"
-        return default_hex_color
+            self.getControl( self.CONTROL_LIMIT_TOPIC_LABEL ).setLabel( _( 502 ), label2=_( 503 ) )
 
     def _set_control_colors( self ):
         enable_control = False
@@ -149,14 +154,14 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
                 self.colors_limit = deque( self.names_colors )
 
                 self.skin_colour_path = self.settings[ "skin_colours_path" ]
-                self.skin_colour = self.settings[ "skin_colours" ] or self._get_default_hex_color()
+                self.skin_colour = self.settings[ "skin_colours" ] or get_default_hex_color()
 
                 if not self.names_colors[ 0 ] == self.skin_colour_path:
                     str_index = self.skin_colour_path, self.skin_colour
                     self.colors_limit.rotate( -( int( self.names_colors.index( str_index ) ) ) )
 
                 label2 = add_pretty_color( self.skin_colour_path, color=self.skin_colour )
-                self.getControl( 220 ).setLabel( _( 505 ), label2=label2 )
+                self.getControl( self.CONTROL_SKIN_COLOR_LABEL ).setLabel( _( 505 ), label2=label2 )
             else:
                 enable_control = True
         except:
@@ -164,8 +169,8 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             enable_control = True
         if enable_control:
             try:
-                self.getControl( 200 ).setEnabled( 0 )
-                self.getControl( 210 ).setEnabled( 0 )
+                self.getControl( self.CONTROL_DECREASE_COLOR_BUTTON ).setEnabled( 0 )
+                self.getControl( self.CONTROL_INCREASE_COLOR_BUTTON ).setEnabled( 0 )
             except:
                 logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
@@ -181,7 +186,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
                     self.url_set.rotate( -( int( str_index ) + 1 ) )
 
                 label2 = self.rss_feeds.get( self.url_set[ 0 ], {} ).get( "title", _( 506 ) )
-                self.getControl( 120 ).setLabel( _( 511 ), label2=label2 )
+                self.getControl( self.CONTROL_RSS_FEEDS_LABEL ).setLabel( _( 511 ), label2=label2 )
             else:
                 enable_control = True
         except:
@@ -189,30 +194,10 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             enable_control = True
         if enable_control:
             try:
-                self.getControl( 100 ).setEnabled( 0 )
-                self.getControl( 110 ).setEnabled( 0 )
+                self.getControl( self.CONTROL_DECREASE_RSS_BUTTON ).setEnabled( 0 )
+                self.getControl( self.CONTROL_INCREASE_RSS_BUTTON ).setEnabled( 0 )
             except:
                 logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-
-    def _set_controls_visible( self ):
-        pass
-        """
-        ici sa sert a rendre visible les controls qu'on veut voir
-        pour le moment il y a 1 parametre, donc les autres sont mis non visible
-        pour le futur on pourra les activer au besoin et coder sa fonction
-        penser a retirer les # de bouton_non_visible = [  ] par ordre de grandeur, suivant == ?
-        """
-        """
-        xbmcgui.lock()
-        try:
-            #bouton_non_visible = [  ]
-            #for control_id in bouton_non_visible:
-            self.getControl( ).setEnabled( False )
-            self.getControl( ).setVisible( False )
-        except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-        xbmcgui.unlock()
-        """
 
     def onFocus( self, controlID ):
         #cette fonction n'est pas utiliser ici, mais dans les XML si besoin
@@ -221,38 +206,38 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
 
     def onClick( self, controlID ):
         try:
-            if controlID in ( 300, 310 ):
+            if controlID in ( self.CONTROL_DECREASE_TOPIC_BUTTON, self.CONTROL_INCREASE_TOPIC_BUTTON ):
                 self.toggle_topic_control( controlID )
-            elif controlID in ( 200, 210 ):
+            elif controlID in ( self.CONTROL_DECREASE_COLOR_BUTTON, self.CONTROL_INCREASE_COLOR_BUTTON ):
                 self.toggle_color_control( controlID )
-            elif controlID in ( 100, 110 ):
+            elif controlID in ( self.CONTROL_DECREASE_RSS_BUTTON, self.CONTROL_INCREASE_RSS_BUTTON ):
                 self.toggle_rss_control( controlID )
-            elif controlID == 130:
+            elif controlID == self.CONTROL_XML_UPDATE_BUTTON:
                 #bouton pour activer desactiver la modification du fichier sources.xml
                 self._set_bool_setting( "xbmc_xml_update" )
-            elif controlID == 140:
+            elif controlID == self.CONTROL_UPDATE_STARTUP_BUTTON:
                 #bouton pour activer desactiver la verification de la mise à jour au demarrage
                 self._set_bool_setting( "update_startup" )
-            elif controlID == 150:
+            elif controlID == self.CONTROL_SCRIPT_DEBUG_BUTTON:
                 #bouton pour activer desactiver la mode debug du script seulement
                 self._set_bool_setting( "script_debug" )
-            elif controlID == 80:
+            elif controlID == self.CONTROL_OK_BUTTON:
                 #bouton ok on save les changements.
                 self._save_settings()
-            elif controlID == 81:
+            elif controlID == self.CONTROL_CANCEL_BUTTON:
                 # bouton annuler on ferme le dialog
                 self._close_dialog()
-            elif controlID == 82:
+            elif controlID == self.CONTROL_RESET_BUTTON:
                 #bouton reset settings, ont recup les settings par default
                 self._get_defaults()
-            elif controlID == 230:
+            elif controlID == self.CONTROL_CUSTOM_BACKGROUND_BUTTON:
                 #bouton custom background a ete activer depuis le xml
                 #balise utiliser: <onclick>Skin.ToggleSetting(use_passion_custom_background)</onclick>
-                self.getControl( 80 ).setEnabled( True )
-            elif controlID == 330:
+                self.getControl( self.CONTROL_OK_BUTTON ).setEnabled( True )
+            elif controlID == self.CONTROL_WEB_BUTTON:
                 #bouton pour choisir le navigateur web
                 self._set_web_navigator()
-            elif controlID == 340:
+            elif controlID == self.CONTROL_WIN32_WAIT_BUTTON:
                 #bouton pour activer desactiver wait state win32 seulement
                 self._set_bool_setting( "win32_exec_wait" )
             else:
@@ -265,9 +250,9 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
         if web_navigator:
             self.settings[ "web_title" ] = web_navigator[ 0 ]
             self.settings[ "web_navigator" ] = web_navigator[ 1 ]
-            self.getControl( 330 ).setLabel( _( 518 ), label2=self.settings[ "web_title" ] )
-            self.getControl( 340 ).setEnabled( True )
-            self.getControl( 80 ).setEnabled( True )
+            self.getControl( self.CONTROL_WEB_BUTTON ).setLabel( _( 518 ), label2=self.settings[ "web_title" ] )
+            self.getControl( self.CONTROL_WIN32_WAIT_BUTTON ).setEnabled( True )
+            self.getControl( self.CONTROL_OK_BUTTON ).setEnabled( True )
 
     def _set_bool_setting( self, str_setting ):
         if not self.settings[ str_setting ]:
@@ -276,61 +261,61 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
         else:
             #Desactive
             self.settings[ str_setting ] = False
-        self.getControl( 80 ).setEnabled( True )
+        self.getControl( self.CONTROL_OK_BUTTON ).setEnabled( True )
         # delete le str
         del str_setting
 
     def toggle_rss_control( self, controlID ):
         try:
             try:
-                if controlID == 100: self.url_set.rotate( 1 )
-                elif controlID == 110: self.url_set.rotate( -1 )
+                if controlID == self.CONTROL_DECREASE_RSS_BUTTON: self.url_set.rotate( 1 )
+                elif controlID == self.CONTROL_INCREASE_RSS_BUTTON: self.url_set.rotate( -1 )
             except: pass
             toggle_preset = False
             rss_id = self.url_set[ 0 ]
             try:
                 label2 = self.rss_feeds.get( rss_id, {} ).get( "title", _( 506 ) )
-                self.getControl( 120 ).setLabel( _( 511 ), label2=label2 )
+                self.getControl( self.CONTROL_RSS_FEEDS_LABEL ).setLabel( _( 511 ), label2=label2 )
                 toggle_preset = True
             except: pass
             if toggle_preset:
                 self.settings[ "rss_feed" ] = rss_id
-                self.getControl( 80 ).setEnabled( True )
+                self.getControl( self.CONTROL_OK_BUTTON ).setEnabled( True )
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def toggle_topic_control( self, controlID ):
         try:
             try:
-                if controlID == 300: self.topic_limit.rotate( 1 )
-                elif controlID == 310: self.topic_limit.rotate( -1 )
+                if controlID == self.CONTROL_DECREASE_TOPIC_BUTTON: self.topic_limit.rotate( 1 )
+                elif controlID == self.CONTROL_INCREASE_TOPIC_BUTTON: self.topic_limit.rotate( -1 )
             except: pass
             toggle_preset = False
             limit = self.topic_limit[ 0 ]
             try:
                 if limit == "00": limit = _( 503 )
-                self.getControl( 320 ).setLabel( _( 502 ), label2=limit )
+                self.getControl( self.CONTROL_LIMIT_TOPIC_LABEL ).setLabel( _( 502 ), label2=limit )
                 toggle_preset = True
             except: pass
             if toggle_preset:
                 self.topics_limit = limit
                 self.settings[ "topics_limit" ] = self.topics_limit
-                self.getControl( 80 ).setEnabled( True )
+                self.getControl( self.CONTROL_OK_BUTTON ).setEnabled( True )
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def toggle_color_control( self, controlID ):
         try:
             try:
-                if controlID == 200: self.colors_limit.rotate( 1 )
-                elif controlID == 210: self.colors_limit.rotate( -1 )
+                if controlID == self.CONTROL_DECREASE_COLOR_BUTTON: self.colors_limit.rotate( 1 )
+                elif controlID == self.CONTROL_INCREASE_COLOR_BUTTON: self.colors_limit.rotate( -1 )
             except: pass
             toggle_preset = False
             color_index = self.names_colors.index( self.colors_limit[ 0 ] )
             name_color = self.names_colors[ color_index ]
             try:
                 label2 = add_pretty_color( name_color[ 0 ], color=name_color[ 1 ] )
-                self.getControl( 220 ).setLabel( _( 505 ), label2=label2 )
+                self.getControl( self.CONTROL_SKIN_COLOR_LABEL ).setLabel( _( 505 ), label2=label2 )
                 toggle_preset = True
             except: pass
             if toggle_preset:
@@ -338,14 +323,13 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
                 self.skin_colour = name_color[ 1 ]
                 self.settings[ "skin_colours_path" ] = self.skin_colour_path
                 self.settings[ "skin_colours" ] = self.skin_colour
-                self.getControl( 80 ).setEnabled( True )
+                self.getControl( self.CONTROL_OK_BUTTON ).setEnabled( True )
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def _save_settings( self ):
         """ save values settings """
         OK = Settings().save_settings( self.settings )
-        self.mainwin.configManager.setXbmcXmlUpdate( self.settings[ "xbmc_xml_update" ] )
         self.mainwin._get_settings()
         if self.rss_on_load != self.settings[ "rss_feed" ]:
             self.mainwin._start_rss_timer()
@@ -357,7 +341,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
         """ resets values to defaults """
         self._get_settings( defaults=True )
         self._set_controls_values()
-        self.getControl( 80 ).setEnabled( True )
+        self.getControl( self.CONTROL_OK_BUTTON ).setEnabled( True )
 
     def onAction( self, action ):
         #( ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, ACTION_CONTEXT_MENU, )
@@ -374,7 +358,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
 def show_settings( mainwin ):
     file_xml = "passion-DialogScriptSettings.xml"
     #depuis la revision 14811 on a plus besoin de mettre le chemin complet, la racine suffit
-    dir_path = CWD #xbmc.translatePath( os.path.join( CWD, "resources" ) )
+    dir_path = os.getcwd().rstrip( ";" )
     #recupere le nom du skin et si force_fallback est vrai, il va chercher les images du defaultSkin.
     current_skin, force_fallback = getUserSkin()
 

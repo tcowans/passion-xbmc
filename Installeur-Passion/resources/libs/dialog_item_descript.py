@@ -2,7 +2,6 @@
 #Modules general
 import os
 import sys
-from collections import deque
 import ftplib
 
 #Other module
@@ -22,40 +21,30 @@ except:
     import script_log as logger
 
 
-#REPERTOIRE RACINE ( default.py )
-CWD = os.getcwd().rstrip( ";" )
-
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
 _ = sys.modules[ "__main__" ].__language__
-
-# script constants
-__script__ = sys.modules[ "__main__" ].__script__
-try: __svn_revision__ = sys.modules[ "__main__" ].__svn_revision__
-except: __svn_revision__ = 0
-if not __svn_revision__: __svn_revision__ = "0"
-__version__ = "%s.%s" % ( sys.modules[ "__main__" ].__version__, __svn_revision__ )
-
 
 DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
 
 class ItemDescription( xbmcgui.WindowXMLDialog ):
+    # control id's
+    CONTROL_TITLE_LABEL = 100
+    CONTROL_VERSION_LABEL = 101
+    CONTROL_LANGUAGE_LABEL = 110
+    CONTROL_PREVIEW_IMAGE = 200
+    CONTROL_DESC_TEXTBOX = 250
+    CONTROL_CANCEL_BUTTON = 301
+    CONTROL_DOWNLOAD_BUTTON = 302
+
     def __init__( self, *args, **kwargs ):
         xbmcgui.WindowXMLDialog.__init__( self, *args, **kwargs )
-
         # Display Loading Window while we are loading the information from the website
-        if xbmc.getCondVisibility( "Window.IsActive(progressdialog)" ):
-            #si le dialog PROGRESS est visible update
-            DIALOG_PROGRESS.update( -1, _( 104 ), _( 110 ) )
-        else:
-            #si le dialog PROGRESS n'est pas visible affiche le dialog
-            DIALOG_PROGRESS.create( _( 0 ), _( 104 ), _( 110 ) )
-        # __init__ normal de python
-        # On recupere le "self" de le fenetre principal pour benificier de ces variables.
-        
+        DIALOG_PROGRESS.create( _( 0 ), _( 104 ), _( 110 ) )
+
         #TODO: deplacer ce chemin dans le fichier de configuration
         self.serverDir  = "/.passionxbmc/Installeur-Passion/content/"
-        
+
         self.mainwin  = kwargs[ "mainwin" ]
         self.itemName = kwargs[ "itemName" ]
         self.itemType = kwargs[ "itemType" ]
@@ -67,10 +56,10 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
         # onInit est pour le windowXML seulement
         xbmcgui.lock()
         try:
-            logger.LOG( logger.LOG_DEBUG, self.itemName)
-            logger.LOG( logger.LOG_DEBUG, self.itemType)
+            logger.LOG( logger.LOG_DEBUG, self.itemName )
+            logger.LOG( logger.LOG_DEBUG, self.itemType )
             
-            self.fileName, self.title, self.version, self.language, self.date , self.previewPicture, self.previewVideoURL, self.description_fr, self.description_en = self._get_info()
+            self.fileName, self.title, self.version, self.language, self.date, self.previewPicture, self.previewVideoURL, self.description_fr, self.description_en = self._get_info()
             #logger.LOG( logger.LOG_DEBUG, self.fileName)
             #logger.LOG( logger.LOG_DEBUG, self.title)
             #logger.LOG( logger.LOG_DEBUG, self.version)
@@ -98,15 +87,15 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
 
     def _get_info( self, defaults=False  ):
         """ reads info """
-        fileName            = None
-        title               = None
-        version             = None
-        language            = None
-        date                = None
-        previewPicture      = None
-        previewVideoURL     = None
-        description_fr      = None
-        description_en      = None
+        fileName        = None
+        title           = None
+        version         = None
+        language        = None
+        date            = None
+        previewPicture  = None
+        previewVideoURL = None
+        description_fr  = None
+        description_en  = None
 
         # On recupere le fichier de description des items
         self._downloadFile(self.srvItemDescripDir + self.srvItemDescripFile)
@@ -122,7 +111,6 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
             cat = self.soup.find("scripts")
         elif self.itemType == "Plugins Musique":
             cat = self.soup.find("musicplugin")
-            #plugins
         elif self.itemType == "Plugins Images":
             cat = self.soup.find("pictureplugin")
         elif self.itemType == "Plugins Programmes":
@@ -209,34 +197,34 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
         eval( logger.LOG_SELF_FUNCTION )
         try:
             if self.title != None:
-                self.getControl( 100 ).setLabel( self.title )
+                self.getControl( self.CONTROL_TITLE_LABEL ).setLabel( self.title )
             else:
-                self.getControl( 100 ).setLabel( self.itemName )
+                self.getControl( self.CONTROL_TITLE_LABEL ).setLabel( self.itemName )
                 
             if self.version != None:
-                self.getControl( 101 ).setLabel( _( 499 ) % ( self.version, ) )
+                self.getControl( self.CONTROL_VERSION_LABEL ).setLabel( _( 499 ) % ( self.version, ) )
             else:
-                self.getControl( 101 ).setLabel( _( 499 ) % ( '-', ) )
+                self.getControl( self.CONTROL_VERSION_LABEL ).setLabel( _( 499 ) % ( '-', ) )
                 
             if self.language != None:
                 langList = self.language.split('-')
                 label = ""
                 for lang in langList:
                     if lang.lower() == 'fr':
-                        label = label +  _( 609 )
+                        label = label + _( 609 )
                     elif lang.lower() == 'en':
-                        label = label +  _( 610 )
+                        label = label + _( 610 )
                     elif lang.lower() == 'multi':
-                        label = label +  _( 611 )
+                        label = label + _( 611 )
                     else:
-                        label = label +  _( 612 )
+                        label = label + _( 612 )
                     if langList.index(lang) < (len(langList) - 1):
                         label = label + ' / '
-                self.getControl( 110 ).setLabel( label )
+                self.getControl( self.CONTROL_LANGUAGE_LABEL ).setLabel( label )
             
             # Clear all ListItems in this control list
             if self.previewPicture != None:
-                self.getControl( 200 ).setImage(self.previewPicture)
+                self.getControl( self.CONTROL_PREVIEW_IMAGE ).setImage(self.previewPicture)
                 logger.LOG( logger.LOG_DEBUG, "**** image")
 
             logger.LOG( logger.LOG_DEBUG,"Current language")
@@ -244,29 +232,20 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
             if xbmc.getLanguage() == 'French':
                 logger.LOG( logger.LOG_DEBUG, "**** French")
                 if self.description_fr != None:
-                    self.getControl( 250 ).setText( self.description_fr )
+                    self.getControl( self.CONTROL_DESC_TEXTBOX ).setText( self.description_fr )
             else:
                 logger.LOG( logger.LOG_DEBUG, "**** Other language")
                 if self.description_en != None:
-                    self.getControl( 250 ).setText( self.description_en )
+                    self.getControl( self.CONTROL_DESC_TEXTBOX ).setText( self.description_en )
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
 
     def _set_controls_visible( self ):
-        """
-        ici sa sert a rendre visible les controls qu'on veut voir 
-        pour le moment il y a 1 parametre, donc les autres sont mis non visible
-        pour le futur on pourra les activer au besoin et coder sa fonction
-        penser a retirer les # de bouton_non_visible = [ 170, 180, 190, 200, 210, 220, 230, 240 ] par ordre de grandeur, suivant == 170
-        """
         xbmcgui.lock()
         try:
-            bouton_non_visible = [ 302 ]
-            for control_id in bouton_non_visible:
-                self.getControl( control_id ).setEnabled( False )
-                self.getControl( control_id ).setVisible( False ) 
-        
+            self.getControl( self.CONTROL_DOWNLOAD_BUTTON ).setEnabled( False )
+            self.getControl( self.CONTROL_DOWNLOAD_BUTTON ).setVisible( False ) 
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         xbmcgui.unlock()
@@ -278,13 +257,10 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
 
     def onClick( self, controlID ):
         try:
-            #if controlID == 300:
-            #    #bouton zoom image.
-            #    self._save_settings()
-            if controlID == 301:
+            if controlID == self.CONTROL_CANCEL_BUTTON:
                 # bouton quitter, on ferme le dialog
                 self._close_dialog()
-            #elif controlID == 302:
+            #elif controlID == self.CONTROL_DOWNLOAD_BUTTON:
             #    #bouton downlaod, non utilise pour le moment (desactive)
             #    pass
             else:
@@ -304,7 +280,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
 def show_descript( mainwin, selectedItem , typeItem):
     file_xml = "passion-ItemDescript.xml"
     #depuis la revision 14811 on a plus besoin de mettre le chemin complet, la racine suffit
-    dir_path = CWD #xbmc.translatePath( os.path.join( CWD, "resources" ) ) 
+    dir_path = os.getcwd().rstrip( ";" )
     #recupere le nom du skin et si force_fallback est vrai, il va chercher les images du defaultSkin.
     current_skin, force_fallback = getUserSkin()
 
