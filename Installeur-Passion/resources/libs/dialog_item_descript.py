@@ -124,7 +124,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
                     if item.filename.string.encode("cp1252") == self.itemName:
                         if hasattr(item.filename,'string'):
                             if item.filename.string != None:
-                                fileName            = item.filename.string.encode("cp1252")
+                                fileName = item.filename.string.encode("cp1252")
                         if hasattr(item.title,'string'):
                             if item.title.string != None:
                                 title = item.title.string.encode("cp1252")
@@ -169,11 +169,11 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
     def _get_settings( self, defaults=False  ):
         """ reads settings from conf file """
         self.settings = Settings().get_settings( defaults=defaults )
-        self.srvHost             = self.mainwin.configManager.getSrvHost()
-        self.srvPassword         = self.mainwin.configManager.getSrvPassword()
-        self.srvUser             = self.mainwin.configManager.getSrvUser()
-        self.srvItemDescripDir   = self.mainwin.configManager.getSrvItemDescripDir()
-        self.srvItemDescripFile  = self.mainwin.configManager.getSrvItemDescripFile()
+        self.srvHost            = self.mainwin.configManager.getSrvHost()
+        self.srvPassword        = self.mainwin.configManager.getSrvPassword()
+        self.srvUser            = self.mainwin.configManager.getSrvUser()
+        self.srvItemDescripDir  = self.mainwin.configManager.getSrvItemDescripDir()
+        self.srvItemDescripFile = self.mainwin.configManager.getSrvItemDescripFile()
 
 
     def _downloadFile(self,remoteFilePath):
@@ -277,7 +277,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
         self.close()
 
 
-def show_descript( mainwin, selectedItem , typeItem):
+def show_descript( mainwin, selectedItem , typeItem ):
     file_xml = "passion-ItemDescript.xml"
     #depuis la revision 14811 on a plus besoin de mettre le chemin complet, la racine suffit
     dir_path = os.getcwd().rstrip( ";" )
