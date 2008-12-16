@@ -2512,13 +2512,17 @@ example:<br>
 &nbsp;&nbsp;-&nbsp;listitem&nbsp;=&nbsp;xbmcgui.<a href="#ListItem">ListItem</a>('Casino&nbsp;Royale',&nbsp;'[PG-13]',&nbsp;'blank-poster.tbn',&nbsp;'poster.tbn')<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%">Methods defined here:<br>
-<dl><dt><a name="ListItem-addContextMenuItems"><strong>addContextMenuItems</strong></a>(...)</dt><dd><tt><a href="#ListItem-addContextMenuItems">addContextMenuItems</a>([(label,&nbsp;action,)*])&nbsp;--&nbsp;Adds&nbsp;item(s)&nbsp;to&nbsp;the&nbsp;context&nbsp;menu&nbsp;for&nbsp;media&nbsp;lists.<br>
+<dl><dt><a name="ListItem-addContextMenuItems"><strong>addContextMenuItems</strong></a>(...)</dt><dd><tt><a href="#ListItem-addContextMenuItems">addContextMenuItems</a>([(label,&nbsp;action,)*],&nbsp;replaceItems)&nbsp;--&nbsp;Adds&nbsp;item(s)&nbsp;to&nbsp;the&nbsp;context&nbsp;menu&nbsp;for&nbsp;media&nbsp;lists.<br>
 &nbsp;<br>
-[(label,&nbsp;action,)*]&nbsp;:&nbsp;list&nbsp;-&nbsp;A&nbsp;list&nbsp;of&nbsp;tuples&nbsp;consisting&nbsp;of&nbsp;label&nbsp;and&nbsp;action&nbsp;pairs.<br>
+items&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;list&nbsp;-&nbsp;[(label,&nbsp;action,)*]&nbsp;A&nbsp;list&nbsp;of&nbsp;tuples&nbsp;consisting&nbsp;of&nbsp;label&nbsp;and&nbsp;action&nbsp;pairs.<br>
 &nbsp;&nbsp;-&nbsp;label&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string&nbsp;or&nbsp;unicode&nbsp;-&nbsp;item's&nbsp;label.<br>
 &nbsp;&nbsp;-&nbsp;action&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string&nbsp;-&nbsp;any&nbsp;built-in&nbsp;function&nbsp;to&nbsp;perform.<br>
+replaceItems&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;[opt]&nbsp;bool&nbsp;-&nbsp;True=only&nbsp;your&nbsp;items&nbsp;will&nbsp;show/False=your&nbsp;items&nbsp;will&nbsp;be&nbsp;added&nbsp;to&nbsp;context&nbsp;menu(Default).<br>
 &nbsp;<br>
 List&nbsp;of&nbsp;functions&nbsp;-&nbsp;<a href="http://xbmc.org/wiki/?title=List_of_Built_In_Functions">http://xbmc.org/wiki/?title=List_of_Built_In_Functions</a>&nbsp;<br>
+&nbsp;<br>
+*Note,&nbsp;You&nbsp;can&nbsp;use&nbsp;the&nbsp;above&nbsp;as&nbsp;keywords&nbsp;for&nbsp;arguments&nbsp;and&nbsp;skip&nbsp;certain&nbsp;optional&nbsp;arguments.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Once&nbsp;you&nbsp;use&nbsp;a&nbsp;keyword,&nbsp;all&nbsp;following&nbsp;arguments&nbsp;require&nbsp;the&nbsp;keyword.<br>
 &nbsp;<br>
 example:<br>
 &nbsp;&nbsp;-&nbsp;listitem.<a href="#ListItem-addContextMenuItems">addContextMenuItems</a>([('Theater&nbsp;Showtimes',&nbsp;'XBMC.RunScript(q:\\scripts\\showtimes\\default.py,Iron&nbsp;Man)',)])</tt></dd></dl>
@@ -2680,6 +2684,18 @@ Throws:&nbsp;SystemError,&nbsp;on&nbsp;Internal&nbsp;error<br>
 
 <dl><dt><a name="Window-getHeight"><strong>getHeight</strong></a>(...)</dt><dd><tt><a href="#Window-getHeight">getHeight</a>(self)&nbsp;--&nbsp;Returns&nbsp;the&nbsp;height&nbsp;of&nbsp;this&nbsp;screen.</tt></dd></dl>
 
+<dl><dt><a name="Window-getProperty"><strong>getProperty</strong></a>(...)</dt><dd><tt><a href="#Window-getProperty">getProperty</a>(key)&nbsp;--&nbsp;Returns&nbsp;a&nbsp;window&nbsp;property&nbsp;as&nbsp;a&nbsp;string,&nbsp;similar&nbsp;to&nbsp;an&nbsp;infolabel.<br>
+&nbsp;<br>
+key&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string&nbsp;-&nbsp;property&nbsp;name.<br>
+&nbsp;<br>
+*Note,&nbsp;Key&nbsp;is&nbsp;NOT&nbsp;case&nbsp;sensitive.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You&nbsp;can&nbsp;use&nbsp;the&nbsp;above&nbsp;as&nbsp;keywords&nbsp;for&nbsp;arguments&nbsp;and&nbsp;skip&nbsp;certain&nbsp;optional&nbsp;arguments.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Once&nbsp;you&nbsp;use&nbsp;a&nbsp;keyword,&nbsp;all&nbsp;following&nbsp;arguments&nbsp;require&nbsp;the&nbsp;keyword.<br>
+&nbsp;<br>
+example:<br>
+&nbsp;&nbsp;-&nbsp;win&nbsp;=&nbsp;xbmcgui.<a href="#Window">Window</a>(xbmcgui.<a href="#-getCurrentWindowId">getCurrentWindowId</a>())<br>
+&nbsp;&nbsp;-&nbsp;category&nbsp;=&nbsp;win.<a href="#Window-getProperty">getProperty</a>('Category')</tt></dd></dl>
+
 <dl><dt><a name="Window-getResolution"><strong>getResolution</strong></a>(...)</dt><dd><tt><a href="#Window-getResolution">getResolution</a>(self)&nbsp;--&nbsp;Returns&nbsp;the&nbsp;resolution&nbsp;of&nbsp;the&nbsp;screen.&nbsp;The&nbsp;returned&nbsp;value&nbsp;is&nbsp;one&nbsp;of&nbsp;the&nbsp;following:<br>
 0&nbsp;-&nbsp;1080i&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(1920x1080)<br>
 1&nbsp;-&nbsp;720p&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(1280x720)<br>
@@ -2734,6 +2750,19 @@ Throws:&nbsp;TypeError,&nbsp;if&nbsp;supplied&nbsp;argument&nbsp;is&nbsp;not&nbs
 Throws:&nbsp;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SystemError,&nbsp;on&nbsp;Internal&nbsp;error<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RuntimeError,&nbsp;if&nbsp;control&nbsp;is&nbsp;not&nbsp;added&nbsp;to&nbsp;a&nbsp;window</tt></dd></dl>
+
+<dl><dt><a name="Window-setProperty"><strong>setProperty</strong></a>(...)</dt><dd><tt><a href="#Window-setProperty">setProperty</a>(key,&nbsp;value)&nbsp;--&nbsp;Sets&nbsp;a&nbsp;window&nbsp;property,&nbsp;similar&nbsp;to&nbsp;an&nbsp;infolabel.<br>
+&nbsp;<br>
+key&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string&nbsp;-&nbsp;property&nbsp;name.<br>
+value&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string&nbsp;or&nbsp;unicode&nbsp;-&nbsp;value&nbsp;of&nbsp;property.<br>
+&nbsp;<br>
+*Note,&nbsp;Key&nbsp;is&nbsp;NOT&nbsp;case&nbsp;sensitive.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You&nbsp;can&nbsp;use&nbsp;the&nbsp;above&nbsp;as&nbsp;keywords&nbsp;for&nbsp;arguments&nbsp;and&nbsp;skip&nbsp;certain&nbsp;optional&nbsp;arguments.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Once&nbsp;you&nbsp;use&nbsp;a&nbsp;keyword,&nbsp;all&nbsp;following&nbsp;arguments&nbsp;require&nbsp;the&nbsp;keyword.<br>
+&nbsp;<br>
+example:<br>
+&nbsp;&nbsp;-&nbsp;win&nbsp;=&nbsp;xbmcgui.<a href="#Window">Window</a>(xbmcgui.<a href="#-getCurrentWindowId">getCurrentWindowId</a>())<br>
+&nbsp;&nbsp;-&nbsp;win.<a href="#Window-setProperty">setProperty</a>('Category',&nbsp;'Newest')</tt></dd></dl>
 
 <dl><dt><a name="Window-show"><strong>show</strong></a>(...)</dt><dd><tt><a href="#Window-show">show</a>(self)&nbsp;--&nbsp;Show&nbsp;this&nbsp;window.<br>
 &nbsp;<br>
@@ -2812,6 +2841,18 @@ Throws:&nbsp;SystemError,&nbsp;on&nbsp;Internal&nbsp;error<br>
 
 <dl><dt><a name="WindowDialog-getHeight"><strong>getHeight</strong></a>(...)</dt><dd><tt><a href="#WindowDialog-getHeight">getHeight</a>(self)&nbsp;--&nbsp;Returns&nbsp;the&nbsp;height&nbsp;of&nbsp;this&nbsp;screen.</tt></dd></dl>
 
+<dl><dt><a name="WindowDialog-getProperty"><strong>getProperty</strong></a>(...)</dt><dd><tt><a href="#WindowDialog-getProperty">getProperty</a>(key)&nbsp;--&nbsp;Returns&nbsp;a&nbsp;window&nbsp;property&nbsp;as&nbsp;a&nbsp;string,&nbsp;similar&nbsp;to&nbsp;an&nbsp;infolabel.<br>
+&nbsp;<br>
+key&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string&nbsp;-&nbsp;property&nbsp;name.<br>
+&nbsp;<br>
+*Note,&nbsp;Key&nbsp;is&nbsp;NOT&nbsp;case&nbsp;sensitive.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You&nbsp;can&nbsp;use&nbsp;the&nbsp;above&nbsp;as&nbsp;keywords&nbsp;for&nbsp;arguments&nbsp;and&nbsp;skip&nbsp;certain&nbsp;optional&nbsp;arguments.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Once&nbsp;you&nbsp;use&nbsp;a&nbsp;keyword,&nbsp;all&nbsp;following&nbsp;arguments&nbsp;require&nbsp;the&nbsp;keyword.<br>
+&nbsp;<br>
+example:<br>
+&nbsp;&nbsp;-&nbsp;win&nbsp;=&nbsp;xbmcgui.<a href="#Window">Window</a>(xbmcgui.<a href="#-getCurrentWindowId">getCurrentWindowId</a>())<br>
+&nbsp;&nbsp;-&nbsp;category&nbsp;=&nbsp;win.<a href="#WindowDialog-getProperty">getProperty</a>('Category')</tt></dd></dl>
+
 <dl><dt><a name="WindowDialog-getResolution"><strong>getResolution</strong></a>(...)</dt><dd><tt><a href="#WindowDialog-getResolution">getResolution</a>(self)&nbsp;--&nbsp;Returns&nbsp;the&nbsp;resolution&nbsp;of&nbsp;the&nbsp;screen.&nbsp;The&nbsp;returned&nbsp;value&nbsp;is&nbsp;one&nbsp;of&nbsp;the&nbsp;following:<br>
 0&nbsp;-&nbsp;1080i&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(1920x1080)<br>
 1&nbsp;-&nbsp;720p&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(1280x720)<br>
@@ -2866,6 +2907,19 @@ Throws:&nbsp;TypeError,&nbsp;if&nbsp;supplied&nbsp;argument&nbsp;is&nbsp;not&nbs
 Throws:&nbsp;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SystemError,&nbsp;on&nbsp;Internal&nbsp;error<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RuntimeError,&nbsp;if&nbsp;control&nbsp;is&nbsp;not&nbsp;added&nbsp;to&nbsp;a&nbsp;window</tt></dd></dl>
+
+<dl><dt><a name="WindowDialog-setProperty"><strong>setProperty</strong></a>(...)</dt><dd><tt><a href="#WindowDialog-setProperty">setProperty</a>(key,&nbsp;value)&nbsp;--&nbsp;Sets&nbsp;a&nbsp;window&nbsp;property,&nbsp;similar&nbsp;to&nbsp;an&nbsp;infolabel.<br>
+&nbsp;<br>
+key&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string&nbsp;-&nbsp;property&nbsp;name.<br>
+value&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string&nbsp;or&nbsp;unicode&nbsp;-&nbsp;value&nbsp;of&nbsp;property.<br>
+&nbsp;<br>
+*Note,&nbsp;Key&nbsp;is&nbsp;NOT&nbsp;case&nbsp;sensitive.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You&nbsp;can&nbsp;use&nbsp;the&nbsp;above&nbsp;as&nbsp;keywords&nbsp;for&nbsp;arguments&nbsp;and&nbsp;skip&nbsp;certain&nbsp;optional&nbsp;arguments.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Once&nbsp;you&nbsp;use&nbsp;a&nbsp;keyword,&nbsp;all&nbsp;following&nbsp;arguments&nbsp;require&nbsp;the&nbsp;keyword.<br>
+&nbsp;<br>
+example:<br>
+&nbsp;&nbsp;-&nbsp;win&nbsp;=&nbsp;xbmcgui.<a href="#Window">Window</a>(xbmcgui.<a href="#-getCurrentWindowId">getCurrentWindowId</a>())<br>
+&nbsp;&nbsp;-&nbsp;win.<a href="#WindowDialog-setProperty">setProperty</a>('Category',&nbsp;'Newest')</tt></dd></dl>
 
 <dl><dt><a name="WindowDialog-show"><strong>show</strong></a>(...)</dt><dd><tt><a href="#WindowDialog-show">show</a>(self)&nbsp;--&nbsp;Show&nbsp;this&nbsp;window.<br>
 &nbsp;<br>
@@ -3011,6 +3065,18 @@ Throws:&nbsp;SystemError,&nbsp;on&nbsp;Internal&nbsp;error<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RuntimeError,&nbsp;if&nbsp;no&nbsp;control&nbsp;has&nbsp;focus</tt></dd></dl>
 
 <dl><dt><a name="WindowXML-getHeight"><strong>getHeight</strong></a>(...)</dt><dd><tt><a href="#WindowXML-getHeight">getHeight</a>(self)&nbsp;--&nbsp;Returns&nbsp;the&nbsp;height&nbsp;of&nbsp;this&nbsp;screen.</tt></dd></dl>
+
+<dl><dt><a name="WindowXML-getProperty"><strong>getProperty</strong></a>(...)</dt><dd><tt><a href="#WindowXML-getProperty">getProperty</a>(key)&nbsp;--&nbsp;Returns&nbsp;a&nbsp;window&nbsp;property&nbsp;as&nbsp;a&nbsp;string,&nbsp;similar&nbsp;to&nbsp;an&nbsp;infolabel.<br>
+&nbsp;<br>
+key&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string&nbsp;-&nbsp;property&nbsp;name.<br>
+&nbsp;<br>
+*Note,&nbsp;Key&nbsp;is&nbsp;NOT&nbsp;case&nbsp;sensitive.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You&nbsp;can&nbsp;use&nbsp;the&nbsp;above&nbsp;as&nbsp;keywords&nbsp;for&nbsp;arguments&nbsp;and&nbsp;skip&nbsp;certain&nbsp;optional&nbsp;arguments.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Once&nbsp;you&nbsp;use&nbsp;a&nbsp;keyword,&nbsp;all&nbsp;following&nbsp;arguments&nbsp;require&nbsp;the&nbsp;keyword.<br>
+&nbsp;<br>
+example:<br>
+&nbsp;&nbsp;-&nbsp;win&nbsp;=&nbsp;xbmcgui.<a href="#Window">Window</a>(xbmcgui.<a href="#-getCurrentWindowId">getCurrentWindowId</a>())<br>
+&nbsp;&nbsp;-&nbsp;category&nbsp;=&nbsp;win.<a href="#WindowXML-getProperty">getProperty</a>('Category')</tt></dd></dl>
 
 <dl><dt><a name="WindowXML-getResolution"><strong>getResolution</strong></a>(...)</dt><dd><tt><a href="#WindowXML-getResolution">getResolution</a>(self)&nbsp;--&nbsp;Returns&nbsp;the&nbsp;resolution&nbsp;of&nbsp;the&nbsp;screen.&nbsp;The&nbsp;returned&nbsp;value&nbsp;is&nbsp;one&nbsp;of&nbsp;the&nbsp;following:<br>
 0&nbsp;-&nbsp;1080i&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(1920x1080)<br>
@@ -3212,6 +3278,18 @@ Throws:&nbsp;SystemError,&nbsp;on&nbsp;Internal&nbsp;error<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RuntimeError,&nbsp;if&nbsp;no&nbsp;control&nbsp;has&nbsp;focus</tt></dd></dl>
 
 <dl><dt><a name="WindowXMLDialog-getHeight"><strong>getHeight</strong></a>(...)</dt><dd><tt><a href="#WindowXMLDialog-getHeight">getHeight</a>(self)&nbsp;--&nbsp;Returns&nbsp;the&nbsp;height&nbsp;of&nbsp;this&nbsp;screen.</tt></dd></dl>
+
+<dl><dt><a name="WindowXMLDialog-getProperty"><strong>getProperty</strong></a>(...)</dt><dd><tt><a href="#WindowXMLDialog-getProperty">getProperty</a>(key)&nbsp;--&nbsp;Returns&nbsp;a&nbsp;window&nbsp;property&nbsp;as&nbsp;a&nbsp;string,&nbsp;similar&nbsp;to&nbsp;an&nbsp;infolabel.<br>
+&nbsp;<br>
+key&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string&nbsp;-&nbsp;property&nbsp;name.<br>
+&nbsp;<br>
+*Note,&nbsp;Key&nbsp;is&nbsp;NOT&nbsp;case&nbsp;sensitive.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You&nbsp;can&nbsp;use&nbsp;the&nbsp;above&nbsp;as&nbsp;keywords&nbsp;for&nbsp;arguments&nbsp;and&nbsp;skip&nbsp;certain&nbsp;optional&nbsp;arguments.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Once&nbsp;you&nbsp;use&nbsp;a&nbsp;keyword,&nbsp;all&nbsp;following&nbsp;arguments&nbsp;require&nbsp;the&nbsp;keyword.<br>
+&nbsp;<br>
+example:<br>
+&nbsp;&nbsp;-&nbsp;win&nbsp;=&nbsp;xbmcgui.<a href="#Window">Window</a>(xbmcgui.<a href="#-getCurrentWindowId">getCurrentWindowId</a>())<br>
+&nbsp;&nbsp;-&nbsp;category&nbsp;=&nbsp;win.<a href="#WindowXMLDialog-getProperty">getProperty</a>('Category')</tt></dd></dl>
 
 <dl><dt><a name="WindowXMLDialog-getResolution"><strong>getResolution</strong></a>(...)</dt><dd><tt><a href="#WindowXMLDialog-getResolution">getResolution</a>(self)&nbsp;--&nbsp;Returns&nbsp;the&nbsp;resolution&nbsp;of&nbsp;the&nbsp;screen.&nbsp;The&nbsp;returned&nbsp;value&nbsp;is&nbsp;one&nbsp;of&nbsp;the&nbsp;following:<br>
 0&nbsp;-&nbsp;1080i&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(1920x1080)<br>

@@ -1,0 +1,1006 @@
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>xbmcclient</strong></big></big> (version 0.0.3)</font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:///Q|/system/python/lib/xbmcclient.py">q:\system\python\lib\xbmcclient.py</a></font></td></tr></table>
+    <p><tt>Implementation&nbsp;of&nbsp;XBMC's&nbsp;UDP&nbsp;based&nbsp;input&nbsp;system.<br>
+&nbsp;<br>
+A&nbsp;set&nbsp;of&nbsp;classes&nbsp;that&nbsp;abstract&nbsp;the&nbsp;various&nbsp;packets&nbsp;that&nbsp;the&nbsp;event&nbsp;server<br>
+currently&nbsp;supports.&nbsp;In&nbsp;addition,&nbsp;there's&nbsp;also&nbsp;a&nbsp;class,&nbsp;<a href="#XBMCClient">XBMCClient</a>,&nbsp;that<br>
+provides&nbsp;functions&nbsp;that&nbsp;sends&nbsp;the&nbsp;various&nbsp;packets.&nbsp;Use&nbsp;<a href="#XBMCClient">XBMCClient</a>&nbsp;if&nbsp;you<br>
+don't&nbsp;need&nbsp;complete&nbsp;control&nbsp;over&nbsp;packet&nbsp;structure.<br>
+&nbsp;<br>
+The&nbsp;basic&nbsp;workflow&nbsp;involves:<br>
+&nbsp;<br>
+1.&nbsp;Send&nbsp;a&nbsp;HELO&nbsp;packet<br>
+2.&nbsp;Send&nbsp;x&nbsp;number&nbsp;of&nbsp;valid&nbsp;packets<br>
+3.&nbsp;Send&nbsp;a&nbsp;BYE&nbsp;packet<br>
+&nbsp;<br>
+IMPORTANT&nbsp;NOTE&nbsp;ABOUT&nbsp;TIMEOUTS:<br>
+A&nbsp;client&nbsp;is&nbsp;considered&nbsp;to&nbsp;be&nbsp;timed&nbsp;out&nbsp;if&nbsp;XBMC&nbsp;doesn't&nbsp;received&nbsp;a&nbsp;packet<br>
+at&nbsp;least&nbsp;once&nbsp;every&nbsp;60&nbsp;seconds.&nbsp;To&nbsp;"ping"&nbsp;XBMC&nbsp;with&nbsp;an&nbsp;empty&nbsp;packet&nbsp;use<br>
+<a href="#PacketPING">PacketPING</a>&nbsp;or&nbsp;<a href="#XBMCClient">XBMCClient</a>.ping().&nbsp;See&nbsp;the&nbsp;documentation&nbsp;for&nbsp;details.</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#fffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="time.html">time</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="xbmcclient.html#Packet">Packet</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="xbmcclient.html#PacketACTION">PacketACTION</a>
+</font></dt><dt><font face="helvetica, arial"><a href="xbmcclient.html#PacketBUTTON">PacketBUTTON</a>
+</font></dt><dt><font face="helvetica, arial"><a href="xbmcclient.html#PacketBYE">PacketBYE</a>
+</font></dt><dt><font face="helvetica, arial"><a href="xbmcclient.html#PacketHELO">PacketHELO</a>
+</font></dt><dt><font face="helvetica, arial"><a href="xbmcclient.html#PacketLOG">PacketLOG</a>
+</font></dt><dt><font face="helvetica, arial"><a href="xbmcclient.html#PacketMOUSE">PacketMOUSE</a>
+</font></dt><dt><font face="helvetica, arial"><a href="xbmcclient.html#PacketNOTIFICATION">PacketNOTIFICATION</a>
+</font></dt><dt><font face="helvetica, arial"><a href="xbmcclient.html#PacketPING">PacketPING</a>
+</font></dt></dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="xbmcclient.html#XBMCClient">XBMCClient</a>
+</font></dt></dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Packet">class <strong>Packet</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Base&nbsp;class&nbsp;that&nbsp;implements&nbsp;a&nbsp;single&nbsp;event&nbsp;packet.<br>
+&nbsp;<br>
+-&nbsp;Generic&nbsp;packet&nbsp;structure&nbsp;(maximum&nbsp;1024&nbsp;bytes&nbsp;per&nbsp;packet)<br>
+-&nbsp;Header&nbsp;is&nbsp;32&nbsp;bytes&nbsp;long,&nbsp;so&nbsp;992&nbsp;bytes&nbsp;available&nbsp;for&nbsp;payload<br>
+-&nbsp;large&nbsp;payloads&nbsp;can&nbsp;be&nbsp;split&nbsp;into&nbsp;multiple&nbsp;packets&nbsp;using&nbsp;H4&nbsp;and&nbsp;H5<br>
+&nbsp;&nbsp;H5&nbsp;should&nbsp;contain&nbsp;total&nbsp;no.&nbsp;of&nbsp;packets&nbsp;in&nbsp;such&nbsp;a&nbsp;case<br>
+-&nbsp;H6&nbsp;contains&nbsp;length&nbsp;of&nbsp;P1,&nbsp;which&nbsp;is&nbsp;limited&nbsp;to&nbsp;992&nbsp;bytes<br>
+-&nbsp;if&nbsp;H5&nbsp;is&nbsp;0&nbsp;or&nbsp;1,&nbsp;then&nbsp;H4&nbsp;will&nbsp;be&nbsp;ignored&nbsp;(single&nbsp;packet&nbsp;msg)<br>
+-&nbsp;H7&nbsp;must&nbsp;be&nbsp;set&nbsp;to&nbsp;zeros&nbsp;for&nbsp;now<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-----------------------------<br>
+&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;-H1&nbsp;Signature&nbsp;("XBMC")&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;-&nbsp;4&nbsp;&nbsp;x&nbsp;CHAR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4B<br>
+&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;-H2&nbsp;Version&nbsp;(eg.&nbsp;2.0)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;-&nbsp;2&nbsp;&nbsp;x&nbsp;UNSIGNED&nbsp;CHAR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2B<br>
+&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;-H3&nbsp;PacketType&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;-&nbsp;1&nbsp;&nbsp;x&nbsp;UNSIGNED&nbsp;SHORT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2B<br>
+&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;-H4&nbsp;Sequence&nbsp;number&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;-&nbsp;1&nbsp;&nbsp;x&nbsp;UNSIGNED&nbsp;LONG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4B<br>
+&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;-H5&nbsp;No.&nbsp;of&nbsp;packets&nbsp;in&nbsp;msg&nbsp;|&nbsp;-&nbsp;1&nbsp;&nbsp;x&nbsp;UNSIGNED&nbsp;LONG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4B<br>
+&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;-H7&nbsp;Client's&nbsp;unique&nbsp;token&nbsp;|&nbsp;-&nbsp;1&nbsp;&nbsp;x&nbsp;UNSIGNED&nbsp;LONG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4B<br>
+&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;-H8&nbsp;Reserved&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;-&nbsp;10&nbsp;x&nbsp;UNSIGNED&nbsp;CHAR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10B<br>
+&nbsp;&nbsp;&nbsp;&nbsp;|---------------------------|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;-P1&nbsp;payload&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;-<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-----------------------------<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Packet-__init__"><strong>__init__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Packet-append_payload"><strong>append_payload</strong></a>(self, blob)</dt><dd><tt>Append&nbsp;to&nbsp;existing&nbsp;payload<br>
+&nbsp;<br>
+Arguments:<br>
+blob&nbsp;--&nbsp;binary&nbsp;data&nbsp;to&nbsp;append&nbsp;to&nbsp;the&nbsp;current&nbsp;payload</tt></dd></dl>
+
+<dl><dt><a name="Packet-get_header"><strong>get_header</strong></a>(self, packettype<font color="#909090">=-1</font>, seq<font color="#909090">=1</font>, maxseq<font color="#909090">=1</font>, payload_size<font color="#909090">=0</font>)</dt><dd><tt>Construct&nbsp;a&nbsp;header&nbsp;and&nbsp;return&nbsp;as&nbsp;string<br>
+&nbsp;<br>
+Keyword&nbsp;arguments:<br>
+packettype&nbsp;--&nbsp;valid&nbsp;packet&nbsp;types&nbsp;are&nbsp;PT_HELO,&nbsp;PT_BYE,&nbsp;PT_BUTTON,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PT_MOUSE,&nbsp;PT_PING,&nbsp;PT_BORADCAST,&nbsp;PT_NOTIFICATION,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PT_BLOB,&nbsp;PT_DEBUG<br>
+seq&nbsp;--&nbsp;the&nbsp;sequence&nbsp;of&nbsp;this&nbsp;packet&nbsp;for&nbsp;a&nbsp;multi&nbsp;packet&nbsp;message<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;1)<br>
+maxseq&nbsp;--&nbsp;the&nbsp;total&nbsp;number&nbsp;of&nbsp;packets&nbsp;for&nbsp;a&nbsp;multi&nbsp;packet&nbsp;message<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;1)<br>
+payload_size&nbsp;--&nbsp;the&nbsp;size&nbsp;of&nbsp;the&nbsp;payload&nbsp;of&nbsp;this&nbsp;packet&nbsp;(default&nbsp;0)</tt></dd></dl>
+
+<dl><dt><a name="Packet-get_payload_size"><strong>get_payload_size</strong></a>(self, seq)</dt><dd><tt>Returns&nbsp;the&nbsp;calculated&nbsp;payload&nbsp;size&nbsp;for&nbsp;the&nbsp;particular&nbsp;packet<br>
+&nbsp;<br>
+Arguments:<br>
+seq&nbsp;--&nbsp;the&nbsp;sequence&nbsp;number</tt></dd></dl>
+
+<dl><dt><a name="Packet-get_udp_message"><strong>get_udp_message</strong></a>(self, packetnum<font color="#909090">=1</font>)</dt><dd><tt>Construct&nbsp;the&nbsp;UDP&nbsp;message&nbsp;for&nbsp;the&nbsp;specified&nbsp;packetnum&nbsp;and&nbsp;return<br>
+as&nbsp;string<br>
+&nbsp;<br>
+Keyword&nbsp;arguments:<br>
+packetnum&nbsp;--&nbsp;the&nbsp;packet&nbsp;no.&nbsp;for&nbsp;which&nbsp;to&nbsp;construct&nbsp;the&nbsp;message<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;1)</tt></dd></dl>
+
+<dl><dt><a name="Packet-num_packets"><strong>num_packets</strong></a>(self)</dt><dd><tt>Return&nbsp;the&nbsp;number&nbsp;of&nbsp;packets&nbsp;required&nbsp;for&nbsp;payload</tt></dd></dl>
+
+<dl><dt><a name="Packet-send"><strong>send</strong></a>(self, sock, addr, uid<font color="#909090">=1229432755</font>)</dt><dd><tt>Send&nbsp;the&nbsp;entire&nbsp;message&nbsp;to&nbsp;the&nbsp;specified&nbsp;socket&nbsp;and&nbsp;address.<br>
+&nbsp;<br>
+Arguments:<br>
+sock&nbsp;--&nbsp;datagram&nbsp;socket&nbsp;object&nbsp;(socket.socket)<br>
+addr&nbsp;--&nbsp;address,&nbsp;port&nbsp;pair&nbsp;(eg:&nbsp;("127.0.0.1",&nbsp;9777)&nbsp;)<br>
+uid&nbsp;&nbsp;--&nbsp;unique&nbsp;identification</tt></dd></dl>
+
+<dl><dt><a name="Packet-set_payload"><strong>set_payload</strong></a>(self, payload)</dt><dd><tt>Set&nbsp;the&nbsp;payload&nbsp;for&nbsp;this&nbsp;packet<br>
+&nbsp;<br>
+Arguments:<br>
+payload&nbsp;--&nbsp;binary&nbsp;data&nbsp;that&nbsp;contains&nbsp;the&nbsp;payload</tt></dd></dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="PacketACTION">class <strong>PacketACTION</strong></a>(<a href="xbmcclient.html#Packet">Packet</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>An&nbsp;ACTION&nbsp;packet<br>
+&nbsp;<br>
+An&nbsp;ACTION&nbsp;packet&nbsp;tells&nbsp;XBMC&nbsp;to&nbsp;do&nbsp;the&nbsp;action&nbsp;specified,&nbsp;based&nbsp;on&nbsp;the&nbsp;type&nbsp;it&nbsp;knows&nbsp;were&nbsp;it&nbsp;needs&nbsp;to&nbsp;be&nbsp;sent.<br>
+The&nbsp;idea&nbsp;is&nbsp;that&nbsp;this&nbsp;will&nbsp;be&nbsp;as&nbsp;in&nbsp;scripting/skining&nbsp;and&nbsp;keymapping,&nbsp;just&nbsp;triggered&nbsp;from&nbsp;afar.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="PacketACTION-__init__"><strong>__init__</strong></a>(self, actionmessage<font color="#909090">=''</font>, actiontype<font color="#909090">=1</font>)</dt><dd><tt>Keyword&nbsp;arguments:<br>
+loglevel&nbsp;--&nbsp;the&nbsp;loglevel,&nbsp;follows&nbsp;XBMC&nbsp;standard.<br>
+logmessage&nbsp;--&nbsp;the&nbsp;message&nbsp;to&nbsp;log<br>
+autoprint&nbsp;--&nbsp;if&nbsp;the&nbsp;logmessage&nbsp;should&nbsp;automaticly&nbsp;be&nbsp;printed&nbsp;to&nbsp;stdout</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="xbmcclient.html#Packet">Packet</a>:<br>
+<dl><dt><a name="PacketACTION-append_payload"><strong>append_payload</strong></a>(self, blob)</dt><dd><tt>Append&nbsp;to&nbsp;existing&nbsp;payload<br>
+&nbsp;<br>
+Arguments:<br>
+blob&nbsp;--&nbsp;binary&nbsp;data&nbsp;to&nbsp;append&nbsp;to&nbsp;the&nbsp;current&nbsp;payload</tt></dd></dl>
+
+<dl><dt><a name="PacketACTION-get_header"><strong>get_header</strong></a>(self, packettype<font color="#909090">=-1</font>, seq<font color="#909090">=1</font>, maxseq<font color="#909090">=1</font>, payload_size<font color="#909090">=0</font>)</dt><dd><tt>Construct&nbsp;a&nbsp;header&nbsp;and&nbsp;return&nbsp;as&nbsp;string<br>
+&nbsp;<br>
+Keyword&nbsp;arguments:<br>
+packettype&nbsp;--&nbsp;valid&nbsp;packet&nbsp;types&nbsp;are&nbsp;PT_HELO,&nbsp;PT_BYE,&nbsp;PT_BUTTON,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PT_MOUSE,&nbsp;PT_PING,&nbsp;PT_BORADCAST,&nbsp;PT_NOTIFICATION,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PT_BLOB,&nbsp;PT_DEBUG<br>
+seq&nbsp;--&nbsp;the&nbsp;sequence&nbsp;of&nbsp;this&nbsp;packet&nbsp;for&nbsp;a&nbsp;multi&nbsp;packet&nbsp;message<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;1)<br>
+maxseq&nbsp;--&nbsp;the&nbsp;total&nbsp;number&nbsp;of&nbsp;packets&nbsp;for&nbsp;a&nbsp;multi&nbsp;packet&nbsp;message<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;1)<br>
+payload_size&nbsp;--&nbsp;the&nbsp;size&nbsp;of&nbsp;the&nbsp;payload&nbsp;of&nbsp;this&nbsp;packet&nbsp;(default&nbsp;0)</tt></dd></dl>
+
+<dl><dt><a name="PacketACTION-get_payload_size"><strong>get_payload_size</strong></a>(self, seq)</dt><dd><tt>Returns&nbsp;the&nbsp;calculated&nbsp;payload&nbsp;size&nbsp;for&nbsp;the&nbsp;particular&nbsp;packet<br>
+&nbsp;<br>
+Arguments:<br>
+seq&nbsp;--&nbsp;the&nbsp;sequence&nbsp;number</tt></dd></dl>
+
+<dl><dt><a name="PacketACTION-get_udp_message"><strong>get_udp_message</strong></a>(self, packetnum<font color="#909090">=1</font>)</dt><dd><tt>Construct&nbsp;the&nbsp;UDP&nbsp;message&nbsp;for&nbsp;the&nbsp;specified&nbsp;packetnum&nbsp;and&nbsp;return<br>
+as&nbsp;string<br>
+&nbsp;<br>
+Keyword&nbsp;arguments:<br>
+packetnum&nbsp;--&nbsp;the&nbsp;packet&nbsp;no.&nbsp;for&nbsp;which&nbsp;to&nbsp;construct&nbsp;the&nbsp;message<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;1)</tt></dd></dl>
+
+<dl><dt><a name="PacketACTION-num_packets"><strong>num_packets</strong></a>(self)</dt><dd><tt>Return&nbsp;the&nbsp;number&nbsp;of&nbsp;packets&nbsp;required&nbsp;for&nbsp;payload</tt></dd></dl>
+
+<dl><dt><a name="PacketACTION-send"><strong>send</strong></a>(self, sock, addr, uid<font color="#909090">=1229432755</font>)</dt><dd><tt>Send&nbsp;the&nbsp;entire&nbsp;message&nbsp;to&nbsp;the&nbsp;specified&nbsp;socket&nbsp;and&nbsp;address.<br>
+&nbsp;<br>
+Arguments:<br>
+sock&nbsp;--&nbsp;datagram&nbsp;socket&nbsp;object&nbsp;(socket.socket)<br>
+addr&nbsp;--&nbsp;address,&nbsp;port&nbsp;pair&nbsp;(eg:&nbsp;("127.0.0.1",&nbsp;9777)&nbsp;)<br>
+uid&nbsp;&nbsp;--&nbsp;unique&nbsp;identification</tt></dd></dl>
+
+<dl><dt><a name="PacketACTION-set_payload"><strong>set_payload</strong></a>(self, payload)</dt><dd><tt>Set&nbsp;the&nbsp;payload&nbsp;for&nbsp;this&nbsp;packet<br>
+&nbsp;<br>
+Arguments:<br>
+payload&nbsp;--&nbsp;binary&nbsp;data&nbsp;that&nbsp;contains&nbsp;the&nbsp;payload</tt></dd></dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="PacketBUTTON">class <strong>PacketBUTTON</strong></a>(<a href="xbmcclient.html#Packet">Packet</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>A&nbsp;BUTTON&nbsp;packet<br>
+&nbsp;<br>
+A&nbsp;button&nbsp;packet&nbsp;send&nbsp;a&nbsp;key&nbsp;press&nbsp;or&nbsp;release&nbsp;event&nbsp;to&nbsp;XBMC<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="PacketBUTTON-__init__"><strong>__init__</strong></a>(self, code<font color="#909090">=0</font>, repeat<font color="#909090">=1</font>, down<font color="#909090">=1</font>, queue<font color="#909090">=0</font>, map_name<font color="#909090">=''</font>, button_name<font color="#909090">=''</font>, amount<font color="#909090">=0</font>, axis<font color="#909090">=0</font>)</dt><dd><tt>Keyword&nbsp;arguments:<br>
+code&nbsp;--&nbsp;raw&nbsp;button&nbsp;code&nbsp;(default:&nbsp;0)<br>
+repeat&nbsp;--&nbsp;this&nbsp;key&nbsp;press&nbsp;should&nbsp;repeat&nbsp;until&nbsp;released&nbsp;(default:&nbsp;1)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Note&nbsp;that&nbsp;queued&nbsp;pressed&nbsp;cannot&nbsp;repeat.<br>
+down&nbsp;--&nbsp;if&nbsp;this&nbsp;is&nbsp;1,&nbsp;it&nbsp;implies&nbsp;a&nbsp;press&nbsp;event,&nbsp;0&nbsp;implies&nbsp;a&nbsp;release<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;event.&nbsp;(default:&nbsp;1)<br>
+queue&nbsp;--&nbsp;a&nbsp;queued&nbsp;key&nbsp;press&nbsp;means&nbsp;that&nbsp;the&nbsp;button&nbsp;event&nbsp;is<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;executed&nbsp;just&nbsp;once&nbsp;after&nbsp;which&nbsp;the&nbsp;next&nbsp;key&nbsp;press&nbsp;is<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;processed.&nbsp;It&nbsp;can&nbsp;be&nbsp;used&nbsp;for&nbsp;macros.&nbsp;Currently&nbsp;there<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;is&nbsp;no&nbsp;support&nbsp;for&nbsp;time&nbsp;delays&nbsp;between&nbsp;queued&nbsp;presses.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default:&nbsp;0)<br>
+map_name&nbsp;--&nbsp;a&nbsp;combination&nbsp;of&nbsp;map_name&nbsp;and&nbsp;button_name&nbsp;refers&nbsp;to&nbsp;a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mapping&nbsp;in&nbsp;the&nbsp;user's&nbsp;Keymap.xml&nbsp;or&nbsp;Lircmap.xml.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map_name&nbsp;can&nbsp;be&nbsp;one&nbsp;of&nbsp;the&nbsp;following:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"KB"&nbsp;=&gt;&nbsp;standard&nbsp;keyboard&nbsp;map&nbsp;(&nbsp;&lt;keyboard&gt;&nbsp;section&nbsp;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"XG"&nbsp;=&gt;&nbsp;xbox&nbsp;gamepad&nbsp;map&nbsp;(&nbsp;&lt;gamepad&gt;&nbsp;section&nbsp;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"R1"&nbsp;=&gt;&nbsp;xbox&nbsp;remote&nbsp;map&nbsp;(&nbsp;&lt;remote&gt;&nbsp;section&nbsp;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"R2"&nbsp;=&gt;&nbsp;xbox&nbsp;universal&nbsp;remote&nbsp;map&nbsp;(&nbsp;&lt;universalremote&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;section&nbsp;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"LI:devicename"&nbsp;=&gt;&nbsp;LIRC&nbsp;remote&nbsp;map&nbsp;where&nbsp;'devicename'&nbsp;is&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;actual&nbsp;device's&nbsp;name<br>
+button_name&nbsp;--&nbsp;a&nbsp;button&nbsp;name&nbsp;defined&nbsp;in&nbsp;the&nbsp;map&nbsp;specified&nbsp;in&nbsp;map_name.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For&nbsp;example,&nbsp;if&nbsp;map_name&nbsp;is&nbsp;"KB"&nbsp;refering&nbsp;to&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;keyboard&gt;&nbsp;section&nbsp;in&nbsp;Keymap.xml&nbsp;then,&nbsp;valid<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;button_names&nbsp;include&nbsp;"printscreen",&nbsp;"minus",&nbsp;"x",&nbsp;etc.<br>
+amount&nbsp;--&nbsp;unimplemented&nbsp;for&nbsp;now;&nbsp;in&nbsp;the&nbsp;future&nbsp;it&nbsp;will&nbsp;be&nbsp;used&nbsp;for<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;specifying&nbsp;magnitude&nbsp;of&nbsp;analog&nbsp;key&nbsp;press&nbsp;events</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="xbmcclient.html#Packet">Packet</a>:<br>
+<dl><dt><a name="PacketBUTTON-append_payload"><strong>append_payload</strong></a>(self, blob)</dt><dd><tt>Append&nbsp;to&nbsp;existing&nbsp;payload<br>
+&nbsp;<br>
+Arguments:<br>
+blob&nbsp;--&nbsp;binary&nbsp;data&nbsp;to&nbsp;append&nbsp;to&nbsp;the&nbsp;current&nbsp;payload</tt></dd></dl>
+
+<dl><dt><a name="PacketBUTTON-get_header"><strong>get_header</strong></a>(self, packettype<font color="#909090">=-1</font>, seq<font color="#909090">=1</font>, maxseq<font color="#909090">=1</font>, payload_size<font color="#909090">=0</font>)</dt><dd><tt>Construct&nbsp;a&nbsp;header&nbsp;and&nbsp;return&nbsp;as&nbsp;string<br>
+&nbsp;<br>
+Keyword&nbsp;arguments:<br>
+packettype&nbsp;--&nbsp;valid&nbsp;packet&nbsp;types&nbsp;are&nbsp;PT_HELO,&nbsp;PT_BYE,&nbsp;PT_BUTTON,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PT_MOUSE,&nbsp;PT_PING,&nbsp;PT_BORADCAST,&nbsp;PT_NOTIFICATION,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PT_BLOB,&nbsp;PT_DEBUG<br>
+seq&nbsp;--&nbsp;the&nbsp;sequence&nbsp;of&nbsp;this&nbsp;packet&nbsp;for&nbsp;a&nbsp;multi&nbsp;packet&nbsp;message<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;1)<br>
+maxseq&nbsp;--&nbsp;the&nbsp;total&nbsp;number&nbsp;of&nbsp;packets&nbsp;for&nbsp;a&nbsp;multi&nbsp;packet&nbsp;message<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;1)<br>
+payload_size&nbsp;--&nbsp;the&nbsp;size&nbsp;of&nbsp;the&nbsp;payload&nbsp;of&nbsp;this&nbsp;packet&nbsp;(default&nbsp;0)</tt></dd></dl>
+
+<dl><dt><a name="PacketBUTTON-get_payload_size"><strong>get_payload_size</strong></a>(self, seq)</dt><dd><tt>Returns&nbsp;the&nbsp;calculated&nbsp;payload&nbsp;size&nbsp;for&nbsp;the&nbsp;particular&nbsp;packet<br>
+&nbsp;<br>
+Arguments:<br>
+seq&nbsp;--&nbsp;the&nbsp;sequence&nbsp;number</tt></dd></dl>
+
+<dl><dt><a name="PacketBUTTON-get_udp_message"><strong>get_udp_message</strong></a>(self, packetnum<font color="#909090">=1</font>)</dt><dd><tt>Construct&nbsp;the&nbsp;UDP&nbsp;message&nbsp;for&nbsp;the&nbsp;specified&nbsp;packetnum&nbsp;and&nbsp;return<br>
+as&nbsp;string<br>
+&nbsp;<br>
+Keyword&nbsp;arguments:<br>
+packetnum&nbsp;--&nbsp;the&nbsp;packet&nbsp;no.&nbsp;for&nbsp;which&nbsp;to&nbsp;construct&nbsp;the&nbsp;message<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;1)</tt></dd></dl>
+
+<dl><dt><a name="PacketBUTTON-num_packets"><strong>num_packets</strong></a>(self)</dt><dd><tt>Return&nbsp;the&nbsp;number&nbsp;of&nbsp;packets&nbsp;required&nbsp;for&nbsp;payload</tt></dd></dl>
+
+<dl><dt><a name="PacketBUTTON-send"><strong>send</strong></a>(self, sock, addr, uid<font color="#909090">=1229432755</font>)</dt><dd><tt>Send&nbsp;the&nbsp;entire&nbsp;message&nbsp;to&nbsp;the&nbsp;specified&nbsp;socket&nbsp;and&nbsp;address.<br>
+&nbsp;<br>
+Arguments:<br>
+sock&nbsp;--&nbsp;datagram&nbsp;socket&nbsp;object&nbsp;(socket.socket)<br>
+addr&nbsp;--&nbsp;address,&nbsp;port&nbsp;pair&nbsp;(eg:&nbsp;("127.0.0.1",&nbsp;9777)&nbsp;)<br>
+uid&nbsp;&nbsp;--&nbsp;unique&nbsp;identification</tt></dd></dl>
+
+<dl><dt><a name="PacketBUTTON-set_payload"><strong>set_payload</strong></a>(self, payload)</dt><dd><tt>Set&nbsp;the&nbsp;payload&nbsp;for&nbsp;this&nbsp;packet<br>
+&nbsp;<br>
+Arguments:<br>
+payload&nbsp;--&nbsp;binary&nbsp;data&nbsp;that&nbsp;contains&nbsp;the&nbsp;payload</tt></dd></dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="PacketBYE">class <strong>PacketBYE</strong></a>(<a href="xbmcclient.html#Packet">Packet</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>A&nbsp;BYE&nbsp;packet<br>
+&nbsp;<br>
+A&nbsp;BYE&nbsp;packet&nbsp;terminates&nbsp;the&nbsp;connection&nbsp;to&nbsp;XBMC.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="PacketBYE-__init__"><strong>__init__</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="xbmcclient.html#Packet">Packet</a>:<br>
+<dl><dt><a name="PacketBYE-append_payload"><strong>append_payload</strong></a>(self, blob)</dt><dd><tt>Append&nbsp;to&nbsp;existing&nbsp;payload<br>
+&nbsp;<br>
+Arguments:<br>
+blob&nbsp;--&nbsp;binary&nbsp;data&nbsp;to&nbsp;append&nbsp;to&nbsp;the&nbsp;current&nbsp;payload</tt></dd></dl>
+
+<dl><dt><a name="PacketBYE-get_header"><strong>get_header</strong></a>(self, packettype<font color="#909090">=-1</font>, seq<font color="#909090">=1</font>, maxseq<font color="#909090">=1</font>, payload_size<font color="#909090">=0</font>)</dt><dd><tt>Construct&nbsp;a&nbsp;header&nbsp;and&nbsp;return&nbsp;as&nbsp;string<br>
+&nbsp;<br>
+Keyword&nbsp;arguments:<br>
+packettype&nbsp;--&nbsp;valid&nbsp;packet&nbsp;types&nbsp;are&nbsp;PT_HELO,&nbsp;PT_BYE,&nbsp;PT_BUTTON,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PT_MOUSE,&nbsp;PT_PING,&nbsp;PT_BORADCAST,&nbsp;PT_NOTIFICATION,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PT_BLOB,&nbsp;PT_DEBUG<br>
+seq&nbsp;--&nbsp;the&nbsp;sequence&nbsp;of&nbsp;this&nbsp;packet&nbsp;for&nbsp;a&nbsp;multi&nbsp;packet&nbsp;message<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;1)<br>
+maxseq&nbsp;--&nbsp;the&nbsp;total&nbsp;number&nbsp;of&nbsp;packets&nbsp;for&nbsp;a&nbsp;multi&nbsp;packet&nbsp;message<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;1)<br>
+payload_size&nbsp;--&nbsp;the&nbsp;size&nbsp;of&nbsp;the&nbsp;payload&nbsp;of&nbsp;this&nbsp;packet&nbsp;(default&nbsp;0)</tt></dd></dl>
+
+<dl><dt><a name="PacketBYE-get_payload_size"><strong>get_payload_size</strong></a>(self, seq)</dt><dd><tt>Returns&nbsp;the&nbsp;calculated&nbsp;payload&nbsp;size&nbsp;for&nbsp;the&nbsp;particular&nbsp;packet<br>
+&nbsp;<br>
+Arguments:<br>
+seq&nbsp;--&nbsp;the&nbsp;sequence&nbsp;number</tt></dd></dl>
+
+<dl><dt><a name="PacketBYE-get_udp_message"><strong>get_udp_message</strong></a>(self, packetnum<font color="#909090">=1</font>)</dt><dd><tt>Construct&nbsp;the&nbsp;UDP&nbsp;message&nbsp;for&nbsp;the&nbsp;specified&nbsp;packetnum&nbsp;and&nbsp;return<br>
+as&nbsp;string<br>
+&nbsp;<br>
+Keyword&nbsp;arguments:<br>
+packetnum&nbsp;--&nbsp;the&nbsp;packet&nbsp;no.&nbsp;for&nbsp;which&nbsp;to&nbsp;construct&nbsp;the&nbsp;message<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;1)</tt></dd></dl>
+
+<dl><dt><a name="PacketBYE-num_packets"><strong>num_packets</strong></a>(self)</dt><dd><tt>Return&nbsp;the&nbsp;number&nbsp;of&nbsp;packets&nbsp;required&nbsp;for&nbsp;payload</tt></dd></dl>
+
+<dl><dt><a name="PacketBYE-send"><strong>send</strong></a>(self, sock, addr, uid<font color="#909090">=1229432755</font>)</dt><dd><tt>Send&nbsp;the&nbsp;entire&nbsp;message&nbsp;to&nbsp;the&nbsp;specified&nbsp;socket&nbsp;and&nbsp;address.<br>
+&nbsp;<br>
+Arguments:<br>
+sock&nbsp;--&nbsp;datagram&nbsp;socket&nbsp;object&nbsp;(socket.socket)<br>
+addr&nbsp;--&nbsp;address,&nbsp;port&nbsp;pair&nbsp;(eg:&nbsp;("127.0.0.1",&nbsp;9777)&nbsp;)<br>
+uid&nbsp;&nbsp;--&nbsp;unique&nbsp;identification</tt></dd></dl>
+
+<dl><dt><a name="PacketBYE-set_payload"><strong>set_payload</strong></a>(self, payload)</dt><dd><tt>Set&nbsp;the&nbsp;payload&nbsp;for&nbsp;this&nbsp;packet<br>
+&nbsp;<br>
+Arguments:<br>
+payload&nbsp;--&nbsp;binary&nbsp;data&nbsp;that&nbsp;contains&nbsp;the&nbsp;payload</tt></dd></dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="PacketHELO">class <strong>PacketHELO</strong></a>(<a href="xbmcclient.html#Packet">Packet</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>A&nbsp;HELO&nbsp;packet<br>
+&nbsp;<br>
+A&nbsp;HELO&nbsp;packet&nbsp;establishes&nbsp;a&nbsp;valid&nbsp;connection&nbsp;to&nbsp;XBMC.&nbsp;It&nbsp;is&nbsp;the<br>
+first&nbsp;packet&nbsp;that&nbsp;should&nbsp;be&nbsp;sent.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="PacketHELO-__init__"><strong>__init__</strong></a>(self, devicename<font color="#909090">=None</font>, icon_type<font color="#909090">=0</font>, icon_file<font color="#909090">=None</font>)</dt><dd><tt>Keyword&nbsp;arguments:<br>
+devicename&nbsp;--&nbsp;the&nbsp;string&nbsp;that&nbsp;identifies&nbsp;the&nbsp;client<br>
+icon_type&nbsp;--&nbsp;one&nbsp;of&nbsp;ICON_NONE,&nbsp;ICON_JPEG,&nbsp;ICON_PNG,&nbsp;ICON_GIF<br>
+icon_file&nbsp;--&nbsp;location&nbsp;of&nbsp;icon&nbsp;file&nbsp;with&nbsp;respect&nbsp;to&nbsp;current&nbsp;working<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;directory&nbsp;if&nbsp;icon_type&nbsp;is&nbsp;not&nbsp;ICON_NONE</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="xbmcclient.html#Packet">Packet</a>:<br>
+<dl><dt><a name="PacketHELO-append_payload"><strong>append_payload</strong></a>(self, blob)</dt><dd><tt>Append&nbsp;to&nbsp;existing&nbsp;payload<br>
+&nbsp;<br>
+Arguments:<br>
+blob&nbsp;--&nbsp;binary&nbsp;data&nbsp;to&nbsp;append&nbsp;to&nbsp;the&nbsp;current&nbsp;payload</tt></dd></dl>
+
+<dl><dt><a name="PacketHELO-get_header"><strong>get_header</strong></a>(self, packettype<font color="#909090">=-1</font>, seq<font color="#909090">=1</font>, maxseq<font color="#909090">=1</font>, payload_size<font color="#909090">=0</font>)</dt><dd><tt>Construct&nbsp;a&nbsp;header&nbsp;and&nbsp;return&nbsp;as&nbsp;string<br>
+&nbsp;<br>
+Keyword&nbsp;arguments:<br>
+packettype&nbsp;--&nbsp;valid&nbsp;packet&nbsp;types&nbsp;are&nbsp;PT_HELO,&nbsp;PT_BYE,&nbsp;PT_BUTTON,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PT_MOUSE,&nbsp;PT_PING,&nbsp;PT_BORADCAST,&nbsp;PT_NOTIFICATION,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PT_BLOB,&nbsp;PT_DEBUG<br>
+seq&nbsp;--&nbsp;the&nbsp;sequence&nbsp;of&nbsp;this&nbsp;packet&nbsp;for&nbsp;a&nbsp;multi&nbsp;packet&nbsp;message<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;1)<br>
+maxseq&nbsp;--&nbsp;the&nbsp;total&nbsp;number&nbsp;of&nbsp;packets&nbsp;for&nbsp;a&nbsp;multi&nbsp;packet&nbsp;message<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;1)<br>
+payload_size&nbsp;--&nbsp;the&nbsp;size&nbsp;of&nbsp;the&nbsp;payload&nbsp;of&nbsp;this&nbsp;packet&nbsp;(default&nbsp;0)</tt></dd></dl>
+
+<dl><dt><a name="PacketHELO-get_payload_size"><strong>get_payload_size</strong></a>(self, seq)</dt><dd><tt>Returns&nbsp;the&nbsp;calculated&nbsp;payload&nbsp;size&nbsp;for&nbsp;the&nbsp;particular&nbsp;packet<br>
+&nbsp;<br>
+Arguments:<br>
+seq&nbsp;--&nbsp;the&nbsp;sequence&nbsp;number</tt></dd></dl>
+
+<dl><dt><a name="PacketHELO-get_udp_message"><strong>get_udp_message</strong></a>(self, packetnum<font color="#909090">=1</font>)</dt><dd><tt>Construct&nbsp;the&nbsp;UDP&nbsp;message&nbsp;for&nbsp;the&nbsp;specified&nbsp;packetnum&nbsp;and&nbsp;return<br>
+as&nbsp;string<br>
+&nbsp;<br>
+Keyword&nbsp;arguments:<br>
+packetnum&nbsp;--&nbsp;the&nbsp;packet&nbsp;no.&nbsp;for&nbsp;which&nbsp;to&nbsp;construct&nbsp;the&nbsp;message<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;1)</tt></dd></dl>
+
+<dl><dt><a name="PacketHELO-num_packets"><strong>num_packets</strong></a>(self)</dt><dd><tt>Return&nbsp;the&nbsp;number&nbsp;of&nbsp;packets&nbsp;required&nbsp;for&nbsp;payload</tt></dd></dl>
+
+<dl><dt><a name="PacketHELO-send"><strong>send</strong></a>(self, sock, addr, uid<font color="#909090">=1229432755</font>)</dt><dd><tt>Send&nbsp;the&nbsp;entire&nbsp;message&nbsp;to&nbsp;the&nbsp;specified&nbsp;socket&nbsp;and&nbsp;address.<br>
+&nbsp;<br>
+Arguments:<br>
+sock&nbsp;--&nbsp;datagram&nbsp;socket&nbsp;object&nbsp;(socket.socket)<br>
+addr&nbsp;--&nbsp;address,&nbsp;port&nbsp;pair&nbsp;(eg:&nbsp;("127.0.0.1",&nbsp;9777)&nbsp;)<br>
+uid&nbsp;&nbsp;--&nbsp;unique&nbsp;identification</tt></dd></dl>
+
+<dl><dt><a name="PacketHELO-set_payload"><strong>set_payload</strong></a>(self, payload)</dt><dd><tt>Set&nbsp;the&nbsp;payload&nbsp;for&nbsp;this&nbsp;packet<br>
+&nbsp;<br>
+Arguments:<br>
+payload&nbsp;--&nbsp;binary&nbsp;data&nbsp;that&nbsp;contains&nbsp;the&nbsp;payload</tt></dd></dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="PacketLOG">class <strong>PacketLOG</strong></a>(<a href="xbmcclient.html#Packet">Packet</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>A&nbsp;LOG&nbsp;packet<br>
+&nbsp;<br>
+A&nbsp;LOG&nbsp;packet&nbsp;tells&nbsp;XBMC&nbsp;to&nbsp;log&nbsp;the&nbsp;message&nbsp;to&nbsp;xbmc.log&nbsp;with&nbsp;the&nbsp;loglevel&nbsp;as&nbsp;specified.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="PacketLOG-__init__"><strong>__init__</strong></a>(self, loglevel<font color="#909090">=0</font>, logmessage<font color="#909090">=''</font>, autoprint<font color="#909090">=True</font>)</dt><dd><tt>Keyword&nbsp;arguments:<br>
+loglevel&nbsp;--&nbsp;the&nbsp;loglevel,&nbsp;follows&nbsp;XBMC&nbsp;standard.<br>
+logmessage&nbsp;--&nbsp;the&nbsp;message&nbsp;to&nbsp;log<br>
+autoprint&nbsp;--&nbsp;if&nbsp;the&nbsp;logmessage&nbsp;should&nbsp;automaticly&nbsp;be&nbsp;printed&nbsp;to&nbsp;stdout</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="xbmcclient.html#Packet">Packet</a>:<br>
+<dl><dt><a name="PacketLOG-append_payload"><strong>append_payload</strong></a>(self, blob)</dt><dd><tt>Append&nbsp;to&nbsp;existing&nbsp;payload<br>
+&nbsp;<br>
+Arguments:<br>
+blob&nbsp;--&nbsp;binary&nbsp;data&nbsp;to&nbsp;append&nbsp;to&nbsp;the&nbsp;current&nbsp;payload</tt></dd></dl>
+
+<dl><dt><a name="PacketLOG-get_header"><strong>get_header</strong></a>(self, packettype<font color="#909090">=-1</font>, seq<font color="#909090">=1</font>, maxseq<font color="#909090">=1</font>, payload_size<font color="#909090">=0</font>)</dt><dd><tt>Construct&nbsp;a&nbsp;header&nbsp;and&nbsp;return&nbsp;as&nbsp;string<br>
+&nbsp;<br>
+Keyword&nbsp;arguments:<br>
+packettype&nbsp;--&nbsp;valid&nbsp;packet&nbsp;types&nbsp;are&nbsp;PT_HELO,&nbsp;PT_BYE,&nbsp;PT_BUTTON,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PT_MOUSE,&nbsp;PT_PING,&nbsp;PT_BORADCAST,&nbsp;PT_NOTIFICATION,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PT_BLOB,&nbsp;PT_DEBUG<br>
+seq&nbsp;--&nbsp;the&nbsp;sequence&nbsp;of&nbsp;this&nbsp;packet&nbsp;for&nbsp;a&nbsp;multi&nbsp;packet&nbsp;message<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;1)<br>
+maxseq&nbsp;--&nbsp;the&nbsp;total&nbsp;number&nbsp;of&nbsp;packets&nbsp;for&nbsp;a&nbsp;multi&nbsp;packet&nbsp;message<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;1)<br>
+payload_size&nbsp;--&nbsp;the&nbsp;size&nbsp;of&nbsp;the&nbsp;payload&nbsp;of&nbsp;this&nbsp;packet&nbsp;(default&nbsp;0)</tt></dd></dl>
+
+<dl><dt><a name="PacketLOG-get_payload_size"><strong>get_payload_size</strong></a>(self, seq)</dt><dd><tt>Returns&nbsp;the&nbsp;calculated&nbsp;payload&nbsp;size&nbsp;for&nbsp;the&nbsp;particular&nbsp;packet<br>
+&nbsp;<br>
+Arguments:<br>
+seq&nbsp;--&nbsp;the&nbsp;sequence&nbsp;number</tt></dd></dl>
+
+<dl><dt><a name="PacketLOG-get_udp_message"><strong>get_udp_message</strong></a>(self, packetnum<font color="#909090">=1</font>)</dt><dd><tt>Construct&nbsp;the&nbsp;UDP&nbsp;message&nbsp;for&nbsp;the&nbsp;specified&nbsp;packetnum&nbsp;and&nbsp;return<br>
+as&nbsp;string<br>
+&nbsp;<br>
+Keyword&nbsp;arguments:<br>
+packetnum&nbsp;--&nbsp;the&nbsp;packet&nbsp;no.&nbsp;for&nbsp;which&nbsp;to&nbsp;construct&nbsp;the&nbsp;message<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;1)</tt></dd></dl>
+
+<dl><dt><a name="PacketLOG-num_packets"><strong>num_packets</strong></a>(self)</dt><dd><tt>Return&nbsp;the&nbsp;number&nbsp;of&nbsp;packets&nbsp;required&nbsp;for&nbsp;payload</tt></dd></dl>
+
+<dl><dt><a name="PacketLOG-send"><strong>send</strong></a>(self, sock, addr, uid<font color="#909090">=1229432755</font>)</dt><dd><tt>Send&nbsp;the&nbsp;entire&nbsp;message&nbsp;to&nbsp;the&nbsp;specified&nbsp;socket&nbsp;and&nbsp;address.<br>
+&nbsp;<br>
+Arguments:<br>
+sock&nbsp;--&nbsp;datagram&nbsp;socket&nbsp;object&nbsp;(socket.socket)<br>
+addr&nbsp;--&nbsp;address,&nbsp;port&nbsp;pair&nbsp;(eg:&nbsp;("127.0.0.1",&nbsp;9777)&nbsp;)<br>
+uid&nbsp;&nbsp;--&nbsp;unique&nbsp;identification</tt></dd></dl>
+
+<dl><dt><a name="PacketLOG-set_payload"><strong>set_payload</strong></a>(self, payload)</dt><dd><tt>Set&nbsp;the&nbsp;payload&nbsp;for&nbsp;this&nbsp;packet<br>
+&nbsp;<br>
+Arguments:<br>
+payload&nbsp;--&nbsp;binary&nbsp;data&nbsp;that&nbsp;contains&nbsp;the&nbsp;payload</tt></dd></dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="PacketMOUSE">class <strong>PacketMOUSE</strong></a>(<a href="xbmcclient.html#Packet">Packet</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>A&nbsp;MOUSE&nbsp;packet<br>
+&nbsp;<br>
+A&nbsp;MOUSE&nbsp;packets&nbsp;sets&nbsp;the&nbsp;mouse&nbsp;position&nbsp;in&nbsp;XBMC<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="PacketMOUSE-__init__"><strong>__init__</strong></a>(self, x, y)</dt><dd><tt>Arguments:<br>
+x&nbsp;--&nbsp;horitontal&nbsp;position&nbsp;ranging&nbsp;from&nbsp;0&nbsp;to&nbsp;65535<br>
+y&nbsp;--&nbsp;vertical&nbsp;position&nbsp;ranging&nbsp;from&nbsp;0&nbsp;to&nbsp;65535<br>
+&nbsp;<br>
+The&nbsp;range&nbsp;will&nbsp;be&nbsp;mapped&nbsp;to&nbsp;the&nbsp;screen&nbsp;width&nbsp;and&nbsp;height&nbsp;in&nbsp;XBMC</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="xbmcclient.html#Packet">Packet</a>:<br>
+<dl><dt><a name="PacketMOUSE-append_payload"><strong>append_payload</strong></a>(self, blob)</dt><dd><tt>Append&nbsp;to&nbsp;existing&nbsp;payload<br>
+&nbsp;<br>
+Arguments:<br>
+blob&nbsp;--&nbsp;binary&nbsp;data&nbsp;to&nbsp;append&nbsp;to&nbsp;the&nbsp;current&nbsp;payload</tt></dd></dl>
+
+<dl><dt><a name="PacketMOUSE-get_header"><strong>get_header</strong></a>(self, packettype<font color="#909090">=-1</font>, seq<font color="#909090">=1</font>, maxseq<font color="#909090">=1</font>, payload_size<font color="#909090">=0</font>)</dt><dd><tt>Construct&nbsp;a&nbsp;header&nbsp;and&nbsp;return&nbsp;as&nbsp;string<br>
+&nbsp;<br>
+Keyword&nbsp;arguments:<br>
+packettype&nbsp;--&nbsp;valid&nbsp;packet&nbsp;types&nbsp;are&nbsp;PT_HELO,&nbsp;PT_BYE,&nbsp;PT_BUTTON,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PT_MOUSE,&nbsp;PT_PING,&nbsp;PT_BORADCAST,&nbsp;PT_NOTIFICATION,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PT_BLOB,&nbsp;PT_DEBUG<br>
+seq&nbsp;--&nbsp;the&nbsp;sequence&nbsp;of&nbsp;this&nbsp;packet&nbsp;for&nbsp;a&nbsp;multi&nbsp;packet&nbsp;message<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;1)<br>
+maxseq&nbsp;--&nbsp;the&nbsp;total&nbsp;number&nbsp;of&nbsp;packets&nbsp;for&nbsp;a&nbsp;multi&nbsp;packet&nbsp;message<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;1)<br>
+payload_size&nbsp;--&nbsp;the&nbsp;size&nbsp;of&nbsp;the&nbsp;payload&nbsp;of&nbsp;this&nbsp;packet&nbsp;(default&nbsp;0)</tt></dd></dl>
+
+<dl><dt><a name="PacketMOUSE-get_payload_size"><strong>get_payload_size</strong></a>(self, seq)</dt><dd><tt>Returns&nbsp;the&nbsp;calculated&nbsp;payload&nbsp;size&nbsp;for&nbsp;the&nbsp;particular&nbsp;packet<br>
+&nbsp;<br>
+Arguments:<br>
+seq&nbsp;--&nbsp;the&nbsp;sequence&nbsp;number</tt></dd></dl>
+
+<dl><dt><a name="PacketMOUSE-get_udp_message"><strong>get_udp_message</strong></a>(self, packetnum<font color="#909090">=1</font>)</dt><dd><tt>Construct&nbsp;the&nbsp;UDP&nbsp;message&nbsp;for&nbsp;the&nbsp;specified&nbsp;packetnum&nbsp;and&nbsp;return<br>
+as&nbsp;string<br>
+&nbsp;<br>
+Keyword&nbsp;arguments:<br>
+packetnum&nbsp;--&nbsp;the&nbsp;packet&nbsp;no.&nbsp;for&nbsp;which&nbsp;to&nbsp;construct&nbsp;the&nbsp;message<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;1)</tt></dd></dl>
+
+<dl><dt><a name="PacketMOUSE-num_packets"><strong>num_packets</strong></a>(self)</dt><dd><tt>Return&nbsp;the&nbsp;number&nbsp;of&nbsp;packets&nbsp;required&nbsp;for&nbsp;payload</tt></dd></dl>
+
+<dl><dt><a name="PacketMOUSE-send"><strong>send</strong></a>(self, sock, addr, uid<font color="#909090">=1229432755</font>)</dt><dd><tt>Send&nbsp;the&nbsp;entire&nbsp;message&nbsp;to&nbsp;the&nbsp;specified&nbsp;socket&nbsp;and&nbsp;address.<br>
+&nbsp;<br>
+Arguments:<br>
+sock&nbsp;--&nbsp;datagram&nbsp;socket&nbsp;object&nbsp;(socket.socket)<br>
+addr&nbsp;--&nbsp;address,&nbsp;port&nbsp;pair&nbsp;(eg:&nbsp;("127.0.0.1",&nbsp;9777)&nbsp;)<br>
+uid&nbsp;&nbsp;--&nbsp;unique&nbsp;identification</tt></dd></dl>
+
+<dl><dt><a name="PacketMOUSE-set_payload"><strong>set_payload</strong></a>(self, payload)</dt><dd><tt>Set&nbsp;the&nbsp;payload&nbsp;for&nbsp;this&nbsp;packet<br>
+&nbsp;<br>
+Arguments:<br>
+payload&nbsp;--&nbsp;binary&nbsp;data&nbsp;that&nbsp;contains&nbsp;the&nbsp;payload</tt></dd></dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="PacketNOTIFICATION">class <strong>PacketNOTIFICATION</strong></a>(<a href="xbmcclient.html#Packet">Packet</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>A&nbsp;NOTIFICATION&nbsp;packet<br>
+&nbsp;<br>
+This&nbsp;packet&nbsp;displays&nbsp;a&nbsp;notification&nbsp;window&nbsp;in&nbsp;XBMC.&nbsp;It&nbsp;can&nbsp;contain<br>
+a&nbsp;caption,&nbsp;a&nbsp;message&nbsp;and&nbsp;an&nbsp;icon.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="PacketNOTIFICATION-__init__"><strong>__init__</strong></a>(self, title, message, icon_type<font color="#909090">=0</font>, icon_file<font color="#909090">=None</font>)</dt><dd><tt>Keyword&nbsp;arguments:<br>
+title&nbsp;--&nbsp;the&nbsp;notification&nbsp;caption&nbsp;/&nbsp;title<br>
+message&nbsp;--&nbsp;the&nbsp;main&nbsp;text&nbsp;of&nbsp;the&nbsp;notification<br>
+icon_type&nbsp;--&nbsp;one&nbsp;of&nbsp;ICON_NONE,&nbsp;ICON_JPEG,&nbsp;ICON_PNG,&nbsp;ICON_GIF<br>
+icon_file&nbsp;--&nbsp;location&nbsp;of&nbsp;icon&nbsp;file&nbsp;with&nbsp;respect&nbsp;to&nbsp;current&nbsp;working<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;directory&nbsp;if&nbsp;icon_type&nbsp;is&nbsp;not&nbsp;ICON_NONE</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="xbmcclient.html#Packet">Packet</a>:<br>
+<dl><dt><a name="PacketNOTIFICATION-append_payload"><strong>append_payload</strong></a>(self, blob)</dt><dd><tt>Append&nbsp;to&nbsp;existing&nbsp;payload<br>
+&nbsp;<br>
+Arguments:<br>
+blob&nbsp;--&nbsp;binary&nbsp;data&nbsp;to&nbsp;append&nbsp;to&nbsp;the&nbsp;current&nbsp;payload</tt></dd></dl>
+
+<dl><dt><a name="PacketNOTIFICATION-get_header"><strong>get_header</strong></a>(self, packettype<font color="#909090">=-1</font>, seq<font color="#909090">=1</font>, maxseq<font color="#909090">=1</font>, payload_size<font color="#909090">=0</font>)</dt><dd><tt>Construct&nbsp;a&nbsp;header&nbsp;and&nbsp;return&nbsp;as&nbsp;string<br>
+&nbsp;<br>
+Keyword&nbsp;arguments:<br>
+packettype&nbsp;--&nbsp;valid&nbsp;packet&nbsp;types&nbsp;are&nbsp;PT_HELO,&nbsp;PT_BYE,&nbsp;PT_BUTTON,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PT_MOUSE,&nbsp;PT_PING,&nbsp;PT_BORADCAST,&nbsp;PT_NOTIFICATION,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PT_BLOB,&nbsp;PT_DEBUG<br>
+seq&nbsp;--&nbsp;the&nbsp;sequence&nbsp;of&nbsp;this&nbsp;packet&nbsp;for&nbsp;a&nbsp;multi&nbsp;packet&nbsp;message<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;1)<br>
+maxseq&nbsp;--&nbsp;the&nbsp;total&nbsp;number&nbsp;of&nbsp;packets&nbsp;for&nbsp;a&nbsp;multi&nbsp;packet&nbsp;message<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;1)<br>
+payload_size&nbsp;--&nbsp;the&nbsp;size&nbsp;of&nbsp;the&nbsp;payload&nbsp;of&nbsp;this&nbsp;packet&nbsp;(default&nbsp;0)</tt></dd></dl>
+
+<dl><dt><a name="PacketNOTIFICATION-get_payload_size"><strong>get_payload_size</strong></a>(self, seq)</dt><dd><tt>Returns&nbsp;the&nbsp;calculated&nbsp;payload&nbsp;size&nbsp;for&nbsp;the&nbsp;particular&nbsp;packet<br>
+&nbsp;<br>
+Arguments:<br>
+seq&nbsp;--&nbsp;the&nbsp;sequence&nbsp;number</tt></dd></dl>
+
+<dl><dt><a name="PacketNOTIFICATION-get_udp_message"><strong>get_udp_message</strong></a>(self, packetnum<font color="#909090">=1</font>)</dt><dd><tt>Construct&nbsp;the&nbsp;UDP&nbsp;message&nbsp;for&nbsp;the&nbsp;specified&nbsp;packetnum&nbsp;and&nbsp;return<br>
+as&nbsp;string<br>
+&nbsp;<br>
+Keyword&nbsp;arguments:<br>
+packetnum&nbsp;--&nbsp;the&nbsp;packet&nbsp;no.&nbsp;for&nbsp;which&nbsp;to&nbsp;construct&nbsp;the&nbsp;message<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;1)</tt></dd></dl>
+
+<dl><dt><a name="PacketNOTIFICATION-num_packets"><strong>num_packets</strong></a>(self)</dt><dd><tt>Return&nbsp;the&nbsp;number&nbsp;of&nbsp;packets&nbsp;required&nbsp;for&nbsp;payload</tt></dd></dl>
+
+<dl><dt><a name="PacketNOTIFICATION-send"><strong>send</strong></a>(self, sock, addr, uid<font color="#909090">=1229432755</font>)</dt><dd><tt>Send&nbsp;the&nbsp;entire&nbsp;message&nbsp;to&nbsp;the&nbsp;specified&nbsp;socket&nbsp;and&nbsp;address.<br>
+&nbsp;<br>
+Arguments:<br>
+sock&nbsp;--&nbsp;datagram&nbsp;socket&nbsp;object&nbsp;(socket.socket)<br>
+addr&nbsp;--&nbsp;address,&nbsp;port&nbsp;pair&nbsp;(eg:&nbsp;("127.0.0.1",&nbsp;9777)&nbsp;)<br>
+uid&nbsp;&nbsp;--&nbsp;unique&nbsp;identification</tt></dd></dl>
+
+<dl><dt><a name="PacketNOTIFICATION-set_payload"><strong>set_payload</strong></a>(self, payload)</dt><dd><tt>Set&nbsp;the&nbsp;payload&nbsp;for&nbsp;this&nbsp;packet<br>
+&nbsp;<br>
+Arguments:<br>
+payload&nbsp;--&nbsp;binary&nbsp;data&nbsp;that&nbsp;contains&nbsp;the&nbsp;payload</tt></dd></dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="PacketPING">class <strong>PacketPING</strong></a>(<a href="xbmcclient.html#Packet">Packet</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>A&nbsp;PING&nbsp;packet<br>
+&nbsp;<br>
+A&nbsp;PING&nbsp;packet&nbsp;tells&nbsp;XBMC&nbsp;that&nbsp;the&nbsp;client&nbsp;is&nbsp;still&nbsp;alive.&nbsp;All&nbsp;valid<br>
+packets&nbsp;act&nbsp;as&nbsp;ping&nbsp;(not&nbsp;just&nbsp;this&nbsp;one).&nbsp;A&nbsp;client&nbsp;needs&nbsp;to&nbsp;ping<br>
+XBMC&nbsp;at&nbsp;least&nbsp;once&nbsp;in&nbsp;60&nbsp;seconds&nbsp;or&nbsp;it&nbsp;will&nbsp;time&nbsp;out.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="PacketPING-__init__"><strong>__init__</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="xbmcclient.html#Packet">Packet</a>:<br>
+<dl><dt><a name="PacketPING-append_payload"><strong>append_payload</strong></a>(self, blob)</dt><dd><tt>Append&nbsp;to&nbsp;existing&nbsp;payload<br>
+&nbsp;<br>
+Arguments:<br>
+blob&nbsp;--&nbsp;binary&nbsp;data&nbsp;to&nbsp;append&nbsp;to&nbsp;the&nbsp;current&nbsp;payload</tt></dd></dl>
+
+<dl><dt><a name="PacketPING-get_header"><strong>get_header</strong></a>(self, packettype<font color="#909090">=-1</font>, seq<font color="#909090">=1</font>, maxseq<font color="#909090">=1</font>, payload_size<font color="#909090">=0</font>)</dt><dd><tt>Construct&nbsp;a&nbsp;header&nbsp;and&nbsp;return&nbsp;as&nbsp;string<br>
+&nbsp;<br>
+Keyword&nbsp;arguments:<br>
+packettype&nbsp;--&nbsp;valid&nbsp;packet&nbsp;types&nbsp;are&nbsp;PT_HELO,&nbsp;PT_BYE,&nbsp;PT_BUTTON,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PT_MOUSE,&nbsp;PT_PING,&nbsp;PT_BORADCAST,&nbsp;PT_NOTIFICATION,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PT_BLOB,&nbsp;PT_DEBUG<br>
+seq&nbsp;--&nbsp;the&nbsp;sequence&nbsp;of&nbsp;this&nbsp;packet&nbsp;for&nbsp;a&nbsp;multi&nbsp;packet&nbsp;message<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;1)<br>
+maxseq&nbsp;--&nbsp;the&nbsp;total&nbsp;number&nbsp;of&nbsp;packets&nbsp;for&nbsp;a&nbsp;multi&nbsp;packet&nbsp;message<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;1)<br>
+payload_size&nbsp;--&nbsp;the&nbsp;size&nbsp;of&nbsp;the&nbsp;payload&nbsp;of&nbsp;this&nbsp;packet&nbsp;(default&nbsp;0)</tt></dd></dl>
+
+<dl><dt><a name="PacketPING-get_payload_size"><strong>get_payload_size</strong></a>(self, seq)</dt><dd><tt>Returns&nbsp;the&nbsp;calculated&nbsp;payload&nbsp;size&nbsp;for&nbsp;the&nbsp;particular&nbsp;packet<br>
+&nbsp;<br>
+Arguments:<br>
+seq&nbsp;--&nbsp;the&nbsp;sequence&nbsp;number</tt></dd></dl>
+
+<dl><dt><a name="PacketPING-get_udp_message"><strong>get_udp_message</strong></a>(self, packetnum<font color="#909090">=1</font>)</dt><dd><tt>Construct&nbsp;the&nbsp;UDP&nbsp;message&nbsp;for&nbsp;the&nbsp;specified&nbsp;packetnum&nbsp;and&nbsp;return<br>
+as&nbsp;string<br>
+&nbsp;<br>
+Keyword&nbsp;arguments:<br>
+packetnum&nbsp;--&nbsp;the&nbsp;packet&nbsp;no.&nbsp;for&nbsp;which&nbsp;to&nbsp;construct&nbsp;the&nbsp;message<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(default&nbsp;1)</tt></dd></dl>
+
+<dl><dt><a name="PacketPING-num_packets"><strong>num_packets</strong></a>(self)</dt><dd><tt>Return&nbsp;the&nbsp;number&nbsp;of&nbsp;packets&nbsp;required&nbsp;for&nbsp;payload</tt></dd></dl>
+
+<dl><dt><a name="PacketPING-send"><strong>send</strong></a>(self, sock, addr, uid<font color="#909090">=1229432755</font>)</dt><dd><tt>Send&nbsp;the&nbsp;entire&nbsp;message&nbsp;to&nbsp;the&nbsp;specified&nbsp;socket&nbsp;and&nbsp;address.<br>
+&nbsp;<br>
+Arguments:<br>
+sock&nbsp;--&nbsp;datagram&nbsp;socket&nbsp;object&nbsp;(socket.socket)<br>
+addr&nbsp;--&nbsp;address,&nbsp;port&nbsp;pair&nbsp;(eg:&nbsp;("127.0.0.1",&nbsp;9777)&nbsp;)<br>
+uid&nbsp;&nbsp;--&nbsp;unique&nbsp;identification</tt></dd></dl>
+
+<dl><dt><a name="PacketPING-set_payload"><strong>set_payload</strong></a>(self, payload)</dt><dd><tt>Set&nbsp;the&nbsp;payload&nbsp;for&nbsp;this&nbsp;packet<br>
+&nbsp;<br>
+Arguments:<br>
+payload&nbsp;--&nbsp;binary&nbsp;data&nbsp;that&nbsp;contains&nbsp;the&nbsp;payload</tt></dd></dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="XBMCClient">class <strong>XBMCClient</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>An&nbsp;XBMC&nbsp;event&nbsp;client<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="XBMCClient-__init__"><strong>__init__</strong></a>(self, name<font color="#909090">=''</font>, icon_file<font color="#909090">=None</font>, broadcast<font color="#909090">=False</font>, uid<font color="#909090">=1229432755</font>, ip<font color="#909090">='127.0.0.1'</font>)</dt><dd><tt>Keyword&nbsp;arguments:<br>
+name&nbsp;--&nbsp;Name&nbsp;of&nbsp;the&nbsp;client<br>
+icon_file&nbsp;--&nbsp;location&nbsp;of&nbsp;an&nbsp;icon&nbsp;file,&nbsp;if&nbsp;any&nbsp;(png,&nbsp;jpg&nbsp;or&nbsp;gif)<br>
+uid&nbsp;&nbsp;--&nbsp;unique&nbsp;identification</tt></dd></dl>
+
+<dl><dt><a name="XBMCClient-close"><strong>close</strong></a>(self)</dt><dd><tt>Close&nbsp;the&nbsp;current&nbsp;connection</tt></dd></dl>
+
+<dl><dt><a name="XBMCClient-connect"><strong>connect</strong></a>(self, ip<font color="#909090">=None</font>, port<font color="#909090">=None</font>)</dt><dd><tt>Initialize&nbsp;connection&nbsp;to&nbsp;XBMC<br>
+ip&nbsp;--&nbsp;IP&nbsp;Address&nbsp;of&nbsp;XBMC<br>
+port&nbsp;--&nbsp;port&nbsp;that&nbsp;the&nbsp;event&nbsp;server&nbsp;on&nbsp;XBMC&nbsp;is&nbsp;listening&nbsp;on</tt></dd></dl>
+
+<dl><dt><a name="XBMCClient-ping"><strong>ping</strong></a>(self)</dt><dd><tt>Send&nbsp;a&nbsp;PING&nbsp;packet</tt></dd></dl>
+
+<dl><dt><a name="XBMCClient-release_button"><strong>release_button</strong></a>(self)</dt><dd><tt>Release&nbsp;all&nbsp;buttons</tt></dd></dl>
+
+<dl><dt><a name="XBMCClient-send_action"><strong>send_action</strong></a>(self, actionmessage<font color="#909090">=''</font>, actiontype<font color="#909090">=1</font>)</dt><dd><tt>Keyword&nbsp;arguments:<br>
+actionmessage&nbsp;--&nbsp;the&nbsp;ActionString<br>
+actiontype&nbsp;--&nbsp;The&nbsp;ActionType&nbsp;the&nbsp;ActionString&nbsp;should&nbsp;be&nbsp;sent&nbsp;to.</tt></dd></dl>
+
+<dl><dt><a name="XBMCClient-send_button"><strong>send_button</strong></a>(self, map<font color="#909090">=''</font>, button<font color="#909090">=''</font>, amount<font color="#909090">=0</font>)</dt><dd><tt>Send&nbsp;a&nbsp;button&nbsp;event&nbsp;to&nbsp;XBMC<br>
+Keyword&nbsp;arguments:<br>
+map&nbsp;--&nbsp;a&nbsp;combination&nbsp;of&nbsp;map_name&nbsp;and&nbsp;button_name&nbsp;refers&nbsp;to&nbsp;a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mapping&nbsp;in&nbsp;the&nbsp;user's&nbsp;Keymap.xml&nbsp;or&nbsp;Lircmap.xml.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map_name&nbsp;can&nbsp;be&nbsp;one&nbsp;of&nbsp;the&nbsp;following:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"KB"&nbsp;=&gt;&nbsp;standard&nbsp;keyboard&nbsp;map&nbsp;(&nbsp;&lt;keyboard&gt;&nbsp;section&nbsp;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"XG"&nbsp;=&gt;&nbsp;xbox&nbsp;gamepad&nbsp;map&nbsp;(&nbsp;&lt;gamepad&gt;&nbsp;section&nbsp;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"R1"&nbsp;=&gt;&nbsp;xbox&nbsp;remote&nbsp;map&nbsp;(&nbsp;&lt;remote&gt;&nbsp;section&nbsp;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"R2"&nbsp;=&gt;&nbsp;xbox&nbsp;universal&nbsp;remote&nbsp;map&nbsp;(&nbsp;&lt;universalremote&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;section&nbsp;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"LI:devicename"&nbsp;=&gt;&nbsp;LIRC&nbsp;remote&nbsp;map&nbsp;where&nbsp;'devicename'&nbsp;is&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;actual&nbsp;device's&nbsp;name<br>
+button&nbsp;--&nbsp;a&nbsp;button&nbsp;name&nbsp;defined&nbsp;in&nbsp;the&nbsp;map&nbsp;specified&nbsp;in&nbsp;map,&nbsp;above.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For&nbsp;example,&nbsp;if&nbsp;map&nbsp;is&nbsp;"KB"&nbsp;refering&nbsp;to&nbsp;the&nbsp;&lt;keyboard&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;section&nbsp;in&nbsp;Keymap.xml&nbsp;then,&nbsp;valid&nbsp;buttons&nbsp;include&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"printscreen",&nbsp;"minus",&nbsp;"x",&nbsp;etc.</tt></dd></dl>
+
+<dl><dt><a name="XBMCClient-send_button_state"><strong>send_button_state</strong></a>(self, map<font color="#909090">=''</font>, button<font color="#909090">=''</font>, amount<font color="#909090">=0</font>, down<font color="#909090">=0</font>, axis<font color="#909090">=0</font>)</dt><dd><tt>Send&nbsp;a&nbsp;button&nbsp;event&nbsp;to&nbsp;XBMC<br>
+Keyword&nbsp;arguments:<br>
+map&nbsp;--&nbsp;a&nbsp;combination&nbsp;of&nbsp;map_name&nbsp;and&nbsp;button_name&nbsp;refers&nbsp;to&nbsp;a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mapping&nbsp;in&nbsp;the&nbsp;user's&nbsp;Keymap.xml&nbsp;or&nbsp;Lircmap.xml.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map_name&nbsp;can&nbsp;be&nbsp;one&nbsp;of&nbsp;the&nbsp;following:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"KB"&nbsp;=&gt;&nbsp;standard&nbsp;keyboard&nbsp;map&nbsp;(&nbsp;&lt;keyboard&gt;&nbsp;section&nbsp;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"XG"&nbsp;=&gt;&nbsp;xbox&nbsp;gamepad&nbsp;map&nbsp;(&nbsp;&lt;gamepad&gt;&nbsp;section&nbsp;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"R1"&nbsp;=&gt;&nbsp;xbox&nbsp;remote&nbsp;map&nbsp;(&nbsp;&lt;remote&gt;&nbsp;section&nbsp;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"R2"&nbsp;=&gt;&nbsp;xbox&nbsp;universal&nbsp;remote&nbsp;map&nbsp;(&nbsp;&lt;universalremote&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;section&nbsp;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"LI:devicename"&nbsp;=&gt;&nbsp;LIRC&nbsp;remote&nbsp;map&nbsp;where&nbsp;'devicename'&nbsp;is&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;actual&nbsp;device's&nbsp;name<br>
+button&nbsp;--&nbsp;a&nbsp;button&nbsp;name&nbsp;defined&nbsp;in&nbsp;the&nbsp;map&nbsp;specified&nbsp;in&nbsp;map,&nbsp;above.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For&nbsp;example,&nbsp;if&nbsp;map&nbsp;is&nbsp;"KB"&nbsp;refering&nbsp;to&nbsp;the&nbsp;&lt;keyboard&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;section&nbsp;in&nbsp;Keymap.xml&nbsp;then,&nbsp;valid&nbsp;buttons&nbsp;include&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"printscreen",&nbsp;"minus",&nbsp;"x",&nbsp;etc.</tt></dd></dl>
+
+<dl><dt><a name="XBMCClient-send_keyboard_button"><strong>send_keyboard_button</strong></a>(self, button<font color="#909090">=None</font>)</dt><dd><tt>Send&nbsp;a&nbsp;keyboard&nbsp;event&nbsp;to&nbsp;XBMC<br>
+Keyword&nbsp;Arguments:<br>
+button&nbsp;--&nbsp;name&nbsp;of&nbsp;the&nbsp;keyboard&nbsp;button&nbsp;to&nbsp;send&nbsp;(same&nbsp;as&nbsp;in&nbsp;Keymap.xml)</tt></dd></dl>
+
+<dl><dt><a name="XBMCClient-send_log"><strong>send_log</strong></a>(self, loglevel<font color="#909090">=0</font>, logmessage<font color="#909090">=''</font>, autoprint<font color="#909090">=True</font>)</dt><dd><tt>Keyword&nbsp;arguments:<br>
+loglevel&nbsp;--&nbsp;the&nbsp;loglevel,&nbsp;follows&nbsp;XBMC&nbsp;standard.<br>
+logmessage&nbsp;--&nbsp;the&nbsp;message&nbsp;to&nbsp;log<br>
+autoprint&nbsp;--&nbsp;if&nbsp;the&nbsp;logmessage&nbsp;should&nbsp;automaticly&nbsp;be&nbsp;printed&nbsp;to&nbsp;stdout</tt></dd></dl>
+
+<dl><dt><a name="XBMCClient-send_mouse_position"><strong>send_mouse_position</strong></a>(self, x<font color="#909090">=0</font>, y<font color="#909090">=0</font>)</dt><dd><tt>Send&nbsp;a&nbsp;mouse&nbsp;event&nbsp;to&nbsp;XBMC<br>
+Keywords&nbsp;Arguments:<br>
+x&nbsp;--&nbsp;absolute&nbsp;x&nbsp;position&nbsp;of&nbsp;mouse&nbsp;ranging&nbsp;from&nbsp;0&nbsp;to&nbsp;65535<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;which&nbsp;maps&nbsp;to&nbsp;the&nbsp;entire&nbsp;screen&nbsp;width<br>
+y&nbsp;--&nbsp;same&nbsp;a&nbsp;'x'&nbsp;but&nbsp;relates&nbsp;to&nbsp;the&nbsp;screen&nbsp;height</tt></dd></dl>
+
+<dl><dt><a name="XBMCClient-send_notification"><strong>send_notification</strong></a>(self, title<font color="#909090">=''</font>, message<font color="#909090">=''</font>, icon_file<font color="#909090">=None</font>)</dt><dd><tt>Send&nbsp;a&nbsp;notification&nbsp;to&nbsp;the&nbsp;connected&nbsp;XBMC<br>
+Keyword&nbsp;Arguments:<br>
+title&nbsp;--&nbsp;The&nbsp;title/heading&nbsp;for&nbsp;the&nbsp;notifcation<br>
+message&nbsp;--&nbsp;The&nbsp;message&nbsp;to&nbsp;be&nbsp;displayed<br>
+icon_file&nbsp;--&nbsp;location&nbsp;of&nbsp;an&nbsp;icon&nbsp;file,&nbsp;if&nbsp;any&nbsp;(png,&nbsp;jpg,&nbsp;gif)</tt></dd></dl>
+
+<dl><dt><a name="XBMCClient-send_remote_button"><strong>send_remote_button</strong></a>(self, button<font color="#909090">=None</font>)</dt><dd><tt>Send&nbsp;a&nbsp;remote&nbsp;control&nbsp;event&nbsp;to&nbsp;XBMC<br>
+Keyword&nbsp;Arguments:<br>
+button&nbsp;--&nbsp;name&nbsp;of&nbsp;the&nbsp;remote&nbsp;control&nbsp;button&nbsp;to&nbsp;send&nbsp;(same&nbsp;as&nbsp;in&nbsp;Keymap.xml)</tt></dd></dl>
+
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-RAND_add"><strong>RAND_add</strong></a>(...)</dt><dd><tt><a href="#-RAND_add">RAND_add</a>(string,&nbsp;entropy)<br>
+&nbsp;<br>
+Mix&nbsp;string&nbsp;into&nbsp;the&nbsp;OpenSSL&nbsp;PRNG&nbsp;state.&nbsp;&nbsp;entropy&nbsp;(a&nbsp;float)&nbsp;is&nbsp;a&nbsp;lower<br>
+bound&nbsp;on&nbsp;the&nbsp;entropy&nbsp;contained&nbsp;in&nbsp;string.</tt></dd></dl>
+ <dl><dt><a name="-RAND_egd"><strong>RAND_egd</strong></a>(...)</dt><dd><tt><a href="#-RAND_egd">RAND_egd</a>(path)&nbsp;-&gt;&nbsp;bytes<br>
+&nbsp;<br>
+Queries&nbsp;the&nbsp;entropy&nbsp;gather&nbsp;daemon&nbsp;(EGD)&nbsp;on&nbsp;socket&nbsp;path.&nbsp;&nbsp;Returns&nbsp;number<br>
+of&nbsp;bytes&nbsp;read.&nbsp;&nbsp;Raises&nbsp;socket.sslerror&nbsp;if&nbsp;connection&nbsp;to&nbsp;EGD&nbsp;fails&nbsp;or<br>
+if&nbsp;it&nbsp;does&nbsp;provide&nbsp;enough&nbsp;data&nbsp;to&nbsp;seed&nbsp;PRNG.</tt></dd></dl>
+ <dl><dt><a name="-RAND_status"><strong>RAND_status</strong></a>(...)</dt><dd><tt><a href="#-RAND_status">RAND_status</a>()&nbsp;-&gt;&nbsp;0&nbsp;or&nbsp;1<br>
+&nbsp;<br>
+Returns&nbsp;1&nbsp;if&nbsp;the&nbsp;OpenSSL&nbsp;PRNG&nbsp;has&nbsp;been&nbsp;seeded&nbsp;with&nbsp;enough&nbsp;data&nbsp;and&nbsp;0&nbsp;if&nbsp;not.<br>
+It&nbsp;is&nbsp;necessary&nbsp;to&nbsp;seed&nbsp;the&nbsp;PRNG&nbsp;with&nbsp;<a href="#-RAND_add">RAND_add</a>()&nbsp;on&nbsp;some&nbsp;platforms&nbsp;before<br>
+using&nbsp;the&nbsp;ssl()&nbsp;function.</tt></dd></dl>
+ <dl><dt><a name="-format_string"><strong>format_string</strong></a>(msg)</dt></dl>
+ <dl><dt><a name="-format_uint16"><strong>format_uint16</strong></a>(num)</dt></dl>
+ <dl><dt><a name="-format_uint32"><strong>format_uint32</strong></a>(num)</dt></dl>
+ <dl><dt><a name="-getaddrinfo"><strong>getaddrinfo</strong></a>(...)</dt><dd><tt><a href="#-getaddrinfo">getaddrinfo</a>(host,&nbsp;port&nbsp;[,&nbsp;family,&nbsp;socktype,&nbsp;proto,&nbsp;flags])<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-&gt;&nbsp;list&nbsp;of&nbsp;(family,&nbsp;socktype,&nbsp;proto,&nbsp;canonname,&nbsp;sockaddr)<br>
+&nbsp;<br>
+Resolve&nbsp;host&nbsp;and&nbsp;port&nbsp;into&nbsp;addrinfo&nbsp;struct.</tt></dd></dl>
+ <dl><dt><a name="-getdefaulttimeout"><strong>getdefaulttimeout</strong></a>(...)</dt><dd><tt><a href="#-getdefaulttimeout">getdefaulttimeout</a>()&nbsp;-&gt;&nbsp;timeout<br>
+&nbsp;<br>
+Returns&nbsp;the&nbsp;default&nbsp;timeout&nbsp;in&nbsp;floating&nbsp;seconds&nbsp;for&nbsp;new&nbsp;socket&nbsp;objects.<br>
+A&nbsp;value&nbsp;of&nbsp;None&nbsp;indicates&nbsp;that&nbsp;new&nbsp;socket&nbsp;objects&nbsp;have&nbsp;no&nbsp;timeout.<br>
+When&nbsp;the&nbsp;socket&nbsp;module&nbsp;is&nbsp;first&nbsp;imported,&nbsp;the&nbsp;default&nbsp;is&nbsp;None.</tt></dd></dl>
+ <dl><dt><a name="-gethostbyaddr"><strong>gethostbyaddr</strong></a>(...)</dt><dd><tt><a href="#-gethostbyaddr">gethostbyaddr</a>(host)&nbsp;-&gt;&nbsp;(name,&nbsp;aliaslist,&nbsp;addresslist)<br>
+&nbsp;<br>
+Return&nbsp;the&nbsp;true&nbsp;host&nbsp;name,&nbsp;a&nbsp;list&nbsp;of&nbsp;aliases,&nbsp;and&nbsp;a&nbsp;list&nbsp;of&nbsp;IP&nbsp;addresses,<br>
+for&nbsp;a&nbsp;host.&nbsp;&nbsp;The&nbsp;host&nbsp;argument&nbsp;is&nbsp;a&nbsp;string&nbsp;giving&nbsp;a&nbsp;host&nbsp;name&nbsp;or&nbsp;IP&nbsp;number.</tt></dd></dl>
+ <dl><dt><a name="-gethostbyname"><strong>gethostbyname</strong></a>(...)</dt><dd><tt><a href="#-gethostbyname">gethostbyname</a>(host)&nbsp;-&gt;&nbsp;address<br>
+&nbsp;<br>
+Return&nbsp;the&nbsp;IP&nbsp;address&nbsp;(a&nbsp;string&nbsp;of&nbsp;the&nbsp;form&nbsp;'255.255.255.255')&nbsp;for&nbsp;a&nbsp;host.</tt></dd></dl>
+ <dl><dt><a name="-gethostbyname_ex"><strong>gethostbyname_ex</strong></a>(...)</dt><dd><tt><a href="#-gethostbyname_ex">gethostbyname_ex</a>(host)&nbsp;-&gt;&nbsp;(name,&nbsp;aliaslist,&nbsp;addresslist)<br>
+&nbsp;<br>
+Return&nbsp;the&nbsp;true&nbsp;host&nbsp;name,&nbsp;a&nbsp;list&nbsp;of&nbsp;aliases,&nbsp;and&nbsp;a&nbsp;list&nbsp;of&nbsp;IP&nbsp;addresses,<br>
+for&nbsp;a&nbsp;host.&nbsp;&nbsp;The&nbsp;host&nbsp;argument&nbsp;is&nbsp;a&nbsp;string&nbsp;giving&nbsp;a&nbsp;host&nbsp;name&nbsp;or&nbsp;IP&nbsp;number.</tt></dd></dl>
+ <dl><dt><a name="-gethostname"><strong>gethostname</strong></a>(...)</dt><dd><tt><a href="#-gethostname">gethostname</a>()&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;the&nbsp;current&nbsp;host&nbsp;name.</tt></dd></dl>
+ <dl><dt><a name="-getnameinfo"><strong>getnameinfo</strong></a>(...)</dt><dd><tt><a href="#-getnameinfo">getnameinfo</a>(sockaddr,&nbsp;flags)&nbsp;--&gt;&nbsp;(host,&nbsp;port)<br>
+&nbsp;<br>
+Get&nbsp;host&nbsp;and&nbsp;port&nbsp;for&nbsp;a&nbsp;sockaddr.</tt></dd></dl>
+ <dl><dt><a name="-getprotobyname"><strong>getprotobyname</strong></a>(...)</dt><dd><tt><a href="#-getprotobyname">getprotobyname</a>(name)&nbsp;-&gt;&nbsp;integer<br>
+&nbsp;<br>
+Return&nbsp;the&nbsp;protocol&nbsp;number&nbsp;for&nbsp;the&nbsp;named&nbsp;protocol.&nbsp;&nbsp;(Rarely&nbsp;used.)</tt></dd></dl>
+ <dl><dt><a name="-getservbyname"><strong>getservbyname</strong></a>(...)</dt><dd><tt><a href="#-getservbyname">getservbyname</a>(servicename[,&nbsp;protocolname])&nbsp;-&gt;&nbsp;integer<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;port&nbsp;number&nbsp;from&nbsp;a&nbsp;service&nbsp;name&nbsp;and&nbsp;protocol&nbsp;name.<br>
+The&nbsp;optional&nbsp;protocol&nbsp;name,&nbsp;if&nbsp;given,&nbsp;should&nbsp;be&nbsp;'tcp'&nbsp;or&nbsp;'udp',<br>
+otherwise&nbsp;any&nbsp;protocol&nbsp;will&nbsp;match.</tt></dd></dl>
+ <dl><dt><a name="-getservbyport"><strong>getservbyport</strong></a>(...)</dt><dd><tt><a href="#-getservbyport">getservbyport</a>(port[,&nbsp;protocolname])&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;the&nbsp;service&nbsp;name&nbsp;from&nbsp;a&nbsp;port&nbsp;number&nbsp;and&nbsp;protocol&nbsp;name.<br>
+The&nbsp;optional&nbsp;protocol&nbsp;name,&nbsp;if&nbsp;given,&nbsp;should&nbsp;be&nbsp;'tcp'&nbsp;or&nbsp;'udp',<br>
+otherwise&nbsp;any&nbsp;protocol&nbsp;will&nbsp;match.</tt></dd></dl>
+ <dl><dt><a name="-htonl"><strong>htonl</strong></a>(...)</dt><dd><tt><a href="#-htonl">htonl</a>(integer)&nbsp;-&gt;&nbsp;integer<br>
+&nbsp;<br>
+Convert&nbsp;a&nbsp;32-bit&nbsp;integer&nbsp;from&nbsp;host&nbsp;to&nbsp;network&nbsp;byte&nbsp;order.</tt></dd></dl>
+ <dl><dt><a name="-htons"><strong>htons</strong></a>(...)</dt><dd><tt><a href="#-htons">htons</a>(integer)&nbsp;-&gt;&nbsp;integer<br>
+&nbsp;<br>
+Convert&nbsp;a&nbsp;16-bit&nbsp;integer&nbsp;from&nbsp;host&nbsp;to&nbsp;network&nbsp;byte&nbsp;order.</tt></dd></dl>
+ <dl><dt><a name="-inet_aton"><strong>inet_aton</strong></a>(...)</dt><dd><tt><a href="#-inet_aton">inet_aton</a>(string)&nbsp;-&gt;&nbsp;packed&nbsp;32-bit&nbsp;IP&nbsp;representation<br>
+&nbsp;<br>
+Convert&nbsp;an&nbsp;IP&nbsp;address&nbsp;in&nbsp;string&nbsp;format&nbsp;(123.45.67.89)&nbsp;to&nbsp;the&nbsp;32-bit&nbsp;packed<br>
+binary&nbsp;format&nbsp;used&nbsp;in&nbsp;low-level&nbsp;network&nbsp;functions.</tt></dd></dl>
+ <dl><dt><a name="-inet_ntoa"><strong>inet_ntoa</strong></a>(...)</dt><dd><tt><a href="#-inet_ntoa">inet_ntoa</a>(packed_ip)&nbsp;-&gt;&nbsp;ip_address_string<br>
+&nbsp;<br>
+Convert&nbsp;an&nbsp;IP&nbsp;address&nbsp;from&nbsp;32-bit&nbsp;packed&nbsp;binary&nbsp;format&nbsp;to&nbsp;string&nbsp;format</tt></dd></dl>
+ <dl><dt><a name="-ntohl"><strong>ntohl</strong></a>(...)</dt><dd><tt><a href="#-ntohl">ntohl</a>(integer)&nbsp;-&gt;&nbsp;integer<br>
+&nbsp;<br>
+Convert&nbsp;a&nbsp;32-bit&nbsp;integer&nbsp;from&nbsp;network&nbsp;to&nbsp;host&nbsp;byte&nbsp;order.</tt></dd></dl>
+ <dl><dt><a name="-ntohs"><strong>ntohs</strong></a>(...)</dt><dd><tt><a href="#-ntohs">ntohs</a>(integer)&nbsp;-&gt;&nbsp;integer<br>
+&nbsp;<br>
+Convert&nbsp;a&nbsp;16-bit&nbsp;integer&nbsp;from&nbsp;network&nbsp;to&nbsp;host&nbsp;byte&nbsp;order.</tt></dd></dl>
+ <dl><dt><a name="-pack"><strong>pack</strong></a>(...)</dt><dd><tt><a href="#-pack">pack</a>(fmt,&nbsp;v1,&nbsp;v2,&nbsp;...)&nbsp;-&gt;&nbsp;string<br>
+Return&nbsp;string&nbsp;containing&nbsp;values&nbsp;v1,&nbsp;v2,&nbsp;...&nbsp;packed&nbsp;according&nbsp;to&nbsp;fmt.<br>
+See&nbsp;struct.__doc__&nbsp;for&nbsp;more&nbsp;on&nbsp;format&nbsp;strings.</tt></dd></dl>
+ <dl><dt><a name="-setdefaulttimeout"><strong>setdefaulttimeout</strong></a>(...)</dt><dd><tt><a href="#-setdefaulttimeout">setdefaulttimeout</a>(timeout)<br>
+&nbsp;<br>
+Set&nbsp;the&nbsp;default&nbsp;timeout&nbsp;in&nbsp;floating&nbsp;seconds&nbsp;for&nbsp;new&nbsp;socket&nbsp;objects.<br>
+A&nbsp;value&nbsp;of&nbsp;None&nbsp;indicates&nbsp;that&nbsp;new&nbsp;socket&nbsp;objects&nbsp;have&nbsp;no&nbsp;timeout.<br>
+When&nbsp;the&nbsp;socket&nbsp;module&nbsp;is&nbsp;first&nbsp;imported,&nbsp;the&nbsp;default&nbsp;is&nbsp;None.</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>ACTION_BUTTON</strong> = 2<br>
+<strong>ACTION_EXECBUILTIN</strong> = 1<br>
+<strong>AF_APPLETALK</strong> = 16<br>
+<strong>AF_DECnet</strong> = 12<br>
+<strong>AF_INET</strong> = 2<br>
+<strong>AF_INET6</strong> = 23<br>
+<strong>AF_IPX</strong> = 6<br>
+<strong>AF_IRDA</strong> = 26<br>
+<strong>AF_SNA</strong> = 11<br>
+<strong>AF_UNSPEC</strong> = 0<br>
+<strong>AI_CANONNAME</strong> = 2<br>
+<strong>AI_NUMERICHOST</strong> = 4<br>
+<strong>AI_PASSIVE</strong> = 1<br>
+<strong>BT_AXIS</strong> = 128<br>
+<strong>BT_AXISSINGLE</strong> = 256<br>
+<strong>BT_DOWN</strong> = 2<br>
+<strong>BT_NO_REPEAT</strong> = 32<br>
+<strong>BT_QUEUE</strong> = 16<br>
+<strong>BT_UP</strong> = 4<br>
+<strong>BT_USE_AMOUNT</strong> = 8<br>
+<strong>BT_USE_NAME</strong> = 1<br>
+<strong>BT_VKEY</strong> = 64<br>
+<strong>CAPI</strong> = &lt;PyCObject object&gt;<br>
+<strong>EAI_AGAIN</strong> = 11002<br>
+<strong>EAI_BADFLAGS</strong> = 10022<br>
+<strong>EAI_FAIL</strong> = 11003<br>
+<strong>EAI_FAMILY</strong> = 10047<br>
+<strong>EAI_MEMORY</strong> = 8<br>
+<strong>EAI_NODATA</strong> = 11001<br>
+<strong>EAI_NONAME</strong> = 11001<br>
+<strong>EAI_SERVICE</strong> = 10109<br>
+<strong>EAI_SOCKTYPE</strong> = 10044<br>
+<strong>HEADER_SIZE</strong> = 32<br>
+<strong>ICON_GIF</strong> = 3<br>
+<strong>ICON_JPEG</strong> = 1<br>
+<strong>ICON_NONE</strong> = 0<br>
+<strong>ICON_PNG</strong> = 2<br>
+<strong>INADDR_ALLHOSTS_GROUP</strong> = -536870911<br>
+<strong>INADDR_ANY</strong> = 0<br>
+<strong>INADDR_BROADCAST</strong> = -1<br>
+<strong>INADDR_LOOPBACK</strong> = 2130706433<br>
+<strong>INADDR_MAX_LOCAL_GROUP</strong> = -536870657<br>
+<strong>INADDR_NONE</strong> = -1<br>
+<strong>INADDR_UNSPEC_GROUP</strong> = -536870912<br>
+<strong>IPPORT_RESERVED</strong> = 1024<br>
+<strong>IPPORT_USERRESERVED</strong> = 5000<br>
+<strong>IPPROTO_AH</strong> = 51<br>
+<strong>IPPROTO_DSTOPTS</strong> = 60<br>
+<strong>IPPROTO_ESP</strong> = 50<br>
+<strong>IPPROTO_FRAGMENT</strong> = 44<br>
+<strong>IPPROTO_GGP</strong> = 3<br>
+<strong>IPPROTO_HOPOPTS</strong> = 0<br>
+<strong>IPPROTO_ICMP</strong> = 1<br>
+<strong>IPPROTO_ICMPV6</strong> = 58<br>
+<strong>IPPROTO_IDP</strong> = 22<br>
+<strong>IPPROTO_IGMP</strong> = 2<br>
+<strong>IPPROTO_IP</strong> = 0<br>
+<strong>IPPROTO_IPV4</strong> = 4<br>
+<strong>IPPROTO_IPV6</strong> = 41<br>
+<strong>IPPROTO_MAX</strong> = 256<br>
+<strong>IPPROTO_ND</strong> = 77<br>
+<strong>IPPROTO_NONE</strong> = 59<br>
+<strong>IPPROTO_PUP</strong> = 12<br>
+<strong>IPPROTO_RAW</strong> = 255<br>
+<strong>IPPROTO_ROUTING</strong> = 43<br>
+<strong>IPPROTO_TCP</strong> = 6<br>
+<strong>IPPROTO_UDP</strong> = 17<br>
+<strong>IPV6_HOPLIMIT</strong> = 21<br>
+<strong>IPV6_JOIN_GROUP</strong> = 12<br>
+<strong>IPV6_LEAVE_GROUP</strong> = 13<br>
+<strong>IPV6_MULTICAST_HOPS</strong> = 10<br>
+<strong>IPV6_MULTICAST_IF</strong> = 9<br>
+<strong>IPV6_MULTICAST_LOOP</strong> = 11<br>
+<strong>IPV6_PKTINFO</strong> = 19<br>
+<strong>IPV6_UNICAST_HOPS</strong> = 4<br>
+<strong>IP_ADD_MEMBERSHIP</strong> = 12<br>
+<strong>IP_DROP_MEMBERSHIP</strong> = 13<br>
+<strong>IP_HDRINCL</strong> = 2<br>
+<strong>IP_MULTICAST_IF</strong> = 9<br>
+<strong>IP_MULTICAST_LOOP</strong> = 11<br>
+<strong>IP_MULTICAST_TTL</strong> = 10<br>
+<strong>IP_OPTIONS</strong> = 1<br>
+<strong>IP_TOS</strong> = 3<br>
+<strong>IP_TTL</strong> = 4<br>
+<strong>LOGDEBUG</strong> = 0<br>
+<strong>LOGERROR</strong> = 4<br>
+<strong>LOGFATAL</strong> = 6<br>
+<strong>LOGINFO</strong> = 1<br>
+<strong>LOGNONE</strong> = 7<br>
+<strong>LOGNOTICE</strong> = 2<br>
+<strong>LOGSEVERE</strong> = 5<br>
+<strong>LOGWARNING</strong> = 3<br>
+<strong>MAX_PACKET_SIZE</strong> = 1024<br>
+<strong>MAX_PAYLOAD_SIZE</strong> = 992<br>
+<strong>MSG_DONTROUTE</strong> = 4<br>
+<strong>MSG_OOB</strong> = 1<br>
+<strong>MSG_PEEK</strong> = 2<br>
+<strong>MS_ABSOLUTE</strong> = 1<br>
+<strong>NI_DGRAM</strong> = 16<br>
+<strong>NI_MAXHOST</strong> = 1025<br>
+<strong>NI_MAXSERV</strong> = 32<br>
+<strong>NI_NAMEREQD</strong> = 4<br>
+<strong>NI_NOFQDN</strong> = 1<br>
+<strong>NI_NUMERICHOST</strong> = 2<br>
+<strong>NI_NUMERICSERV</strong> = 8<br>
+<strong>PT_ACTION</strong> = 10<br>
+<strong>PT_BLOB</strong> = 8<br>
+<strong>PT_BROADCAST</strong> = 6<br>
+<strong>PT_BUTTON</strong> = 3<br>
+<strong>PT_BYE</strong> = 2<br>
+<strong>PT_DEBUG</strong> = 255<br>
+<strong>PT_HELO</strong> = 1<br>
+<strong>PT_LOG</strong> = 9<br>
+<strong>PT_MOUSE</strong> = 4<br>
+<strong>PT_NOTIFICATION</strong> = 7<br>
+<strong>PT_PING</strong> = 5<br>
+<strong>SHUT_RD</strong> = 0<br>
+<strong>SHUT_RDWR</strong> = 2<br>
+<strong>SHUT_WR</strong> = 1<br>
+<strong>SOCK_DGRAM</strong> = 2<br>
+<strong>SOCK_RAW</strong> = 3<br>
+<strong>SOCK_RDM</strong> = 4<br>
+<strong>SOCK_SEQPACKET</strong> = 5<br>
+<strong>SOCK_STREAM</strong> = 1<br>
+<strong>SOL_IP</strong> = 0<br>
+<strong>SOL_SOCKET</strong> = 65535<br>
+<strong>SOL_TCP</strong> = 6<br>
+<strong>SOL_UDP</strong> = 17<br>
+<strong>SOMAXCONN</strong> = 2147483647<br>
+<strong>SO_ACCEPTCONN</strong> = 2<br>
+<strong>SO_BROADCAST</strong> = 32<br>
+<strong>SO_DEBUG</strong> = 1<br>
+<strong>SO_DONTROUTE</strong> = 16<br>
+<strong>SO_ERROR</strong> = 4103<br>
+<strong>SO_EXCLUSIVEADDRUSE</strong> = -5<br>
+<strong>SO_KEEPALIVE</strong> = 8<br>
+<strong>SO_LINGER</strong> = 128<br>
+<strong>SO_OOBINLINE</strong> = 256<br>
+<strong>SO_RCVBUF</strong> = 4098<br>
+<strong>SO_RCVLOWAT</strong> = 4100<br>
+<strong>SO_RCVTIMEO</strong> = 4102<br>
+<strong>SO_REUSEADDR</strong> = 4<br>
+<strong>SO_SNDBUF</strong> = 4097<br>
+<strong>SO_SNDLOWAT</strong> = 4099<br>
+<strong>SO_SNDTIMEO</strong> = 4101<br>
+<strong>SO_TYPE</strong> = 4104<br>
+<strong>SO_USELOOPBACK</strong> = 64<br>
+<strong>SSL_ERROR_EOF</strong> = 8<br>
+<strong>SSL_ERROR_INVALID_ERROR_CODE</strong> = 9<br>
+<strong>SSL_ERROR_SSL</strong> = 1<br>
+<strong>SSL_ERROR_SYSCALL</strong> = 5<br>
+<strong>SSL_ERROR_WANT_CONNECT</strong> = 7<br>
+<strong>SSL_ERROR_WANT_READ</strong> = 2<br>
+<strong>SSL_ERROR_WANT_WRITE</strong> = 3<br>
+<strong>SSL_ERROR_WANT_X509_LOOKUP</strong> = 4<br>
+<strong>SSL_ERROR_ZERO_RETURN</strong> = 6<br>
+<strong>TCP_NODELAY</strong> = 1<br>
+<strong>UNIQUE_IDENTIFICATION</strong> = 1229432755<br>
+<strong>__author__</strong> = 'd4rk@xbmc.org'<br>
+<strong>__version__</strong> = '0.0.3'<br>
+<strong>errorTab</strong> = {10004: 'The operation was interrupted.', 10009: 'A bad file handle was passed.', 10013: 'Permission denied.', 10014: 'A fault occurred on the network??', 10022: 'An invalid operation was attempted.', 10035: 'The socket operation would block', 10036: 'A blocking operation is already in progress.', 10048: 'The network address is in use.', 10054: 'The connection has been reset.', 10058: 'The network has been shut down.', ...}<br>
+<strong>has_ipv6</strong> = True</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#7799ee">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Author</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#7799ee"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%">d4rk@xbmc.org</td></tr></table>
