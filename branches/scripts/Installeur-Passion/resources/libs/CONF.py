@@ -33,9 +33,7 @@ SYSTEM_PLATFORM = get_system_platform()
 
 
 def SetConfiguration():
-    """
-    Definit les repertoires locaux de l'utilisateur
-    """
+    """ Definit les repertoires locaux de l'utilisateur """
     # we use "U:\\" for linux, windows and osx for platform mode and "Q:\\" for xbox
     XBMC_ROOT = xbmc.translatePath( ( "U:\\", "Q:\\", )[ ( SYSTEM_PLATFORM == "xbox" ) ] )
 
@@ -51,7 +49,7 @@ def SetConfiguration():
     USRPath = False
 
     if not os.path.isdir( XBMC_ROOT ):
-        XBMC_ROOT = DIALOG_BROWSE( 0, "Choisissez le dossier d'installation d'XBMC", "files" )
+        XBMC_ROOT = DIALOG_BROWSE( 0, sys.modules[ "__main__" ].__language__( 100 ), "files" )
         logger.LOG( logger.LOG_DEBUG, "Other case, XBMC = %s", XBMC_ROOT )
     config.set( "InstallPath", "path", XBMC_ROOT )
 
@@ -61,7 +59,7 @@ def SetConfiguration():
         config.set( "InstallPath", "ScraperDir", ScraperDir )
         #Set Linux PMIIIDir
         PMIIIDir = os.path.join( os.sep+"usr", "share", "xbmc", "skin" )
-        config.set("InstallPath", "PMIIIDir",PMIIIDir )
+        config.set( "InstallPath", "PMIIIDir", PMIIIDir )
         USRPath = True
     else:
         #Set Win ScraperDir
@@ -84,13 +82,10 @@ def SetConfiguration():
     config.set( "InstallPath", "PluginPictDir", os.path.join( PluginDir, "pictures" ) )
     config.set( "InstallPath", "PluginProgDir", os.path.join( PluginDir, "programs" ) )
     config.set( "InstallPath", "PluginVidDir", os.path.join( PluginDir, "video" ) )
-    
-    #Set ImageDir
-    config.set( "InstallPath", "ImageDir", os.path.join( ROOTDIR, "resources", "skins", "Default", "media" ) )
 
     #Set CacheDir
     config.set( "InstallPath", "CacheDir", os.path.join( ROOTDIR, "cache" ) )
-    
+
     #Set UserDataDir
     config.set( "InstallPath", "UserDataDir", os.path.join( XBMC_ROOT, "userdata" ) )
 

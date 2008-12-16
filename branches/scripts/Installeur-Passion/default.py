@@ -7,7 +7,7 @@ __url__    = "http://passion-xbmc.org/index.php"
 __svn_url__ = "http://code.google.com/p/passion-xbmc/source/browse/#svn/trunk/Scripts/Installeur-Passion"
 __credits__ = "Team XBMC, http://xbmc.org/"
 __platform__  = "xbmc media center"
-__date__    = "15-12-2008"
+__date__    = "16-12-2008"
 __version__ = "pre-1.0.0"
 __svn_revision__ = 0
 
@@ -41,12 +41,12 @@ def MAIN():
 
     try:
         # INITIALISATION CHEMINS DE FICHIER LOCAUX
-        fichier = os.path.join(ROOTDIR, "resources", "conf.cfg")
+        fichier = os.path.join( ROOTDIR, "resources", "conf.cfg" )
         config = ConfigParser()
-        config.read(fichier)
+        config.read( fichier )
 
         DIALOG_PROGRESS.update( -1, __language__( 101 ), __language__( 110 ) )
-        if not config.getboolean('InstallPath','pathok'):
+        if not config.getboolean( 'InstallPath', 'pathok' ):
             # GENERATION DES INFORMATIONS LOCALES
             from resources.libs import CONF
             CONF.SetConfiguration()
@@ -63,10 +63,10 @@ def MAIN():
             DIALOG_PROGRESS.update( -1, __language__( 102 ), __language__( 110 ) )
         CHECKMAJ.go()
 
-        config.read(fichier)
+        config.read( fichier )
 
         dialog_error = False
-        if not config.getboolean('Version','UPDATING'):
+        if not config.getboolean( 'Version', 'UPDATING' ):
             try:
                 # LANCEMENT DU SCRIPT
                 from resources.libs import INSTALLEUR
@@ -77,8 +77,8 @@ def MAIN():
         else:
             # LANCEMENT DE LA MISE A JOUR
             try:
-                scriptmaj = config.get('Version','SCRIPTMAJ')
-                xbmc.executescript(scriptmaj)
+                scriptmaj = config.get( 'Version', 'SCRIPTMAJ' )
+                xbmc.executescript( scriptmaj )
 
                 #from resources.libs import INSTALLEUR
                 #INSTALLEUR.go()

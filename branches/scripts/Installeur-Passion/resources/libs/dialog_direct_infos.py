@@ -152,7 +152,7 @@ class DirectInfos( xbmcgui.WindowXML ):
                     imgs = set()
                     slideshow = ""
                     try:
-                        title = item.findtext( "title" )
+                        title = item.findtext( "title" ).replace( u'\xa0', " " )
                         pubdate = set_local_time( item.findtext( "pubdate" ) )
                         guid = item.findtext( "guid" )
                         _desc = item.find( "description" )
