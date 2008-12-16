@@ -33,6 +33,7 @@ RSS_FEEDS_XML = os.path.join( CWD, "resources", "RssFeeds.xml" )
 
 
 def get_system_platform():
+    """ fonction: pour recuperer la platform que xbmc tourne """
     platform = "unknown"
     if xbmc.getCondVisibility( "system.platform.linux" ):
         platform = "linux"
@@ -50,6 +51,7 @@ XBMC_ROOT = xbmc.translatePath( ( "U:\\", "Q:\\", )[ ( SYSTEM_PLATFORM == "xbox"
 
 
 def parse_rss_xml( xml_path=RSS_FEEDS_XML ):
+    """ fonction: pour parser le fichier RssFeeds.xml """
     feeds = {}
     try:
         feed = open( xml_path )
@@ -74,6 +76,7 @@ def parse_rss_xml( xml_path=RSS_FEEDS_XML ):
 
 
 def set_web_navigator( navigator="" ):
+    """ fonction: pour parcourir le navigateur web """
     mask = ( "", ".bat|.exe", )[ ( SYSTEM_PLATFORM == "windows" ) ]
     browser_path = xbmcgui.Dialog().browse( 1, sys.modules[ "__main__" ].__language__( 520 ), "files", mask, False, False, navigator )
     if browser_path:
@@ -140,6 +143,15 @@ def getSkinColors():
         logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
 
 
+def get_default_hex_color():
+    try:
+        default_hex_color = dict( getSkinColors() ).get( "default", "FFFFFFFF" )
+    except:
+        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+        default_hex_color = "FFFFFFFF"
+    return default_hex_color
+
+
 #NOTE: CE CODE PEUT ETRE REMPLACER PAR UN CODE MIEUX FAIT
 def add_pretty_color( word, start="all", end=None, color=None ):
     """ FONCTION POUR METTRE EN COULEUR UN MOT OU UNE PARTIE """
@@ -183,18 +195,6 @@ def set_xbmc_carriage_return( text ):
     return text
 
 
-def set_pretty_formatting( text, bold_links=False ):
-    """ FONCTION POUR RENDRE COMPATIBLE LES TAGS HTML POUR XBMC """
-    text = text.replace( "<br />", "\n" )#.replace( "<br />", "[CR]" )
-    text = text.replace( "<i>", "[I]" ).replace( "</i>", "[/I]" )
-    text = text.replace( "<b>", "[B]" ).replace( "</b>", "[/B]" )
-    text = re.sub( "(?s)</[^>]*>", "\n", text )
-    if bold_links:
-        text = re.sub( "(?s)</[^>]*>", "[/B]", text )
-        text = re.sub( "(?s)<[^>]*>", "[B]", text )
-    return text
-
-
 def strip_off( text, by="", xbmc_labels_formatting=False ):
     """ FONCTION POUR RECUPERER UN TEXTE D'UN TAG """
     if xbmc_labels_formatting:
@@ -202,77 +202,46 @@ def strip_off( text, by="", xbmc_labels_formatting=False ):
     return re.sub( "(?s)<[^>]*>", by, text )
 
 
-class CONVERT:
-    def __init__( self, strvalue="" ):
-        # Internal -- convert entity or character reference
-        # http://www.toutimages.com/codes_caracteres.htm
-        strvalue = self._replace_html_to_iso( strvalue )
+class Slideshow:
+    def clearPlayList( self, m3u ):
+        #xbmc.PlayList(0).clear()
+        #xbmc.PlayList(1).clear()
+        try: os.unlink( m3u )
+        except: pass
 
-        self.entitydefs = { 'lt': '<', 'gt': '>', 'amp': '&', 'quot': '"', 'apos': '\'' }
 
-        self.entity_or_charref = re.compile( '&(?:'
-            '([a-zA-Z][-.a-zA-Z0-9]*)|#([0-9]+)'
-            ')(;?)' ).sub( self._convert_ref, strvalue )
-
-    def _replace_html_to_iso( self, strvalue ):
-        strvalue = strvalue.replace( "&#160;", '&nbsp;' )
-        # NO CONFORM
-        html_to_iso = {
-            '&#8211;': "-",
-            '&#8217;': "'",
-            '&euro;': "&#128;",
-            '&ldquo;': "&#147;",
-            '&rdquo;': "&#148;",
-            '&nbsp;': "&#32;", #'&nbsp;':   "&#160;",
-            '&hellip;': "&#133;", '&Hellip;': "&#133;",
-            '&agrave;': "&#224;", '&Agrave;': "&#192;",
-            '&acirc;':  "&#226;", '&Acirc;':  "&#194;",
-            '&ccedil;': "&#231;", '&Ccedil;': "&#199;",
-            '&egrave;': "&#232;", '&Egrave;': "&#200;",
-            '&eacute;': "&#233;", '&Eacute;': "&#201;",
-            '&ecirc;':  "&#234;", '&Ecirc;':  "&#202;",
-            '&icirc;':  "&#238;", '&Icirc;':  "&#206;",
-            '&iuml;':   "&#239;", '&Iuml;':   "&#207;",
-            '&ocirc;':  "&#244;", '&Ocirc;':  "&#212;",
-            '&ugrave;': "&#249;", '&Ugrave;': "&#217;",
-            '&ucirc;':  "&#251;", '&Ucirc;':  "&#219;"
-            }
-        for key, value in html_to_iso.items():
-            strvalue = strvalue.replace( key, value )
-        return strvalue
-
-    def _convert_ref( self, match ):
-        if match.group( 2 ):
-            return self.convert_charref( match.group( 2 ) ) or ( '&#%s%s' % match.groups( )[ 1: ] )
-        elif match.group( 3 ):
-            return self.convert_entityref( match.group( 1 ) ) or ( '&%s;' % match.group( 1 ) )
+    def playSlideshow( self, screens=[] ):
+        if not screens: return
+        elif len( screens ) == 1:
+            xbmc.executehttpapi( "ShowPicture(%s)" % ( screens[ 0 ], ) )
         else:
-            return '&%s' % match.group( 1 )
+            #Clears the slideshow playlist.
+            #print xbmc.executehttpapi( "ClearSlideshow" )
 
-    def convert_charref( self, name ):
-        """Convert character reference, may be overridden."""
-        try:
-            n = int( name )
-        except ValueError:
-            return
-        if not 0 <= n <= 255:
-            return
-        return self.convert_codepoint( n )
+            #AddToSlideshow(media;[mask];[recursive])
+            #Adds a file or folder (media is either a file or a folder) to the slideshow playlist. To specify a file mask use mask e.g. .jpg|.bmp
+            #[Added 4 Jan 08] If recursive = "1" and media is a folder then all appropriate media within subfolders beneath media will be added otherwise only media within the folder media
+            #will be added. Default behaviour is to be recursive. [Added 5 Jan 08] mask can now also be set to one of the
+            #following values [music], [video], [pictures], [files] in which case XBMC's current set of file extensions for the
+            #type specified will be used as the mask. (Note it only makes much sense for this command to use a value of [pictures].
 
-    def convert_codepoint( self, codepoint ):
-        return chr( codepoint )
+            m3u = os.path.join( xbmc.translatePath( "Z:\\" ), "passion_slideshow.m3u" )
+            #clearPlayList is not very necessary, because next line "w" is used. "w" == write new file.
+            self.clearPlayList( m3u )
 
-    def convert_entityref( self, name ):
-        """Convert entity references.
+            file = open( m3u, "w+" )
+            file.write( "#EXTM3U" )
+            for count, screen in enumerate( screens ):
+                #thumb = xbmc.getCacheThumbName( screen )
+                #print thumb
+                file.write( "\n#EXTINF:0,%i - %s\n%s" % ( ( count + 1 ), os.path.basename( screen ), screen, ) )
+                #print xbmc.executehttpapi( "AddToSlideshow(%s)" % ( screen, ) )
+            file.close()
 
-        As an alternative to overriding this method; one can tailor the
-        results by setting up the self.entitydefs mapping appropriately.
-        """
-        table = self.entitydefs
-        if name in table:
-            return table[ name ]
-        else:
-            return
+            #PlaySlideshow([directory];[recursive])
+            #Starts the slideshow. Directory specifies a folder of images to add to the slideshow playlist.
+            #If recursive has a value of True then all directories beneath directory are searched for images and added to the slideshow playlist.
+            xbmc.executehttpapi( "PlaySlideshow(%s;false)" % ( m3u, ) )
 
 
 class Settings:

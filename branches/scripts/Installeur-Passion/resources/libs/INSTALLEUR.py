@@ -44,10 +44,7 @@ _ = sys.modules[ "__main__" ].__language__
 DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
 # script constants
-__script__ = sys.modules[ "__main__" ].__script__
-try: __svn_revision__ = sys.modules[ "__main__" ].__svn_revision__
-except: __svn_revision__ = 0
-if not __svn_revision__: __svn_revision__ = "0"
+__svn_revision__ = sys.modules[ "__main__" ].__svn_revision__ or "0"
 __version__ = "%s.%s" % ( sys.modules[ "__main__" ].__version__, __svn_revision__ )
 __author__  = sys.modules[ "__main__" ].__author__
 
@@ -836,8 +833,6 @@ class configCtrl:
             self.password            = self.config.get('ServeurID','password')
             self.itemDescripDir     = self.config.get('ServeurID','contentdescriptorDir')
             self.itemDescripFile    = self.config.get('ServeurID','contentdescriptor')
-            
-            self.xbmcXmlUpdate       = self.config.getboolean('System','XbmcXmlUpdate')
 
             self.is_conf_valid = True
         except:
@@ -870,39 +865,14 @@ class configCtrl:
         """
         return self.itemDescripFile
 
-    def setXbmcXmlUpdate(self,xbmcxmlupdateStatus):
-        """
-        """
-        #TODO: Creer un classe configuration controleur responsable de la conf et y deplacer cette fonction ainsi que les autres
-        self.xbmcXmlUpdate = xbmcxmlupdateStatus
-
-        # Set cachepages parameter
-        self.config.set('System','XbmcXmlUpdate', self.xbmcXmlUpdate)
-
-        # Update file
-        cfgfile=open(os.path.join(ROOTDIR, "resources", "conf.cfg"), 'w+')
-        try:
-            self.config.write(cfgfile)
-        except:
-            logger.LOG( logger.LOG_DEBUG, "Exception during setXbmcXmlUpdate" )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-        cfgfile.close()
-
-    def getXbmcXmlUpdate(self):
-        """
-        """
-        #TODO: Creer un classe configuration controleur responsable de la conf et y deplacer cette fonction ainsi que les autres
-        return self.xbmcXmlUpdate
-
 
 #class MainWindow(xbmcgui.Window):
 class MainWindow( xbmcgui.WindowXML ):
-    """
+    # control id's
+    CONTROL_MAIN_LIST = 150
+    CONTROL_FORUM_BUTTON = 300
+    CONTROL_OPTIONS_BUTTON = 310
 
-    Interface graphique
-
-    """
-    #def __init__(self):
     def __init__( self, *args, **kwargs ):
         xbmcgui.WindowXML.__init__( self, *args, **kwargs )
         """
@@ -935,7 +905,6 @@ class MainWindow( xbmcgui.WindowXML ):
         self.pluginDisplayList  = pluginDisplayLst
         self.pluginsDirSpyList  = []
 
-        #self.xbmcXmlUpdate      = xbmcxmlupdate
 
         self.curDirList         = []
         self.connected          = False # status de la connection (inutile pour le moment)
@@ -970,19 +939,6 @@ class MainWindow( xbmcgui.WindowXML ):
 
 
     def onInit( self ):
-        # item Control List
-        self.list = 150
-
-        # Menu Forum button
-        self.buttonForum = 300
-
-        # Menu option buttons a the top
-        self.buttonOptions = 310
-
-        # Help button a the top
-        # moved in settings screen 
-        #self.buttonHelp = 320
-
         # Title of the current pages
         self.setProperty( "Category", _( 10 ) )
 
@@ -1026,23 +982,15 @@ class MainWindow( xbmcgui.WindowXML ):
         self.settings = Settings().get_settings( defaults=defaults )
 
     def _set_skin_colours( self ):
-        xbmcgui.lock()
+        #xbmcgui.lock()
         try:
             self.setProperty( "style_PMIII.HD", ( "", "true" )[ ( self.settings[ "skin_colours_path" ] == "style_PMIII.HD" ) ] )
             self.setProperty( "Skin-Colours-path", self.settings[ "skin_colours_path" ] )
-            self.setProperty( "Skin-Colours", ( self.settings[ "skin_colours" ] or self._get_default_hex_color() ) )
+            self.setProperty( "Skin-Colours", ( self.settings[ "skin_colours" ] or get_default_hex_color() ) )
             #print xbmc.getInfoLabel( "Container.Property(Skin-Colours)" )
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-        xbmcgui.unlock()
-
-    def _get_default_hex_color( self ):
-        try:
-            default_hex_color = dict( getSkinColors() ).get( "default", "FFFFFFFF" )
-        except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-            default_hex_color = "FFFFFFFF"
-        return default_hex_color
+        #xbmcgui.unlock()
 
     def _start_rss_timer( self ):
         # temps entre chaque mise a jour du flux rss 15 min.
@@ -1101,13 +1049,13 @@ class MainWindow( xbmcgui.WindowXML ):
     def _on_action_control( self, act_ctrl_id ):
         try:
             #button_code_F1_keyboard = 61552
-            if ( act_ctrl_id in ( self.buttonForum, 61552, ) ):
+            if ( act_ctrl_id in ( self.CONTROL_FORUM_BUTTON, 61552, ) ):
                 from dialog_direct_infos import show_direct_infos
                 show_direct_infos( self )
                 #on a plus besoin, on le delete
                 del show_direct_infos
 
-            elif ( act_ctrl_id in ( ACTION_CONTEXT_MENU, self.buttonOptions, ) ):
+            elif ( act_ctrl_id in ( ACTION_CONTEXT_MENU, self.CONTROL_OPTIONS_BUTTON, ) ):
                 from dialog_script_settings import show_settings
                 show_settings( self )
                 #on a plus besoin du settins, on le delete
@@ -1115,21 +1063,14 @@ class MainWindow( xbmcgui.WindowXML ):
 
             #button_code_F3_keyboard = 61554
             elif ( act_ctrl_id in ( ACTION_SHOW_INFO, 61554, ) ):
-                if ( not self.type.lower() in ( "racine", "plugins", ) ) and ( self.getFocusId() == self.list ):
-                    currentListIndex = self.getControl( self.list ).getSelectedPosition()
+                if ( not self.type.lower() in ( "racine", "plugins", ) ) and ( self.getFocusId() == self.CONTROL_MAIN_LIST ):
+                    currentListIndex = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()
                     if currentListIndex >= 0:
                         selectedItem = os.path.basename( self.curDirList[ currentListIndex ] )
                         from dialog_item_descript import show_descript
                         show_descript( self , selectedItem , self.type )
                         #on a plus besoin du descript, on le delete
                         del show_descript
-
-            #button_code_F2_keyboard = 61553
-            elif ( act_ctrl_id in ( 61553, ) ):
-                from dialog_log_viewer import show_log
-                show_log()
-                #on a plus besoin, on le delete
-                del show_log
 
             else:
                 pass
@@ -1143,17 +1084,7 @@ class MainWindow( xbmcgui.WindowXML ):
         self._on_action_control( action )
         self._on_action_control( action.getButtonCode() )
         try:
-            #if action == ACTION_SHOW_INFO:
-            #    from dialog_item_descript import show_descript
-            #    if (self.type   != "racine") and (self.type   != "Plugins"):
-            #        currentListIndex = self.getControl( self.list ).getSelectedPosition()
-            #        selectedItem = os.path.basename(self.curDirList[currentListIndex])
 
-            #        show_descript( self , selectedItem , self.type)
-            #        #on a plus besoin du descript, on le delete
-            #        del show_descript
-            
-            
             if action == ACTION_PREVIOUS_MENU:
                 # Sortie du script
 
@@ -1164,7 +1095,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 self.deleteDir(CACHEDIR)
 
                 # Verifions si la mise a jour du XML a ete activee
-                if self.configManager.getXbmcXmlUpdate():
+                if self.settings[ "xbmc_xml_update" ]:
                     # Capturons le contenu des sous-repertoires plugins a la sortie du script
                     xmlConfFile = userDataXML(os.path.join(self.userDataDir,"sources.xml"),os.path.join(self.userDataDir,"sourcesNew.xml"))
                     for type in self.downloadTypeList:
@@ -1268,22 +1199,22 @@ class MainWindow( xbmcgui.WindowXML ):
         """
         self._on_action_control( controlID )
         try:
-            if controlID == self.list:
+            if controlID == self.CONTROL_MAIN_LIST:
 
                 if (self.type   == "racine"):
-                    self.index = self.getControl( self.list ).getSelectedPosition()#self.list.getSelectedPosition()
-                    self.type  = self.downloadTypeList[self.racineDisplayList[self.getControl( self.list ).getSelectedPosition()]] # On utilise le filtre
+                    self.index = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()
+                    self.type  = self.downloadTypeList[self.racineDisplayList[self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()]] # On utilise le filtre
                     self.updateList() #on raffraichit la page pour afficher le contenu
 
                 elif (self.type   == "Plugins"):
-                    self.index = self.getControl( self.list ).getSelectedPosition()
-                    self.type  = self.downloadTypeList[self.pluginDisplayList[self.getControl( self.list ).getSelectedPosition()]] # On utilise le filtre
+                    self.index = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()
+                    self.type  = self.downloadTypeList[self.pluginDisplayList[self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()]] # On utilise le filtre
                     self.updateList() #on raffraichit la page pour afficher le contenu
 
                 else:
                     downloadOK = True
                     correctionPM3bidon = False
-                    self.index = self.getControl( self.list ).getSelectedPosition()
+                    self.index = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()
 
                     source = self.curDirList[self.index]
 
@@ -1482,14 +1413,14 @@ class MainWindow( xbmcgui.WindowXML ):
     def _save_downloaded_property( self ):
         try:
             self._load_downloaded_property()
-            selected_label = self.getControl( self.list ).getSelectedItem().getLabel()
+            selected_label = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedItem().getLabel()
             self.downloaded_property.update( [ md5.new( selected_label ).hexdigest() ] )
             file_path = os.path.join( logger.DIRECTORY_DATA, "downloaded.txt" )
             file( file_path, "w" ).write( repr( self.downloaded_property ) )
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         else:
-            self.getControl( self.list ).getSelectedItem().setProperty( "Downloaded", "isDownloaded" )
+            self.getControl( self.CONTROL_MAIN_LIST ).getSelectedItem().setProperty( "Downloaded", "isDownloaded" )
 
     def updateProgress_cb(self, percent, dp=None):
         """
@@ -1530,7 +1461,7 @@ class MainWindow( xbmcgui.WindowXML ):
         xbmcgui.lock()
 
         # Clear all ListItems in this control list
-        self.getControl( self.list ).reset()
+        self.getControl( self.CONTROL_MAIN_LIST ).reset()
 
         # Calcul du nombre d'elements de la liste
         itemnumber = len(self.curDirList)
@@ -1567,7 +1498,7 @@ class MainWindow( xbmcgui.WindowXML ):
 
                 displayListItem = xbmcgui.ListItem( sectionLocTitle, "", thumbnailImage = imagePath )
                 displayListItem.setProperty( "Downloaded", "" )
-                self.getControl( self.list ).addItem(displayListItem)
+                self.getControl( self.CONTROL_MAIN_LIST ).addItem(displayListItem)
                 
             elif (self.type  == "Plugins"):
                 # Nom de la section
@@ -1593,7 +1524,7 @@ class MainWindow( xbmcgui.WindowXML ):
                     sectionLocTitle = _( 18 )
                 displayListItem = xbmcgui.ListItem( sectionLocTitle, "", thumbnailImage = imagePath )
                 displayListItem.setProperty( "Downloaded", "" )
-                self.getControl( self.list ).addItem(displayListItem)
+                self.getControl( self.CONTROL_MAIN_LIST ).addItem(displayListItem)
             
             
             elif (self.type == "Plugins Musique") or (self.type == "Plugins Images") or (self.type == "Plugins Programmes") or (self.type == "Plugins Vidéos"):
@@ -1637,7 +1568,7 @@ class MainWindow( xbmcgui.WindowXML ):
 
                 displayListItem = xbmcgui.ListItem( item2download, "", thumbnailImage = imagePath )
                 displayListItem.setProperty( "Downloaded", already_downloaded )
-                self.getControl( self.list ).addItem(displayListItem)
+                self.getControl( self.CONTROL_MAIN_LIST ).addItem(displayListItem)
 
             else:
                 # Element de la liste
@@ -1677,11 +1608,9 @@ class MainWindow( xbmcgui.WindowXML ):
 
                 displayListItem = xbmcgui.ListItem( item2download, "", thumbnailImage = imagePath )
                 displayListItem.setProperty( "Downloaded", already_downloaded )
-                self.getControl( self.list ).addItem(displayListItem)
+                self.getControl( self.CONTROL_MAIN_LIST ).addItem(displayListItem)
         xbmcgui.unlock()
 
-        # Set Focus on list
-        #self.setFocus(self.list)
         DIALOG_PROGRESS.close()
 
     def deleteDir(self,path):
@@ -1886,7 +1815,6 @@ user                = config.get('ServeurID','user')
 rssfeed             = config.get('ServeurID','rssfeed')
 password            = config.get('ServeurID','password')
 
-#xbmcxmlupdate       = config.getboolean('System','XbmcXmlUpdate') # Deplacé dans le configCtrl
 
 downloadTypeLst     = ["Themes","Scrapers","Scripts","Plugins","Plugins Musique","Plugins Images","Plugins Programmes","Plugins Vidéos"]
 #TODO: mettre les chemins des rep sur le serveur dans le fichier de conf

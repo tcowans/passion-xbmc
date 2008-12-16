@@ -66,6 +66,9 @@
   <string id="232">Corbeille</string>
   <string id="233">Trac Passion-Xbmc</string>
 
+  <string id="236">Confirmer le lancement du topic:</string>
+  <string id="237">Passer</string>
+  <string id="238">Lancer</string>
   <string id="239">Récupération des topics...</string>
   <string id="240">Infos non disponible!</string>
   <string id="241">Impossible de récupérer les informations!</string>
@@ -81,7 +84,7 @@
   <string id="506">Aucun</string>
   <string id="507">Activer l'arrière-plan personnel</string>
   <string id="508">Chemin:</string>
-
+  <string id="509">Voulez-vous effacer le chemin de l'arrière-plan?</string>
   <string id="510">Activer la vérification de la mise à jour au démarrage</string>
   <string id="511">Flux RSS</string>
   <string id="512">Activer le mode débogue du [B]*script*[/B]</string>
