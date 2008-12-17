@@ -3,6 +3,34 @@ Module de partage des fonctions et des constantes
 
 """
 
+#En gros seul les fonctions et variables de __all__ vont etre importees lors du "import *"
+#The public names defined by a module are determined by checking the module's namespace
+#for a variable named __all__; if defined, it must be a sequence of strings which are names defined
+#or imported by that module. The names given in __all__ are all considered public and are required to exist.
+#If __all__ is not defined, the set of public names includes all names found in the module's namespace
+#which do not begin with an underscore character ("_"). __all__ should contain the entire public API.
+#It is intended to avoid accidentally exporting items that are not part of the API (such as library modules
+#which were imported and used within the module).
+__all__ = [
+    # public names
+    "SYSTEM_PLATFORM",
+    "XBMC_ROOT",
+    "parse_rss_xml",
+    "set_web_navigator",
+    "is_playable_media",
+    "get_html_source",
+    "getUserSkin",
+    "getSkinColors",
+    "get_default_hex_color",
+    "add_pretty_color",
+    "bold_text",
+    "italic_text",
+    "set_xbmc_carriage_return",
+    "strip_off",
+    "Slideshow",
+    "Settings",
+    ]
+
 #Modules general
 import os
 import re

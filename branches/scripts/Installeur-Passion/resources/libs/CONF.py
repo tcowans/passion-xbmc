@@ -1,10 +1,15 @@
 
+#Modules general
 import os
 import sys
 import ConfigParser
 
+#modules XBMC
 import xbmc
 from xbmcgui import Dialog
+
+#modules custom
+#from utilities import SYSTEM_PLATFORM, XBMC_ROOT
 
 #module logger
 try:
@@ -16,27 +21,10 @@ except:
 DIALOG_BROWSE = Dialog().browse
 
 
-def get_system_platform():
-    """ fonction: pour recuperer la platform que xbmc tourne """
-    platform = "unknown"
-    if xbmc.getCondVisibility( "system.platform.linux" ):
-        platform = "linux"
-    elif xbmc.getCondVisibility( "system.platform.xbox" ):
-        platform = "xbox"
-    elif xbmc.getCondVisibility( "system.platform.windows" ):
-        platform = "windows"
-    elif xbmc.getCondVisibility( "system.platform.osx" ):
-        platform = "osx"
-    return platform
-
-SYSTEM_PLATFORM = get_system_platform()
-
-
 def SetConfiguration():
     """ Definit les repertoires locaux de l'utilisateur """
-    # we use "U:\\" for linux, windows and osx for platform mode and "Q:\\" for xbox
-    XBMC_ROOT = xbmc.translatePath( ( "U:\\", "Q:\\", )[ ( SYSTEM_PLATFORM == "xbox" ) ] )
-
+    from utilities import SYSTEM_PLATFORM, XBMC_ROOT
+    
     logger.LOG( logger.LOG_DEBUG, str( "*" * 85 ) )
     logger.LOG( logger.LOG_DEBUG, "Setting Configuration".center( 85 ) )
     logger.LOG( logger.LOG_DEBUG, str( "*" * 85 ) )
