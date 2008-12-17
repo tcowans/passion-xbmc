@@ -42,6 +42,7 @@ def load_infos( url ):
         return HTB.parse( StringIO( source ), "utf-8"  ).findall( "channel" )[ 0 ]
     except:
         logger.EXC_INFO( logger.LOG_DEBUG, sys.exc_info() )
+        # si on arrive ici le retour est automatiquement None
 
 
 class LIST_CONTAINER_150( dict ):

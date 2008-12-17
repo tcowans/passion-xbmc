@@ -14,6 +14,9 @@ import ConfigParser
 
 from threading import Thread, Timer
 from htmlentitydefs import name2codepoint
+import elementtree.HTMLTreeBuilder as HTB
+from StringIO import StringIO
+
 from string import * #a verifier si on a besoin de cette methode import *
 from BeautifulSoup import BeautifulStoneSoup, Tag, NavigableString  #librairie de traitement XML
 
@@ -44,6 +47,7 @@ DIALOG_PROGRESS = xbmcgui.DialogProgress()
 __svn_revision__ = sys.modules[ "__main__" ].__svn_revision__ or "0"
 __version__ = "%s.%s" % ( sys.modules[ "__main__" ].__version__, __svn_revision__ )
 __author__ = sys.modules[ "__main__" ].__author__
+
 
 ############################################################################
 # Get actioncodes from keymap.xml
@@ -83,103 +87,39 @@ class rssReader:
     Class responsable de la recuperation du flux RSS et de l'extraction des infos RSS
     """
     def __init__( self, rss_title, rssUrl, titlecolor="ffffffff", textcolor="ffffffff" ):
-        """
-        Init de rssReader
-        """
         self.rss_title = rss_title
-        self.rssURL = rssUrl
         self.titlecolor = titlecolor
         self.textcolor = textcolor
-        self.rssPage = self.get_rss_page( self.rssURL )
+        self.rssPage = self.load_feeds_infos( rssUrl )
 
-    def get_rss_page( self, rssUrl ):
-        """
-        Télécharge et renvoi la page RSS
-        """
+    def load_feeds_infos( self, url ):
         try:
-            request = urllib2.Request( rssUrl )
-            request.add_header( 'User-Agent', 'Mozilla/5.0 ( Windows; U; Windows NT 5.1; fr; rv:1.9 ) Gecko/2008052906 Firefox/3.0' )
-            request.add_header( 'Accept', 'text/html, application/xhtml+xml, application/xml;q=0.9, */*;q=0.8' )
-            request.add_header( 'Accept-Language', 'fr, fr-fr;q=0.8, en-us;q=0.5, en;q=0.3' )
-            request.add_header( 'Accept-Charset', 'ISO-8859-1, utf-8;q=0.7, *;q=0.7' )
-            response = urllib2.urlopen( request )
-            the_page = response.read()
+            html = urllib.urlopen( url )
+            source = re.sub( "<!\[CDATA\[|\]\]>", "", html.read() )
+            html.close()
+            return HTB.parse( StringIO( source ), "utf-8"  ).findall( "channel" )[ 0 ]
         except:
-            logger.LOG( logger.LOG_DEBUG, "Exception get_rss_page" )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-            the_page = ""
-        # renvo a page the RSS
-        return the_page
-
-    def unescape( self, text ):
-        """
-        credit : Fredrik Lundh
-        trouvé : http://effbot.org/zone/re-sub.htm#unescape-html
-        """
-        def fixup( m ):# m est un objet match
-            text = m.group( 0 )#on récupère le texte correspondant au match
-            if text[ :2 ] == "&#":# dans le cas où le match ressemble à &#
-                # character reference
-                try:
-                    if text[ :3 ] == "&#x":#si plus précisément le texte ressemble à &#38;#x ( donc notation hexa )
-                        return unichr( int( text[ 3:-1 ], 16 ) )#alors on retourne le unicode du caractère en base 16 ( hexa )
-                    else:
-                        return unichr( int( text[ 2:-1 ] ) )#sinon on retourne le unicode du caractère en base 10 ( donc notation décimale )
-                except ValueError: #si le caractère n'est pas unicode, on le passe simplement
-                    pass
-            else: #sinon c'est un caractère nommé ( htmlentities )
-                # named entity
-                try:
-                    text = unichr( name2codepoint[ text[ 1:-1 ] ] )#on renvoi le unicode de la correspondance pour le caractère nommé
-                except KeyError:
-                    pass #si le caractère nommé n'est pas défini dans les htmlentities alors on passe
-            return text # leave as is #dans tous les autres cas, le match n'était pas un caractère d'échapement html on le retourne tel quel
-
-        # par un texte issu de la fonction fixup
-        return re.sub( "&#?\w+;", fixup,   text )
+            logger.EXC_INFO( logger.LOG_DEBUG, sys.exc_info() )
+            # si on arrive ici le retour est automatiquement None
 
     def GetRssInfo( self ):
-        """
-        Recupere les information du FLux RSS de passion XBMC
-        Merci a Alexsolex
-        """
         try:
-            soup = BeautifulStoneSoup( self.rssPage )
-            if not self.rss_title:
-                maintitle = soup.find( "description" ).string.encode( "cp1252", 'xmlcharrefreplace' ).replace( "&#224;", "à" ).replace( "&#234;", "ê" ).replace( "&#232;", "è" ).replace( "&#233;", "é" ).replace( "&#160;", "  ***  " ) # Note: &#160;=&
-            else:
-                maintitle = self.rss_title
+            if self.rssPage is None: raise
+            items_listed = self.rssPage.findall( "item" )
+            if not self.rss_title: maintitle = _( 107 )
+            else: maintitle = self.rss_title
             items = add_pretty_color( maintitle + ": ", color=self.titlecolor )
             item_sep = add_pretty_color( " - ", color=self.textcolor )
-            items_listed = soup.findAll( "item" )
             item_end = len( items_listed )
-            for count, item in enumerate( items_listed ): #boucle si plusieurs items dans le rss
-                # Titre de l'Item
+            for count, item in enumerate( items_listed ):
                 try:
-                    itemsTitle = item.find( "title" ).string.encode( "cp1252", 'xmlcharrefreplace' ).replace( "&#224;", "à" ).replace( "&#234;", "ê" ).replace( "&#232;", "è" ).replace( "&#233;", "é" ).replace( "&#160;", "  ***  " ) # Note: &#160;=&
-                    items += itemsTitle
+                    items += item.findtext( "title" ).replace( u'\xa0', " " )
                 except:
-                    #possible error:
-                    #ERROR: INSTALLEUR::rssReader::GetRssInfo ( 167 ), 'itemsTitle = item.find( "title" ).string.encode( "cp1252", \'xmlcharrefreplace\' ).replace( "&#224;", "\xe0" ).replace( "&#234;", "\xea" ).replace( "&#232;", "\xe8" ).replace( "&#233;", "\xe9" ).replace( "&#160;", "  ***  " ) # Note: &#160;=&' - 'NoneType' object has no attribute 'encode'
                     logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
                     continue
                 if ( ( count + 1 ) < item_end ):
                     items += item_sep
-                #items = items + add_pretty_color( itemsTitle + ":  ", color="FFFF0000" )
-                '''
-                # la ligne suivante supprime toutes les balises au sein de l'info "description"
-                clean_desc = re.sub( r"<.*?>", r"", "".join( item.find( "description" ).contents ) )
 
-                # on imprime le texte sans les caracteres d'echappements html
-                # Description de l'item
-                itemDesc = self.unescape( clean_desc ).strip().encode( "cp1252", 'xmlcharrefreplace' ).replace( "&#224;", "à" ).replace( "&#234;", "ê" ).replace( "&#232;", "è" ).replace( "&#233;", "é" ).replace( "&#160;", "  ***  " ) # Note: &#160;=&
-                itemDesc = itemDesc.replace( "-Plus d'info", "" ).replace( "-Voir la suite...", "" ) # on supprime "-Plus d'info" et "-Voir la suite..."
-
-                #TODO: supprimer balise link plutot que remplacer les chaines "-Voir la suite..."
-
-                # Concatenation
-                items = items + " " + itemDesc + " - "
-                '''
             return maintitle, items
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
@@ -833,7 +773,7 @@ class MainWindow( xbmcgui.WindowXML ):
         """
         Initialisation de l'interface
         """
-        self.main_list_last_pos = 0
+        self.main_list_last_pos = []
 
         # Display Loading Window while we are loading the information from the website
         if xbmc.getCondVisibility( "Window.IsActive(progressdialog)" ):
@@ -1114,18 +1054,22 @@ class MainWindow( xbmcgui.WindowXML ):
                 # remonte l'arborescence
                 # On verifie si on est a l'interieur d'un ses sous section plugin
                 #if ( self.type == "Plugins Musique" ) or ( self.type == "Plugins Images" ) or ( self.type == "Plugins Programmes" ) or ( self.type == "Plugins Vidéos" ):
+                if not self.main_list_last_pos:
+                    try: self.main_list_last_pos.append( self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition() )
+                    except: self.main_list_last_pos.append( 0 )
                 try:
                     if "Plugins " in self.type:
                         self.type = "Plugins"
-                        self.updateList()
                     else:
                         # cas standard
                         self.type = "racine"
-                        self.updateList()
+                    self.updateList()
                 except:
                     logger.LOG( logger.LOG_DEBUG, "Window::onAction::ACTION_PREVIOUS_MENU: Exception durant updateList()" )
                     logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-                self.getControl( self.CONTROL_MAIN_LIST ).selectItem( self.main_list_last_pos )
+
+                if self.main_list_last_pos:
+                    self.getControl( self.CONTROL_MAIN_LIST ).selectItem( self.main_list_last_pos.pop() )
         except:
             logger.LOG( logger.LOG_DEBUG, "Window::onAction: Exception" )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
@@ -1148,8 +1092,8 @@ class MainWindow( xbmcgui.WindowXML ):
         self._on_action_control( controlID )
         try:
             if controlID == self.CONTROL_MAIN_LIST:
-                try: self.main_list_last_pos = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()
-                except: self.main_list_last_pos = 0
+                try: self.main_list_last_pos.append( self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition() )
+                except: self.main_list_last_pos.append( 0 )
                 if ( self.type == "racine" ):
                     self.index = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()
                     self.type = self.downloadTypeList[ self.racineDisplayList[ self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition() ] ] # On utilise le filtre
