@@ -7,7 +7,7 @@ import md5
 import sys
 import time
 import ftplib
-import urllib2
+import urllib
 import rarfile
 import zipfile
 import ConfigParser
@@ -17,7 +17,7 @@ from htmlentitydefs import name2codepoint
 import elementtree.HTMLTreeBuilder as HTB
 from StringIO import StringIO
 
-from string import * #a verifier si on a besoin de cette methode import *
+#from string import * #a verifier si on a besoin de cette methode import *
 from BeautifulSoup import BeautifulStoneSoup, Tag, NavigableString  #librairie de traitement XML
 
 
@@ -1646,7 +1646,7 @@ def go():
     #Fonction de demarrage
     file_xml = "passion-main.xml"
     #depuis la revision 14811 on a plus besoin de mettre le chemin complet, la racine suffit
-    dir_path = CWD #xbmc.translatePath( os.path.join( CWD, "resources" ) )
+    dir_path = ROOTDIR
     #recupere le nom du skin et si force_fallback est vrai, il va chercher les images du defaultSkin.
     current_skin, force_fallback = getUserSkin()
 
