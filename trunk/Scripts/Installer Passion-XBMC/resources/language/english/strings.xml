@@ -44,7 +44,7 @@
   <string id="118">You can't overwrite the Skin currently in use</string>
   <string id="119">Please change the Skin currently in use[CR]before downloading it</string>
   <string id="120">You can't install this Skin[CR]without admin permissions</string>
-  <string id="121">You can't install this Scraper[CR]without admin permissions/string>
+  <string id="121">You can't install this Scraper[CR]without admin permissions</string>
   <string id="122">Download: %s</string>
   <string id="123">Total download: %d%%</string>
   <string id="124">Download cancelled</string>
@@ -160,3 +160,4 @@
   <string id="611">Multilanguages</string>
   <string id="612">Unknown</string>
 </strings>
+  
