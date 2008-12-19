@@ -19,7 +19,7 @@ DEBUG_MODE = ( None, "DEBUGS", )[ 0 ]
 
 
 try: __script__ = sys.modules[ "__main__" ].__script__
-except: __script__ = "Installeur-Passion"
+except: __script__ = "Installer Passion-XBMC"
 DIRECTORY_DATA = os.path.join( xbmc.translatePath( "T:\\script_data" ), __script__ )
 if not os.path.isdir( DIRECTORY_DATA ): os.makedirs( DIRECTORY_DATA )
 

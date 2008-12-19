@@ -1,6 +1,6 @@
 
 # script constants
-__script__ = "Installeur-Passion"
+__script__ = "Installer Passion-XBMC"
 __plugin__ = "Unknown"
 __author__ = "Team Passion-XBMC"
 __url__    = "http://passion-xbmc.org/index.php"
