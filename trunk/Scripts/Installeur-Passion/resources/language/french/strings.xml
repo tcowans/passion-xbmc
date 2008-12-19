@@ -15,19 +15,70 @@
   <string id="16">Plugins Images</string>
   <string id="17">Plugins Programmes</string>
   <string id="18">Plugins Vidéos</string>
+  <string id="19">Demande de mot de passe</string>
+  <string id="20">Vous devez saisir votre mot de passe administrateur[CR]système</string>
+  <string id="21">Mot de passe Administrateur</string>
 
   <string id="24">Page</string>
   <string id="25">Objet(s)</string>
 
   <!--DIVERS STRINGS -->
+  <string id="100">Choisissez le dossier d'installation d'XBMC</string>
   <string id="101">Configuration du système</string>
   <string id="102">Vérification de la mise à jour</string>
   <string id="103">Création de l'interface Graphique</string>
   <string id="104">Chargement des informations</string>
+  <string id="105">Une nouvelle version est disponible</string>
+  <string id="106">Voulez-vous faire une mise à jour?</string>
+  <string id="107">RSS Feed:</string>
+  <string id="108"> Not available!</string>
 
   <string id="110">Veuillez patienter...</string>
   <string id="111">Erreur</string>
   <string id="112">Exception durant l'initialisation</string>
+  <string id="113">Mettre à jour la configuation et sortir</string>
+  <string id="114">Mettre à jour la configuation et redémarrer</string>
+  <string id="115">Sortir sans rien faire</string>
+  <string id="116">Modifications dans sources.xml, que désirez vous faire?</string>
+  <string id="117">Action impossible</string>
+  <string id="118">Vous ne pouvez pas écraser le Thème en cours d'utilisation</string>
+  <string id="119">Merci de changer le Thème en cours d'utilisation[CR]avant de le télécharger</string>
+  <string id="120">Vous ne pouvez installer ce thème[CR]sans les droits d'administrateur</string>
+  <string id="121">Vous ne pouvez installer le scraper[CR]sans les droits d'administrateur</string>
+  <string id="122">Téléchargement: %s</string>
+  <string id="123">Téléchargement total: %d%%</string>
+  <string id="124">Téléchargement annulé</string>
+  <string id="125">Téléchargement annulé alors qu'il était en cours</string>
+  <string id="126">Voulez-vous supprimer les fichiers déjà téléchargés?</string>
+  <string id="127">Répertoire supprimé</string>
+  <string id="128">Le répertoire:</string>
+  <string id="129">a bien été supprimé</string>
+  <string id="130">Impossible de supprimer le répertoire</string>
+  <string id="131">Fichier supprimé</string>
+  <string id="132">Le fichier:</string>
+  <string id="133">Impossible de supprimer le fichier</string>
+  <string id="134">Téléchargement terminé</string>
+  <string id="135">a été téléchargé dans le repertoire:</string>
+  <string id="136">Installation: %s</string>
+  <string id="137">Installation en cours ...</string>
+  <string id="138">%s est en cours d'installation</string>
+  <string id="139">Erreur durant l'extraction de %s</string>
+  <string id="140">Exception durant l'extraction de %s</string>
+  <string id="141">Installation Terminée</string>
+  <string id="142">L'installation de %s</string>
+  <string id="143">est terminée</string>
+  <string id="144">Erreur - Installation impossible</string>
+  <string id="145">Veuillez vérifier les logs</string>
+  <string id="146">Installation annulée</string>
+  <string id="147">L'installation de %s a été annulée</string>
+  <string id="148">Erreur inconnue</string>
+  <string id="149">%s est déjà présent, que désirez vous faire?</string>
+  <string id="150">Supprimer le répertoire</string>
+  <string id="151">Renommer le répertoire</string>
+  <string id="152">Écraser le repertoire</string>
+  <string id="153">Annuler</string>
+  <string id="154">Saisir le nouveau nom:</string>
+  <string id="155">L'élément a été renommé:</string>
 
   <!--FORUM DIRECT INFOS STRINGS -->
   <string id="199">Informations en direct</string>
@@ -66,6 +117,9 @@
   <string id="232">Corbeille</string>
   <string id="233">Trac Passion-Xbmc</string>
 
+  <string id="236">Confirmer le lancement du topic:</string>
+  <string id="237">Passer</string>
+  <string id="238">Lancer</string>
   <string id="239">Récupération des topics...</string>
   <string id="240">Infos non disponible!</string>
   <string id="241">Impossible de récupérer les informations!</string>
@@ -81,7 +135,7 @@
   <string id="506">Aucun</string>
   <string id="507">Activer l'arrière-plan personnel</string>
   <string id="508">Chemin:</string>
-
+  <string id="509">Voulez-vous effacer le chemin de l'arrière-plan?</string>
   <string id="510">Activer la vérification de la mise à jour au démarrage</string>
   <string id="511">Flux RSS</string>
   <string id="512">Activer le mode débogue du [B]*script*[/B]</string>

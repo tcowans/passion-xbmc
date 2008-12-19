@@ -42,10 +42,6 @@ SEPARATOR = str( "-" * 85 )
 LOG_DEBUG, LOG_INFO, LOG_NOTICE, LOG_WARNING, LOG_ERROR, LOG_FATAL = range( 1, 7 )
 
 #REGEXP FOR FUNCTION, e.g.: eval( LOG_SELF_FUNCTION )
-#try:
-#    LOG_SELF_FUNCTION = 'LOG( LOG_DEBUG, "%s::%s::%s", self.__module__, self.__class__.__name__, sys._getframe( 1 ).f_code.co_name )' #self.__module__.split( "." )[ -1 ]
-#    LOG_FUNCTION = 'LOG( LOG_DEBUG, "%s::%s", globals()[ "__name__" ], sys._getframe( 1 ).f_code.co_name )'
-#except:
 LOG_SELF_FUNCTION = 'logger.LOG( logger.LOG_DEBUG, "%s::%s::%s", self.__module__, self.__class__.__name__, sys._getframe( 1 ).f_code.co_name )' #self.__module__.split( "." )[ -1 ]
 LOG_FUNCTION = 'logger.LOG( logger.LOG_DEBUG, "%s::%s", globals()[ "__name__" ], sys._getframe( 1 ).f_code.co_name )'
 
@@ -158,6 +154,10 @@ def create_log_file():
         globals()[ "WRITABLE_LOG" ] = open( LOG_SCRIPT, "w+" )
         if old_log != "":
             WRITABLE_LOG.write( old_log )
+            LOG( LOG_NOTICE, SEPARATOR )
+            LOG( LOG_NOTICE, SEPARATOR )
+            LOG( LOG_NOTICE, "Checking the Date!" )
+            LOG( LOG_INFO, "- Current Date is: %s", CURRENT_DATE )
 
 
 class LogErr:

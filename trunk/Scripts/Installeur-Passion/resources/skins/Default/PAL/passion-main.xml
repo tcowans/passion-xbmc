@@ -184,6 +184,7 @@
 						<posx>0</posx>
 						<posy>0</posy>
 						<texture>passion-list-nofocus.png</texture>
+						<colordiffuse>50ffffff</colordiffuse>
 						<visible>Control.IsVisible(2050)</visible>
 					</control>
 					<control type="image">
@@ -192,6 +193,7 @@
 						<posx>0</posx>
 						<posy>0</posy>
 						<texture>passion-list-nofocus.png</texture>
+						<colordiffuse>50ffffff</colordiffuse>
 						<visible>!Control.IsVisible(2050)</visible>
 					</control>
 					<control type="image">
@@ -244,6 +246,7 @@
 						<posx>0</posx>
 						<posy>0</posy>
 						<texture>passion-list-nofocus.png</texture>
+						<colordiffuse>50ffffff</colordiffuse>
 						<visible>!Control.HasFocus(150) + Control.IsVisible(2050)</visible>
 					</control>
 					<control type="image">
@@ -252,6 +255,7 @@
 						<posx>0</posx>
 						<posy>0</posy>
 						<texture>passion-list-nofocus.png</texture>
+						<colordiffuse>50ffffff</colordiffuse>
 						<visible>!Control.HasFocus(150) + !Control.IsVisible(2050)</visible>
 					</control>
 					<control type="image">

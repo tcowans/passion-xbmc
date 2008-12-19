@@ -1,4 +1,4 @@
-# rarfile.py
+# rarfile.py, http://grue.l-t.ee/~marko/src/rarfile/
 #
 # Copyright (c) 2005  Marko Kreen <marko@l-t.ee>
 #

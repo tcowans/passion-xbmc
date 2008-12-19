@@ -14,6 +14,10 @@ try:
 except:
     import script_log as logger
 
+
+#FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
+_ = sys.modules[ "__main__" ].__language__
+
 # variable qui peut etre modifie a partir du __main__ e.g.:
 # import CHECKMAJ
 # CHECKMAJ.UPDATE_STARTUP = False
@@ -140,7 +144,7 @@ class CheckMAJ:
             # version non a jour - Demande a l'utlisateur
             # Message a l'utilisateur pour l'update
             dialog = xbmcgui.Dialog()
-            if (dialog.yesno("Installeur Passion - Mise a jour", "Une nouvelle version est disponible","Voulez vous faire une mise à jour?")):
+            if dialog.yesno( _( 0 ), _( 105 ), _( 106 ) ):
             
                 #Telechargement de la nouvelle archive
                 self.filetodl = self.newscript

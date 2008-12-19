@@ -39,7 +39,7 @@ REGEXP += '((?:(?:[0-1][0-9])|(?:[2][0-3])|(?:[0-9])):(?:[0-5][0-9])(?::[0-5][0-
 
 def set_local_time( utc_string ):
     try:
-        _ = re.compile( REGEXP , re.IGNORECASE | re.DOTALL ).search( utc_string )
+        _ = re.compile( REGEXP, re.IGNORECASE | re.DOTALL ).search( utc_string )
         if _:
             _dayofweek = _.group( 1 )
             _day = _.group( 2 )
