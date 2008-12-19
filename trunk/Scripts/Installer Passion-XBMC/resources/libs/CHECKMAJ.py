@@ -56,10 +56,10 @@ class CheckMAJ:
         ##############################################################################
         #                   Initialisation parametres serveur                        #
         ##############################################################################
-        self.host        = self.localConfParser.get('ServeurID','host')
-        self.user        = self.localConfParser.get('ServeurID','user')
-        self.password    = self.localConfParser.get('ServeurID','password')
-        self.remoteversionDir  = "/.passionxbmc/Installeur-Passion/"
+        self.host               = self.localConfParser.get('ServeurID','host')
+        self.user               = self.localConfParser.get('ServeurID','user')
+        self.password           = self.localConfParser.get('ServeurID','password')
+        self.remoteversionDir   = self.localConfParser.get('ServeurID','updatescriptdir')
 
         self.filetodl = ""
         self.newversionfile = ""
