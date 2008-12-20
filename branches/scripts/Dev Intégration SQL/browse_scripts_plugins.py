@@ -2,6 +2,7 @@ import os
 import csv
 import urllib
 import xbmcgui
+import sys
 
 try:
     #New in python version 2.5
