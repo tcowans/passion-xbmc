@@ -20,7 +20,6 @@ from StringIO import StringIO
 #from string import * #a verifier si on a besoin de cette methode import *
 from BeautifulSoup import BeautifulStoneSoup, Tag, NavigableString  #librairie de traitement XML
 
-
 #modules XBMC
 import xbmc
 import xbmcgui
@@ -553,7 +552,8 @@ class ftpDownloadCtrl:
         fp.close()
         conn.close()
         #return self.ftp.voidresp()
-        return self.ftp.Command( self.ftp.voidresp )
+        #return self.ftp.Command( self.ftp.voidresp )
+        return # La commande 'self.ftp.voidresp' genere un blockage sur CANCEL et vu qu'ici on n'a que faire de la velur de retour ....
 
 
 
@@ -587,7 +587,7 @@ class FtpCallback( object ):
             percent = 100
 
         if self.dp != None:
-            self.dp.update( 100, _( 123 ) % self.curPercent, self.srcName )
+            self.dp.update( percent, _( 123 ) % self.curPercent, self.srcName )
 
 
 class userDataXML:
