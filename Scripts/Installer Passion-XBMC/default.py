@@ -1,15 +1,15 @@
 
 # script constants
-__script__          = "Installer Passion-XBMC"
-__plugin__          = "Unknown"
-__author__          = "Team Passion-XBMC"
-__url__             = "http://passion-xbmc.org/index.php"
-__svn_url__         = "http://code.google.com/p/passion-xbmc/source/browse/#svn/trunk/Scripts/Installeur-Passion"
-__credits__         = "Team XBMC, http://xbmc.org/"
-__platform__        = "xbmc media center"
-__date__            = "19-12-2008"
-__version__         = "pre-1.0.0"
-__svn_revision__    = 0
+__script__       = "Installer Passion-XBMC"
+__plugin__       = "Unknown"
+__author__       = "Team Passion-XBMC"
+__url__          = "http://passion-xbmc.org/index.php"
+__svn_url__      = "http://code.google.com/p/passion-xbmc/source/browse/#svn/trunk/Scripts/Installeur-Passion"
+__credits__      = "Team XBMC, http://xbmc.org/"
+__platform__     = "xbmc media center"
+__date__         = "20-12-2008"
+__version__      = "pre-1.0.0"
+__svn_revision__ = 0
 
 
 #Modules general
