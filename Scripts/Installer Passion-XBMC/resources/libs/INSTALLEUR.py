@@ -310,7 +310,6 @@ class ftpDownloadCtrl:
         try:
             #self.ftp.cwd( pathsrc ) # c'est cette commande qui genere l'exception dans le cas d'un fichier
             self.ftp.Command( self.ftp.cwd, pathsrc ) # c'est cette commande qui genere l'exception dans le cas d'un fichier
-
             # Pas d'excpetion => il s'agit d'un dossier
             logger.LOG( logger.LOG_DEBUG, "isDir: %s EST un DOSSIER", pathsrc )
         except:
@@ -365,13 +364,18 @@ class ftpDownloadCtrl:
 
         self.curLocalDirRoot = self.localdirList[ typeIndex ]
         self.curRemoteDirRoot = rootdirsrc
+        
+        if typeIndex == "Themes":
+            isSingleFile = False
+        else:
+            isSingleFile = True
 
         # Appel de la fonction privee en charge du download - on passe en parametre l'index correspondant au type
-        status = self._download( pathsrc, progressbar_cb, dialogProgressWin, 0, 1 )
+        status = self._download( pathsrc, isSingleFile, progressbar_cb, dialogProgressWin, 0, 1 )
         return  status # retour du status du download recupere
 
 
-    def _download( self, pathsrc, progressbar_cb=None, dialogProgressWin=None, curPercent=0, coeff=1 ):
+    def _download( self, pathsrc, isSingleFile=False, progressbar_cb=None, dialogProgressWin=None, curPercent=0, coeff=1 ):
         """
         Fonction privee ( ne pouvant etre appelee que par la classe ftpDownloadCtrl elle meme )
         Telecharge un element sur le server FTP
@@ -415,7 +419,7 @@ class ftpDownloadCtrl:
                     # pathsrc est un fichier
 
                     # Telechargement du fichier
-                    self._downloadfichier( i, dialogProgressWin=dialogProgressWin, curPercent=percentBefore, coeff=coeff*curDirListSize )
+                    self._downloadfichier( i, isSingleFile=isSingleFile, dialogProgressWin=dialogProgressWin, curPercent=percentBefore, coeff=coeff*curDirListSize )
 
                 percentAfter = min( curPercent + int( ( float( curDirList.index( i )+1 )*100 )/( curDirListSize * coeff ) ), 100 )
 
@@ -482,7 +486,7 @@ class ftpDownloadCtrl:
             # Repertoire non vide - lancement du download ( !!!APPEL RECURSIF!!! )
             self._download( dirsrc, dialogProgressWin=dialogProgressWin, curPercent=curPercent, coeff=coeff )
 
-    def _downloadfichier( self, filesrc, dialogProgressWin=None, curPercent=0, coeff=1 ):
+    def _downloadfichier( self, filesrc, isSingleFile=False, dialogProgressWin=None, curPercent=0, coeff=1 ):
         """
         Fonction privee ( ne pouvant etre appelee que par la classe ftpDownloadCtrl elle meme )
         Telecharge un fichier sur le server FTP
@@ -501,7 +505,7 @@ class ftpDownloadCtrl:
                 # Dans le cas ou un fichier n'a pas une taille valide ou corrompue
                 remoteFileSize = 1
         except:
-            logger.LOG( logger.LOG_DEBUG, "_downloaddossier: Exception - Impossible de creer le dossier: %s", localAbsDirPath )
+            logger.LOG( logger.LOG_DEBUG, "_downloadfichier: Exception - Impossible de recuperer la taille du fichier: %s", filesrc )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
         # Créé le chemin du repertorie local
@@ -518,13 +522,14 @@ class ftpDownloadCtrl:
         localFile = open( localAbsFilePath, "wb" )
         try:
             # Creation de la fonction callback appele a chaque block_size telecharge
-            ftpCB = FtpCallback( remoteFileSize, localFile, filesrc, dialogProgressWin, curPercent, coeff*remoteFileSize )
+            ftpCB = FtpCallback( remoteFileSize, localFile, filesrc, dialogProgressWin, curPercent, coeff*remoteFileSize, isSingleFile=isSingleFile )
 
             # Telecahrgement ( on passe la CB en parametre )
             # !!NOTE!!: on utilise un implemenation locale et non celle de ftplib qui ne supporte pas l'interuption d'un telechargement
-            self.retrbinary( 'RETR ' + filesrc, ftpCB, block_size )
+            result = self.retrbinary( 'RETR ' + filesrc, ftpCB, block_size )
+            logger.LOG( logger.LOG_DEBUG, "Response Server FTP sur retrieve: %s", repr( result ) )
         except:
-            logger.LOG( logger.LOG_DEBUG, "_downloaddossier: Exception - Impossible de creer le dossier: %s", localAbsDirPath )
+            logger.LOG( logger.LOG_DEBUG, "_downloadfichier: Exception - Impossible de telecharger le fichier: %s", filesrc )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         # On ferme le fichier
         localFile.close()
@@ -534,6 +539,7 @@ class ftpDownloadCtrl:
         Cette version de retrbinary permet d'interompte un telechargement en cours alors que la version de ftplib ne le permet pas
         Inspirée du code dispo a http://www.archivum.info/python-bugs-list@python.org/2007-03/msg00465.html
         """
+        abort = False
         #self.ftp.voidcmd( 'TYPE I' )
         self.ftp.Command( self.ftp.voidcmd, 'TYPE I' )
         #conn = self.ftp.transfercmd( cmd, rest )
@@ -546,14 +552,16 @@ class ftpDownloadCtrl:
             try:
                 callback( data )
             except cancelRequest:
+                abort = True
                 logger.LOG( logger.LOG_NOTICE, "retrbinary: Download ARRETE par l'utilisateur" )
                 logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
                 break
         fp.close()
         conn.close()
+        if abort:
+            self.ftp.Command( self.ftp.abort ) # Afin d'eviter un blockage dans le cas d'un cancel et puis d'un self.ftp.voidresp
         #return self.ftp.voidresp()
-        #return self.ftp.Command( self.ftp.voidresp )
-        return # La commande 'self.ftp.voidresp' genere un blockage sur CANCEL et vu qu'ici on n'a que faire de la velur de retour ....
+        return self.ftp.Command( self.ftp.voidresp )
 
 
 
@@ -562,14 +570,15 @@ class FtpCallback( object ):
     Inspired from source Justin Ezequiel ( Thanks )
     http://coding.derkeiler.com/pdf/Archive/Python/comp.lang.python/2006-09/msg02008.pdf
     """
-    def __init__( self, filesize, localfile, filesrc, dp=None, curPercent=0, coeff=1 ):
-        self.filesize = filesize
-        self.localfile = localfile
-        self.srcName = filesrc
-        self.received = 0
-        self.curPercent = curPercent # Pourcentage total telecharger ( et non du fichier en cours )
-        self.coeff = coeff
-        self.dp = dp
+    def __init__( self, filesize, localfile, filesrc, dp=None, curPercent=0, coeff=1 , isSingleFile=False ):
+        self.filesize       = filesize
+        self.localfile      = localfile
+        self.srcName        = filesrc
+        self.received       = 0
+        self.curPercent     = curPercent # Pourcentage total telecharger ( et non du fichier en cours )
+        self.isSingleFile   = isSingleFile  # Flag indiquant si on telecharge un fichier seul, dans ce cas on met a jour le string %
+        self.coeff          = coeff
+        self.dp             = dp
 
     def __call__( self, data ):
         if self.dp != None:
@@ -586,6 +595,8 @@ class FtpCallback( object ):
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
             percent = 100
 
+        if self.isSingleFile:
+            self.curPercent = percent
         if self.dp != None:
             self.dp.update( percent, _( 123 ) % self.curPercent, self.srcName )
 
@@ -668,7 +679,7 @@ class directorySpy:
         Capture le contenu d'un repertoire a l'init
         On s'en servira comme reference dans le future pour observer les modifications dans ce repertoire
         """
-        self.dirPath = dirpath
+        self.dirPath            = dirpath
         self.dirContentInitList = []
         if os.path.isdir( dirpath ):
             # On capture le contenu du repertoire et on le sauve
@@ -789,31 +800,30 @@ class MainWindow( xbmcgui.WindowXML ):
         # Creation du configCtrl
         self.configManager = configCtrl()
 
-        self.host = host
-        self.user = user
-        self.rssfeed = rssfeed
-        self.password = password
-        self.remotedirList = remoteDirLst
-        self.localdirList = localDirLst
-        self.downloadTypeList = downloadTypeLst
+        self.host               = host
+        self.user               = user
+        self.rssfeed            = rssfeed
+        self.password           = password
+        self.remotedirList      = remoteDirLst
+        self.localdirList       = localDirLst
+        self.downloadTypeList   = downloadTypeLst
 
-        self.racineDisplayList = racineDisplayLst
-        self.pluginDisplayList = pluginDisplayLst
-        self.pluginsDirSpyList = []
+        self.racineDisplayList  = racineDisplayLst
+        self.pluginDisplayList  = pluginDisplayLst
+        self.pluginsDirSpyList  = []
 
-
-        self.curDirList = []
-        self.connected = False # status de la connection ( inutile pour le moment )
-        self.index = ""
-        self.scraperDir = scraperDir
-        self.type = "racine"
-        self.USRPath = USRPath
-        self.rightstest = ""
-        self.scriptDir = scriptDir
-        self.extracter = scriptextracter() # On cree un instance d'extracter
-        self.CacheDir = CACHEDIR
-        self.userDataDir = userdatadir # userdata directory
-        self.targetDir = ""
+        self.curDirList         = []
+        self.connected          = False # status de la connection ( inutile pour le moment )
+        self.index              = ""
+        self.scraperDir         = scraperDir
+        self.type               = "racine"
+        self.USRPath            = USRPath
+        self.rightstest         = ""
+        self.scriptDir          = scriptDir
+        self.extracter          = scriptextracter() # On cree un instance d'extracter
+        self.CacheDir           = CACHEDIR
+        self.userDataDir        = userdatadir # userdata directory
+        self.targetDir          = ""
 
         # Verifie si le repertoire cacher existe et le cree s'il n'existent pas encore
         if os.path.exists( CACHEDIR ):
