@@ -39,6 +39,7 @@ if (mysql_num_rows($resQuery) != 0) {
             }
             else
             {
+                $contenu = str_replace("&nbsp;", " ",$contenu);
                 $textsansbalise = strip_tags($contenu);
                 $text = str_replace("\r\n","</br>",$textsansbalise);
                 //$text = nl2br($contenu);

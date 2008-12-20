@@ -134,7 +134,7 @@ class InfoWindow(xbmcgui.WindowDialog):
             self.setCoordinateResolution(PAL_4x3) # Set coordinate resolution to PAL 4:3
 
         # Background image
-        self.addControl(xbmcgui.ControlImage(100,100,545,435, os.path.join(IMAGEDIR,"dialog-panel.png")))
+        self.addControl(xbmcgui.ControlImage(100,100,545,435, os.path.join(RootDir,"dialog-panel.png")))
 
         self.strTitle = xbmcgui.ControlLabel(130, 110, 350, 30, "INFORMATION ITEM",'special13')
         self.addControl(self.strTitle)
