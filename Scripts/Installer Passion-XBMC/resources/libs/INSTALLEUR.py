@@ -1719,7 +1719,7 @@ graphicdesigner = 'Jahnrik'
 ##############################################################################
 #les infos auteur, version et graphic, etc sont deja dans le LOG et dans le future dans le "dialog_credits.py + passion-dialog_credits.xml"
 #logger.LOG( logger.LOG_DEBUG, "===================================================================" )
-#logger.LOG( logger.LOG_DEBUG, "Passion XBMC Installeur %s STARTS".center( 85 ), __version__ )
+#logger.LOG( logger.LOG_DEBUG, "Installer Passion-XBMC %s STARTS".center( 85 ), __version__ )
 #logger.LOG( logger.LOG_DEBUG, "Auteurs : %s".center( 85 ), __author__ )
 #logger.LOG( logger.LOG_DEBUG, "===================================================================" )
 
