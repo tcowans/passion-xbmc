@@ -820,7 +820,7 @@ class MainWindow( xbmcgui.WindowXML ):
         self.USRPath            = USRPath
         self.rightstest         = ""
         self.scriptDir          = scriptDir
-        self.extracter          = scriptextracter() # On cree un instance d'extracter
+        #self.extracter          = scriptextracter() # On cree un instance d'extracter
         self.CacheDir           = CACHEDIR
         self.userDataDir        = userdatadir # userdata directory
         self.targetDir          = ""
@@ -1178,7 +1178,7 @@ class MainWindow( xbmcgui.WindowXML ):
                             # Type est desormais reellement le type de download, on utlise alors les liste pour recuperer le chemin que l'on doit toujours passer
                             # on appel la classe passionFTPCtrl avec la source a telecharger
                             downloadStatus = self.passionFTPCtrl.download( source, self.remotedirList[ self.downloadTypeList.index( self.type ) ], self.downloadTypeList.index( self.type ), progressbar_cb=self.updateProgress_cb, dialogProgressWin = dp )
-                            dp.close()
+                            #dp.close()
 
                             if downloadStatus == -1:
                                 # Telechargment annule par l'utilisateur
@@ -1186,21 +1186,19 @@ class MainWindow( xbmcgui.WindowXML ):
                                 message1 = "%s: %s" % ( self.type, downloadItem )
                                 message2 = _( 125 )
                                 message3 = _( 126 )
-                                dialogInfo = xbmcgui.Dialog()
-                                if dialogInfo.yesno( title, message1, message2, message3 ):
+                                if xbmcgui.Dialog().yesno( title, message1, message2, message3 ):
                                     logger.LOG( logger.LOG_WARNING, "Suppression du repertoire %s", localDirPath )
-                                    dialogInfo2 = xbmcgui.Dialog()
                                     if os.path.isdir( localDirPath ):
                                         if self.deleteDir( localDirPath ):
-                                            dialogInfo2.ok( _( 127 ), _( 128 ), localDirPath, _( 129 ) )
+                                            xbmcgui.Dialog().ok( _( 127 ), _( 128 ), localDirPath, _( 129 ) )
                                         else:
-                                            dialogInfo2.ok( _( 111 ), _( 130 ), localDirPath )
+                                            xbmcgui.Dialog().ok( _( 111 ), _( 130 ), localDirPath )
                                     else:
                                         try:
                                             os.remove( localDirPath )
-                                            dialogInfo2.ok( _( 131 ), _( 132 ), localDirPath, _( 129 ) )
+                                            xbmcgui.Dialog().ok( _( 131 ), _( 132 ), localDirPath, _( 129 ) )
                                         except Exception, e:
-                                            dialogInfo2.ok( _( 111 ), _( 133 ), localDirPath )
+                                            xbmcgui.Dialog().ok( _( 111 ), _( 133 ), localDirPath )
                             else:
                                 title = _( 134 )
                                 message1 = "%s: %s" % ( self.type, downloadItem )
@@ -1208,8 +1206,7 @@ class MainWindow( xbmcgui.WindowXML ):
                                 message3 = self.localdirList[ self.downloadTypeList.index( self.type ) ]
 
                                 self._save_downloaded_property()
-                                dialogInfo = xbmcgui.Dialog()
-                                dialogInfo.ok( title, message1, message2, message3 )
+                                xbmcgui.Dialog().ok( title, message1, message2, message3 )
 
                             #TODO: Attention correctionPM3bidon n'est pa defini dans le cas d'un scraper ou script
                             #      Je l'ai donc defini a False au debut
@@ -1224,84 +1221,101 @@ class MainWindow( xbmcgui.WindowXML ):
                                 if downloadStatus != -1:
                                     installCancelled = False
                                     installError = None
-                                    dp = xbmcgui.DialogProgress()
-                                    dp.create( _( 136 ) % downloadItem, _( 123 ) % percent )
-                                    dialogUI = xbmcgui.DialogProgress()
-                                    dialogUI.create( _( 137 ), _( 138 ) % downloadItem, _( 110 ) )
+                                    #dp = xbmcgui.DialogProgress()
+                                    #dp.create( _( 136 ) % downloadItem, _( 123 ) % percent )
+                                    #dialogUI = xbmcgui.DialogProgress()
+                                    dp.create( _( 137 ), _( 138 ) % downloadItem, _( 110 ) )
 
                                     #Appel de la classe d'extraction des archives
                                     remoteDirPath = self.remotedirList[ self.downloadTypeList.index( self.type ) ]#chemin ou a ete telecharge le script
                                     localDirPath = self.localdirList[ self.downloadTypeList.index( self.type ) ]
                                     archive = source.replace( remoteDirPath, localDirPath + os.sep )#remplacement du chemin de l'archive distante par le chemin local temporaire
-                                    self.localdirList[ self.downloadTypeList.index( self.type ) ]= self.targetDir
-                                    fichierfinal0 = archive.replace( localDirPath, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
-                                    if fichierfinal0.endswith( '.zip' ):
-                                        fichierfinal = fichierfinal0.replace( '.zip', '' )
-                                    elif fichierfinal0.endswith( '.rar' ):
-                                        fichierfinal = fichierfinal0.replace( '.rar', '' )
+                                    self.localdirList[ self.downloadTypeList.index( self.type ) ] = self.targetDir
+                                    #fichierfinal0 = archive.replace( localDirPath, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
+                                    #if fichierfinal0.endswith( '.zip' ):
+                                    #    fichierfinal = fichierfinal0.replace( '.zip', '' )
+                                    #elif fichierfinal0.endswith( '.rar' ):
+                                    #    fichierfinal = fichierfinal0.replace( '.rar', '' )
 
+                                    import extractor
+                                    process_error = False
+                                    # on extrat tous dans le cache et si c'est OK on copy par la suite
+                                    file_path, OK = extractor.extract( archive, report=True )
+                                    #print OK, file_path
                                     if self.type == "Scrapers":
                                         # cas des Scrapers
                                         # ----------------
-                                        self.extracter.extract( archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
+                                        #self.extracter.extract( archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
+                                        destination = self.localdirList[ self.downloadTypeList.index( self.type ) ]
+                                        if ( OK == bool( file_path ) ) and os.path.exists( file_path ):
+                                            extractor.copy_inside_dir( file_path, destination )
                                     else:
                                         # Cas des scripts et plugins
                                         # --------------------------
-
                                         # Recuperons le nom du repertorie a l'interieur de l'archive:
-                                        dirName = self.extracter.getDirName( archive )
+                                        dirName = ""
+                                        if ( OK == bool( file_path ) ) and os.path.exists( file_path ):
+                                            dirName = os.path.basename( file_path )#self.extracter.getDirName( archive )
+                                            destination = os.path.join( self.localdirList[ self.downloadTypeList.index( self.type ) ], os.path.basename( file_path ) )
 
                                         if dirName == "":
                                             installError = _( 139 ) % archive
                                             logger.LOG( logger.LOG_ERROR, "Erreur durant l'extraction de %s - impossible d'extraire le nom du repertoire", archive )
                                         else:
-                                            destination = os.path.join( self.localdirList[ self.downloadTypeList.index( self.type ) ], dirName )
+                                            #destination = os.path.join( self.localdirList[ self.downloadTypeList.index( self.type ) ], dirName )
                                             logger.LOG( logger.LOG_NOTICE, destination )
                                             if os.path.exists( destination ):
                                                 # Repertoire déja présent
                                                 # On demande a l'utilisateur ce qu'il veut faire
                                                 if self.processOldDownload( destination ):
                                                     try:
-                                                        logger.LOG( logger.LOG_NOTICE, "Extraction de %s vers %s", archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
-                                                        self.extracter.extract( archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
+                                                        #logger.LOG( logger.LOG_NOTICE, "Extraction de %s vers %s", archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
+                                                        #self.extracter.extract( archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
+                                                        if ( OK == bool( file_path ) ) and os.path.exists( file_path ):
+                                                            extractor.copy_dir( file_path, destination )
                                                     except:
-                                                        installError = _( 140 ) % archive
-                                                        logger.LOG( logger.LOG_ERROR, "Exception durant l'extraction de %s", archive )
-                                                        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                                                        process_error = True
                                                 else:
                                                     installCancelled = True
                                                     logger.LOG( logger.LOG_WARNING, "L'installation de %s a ete annulee par l'utilisateur", downloadItem  )
                                             else:
                                                 # Le Repertoire n'est pas present localement -> on peut deplacer le repertoire depuis cache
                                                 try:
-                                                    logger.LOG( logger.LOG_NOTICE, "Extraction de %s vers %s", archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
-                                                    self.extracter.extract( archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
+                                                    #logger.LOG( logger.LOG_NOTICE, "Extraction de %s vers %s", archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
+                                                    #self.extracter.extract( archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
+                                                    if ( OK == bool( file_path ) ) and os.path.exists( file_path ):
+                                                        extractor.copy_dir( file_path, destination )
                                                 except:
-                                                    installError = _( 140 ) % archive
-                                                    logger.LOG( logger.LOG_ERROR, "Exception durant l'extraction de %s", archive )
-                                                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                                                    process_error = True
 
+                                    del extractor
                                     # Close the Loading Window
-                                    dialogUI.close()
+                                    #dialogUI.close()
 
-                                    dialogInfo = xbmcgui.Dialog()
+                                    if process_error:
+                                        installError = _( 140 ) % archive
+                                        logger.LOG( logger.LOG_ERROR, "Exception durant l'extraction de %s", archive )
+                                        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+
                                     if installCancelled == False and installError == None:
                                         self._save_downloaded_property()
-                                        dialogInfo.ok( _( 141 ), _( 142 ) % downloadItem, _( 143 ) )
+                                        xbmcgui.Dialog().ok( _( 141 ), _( 142 ) % downloadItem, _( 143 ) )
                                     else:
                                         if installError != None:
                                             # Erreur durant l'install ( meme si on a annule )
-                                            dialogInfo.ok( _( 144 ), installError, _( 145 ) )
+                                            xbmcgui.Dialog().ok( _( 144 ), installError, _( 145 ) )
                                         elif installCancelled == True:
                                             # Install annulee
-                                            dialogInfo.ok( _( 146 ), _( 147 ) % downloadItem )
+                                            xbmcgui.Dialog().ok( _( 146 ), _( 147 ) % downloadItem )
                                         else:
                                             # Install annulee
-                                            dialogInfo.ok( _( 144 ), _( 148 ), _( 145 ) )
+                                            xbmcgui.Dialog().ok( _( 144 ), _( 148 ), _( 145 ) )
                                 else:
                                     # On remet a la bonne valeur initiale self.localdirList
-                                    self.localdirList[ self.downloadTypeList.index( self.type ) ]= self.targetDir
+                                    self.localdirList[ self.downloadTypeList.index( self.type ) ] = self.targetDir
 
+                            # Close the Loading Window
+                            dp.close()
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
@@ -1310,7 +1324,7 @@ class MainWindow( xbmcgui.WindowXML ):
             file_path = os.path.join( logger.DIRECTORY_DATA, "downloaded.txt" )
             self.downloaded_property = eval( file( file_path, "r" ).read() )
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            logger.EXC_INFO( logger.LOG_DEBUG, sys.exc_info(), self )
             self.downloaded_property = set()
 
     def _save_downloaded_property( self ):
@@ -1628,8 +1642,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 if ( keyboard.isConfirmed() ):
                     inputText = keyboard.getText()
                     os.rename( localAbsDirPath, localAbsDirPath.replace( os.path.basename( localAbsDirPath ), inputText ) )
-                    dialogInfo = xbmcgui.Dialog()
-                    dialogInfo.ok( _( 155 ), localAbsDirPath.replace( os.path.basename( localAbsDirPath ), inputText ) )
+                    xbmcgui.Dialog().ok( _( 155 ), localAbsDirPath.replace( os.path.basename( localAbsDirPath ), inputText ) )
                 del keyboard
             elif chosenIndex == 2: # Ecraser
                 pass

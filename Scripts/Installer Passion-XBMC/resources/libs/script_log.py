@@ -155,9 +155,9 @@ def create_log_file():
         if old_log != "":
             WRITABLE_LOG.write( old_log )
             LOG( LOG_NOTICE, SEPARATOR )
-            LOG( LOG_NOTICE, SEPARATOR )
             LOG( LOG_NOTICE, "Checking the Date!" )
             LOG( LOG_INFO, "- Current Date is: %s", CURRENT_DATE )
+            LOG( LOG_NOTICE, SEPARATOR )
 
 
 class LogErr:
