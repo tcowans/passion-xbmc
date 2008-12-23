@@ -5,7 +5,7 @@
     <string id="32000">Tetesaclaques.tv</string>
 
     <!-- Dialog Messages -->
-	<string id="32100">Creation de l'interface Graphique</string>
+    <string id="32100">Creation de l'interface Graphique</string>
     <string id="32101">Configuration du système</string>
     <string id="32102">Chargement des informations</string>
     <string id="32103">Vérification de la mise à jour</string>
@@ -52,32 +52,33 @@
     <string id="32512">Selectionner le nettoyage du cache désiré</string>
     <string id="32513">Activer</string>
     <string id="32514">Désactiver</string>
+    <string id="32515">Aucune</string>
+    <string id="32516">Langue courante: </string>
     
     <!-- Settings buttons -->
     <string id="32600">Ok</string>
     <string id="32601">Annuler</string>
-    <string id="32602">Mise à jour</string>
+    <string id="32602">Enregistrer</string>
     <string id="32603">Credits</string>
-	<string id="32604">Défaut</string>
+    <string id="32604">Défaut</string>
 
     <!-- Settings messages -->
     <string id="32701">Enregistrement de vos paramètres ...</string>
     <string id="32702">Une erreur est survenue lors de la sauvegarde de vos paramètres!</string>
+    <string id="32703">Nouveaux paramètres enregistrés</string>
+    <string id="32704">Pas de modification détectée</string>
 
     <!-- Settings restart required message -->
-    <string id="32703">Les changements seront appliqués au prochain redémarrage.</string>
-    <string id="32704">Souhaitez-vous relancer le script maintenant ?</string>
+    <string id="32710">Les changements seront appliqués au prochain redémarrage.</string>
+    <string id="32711">Souhaitez-vous relancer le script maintenant ?</string>
         
     <!-- Credits -->
     <string id="32800">Version: </string>
     <string id="32801">Auteur: </string>
     <string id="32802">Description: </string>
-    <string id="32803">Ce script permet de visionner les vidéos sur le site www.tetesaclaques.tv que je vous le recommande fortement. Attention rires en vue!
-On y découvre chaque semaine un nouveau clip de quelques minutes qui vaut vraiment le détour.
-Si vous aimez les Têtes à claques, merci d'encourager leur createurs
-en visitant leur site web www.tetesaclaques.tv et/ou en achetant le DVD(s)</string>
-    <string id="32804">Les droits de diffusions et des images utilisées sont exclusivement réservés à
-Salambo productions Inc (www.tetesaclaques.tv)</string>
+    <string id="32803">Ce script permet de visionner les vidéos sur le site www.tetesaclaques.tv que je vous le recommande fortement. Attention rires en vue! On y découvre chaque semaine un nouveau clip de quelques minutes qui vaut vraiment le détour.
+Si vous aimez les Têtes à claques, merci d'encourager leur createurs en visitant leur site web www.tetesaclaques.tv et/ou en achetant le DVD(s)</string>
+    <string id="32804">Les droits de diffusions et des images utilisées sont exclusivement réservés à Salambo productions Inc (www.tetesaclaques.tv)</string>
     
     <!-- Images -->
     <string id="32900">logo-fr.png</string>

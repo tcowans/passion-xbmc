@@ -4,8 +4,8 @@
 	<allowoverlay>false</allowoverlay>
     
 	<!-- Important if you don't want to use the WindowLists you still need to remember not to use the ids for other stuff. -->
-    <!-- * id 2 - Button - For the View button (to change between the lists) so if you don't want the view button or to use multi views simply do not use id 2, 3,4, 12 or 50-59 for any controls. -->
-    <!-- * id 3 - Button - For the Sort button (to change between the lists) -->
+	<!-- * id 2 - Button - For the View button (to change between the lists) so if you don't want the view button or to use multi views simply do not use id 2, 3,4, 12 or 50-59 for any controls. -->
+	<!-- * id 3 - Button - For the Sort button (to change between the lists) -->
 	<!-- * id 4/5 - Reserved (Don't actually do anything at the moment) -->
 	<!-- * id 12 - Label - For displaying the number of items in the WindowLists -->
 	<!-- * id 50-59 - Lists/Panels - The actual lists for displaying the information in the window lists -->
@@ -30,18 +30,17 @@
 		</control>
 		<control type="image" id="30">
 			<description>TAC Logo</description>
-			<posx>20</posx>
-			<posy>20</posy>
-			<width>235</width>
-			<height>144</height>
+			<posx>30</posx>
+			<posy>-10</posy>
+			<width>140</width>
 			<aspectratio>keep</aspectratio>
 			<texture>tac_logo-fr.png</texture>
 		</control>
 		<control type="image" id="31">
 			<description>List background</description>
-			<posx>65</posx>
-			<posy>190</posy>
-			<width>600</width>
+			<posx>30</posx>
+			<posy>150</posy>
+			<width>660</width>
 			<height>375</height>
 			<texture>tac_solid.png</texture>
 		</control>
@@ -49,22 +48,22 @@
 
 		<!-- RSS feed -->
 		<!-- 
-        <control type="rss" id="1">
-              <description>TAC RSS control</description>
-              <posx>80</posx>
-              <posy>60</posy>
-              <width>500</width>
-              <visible>true</visible>
-              <font>font14</font>
-              <textcolor>FFB2D4F5</textcolor>
-              <headlinecolor>FFFFFFFF</headlinecolor>
-              <titlecolor>FF655656</titlecolor>
-              <urlset>1</urlset>
-        </control>		
-        -->
-        <!-- START: View button -->
+		<control type="rss" id="1">
+		      <description>TAC RSS control</description>
+		      <posx>80</posx>
+		      <posy>60</posy>
+		      <width>500</width>
+		      <visible>true</visible>
+		      <font>font14</font>
+		      <textcolor>FFB2D4F5</textcolor>
+		      <headlinecolor>FFFFFFFF</headlinecolor>
+		      <titlecolor>FF655656</titlecolor>
+		      <urlset>1</urlset>
+		</control>		
+		-->
+		<!-- START: View button -->
 		<!-- 
-		<control type="group" id="9000">
+		<control type="group" id="8000">
 			<posx>100</posx>
 			<posy>180</posy>
 			<width>150</width>
@@ -79,10 +78,10 @@
 				<description>View As Icons button</description>				
 				<posx>0</posx>				
 				<posy>0</posy>
-            	<onright>50</onright>
+		<onright>50</onright>
 			</control>
 		</control>
-        -->
+		-->
 		<!-- END: View button -->
 
 		<!-- START: Labels -->
@@ -99,376 +98,1077 @@
 			<aligny>center</aligny>			
 			<textcolor>FFFFFF00</textcolor>
 		</control>
+			
+		<control type="label" id="110">
+			<description>Number of videos</description>
+			<posx>690</posx>
+			<posy>540</posy>
+			<width>150</width>
+			<height>20</height>		
+			<label>$INFO[Container.NumItems] $INFO[Container.Property(video-number-label)]</label>
+			<label2>TEST</label2>
+			<font>special13</font>
+			<align>right</align>
+			<aligny>center</aligny>			
+			<textcolor>FFFFFF00</textcolor>
+			<!--<visible>!IsEmpty(Container.Property(view-Collection)) + !IsEmpty(Container.Property(display-item-number))</visible>-->
+			<visible>[!IsEmpty(Container.Property(view-Collection)) | !IsEmpty(Container.Property(view-Sub-Serie)) | !IsEmpty(Container.Property(view-Extras)) | !IsEmpty(Container.Property(view-Ads))] + !IsEmpty(Container.Property(display-item-number))</visible>
+		</control>
 
+		<control type="label" id="115">
+			<description>Video(s) label</description>
+			<posx>690</posx>
+			<posy>540</posy>
+			<width>90</width>
+			<height>20</height>		
+			<label>SCRIPT_32305</label>
+			<font>special13</font>
+			<align>right</align>
+			<aligny>center</aligny>			
+			<textcolor>FFFFFF00</textcolor>
+			<visible>!IsEmpty(Container.Property(view-Collection)) | !IsEmpty(Container.Property(view-Sub-Serie)) | !IsEmpty(Container.Property(view-Extras)) | !IsEmpty(Container.Property(view-Ads))</visible>
+		</control>
+
+		<control type="label" id="120">
+			<description>Number of series</description>
+			<posx>690</posx>
+			<posy>540</posy>
+			<width>150</width>
+			<height>20</height>		
+			<label>$INFO[Container.NumItems] $INFO[Container.Property(serie-number-label)]</label>
+			<font>special13</font>
+			<align>right</align>
+			<aligny>center</aligny>			
+			<textcolor>FFFFFF00</textcolor>
+			<visible>!IsEmpty(Container.Property(view-Series)) + !IsEmpty(Container.Property(display-item-number))</visible>
+		</control>
+
+		<control type="label" id="125">
+			<description>Serie(s) Label</description>
+			<posx>690</posx>
+			<posy>540</posy>
+			<width>90</width>
+			<height>20</height>		
+			<label>SCRIPT_32307</label>
+			<font>special13</font>
+			<align>right</align>
+			<aligny>center</aligny>			
+			<textcolor>FFFFFF00</textcolor>
+			<visible>!IsEmpty(Container.Property(view-Series))</visible>
+		</control>
 		<!-- START: General Buttons -->
-        <control type="button" id="140">
-            <description>Language button</description>
-            <posx>285</posx>
-            <posy>100</posy>
-            <width>110</width>
-            <height>30</height>
-            <ondown>50</ondown>
-            <textoffsetx>7</textoffsetx>
-            <label>SCRIPT_32301</label>
-            <font>font13</font>
-            <textcolor>ffffffff</textcolor>
-            <focusedcolor>ffffff00</focusedcolor>
-            <align>center</align>
-            <aligny>center</aligny>
-            <texturefocus>tac_blueButtonFocus.png</texturefocus>
-            <texturenofocus>tac_solid.png</texturenofocus>
-        </control>
-
+		<control type="button" id="140">
+			<description>Language button</description>
+			<posx>285</posx>
+			<posy>60</posy>
+			<width>110</width>
+			<height>30</height>
+			<ondown>150</ondown>
+			<textoffsetx>7</textoffsetx>
+			<label>SCRIPT_32301</label>
+			<font>font13</font>
+			<textcolor>ffffffff</textcolor>
+			<focusedcolor>ffffff00</focusedcolor>
+			<align>center</align>
+			<aligny>center</aligny>
+			<texturefocus>tac_input-nofocus.png</texturefocus>
+		</control>
+	
 		<!-- END: General Buttons -->
-        
+		
 		<!-- START: Main menu -->
 		<!-- ** Required ** Do not change id's or type's -->
-        <control type="button" id="150">
-            <description>Collection button</description>
-            <posx>65</posx>
-            <posy>160</posy>
-            <width>110</width>
-            <height>30</height>
-            <onright>160</onright>
-            <ondown>50</ondown>
-			<onup>140</onup>
-            <textoffsetx>7</textoffsetx>
-            <label>SCRIPT_32306</label>
-            <font>font13</font>
-            <textcolor>ffffffff</textcolor>
-            <focusedcolor>ffffff00</focusedcolor>
-            <align>center</align>
-            <aligny>center</aligny>
-            <texturefocus>tac_blueButtonFocus.png</texturefocus>
-            <texturenofocus>tac_solid.png</texturenofocus>
-        </control>
-        <control type="button" id="160">
-            <description>Series button</description>
-            <posx>184</posx>
-            <posy>160</posy>
-            <width>110</width>
-            <height>30</height>
-            <onleft>150</onleft>
-            <onright>170</onright>
-			<onup>140</onup>
-            <ondown>50</ondown>
-            <textoffsetx>7</textoffsetx>
-            <label>SCRIPT_32307</label>
-            <font>font13</font>
-            <textcolor>ffffffff</textcolor>
-            <focusedcolor>ffffff00</focusedcolor>
-            <align>center</align>
-            <aligny>center</aligny>
-            <texturefocus>tac_blueButtonFocus.png</texturefocus>
-            <texturenofocus>tac_solid.png</texturenofocus>
-        </control>
-        <control type="button" id="170">
-            <description>Extras button</description>
-            <posx>303</posx>
-            <posy>160</posy>
-            <width>110</width>
-            <height>30</height>
-            <onleft>160</onleft>
-            <onright>180</onright>
-			<onup>140</onup>
-            <ondown>50</ondown>
-            <textoffsetx>7</textoffsetx>
-            <label>SCRIPT_32308</label>
-            <font>font13</font>
-            <textcolor>ffffffff</textcolor>
-            <focusedcolor>ffffff00</focusedcolor>
-            <align>center</align>
-            <aligny>center</aligny>
-            <texturefocus>tac_blueButtonFocus.png</texturefocus>
-            <texturenofocus>tac_solid.png</texturenofocus>
-        </control>
-        <control type="button" id="180">
-            <description>Ads button</description>
-            <posx>422</posx>
-            <posy>160</posy>
-            <width>109</width>
-            <height>30</height>
-            <onleft>170</onleft>
-            <onright>190</onright>
-			<onup>140</onup>
-            <ondown>50</ondown>
-            <textoffsetx>7</textoffsetx>
-            <label>SCRIPT_32309</label>
-            <font>font13</font>
-            <textcolor>ffffffff</textcolor>
-            <focusedcolor>ffffff00</focusedcolor>
-            <align>center</align>
-            <aligny>center</aligny>
-            <texturefocus>tac_blueButtonFocus.png</texturefocus>
-            <texturenofocus>tac_solid.png</texturenofocus>
-        </control>
-        <control type="button" id="190">
-            <description>Settings button</description>
-            <!-- <posx>545</posx> -->
-            <posx>540</posx>
-            <posy>160</posy>
-            <width>109</width>
-            <height>30</height>
-            <onleft>180</onleft>
-			<onup>140</onup>
-            <ondown>50</ondown>
-            <textoffsetx>7</textoffsetx>
-            <label>SCRIPT_32303</label>
-            <font>font13</font>
-            <textcolor>ffffffff</textcolor>
-            <focusedcolor>ffffff00</focusedcolor>
-            <align>center</align>
-            <aligny>center</aligny>
-            <texturefocus>tac_blueButtonFocus.png</texturefocus>
-            <texturenofocus>tac_solid.png</texturenofocus>
-        </control>
+		<control type="group" id="9000">
+			<control type="button" id="150">
+				<description>Collection button</description>
+				<posx>30</posx>
+				<posy>120</posy>
+				<width>100</width>
+				<height>30</height>
+				<onright>160</onright>
+				<ondown>5000</ondown>
+				<onup>140</onup>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT_32306</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<focusedcolor>ffffff00</focusedcolor>
+				<align>center</align>
+				<aligny>center</aligny>
+				<texturefocus>tac_blueButtonFocus.png</texturefocus>
+				<texturenofocus>tac_solid.png</texturenofocus>
+			</control>
+			<control type="button" id="160">
+				<description>Series button</description>
+				<posx>142</posx>
+				<posy>120</posy>
+				<width>100</width>
+				<height>30</height>
+				<onleft>150</onleft>
+				<onright>170</onright>
+				<onup>140</onup>
+				<ondown>5000</ondown>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT_32307</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<focusedcolor>ffffff00</focusedcolor>
+				<align>center</align>
+				<aligny>center</aligny>
+				<texturefocus>tac_blueButtonFocus.png</texturefocus>
+				<texturenofocus>tac_solid.png</texturenofocus>
+			</control>
+			<control type="button" id="170">
+				<description>Extras button</description>
+				<posx>254</posx>
+				<posy>120</posy>
+				<width>100</width>
+				<height>30</height>
+				<onleft>160</onleft>
+				<onright>180</onright>
+				<onup>140</onup>
+				<ondown>5000</ondown>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT_32308</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<focusedcolor>ffffff00</focusedcolor>
+				<align>center</align>
+				<aligny>center</aligny>
+				<texturefocus>tac_blueButtonFocus.png</texturefocus>
+				<texturenofocus>tac_solid.png</texturenofocus>
+			</control>
+			<control type="button" id="180">
+				<description>Ads button</description>
+				<posx>366</posx>
+				<posy>120</posy>
+				<width>100</width>
+				<height>30</height>
+				<onleft>170</onleft>
+				<onright>190</onright>
+					    <onup>140</onup>
+				<ondown>5000</ondown>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT_32309</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<focusedcolor>ffffff00</focusedcolor>
+				<align>center</align>
+				<aligny>center</aligny>
+				<texturefocus>tac_blueButtonFocus.png</texturefocus>
+				<texturenofocus>tac_solid.png</texturenofocus>
+			</control>
+			<control type="button" id="190">
+				<description>Settings button</description>
+				<!-- <posx>545</posx> -->
+				<posx>478</posx>
+				<posy>120</posy>
+				<width>100</width>
+				<height>30</height>
+				<onleft>180</onleft>
+				<onright>200</onright>
+				<onup>140</onup>
+				<ondown>5000</ondown>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT_32303</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<focusedcolor>ffffff00</focusedcolor>
+				<align>center</align>
+				<aligny>center</aligny>
+				<texturefocus>tac_blueButtonFocus.png</texturefocus>
+				<texturenofocus>tac_solid.png</texturenofocus>
+			</control>
+			<control type="button" id="200">
+				<description>About button</description>
+				<!-- <posx>545</posx> -->
+				<posx>590</posx>
+				<posy>120</posy>
+				<width>100</width>
+				<height>30</height>
+				<onleft>190</onleft>
+				<onup>140</onup>
+				<ondown>5000</ondown>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT_32304</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<focusedcolor>ffffff00</focusedcolor>
+				<align>center</align>
+				<aligny>center</aligny>
+				<texturefocus>tac_blueButtonFocus.png</texturefocus>
+				<texturenofocus>tac_solid.png</texturenofocus>
+			</control>
+		</control>
 		<!-- END: Main menu -->
-        
-        <!-- Section divider -->
-        <control type="image">
-            <description>divider</description>
-			<posx>65</posx>
-			<posy>188</posy>
-			<width>600</width>
-            <height>2</height>
-            <texture>tac_tab.png</texture>
-            <aspectratio>stretch</aspectratio>
-        </control>
-        <!-- Selected tab images -->
-        <control type="image">
-            <description>tab1 selected</description>
-            <posx>65</posx>
-            <posy>188</posy>
-            <width>110</width>
-            <height>2</height>
-            <texture>tac_solid.png</texture>
-            <aspectratio>stretch</aspectratio>
-            <visible>!IsEmpty(Container(50).Property(view-Collection))</visible>
-        </control>
-        <control type="image">
-            <description>tab2 selected</description>
-            <posx>184</posx>
-            <posy>188</posy>
-            <width>110</width>
-            <height>2</height>
-            <texture>tac_solid.png</texture>
-            <aspectratio>stretch</aspectratio>
-            <visible>!IsEmpty(Container(50).Property(view-Series)) | !IsEmpty(Container(50).Property(view-Sub-Serie))</visible> 
-        </control>
-        <control type="image">
-            <description>tab3 selected</description>
-            <posx>303</posx>
-            <posy>188</posy>
-            <width>110</width>
-            <height>2</height>
-            <texture>tac_solid.png</texture>
-            <aspectratio>stretch</aspectratio>
-            <visible>!IsEmpty(Container(50).Property(view-Extras))</visible>
-        </control>
-        <control type="image">
-            <description>tab4 selected</description>
-            <posx>422</posx>
-            <posy>188</posy>
-            <width>109</width>
-            <height>2</height>
-            <texture>tac_solid.png</texture>
-            <aspectratio>stretch</aspectratio>
-            <visible>!IsEmpty(Container(50).Property(view-Ads))</visible>
-        </control>
-        <control type="image">
-            <description>tab5 selected</description>
-            <posx>540</posx>
-            <posy>188</posy>
-            <width>109</width>
-            <height>2</height>
-            <texture>tac_solid.png</texture>
-            <aspectratio>stretch</aspectratio>
-            <visible>!IsEmpty(Container(50).Property(view-Settings))</visible>
-        </control>
-        
-		<!-- START: Lists -->
-        <!-- Medium icones -->
-		<control type="panel" id="50">
-			<posx>80</posx>
-			<posy>200</posy>
-			<width>560</width>
-			<height>360</height>
-			<onleft>150</onleft>
-			<onright>60</onright>
-			<onup>150</onup>
-			<scrolltime>200</scrolltime>
-			<viewtype label="536">Medium Icons</viewtype>
-			<pagecontrol>60</pagecontrol>
-            <visible>!IsEmpty(Container(50).Property(view-Collection)) | !IsEmpty(Container(50).Property(view-Extras)) | !IsEmpty(Container(50).Property(view-Ads)) | !IsEmpty(Container(50).Property(view-Sub-Serie))</visible> 
-			<itemlayout height="120" width="140">
-				<control type="image">
-					<posx>5</posx>
-					<posy>25</posy>
-					<width>125</width>
-					<aspectratio>keep</aspectratio>
-					<info>ListItem.Icon</info>
+		
+		<!-- Section divider -->
+		<control type="image">
+			<description>divider</description>
+				    <posx>30</posx>
+				    <posy>148</posy>
+				    <width>660</width>
+			<height>2</height>
+			<texture>tac_tab.png</texture>
+			<aspectratio>stretch</aspectratio>
+		</control>
+		<!-- Selected tab images -->
+		<control type="image">
+			<description>Collection tab selected</description>
+			<posx>30</posx>
+			<posy>148</posy>
+			<width>100</width>
+			<height>2</height>
+			<texture>tac_solid.png</texture>
+			<aspectratio>stretch</aspectratio>
+			<visible>!IsEmpty(Container.Property(view-Collection))</visible>
+		</control>
+		<control type="image">
+			<description>Serie tab selected</description>
+			<posx>142</posx>
+			<posy>148</posy>
+			<width>100</width>
+			<height>2</height>
+			<texture>tac_solid.png</texture>
+			<aspectratio>stretch</aspectratio>
+			<visible>!IsEmpty(Container.Property(view-Series)) | !IsEmpty(Container.Property(view-Sub-Serie))</visible> 
+		</control>
+		<control type="image">
+			<description>Extras tab selected</description>
+			<posx>254</posx>
+			<posy>148</posy>
+			<width>100</width>
+			<height>2</height>
+			<texture>tac_solid.png</texture>
+			<aspectratio>stretch</aspectratio>
+			<visible>!IsEmpty(Container.Property(view-Extras))</visible>
+		</control>
+		<control type="image">
+			<description>Ads tab selected</description>
+			<posx>366</posx>
+			<posy>148</posy>
+			<width>100</width>
+			<height>2</height>
+			<texture>tac_solid.png</texture>
+			<aspectratio>stretch</aspectratio>
+			<visible>!IsEmpty(Container.Property(view-Ads))</visible>
+		</control>
+		<control type="image">
+			<description>Settings tab selected</description>
+			<posx>478</posx>
+			<posy>148</posy>
+			<width>100</width>
+			<height>2</height>
+			<texture>tac_solid.png</texture>
+			<aspectratio>stretch</aspectratio>
+			<visible>!IsEmpty(Container.Property(view-Settings))</visible>
+		</control>
+		<control type="image">
+			<description>About tab selected</description>
+			<posx>590</posx>
+			<posy>148</posy>
+			<width>100</width>
+			<height>2</height>
+			<texture>tac_solid.png</texture>
+			<aspectratio>stretch</aspectratio>
+			<visible>!IsEmpty(Container.Property(view-About))</visible>
+		</control>
+		
+		<!-- START: TAB -->
+		<control type="group" id="5000">
+			<!-- START: Lists -->
+			<!-- Videos COLLECTION icons -->
+			<control type="panel" id="50">
+				<posx>55</posx>
+				<posy>155</posy>
+				<width>620</width>
+				<height>370</height>
+				<onleft>150</onleft>
+				<onright>60</onright>
+				<onup>9000</onup>
+				<scrolltime>200</scrolltime>
+				<viewtype label="536">Medium Icons</viewtype>
+				<pagecontrol>60</pagecontrol>
+				<visible>!IsEmpty(Container.Property(view-Collection))</visible> 
+				<itemlayout height="121" width="150">
+					<control type="image">
+						<posx>5</posx>
+						<posy>30</posy>
+						<width>140</width>
+						<aspectratio>keep</aspectratio>
+						<texture>tac_noImageAvailable_wide.jpg</texture>
+						<info>ListItem.Icon</info>
+					</control>
+					<control type="label">
+						<posx>9</posx>
+						<posy>6</posy>
+						<width>140</width>
+						<height>90</height>
+						<font>font11</font>
+						<selectedcolor>green</selectedcolor>
+						<align>left</align>
+						<aligny>top</aligny>
+						<info>ListItem.Label</info>
+					</control>
+				</itemlayout>
+				<focusedlayout height="121" width="150">
+					<control type="image">
+						<width>144</width>
+						<height>125</height>
+						<posx>3</posx>
+						<posy>5</posy>
+						<texture>tac_blueButtonFocus.png</texture>
+						<animation effect="zoom" reversible="false" center="auto" start="100" end="130" time="100">focus</animation>
+						<animation type="unfocus">
+							<effect reversible="false" type="fade" start="100" end="0" time="200" />
+							<effect reversible="false" type="zoom" center="auto" start="130" end="100" time="100" />
+						</animation>
+					</control>
+					<control type="image">
+						<posx>5</posx>
+						<posy>30</posy>
+						<width>140</width>
+						<aspectratio>keep</aspectratio>
+						<info>ListItem.Icon</info>
+						<texture>tac_noImageAvailable_wide.jpg</texture>
+						<animation reversible="false" effect="zoom" center="auto" start="100" end="130" time="100">focus</animation>
+						<animation reversible="false" effect="zoom" center="auto" start="130" end="100" time="100">unfocus</animation>
+					</control>
+					<control type="label">
+						<posx>9</posx>
+						<posy>6</posy>
+						<width>140</width>
+						<height>130</height>
+						<font>font11</font>
+						<textcolor>FFFFFF00</textcolor>
+						<align>left</align>
+						<aligny>top</aligny>
+						<info>ListItem.Label</info>
+						<animation reversible="false" effect="zoom" center="auto" start="100" end="130" time="100">focus</animation>
+						<animation reversible="false" effect="zoom" center="auto" start="130" end="100" time="100">unfocus</animation>
+					</control>
+				</focusedlayout>
+			</control>
+		
+			<!-- Videos EXTRAS icons -->
+			<control type="panel" id="51">
+				<posx>55</posx>
+				<posy>155</posy>
+				<width>620</width>
+				<height>370</height>
+				<onleft>150</onleft>
+				<onright>60</onright>
+				<onup>9000</onup>
+				<scrolltime>200</scrolltime>
+				<viewtype label="536">Medium Icons</viewtype>
+				<pagecontrol>60</pagecontrol>
+				<visible>!IsEmpty(Container.Property(view-Extras))</visible> 
+				<itemlayout height="121" width="150">
+					<control type="image">
+						<posx>5</posx>
+						<posy>30</posy>
+						<width>140</width>
+						<aspectratio>keep</aspectratio>
+						<texture>tac_noImageAvailable_wide.jpg</texture>
+						<info>ListItem.Icon</info>
+					</control>
+					<control type="label">
+						<posx>9</posx>
+						<posy>6</posy>
+						<width>140</width>
+						<height>90</height>
+						<font>font11</font>
+						<selectedcolor>green</selectedcolor>
+						<align>left</align>
+						<aligny>top</aligny>
+						<info>ListItem.Label</info>
+					</control>
+				</itemlayout>
+				<focusedlayout height="121" width="150">
+					<control type="image">
+						<width>144</width>
+						<height>125</height>
+						<posx>3</posx>
+						<posy>5</posy>
+						<texture>tac_blueButtonFocus.png</texture>
+						<animation effect="zoom" reversible="false" center="auto" start="100" end="130" time="100">focus</animation>
+						<animation type="unfocus">
+							<effect reversible="false" type="fade" start="100" end="0" time="200" />
+							<effect reversible="false" type="zoom" center="auto" start="130" end="100" time="100" />
+						</animation>
+					</control>
+					<control type="image">
+						<posx>5</posx>
+						<posy>30</posy>
+						<width>140</width>
+						<aspectratio>keep</aspectratio>
+						<info>ListItem.Icon</info>
+						<texture>tac_noImageAvailable_wide.jpg</texture>
+						<animation reversible="false" effect="zoom" center="auto" start="100" end="130" time="100">focus</animation>
+						<animation reversible="false" effect="zoom" center="auto" start="130" end="100" time="100">unfocus</animation>
+					</control>
+					<control type="label">
+						<posx>9</posx>
+						<posy>6</posy>
+						<width>140</width>
+						<height>130</height>
+						<font>font11</font>
+						<textcolor>FFFFFF00</textcolor>
+						<align>left</align>
+						<aligny>top</aligny>
+						<info>ListItem.Label</info>
+						<animation reversible="false" effect="zoom" center="auto" start="100" end="130" time="100">focus</animation>
+						<animation reversible="false" effect="zoom" center="auto" start="130" end="100" time="100">unfocus</animation>
+					</control>
+				</focusedlayout>
+			</control>
+		
+			<!-- Videos SUB SERIES icons -->
+			<control type="panel" id="52">
+				<posx>55</posx>
+				<posy>155</posy>
+				<width>620</width>
+				<height>370</height>
+				<onleft>150</onleft>
+				<onright>60</onright>
+				<onup>9000</onup>
+				<scrolltime>200</scrolltime>
+				<viewtype label="536">Medium Icons</viewtype>
+				<pagecontrol>60</pagecontrol>
+				<visible>!IsEmpty(Container.Property(view-Sub-Serie))</visible> 
+				<itemlayout height="121" width="150">
+					<control type="image">
+						<posx>5</posx>
+						<posy>30</posy>
+						<width>140</width>
+						<aspectratio>keep</aspectratio>
+						<texture>tac_noImageAvailable_wide.jpg</texture>
+						<info>ListItem.Icon</info>
+					</control>
+					<control type="label">
+						<posx>9</posx>
+						<posy>6</posy>
+						<width>140</width>
+						<height>90</height>
+						<font>font11</font>
+						<selectedcolor>green</selectedcolor>
+						<align>left</align>
+						<aligny>top</aligny>
+						<info>ListItem.Label</info>
+					</control>
+				</itemlayout>
+				<focusedlayout height="121" width="150">
+					<control type="image">
+						<width>144</width>
+						<height>125</height>
+						<posx>3</posx>
+						<posy>5</posy>
+						<texture>tac_blueButtonFocus.png</texture>
+						<animation effect="zoom" reversible="false" center="auto" start="100" end="130" time="100">focus</animation>
+						<animation type="unfocus">
+							<effect reversible="false" type="fade" start="100" end="0" time="200" />
+							<effect reversible="false" type="zoom" center="auto" start="130" end="100" time="100" />
+						</animation>
+					</control>
+					<control type="image">
+						<posx>5</posx>
+						<posy>30</posy>
+						<width>140</width>
+						<aspectratio>keep</aspectratio>
+						<info>ListItem.Icon</info>
+						<texture>tac_noImageAvailable_wide.jpg</texture>
+						<animation reversible="false" effect="zoom" center="auto" start="100" end="130" time="100">focus</animation>
+						<animation reversible="false" effect="zoom" center="auto" start="130" end="100" time="100">unfocus</animation>
+					</control>
+					<control type="label">
+						<posx>9</posx>
+						<posy>6</posy>
+						<width>140</width>
+						<height>130</height>
+						<font>font11</font>
+						<textcolor>FFFFFF00</textcolor>
+						<align>left</align>
+						<aligny>top</aligny>
+						<info>ListItem.Label</info>
+						<animation reversible="false" effect="zoom" center="auto" start="100" end="130" time="100">focus</animation>
+						<animation reversible="false" effect="zoom" center="auto" start="130" end="100" time="100">unfocus</animation>
+					</control>
+				</focusedlayout>
+			</control>
+		
+			<!-- Videos ADS icons -->
+			<control type="panel" id="53">
+				<posx>55</posx>
+				<posy>155</posy>
+				<width>620</width>
+				<height>370</height>
+				<onleft>150</onleft>
+				<onright>60</onright>
+				<onup>9000</onup>
+				<scrolltime>200</scrolltime>
+				<viewtype label="536">Medium Icons</viewtype>
+				<pagecontrol>60</pagecontrol>
+				<visible>!IsEmpty(Container(50).Property(view-Ads))</visible> 
+				<itemlayout height="121" width="150">
+					<control type="image">
+						<posx>5</posx>
+						<posy>30</posy>
+						<width>140</width>
+						<aspectratio>keep</aspectratio>
+						<texture>tac_noImageAvailable_wide.jpg</texture>
+						<info>ListItem.Icon</info>
+					</control>
+					<control type="label">
+						<posx>9</posx>
+						<posy>6</posy>
+						<width>140</width>
+						<height>90</height>
+						<font>font11</font>
+						<selectedcolor>green</selectedcolor>
+						<align>left</align>
+						<aligny>top</aligny>
+						<info>ListItem.Label</info>
+					</control>
+				</itemlayout>
+				<focusedlayout height="121" width="150">
+					<control type="image">
+						<width>144</width>
+						<height>125</height>
+						<posx>3</posx>
+						<posy>5</posy>
+						<texture>tac_blueButtonFocus.png</texture>
+						<animation effect="zoom" reversible="false" center="auto" start="100" end="130" time="100">focus</animation>
+						<animation type="unfocus">
+							<effect reversible="false" type="fade" start="100" end="0" time="200" />
+							<effect reversible="false" type="zoom" center="auto" start="130" end="100" time="100" />
+						</animation>
+					</control>
+					<control type="image">
+						<posx>5</posx>
+						<posy>30</posy>
+						<width>140</width>
+						<aspectratio>keep</aspectratio>
+						<info>ListItem.Icon</info>
+						<texture>tac_noImageAvailable_wide.jpg</texture>
+						<animation reversible="false" effect="zoom" center="auto" start="100" end="130" time="100">focus</animation>
+						<animation reversible="false" effect="zoom" center="auto" start="130" end="100" time="100">unfocus</animation>
+					</control>
+					<control type="label">
+						<posx>9</posx>
+						<posy>6</posy>
+						<width>140</width>
+						<height>130</height>
+						<font>font11</font>
+						<textcolor>FFFFFF00</textcolor>
+						<align>left</align>
+						<aligny>top</aligny>
+						<info>ListItem.Label</info>
+						<animation reversible="false" effect="zoom" center="auto" start="100" end="130" time="100">focus</animation>
+						<animation reversible="false" effect="zoom" center="auto" start="130" end="100" time="100">unfocus</animation>
+					</control>
+				</focusedlayout>
+			</control>
+		
+			<!-- Series icons -->
+			<control type="panel" id="55">
+				<posx>55</posx>
+				<posy>145</posy>
+				<width>560</width>
+				<height>360</height>
+				<onleft>150</onleft>
+				<onright>60</onright>
+				<onup>9000</onup>
+				<scrolltime>200</scrolltime>
+				<visible>!IsEmpty(Container(50).Property(view-Series))</visible>
+				<viewtype label="536">Medium Icons</viewtype>
+				<pagecontrol>60</pagecontrol>
+				<itemlayout height="120" width="140">
+					<control type="image">
+						<posx>5</posx>
+						<posy>25</posy>
+						<height>100</height>
+						<aspectratio>keep</aspectratio>
+						<align>center</align>
+						<aligny>center</aligny>
+						<texture>tac_noImageAvailable_square.jpg</texture>
+						<info>ListItem.Icon</info>
+					</control>
+				</itemlayout>
+				<focusedlayout height="120" width="140">
+					<control type="image">
+						<posx>5</posx>
+						<posy>25</posy>
+						<height>100</height>
+						<aspectratio>keep</aspectratio>
+						<texture>tac_noImageAvailable_square.jpg</texture>
+						<info>ListItem.Icon</info>
+						<animation reversible="false" effect="zoom" center="auto" start="100" end="140" time="100">focus</animation>
+						<animation reversible="false" effect="zoom" center="auto" start="140" end="100" time="100">unfocus</animation>
+					</control>
+				</focusedlayout>
+			</control>
+			<!-- END: Lists -->		
+	
+			<!-- SCROLL BAR VIDEO LIST -->
+			<control type="group">
+				<visible>Control.isVisible(50) | Control.isVisible(51) | Control.isVisible(52) | Control.isVisible(53) | Control.isVisible(55)</visible>
+				<control type="button">
+					<posx>674</posx>
+					<posy>150</posy>
+					<width>16</width>
+					<height>16</height>
+					<texturenofocus>tac_scrollbar-up-arrow.png</texturenofocus>
+					<texturefocus>tac_scrollbar-up-arrow-focus.png</texturefocus>
+					<onclick>PageUp(60)</onclick>
 				</control>
+				<control type="scrollbar" id="60">
+					<posx>674</posx>
+					<posy>164</posy>
+					<width>16</width>
+					<height>348</height>
+					<texturesliderbackground border="4">tac_scrollbar-bg.png</texturesliderbackground>
+					<texturesliderbar border="3">tac_scrollbar-bar-nofocus.png</texturesliderbar>
+					<texturesliderbarfocus border="3">tac_scrollbar-bar-focus.png</texturesliderbarfocus>
+					<textureslidernib>tac_scrollbar-nib-nofocus.png</textureslidernib>
+					<textureslidernibfocus>tac_scrollbar-nib-focus.png</textureslidernibfocus>
+					<onleft>50</onleft>
+					<onright>9000</onright>
+					<onup>9000</onup>
+					<showonepage>true</showonepage>
+					<orientation>vertical</orientation>
+				</control>
+				<control type="button">
+					<posx>674</posx>
+					<posy>509</posy>
+					<width>16</width>
+					<height>16</height>
+					<texturenofocus>tac_scrollbar-down-arrow.png</texturenofocus>
+					<texturefocus>tac_scrollbar-down-arrow-focus.png</texturefocus>
+					<onclick>PageDown(60)</onclick>
+				</control>
+			</control>
+	
+			<!-- SETTINGS SECTION -->
+			<control type="group">
+				<posx>60</posx>
+				<posy>180</posy>
+				<visible>!IsEmpty(Container(50).Property(view-Settings))</visible>
+				<animation effect="fade" reversible="true" time="300">VisibleChange</animation>
+				<control type="group" id="9040">
+					<!-- Settings 0 -->
+					<!-- Current Language List Limit Decrease/Increase -->
+					<!-- ** Required ** Do not change id's or type's -->
+					<control type="group">
+						<description>Current language setting</description>
+						<posx>0</posx>
+						<posy>0</posy>
+						<control type="image" id="264">
+							<description>Current Language background image</description>
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>600</width>
+							<height>34</height>
+							<texture>tac_input-focus.png</texture>
+							<visible>ControlGroup(9003).HasFocus()</visible>
+						</control>
+						<control type="group" id="9003">
+							<description>Button CURRENT language setting</description>
+							<posx>0</posx>
+							<posy>0</posy>
+							<visible>!IsEmpty(Container(50).Property(view-Settings))</visible>
+							<control type="button" id="261">
+								<description>Decrease current language button</description>
+								<posx>555</posx>
+								<posy>9</posy>
+								<width>18</width>
+								<height>16</height>
+								<texturenofocus>tac_scroll-down.png</texturenofocus>
+								<texturefocus>tac_scroll-down-focus.png</texturefocus>
+								<onleft>263</onleft>
+								<onright>262</onright>
+								<ondown>9500</ondown>
+								<onup>9000</onup>
+							</control>
+							<control type="button" id="262">
+								<description>Increase current language button</description>
+								<posx>573</posx>
+								<posy>9</posy>
+								<width>18</width>
+								<height>16</height>
+								<texturenofocus>tac_scroll-up.png</texturenofocus>
+								<texturefocus>tac_scroll-up-focus.png</texturefocus>
+								<onleft>261</onleft>
+								<onright>9050</onright>
+								<ondown>9500</ondown>
+								<onup>9000</onup>
+							</control>
+							<control type="button" id="263">
+								<description>Language label</description>
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>555</width>
+								<height>34</height>
+								<textoffsetx>7</textoffsetx>
+								<label>SCRIPT_32504</label>
+								<label2>SCRIPT_32XXX</label2>
+								<font>font13</font>
+								<textcolor>ffffffff</textcolor>
+								<colordiffuse>ffffffff</colordiffuse>
+								<disabledcolor>60d0d0d0</disabledcolor>
+								<align>left</align>
+								<aligny>center</aligny>
+								<texturefocus>-</texturefocus>e
+								<texturenofocus>-</texturenofocus>
+								<onright>261</onright>
+								<ondown>9500</ondown>
+								<onup>9000</onup>
+							</control>
+						</control>
+					</control>
+					<!-- separator -->
+					<control type="image" >
+						<description>separator image</description>
+						<posx>-10</posx>
+						<posy>40</posy>
+						<width>620</width>
+						<height>5</height>
+						<texture>tac_separator.png</texture>
+					</control>
+					<control type="group" id="9500">
+						<description>Permanent setting</description>
+						<control type="group" id="9600">
+							<description>Permanent setting</description>
+							<!-- Settings 1 -->
+							<!-- Player List Limit Decrease/Increase -->
+							<!-- ** Required ** Do not change id's or type's -->
+							<control type="group">
+								<description>Player setting</description>
+								<posx>0</posx>
+								<posy>60</posy>
+								<control type="image" id="204">
+									<description>Player background image</description>
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>460</width>
+									<height>34</height>
+									<texture>tac_input-focus.png</texture>
+									<visible>ControlGroup(9001).HasFocus()</visible>
+								</control>
+								<control type="group" id="9001">
+									<description>Button player setting</description>
+									<posx>0</posx>
+									<posy>0</posy>
+									<visible>!IsEmpty(Container(50).Property(view-Settings))</visible>
+									<control type="button" id="201">
+										<description>Decrease player button</description>
+										<posx>415</posx>
+										<posy>9</posy>
+										<width>18</width>
+										<height>16</height>
+										<texturenofocus>tac_scroll-down.png</texturenofocus>
+										<texturefocus>tac_scroll-down-focus.png</texturefocus>
+										<onleft>203</onleft>
+										<onright>202</onright>
+										<ondown>9002</ondown>
+										<onup>9003</onup>
+									</control>
+									<control type="button" id="202">
+										<description>Increase player button</description>
+										<posx>433</posx>
+										<posy>9</posy>
+										<width>18</width>
+										<height>16</height>
+										<texturenofocus>tac_scroll-up.png</texturenofocus>
+										<texturefocus>tac_scroll-up-focus.png</texturefocus>
+										<onleft>201</onleft>
+										<onright>9050</onright>
+										<ondown>9002</ondown>
+										<onup>9003</onup>
+									</control>
+									<control type="button" id="203">
+										<description>Player label</description>
+										<posx>0</posx>
+										<posy>0</posy>
+										<width>415</width>
+										<height>34</height>
+										<textoffsetx>7</textoffsetx>
+										<label>SCRIPT_32500</label>
+										<label2>SCRIPT_32XXX</label2>
+										<font>font13</font>
+										<textcolor>ffffffff</textcolor>
+										<colordiffuse>ffffffff</colordiffuse>
+										<disabledcolor>60d0d0d0</disabledcolor>
+										<align>left</align>
+										<aligny>center</aligny>
+										<texturefocus>-</texturefocus>
+										<texturenofocus>-</texturenofocus>
+										<onright>201</onright>
+										<ondown>9002</ondown>
+										<onup>9003</onup>
+									</control>
+								</control>
+							</control>
+							<!-- Settings 2 -->
+							<!-- Startup Language List Limit Decrease/Increase -->
+							<!-- ** Required ** Do not change id's or type's -->
+							<control type="group">
+								<description>Language setting</description>
+								<posx>0</posx>
+								<posy>100</posy>
+								<control type="image" id="234">
+									<description>Language background image</description>
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>460</width>
+									<height>34</height>
+									<texture>tac_input-focus.png</texture>
+									<visible>ControlGroup(9002).HasFocus()</visible>
+								</control>
+								<control type="group" id="9002">
+									<description>Button language setting</description>
+									<posx>0</posx>
+									<posy>0</posy>
+									<visible>!IsEmpty(Container(50).Property(view-Settings))</visible>
+									<control type="button" id="231">
+										<description>Decrease language button</description>
+										<posx>415</posx>
+										<posy>9</posy>
+										<width>18</width>
+										<height>16</height>
+										<texturenofocus>tac_scroll-down.png</texturenofocus>
+										<texturefocus>tac_scroll-down-focus.png</texturefocus>
+										<onleft>233</onleft>
+										<onright>232</onright>
+										<ondown>300</ondown>
+										<onup>9001</onup>
+									</control>
+									<control type="button" id="232">
+										<description>Increase language button</description>
+										<posx>433</posx>
+										<posy>9</posy>
+										<width>18</width>
+										<height>16</height>
+										<texturenofocus>tac_scroll-up.png</texturenofocus>
+										<texturefocus>tac_scroll-up-focus.png</texturefocus>
+										<onleft>231</onleft>
+										<onright>9050</onright>
+										<ondown>300</ondown>
+										<onup>9001</onup>
+									</control>
+									<control type="button" id="233">
+										<description>Language label</description>
+										<posx>0</posx>
+										<posy>0</posy>
+										<width>415</width>
+										<height>34</height>
+										<textoffsetx>7</textoffsetx>
+										<label>SCRIPT_32504</label>
+										<label2>SCRIPT_32XXX</label2>
+										<font>font13</font>
+										<textcolor>ffffffff</textcolor>
+										<colordiffuse>ffffffff</colordiffuse>
+										<disabledcolor>60d0d0d0</disabledcolor>
+										<align>left</align>
+										<aligny>center</aligny>
+										<texturefocus>-</texturefocus>e
+										<texturenofocus>-</texturenofocus>
+										<onright>231</onright>
+										<ondown>300</ondown>
+										<onup>9001</onup>
+									</control>
+								</control>
+							</control>
+							<!-- Settings 3 -->
+							<control type="radiobutton" id="300">
+								<description>Clean cache</description>
+								<posx>0</posx>
+								<posy>140</posy>
+								<width>440</width>
+								<height>34</height>
+								<font>font13</font>
+								<textcolor>FFFFFFFF</textcolor>
+								<label>SCRIPT_32507</label>
+								<align>left</align>
+								<aligny>center</aligny>
+								<textoffsetx>7</textoffsetx>
+								<textureradiofocus>tac_radiobutton-focus.png</textureradiofocus>
+								<textureradionofocus>tac_radiobutton-nofocus.png</textureradionofocus>
+								<texturefocus border="3">tac_input-focus.png</texturefocus>
+								<texturenofocus>-</texturenofocus>
+								<onright>9050</onright>
+								<onup>9002</onup>
+							</control>
+						</control>
+						<control type="group" id="9050">
+							<control type="button" id="400">
+								<description>Save button</description>
+								<posx>490</posx>
+								<posy>60</posy>
+								<width>100</width>
+								<height>30</height>
+								<onleft>9600</onleft>
+								<onup>9003</onup>
+								<ondown>410</ondown>
+								<textoffsetx>7</textoffsetx>
+								<label>SCRIPT_32602</label>
+								<font>font13</font>
+								<textcolor>ffffffff</textcolor>
+								<focusedcolor>ffffff00</focusedcolor>
+								<align>center</align>
+								<aligny>center</aligny>
+								<texturefocus>tac_input-focus.png</texturefocus>
+								<texturenofocus>tac_input-nofocus.png</texturenofocus>
+							</control>
+							<control type="button" id="410">
+								<description>Default button</description>
+								<posx>490</posx>
+								<posy>95</posy>
+								<width>100</width>
+								<height>30</height>
+								<onleft>9600</onleft>
+								<onup>400</onup>
+								<textoffsetx>7</textoffsetx>
+								<label>SCRIPT_32604</label>
+								<font>font13</font>
+								<textcolor>ffffffff</textcolor>
+								<focusedcolor>ffffff00</focusedcolor>
+								<align>center</align>
+								<aligny>center</aligny>
+								<texturefocus>tac_input-focus.png</texturefocus>
+								<texturenofocus>tac_input-nofocus.png</texturenofocus>
+							</control>
+						</control>
+					</control>
+				</control>
+			</control>
+			<!-- ABOUT SECTION -->
+			<control type="group">
+				<posx>60</posx>
+				<posy>180</posy>
+				<visible>!IsEmpty(Container(50).Property(view-About))</visible>
+				<animation effect="fade" reversible="true" time="300">VisibleChange</animation>
+				<defaultcontrol>1251</defaultcontrol>	
 				<control type="label">
-					<posx>5</posx>
-					<posy>5</posy>
-					<width>125</width>
-					<height>90</height>
-					<font>font10</font>
-					<selectedcolor>green</selectedcolor>
-					<aligny>top</aligny>
-					<info>ListItem.Label</info>
-				</control>
-			</itemlayout>
-			<focusedlayout height="120" width="140">
-				<control type="image">
-					<width>135</width>
-					<height>115</height>
+					<description>Script Title</description>
 					<posx>0</posx>
-					<posy>5</posy>
-					<texture>tac_blueButtonFocus.png</texture>
-                                        <animation effect="zoom" reversible="false" center="auto" start="100" end="130" time="100">focus</animation>
-                                        <animation type="unfocus">
-                                                <effect reversible="false" type="fade" start="100" end="0" time="200" />
-                                                <effect reversible="false" type="zoom" center="auto" start="130" end="100" time="100" />
-                                        </animation>
-				</control>
-				<control type="image">
-					<posx>5</posx>
-					<posy>25</posy>
-					<width>125</width>
-					<aspectratio>keep</aspectratio>
-					<info>ListItem.Icon</info>
-                                        <animation reversible="false" effect="zoom" center="auto" start="100" end="130" time="100">focus</animation>
-                                        <animation reversible="false" effect="zoom" center="auto" start="130" end="100" time="100">unfocus</animation>
+					<posy>0</posy>
+					<width>550</width>
+					<height>30</height>
+					<label>$INFO[Container.Property(script-title-about-label)]</label>
+					<font>special13</font>
+					<textcolor>DDced8da</textcolor>
+					<align>left</align>
 				</control>
 				<control type="label">
-					<posx>5</posx>
-					<posy>5</posy>
-					<width>125</width>
-					<height>90</height>
-					<font>font10</font>
-					<textcolor>FFFFFF00</textcolor>
+					<description>version</description>
+					<posx>0</posx>
+					<posy>50</posy>
+					<width>550</width>
+					<height>30</height>
+					<label>$INFO[Container.Property(version-about-label)]</label>
+					<font>special13</font>
+					<textcolor>DDced8da</textcolor>
 					<align>left</align>
-					<aligny>top</aligny>
-					<info>ListItem.Label</info>
-                                        <animation reversible="false" effect="zoom" center="auto" start="100" end="130" time="100">focus</animation>
-                                        <animation reversible="false" effect="zoom" center="auto" start="130" end="100" time="100">unfocus</animation>
 				</control>
-				<control type="image">
-					<posx>5</posx>
-					<posy>5</posy>
-					<align>center</align>
-					<aligny>center</aligny>
-					<width>125</width>
-					<height>71</height>
-					<texture>tac_playOverlay.png</texture>
-                    <!-- 
-					<info>ListItem.Overlay</info>
-                    -->	
+				<control type="label">
+					<description>Author</description>
+					<posx>0</posx>
+					<posy>85</posy>
+					<width>250</width>
+					<height>30</height>
+					<label>$INFO[Container.Property(author-about-label)]</label>
+					<font>special13</font>
+					<textcolor>DDced8da</textcolor>
+					<align>left</align>
 				</control>
-			</focusedlayout>
-		</control>
-        
-        <!-- Series icones -->
-		<control type="panel" id="51">
-			<posx>80</posx>
-			<posy>200</posy>
-			<width>560</width>
-			<height>360</height>
-			<onleft>150</onleft>
-			<onright>60</onright>
-			<onup>150</onup>
-			<scrolltime>200</scrolltime>
-            <visible>!IsEmpty(Container(50).Property(view-Series))</visible>
-			<viewtype label="536">Medium Icons</viewtype>
-			<pagecontrol>60</pagecontrol>
-			<itemlayout height="120" width="140">
-				<control type="image">
-					<posx>5</posx>
-					<posy>25</posy>
-					<height>90</height>
-					<aspectratio>keep</aspectratio>
-					<info>ListItem.Icon</info>
+				<control type="label">
+					<description>Description Title</description>
+					<posx>0</posx>
+					<posy>120</posy>
+					<width>250</width>
+					<height>30</height>
+					<label>$INFO[Container.Property(descrip-title-about-label)]</label>
+					<font>special13</font>
+					<textcolor>DDced8da</textcolor>
+					<align>left</align>
 				</control>
-			</itemlayout>
-			<focusedlayout height="120" width="140">
-				<control type="image">
-					<posx>5</posx>
-					<posy>25</posy>
-					<height>90</height>
-					<aspectratio>keep</aspectratio>
-					<info>ListItem.Icon</info>
-                                        <animation reversible="false" effect="zoom" center="auto" start="100" end="130" time="100">focus</animation>
-                                        <animation reversible="false" effect="zoom" center="auto" start="130" end="100" time="100">unfocus</animation>
+				<control type="textbox" id="1250">
+					<description>Description content</description>
+					<posx>0</posx>
+					<posy>155</posy>
+					<width>600</width>
+					<height>140</height>
+					<onup>9000</onup>
+					<ondown>9000</ondown>
+					<pagecontrol>1251</pagecontrol>
+					<textcolor>FFFFFFFF</textcolor>
+					<font>font13</font>
+					<align>justify</align>
+					<label>$INFO[Container.Property(descrip-content-about-label)]</label>
+					<autoscroll time="2000" delay="3000">Skin.HasSetting(AutoScroll)</autoscroll>
 				</control>
-			</focusedlayout>
-		</control>
-		<!-- END: Lists -->		
-
-		<!-- SCROLL BAR VIDEO LIST -->
-		<control type="group">
-			<visible>Control.isVisible(50) | Control.isVisible(51)</visible>
-			<control type="button">
-				<posx>649</posx>
-				<posy>190</posy>
-				<width>16</width>
-				<height>16</height>
-				<texturenofocus>tac_scrollbar-up-arrow.png</texturenofocus>
-				<texturefocus>tac_scrollbar-up-arrow-focus.png</texturefocus>
-				<onclick>PageUp(60)</onclick>
+				<control type="group">
+					<posx>605</posx>
+					<posy>155</posy>
+					<control type="scrollbar" id="1251">
+						<description>Scroll Bar for text of topic</description>
+						<posx>0</posx>
+						<posy>20</posy>
+						<width>20</width>
+						<height>108</height>
+						<texturesliderbackground border="4">tac_scrollbar-bg.png</texturesliderbackground>
+						<texturesliderbar border="3">tac_scrollbar-bar-nofocus.png</texturesliderbar>
+						<texturesliderbarfocus border="3">tac_scrollbar-bar-focus.png</texturesliderbarfocus>
+						<textureslidernib>tac_scrollbar-nib-nofocus.png</textureslidernib>
+						<textureslidernibfocus>tac_scrollbar-nib-focus.png</textureslidernibfocus>
+						<onleft>9000</onleft>
+						<onright>9000</onright>
+						<showonepage>false</showonepage>
+						<orientation>vertical</orientation>
+					</control>
+					<control type="button">
+						<description>Page Up for text of topic</description>
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>20</width>
+						<height>20</height>
+						<onup>9000</onup>
+						<ondown>1251</ondown>
+						<onleft>9000</onleft>
+						<onright>9000</onright>
+						<onclick>PageUp(1251)</onclick>
+						<texturenofocus>tac_scrollbar-up-arrow.png</texturenofocus>
+						<texturefocus>tac_scrollbar-up-arrow-focus.png</texturefocus>
+						<visible>Control.IsVisible(1251)</visible>
+					</control>
+					<control type="button">
+						<description>Page Down for text of topic</description>
+						<posx>0</posx>
+						<posy>128</posy>
+						<width>20</width>
+						<height>20</height>
+						<onleft>9000</onleft>
+						<onright>9000</onright>
+						<onclick>PageDown(1251)</onclick>
+						<texturenofocus>tac_scrollbar-down-arrow.png</texturenofocus>
+						<texturefocus>tac_scrollbar-down-arrow-focus.png</texturefocus>
+						<visible>Control.IsVisible(1251)</visible>
+					</control>
+				</control>
+				<control type="textbox">
+					<description>Copyrights</description>
+					<posx>0</posx>
+					<posy>308</posy>
+					<width>600</width>
+					<height>70</height>
+					<onup>9000</onup>
+					<label>$INFO[Container.Property(copyrights-about-label)]</label>
+					<textcolor>FFFF0000</textcolor>
+					<font>font10</font>
+					<align>justify</align>
+				</control>
 			</control>
-			<control type="scrollbar" id="60">
-				<posx>649</posx>
-				<posy>204</posy>
-				<width>16</width>
-				<height>348</height>
-				<texturesliderbackground border="4">tac_scrollbar-bg.png</texturesliderbackground>
-				<texturesliderbar border="3">tac_scrollbar-bar-nofocus.png</texturesliderbar>
-				<texturesliderbarfocus border="3">tac_scrollbar-bar-focus.png</texturesliderbarfocus>
-				<textureslidernib>tac_scrollbar-nib-nofocus.png</textureslidernib>
-				<textureslidernibfocus>tac_scrollbar-nib-focus.png</textureslidernibfocus>
-				<onleft>50</onleft>
-				<showonepage>true</showonepage>
-				<orientation>vertical</orientation>
-			</control>
-			<control type="button">
-				<posx>649</posx>
-				<posy>549</posy>
-				<width>16</width>
-				<height>16</height>
-				<texturenofocus>tac_scrollbar-down-arrow.png</texturenofocus>
-				<texturefocus>tac_scrollbar-down-arrow-focus.png</texturefocus>
-				<onclick>PageDown(60)</onclick>
-			</control>
 		</control>
-
-        <!-- Settings section ** Required ** -->
-        <control type="group">
-            <posx>75</posx>
-            <posy>300</posy>
-            <visible>!IsEmpty(Container(50).Property(view-Settings))</visible>
-            <animation effect="fade" reversible="true" time="300">VisibleChange</animation>
-            <!-- Settings 1 -->
-            <control type="radiobutton" id="400">
-                <description>Clean cache</description>
-                <posx>0</posx>
-                <posy>0</posy>
-                <width>560</width>
-                <height>30</height>
-                <font>font13</font>
-                <textcolor>FFFFFFFF</textcolor>
-                <label>SCRIPT_32507</label>
-                <align>left</align>
-                <aligny>center</aligny>
-                <textoffsetx>7</textoffsetx>
-                <textureradiofocus>tac_radiobutton-focus.png</textureradiofocus>
-                <textureradionofocus>tac_radiobutton-nofocus.png</textureradionofocus>
-                <texturefocus border="3">tac_input-focus.png</texturefocus>
-                <texturenofocus>-</texturenofocus>
-                <onup>160</onup>
-            </control>
-            <!-- Settings 2 -->
-       </control>
-
+	<!-- END: TAB -->
 	</controls>
 </window>
