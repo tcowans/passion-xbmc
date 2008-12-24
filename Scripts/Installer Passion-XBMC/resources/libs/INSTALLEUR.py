@@ -950,20 +950,20 @@ class MainWindow( xbmcgui.WindowXML ):
     def _on_action_control( self, act_ctrl_id ):
         try:
             #button_code_F1_keyboard = 61552
-            if ( act_ctrl_id in ( self.CONTROL_FORUM_BUTTON, 61552, ) ):
+            if ( act_ctrl_id in ( self.CONTROL_FORUM_BUTTON, 61552 ) ):
                 from dialog_direct_infos import show_direct_infos
                 show_direct_infos( self )
                 #on a plus besoin, on le delete
                 del show_direct_infos
 
-            elif ( act_ctrl_id in ( ACTION_CONTEXT_MENU, self.CONTROL_OPTIONS_BUTTON, ) ):
+            elif ( act_ctrl_id in ( ACTION_CONTEXT_MENU, self.CONTROL_OPTIONS_BUTTON ) ):
                 from dialog_script_settings import show_settings
                 show_settings( self )
                 #on a plus besoin du settins, on le delete
                 del show_settings
 
             #button_code_F3_keyboard = 61554
-            elif ( act_ctrl_id in ( ACTION_SHOW_INFO, 61554, ) ):
+            elif ( act_ctrl_id in ( ACTION_SHOW_INFO, 61554 ) ):
                 if ( not self.type.lower() in ( "racine", "plugins", ) ) and ( self.getFocusId() == self.CONTROL_MAIN_LIST ):
                     currentListIndex = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()
                     if currentListIndex >= 0:
@@ -982,10 +982,7 @@ class MainWindow( xbmcgui.WindowXML ):
         """
         Remonte l'arborescence et quitte le script
         """
-        self._on_action_control( action )
-        self._on_action_control( action.getButtonCode() )
         try:
-
             if action == ACTION_PREVIOUS_MENU:
                 # Sortie du script
 
@@ -1060,7 +1057,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 #on ferme tout
                 self._close_script()
 
-            if action == ACTION_PARENT_DIR:
+            elif action == ACTION_PARENT_DIR:
                 # remonte l'arborescence
                 # On verifie si on est a l'interieur d'un ses sous section plugin
                 #if ( self.type == "Plugins Musique" ) or ( self.type == "Plugins Images" ) or ( self.type == "Plugins Programmes" ) or ( self.type == "Plugins Vidéos" ):
@@ -1080,13 +1077,21 @@ class MainWindow( xbmcgui.WindowXML ):
 
                 if self.main_list_last_pos:
                     self.getControl( self.CONTROL_MAIN_LIST ).selectItem( self.main_list_last_pos.pop() )
+
+            else:
+                self._on_action_control( action )
+                self._on_action_control( action.getButtonCode() )
+
         except:
             logger.LOG( logger.LOG_DEBUG, "Window::onAction: Exception" )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def _close_script( self ):
-        #on ferme tout
+        #**IMPORTANT** faut annuler les thread avant de fermer le script, sinon xbmc risque de planter
+        #NB: le meme scenario va ce produire si vous fermer ou redemarrer xbmc avec le script en marche
+        #on annule les thread
         self._stop_rss_timer()
+        #on ferme le script
         self.close()
 
     def onFocus( self, controlID ):
@@ -1099,7 +1104,6 @@ class MainWindow( xbmcgui.WindowXML ):
         """
         Traitement si selection d'un element de la liste
         """
-        self._on_action_control( controlID )
         try:
             if controlID == self.CONTROL_MAIN_LIST:
                 try: self.main_list_last_pos.append( self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition() )
@@ -1316,6 +1320,10 @@ class MainWindow( xbmcgui.WindowXML ):
 
                             # Close the Loading Window
                             dp.close()
+
+            else:
+                self._on_action_control( controlID )
+
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
