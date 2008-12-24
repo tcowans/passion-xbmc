@@ -41,8 +41,6 @@ if (mysql_num_rows($resQuery) != 0) {
             {
                 $contenu = str_replace("<i>", "[I]",$contenu);
                 $contenu = str_replace("</i>", "[/I]",$contenu);
-                $contenu = str_replace("<u>", "[U]",$contenu);
-                $contenu = str_replace("</u>", "[/U]",$contenu);
                 $contenu = str_replace("<strong>", "[B]",$contenu);
                 $contenu = str_replace("</strong>", "[/B]",$contenu);
                 $contenu = str_replace("&nbsp;", " ",$contenu);
