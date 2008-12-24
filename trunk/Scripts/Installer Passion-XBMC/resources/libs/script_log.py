@@ -57,10 +57,10 @@ def LOG( status, format, *args ):
     except: dwAvailPhys = "?"
     status = ( "DEBUG", "INFO", "NOTICE", "WARNING", "ERROR", "FATAL ERROR", )[ status - 1 ]
     _pre_line_ = "%s T:%s M:%s %s: " % ( time.strftime( "%X" ), str( thread.get_ident() ).rjust( 4 ), dwAvailPhys, status.rjust( 7 ), )
-    _write_line_ = "%s\n" % ( format % args, )
+    _write_line_ = "%s%s" % ( format % args, os.linesep, )
     WRITABLE_LOG.write( _pre_line_ + _write_line_ )
     if ( DEBUG_MODE == "DEBUGS" ):
-        xbmc.output( _write_line_.strip( "\n" ) )
+        xbmc.output( _write_line_.strip( "\r\n" ) )
 
 
 def EXC_INFO( status, infos, _self_=None ):
