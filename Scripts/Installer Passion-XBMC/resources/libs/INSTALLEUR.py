@@ -963,15 +963,17 @@ class MainWindow( xbmcgui.WindowXML ):
                 del show_settings
 
             #button_code_F3_keyboard = 61554
-            elif ( act_ctrl_id in ( ACTION_SHOW_INFO, 61554 ) ):
-                if ( not self.type.lower() in ( "racine", "plugins", ) ) and ( self.getFocusId() == self.CONTROL_MAIN_LIST ):
-                    currentListIndex = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()
-                    if currentListIndex >= 0:
-                        selectedItem = os.path.basename( self.curDirList[ currentListIndex ] )
-                        from dialog_item_descript import show_descript
-                        show_descript( self, selectedItem, self.type )
-                        #on a plus besoin du descript, on le delete
-                        del show_descript
+            # Temporarement desactivé en attendant une solution
+            # Note: dans xbmc la touche I du clavier correspond a ACTION_SHOW_INFO (pourquoi utiliser F3)
+            #elif ( act_ctrl_id in ( ACTION_SHOW_INFO, 61554 ) ):
+            #    if ( not self.type.lower() in ( "racine", "plugins", ) ) and ( self.getFocusId() == self.CONTROL_MAIN_LIST ):
+            #        currentListIndex = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()
+            #        if currentListIndex >= 0:
+            #            selectedItem = os.path.basename( self.curDirList[ currentListIndex ] )
+            #            from dialog_item_descript import show_descript
+            #            show_descript( self, selectedItem, self.type )
+            #            #on a plus besoin du descript, on le delete
+            #            del show_descript
 
             else:
                 pass
@@ -1078,6 +1080,15 @@ class MainWindow( xbmcgui.WindowXML ):
                 if self.main_list_last_pos:
                     self.getControl( self.CONTROL_MAIN_LIST ).selectItem( self.main_list_last_pos.pop() )
 
+            elif action == ACTION_SHOW_INFO :
+                if ( not self.type.lower() in ( "racine", "plugins", ) ) and ( self.getFocusId() == self.CONTROL_MAIN_LIST ):
+                    currentListIndex = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()
+                    if currentListIndex >= 0:
+                        selectedItem = os.path.basename( self.curDirList[ currentListIndex ] )
+                        from dialog_item_descript import show_descript
+                        show_descript( self, selectedItem, self.type )
+                        #on a plus besoin du descript, on le delete
+                        del show_descript
             else:
                 self._on_action_control( action )
                 self._on_action_control( action.getButtonCode() )
@@ -1085,6 +1096,8 @@ class MainWindow( xbmcgui.WindowXML ):
         except:
             logger.LOG( logger.LOG_DEBUG, "Window::onAction: Exception" )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+
+
 
     def _close_script( self ):
         #**IMPORTANT** faut annuler les thread avant de fermer le script, sinon xbmc risque de planter
