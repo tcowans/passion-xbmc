@@ -39,6 +39,12 @@ if (mysql_num_rows($resQuery) != 0) {
             }
             else
             {
+                $contenu = str_replace("<i>", "[I]",$contenu);
+                $contenu = str_replace("</i>", "[/I]",$contenu);
+                $contenu = str_replace("<u>", "[U]",$contenu);
+                $contenu = str_replace("</u>", "[/U]",$contenu);
+                $contenu = str_replace("<strong>", "[B]",$contenu);
+                $contenu = str_replace("</strong>", "[/B]",$contenu);
                 $contenu = str_replace("&nbsp;", " ",$contenu);
                 $textsansbalise = strip_tags($contenu);
                 $text = str_replace("\r\n","</br>",$textsansbalise);
