@@ -1,19 +1,16 @@
-# -*- coding: cp1252 -*-
+# -*- coding: UTF-8 -*-
 import os
 import csv
 import urllib
 import xbmcgui
 import sys
 
-try:
-    #New in python version 2.5
-    import sqlite3 as sqlite
-except:
-    #cette methode provient d'apple movie trailer
-    # append the proper platforms folder to our path, xbox is the same as win32
-    env = ( os.environ.get( "OS", "win32" ), "win32", )[ os.environ.get( "OS", "win32" ) == "xbox" ]
-    sys.path.append( os.path.join( os.getcwd(), "platform_libraries", env ) )
-    from pysqlite2 import dbapi2 as sqlite
+
+#cette methode provient d'apple movie trailer
+# append the proper platforms folder to our path, xbox is the same as win32
+env = ( os.environ.get( "OS", "win32" ), "win32", )[ os.environ.get( "OS", "win32" ) == "xbox" ]
+sys.path.append( os.path.join( os.getcwd(), "platform_libraries", env ) )
+from pysqlite2 import dbapi2 as sqlite
 
 RootDir  = os.getcwd().replace( ";", "" ) # Create a path with valid format
 cacheDir = os.path.join(RootDir, "cache")
