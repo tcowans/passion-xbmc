@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<rssfeeds>
+  <!-- RSS feeds. To have multiple feeds, just add a feed to the set. You can also have multiple sets. 	!-->
+  <!-- To use different sets in your skin, each must be called from skin with a unique id.             	!-->
+  <set id="1">
+    <title>Xbmc Passion - Service Importation</title>
+    <feed updateinterval="30">http://passion-xbmc.org/service-importation/?action=.xml;type=rss2;limit=10</feed>
+  </set>
+  <set id="2">
+    <title>Xbmc Passion - Releases et Nouvelles</title>
+    <feed updateinterval="30">http://passion-xbmc.org/releases-et-nouvelles/?action=.xml;type=rss2;limit=10</feed>
+  </set>
+  <set id="3">
+    <title>Xbmc Passion - XBMC</title>
+    <feed updateinterval="30">http://passion-xbmc.org/xbmc/?action=.xml;type=rss2;limit=10</feed>
+  </set>
+  <set id="4">
+    <title>Xbmc Passion - Ubuntu</title>
+    <feed updateinterval="30">http://passion-xbmc.org/ubuntu/?action=.xml;type=rss2;limit=10</feed>
+  </set>
+  <set id="5">
+    <title>Xbmc Passion - Windows</title>
+    <feed updateinterval="30">http://passion-xbmc.org/windows/?action=.xml;type=rss2;limit=10</feed>
+  </set>
+  <set id="6">
+    <title>Xbmc Passion - Mac OSX (Leopard et Tiger)</title>
+    <feed updateinterval="30">http://passion-xbmc.org/mac-osx-(-leopard-et-tiger)/?action=.xml;type=rss2;limit=10</feed>
+  </set>
+  <set id="7">
+    <title>Xbmc Passion - Le coin des utilisateurs (Scripts/Plugins)</title>
+    <feed updateinterval="30">http://passion-xbmc.org/le-coin-des-utilisateurs/?action=.xml;type=rss2;limit=10</feed>
+  </set>
+  <set id="8">
+    <title>Informations en direct de Xbmc Passion</title>
+    <feed updateinterval="30">http://passion-xbmc.org/.xml/?type=rss;limit=10</feed>
+  </set>
+</rssfeeds>
