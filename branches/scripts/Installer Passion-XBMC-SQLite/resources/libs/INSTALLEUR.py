@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: cp1252 -*-
 
 #Modules general
 import os
@@ -1076,6 +1076,27 @@ class MainWindow( xbmcgui.WindowXML ):
                 try:
                     if "Plugins " in self.type:
                         self.type = "Plugins"
+                        
+                    #SQLite Modification 
+                    elif "Scripts" == self.type:
+                        self.type = "racine"
+                    elif "dlcat" == self.type:
+                        if self.curlist['parent'][0] != self.scriptcat: 
+                            """
+                            Affichage de la catégorie mère. On utilise le parent du premier item de la liste du 
+                            dictionnaire parent pour cela (tous identiques).
+                            """  
+                            self.type = 'outcat'
+                            self.updateList()
+                        else:
+                            """
+                            Si on est déjà à la racine on réaffiche la catégorie racine. Sert aussi si on vient 
+                            d'une catégorie fille vide.
+                            """
+                            self.type = "Scripts"
+                            self.updateList()
+                    #/SQLite Modification
+                    
                     else:
                         # cas standard
                         self.type = "racine"
@@ -1137,6 +1158,19 @@ class MainWindow( xbmcgui.WindowXML ):
                     self.index = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()
                     self.type = self.downloadTypeList[ self.pluginDisplayList[ self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition() ] ] # On utilise le filtre
                     self.updateList() #on raffraichit la page pour afficher le contenu
+                
+                #SQLite Modification
+                elif ( self.type == "Scripts" ) or ( self.type == "dlcat" ):
+                    self.index = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()
+                    self.type = self.curlist['type'][ self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition() ] # On utilise le dictionnaire des types
+                    print "********************************"
+                    print "self.type = %s"%self.type
+                    self.updateList() #on raffraichit la page pour afficher le contenu
+
+                ##SQLite Modification
+                #elif ( self.type == "dlitem" ):
+                    
+
 
                 else:
                     downloadOK = True
@@ -1400,6 +1434,31 @@ class MainWindow( xbmcgui.WindowXML ):
             #liste virtuelle des sections
             #self.curDirList = self.pluginDisplayList
 
+        #SQLite Modification
+        elif ( self.type == "dlcat" ):
+            """
+            Cas d'une catégorie, on fait une sauvegarde la liste précédente, au cas où la suivante
+            soit vide.
+            """
+            savelist = self.curlist
+            print "****************************************"
+            print "self.curlist['id'][self.index] %s = "%self.curlist['id'][self.index]
+            self.curlist = browse.incat(self.curlist['id'][self.index])
+            if self.curlist['id'] == []:
+                self.type = 'Scripts'
+                self.curlist = savelist   
+            self.curDirList = self.curlist['name']
+
+        #SQLite Modification
+        elif ( self.type == 'outcat'):
+            self.curlist = browse.outcat(self.curlist['parent'][0])
+            self.curDirList = self.curlist['name']
+            self.type = 'Scripts'
+            #if self.curlist['parent'][0] == 0:
+                #self.type = 'Scripts'
+            #else:
+                #self.type = 'dlcat'
+
         elif ( self.type == "Plugins" ):
             #liste virtuelle des sections
             self.curDirList = self.pluginDisplayList
@@ -1454,7 +1513,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 self.getControl( self.CONTROL_MAIN_LIST ).addItem( displayListItem )
                 
             #SQLite Modification
-            elif ( self.type == "Scripts" ):
+            elif ( self.type == "Scripts" ) or ( self.type == "dlcat" ):
                 # Element de la liste
                 ItemListPath = self.curDirList[ j ]
 
@@ -1468,7 +1527,9 @@ class MainWindow( xbmcgui.WindowXML ):
                     imagePath = "icone_script.png"
 
                 # nettoyage du nom: replace les souligner pas un espace et enleve l'extension
-                item2download = os.path.splitext( ItemListPath)[ 0 ].replace( "_", " " )
+                #item2download = os.path.splitext( ItemListPath)[ 0 ].replace( "_", " " )
+                item2download = ItemListPath
+                print "ItemListPath %s"%ItemListPath
                 #except: item2download = ItemListPath[ lenindex: ]
 
                 if self.downloaded_property.__contains__( md5.new( item2download ).hexdigest() ):
