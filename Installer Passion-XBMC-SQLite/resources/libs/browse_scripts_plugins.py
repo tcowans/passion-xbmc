@@ -52,8 +52,6 @@ def maketable():
 
     for row in reader:
 
-        #on retranche l'occurs de fin de ligne     
-        colonnes = row[:len(row)-1]
 
         try:
             #Chaque ligne trouvée dans le table.csv est insérée dans la table
@@ -115,10 +113,15 @@ def incat(iditem):
                  
     #pour chaque colonne fetchée par la requête on alimente une liste, l'ensemble des  
     #listes constitue le dictionnaire
-    for row in c:
+    for row in c:   
         print row
+        #for colomn in row:
+            #colomn = unicode( colomn, "utf-8" )
+            #colomn = colomn.encode( "utf-8" )     
+        #on retranche l'occurs de fin de ligne     
+        colonnes = row[:len(row)-1]
         id.append(row[0])
-        name.append(row[1])
+        name.append(row[1].encode("cp1252"))
         parent.append(row[2])
         file.append(row[3])
         type.append(row[4])
@@ -178,8 +181,9 @@ def outcat(idparent):
     #pour chaque colonne fetchée par la requête on alimente une liste, l'ensemble des  
     #listes constitue le dictionnaire
     for row in c:
+        
         id.append(row[0])
-        name.append(row[1])
+        name.append(row[1].encode("cp1252"))
         parent.append(row[2])
         file.append(row[3])
         type.append(row[4])
@@ -211,8 +215,8 @@ def info(id):
     #pour chaque colonne fetchée par la requête on alimente un index du dictionnaire
     dico = {}
     for row in c:
-        dico['name'] = row[0]
-        dico['description'] = row[1]
+        dico['name'] = (row[0].encode("cp1252"))
+        dico['description'] = (row[1].encode("cp1252"))
         dico['icon'] = row[2]
         dico['downloads'] = row[3]
         dico['file'] = row[4]
