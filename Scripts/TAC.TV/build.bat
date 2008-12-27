@@ -49,25 +49,23 @@ ECHO ----------------------------------------------------------------------
 ECHO.
 ECHO Copying required files to \Build\%ScriptName%\ folder . . .
 XCOPY resources "BUILD\%ScriptName%\resources" /E /Q /I /Y /EXCLUDE:BUILD\exclude.txt
-COPY *.* "BUILD\%ScriptName%\"
-rem COPY *.py "BUILD\%ScriptName%\"
-rem COPY *.tbn "BUILD\%ScriptName%\"
-rem COPY *.txt "BUILD\%ScriptName%\"
-rem COPY *.xml "BUILD\%ScriptName%\"
+COPY default.tbn "BUILD\%ScriptName%\"
+COPY *.txt "BUILD\%ScriptName%\"
+COPY *.xml "BUILD\%ScriptName%\"
 
-:: non compatible avec le dafault.py
+
 :: Create new default.py with __svn_revision__ embedded
-rem ECHO # %ScriptName% script revision: %Revision% - built with build.bat version 1.0 #> "BUILD\%ScriptName%\default.py"
-rem FOR /F "Tokens=1* Delims=]" %%L IN ('FIND /v /n "&_&_&_&" default.py') DO (
-rem     IF /I "%%M"=="__svn_revision__ = 0" (
-rem         ECHO __svn_revision__ = "%Revision%">> "BUILD\%ScriptName%\default.py"
-rem     ) ELSE IF "%%M"=="" (
-rem         ECHO.>> "BUILD\%ScriptName%\default.py"
-rem     ) ELSE (
-rem         ECHO %%M>> "BUILD\%ScriptName%\default.py"
-rem         )
-rem     )
-rem )
+ECHO # %ScriptName% script revision: %Revision% - built with build.bat version 1.0 #> "BUILD\%ScriptName%\default.py"
+FOR /F "Tokens=1* Delims=]" %%L IN ('FIND /v /n "&_&_&_&" default.py') DO (
+    IF /I "%%M"=="__svn_revision__ = 0" (
+        ECHO __svn_revision__ = "%Revision%">> "BUILD\%ScriptName%\default.py"
+    ) ELSE IF "%%M"=="" (
+        ECHO.>> "BUILD\%ScriptName%\default.py"
+    ) ELSE (
+        ECHO %%M>> "BUILD\%ScriptName%\default.py"
+        )
+    )
+)
 ECHO.
 
 :Cleanup
