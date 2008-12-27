@@ -1,8 +1,7 @@
-******************************************************************************
 
-Têtes à claques Video HTML parser avec interface par Temhil (temhil@gmail.com)
 
-******************************************************************************
+Script Têtes à claques par Temhil (temhil@gmail.com)
+
 
 Description:
 -----------
@@ -18,6 +17,11 @@ réservés à Salambo productions inc (www.tetesaclaques.tv)
 
 Historique:
 ----------
+26-12-08 Version 2.0 par Temhil
+  - Passage a WindowXML, changement total de l'interface (presentation sous forme de tabs comem sur le site web)
+  - Correction bug ou aucune image s'affichait lorsque l'on n'a pas d'url d'images dans le XML
+  - Telechargement des images dans un thread separe (evite le blocage de l'interface sur Mac et Linux durant le download)
+ 
 14-11-08 Version 1.0 par Temhil:
   - Renommage du script TAC.TV afin de supporter anglais et francais (similaire à ce qui a deja ete fait sur le site)
   - Amelioration de l'interface
@@ -51,15 +55,13 @@ Historique:
 
 
 
-############################################################################################################################################
+____________________________________________________________________________________________________________________________________
+____________________________________________________________________________________________________________________________________
 
 
+TAC.TV script by Temhil (temhil@gmail.com)
 
-******************************************************************************
 
-TAC.tv Video HTML parser with GUI by Temhil (temhil@gmail.com)
-
-******************************************************************************
 
 Description:
 -----------
@@ -71,9 +73,14 @@ Distribution rights and pictures are property of Salambo productions Inc (www.ta
 
 History:
 -------
+26-12-08 Version 2.0 by Temhil
+  - Total redesigned UI in order to use WindowXML and all the advantages of it (display using tabs like on the website)
+  - Bug fix where picture wasn't displayed picture URL wasn't defined in the XML
+  - Download pictures in a separate thread (in case of Mac/Linux it avoid to block the UI while picture are downloaded)
+ 
 14-11-08 Version 1.0 by Temhil:
-  - Renammed script to TAC.TV in order to support english and french user (following waht already has been done on the website) 
-  - GUI improvment
+  - Renamed script to TAC.TV in order to support English and French user (following what already has been done on the website) 
+  - GUI improvement
   - Multilanguages fully supported; on language change, the GUI is updated (text +  icons)
   - Added support ot series, it is possible now to watch only the videos of a specific serie
   - Redesign of Data retrieval: separation of view of model
@@ -84,7 +91,7 @@ History:
   - Prepared the script for WindowXML use (to come)
   
 21-10-08 Version Beta2 by Temhil: 
-  - Adpatation of the script after a full upadte of the website
+  - Adaptation of the script after a full update of the website
   - Added English/French support (language and video browsing)
   - Added Series/TV Ads categories
   - Added background picture download 
@@ -92,7 +99,7 @@ History:
   - Deleted sorting (vote/date) functions: not supported anymore because of changes done on the website
   
 27-04-08 Version Beta1 par Temhil
-  - Script creation providing the functionnality to watch video on the website:
+  - Script creation providing the functionality to watch video on the website:
     www.tetesaclaques.tv (www.tac.tv)
   - Settings support will be provided in the future
   - Pictures are downloaded on the cache directory but are never deleted by the script (will come). 

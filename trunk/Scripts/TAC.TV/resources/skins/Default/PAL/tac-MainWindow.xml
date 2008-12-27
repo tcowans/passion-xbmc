@@ -46,44 +46,6 @@
 		</control>
 		<!-- END: Images -->
 
-		<!-- RSS feed -->
-		<!-- 
-		<control type="rss" id="1">
-		      <description>TAC RSS control</description>
-		      <posx>80</posx>
-		      <posy>60</posy>
-		      <width>500</width>
-		      <visible>true</visible>
-		      <font>font14</font>
-		      <textcolor>FFB2D4F5</textcolor>
-		      <headlinecolor>FFFFFFFF</headlinecolor>
-		      <titlecolor>FF655656</titlecolor>
-		      <urlset>1</urlset>
-		</control>		
-		-->
-		<!-- START: View button -->
-		<!-- 
-		<control type="group" id="8000">
-			<posx>100</posx>
-			<posy>180</posy>
-			<width>150</width>
-			<height>30</height>		
-			<texturefocus>tac_list-focus.png</texturefocus>
-			<texturenofocus>tac_list-focus.png</texturenofocus>
-			<textcolor>ffffffff</textcolor>
-			<disabledcolor>ffffff00</disabledcolor>
-			<textoffsetx>17</textoffsetx>
-			<aligny>center</aligny>						
-			<control type="button" id="2">
-				<description>View As Icons button</description>				
-				<posx>0</posx>				
-				<posy>0</posy>
-		<onright>50</onright>
-			</control>
-		</control>
-		-->
-		<!-- END: View button -->
-
 		<!-- START: Labels -->
 		<!-- ** Required ** Do not change id's or type's -->
 		<control type="label" id="100">
@@ -1163,7 +1125,7 @@
 					<height>70</height>
 					<onup>9000</onup>
 					<label>$INFO[Container.Property(copyrights-about-label)]</label>
-					<textcolor>FFFF0000</textcolor>
+					<textcolor>FF000080</textcolor>
 					<font>font10</font>
 					<align>justify</align>
 				</control>
