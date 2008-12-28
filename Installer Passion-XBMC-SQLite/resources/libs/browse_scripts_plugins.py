@@ -51,7 +51,8 @@ def maketable():
     reader = csv.reader(open(result),delimiter = '|')
 
     for row in reader:
-
+        #on retranche l'occurs de fin de ligne     
+        colonnes = row[:len(row)-1]
 
         try:
             #Chaque ligne trouvée dans le table.csv est insérée dans la table
@@ -117,9 +118,7 @@ def incat(iditem):
         print row
         #for colomn in row:
             #colomn = unicode( colomn, "utf-8" )
-            #colomn = colomn.encode( "utf-8" )     
-        #on retranche l'occurs de fin de ligne     
-        colonnes = row[:len(row)-1]
+            #colomn = colomn.encode( "utf-8" )    
         id.append(row[0])
         name.append(row[1].encode("cp1252"))
         parent.append(row[2])
