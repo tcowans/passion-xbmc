@@ -215,6 +215,7 @@ def italic_text( text ):
 
 def set_xbmc_carriage_return( text ):
     """ only for xbmc """
+    text = text.replace( "</br>", "\n" )
     text = text.replace( "\r\n", "[CR]" )
     text = text.replace( "\n\n", "[CR]" )
     text = text.replace( "\n", "[CR]" )
