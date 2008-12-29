@@ -1,5 +1,3 @@
-# Installer Passion-XBMC script revision: 216 - built with build.bat version 1.0 #
-
 
 # script constants
 __script__       = "Installer Passion-XBMC"
@@ -9,9 +7,9 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://code.google.com/p/passion-xbmc/source/browse/#svn/trunk/Scripts/Installer%20Passion-XBMC"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center"
-__date__         = "24-12-2008"
-__version__      = "Beta-Christmas-08"
-__svn_revision__ = "216"
+__date__         = "29-12-2008"
+__version__      = "pre-sqlite"
+__svn_revision__ = 0
 
 
 #Modules general

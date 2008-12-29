@@ -599,7 +599,7 @@ class ItemDescriptionSQL( ItemDescription ):
             title           = dico['name']
             language        = 'fr'
             previewPicture  = dico['screenshot'].encode("utf-8")
-            description_fr  = dico['description']
+            description_fr  = set_xbmc_carriage_return( dico['description'] )
             
             logger.LOG( logger.LOG_DEBUG, "ItemDescriptionSQL - _get_info: Image URL: %s", previewPicture )
             
