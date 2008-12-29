@@ -240,9 +240,8 @@ class DirectInfos( xbmcgui.WindowXML ):
             if ( SYSTEM_PLATFORM == "windows" ):
                 command = '%s("%s" "%s")' % ( cmd, self.settings[ "web_navigator" ], url, )
             else:#if ( SYSTEM_PLATFORM == "linux" ):
-                # sous linux la vigule pose probleme. pas trouver de solution e.g.:
-                # original: http://passion-xbmc.org/index.php/topic,1491.msg10804.html#msg10804
-                # ouvert avec linux: http://passion-xbmc.org/index.php/topic
+                # sous linux la vigule pose probleme. solution obtenir la redirection de l'url
+                url = self.get_redirected_url( url )
                 command = '%s(%s %s)' % ( cmd, self.settings[ "web_navigator" ], url, )
 
             if command is not None:
@@ -259,6 +258,19 @@ class DirectInfos( xbmcgui.WindowXML ):
 
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+
+    def get_redirected_url( self, url ):
+        from urllib2 import urlopen
+        from urlparse import urlparse, urlunparse
+        try:
+            redirection = urlopen( url ).geturl()
+            scheme1, host1, path1, params1, query1, fragment1 = urlparse( url )
+            scheme2, host2, path2, params2, query2, fragment2 = urlparse( redirection )
+            url = urlunparse( ( scheme2, host2, path2, params2, None, fragment1 ) )
+        except:
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+        del urlopen, urlparse, urlunparse
+        return url
 
     def _unicode( self, s, encoding="utf-8" ):
         try: s = unicode( s, encoding )
