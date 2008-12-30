@@ -1109,14 +1109,27 @@ class MainWindow( xbmcgui.WindowXML ):
                     self.getControl( self.CONTROL_MAIN_LIST ).selectItem( self.main_list_last_pos.pop() )
 
             elif action == ACTION_SHOW_INFO :
-                if ( not self.type.lower() in ( "racine", "plugins", ) ) and ( self.getFocusId() == self.CONTROL_MAIN_LIST ):
+                #SQLite Modification
+                if ( not self.type.lower() in ( "racine", "plugins","dlcat","scripts", ) ) and ( self.getFocusId() == self.CONTROL_MAIN_LIST ):
+                #if ( not self.type.lower() in ( "racine", "plugins", ) ) and ( self.getFocusId() == self.CONTROL_MAIN_LIST ):
                     currentListIndex = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()
-                    if currentListIndex >= 0:
+                    if currentListIndex >= 0:                         
                         selectedItem = os.path.basename( self.curDirList[ currentListIndex ] )
                         from dialog_item_descript import show_descript
                         show_descript( self, selectedItem, self.type )
                         #on a plus besoin du descript, on le delete
                         del show_descript
+                        
+                #SQLite Modification
+                elif ( self.type.lower() in ('dlcat','scripts', ) ) and ( self.getFocusId() == self.CONTROL_MAIN_LIST ):
+                    currentListIndex = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()
+                    if currentListIndex >= 0:
+                        if (self.curlist['type'][currentListIndex] == 'dlitem'):
+                            selectedItem = self.curlist['id'][currentListIndex]
+                            from dialog_item_descript import show_descript
+                            show_descript( self, selectedItem, self.type )
+                            #on a plus besoin du descript, on le delete
+                            del show_descript
             else:
                 self._on_action_control( action )
                 self._on_action_control( action.getButtonCode() )
