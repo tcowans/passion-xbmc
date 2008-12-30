@@ -599,7 +599,9 @@ class ItemDescriptionSQL( ItemDescription ):
             title           = dico['name']
             language        = 'fr'
             previewPicture  = dico['screenshot'].encode("utf-8")
-            description_fr  = set_xbmc_carriage_return( dico['description'] )
+            description_fr  = dico['description'].replace('</br>','\r\n')
+            
+
             
             logger.LOG( logger.LOG_DEBUG, "ItemDescriptionSQL - _get_info: Image URL: %s", previewPicture )
             
@@ -610,7 +612,7 @@ class ItemDescriptionSQL( ItemDescription ):
                 checkPathPic = os.path.join(self.mainwin.CacheDir, os.path.basename(previewPicture))
                 if os.path.exists(checkPathPic):
                     previewPicture = checkPathPic
-
+            
         except Exception, e:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         
@@ -648,8 +650,9 @@ def show_descript( mainwin, selectedItem , typeItem ):
     current_skin, force_fallback = getUserSkin()
 
     #w = ItemDescription( file_xml, dir_path, current_skin, force_fallback, mainwin=mainwin, itemName=selectedItem, itemType=typeItem )
-    if typeItem == "dlcat":
-        selectedItem = 140 # Test avec id-140 (TAC) en attendant d'ajouter le support tdans le script appelant
+    if (typeItem == "dlcat") or (typeItem == 'Scripts'):
+        print "SELECTED ITEM = %s"%selectedItem
+        #selectedItem = 140 # Test avec id-140 (TAC) en attendant d'ajouter le support tdans le script appelant
         w = ItemDescriptionSQL( file_xml, dir_path, current_skin, force_fallback, mainwin=mainwin, itemName=selectedItem, itemType=typeItem )
         w.doModal()
         del w
