@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+  <!-- GENERAL -->
+  <setting id="set_content" type="enum" lvalues="744|20342" label="30400" default="1" />
+  <setting id="sort_method" type="enum" lvalues="556|562|515|563" label="30401" default="0" />
+  <setting id="sort_direction" type="enum" lvalues="584|585" label="30402" default="0" />
+
+  <!-- SCRAPER SETTINGS -->
+  <setting type="sep" />
+  <setting id="trailers_scraper" type="fileenum" mask="/" values="resources\pluginAPI\scrapers\trailers\" label="30139" default="GameVideos" />
+  <setting id="max_trailer" type="enum" values="[B]&#126;&#126;[/B]|10|50|100|200|500|1000" label="30134" default="2" />
+  <setting id="download_path" type="folder" source="video" option="writeable" mask="/" label="30140" default="F:\videos" />
+
+
+  <!-- GAMES PATH SETTINGS -->
+  <setting type="sep" />
+  <setting id="game_path_settings" type="bool" label="30600" default="false" />
+  <setting visible="eq(-1,true)" type="sep" />
+
+  <setting visible="eq(-2,true)" type="sep" />
+  <setting visible="eq(-3,true)" id="whole_words" type="bool" label="30604" default="true" />
+  <setting visible="eq(-4,true)" id="game_path_1" type="folder" source="programs" mask="/" label="30601" default="multipath://E:\games\/F:\games\/G:\games\/" />
+  <setting visible="eq(-5,true)+!eq(-1,)" id="game_path_2" type="folder" source="local" mask="/" label="30602" default="" />
+  <setting visible="eq(-6,true)+!eq(-1,)" id="game_path_3" type="folder" source="local" mask="/" label="30603" default="" />
+
+  <!-- MORE SETTINGS -->
+  <setting type="sep" />
+  <setting id="more_settings" type="bool" label="30800" default="false" />
+  <setting visible="eq(-1,true)" type="sep" />
+
+  <setting visible="eq(-2,true)" type="sep" />
+  <setting visible="eq(-3,true)" id="refresh_data" type="bool" label="30502" default="false" />
+  <setting visible="eq(-4,true)" id="data_path" type="enum" lvalues="571|20190" label="30500" default="0" />
+  <setting visible="eq(-5,true)" id="custom_path" type="folder" source="local" mask="/" option="writeable" label="30501" enable="eq(-1,1)" default="P:\plugin_data\video\All Game" />
+
+  <setting visible="eq(-6,true)" type="sep" />
+  <setting visible="eq(-7,true)" id="hide_goto" type="bool" label="30017" default="false" />
+  <setting visible="eq(-8,true)" id="extra_button" type="enum" lvalues="30029|30028|30027|30026|30025|30024" label="30030" default="0" />
+
+  <setting visible="eq(-9,true)" type="sep" />
+  <setting visible="eq(-10,true)" id="xbmc_auto_thumbs" type="bool" label="30410" default="false" />
+  <setting visible="eq(-11,true)" id="no_games_thumb" type="enum" lvalues="571|20190|30413" label="30411" default="0" />
+  <setting visible="eq(-12,true)" enable="eq(-1,1)" id="custom_games_thumb" type="files" source="local" mask=".png|.gif|.jpg|.tbn" label="30412" default="Q:\plugins\video\All Game\default.tbn" />
+
+  <setting visible="eq(-13,true)" type="sep" />
+  <setting visible="eq(-14,true)" id="enable_fanart" type="bool" label="30900" default="false" />
+  <setting visible="eq(-15,true)" id="fanart_image" type="pictures" label="30901" enable="eq(-1,true)" default="" />
+  <setting visible="eq(-16,true)+eq(-2,true)" id="fanart_color1" type="text" label="30902" enable="!eq(-1,)" default="" />
+  <setting visible="eq(-17,true)+eq(-3,true)" id="fanart_color2" type="text" label="30903" enable="!eq(-2,)" default="" />
+  <setting visible="eq(-18,true)+eq(-4,true)" id="fanart_color3" type="text" label="30904" enable="!eq(-3,)" default="" />
+
+  <setting visible="eq(-19,true)" type="sep" />
+  <setting visible="eq(-20,true)" id="anime_dialog" type="bool" label="30802" default="true" />
+  <setting visible="eq(-21,true)" id="plugin_booster" type="bool" label="30801" default="false" />
+</settings>

@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!-- Les strings de 30000 à 30999 sont réservées aux paramètres plug-in -->
+  <!--GENERAL STRINGS -->
+  <string id="30000">All Game</string>
+  <string id="30001">Toutes les platformes</string>
+  <string id="30002">Sorties Récentes</string>
+  <string id="30003">Prochaines Sorties</string>
+  <string id="30004">Sorties Future</string>
+  <string id="30005">Genres</string>
+  <string id="30006">Rechercher</string>
+  <string id="30007">Résultats de la recherche du jeu:[CR]%s</string>
+  <string id="30008">Entrez un nom</string>
+  <string id="30009">Rafraîchissement...&#32;</string>
+  <string id="30010">Récupération...&#32;</string>
+  <string id="30011">Sauvegarde des infos de la platforme...</string>
+  <string id="30012">Sauvegarde des infos du jeux...</string>
+  <string id="30013">&#32;%i de %i</string>
+  <string id="30014">&#32;Page Suivante %i de %i</string>
+  <string id="30015">Aller à la page</string>
+  <string id="30016">Choisir une page: 1 à %s</string>
+  <string id="30017">Masquer le bouton "Aller à la page"</string>
+
+  <string id="30020">XBox</string>
+  <string id="30021">IBM PC Compatible</string>
+  <string id="30022">Macintosh</string>
+  <string id="30023">Hybrid Windows/Mac</string>
+  <string id="30024">PlayStation 3</string>
+  <string id="30025">XBox 360</string>
+  <string id="30026">Wii</string>
+  <string id="30027">PlayStation Portable</string>
+  <string id="30028">Nintendo DS</string>
+  <string id="30029">Aucun</string>
+  <string id="30030">Bouton supplémentaire dans la liste "Catégories"</string>
+
+  <!-- string id's 30100 thru 30200 are reserved for Dialog Game Info -->
+  <string id="30100">Info Jeux</string>
+  <string id="30101">ID Jeux:</string>
+  <string id="30102">Platforme:</string>
+  <string id="30103">Note AMG:</string>
+  <string id="30104">Avis ESRB:</string>
+  <string id="30105">Genre:</string>
+  <string id="30106">Styles:</string>
+  <string id="30107">Joueurs:</string>
+  <string id="30108">Développeurs:</string>
+  <string id="30109">Éditeur:</string>
+  <string id="30110">Date de sortie:</string>
+  <string id="30111">Cabinet Style:</string>
+  <string id="30112">Contrôles:</string>
+  <string id="30113">Flags:</string>
+  <string id="30114">Avertissements:</string>
+  <string id="30115">Supportes:</string>
+  <string id="30116">Forfait inclus:</string>
+  <string id="30117">Support E-Mail:</string>
+  <string id="30118">Support URL:</string>
+  <string id="30119">Support Phone:</string>
+  <string id="30120">-</string>
+  <string id="30121">-</string>
+  <string id="30122">-</string>
+  <string id="30123">-</string>
+  <string id="30124">-</string>
+  <string id="30125">Résumé</string>
+  <string id="30126">Critique</string>
+  <string id="30127">Crédits</string>
+  <string id="30128">Extra Crédits</string>
+  <string id="30129">Lancer le jeux</string>
+  <string id="30130">Configuration requise</string>
+  <string id="30131">Achat</string>
+  <string id="30132">Voir diaporama</string>
+  <string id="30133">Bande-annonce</string>
+  <string id="30134">- Maximum de bandes-annonces à récupérer</string>
+  <string id="30135">Récupération de la page %i de %i</string>
+  <string id="30136">Bandes-annonces récupérées %i de %i</string>
+  <string id="30137">Titre:&#32;</string>
+  <string id="30138">*Appuyez sur le bouton pour récupérer les bandes-annonces*</string>
+  <string id="30139">Scraper de bandes-annonces</string>
+  <string id="30140">- Dossier des enregistrements</string>
+  <string id="30141">Taille: %.2f / %.2f Mo</string>
+  <string id="30142">Taille: %.2f / ?.?? Mo</string>
+  <string id="30143">Existe déjà...</string>
+  <string id="30144">Passer</string>
+  <string id="30145">MAJ</string>
+  <string id="30146">(aucun lien trouvé pour cette bande-annonce)</string>
+
+  <string id="30159">Supprimer cet enregistrement</string>
+  <string id="30160">Marquer comme Vu</string>
+  <string id="30161">Marquer comme Non Vu</string>
+
+  <string id="30200">-</string>
+
+  <!-- string id's 30400 thru 30999 are reserved for settings.xml and misc -->
+  <string id="30400">Définir le contenu du Plugin</string>
+  <string id="30401">Méthode du tri [I](Pour obtenir jeux et non "Méthode du tri d'XBMC")[/I]</string>
+  <string id="30402">Direction du tri [I](Utilisé avec Méthode du tri)[/I]</string>
+
+  <string id="30410">Laisser XBMC gérer les vignettes</string>
+  <string id="30411">Vignette de jeux non disponible</string>
+  <string id="30412">- Vignette personnalisée</string>
+
+  <string id="30420">-</string>
+
+  <!-- DATABASE STRINGS -->
+  <string id="30500">Chemin de la base de données</string>
+  <string id="30501">- Chemin personnaliser</string>
+  <string id="30502">Rafraîchir la base de données en tout temps</string>
+  <string id="30503">-</string>
+
+  <!-- GAME PATH STRINGS -->
+  <string id="30600">[B]Répertoires des jeux &#62;&#62;[/B]</string>
+  <string id="30601">- Chemin local 1</string>
+  <string id="30602">- Chemin local 2</string>
+  <string id="30603">- Chemin local 3</string>
+  <string id="30604">- Associer le nom du jeu aux mots entiers seulement</string>
+
+  <!-- ? STRINGS -->
+  <string id="30800">[B]Plus &#62;&#62;[/B]</string>
+  <string id="30801">Activer l'accélérateur plugin [I](expérimental, &#177;10Mo est utilisé)[/I]</string>
+  <string id="30802">Activer les animations du plugin</string>
+  <string id="30803">-</string>
+  <string id="30804">-</string>
+  <string id="30805">-</string>
+  <string id="30806">-</string>
+  <string id="30807">-</string>
+  <string id="30808">-</string>
+  <string id="30809">-</string>
+  <string id="30810">-</string>
+  <string id="30811">-</string>
+  <string id="30812">-</string>
+  <string id="30813">-</string>
+  <string id="30814">-</string>
+  <string id="30815">-</string>
+
+  <!-- MISC STRINGS -->
+  <string id="30900">Activer l'image fanart</string>
+  <string id="30901">Image Fanart</string>
+  <string id="30902">- Couleur fanart un (AARRGGBB)</string>
+  <string id="30903">- Couleur fanart deux (AARRGGBB)</string>
+  <string id="30904">- Couleur fanart trois (AARRGGBB)</string>
+  <string id="30905">-</string>
+  <string id="30906">-</string>
+  <string id="30907">-</string>
+  <string id="30908">-</string>
+  <string id="30909">-</string>
+  <string id="30910">-</string>
+  <string id="30911">-</string>
+  <string id="30912">-</string>
+  <string id="30913">-</string>
+  <string id="30914">-</string>
+  <string id="30915">-</string>
+
+  <string id="30996">&#32;</string>
+  <string id="30997">le|la|les|un|une|de|des|et|a</string>  <!-- set words always in lowercase for TITLE -->
+  <string id="30998">[CR]</string>
+  <string id="30999">&#45;</string>
+</strings>
