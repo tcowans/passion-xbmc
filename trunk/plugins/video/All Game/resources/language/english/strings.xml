@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<strings>
+  <!-- strings 30000 thru 30999 reserved for plugin settings -->
+  <!--GENERAL STRINGS -->
+  <string id="30000">All Game</string>
+  <string id="30001">All Platforms</string>
+  <string id="30002">Recent Releases</string>
+  <string id="30003">Upcoming Releases</string>
+  <string id="30004">Future Releases</string>
+  <string id="30005">Game Genres</string>
+  <string id="30006">Search</string>
+  <string id="30007">Game Title Search Results for:[CR]%s</string>
+  <string id="30008">Enter name</string>
+  <string id="30009">Refreshing...&#32;</string>
+  <string id="30010">Fetching...&#32;</string>
+  <string id="30011">Saving Platform Info...</string>
+  <string id="30012">Saving Game Info...</string>
+  <string id="30013">&#32;%i of %i</string>
+  <string id="30014">&#32;Next Page %i of %i</string>
+  <string id="30015">Go to page</string>
+  <string id="30016">Choose page: 1 to %s</string>
+  <string id="30017">Hide button "Go to page"</string>
+
+  <string id="30020">XBox</string>
+  <string id="30021">IBM PC Compatible</string>
+  <string id="30022">Macintosh</string>
+  <string id="30023">Hybrid Windows/Mac</string>
+  <string id="30024">PlayStation 3</string>
+  <string id="30025">XBox 360</string>
+  <string id="30026">Wii</string>
+  <string id="30027">PlayStation Portable</string>
+  <string id="30028">Nintendo DS</string>
+  <string id="30029">None</string>
+  <string id="30030">Extra button in "Categories" list</string>
+
+  <!-- string id's 30100 thru 30200 are reserved for Dialog Game Info -->
+  <string id="30100">Game Info</string>
+  <string id="30101">Game ID:</string>
+  <string id="30102">Platform:</string>
+  <string id="30103">AMG Rating:</string>
+  <string id="30104">ESRB Rating:</string>
+  <string id="30105">Genre:</string>
+  <string id="30106">Styles:</string>
+  <string id="30107">Players:</string>
+  <string id="30108">Developer:</string>
+  <string id="30109">Publisher:</string>
+  <string id="30110">Release Date:</string>
+  <string id="30111">Cabinet Style:</string>
+  <string id="30112">Controls:</string>
+  <string id="30113">Flags:</string>
+  <string id="30114">Warnings:</string>
+  <string id="30115">Supports:</string>
+  <string id="30116">Included Package:</string>
+  <string id="30117">Support E-Mail:</string>
+  <string id="30118">Support URL:</string>
+  <string id="30119">Support Phone:</string>
+  <string id="30120">-</string>
+  <string id="30121">-</string>
+  <string id="30122">-</string>
+  <string id="30123">-</string>
+  <string id="30124">-</string>
+  <string id="30125">Plot</string>
+  <string id="30126">Review</string>
+  <string id="30127">Credits</string>
+  <string id="30128">Extra Credits</string>
+  <string id="30129">Play Game</string>
+  <string id="30130">System Requirements</string>
+  <string id="30131">Buy</string>
+  <string id="30132">View Slideshow</string>
+  <string id="30133">Trailer</string>
+  <string id="30134">- Maximum of trailers to retrieving</string>
+  <string id="30135">Loading page %i of %i</string>
+  <string id="30136">Retrieved %i of %i Trailers</string>
+  <string id="30137">Title:&#32;</string>
+  <string id="30138">*Press button for retrieving trailers*</string>
+  <string id="30139">Trailers scraper</string>
+  <string id="30140">- Recordings Folder</string>
+  <string id="30141">Size: %.2f / %.2f Mb</string>
+  <string id="30142">Size: %.2f / ?.?? Mb</string>
+  <string id="30143">Already exists...</string>
+  <string id="30144">Skip</string>
+  <string id="30145">Update</string>
+  <string id="30146">(no link found for this trailer)</string>
+
+  <string id="30159">Remove this recording</string>
+  <string id="30160">Mark as Watched</string>
+  <string id="30161">Mark as Unwatched</string>
+
+  <string id="30200">-</string>
+
+  <!-- string id's 30400 thru 30999 are reserved for settings.xml and misc -->
+  <string id="30400">Sets the plugins content</string>
+  <string id="30401">Sort Method [I](For Grab Games Only and Not "XBMC Sort Method")[/I]</string>
+  <string id="30402">Sort Direction [I](Used With Sort Method)[/I]</string>
+
+  <string id="30410">Let XBMC generate thumbnails</string>
+  <string id="30411">Thumbnail of games not available</string>
+  <string id="30412">- Custom Thumbnail</string>
+  <string id="30413">Textures.xpr://DefaultProgramBig.png</string>
+
+  <string id="30420">-</string>
+
+  <!-- DATA STRINGS -->
+  <string id="30500">Path to database</string>
+  <string id="30501">- Custom Path</string>
+  <string id="30502">Refresh database any time</string>
+  <string id="30503">-</string>
+
+  <!-- GAME PATH STRINGS -->
+  <string id="30600">[B]Directories of Games &#62;&#62;[/B]</string>
+  <string id="30601">- Local Path 1</string>
+  <string id="30602">- Local Path 2</string>
+  <string id="30603">- Local Path 3</string>
+  <string id="30604">- matches game name whole words only</string>
+
+  <!-- ? STRINGS -->
+  <string id="30800">[B]More &#62;&#62;[/B]</string>
+  <string id="30801">Enable Booster Plugin [I](experimental, &#177;10Mb is used)[/I]</string>
+  <string id="30802">Enable Animations plugin</string>
+  <string id="30803">-</string>
+  <string id="30804">-</string>
+  <string id="30805">-</string>
+  <string id="30806">-</string>
+  <string id="30807">-</string>
+  <string id="30808">-</string>
+  <string id="30809">-</string>
+  <string id="30810">-</string>
+  <string id="30811">-</string>
+  <string id="30812">-</string>
+  <string id="30813">-</string>
+  <string id="30814">-</string>
+  <string id="30815">-</string>
+
+  <!-- MISC STRINGS -->
+  <string id="30900">Enable fanart image</string>
+  <string id="30901">Fanart image</string>
+  <string id="30902">- Fanart color one (AARRGGBB)</string>
+  <string id="30903">- Fanart color two (AARRGGBB)</string>
+  <string id="30904">- Fanart color three (AARRGGBB)</string>
+  <string id="30905">-</string>
+  <string id="30906">-</string>
+  <string id="30907">-</string>
+  <string id="30908">-</string>
+  <string id="30909">-</string>
+  <string id="30910">-</string>
+  <string id="30911">-</string>
+  <string id="30912">-</string>
+  <string id="30913">-</string>
+  <string id="30914">-</string>
+  <string id="30915">-</string>
+
+  <string id="30996">&#32;</string>
+  <string id="30997">the|a|of|and</string>  <!-- set words always in lowercase for TITLE -->
+  <string id="30998">[CR]</string>
+  <string id="30999">&#45;</string>
+</strings>
