@@ -1,0 +1,41 @@
+<window id="136">
+	
+	<controls>
+		<control type="group">
+			<posx>0</posx>
+			<posy>480</posy>
+			<include>fadeinout</include>
+			
+			<control type="image">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>720</width>
+				<height>88</height>
+				<texture border="28">grid-overlay2.png</texture>	
+			</control>
+			<control type="image">
+				<description>background image</description>
+				<posx>20</posx>
+				<posy>30</posy>
+				<width>46</width>
+				<height>60</height>
+				<texture border="2">smily.png</texture>	
+			</control>
+			
+			<control type="label" id="200">
+				<include>home-start</include>
+				<posx>0</posx>
+				<posy>47</posy>
+				<width>720</width>
+				<label>31906</label>
+				<align>center</align>
+				<font>cali38</font>
+				<textcolor>sublabel-text</textcolor>
+				<include>fadeinout</include>	
+			</control>	
+			
+		</control>		
+	</controls>
+	
+</window>

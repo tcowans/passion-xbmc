@@ -1,0 +1,123 @@
+﻿<window id="121">
+	<defaultcontrol>2</defaultcontrol>
+	
+	<include>dialog-open</include>
+	
+	<coordinates>
+		<system>1</system>
+		<posx>282</posx>
+		<posy>20</posy>
+	</coordinates>
+	
+	<controls>
+		
+		<control type="group">
+			
+			<control type="image">
+				<posx>-60</posx>
+				<posy>-30</posy>
+				<width>500</width>
+				<height>505</height>
+				<texture border="38">dialogpanel.png</texture>
+				<colordiffuse>98FFFFFF</colordiffuse>
+			</control>
+		
+			<control type="label" id="2">
+				<description>Settings Label</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>360</width>
+				<align>center</align>
+				<label>-</label>
+				<font>h1D</font>
+				<textcolor>rss-title</textcolor>
+			</control>
+			
+			<control type="fadelabel" id="3">
+				<description>No Settings Label</description>
+				<posx>-20</posx>
+				<posy>45</posy>
+				<width>420</width>
+				<align>center</align>
+				<label>13390</label>
+				<font>cali38</font>
+				<textcolor>sublabel-text</textcolor>
+			</control>
+
+			<control type="spincontrol" id="60">
+				<description>Next page button</description>
+				<posx>371</posx>
+				<posy>8</posy>
+				<subtype>int</subtype>
+				<font>font12</font>
+				<onleft>60</onleft>
+				<onright>60</onright>
+				<ondown>2</ondown>
+			</control>
+			
+			<control type="image" id="5">
+				<description>control area</description>
+				<posx>0</posx>
+				<posy>45</posy>
+				<width>480</width>
+				<height>485</height>
+			</control>
+			
+			<control type="image" id="6">
+				<description>control gap</description>
+				<width>350</width>
+				<height>31</height>
+				<texture>-</texture>
+			</control>
+			
+			<control type="button" id="7">
+				<description>Default Button</description>
+				<posx>530</posx>
+				<posy>150</posy>
+				<height>37</height>
+				<font>cali38aspect</font>
+				<textoffsetx>10</textoffsetx>
+				<aligny>center</aligny>
+				<texturefocus>default-button.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<textcolor>button-text</textcolor>
+			</control>
+			
+			<control type="radiobutton" id="8">
+				<description>Default RadioButton</description>
+				<posx>530</posx>
+				<posy>150</posy>
+				<height>37</height>
+				<font>cali38aspect</font>
+				<texturefocus>default-button.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<textoffsetx>10</textoffsetx>
+				<aligny>center</aligny>
+				<textureradiofocus>check-box.png</textureradiofocus>
+				<textureradionofocus>check-boxNF.png</textureradionofocus>
+				<textcolor>button-text</textcolor>
+			</control>
+			
+			<control type="spincontrolex" id="9">
+				<description>Default SpinControlex</description>
+				<posx>530</posx>
+				<posy>150</posy>
+				<height>37</height>
+				<width>300</width>
+				<texturefocus>default-button.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<textureup>scroll-up.png</textureup>
+				<texturedown>scroll-down.png</texturedown>
+				<textureupfocus>scroll-up-focus.png</textureupfocus>
+				<texturedownfocus>scroll-down-focus.png</texturedownfocus>
+				<font>cali38aspect</font>
+				<textcolor>button-text</textcolor>
+				<selectedcolor>listselectedtext</selectedcolor>
+				<textoffsetx>10</textoffsetx>
+				<aligny>center</aligny>
+				<reverse>yes</reverse>
+			</control>
+		
+	</control>
+	</controls>
+</window>
