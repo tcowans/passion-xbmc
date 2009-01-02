@@ -1,0 +1,161 @@
+<window id="6">
+	<defaultcontrol always="true">50</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<previouswindow>Home</previouswindow>
+
+	<controls>
+
+		<include>background</include> 
+		<include>xmasallscreens</include>
+
+		<include>pagebar</include>
+
+		<control type="group">
+			<description>page content</description>
+			<include>PageControl</include>
+			<include>viewsmenu</include>
+			<include>viewsmenucontext</include>
+			<include>pageslide</include>
+			<include>ListView</include>			
+			<include>Icons</include>
+			<include>MovieSlideFileMode</include>
+			<include>CoverflowFileMode</include>
+			<include>BigIconsF</include>
+
+			<include>AllViewCommonPageControls</include>
+
+			<control type="image">
+				<description>list item icon background</description>
+				<posx>360</posx>
+				<posy>-8</posy>
+				<width>360</width>
+				<height>600</height>
+				<texture>schatten2.png</texture>				
+				<visible>Control.IsVisible(50) + !System.IdleTime(3)</visible>	
+				<include>fadeinout-osd</include>
+			</control>
+
+			<control type="image">
+				<description>list item icon</description>
+				<posx>415</posx>
+				<posy>70</posy>
+				<width>260</width>
+				<height>450</height>
+				<info>ListItem.Icon</info>
+				<bordertexture border="2">list-focus.png</bordertexture>
+				<bordersize>10</bordersize>
+				<aspectratio align="bottom">keep</aspectratio>
+				<!-- <visible allowhiddenfocus="true">![Control.IsVisible(50) + System.IdleTime(3)]</visible> -->
+				<visible>Control.IsVisible(50) + !System.IdleTime(3)</visible>
+				<include>fadeinout-osd</include>
+			</control>
+
+			<control type="label">
+				<description>Genre</description>
+				<posx>415</posx>
+				<posy>480</posy>
+				<width>260</width>
+				<height>200</height>
+				<label>$INFO[ListItem.Genre]</label>
+				<scroll>true</scroll>
+				<font>h2</font>
+				<align>center</align>
+				<textcolor>sublabel-text</textcolor>
+				<include>fadeinout</include>
+			</control>
+
+
+
+			<!-- SLIDE VIEW --> 
+
+			<control type="label">
+				<posx>35</posx>
+				<posy>385</posy>
+				<width>660</width>
+				<info>ListItem.Label</info>
+				<visible>Control.IsVisible(52)</visible>
+				<font>menu</font>
+			</control>
+
+			<control type="label">
+				<include>slideSubLabelSize</include>
+				<posx>35</posx>
+				<posy>460</posy>
+				<width>530</width>
+				<label>[B]$INFO[ListItem.Size][/B]</label>
+				<visible>Control.IsVisible(52)</visible>
+			</control>
+
+			<control type="label">				
+				<posx>35</posx>
+				<posy>500</posy>
+				<width>200</width>
+				<label>[B]$INFO[ListItem.Date][/B]</label>
+				<font>date</font>
+				<textcolor>disabled-text</textcolor>
+				<visible>Control.IsVisible(52)</visible>
+			</control>
+
+			<!-- <control type="label">
+				<include>slideSubLabel</include>
+				<posx>685</posx>
+				<posy>80</posy>
+				<width>300</width>
+				<label>31931</label>
+				<font>h4</font>
+				<align>right</align>
+				<textcolor>sublabel-text</textcolor>
+				<scroll>true</scroll>
+				<visible>!IsEmpty(ListItem.Trailer) + Control.IsVisible(52) + Container.Content(movies)</visible>
+			</control> -->		
+
+			<!-- <control type="textbox">
+				<description>movie plot outline</description>
+				<posx>65</posx>
+				<posy>420</posy>
+				<width>620</width>
+				<height>120</height>
+				<info>ListItem.PlotOutline</info>
+				<align>justify</align>
+				<spinposx>-6600</spinposx>
+				<spinposy>-6125</spinposy>
+				<visible>Container.Content(movies) + Control.IsVisible(52)</visible>
+			</control>
+
+			<control type="textbox">
+				<description>movie plot</description>
+				<posx>65</posx>
+				<posy>420</posy>
+				<width>620</width>
+				<height>120</height>
+				<label fallback="31932">$INFO[ListItem.PlotOutline]</label>
+				<align>justify</align>
+				<spinposx>-6600</spinposx>
+				<spinposy>-6125</spinposy>
+				<visible>Container.Content(movies) + Control.IsVisible(52) + IsEmpty(ListItem.PlotOutline)</visible>
+			</control> -->
+
+
+		</control>
+
+
+		<!-- PAGE HEADER -->
+
+		<include>allscreens</include>
+
+		<control type="label">
+			<include>pageLabel</include>
+			<label>3</label>
+			<visible>IsEmpty(Container.PluginName)</visible>
+		</control>
+
+		<control type="label">
+			<include>pageLabel</include>
+			<info>Container.Pluginname</info>
+			<visible>!IsEmpty(Container.PluginName)</visible>
+		</control>
+
+		<include>FilesMenu</include>
+
+	</controls>
+</window>  

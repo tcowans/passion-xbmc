@@ -1,0 +1,366 @@
+<window type="dialog" id="2600">
+	<defaultcontrol>2</defaultcontrol>
+	<zorder>2</zorder>
+	<coordinates>
+		<system>1</system>
+		<posx>0</posx>
+		<posy>0</posy>
+	</coordinates>
+	<controls>
+		<include>background</include>
+		<include>allscreens</include>
+		<control type="label">
+			<include>pageLabel</include>
+			<label>10508</label>
+		</control>
+		<include>WeatherMenu</include>
+		<!-- <control type="image">
+		<description>background image</description>
+		<posx>40</posx>
+		<posy>65</posy>
+		<width>1210</width>
+		<height>680</height>
+		<texture>voulume-panel-bg-weather.png</texture>
+		<include>fadeinout</include>
+	</control> -->
+		<control type="group" id="9777">
+			<posx>-30</posx>
+			<posy>-8</posy>
+			<control type="image">
+				<description>background image</description>
+				<posx>40</posx>
+				<posy>71</posy>
+				<width>124</width>
+				<height>450</height>
+				<texture>voulume-panel-bg-weather.png</texture>
+				<include>fadeinout</include>
+			</control>
+			<control type="image">
+				<description>background image</description>
+				<posx>184</posx>
+				<posy>71</posy>
+				<width>124</width>
+				<height>450</height>
+				<texture>voulume-panel-bg-weather.png</texture>
+				<include>fadeinout</include>
+			</control>
+			<control type="image">
+				<description>background image</description>
+				<posx>328</posx>
+				<posy>71</posy>
+				<width>124</width>
+				<height>450</height>
+				<texture>voulume-panel-bg-weather.png</texture>
+				<include>fadeinout</include>
+			</control>
+			<control type="image">
+				<description>background image</description>
+				<posx>472</posx>
+				<posy>71</posy>
+				<width>124</width>
+				<height>450</height>
+				<texture>voulume-panel-bg-weather.png</texture>
+				<include>fadeinout</include>
+			</control>
+			<control type="image">
+				<description>background image</description>
+				<posx>616</posx>
+				<posy>71</posy>
+				<width>124</width>
+				<height>450</height>
+				<texture>voulume-panel-bg-weather.png</texture>
+				<include>fadeinout</include>
+			</control>
+			<control type="image">
+				<description>xmas Icon</description>
+				<posx>678</posx>
+				<posy>42</posy>
+				<width>52</width>
+				<height>52</height>
+				<visible allowhiddenfocus="true">Skin.HasSetting(xmasbells)</visible>
+				<texture>Christmas-Bells.png</texture>
+				<aspectratio>keep</aspectratio>
+				<include>home-menubar</include>
+				<include>home-menubar-startup</include>
+				<include>fadeinout</include>
+			</control>
+			<control type="image">
+				<description>xmas Icon</description>
+				<posx>19</posx>
+				<posy>10</posy>
+				<width>86</width>
+				<height>86</height>
+				<visible allowhiddenfocus="true">Skin.HasSetting(xmasbells)</visible>
+				<texture>Santa-Hat.png</texture>
+				<aspectratio>keep</aspectratio>
+				<include>home-menubar</include>
+				<include>home-menubar-startup</include>
+				<include>fadeinout</include>
+			</control>
+		</control>
+		<!-- <control type="image">
+			<description>background image</description>
+			<posx>40</posx>
+			<posy>65</posy>
+			<width>1210</width>
+			<height>680</height>
+			<texture>filemanpanelpolish.png</texture>
+			<include>fadeinout</include>
+		</control> -->
+		<include>fadeinout</include>
+		<control type="group">
+			<posx>-57</posx>
+			<posy>48</posy>
+			<include>fadeinout</include>
+			<control type="label" id="0">
+				<description>weather location select label</description>
+				<include>weatherday2</include>
+				<label>310361</label>
+			</control>
+			<!-- <control type="label" id="224">
+				<description>current feels like static label</description>
+				<posy>390</posy>
+				<include>weathercondleft</include>
+			</control>
+			<control type="label" id="225">
+				<description>current UV Index static label</description>
+				<posy>430</posy>
+				<include>weathercondleft</include>
+			</control>
+			<control type="label" id="228">
+				<description>current humidity static label</description>
+				<posy>410</posy>
+				<include>weathercondleft</include>
+			</control> -->
+			<control type="image" id="21">
+				<description>current weather icon</description>
+				<include>weathericon</include>
+			</control>
+			<control type="label" id="22">
+				<description>current condition label</description>
+				<include>weatherconditions</include>
+			</control>
+			<control type="label" id="23">
+				<description>current temp label</description>
+				<include>weatherhightemp</include>
+			</control>
+			<!-- <control type="label" id="24">
+				<description>current feels like label</description>
+				<posy>390</posy>
+				<include>weathercondright</include>
+			</control> -->
+			<!-- <control type="label" id="25">
+				<description>current UV Index label</description>
+				<posy>430</posy>
+				<include>weathercondright</include>
+			</control> -->
+			<control type="label" id="28">
+				<description>current humidity label</description>
+				<posy>406</posy>
+				<include>weathercondright</include>
+			</control>
+		</control>
+		<control type="group">
+			<description>day 0</description>
+			<posx>87</posx>
+			<posy>48</posy>
+			<include>fadeinout</include>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<height>35</height>
+				<width>453</width>
+				<texture>button-nofocus.png</texture>
+			</control>
+			<control type="label" id="31">
+				<description>day 0 label</description>
+				<include>weatherday</include>
+			</control>
+			<control type="image" id="35">
+				<description>day icon</description>
+				<include>weathericon</include>
+			</control>
+			<control type="label" id="32">
+				<description>high value</description>
+				<include>weatherhightemp</include>
+			</control>
+			<control type="label" id="33">
+				<description>low value</description>
+				<include>weatherlowtemp</include>
+			</control>
+			<control type="label" id="34">
+				<description>conditions label</description>
+				<include>weatherconditions</include>
+			</control>
+		</control>
+		<control type="group">
+			<description>day 1</description>
+			<posx>231</posx>
+			<posy>48</posy>
+			<include>fadeinout</include>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<height>35</height>
+				<width>453</width>
+				<texture>button-nofocus.png</texture>
+			</control>
+			<control type="label" id="41">
+				<description>day 1 label</description>
+				<include>weatherday</include>
+			</control>
+			<control type="image" id="45">
+				<description>day icon</description>
+				<include>weathericon</include>
+			</control>
+			<control type="label" id="42">
+				<description>high value</description>
+				<include>weatherhightemp</include>
+			</control>
+			<control type="label" id="43">
+				<description>low value</description>
+				<include>weatherlowtemp</include>
+			</control>
+			<control type="label" id="44">
+				<description>conditions label</description>
+				<include>weatherconditions</include>
+			</control>
+		</control>
+		<control type="group">
+			<description>day 2</description>
+			<posx>375</posx>
+			<posy>48</posy>
+			<include>fadeinout</include>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<height>35</height>
+				<width>453</width>
+				<texture>button-nofocus.png</texture>
+			</control>
+			<control type="label" id="51">
+				<description>day 2 label</description>
+				<include>weatherday</include>
+			</control>
+			<control type="image" id="55">
+				<description>day icon</description>
+				<include>weathericon</include>
+			</control>
+			<control type="label" id="52">
+				<description>high value</description>
+				<include>weatherhightemp</include>
+			</control>
+			<control type="label" id="53">
+				<description>low value</description>
+				<include>weatherlowtemp</include>
+			</control>
+			<control type="label" id="54">
+				<description>conditions label</description>
+				<include>weatherconditions</include>
+			</control>
+		</control>
+		<control type="group">
+			<description>day 3</description>
+			<posx>519</posx>
+			<posy>48</posy>
+			<include>fadeinout</include>
+			<control type="image">
+				<description>Section Background</description>
+				<posx>0</posx>
+				<posy>35</posy>
+				<width>453</width>
+				<height>113</height>
+				<texture>blue_rectangle_weather.png</texture>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<height>35</height>
+				<width>453</width>
+				<texture>button-nofocus.png</texture>
+			</control>
+			<control type="label" id="61">
+				<description>day 0 label</description>
+				<include>weatherday</include>
+			</control>
+			<control type="image" id="65">
+				<description>day icon</description>
+				<include>weathericon</include>
+			</control>
+			<control type="label" id="62">
+				<description>high value</description>
+				<include>weatherhightemp</include>
+			</control>
+			<control type="label" id="63">
+				<description>low value</description>
+				<include>weatherlowtemp</include>
+			</control>
+			<control type="label" id="64">
+				<description>conditions label</description>
+				<include>weatherconditions</include>
+			</control>
+		</control>
+		<control type="group" id="9000">
+			<posx>0</posx>
+			<posy>0</posy>
+			<include>fadeinout</include>
+			<control type="button" id="2">
+				<description>Refresh Button</description>
+				<posx>9</posx>
+				<posy>526</posy>
+				<label>184</label>
+				<onleft>3</onleft>
+				<onright>4</onright>
+				<include>contextformatbrowser2</include>
+				<textoffsety>0</textoffsety>
+			</control>
+			<control type="button" id="4">
+				<description>Settings Button</description>
+				<posx>153</posx>
+				<posy>526</posy>
+				<label>5</label>
+				<onleft>2</onleft>
+				<onright>3</onright>
+				<include>contextformatbrowser2</include>
+				<textoffsety>0</textoffsety>
+				<onclick>ActivateWindow(MyWeatherSettings)</onclick>
+			</control>
+		</control>
+		<control type="group">
+			<posx>330</posx>
+			<posy>538</posy>
+			<include>fadeinout</include>
+			<control type="spincontrol" id="3">
+				<description>weather location select spincontrol</description>
+				<align>right</align>
+				<posx>0</posx>
+				<posy>-1</posy>
+				<width>20</width>
+				<height>20</height>
+				<reverse>yes</reverse>
+				<onleft>4</onleft>
+				<onright>2</onright>
+				<font>-</font>
+				<disabledcolor>disabled</disabledcolor>
+				<textoffsetx>0</textoffsetx>
+				<textoffsety>0</textoffsety>
+				<aligny>center</aligny>
+			</control>
+			<control type="label" id="0">
+				<description>weather location select label</description>
+				<align>left</align>
+				<posx>55</posx>
+				<posy>8</posy>
+				<font>fruity21</font>
+				<textcolor>ffbdb76b</textcolor>
+				<aligny>center</aligny>
+				<reverse>yes</reverse>
+				<disabledcolor>disabled</disabledcolor>
+				<textoffsetx>0</textoffsetx>
+				<textoffsety>0</textoffsety>
+				<aligny>center</aligny>
+				<info>Weather.Location</info>
+			</control>
+		</control>
+	</controls>
+</window>
