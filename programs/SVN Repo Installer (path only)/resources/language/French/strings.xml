@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+    <!-- Update messages -->
+    <string id="30000">Voulez-vous installer cet objet?</string>
+    <string id="30001"></string>
+    <string id="30002">Récupération de la liste des fichiers...</string>
+    <string id="30003">Veuillez patienter...</string>
+    <string id="30004"></string>
+    <string id="30005">Récupération:</string>
+    <string id="30006">Chemin:</string>
+    <string id="30007">Fichier:</string>
+    <string id="30008">Votre nouvel objet a été installé ici:</string>
+
+    <string id="30020">Passer</string>
+    <string id="30021">Installer</string>
+
+    <!-- settings -->
+    <string id="30500">Liste au dépôt</string>
+
+    <!-- Update error messages -->
+    <string id="30030">Il y a eu une erreur sur l'installation de cet objet!</string>
+</strings>
