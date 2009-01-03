@@ -1,3 +1,4 @@
+#labels Featured,Phase-Implementation
 = Python Documentation: module xbmc, xbmcgui and xbmcplugin =
 
 == [http://passion-xbmc.googlecode.com/svn/wiki/xbmc.html xbmc] ==
@@ -10,4 +11,4 @@
 == [http://xbmc.svn.sourceforge.net/viewvc/xbmc/branches/linuxport/XBMC/tools/EventClients/README.txt Pour plus d'infos lisez le readme.txt du EventClients] [http://xbmc.svn.sourceforge.net/viewvc/xbmc/branches/linuxport/XBMC/tools/EventClients/ Download tool EventClients] ==
 
 
-=== Dernière MAJ: 16 Décembre 2008 avec [http://xbmc.svn.sourceforge.net/viewvc/xbmc/branches/linuxport/?pathrev=16582 XBMC rev 16582] ===
+=== Dernière MAJ: 3 Janvier 2009 avec [http://xbmc.svn.sourceforge.net/viewvc/xbmc/branches/linuxport/?pathrev=16853 XBMC rev 16853] ===
