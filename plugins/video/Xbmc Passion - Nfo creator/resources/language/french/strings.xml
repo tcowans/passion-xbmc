@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!-- Les strings de 30000 à 30999 sont réservées aux paramètres plug-in -->
+  <!--GENERAL STRINGS -->
+  <string id="30000">Xbmc Passion - Nfo créator</string>
+  <string id="30001">Recherche Manuel</string>
+  <string id="30002">Les fichiers ne doivent pas contenir</string>
+  <string id="30003">de caractères accentués ou d'apostrophe.</string>
+  <string id="30004">(n'oubliez pas l'extension ".avi", ".mpg", ...)</string>
+  <string id="30005">Entrer un nom de film avec l'extension pour le recherche</string>
+  <string id="30006">Installation terminée.</string>
+  <string id="30007">Erreur: Impossible d'extraire ou de récupérer l'archive</string>
+  <string id="30008">Vous devez paramétrer le plugin!</string>
+
+  <string id="30010">Voir la fiche</string>
+
+  <string id="30019">Vidéos</string>
+  <string id="30020">Chemin des Films:</string>
+
+  <string id="30029">Web (XBox pas supporter)</string>
+  <string id="30030">Chemin du Navigateur Web:</string>
+</strings>

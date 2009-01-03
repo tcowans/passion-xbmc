@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+  <!-- GENERAL -->
+  <setting type="lsep" label="30019" />
+  <setting id="path" type="folder" source="video" label="30020" default="" />
+
+  <setting type="lsep" label="30029" />
+  <setting id="web_navigator" type="files" source="files" label="30030" default="" />
+</settings>
