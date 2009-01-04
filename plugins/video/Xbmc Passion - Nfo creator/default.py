@@ -29,7 +29,6 @@ def set_pretty_formatting( text ):
 def get_html_source( url ):
     """ fetch the html source """
     try:
-        DIALOG_PROGRESS.update( -1, _( 1040 ), url )
         if os.path.isfile( url ): sock = open( url, "r" )
         else:
             urllib.urlcleanup()
@@ -38,7 +37,7 @@ def get_html_source( url ):
         sock.close()
         return htmlsource
     except:
-        traceback.print_exc()
+        print_exc()
         return ""
 
 
@@ -46,15 +45,14 @@ def unzip( filename, destination=None, report=False ):
     from zipfile import ZipFile
     from StringIO import StringIO
     filename = StringIO( get_html_source( filename ) )
-    #print unzip( filename, os.getcwd().rstrip( ";" ), True )
     try:
         zip = ZipFile( filename, "r" )
         namelist = zip.namelist()
+        #print namelist
         total_items = len( namelist ) or 1
         diff = 100.0 / total_items
         percent = 0
         # nom du fichier nfo
-        print namelist
         nfo_name = namelist[ 0 ]
         for count, item in enumerate( namelist ):
             percent += diff
@@ -173,7 +171,7 @@ class Main:
                     thumbnail = ""
             return thumbnail
         except:
-            import traceback; traceback.print_exc()
+            print_exc()
             return ""
 
     def _select_nfo( self ):
@@ -207,7 +205,7 @@ class Main:
                     name = set_pretty_formatting( items[ 2 ].strip() )
                     DIALOG_PROGRESS.update( -1, _( 1040 ), name )
 
-                    listitem = xbmcgui.ListItem( name, thumbnailImage="" )
+                    listitem = xbmcgui.ListItem( name, thumbnailImage=os.path.join( os.getcwd().rstrip( ";" ), "default.tbn" ) )
 
                     if self.settings[ "web_navigator" ] != "" and os.path.exists( self.settings[ "web_navigator" ] ):
                         cmd = "System.Exec"
