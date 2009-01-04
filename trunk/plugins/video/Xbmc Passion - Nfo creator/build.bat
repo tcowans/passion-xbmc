@@ -50,7 +50,6 @@ ECHO ----------------------------------------------------------------------
 ECHO.
 ECHO Copying required files to \Build\%PluginName%\ folder . . .
 XCOPY resources "BUILD\%PluginName%\resources" /E /Q /I /Y /EXCLUDE:BUILD\exclude.txt
-XCOPY psyco "BUILD\%PluginName%\psyco" /E /Q /I /Y /EXCLUDE:BUILD\exclude.txt
 COPY default.tbn "BUILD\%PluginName%\"
 
 :: Create new default.py with __svn_revision__ embedded

@@ -2,76 +2,35 @@
 import os
 import re
 import sys
-import time
 import urllib
+from traceback import print_exc
+
 import xbmc
 import xbmcgui
 import xbmcplugin
-from traceback import print_exc
+
+from resources.pluginAPI.utilities import *
 
 
-_ = xbmc.getLocalizedString
+# plugin constants
+__plugin__       = "Xbmc Passion - Nfo creator"
+__script__       = "Unknown"
+__author__       = "Frost"
+__url__          = "http://code.google.com/p/passion-xbmc/"
+__svn_url__      = "http://code.google.com/p/passion-xbmc/source/browse/#svn/trunk/plugins/video/"
+__credits__      = "Team XBMC, http://xbmc.org/"
+__platform__     = "xbmc media center"
+__date__         = "04-01-2009"
+__version__      = "0.1.1"
+__svn_revision__ = 0
 
-DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
 etape2 = "http://passion-xbmc.org/nfo_creator/index.php?listeFilm=%s&etape=2"
 etape3 = "http://passion-xbmc.org/nfo_creator/index.php?etape=3&%s=%s"
 
 regexp = """<input type="radio" name="([^"]+)" value="([^"]+)".*/>([^"]+)<a target=_blank href='([^"]+)'>voir la fiche</a>"""
 
-
-def set_pretty_formatting( text ):
-    text = text.replace( "<i>", "[I]" ).replace( "</i>", "[/I]" )
-    text = text.replace( "<b>", "[B]" ).replace( "</b>", "[/B]" )
-    return text
-
-
-def get_html_source( url ):
-    """ fetch the html source """
-    try:
-        if os.path.isfile( url ): sock = open( url, "r" )
-        else:
-            urllib.urlcleanup()
-            sock = urllib.urlopen( url )
-        htmlsource = sock.read()
-        sock.close()
-        return htmlsource
-    except:
-        print_exc()
-        return ""
-
-
-def unzip( filename, destination=None, report=False ):
-    from zipfile import ZipFile
-    from StringIO import StringIO
-    filename = StringIO( get_html_source( filename ) )
-    try:
-        zip = ZipFile( filename, "r" )
-        namelist = zip.namelist()
-        #print namelist
-        total_items = len( namelist ) or 1
-        diff = 100.0 / total_items
-        percent = 0
-        # nom du fichier nfo
-        nfo_name = namelist[ 0 ]
-        for count, item in enumerate( namelist ):
-            percent += diff
-            if report:
-                if DIALOG_PROGRESS.iscanceled():
-                    break
-                DIALOG_PROGRESS.update( int( percent ), "Unzipping %i of %i items" % ( count + 1, total_items ), item, "Please wait..." )
-                #print round( percent, 2 ), item
-            if not item.endswith( "/" ):
-                root, name = os.path.split( item )
-                directory = os.path.normpath( os.path.join( destination, root ) )
-                if not os.path.isdir( directory ): os.makedirs( directory )
-                file( os.path.join( directory, name ), "wb" ).write( zip.read( item ) )
-        zip.close()
-        del zip
-        return os.path.join( destination, nfo_name ), True
-    except:
-        print_exc()
-        return "", False
+_ = xbmc.getLocalizedString
 
 
 class _Info:
@@ -80,8 +39,6 @@ class _Info:
 
 
 class Main:
-    # base paths
-    BASE_CACHE_PATH = os.path.join( xbmc.translatePath( "P:\\Thumbnails" ), "Video" )
     # add all video extensions wanted in lowercase
     VIDEO_EXT = xbmc.getSupportedMedia( "video" )
 
@@ -113,30 +70,108 @@ class Main:
             if not self.settings[ "path" ]:
                 xbmcgui.Dialog().ok( _( 30000 ), _( 30008 ) )
                 return
+            total_items = 1
             for root, dirs, files in os.walk( self.settings[ "path" ], topdown=False ):
+                total_items += len( files )
                 for name in files:
                     fpath = os.path.join( root, name )
                     title, ext = os.path.splitext( name )
                     if title.lower() == "vts_01_1":
                         name = os.path.basename( root ) + ext
-                    elif re.search( "vts_|video_", title.lower() ): continue
-                    if not ext.lower() in self.VIDEO_EXT: continue
+                    elif re.search( "vts_|video_", title.lower() ):
+                        total_items -= 1
+                        continue
+                    if not ext.lower() in self.VIDEO_EXT:
+                        total_items -= 1
+                        continue
                     DIALOG_PROGRESS.update( -1, _( 1040 ), name )
-                    thumbnail = self._get_thumbnail( fpath )
+                    thumbnail = get_thumbnail( fpath )
                     listitem = xbmcgui.ListItem( name, thumbnailImage=thumbnail )
                     # add the movie information item
                     c_items = [ ( _( 13358 ), "XBMC.PlayMedia(%s)" % ( fpath ), ) ]
                     # add items to listitem with replaceItems = True so only ours show
                     listitem.addContextMenuItems( c_items, replaceItems=True )
+                    #get informations if exists
+                    infolabels = self._get_infos( fpath )
+                    listitem.setInfo( type="Video", infoLabels=infolabels )
                     url = '%s?path=%s&isFolder=%d' % ( sys.argv[ 0 ], repr( urllib.quote_plus( fpath ) ), 0, )
                     OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=True )
                     if ( not OK ): raise
             listitem = xbmcgui.ListItem( _( 30001 ), thumbnailImage=os.path.join( os.getcwd().rstrip( ";" ), "default.tbn" ) )
             listitem.addContextMenuItems( [], replaceItems=True )
             url = '%s?path=%s&isFolder=%d' % ( sys.argv[ 0 ], repr( urllib.quote_plus( "" ) ), 0, )
-            OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=True )
+            OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=True, totalItems=total_items )
             if ( not OK ): raise
             xbmcplugin.setPluginCategory( handle=int( sys.argv[ 1 ] ), category=_( 20012 ) )
+        except:
+            print_exc()
+            OK = False
+        self._set_Content( OK )
+
+    def _get_infos( self, fpath ):
+        infos = { "Title": os.path.basename( fpath ) }
+        try:
+            list = xbmc.executehttpapi( "GetMovieDetails(%s)" % ( fpath, ) ).split( "<li>" )
+            infos.update( dict( [ tuple( unicode( line.strip( "\n" ), "utf-8" ).split( ":", 1 ) ) for line in list if line.strip( "\n" ) ] ) )
+            if infos.get( "Year" ):
+                infos[ "Year" ] = int( infos[ "Year" ] )
+            if infos.get( "Rating" ):
+                infos[ "Rating" ] = float( infos[ "Rating" ] )
+            if infos.get( "Cast" ):
+                infos[ "Cast" ] = infos[ "Cast" ].split( "\n" )
+            #for key, value in infos.items():
+            #    print key, value
+            #print infos.keys()
+            #print "-"*85
+        except:
+            print_exc()
+        return infos
+
+    def _select_nfo( self ):
+        search_nfo = ""
+        OK = True
+        try:
+            if not self.args.path:
+                #xbmcgui.Dialog().ok( _( 30000 )  , _( 30002 ), _( 30003 ), _( 30004 ) )
+                keyboard = xbmc.Keyboard( "", _( 30005 ) )
+                keyboard.doModal()
+                if keyboard.isConfirmed():
+                    search_nfo = keyboard.getText().replace( " ", "+" )
+                else:
+                    return
+            else:
+                search_nfo = os.path.basename( self.args.path ).replace( " ", "+" )
+
+            fpath = repr( urllib.quote_plus( self.args.path ) )
+
+            #cas pour un dvd
+            title, ext = os.path.splitext( search_nfo )
+            if title.lower() == "vts_01_1":
+                search_nfo = os.path.basename( os.path.dirname( self.args.path ) ) + ext
+
+            DIALOG_PROGRESS.update( -1, _( 1040 ), search_nfo )
+            if search_nfo:
+                source = get_html_source( etape2 % search_nfo )
+                nfo_listed =  re.findall( regexp, source )
+                for count, items in enumerate( nfo_listed ):
+                    name = set_pretty_formatting( items[ 2 ].strip() )
+                    DIALOG_PROGRESS.update( -1, _( 1040 ), name )
+
+                    listitem = xbmcgui.ListItem( name, thumbnailImage=os.path.join( os.getcwd().rstrip( ";" ), "default.tbn" ) )
+
+                    if self.settings[ "web_navigator" ] != "" and os.path.exists( self.settings[ "web_navigator" ] ):
+                        cmd = "System.Exec"
+                        command = '%s("%s" "%s")' % ( cmd, self.settings[ "web_navigator" ], items[ 3 ], )
+                        # add the movie information item
+                        c_items = [ ( _( 30010 ), command, ) ]
+                        # add items to listitem with replaceItems = True so only ours show
+                        listitem.addContextMenuItems( c_items, replaceItems=True )
+
+                    nfoUrl = repr( urllib.quote_plus( etape3 % ( items[ 0 ], items[ 1 ].replace( " ", "+" ), ) ) )
+                    url = '%s?path=%s&nfoUrl=%s' % ( sys.argv[ 0 ], fpath, nfoUrl, )
+                    OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=False, totalItems=len( nfo_listed ) )
+                    if ( not OK ): raise
+            xbmcplugin.setPluginCategory( handle=int( sys.argv[ 1 ] ), category=_( 283 ) + ":[CR]" + search_nfo )
         except:
             print_exc()
             OK = False
@@ -156,89 +191,50 @@ class Main:
     def _end_of_directory( self, OK ):
         xbmcplugin.endOfDirectory( handle=int( sys.argv[ 1 ] ), succeeded=OK )
 
-    def _get_thumbnail( self, path ):
-        try:
-            fpath = path
-            # make the proper cache filename and path so duplicate caching is unnecessary
-            filename = xbmc.getCacheThumbName( fpath )
-            thumbnail = os.path.join( self.BASE_CACHE_PATH, filename[ 0 ], filename )
-            # if the cached thumbnail does not exist check for a tbn file
-            if ( not os.path.isfile( thumbnail ) ):
-                # create filepath to a local tbn file
-                thumbnail = os.path.splitext( path )[ 0 ] + ".tbn"
-                # if there is no local tbn file leave blank
-                if ( not os.path.isfile( thumbnail.encode( "utf-8" ) ) ):
-                    thumbnail = ""
-            return thumbnail
-        except:
-            print_exc()
-            return ""
-
-    def _select_nfo( self ):
-        search_nfo = ""
-        OK = True
-        try:
-            if not self.args.path:
-                xbmcgui.Dialog().ok( _( 30000 )  , _( 30002 ), _( 30003 ), _( 30004 ) )
-                keyboard = xbmc.Keyboard( "", _( 30005 ) )
-                keyboard.doModal()
-                if keyboard.isConfirmed():
-                    search_nfo = keyboard.getText()#.replace( " ", "+" )
-            else:
-                search_nfo = os.path.basename( self.args.path )#.replace( " ", "+" )
-
-            fpath = repr( urllib.quote_plus( self.args.path ) )
-
-            #cas pour un dvd
-            title, ext = os.path.splitext( search_nfo )
-            if title.lower() == "vts_01_1":
-                search_nfo = os.path.basename( os.path.dirname( self.args.path ) ) + ext
-            #print search_nfo
-
-            search_nfo = search_nfo.replace( " ", "+" )
-            DIALOG_PROGRESS.update( -1, _( 1040 ), search_nfo )
-            if search_nfo:
-                #time.sleep( 1 )
-                source = get_html_source( etape2 % search_nfo )
-                nfo_listed =  re.findall( regexp, source )
-                for count, items in enumerate( nfo_listed ):
-                    name = set_pretty_formatting( items[ 2 ].strip() )
-                    DIALOG_PROGRESS.update( -1, _( 1040 ), name )
-
-                    listitem = xbmcgui.ListItem( name, thumbnailImage=os.path.join( os.getcwd().rstrip( ";" ), "default.tbn" ) )
-
-                    if self.settings[ "web_navigator" ] != "" and os.path.exists( self.settings[ "web_navigator" ] ):
-                        cmd = "System.Exec"
-                        command = '%s("%s" "%s")' % ( cmd, self.settings[ "web_navigator" ], items[ 3 ], )
-                        # add the movie information item
-                        c_items = [ ( _( 30010 ), command, ) ]
-                        # add items to listitem with replaceItems = True so only ours show
-                        listitem.addContextMenuItems( c_items, replaceItems=True )
-
-                    nfoUrl = repr( urllib.quote_plus( etape3 % ( items[ 0 ], items[ 1 ].replace( " ", "+" ), ) ) )
-                    url = '%s?path=%s&nfoUrl=%s' % ( sys.argv[ 0 ], fpath, nfoUrl, )
-                    OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=False )
-                    if ( not OK ): raise
-            xbmcplugin.setPluginCategory( handle=int( sys.argv[ 1 ] ), category=_( 283 ) + ":[CR]" + search_nfo )
-        except:
-            print_exc()
-            OK = False
-        self._set_Content( OK )
-
     def _install_nfo( self ):
         try:
-            heading, line1, line_error = _( 30000 ), _( 30006 ), _( 30007 )
-            xbmcplugin.endOfDirectory( handle=int( sys.argv[ 1 ] ), succeeded=False )
             self.args.nfoUrl = urllib.unquote_plus( self.args.nfoUrl )
-            destination = os.path.dirname( self.args.path ) or os.getcwd().rstrip( ";" )
-            filename =  self.args.nfoUrl
-            DIALOG_PROGRESS.create( heading, os.path.basename( self.args.path ) )
-            nfo, ok = unzip( filename, destination, True )
+            destination = os.path.dirname( self.args.path ) or os.path.dirname( self._nfo_associated_with() )
+            if not destination:
+                xbmcgui.Dialog().ok( _( 30000 ), _( 30041 ) )
+                return
+
+            heading, line1, line_error = _( 30000 ), _( 30006 ), _( 30007 )
+            #xbmcplugin.endOfDirectory( handle=int( sys.argv[ 1 ] ), succeeded=False )
+            self._end_of_directory( False )
+            DIALOG_PROGRESS.create( heading,  _( 1040 ), os.path.basename( self.args.path ),  )
+            nfo, ok = unzip( self.args.nfoUrl, destination, True )
             DIALOG_PROGRESS.close()
             if not ok: xbmcgui.Dialog().ok( heading, line_error )
-            else: xbmcgui.Dialog().ok( heading, line1, "Dir: " + os.path.dirname( nfo ), "File: " + os.path.basename( nfo ) )
+            else:
+                #cas pour un dvd
+                #if "vts_01_1" in self.args.path.lower():
+                v_name = os.path.splitext( os.path.basename( self.args.path.lower() ) )[ 0 ]
+                n_name = os.path.splitext( os.path.basename( nfo.lower() ) )[ 0 ]
+                # les noms sont diffs on renomme le nfo comme le fichier video
+                if v_name != n_name: nfo = self._rename_nfo( nfo )
+                xbmcgui.Dialog().ok( heading, line1, "Dir: " + reduced_path( os.path.dirname( nfo ) ), "File: " + os.path.basename( nfo ) )
+                #xbmc.executebuiltin( "XBMC.updatelibrary(video)" )
         except:
             print_exc()
+
+    def _nfo_associated_with( self ):
+        vpath = get_browse_dialog( heading=_( 30040 ), mask=self.VIDEO_EXT )
+        self.args.path = vpath
+        return vpath
+
+    def _rename_nfo( self, old_name ):
+        try:
+            title, ext = os.path.splitext( os.path.basename( self.args.path ) )
+            n_title, n_ext = os.path.splitext( os.path.basename( old_name ) )
+            new_name = os.path.join( os.path.dirname( self.args.path ), title + n_ext )
+            if os.path.exists( new_name ):
+                os.remove( new_name )
+            os.rename( old_name, new_name )
+            return new_name
+        except:
+            print_exc()
+            return old_name
 
 
 if __name__ == "__main__":
