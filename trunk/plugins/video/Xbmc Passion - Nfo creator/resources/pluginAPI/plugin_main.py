@@ -160,11 +160,14 @@ class Main:
                 keyboard = xbmc.Keyboard( "", _( 30005 ) )
                 keyboard.doModal()
                 if keyboard.isConfirmed():
-                    search_nfo = keyboard.getText().replace( " ", "+" )
-                else:
-                    return
+                    search_nfo = keyboard.getText()
+                    # if user use "+" for multiple search replace there by line return
+                    search_nfo = urllib.quote_plus( os.linesep ).join( [ n.strip() for n in search_nfo.split( "+" ) ] ).replace( " ", "+" )
             else:
                 search_nfo = os.path.basename( self.args.path ).replace( " ", "+" )
+
+            if not search_nfo:
+                return
 
             fpath = repr( urllib.quote_plus( self.args.path ) )
 
@@ -174,7 +177,7 @@ class Main:
             if search_nfo.lower() == "video_ts.ifo":
                 search_nfo = os.path.basename( os.path.dirname( self.args.path ) ) + ext
 
-            DIALOG_PROGRESS.update( -1, _( 1040 ), search_nfo )
+            DIALOG_PROGRESS.update( -1, _( 1040 ), urllib.unquote_plus( search_nfo ).replace( os.linesep, "+" ) )
             if search_nfo:
                 source = get_html_source( etape2 % search_nfo )
                 nfo_listed =  re.findall( regexp, source )
@@ -200,6 +203,7 @@ class Main:
                     url = '%s?show_nfo=%s&path=%s&nfoUrl=%s' % ( sys.argv[ 0 ], web, fpath, nfoUrl, )
                     OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=True, totalItems=len( nfo_listed ) )
                     if ( not OK ): raise
+            search_nfo = urllib.unquote_plus( search_nfo ).replace( os.linesep, "+" )
             xbmcplugin.setPluginCategory( handle=int( sys.argv[ 1 ] ), category=_( 283 ) + ":[CR]" + search_nfo )
         except:
             print_exc()
