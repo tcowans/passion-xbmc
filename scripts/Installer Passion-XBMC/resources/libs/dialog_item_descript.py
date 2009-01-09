@@ -6,6 +6,7 @@ import ftplib
 
 #Other module
 from BeautifulSoup import BeautifulStoneSoup, Tag, NavigableString  #librairie de traitement XML
+from threading import Thread
 
 #modules XBMC
 import xbmc
@@ -26,69 +27,21 @@ _ = sys.modules[ "__main__" ].__language__
 
 DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
-
-class ItemDescription( xbmcgui.WindowXMLDialog ):
-    # control id's
-    CONTROL_TITLE_LABEL = 100
-    CONTROL_VERSION_LABEL = 101
-    CONTROL_LANGUAGE_LABEL = 110
-    CONTROL_PREVIEW_IMAGE = 200
-    CONTROL_DESC_TEXTBOX = 250
-    CONTROL_CANCEL_BUTTON = 301
-    CONTROL_DOWNLOAD_BUTTON = 302
-
+class InfoWarehouse:
+    """
+    Class Abstraite contenant toutes les informations necessaires a la description d'un item
+    """
     def __init__( self, *args, **kwargs ):
-        xbmcgui.WindowXMLDialog.__init__( self, *args, **kwargs )
-        # Display Loading Window while we are loading the information from the website
-        DIALOG_PROGRESS.create( _( 0 ), _( 104 ), _( 110 ) )
-
-        #TODO: deplacer ce chemin dans le fichier de configuration
-        self.serverDir  = "/.passionxbmc/Installeur-Passion/content/"
-
-        self.mainwin  = kwargs[ "mainwin" ]
-        self.itemName = kwargs[ "itemName" ]
-        self.itemType = kwargs[ "itemType" ]
-
-        self._get_settings()
-        self._set_skin_colours()
-
-    def onInit( self ):
-        # onInit est pour le windowXML seulement
-        xbmcgui.lock()
-        try:
-            logger.LOG( logger.LOG_DEBUG, self.itemName )
-            logger.LOG( logger.LOG_DEBUG, self.itemType )
-            
-            self.fileName, self.title, self.version, self.language, self.date, self.previewPicture, self.previewVideoURL, self.description_fr, self.description_en = self._get_info()
-            #logger.LOG( logger.LOG_DEBUG, self.fileName)
-            #logger.LOG( logger.LOG_DEBUG, self.title)
-            #logger.LOG( logger.LOG_DEBUG, self.version)
-            #logger.LOG( logger.LOG_DEBUG, str(self.date))
-            #logger.LOG( logger.LOG_DEBUG, self.previewPicture)
-            #logger.LOG( logger.LOG_DEBUG, self.previewVideoURL)
-            #logger.LOG( logger.LOG_DEBUG, self.description_fr)
-            #logger.LOG( logger.LOG_DEBUG, self.description_en)
-
-            self._set_controls_labels()
-            self._set_controls_visible()
-
-        except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-            #self._close_dialog()
-        xbmcgui.unlock()
-        # Close the Loading Window
-        DIALOG_PROGRESS.close()
-
-    def _set_skin_colours( self ):
-        try:
-            xbmc.executebuiltin( "Skin.SetString(PassionSettingsColours,%s)" % ( self.settings[ "skin_colours_path" ], ) )
-        except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-
-    def _get_info( self, defaults=False  ):
-        """ reads info """
-        fileName        = None
-        title           = None
+        pass
+    
+    def getInfo( self, itemName = None, iTemType=None, itemId = None, ):
+        """ 
+        Lit les info 
+        retourne fileName, title, version, language, date , previewPicture, previewVideoURL, description_fr, description_en
+        Fonction abstraite
+        """
+        fileName        = itemName # Defaukt value if we don't find itemname
+        title           = itemName # Defaukt value if we don't find itemname
         version         = None
         language        = None
         date            = None
@@ -97,31 +50,87 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
         description_fr  = None
         description_en  = None
 
+        return fileName, title, version, language, date , previewPicture, previewVideoURL, description_fr, description_en
+
+
+class InfoWarehouseXMLFTP( InfoWarehouse ):
+    """
+    Class contenant tous les informations dans un fichier XML sur serveur FTP necessaires a la description d'un item
+    Pour des raisons de performance, on instanciera cette classe une seule fois au demarrage du script
+    """
+    def __init__( self, *args, **kwargs ):
+
+        logger.LOG( logger.LOG_DEBUG,'InfoWarehouseXMLFTP starts')
+        self.mainwin  = kwargs[ "mainwin" ]
+
+        self._get_settings()
+        
         # On recupere le fichier de description des items
         self._downloadFile(self.srvItemDescripDir + self.srvItemDescripFile)
         self.soup =  BeautifulStoneSoup((open(os.path.join(self.mainwin.CacheDir,self.srvItemDescripFile), 'r')).read())
-        #logger.LOG( logger.LOG_DEBUG,self.soup.prettify())
+    
+    def _getImage( self, pictureURL, updateImage_cb=None ):
+        try: 
+            self.getImage_thread.cancel()
+        except: 
+            pass
+        self.getImage_thread = Thread( target=self._thread_getImage, args=(pictureURL, updateImage_cb) )
+        self.getImage_thread.start()
+        
+    def _thread_getImage( self, pictureURL, updateImage_cb=None ):
+        """
+        Recupere l'image dans un thread separe
+        """
+        # Telechargement de l'image
+        self._downloadFile(pictureURL)
+        checkPathPic = os.path.join(self.mainwin.CacheDir, os.path.basename(pictureURL))
+        if os.path.exists(checkPathPic):
+            previewPicture = checkPathPic
+        else:
+            #TODO: afficher nominage si un jour on a une image animee le temps du download
+            pass
+        
+        # Notifie la callback de mettre a jour l'image
+        updateImage_cb(previewPicture)
+
+    def getInfo( self, itemName = None, itemType=None, itemId = None, updateImage_cb= None ):
+        """ 
+        Lit les info 
+        retourne fileName, title, version, language, date , previewPicture, previewVideoURL, description_fr, description_en
+        Fonction abstraite
+        """
+        """ reads info """
+        fileName        = itemName # Defaukt value if we don't find itemname
+        title           = itemName # Defaukt value if we don't find itemname
+        version         = None
+        language        = None
+        date            = None
+        previewPicture  = None
+        previewVideoURL = None
+        description_fr  = None
+        description_en  = None
+
         cat = None
         
-        if self.itemType == "Themes":
+        if itemType == "Themes":
             cat = self.soup.find("skins")
-        elif self.itemType == "Scrapers":
+        elif itemType == "Scrapers":
             cat = self.soup.find("scrapers")
-        elif self.itemType == "Scripts":
+        elif itemType == "Scripts":
             cat = self.soup.find("scripts")
-        elif self.itemType == "Plugins Musique":
+        elif itemType == "Plugins Musique":
             cat = self.soup.find("musicplugin")
-        elif self.itemType == "Plugins Images":
+        elif itemType == "Plugins Images":
             cat = self.soup.find("pictureplugin")
-        elif self.itemType == "Plugins Programmes":
+        elif itemType == "Plugins Programmes":
             cat = self.soup.find("programplugin")
-        elif self.itemType == "Plugins Vidéos":
+        elif itemType == "Plugins Vidéos":
             cat = self.soup.find("videoplugin")
 
         try:
             if cat != None:
                 for item in cat.findAll("entry"):
-                    if item.filename.string.encode("cp1252") == self.itemName:
+                    if item.filename.string.encode("cp1252") == itemName:
                         if hasattr(item.filename,'string'):
                             if item.filename.string != None:
                                 fileName = item.filename.string.encode("cp1252")
@@ -141,11 +150,19 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
                             if item.previewpictureurl.string != None:
                                 previewPictureURL = item.previewpictureurl.string.encode("utf-8")
                                 
-                                # Telechargement de l'image
-                                self._downloadFile(previewPictureURL)
+                                # On verifie si l'image serait deja la
                                 checkPathPic = os.path.join(self.mainwin.CacheDir, os.path.basename(previewPictureURL))
                                 if os.path.exists(checkPathPic):
                                     previewPicture = checkPathPic
+                                else:
+                                    # Telechargement et mise a jour de l'image (thread de separe)
+                                    self._getImage( previewPictureURL, updateImage_cb=updateImage_cb )
+#                                
+#                                # Telechargement de l'image
+#                                self._downloadFile(previewPictureURL)
+#                                checkPathPic = os.path.join(self.mainwin.CacheDir, os.path.basename(previewPictureURL))
+#                                if os.path.exists(checkPathPic):
+#                                    previewPicture = checkPathPic
                                     
                         if hasattr(item.previewvideourl,'string'):
                             if item.previewvideourl.string != None:
@@ -163,18 +180,22 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
         except Exception, e:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         
+        logger.LOG( logger.LOG_DEBUG,title)
+        logger.LOG( logger.LOG_DEBUG,description_fr)
+
         return fileName, title, version, language, date , previewPicture, previewVideoURL, description_fr, description_en
-        
-        
+
     def _get_settings( self, defaults=False  ):
         """ reads settings from conf file """
-        self.settings = Settings().get_settings( defaults=defaults )
+        self.settings           = Settings().get_settings( defaults=defaults )
         self.srvHost            = self.mainwin.configManager.getSrvHost()
         self.srvPassword        = self.mainwin.configManager.getSrvPassword()
         self.srvUser            = self.mainwin.configManager.getSrvUser()
         self.srvItemDescripDir  = self.mainwin.configManager.getSrvItemDescripDir()
         self.srvItemDescripFile = self.mainwin.configManager.getSrvItemDescripFile()
-
+        
+        logger.LOG( logger.LOG_DEBUG,self.srvHost)
+        logger.LOG( logger.LOG_DEBUG,self.srvItemDescripDir)
 
     def _downloadFile(self,remoteFilePath):
         """
@@ -189,23 +210,85 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
             localFile.close()
             ftp.quit()
         except:
-            logger.LOG( logger.LOG_DEBUG, "_downloaddossier: Exception - Impossible de creer le dossier: %s", localAbsDirPath )
+            logger.LOG( logger.LOG_DEBUG, "_downloaddossier: Exception - Impossible de telecharger le fichier: %s", remoteFilePath )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
+
+class ItemDescription( xbmcgui.WindowXMLDialog ):
+    # control id's
+    CONTROL_TITLE_LABEL = 100
+    CONTROL_VERSION_LABEL = 101
+    CONTROL_LANGUAGE_LABEL = 110
+    CONTROL_PREVIEW_IMAGE = 200
+    CONTROL_DESC_TEXTBOX = 250
+    CONTROL_CANCEL_BUTTON = 301
+    CONTROL_DOWNLOAD_BUTTON = 302
+
+    def __init__( self, *args, **kwargs ):
+        xbmcgui.WindowXMLDialog.__init__( self, *args, **kwargs )
+        # Display Loading Window while we are loading the information from the website
+        DIALOG_PROGRESS.create( _( 0 ), _( 104 ), _( 110 ) )
+
+        self.mainwin       = kwargs[ "mainwin" ]
+        self.infoWareHouse = kwargs["infoWareHouse"]
+        self.itemName      = kwargs[ "itemName" ]
+        self.itemType      = kwargs[ "itemType" ]
+
+        self._set_skin_colours()
+
+    def onInit( self ):
+        # onInit est pour le windowXML seulement
+        xbmcgui.lock()
+        try:
+            #logger.LOG( logger.LOG_DEBUG, self.itemName )
+            logger.LOG( logger.LOG_DEBUG, self.itemType )
+            
+            self.fileName, self.title, self.version, self.language, self.date, self.previewPicture, self.previewVideoURL, self.description_fr, self.description_en = self.infoWareHouse.getInfo(itemName = self.itemName, itemType=self.itemType , updateImage_cb=self._updateThumb_cb )
+            logger.LOG( logger.LOG_DEBUG, self.fileName)
+            logger.LOG( logger.LOG_DEBUG, self.title)
+            #logger.LOG( logger.LOG_DEBUG, self.version)
+            #logger.LOG( logger.LOG_DEBUG, str(self.date))
+            #logger.LOG( logger.LOG_DEBUG, self.previewPicture)
+            #logger.LOG( logger.LOG_DEBUG, self.previewVideoURL)
+            #logger.LOG( logger.LOG_DEBUG, self.description_fr)
+            #logger.LOG( logger.LOG_DEBUG, self.description_en)
+
+            self._set_controls_labels()
+            self._set_controls_visible()
+
+        except:
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            #self._close_dialog()
+        xbmcgui.unlock()
+        # Close the Loading Window
+        DIALOG_PROGRESS.close()
+
+
+    def _updateThumb_cb (self, imagePath):
+        if imagePath != None:
+            self.getControl( self.CONTROL_PREVIEW_IMAGE ).setImage(imagePath)
+            logger.LOG( logger.LOG_DEBUG, "**** image")
+        
+    def _set_skin_colours( self ):
+        logger.LOG( logger.LOG_DEBUG, "_set_skin_colours: ItemDescription")        
+        try:
+            xbmc.executebuiltin( "Skin.SetString(PassionSettingsColours,%s)" % ( self.settings[ "skin_colours_path" ], ) )
+        except:
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+        
     def _set_controls_labels( self ):
         # setlabel pour les controles du dialog qui a comme info exemple: id="100" et pour avoir son controle on fait un getControl( 100 )
         eval( logger.LOG_SELF_FUNCTION )
         try:
             if self.title != None:
                 self.getControl( self.CONTROL_TITLE_LABEL ).setLabel( self.title )
-            else:
-                self.getControl( self.CONTROL_TITLE_LABEL ).setLabel( self.itemName )
                 
             if self.version != None:
                 self.getControl( self.CONTROL_VERSION_LABEL ).setLabel( _( 499 ) % ( self.version, ) )
             else:
                 self.getControl( self.CONTROL_VERSION_LABEL ).setLabel( _( 499 ) % ( '-', ) )
                 
+            label = _( 612 ) # Default value to display for language 
             if self.language != None:
                 langList = self.language.split('-')
                 label = ""
@@ -220,7 +303,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
                         label = label + _( 612 )
                     if langList.index(lang) < (len(langList) - 1):
                         label = label + ' / '
-                self.getControl( self.CONTROL_LANGUAGE_LABEL ).setLabel( label )
+            self.getControl( self.CONTROL_LANGUAGE_LABEL ).setLabel( label )
             
             # Clear all ListItems in this control list
             if self.previewPicture != None:
@@ -277,13 +360,30 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
         self.close()
 
 
-def show_descript( mainwin, selectedItem , typeItem ):
-    file_xml = "passion-ItemDescript.xml"
-    #depuis la revision 14811 on a plus besoin de mettre le chemin complet, la racine suffit
-    dir_path = os.getcwd().rstrip( ";" )
-    #recupere le nom du skin et si force_fallback est vrai, il va chercher les images du defaultSkin.
-    current_skin, force_fallback = getUserSkin()
+class ItemInfosManager:
+    """
+    Class gerant toutes les description quelquesoit luer provenance (FTp, SQL ...)
+    """
+    def __init__( self, *args, **kwargs ):
+        self.mainwin = kwargs[ "mainwin" ]
+        self.create_info_warehouses()
 
-    w = ItemDescription( file_xml, dir_path, current_skin, force_fallback, mainwin=mainwin, itemName=selectedItem, itemType=typeItem )
-    w.doModal()
-    del w
+    def create_info_warehouses( self ):
+        self.infoWarehouseFTP = InfoWarehouseXMLFTP( mainwin=self.mainwin )
+        #infoWarehouseSQL = InfoWarehouseXMLSQL( mainwin=mainwin )
+    
+    def show_descript( self, selectedItem , typeItem ):
+        file_xml = "passion-ItemDescript.xml"
+        #depuis la revision 14811 on a plus besoin de mettre le chemin complet, la racine suffit
+        dir_path = os.getcwd().rstrip( ";" )
+        #recupere le nom du skin et si force_fallback est vrai, il va chercher les images du defaultSkin.
+        current_skin, force_fallback = getUserSkin()
+    
+        #TODO: ajouter check si infoWarehouse n'a pas ete cree
+        #infoWarehouse = InfoWarehouseXMLFTP( mainwin=mainwin )
+    
+        #TODO: check sur le type afin de passer le bon info warehouse a la classe ItemDescription
+        w = ItemDescription( file_xml, dir_path, current_skin, force_fallback, mainwin=self.mainwin, infoWareHouse=self.infoWarehouseFTP,itemName=selectedItem, itemType=typeItem )
+        #w = ItemDescriptionFTP( file_xml, dir_path, current_skin, force_fallback, mainwin=mainwin, itemName=selectedItem, itemType=typeItem )
+        w.doModal()
+        del w

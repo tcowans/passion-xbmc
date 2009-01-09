@@ -17,6 +17,8 @@ from htmlentitydefs import name2codepoint
 import elementtree.HTMLTreeBuilder as HTB
 from StringIO import StringIO
 
+from dialog_item_descript import ItemInfosManager
+
 #from string import * #a verifier si on a besoin de cette methode import *
 from BeautifulSoup import BeautifulStoneSoup, Tag, NavigableString  #librairie de traitement XML
 
@@ -875,7 +877,10 @@ class MainWindow( xbmcgui.WindowXML ):
                     self.pluginsDirSpyList.append( directorySpy( self.localdirList[ self.downloadTypeList.index( type ) ] ) )
                 else:
                     self.pluginsDirSpyList.append( None )
-
+                    
+            # Creons ItemInfosManager afin de recuperer les description
+            self.itemInfosManager = ItemInfosManager( mainwin=self )
+            
             # Close the Loading Window
             DIALOG_PROGRESS.close()
 
@@ -1085,10 +1090,7 @@ class MainWindow( xbmcgui.WindowXML ):
                     currentListIndex = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()
                     if currentListIndex >= 0:
                         selectedItem = os.path.basename( self.curDirList[ currentListIndex ] )
-                        from dialog_item_descript import show_descript
-                        show_descript( self, selectedItem, self.type )
-                        #on a plus besoin du descript, on le delete
-                        del show_descript
+                        self.itemInfosManager.show_descript( selectedItem, self.type )
             else:
                 self._on_action_control( action )
                 self._on_action_control( action.getButtonCode() )
