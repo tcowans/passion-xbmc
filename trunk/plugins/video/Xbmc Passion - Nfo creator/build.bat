@@ -90,12 +90,14 @@ IF EXIST "%XBMC_EXE%" (
     ECHO [1] Yes, copy a new "\Build\%PluginName%\ to %XBMC_EXE%\plugins\%PluginType%\%PluginName%\"
     ECHO [2] Yes, copy a new build and run XBMC in fullscreen
     ECHO [3] No, i prefer copied manually
+    ECHO [4] Create ZIP "BUILD\%PluginName%.zip"
     ECHO.
     ECHO ----------------------------------------------------------------------
-    SET /P COPY_BUILD_ANSWER=Copy a new BUILD? [1/2/3]:
+    SET /P COPY_BUILD_ANSWER=Copy a new BUILD? [1/2/3/4]:
     IF /I %COPY_BUILD_ANSWER% EQU 1 GOTO COPY_BUILD
     IF /I %COPY_BUILD_ANSWER% EQU 2 GOTO COPY_BUILD
     IF /I %COPY_BUILD_ANSWER% EQU 3 GOTO Finish
+    IF /I %COPY_BUILD_ANSWER% EQU 4 GOTO ZIP_BUILD
 
 :COPY_BUILD
     :: Copy release build
@@ -122,6 +124,25 @@ IF EXIST "%XBMC_EXE%" (
         )
 
     GOTO END
+
+:ZIP_BUILD
+    set ZIP="%ProgramFiles%\7-Zip\7z.exe"
+    set ZIP_ROOT=7z.exe
+    set ZIPOPS_EXE=a -tzip "%PluginName%.zip" "%PluginName%"
+    ECHO IF EXIST %ZIP% ( %ZIP% %ZIPOPS_EXE%>>"BUILD\zip_build.bat"
+    ECHO   ) ELSE (>>"BUILD\zip_build.bat"
+    ECHO   IF EXIST %ZIP_ROOT% ( %ZIP_ROOT% %ZIPOPS_EXE%>>"BUILD\zip_build.bat"
+    ECHO     ) ELSE (>>"BUILD\zip_build.bat"
+    ECHO     ECHO 7-Zip not installed!  Skipping .zip compression...>>"BUILD\zip_build.bat"
+    ECHO     )>>"BUILD\zip_build.bat"
+    ECHO   )>>"BUILD\zip_build.bat"
+    cd BUILD
+    ECHO Compressing "BUILD\%PluginName%.zip"...
+    CALL zip_build.bat
+    ::cd ..
+    ::DEL "BUILD\zip_build.bat"
+    DEL zip_build.bat
+    GOTO Finish
 
 :Finish
     :: Notify user of completion
