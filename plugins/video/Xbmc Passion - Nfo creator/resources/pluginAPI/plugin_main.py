@@ -22,6 +22,9 @@ regexp = """<input type="radio" name="([^"]+)" value="([^"]+)".*/>([^"]+)<a targ
 
 _ = xbmc.getLocalizedString
 
+# set our thumbnail
+install_thumbnail = xbmc.getInfoImage( "ListItem.Thumb" )
+Fanart_thumbnail = xbmc.getInfoImage( "Fanart.Image" )
 
 class Main:
     # add all video extensions wanted in lowercase
@@ -46,7 +49,7 @@ class Main:
 
     def _get_settings( self ):
         self.settings = {}
-        self.settings[ "path" ] = xbmcplugin.getSetting( "path" )
+        self.settings[ "path" ] = self._get_path_list( xbmcplugin.getSetting( "path" ) )#xbmcplugin.getSetting( "path" )
         self.settings[ "web_navigator" ] = xbmcplugin.getSetting( "web_navigator" )
         self.settings[ "write_list" ] = int( xbmcplugin.getSetting( "write_list" ) )
 
@@ -54,43 +57,46 @@ class Main:
         OK = True
         listing = []
         try:
-            if not self.settings[ "path" ]:# or not os.path.exists( self.settings[ "path" ] ):
-                #print "NFO Creator, videos path invalide:", repr( self.settings[ "path" ] )
+            if not self.settings[ "path" ]:
                 xbmcgui.Dialog().ok( _( 30000 ), _( 30008 ) )
                 return
             total_items = 1
-            if os.path.exists( self.settings[ "path" ] ):
-                for root, dirs, files in os.walk( self.settings[ "path" ], topdown=False ):
-                    total_items += len( files )
-                    for name in files:
-                        fpath = os.path.join( root, name )
-                        title, ext = os.path.splitext( name )
-                        #if title.lower() == "vts_01_1":
-                        if name.lower() == "video_ts.ifo":
-                            name = os.path.basename( root ) + ext
-                        elif re.search( "vts_|video_", title.lower() ):
-                            total_items -= 1
-                            continue
-                        if not ext.lower() in self.VIDEO_EXT:
-                            total_items -= 1
-                            continue
-                        # add name in listing for liste.txt
-                        listing.append( name )
-                        DIALOG_PROGRESS.update( -1, _( 1040 ), name )
-                        thumbnail = get_thumbnail( fpath )
-                        listitem = xbmcgui.ListItem( name, thumbnailImage=thumbnail )
-                        # add the movie information item
-                        c_items = [ ( _( 13358 ), "XBMC.PlayMedia(%s)" % ( fpath ), ) ]
-                        # add items to listitem with replaceItems = True so only ours show
-                        listitem.addContextMenuItems( c_items, replaceItems=True )
-                        #get informations if exists
-                        infolabels = self._get_infos( fpath )
-                        listitem.setInfo( type="Video", infoLabels=infolabels )
-                        url = '%s?path=%s&isFolder=%d' % ( sys.argv[ 0 ], repr( urllib.quote_plus( fpath ) ), 0, )
-                        OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=True, totalItems=total_items )
-                        if ( not OK ): raise
-            else:
-                print "NFO Creator, videos path invalide:", repr( self.settings[ "path" ] )
+            for paths in self.settings[ "path" ]:
+                if not os.path.exists( paths ):
+                    print "NFO Creator, videos path invalide:", repr( paths )
+                else:
+                    for root, dirs, files in os.walk( paths, topdown=False ):
+                        #total_items += len( files )
+                        for name in files:
+                            fpath = os.path.join( root, name )
+                            title, ext = os.path.splitext( name )
+                            if name.lower() == "video_ts.ifo":
+                                name = os.path.basename( root ) + ext
+                            elif re.search( "vts_|video_", title.lower() ):
+                                #total_items -= 1
+                                continue
+                            if not ext.lower() in self.VIDEO_EXT:
+                                #total_items -= 1
+                                continue
+                            total_items += 1
+                            # add name in listing for liste.txt
+                            listing.append( name )
+                            DIALOG_PROGRESS.update( -1, _( 1040 ), name )
+                            icon = "DefaultVideo.png"
+                            thumbnail = get_thumbnail( fpath ) or os.path.splitext( fpath )[ 0 ] + ".tbn"
+                            listitem = xbmcgui.ListItem( name, iconImage=icon, thumbnailImage=thumbnail )
+                            # add the movie information item
+                            c_items = [ ( _( 13358 ), "XBMC.PlayMedia(%s)" % ( fpath ), ) ]
+                            # add items to listitem with replaceItems = True so only ours show
+                            listitem.addContextMenuItems( c_items, replaceItems=True )
+                            #get informations if exists
+                            infolabels = self._get_infos( fpath )
+                            listitem.setInfo( type="Video", infoLabels=infolabels )
+                            listitem.setProperty( "Fanart_Image", os.path.splitext( fpath )[ 0 ] + "-fanart.jpg" )
+                            url = '%s?path=%s&isFolder=%d' % ( sys.argv[ 0 ], repr( urllib.quote_plus( fpath ) ), 0, )
+                            OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=True, totalItems=total_items )
+                            if ( not OK ): raise
+
             # recherche manuel
             listing.sort( key=lambda f: f.lower() )
             self._add_search( listing, total_items )
@@ -102,11 +108,30 @@ class Main:
         self._save_listing( listing )
         self._set_Content( OK )
 
+    def _get_path_list( self, paths ):
+        # we do not want the slash at end
+        if ( paths.endswith( "\\" ) or paths.endswith( "/" ) ):
+            paths = paths[ : -1 ]
+        # if this is not a multipath return it as a list
+        if ( not paths.startswith( "multipath://" ) ): return [ paths ]
+        # we need to parse out the separate paths in a multipath share
+        fpaths = []
+        # multipaths are separated by a forward slash(why not a pipe)
+        path_list = paths[ 12 : ].split( "/" )
+        # enumerate thru our path list and unquote the url
+        for path in path_list:
+        # we do not want the slash at end
+            if ( path.endswith( "\\" ) or path.endswith( "/" ) ):
+                path = path[ : -1 ]
+            # add our path
+            fpaths += [ urllib.unquote( path ) ]
+        return fpaths
+
     def _save_listing( self, listing ):
         #save la liste pour etre utiliser directement avec le generateur nfo
         if listing and ( self.settings[ "write_list" ] > 0 ):
             try:
-                file( os.path.join( self.settings[ "path" ], "Liste.txt" ), "w" ).write( os.linesep.join( listing ) )
+                file( os.path.join( self.settings[ "path" ][ 0 ], "Liste.txt" ), "w" ).write( os.linesep.join( listing ) )
             except:
                 print_exc()
 
@@ -123,7 +148,7 @@ class Main:
                 c_items = [ ( _( 30011 ), command, ) ]
                 # add items to listitem with replaceItems = True so only ours show
                 listitem.addContextMenuItems( c_items, replaceItems=True )
-            infos = { "Title": unicode( reduced_path( os.path.join( self.settings[ "path" ], "Liste.txt" ) ), "utf-8" ),
+            infos = { "Title": unicode( reduced_path( os.path.join( self.settings[ "path" ][ 0 ], "Liste.txt" ) ), "utf-8" ),
                 "plot": unicode( "[CR]".join( listing ), "utf-8" ), "genre": "http://passion-xbmc.org/nfo_creator/index.php" }
             listitem.setInfo( type="Video", infoLabels=infos )
         if not c_items:
@@ -237,21 +262,32 @@ class Main:
                 return
 
             heading, line1, line_error = _( 30000 ), _( 30006 ), _( 30007 )
-            #xbmcplugin.endOfDirectory( handle=int( sys.argv[ 1 ] ), succeeded=False )
             self._end_of_directory( False )
             DIALOG_PROGRESS.create( heading,  _( 1040 ), os.path.basename( self.args.path ),  )
             nfo, ok = unzip( self.args.nfoUrl, destination, True )
+            self._copy_thumbnails()
             DIALOG_PROGRESS.close()
             if not ok: xbmcgui.Dialog().ok( heading, line_error )
             else:
-                #cas pour un dvd
-                #if "vts_01_1" in self.args.path.lower():
                 v_name = os.path.splitext( os.path.basename( self.args.path.lower() ) )[ 0 ]
                 n_name = os.path.splitext( os.path.basename( nfo.lower() ) )[ 0 ]
                 # les noms sont diffs on renomme le nfo comme le fichier video
                 if v_name != n_name: nfo = self._rename_nfo( nfo )
                 xbmcgui.Dialog().ok( heading, line1, "Dir: " + reduced_path( os.path.dirname( nfo ) ), "File: " + os.path.basename( nfo ) )
                 #xbmc.executebuiltin( "XBMC.updatelibrary(video)" )
+        except:
+            print_exc()
+
+    def _copy_thumbnails( self ):
+        try:
+            if os.path.exists( install_thumbnail ):
+                thumbpath = os.path.splitext( self.args.path )[ 0 ] + ".tbn"
+                DIALOG_PROGRESS.update( -1, install_thumbnail, thumbpath )
+                xbmc.executehttpapi( "FileCopy(%s,%s)" % ( install_thumbnail, thumbpath.encode( "utf-8" ), ) )
+            if os.path.exists( Fanart_thumbnail ):
+                thumbpath = os.path.splitext( self.args.path )[ 0 ] + "-fanart.jpg"
+                DIALOG_PROGRESS.update( -1, Fanart_thumbnail, thumbpath )
+                xbmc.executehttpapi( "FileCopy(%s,%s)" % ( Fanart_thumbnail, thumbpath.encode( "utf-8" ), ) )
         except:
             print_exc()
 
