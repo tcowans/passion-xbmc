@@ -90,6 +90,7 @@ IF EXIST "%XBMC_EXE%" (
     ECHO XBMC is installed on your PC!
     ECHO [1] Yes, copy a new "\Build\%PluginName%\ to %XBMC_EXE%\plugins\%PluginType%\%PluginName%\"
     ECHO [2] Yes, copy a new build and run XBMC in fullscreen
+    ECHO [3] No, i prefer copied manually
     ECHO [4] Create ZIP "BUILD\%PluginName%.zip"
     ECHO.
     ECHO ----------------------------------------------------------------------
