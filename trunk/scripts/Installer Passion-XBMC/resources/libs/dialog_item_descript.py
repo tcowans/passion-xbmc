@@ -87,8 +87,7 @@ class InfoWarehouseXMLFTP( InfoWarehouse ):
         if os.path.exists(checkPathPic):
             previewPicture = checkPathPic
         else:
-            #TODO: afficher nominage si un jour on a une image animee le temps du download
-            pass
+            previewPicture = None
         
         # Notifie la callback de mettre a jour l'image
         updateImage_cb(previewPicture)
@@ -130,59 +129,52 @@ class InfoWarehouseXMLFTP( InfoWarehouse ):
         try:
             if cat != None:
                 for item in cat.findAll("entry"):
-                    if item.filename.string.encode("cp1252") == itemName:
-                        if hasattr(item.filename,'string'):
-                            if item.filename.string != None:
-                                fileName = item.filename.string.encode("cp1252")
-                        if hasattr(item.title,'string'):
-                            if item.title.string != None:
-                                title = item.title.string.encode("cp1252")
-                        if hasattr(item.version,'string'): 
-                            if item.version.string != None:
-                                version = item.version.string.encode("utf-8")
-                        if hasattr(item.lang,'string'): 
-                            if item.lang.string != None:
-                                language = item.lang.string.encode("utf-8")
-                        if hasattr(item.date,'string'):
-                            if item.date.string != None:
-                                date = item.date.string.encode("cp1252")
-                        if hasattr(item.previewpictureurl,'string'):
-                            if item.previewpictureurl.string != None:
-                                previewPictureURL = item.previewpictureurl.string.encode("utf-8")
-                                
-                                # On verifie si l'image serait deja la
-                                checkPathPic = os.path.join(self.mainwin.CacheDir, os.path.basename(previewPictureURL))
-                                if os.path.exists(checkPathPic):
-                                    previewPicture = checkPathPic
-                                else:
-                                    # Telechargement et mise a jour de l'image (thread de separe)
-                                    self._getImage( previewPictureURL, updateImage_cb=updateImage_cb )
-#                                
-#                                # Telechargement de l'image
-#                                self._downloadFile(previewPictureURL)
-#                                checkPathPic = os.path.join(self.mainwin.CacheDir, os.path.basename(previewPictureURL))
-#                                if os.path.exists(checkPathPic):
-#                                    previewPicture = checkPathPic
-                                    
-                        if hasattr(item.previewvideourl,'string'):
-                            if item.previewvideourl.string != None:
-                                # Non utilse pour le moment
-                                previewVideoURL = item.previewvideourl.string.encode("utf-8")
-                        if hasattr(item.description_fr,'string'):
-                            if item.description_fr.string != None:
-                                description_fr = item.description_fr.string.encode("cp1252")
-                        if hasattr(item.description_en,'string'):
-                            if item.description_en.string != None:
-                                description_en = item.description_en.string.encode("cp1252")
-                        # We exit the loop since we found the file we were looking for
-                        break
+                    if hasattr(item.filename,'string'):
+                        if item.filename.string != None:
+                            fileName = item.filename.string.encode("cp1252")
+
+                            if fileName == itemName:
+                                if hasattr(item.title,'string'):
+                                    if item.title.string != None:
+                                        title = item.title.string.encode("cp1252")
+                                if hasattr(item.version,'string'): 
+                                    if item.version.string != None:
+                                        version = item.version.string.encode("utf-8")
+                                if hasattr(item.lang,'string'): 
+                                    if item.lang.string != None:
+                                        language = item.lang.string.encode("utf-8")
+                                if hasattr(item.date,'string'):
+                                    if item.date.string != None:
+                                        date = item.date.string.encode("cp1252")
+                                if hasattr(item.previewpictureurl,'string'):
+                                    if item.previewpictureurl.string != None:
+                                        previewPictureURL = item.previewpictureurl.string.encode("utf-8")
+                                        
+                                        # On verifie si l'image serait deja la
+                                        checkPathPic = os.path.join(self.mainwin.CacheDir, os.path.basename(previewPictureURL))
+                                        if os.path.exists(checkPathPic):
+                                            previewPicture = checkPathPic
+                                        else:
+                                            # Telechargement et mise a jour de l'image (thread de separe)
+                                            previewPicture = "downloading"
+                                            self._getImage( previewPictureURL, updateImage_cb=updateImage_cb )
+                                            
+                                if hasattr(item.previewvideourl,'string'):
+                                    if item.previewvideourl.string != None:
+                                        # Non utilse pour le moment
+                                        previewVideoURL = item.previewvideourl.string.encode("utf-8")
+                                if hasattr(item.description_fr,'string'):
+                                    if item.description_fr.string != None:
+                                        description_fr = item.description_fr.string.encode("cp1252")
+                                if hasattr(item.description_en,'string'):
+                                    if item.description_en.string != None:
+                                        description_en = item.description_en.string.encode("cp1252")
+                                # We exit the loop since we found the file we were looking for
+                                break
                
         except Exception, e:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         
-        logger.LOG( logger.LOG_DEBUG,title)
-        logger.LOG( logger.LOG_DEBUG,description_fr)
-
         return fileName, title, version, language, date , previewPicture, previewVideoURL, description_fr, description_en
 
     def _get_settings( self, defaults=False  ):
@@ -230,7 +222,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
         DIALOG_PROGRESS.create( _( 0 ), _( 104 ), _( 110 ) )
 
         self.mainwin       = kwargs[ "mainwin" ]
-        self.infoWareHouse = kwargs["infoWareHouse"]
+        self.infoWareHouse = kwargs[ "infoWareHouse" ]
         self.itemName      = kwargs[ "itemName" ]
         self.itemType      = kwargs[ "itemType" ]
 
@@ -241,11 +233,13 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
         xbmcgui.lock()
         try:
             #logger.LOG( logger.LOG_DEBUG, self.itemName )
-            logger.LOG( logger.LOG_DEBUG, self.itemType )
+            #logger.LOG( logger.LOG_DEBUG, self.itemType )
             
-            self.fileName, self.title, self.version, self.language, self.date, self.previewPicture, self.previewVideoURL, self.description_fr, self.description_en = self.infoWareHouse.getInfo(itemName = self.itemName, itemType=self.itemType , updateImage_cb=self._updateThumb_cb )
-            logger.LOG( logger.LOG_DEBUG, self.fileName)
-            logger.LOG( logger.LOG_DEBUG, self.title)
+            self.getControl( 200 ).setVisible( 0 ) # auto busy
+            
+            self.fileName, self.title, self.version, self.language, self.date, self.previewPicture, self.previewVideoURL, self.description_fr, self.description_en = self.infoWareHouse.getInfo( itemName=self.itemName, itemType=self.itemType, updateImage_cb=self._updateThumb_cb )
+            #logger.LOG( logger.LOG_DEBUG, self.fileName)
+            #logger.LOG( logger.LOG_DEBUG, self.title)
             #logger.LOG( logger.LOG_DEBUG, self.version)
             #logger.LOG( logger.LOG_DEBUG, str(self.date))
             #logger.LOG( logger.LOG_DEBUG, self.previewPicture)
@@ -267,7 +261,8 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
     def _updateThumb_cb (self, imagePath):
         if imagePath != None:
             self.getControl( self.CONTROL_PREVIEW_IMAGE ).setImage(imagePath)
-            logger.LOG( logger.LOG_DEBUG, "**** image")
+        self.getControl( 200 ).setVisible( 1 )
+        logger.LOG( logger.LOG_DEBUG, "**** image")
         
     def _set_skin_colours( self ):
         logger.LOG( logger.LOG_DEBUG, "_set_skin_colours: ItemDescription")        
@@ -305,11 +300,18 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
                         label = label + ' / '
             self.getControl( self.CONTROL_LANGUAGE_LABEL ).setLabel( label )
             
-            # Clear all ListItems in this control list
             if self.previewPicture != None:
-                self.getControl( self.CONTROL_PREVIEW_IMAGE ).setImage(self.previewPicture)
-                logger.LOG( logger.LOG_DEBUG, "**** image")
-
+                if self.previewPicture == "downloading":
+                    self.getControl( 200 ).setVisible( 0 ) # auto busy
+                else:
+                    # Image deja presente 
+                    self.getControl( self.CONTROL_PREVIEW_IMAGE ).setImage(self.previewPicture)
+                    self.getControl( 200 ).setVisible( 1 )
+                    logger.LOG( logger.LOG_DEBUG, "**** image")
+            else:
+                # On affiche l'image par defaut (NoImage)
+                self.getControl( 200 ).setVisible( 1 ) 
+            
             logger.LOG( logger.LOG_DEBUG,"Current language")
             logger.LOG( logger.LOG_DEBUG,xbmc.getLanguage())
             if xbmc.getLanguage() == 'French':

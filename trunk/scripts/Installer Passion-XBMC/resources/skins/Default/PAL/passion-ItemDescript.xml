@@ -215,6 +215,32 @@
 				<animation effect="zoom" reversible="false" center="auto" start="100" end="130" time="100">focus</animation>
 			</control>
 		</control>
+		<control type="group">
+			<visible>!Control.IsVisible(200)</visible>
+			<posx>315</posx>
+			<posy>100</posy>
+			<control type="image">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>100</width>
+				<height>100</height>
+				<aspectratio>keep</aspectratio>
+				<texture border="4">passion-osd-menu-bg.png</texture>
+				<visible>false</visible>
+			</control>
+			<control type="multiimage">
+				<description>Busy animation</description>
+				<posx>5</posx>
+				<posy>5</posy>
+				<width>90</width>
+				<height>90</height>
+				<aspectratio>keep</aspectratio>
+				<imagepath>passion-busy</imagepath>
+				<timeperimage>100</timeperimage>
+				<fadetime>0</fadetime>
+			</control>
+		</control>
 
 		<!-- ITEM PICTURES -->
 		<control type="image" id="200">
