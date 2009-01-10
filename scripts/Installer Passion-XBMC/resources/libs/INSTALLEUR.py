@@ -1086,6 +1086,7 @@ class MainWindow( xbmcgui.WindowXML ):
                     self.getControl( self.CONTROL_MAIN_LIST ).selectItem( self.main_list_last_pos.pop() )
 
             elif action == ACTION_SHOW_INFO :
+                # Affiche la description de l'item selectionné
                 if ( not self.type.lower() in ( "racine", "plugins", ) ) and ( self.getFocusId() == self.CONTROL_MAIN_LIST ):
                     currentListIndex = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()
                     if currentListIndex >= 0:
