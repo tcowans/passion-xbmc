@@ -342,18 +342,22 @@ Will&nbsp;be&nbsp;called&nbsp;when&nbsp;user&nbsp;stops&nbsp;xbmc&nbsp;playing&n
 
 <dl><dt><a name="Player-pause"><strong>pause</strong></a>(...)</dt><dd><tt><a href="#Player-pause">pause</a>()&nbsp;--&nbsp;Pause&nbsp;playing.</tt></dd></dl>
 
-<dl><dt><a name="Player-play"><strong>play</strong></a>(...)</dt><dd><tt><a href="#Player-play">play</a>([item,&nbsp;listitem])&nbsp;--&nbsp;Play&nbsp;this&nbsp;item.<br>
+<dl><dt><a name="Player-play"><strong>play</strong></a>(...)</dt><dd><tt><a href="#Player-play">play</a>([item,&nbsp;listitem,&nbsp;windowed])&nbsp;--&nbsp;Play&nbsp;this&nbsp;item.<br>
 &nbsp;<br>
 item&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;[opt]&nbsp;string&nbsp;-&nbsp;filename,&nbsp;url&nbsp;or&nbsp;playlist.<br>
 listitem&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;[opt]&nbsp;listitem&nbsp;-&nbsp;used&nbsp;with&nbsp;setInfo()&nbsp;to&nbsp;set&nbsp;different&nbsp;infolabels.<br>
+windowed&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;[opt]&nbsp;bool&nbsp;-&nbsp;true=play&nbsp;video&nbsp;windowed,&nbsp;false=play&nbsp;users&nbsp;preference.(default)<br>
 &nbsp;<br>
 *Note,&nbsp;If&nbsp;item&nbsp;is&nbsp;not&nbsp;given&nbsp;then&nbsp;the&nbsp;<a href="#Player">Player</a>&nbsp;will&nbsp;try&nbsp;to&nbsp;play&nbsp;the&nbsp;current&nbsp;item<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in&nbsp;the&nbsp;current&nbsp;playlist.<br>
 &nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You&nbsp;can&nbsp;use&nbsp;the&nbsp;above&nbsp;as&nbsp;keywords&nbsp;for&nbsp;arguments&nbsp;and&nbsp;skip&nbsp;certain&nbsp;optional&nbsp;arguments.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Once&nbsp;you&nbsp;use&nbsp;a&nbsp;keyword,&nbsp;all&nbsp;following&nbsp;arguments&nbsp;require&nbsp;the&nbsp;keyword.<br>
+&nbsp;<br>
 example:<br>
 &nbsp;&nbsp;-&nbsp;listitem&nbsp;=&nbsp;xbmcgui.ListItem('Ironman')<br>
 &nbsp;&nbsp;-&nbsp;listitem.setInfo('video',&nbsp;{'Title':&nbsp;'Ironman',&nbsp;'Genre':&nbsp;'Science&nbsp;Fiction'})<br>
-&nbsp;&nbsp;-&nbsp;xbmc.<a href="#Player">Player</a>(&nbsp;xbmc.PLAYER_CORE_MPLAYER&nbsp;).<a href="#Player-play">play</a>(url,&nbsp;listitem)</tt></dd></dl>
+&nbsp;&nbsp;-&nbsp;xbmc.<a href="#Player">Player</a>(&nbsp;xbmc.PLAYER_CORE_MPLAYER&nbsp;).<a href="#Player-play">play</a>(url,&nbsp;listitem,&nbsp;windowed)</tt></dd></dl>
 
 <dl><dt><a name="Player-playnext"><strong>playnext</strong></a>(...)</dt><dd><tt><a href="#Player-playnext">playnext</a>()&nbsp;--&nbsp;Play&nbsp;next&nbsp;item&nbsp;in&nbsp;playlist.</tt></dd></dl>
 
@@ -489,6 +493,8 @@ id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;<br>
 *Note,&nbsp;choices&nbsp;are&nbsp;(dateshort,&nbsp;datelong,&nbsp;time,&nbsp;meridiem,&nbsp;tempunit,&nbsp;speedunit)<br>
 &nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You&nbsp;can&nbsp;use&nbsp;the&nbsp;above&nbsp;as&nbsp;keywords&nbsp;for&nbsp;arguments.<br>
+&nbsp;<br>
 example:<br>
 &nbsp;&nbsp;-&nbsp;date_long_format&nbsp;=&nbsp;xbmc.<a href="#-getRegion">getRegion</a>('datelong')</tt></dd></dl>
  <dl><dt><a name="-getSkinDir"><strong>getSkinDir</strong></a>(...)</dt><dd><tt><a href="#-getSkinDir">getSkinDir</a>()&nbsp;--&nbsp;Returns&nbsp;the&nbsp;active&nbsp;skin&nbsp;directory&nbsp;as&nbsp;a&nbsp;string.<br>
@@ -505,8 +511,7 @@ media&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string&n
 &nbsp;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;return&nbsp;value&nbsp;is&nbsp;a&nbsp;pipe&nbsp;separated&nbsp;string&nbsp;of&nbsp;filetypes&nbsp;(eg.&nbsp;'.mov|.avi').<br>
 &nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You&nbsp;can&nbsp;use&nbsp;the&nbsp;above&nbsp;as&nbsp;keywords&nbsp;for&nbsp;arguments&nbsp;and&nbsp;skip&nbsp;certain&nbsp;optional&nbsp;arguments.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Once&nbsp;you&nbsp;use&nbsp;a&nbsp;keyword,&nbsp;all&nbsp;following&nbsp;arguments&nbsp;require&nbsp;the&nbsp;keyword.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You&nbsp;can&nbsp;use&nbsp;the&nbsp;above&nbsp;as&nbsp;keywords&nbsp;for&nbsp;arguments.<br>
 &nbsp;<br>
 example:<br>
 &nbsp;&nbsp;-&nbsp;mTypes&nbsp;=&nbsp;xbmc.<a href="#-getSupportedMedia">getSupportedMedia</a>('video')</tt></dd></dl>
@@ -515,7 +520,9 @@ example:<br>
 msg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string&nbsp;-&nbsp;text&nbsp;to&nbsp;output.<br>
 level&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;[opt]&nbsp;integer&nbsp;-&nbsp;log&nbsp;level&nbsp;to&nbsp;ouput&nbsp;at.&nbsp;(default=LOGNOTICE)<br>
 &nbsp;<br>
-*Note,&nbsp;You&nbsp;can&nbsp;use&nbsp;the&nbsp;above&nbsp;as&nbsp;keywords&nbsp;for&nbsp;arguments.<br>
+&nbsp;<br>
+*Note,&nbsp;You&nbsp;can&nbsp;use&nbsp;the&nbsp;above&nbsp;as&nbsp;keywords&nbsp;for&nbsp;arguments&nbsp;and&nbsp;skip&nbsp;certain&nbsp;optional&nbsp;arguments.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Once&nbsp;you&nbsp;use&nbsp;a&nbsp;keyword,&nbsp;all&nbsp;following&nbsp;arguments&nbsp;require&nbsp;the&nbsp;keyword.<br>
 &nbsp;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Text&nbsp;is&nbsp;written&nbsp;to&nbsp;the&nbsp;log&nbsp;for&nbsp;the&nbsp;following&nbsp;conditions.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XBMC&nbsp;loglevel&nbsp;==&nbsp;-1&nbsp;(NONE,&nbsp;nothing&nbsp;at&nbsp;all&nbsp;is&nbsp;logged)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XBMC&nbsp;loglevel&nbsp;==&nbsp;0&nbsp;(NORMAL,&nbsp;shows&nbsp;LOGNOTICE,&nbsp;LOGERROR,&nbsp;LOGSEVERE&nbsp;and&nbsp;LOGFATAL)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XBMC&nbsp;loglevel&nbsp;==&nbsp;1&nbsp;(DEBUG,&nbsp;shows&nbsp;all)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;See&nbsp;pydocs&nbsp;for&nbsp;valid&nbsp;values&nbsp;for&nbsp;level.<br>
@@ -524,11 +531,14 @@ example:<br>
 &nbsp;&nbsp;-&nbsp;xbmc.<a href="#-log">log</a>(msg='This&nbsp;is&nbsp;a&nbsp;test&nbsp;string.',&nbsp;level=xbmc.LOGDEBUG)</tt></dd></dl>
  <dl><dt><a name="-makeLegalFilename"><strong>makeLegalFilename</strong></a>(...)</dt><dd><tt><a href="#-makeLegalFilename">makeLegalFilename</a>(filename[,&nbsp;fatX])&nbsp;--&nbsp;Returns&nbsp;a&nbsp;legal&nbsp;filename&nbsp;or&nbsp;path&nbsp;as&nbsp;a&nbsp;string.<br>
 &nbsp;<br>
-filename&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string&nbsp;-&nbsp;filename/path&nbsp;to&nbsp;make&nbsp;legal<br>
+filename&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string&nbsp;or&nbsp;unicode&nbsp;-&nbsp;filename/path&nbsp;to&nbsp;make&nbsp;legal<br>
 fatX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;[opt]&nbsp;bool&nbsp;-&nbsp;True=Xbox&nbsp;file&nbsp;system(Default)<br>
 &nbsp;<br>
 *Note,&nbsp;If&nbsp;fatX&nbsp;is&nbsp;true&nbsp;you&nbsp;should&nbsp;pass&nbsp;a&nbsp;full&nbsp;path.&nbsp;If&nbsp;fatX&nbsp;is&nbsp;false&nbsp;only&nbsp;pass<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;basename&nbsp;of&nbsp;the&nbsp;path.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You&nbsp;can&nbsp;use&nbsp;the&nbsp;above&nbsp;as&nbsp;keywords&nbsp;for&nbsp;arguments&nbsp;and&nbsp;skip&nbsp;certain&nbsp;optional&nbsp;arguments.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Once&nbsp;you&nbsp;use&nbsp;a&nbsp;keyword,&nbsp;all&nbsp;following&nbsp;arguments&nbsp;require&nbsp;the&nbsp;keyword.<br>
 &nbsp;<br>
 example:<br>
 &nbsp;&nbsp;-&nbsp;filename&nbsp;=&nbsp;xbmc.<a href="#-makeLegalFilename">makeLegalFilename</a>('F:\Trailers\Ice&nbsp;Age:&nbsp;The&nbsp;Meltdown.avi')</tt></dd></dl>
@@ -537,7 +547,8 @@ example:<br>
 msg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string&nbsp;-&nbsp;text&nbsp;to&nbsp;output.<br>
 level&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;[opt]&nbsp;integer&nbsp;-&nbsp;log&nbsp;level&nbsp;to&nbsp;ouput&nbsp;at.&nbsp;(default=LOGNOTICE)<br>
 &nbsp;<br>
-*Note,&nbsp;You&nbsp;can&nbsp;use&nbsp;the&nbsp;above&nbsp;as&nbsp;keywords&nbsp;for&nbsp;arguments.<br>
+*Note,&nbsp;You&nbsp;can&nbsp;use&nbsp;the&nbsp;above&nbsp;as&nbsp;keywords&nbsp;for&nbsp;arguments&nbsp;and&nbsp;skip&nbsp;certain&nbsp;optional&nbsp;arguments.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Once&nbsp;you&nbsp;use&nbsp;a&nbsp;keyword,&nbsp;all&nbsp;following&nbsp;arguments&nbsp;require&nbsp;the&nbsp;keyword.<br>
 &nbsp;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Text&nbsp;is&nbsp;written&nbsp;to&nbsp;the&nbsp;log&nbsp;for&nbsp;the&nbsp;following&nbsp;conditions.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XBMC&nbsp;loglevel&nbsp;==&nbsp;-1&nbsp;(NONE,&nbsp;nothing&nbsp;at&nbsp;all&nbsp;is&nbsp;logged)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XBMC&nbsp;loglevel&nbsp;==&nbsp;0&nbsp;(NORMAL,&nbsp;shows&nbsp;LOGNOTICE,&nbsp;LOGERROR,&nbsp;LOGSEVERE&nbsp;and&nbsp;LOGFATAL)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XBMC&nbsp;loglevel&nbsp;==&nbsp;1&nbsp;(DEBUG,&nbsp;shows&nbsp;all)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;See&nbsp;pydocs&nbsp;for&nbsp;valid&nbsp;values&nbsp;for&nbsp;level.<br>
@@ -564,8 +575,7 @@ image&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string&n
 &nbsp;<br>
 *Note,&nbsp;If&nbsp;the&nbsp;media&nbsp;resides&nbsp;in&nbsp;a&nbsp;subfolder&nbsp;include&nbsp;it.&nbsp;(eg.&nbsp;home-myfiles\\home-myfiles2.png)<br>
 &nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You&nbsp;can&nbsp;use&nbsp;the&nbsp;above&nbsp;as&nbsp;keywords&nbsp;for&nbsp;arguments&nbsp;and&nbsp;skip&nbsp;certain&nbsp;optional&nbsp;arguments.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Once&nbsp;you&nbsp;use&nbsp;a&nbsp;keyword,&nbsp;all&nbsp;following&nbsp;arguments&nbsp;require&nbsp;the&nbsp;keyword.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You&nbsp;can&nbsp;use&nbsp;the&nbsp;above&nbsp;as&nbsp;keywords&nbsp;for&nbsp;arguments.<br>
 &nbsp;<br>
 example:<br>
 &nbsp;&nbsp;-&nbsp;exists&nbsp;=&nbsp;xbmc.<a href="#-skinHasImage">skinHasImage</a>('ButtonFocusedTexture.png')</tt></dd></dl>
