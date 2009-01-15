@@ -322,7 +322,8 @@ class Settings:
 
     def _use_defaults( self, current_settings=None, save=True ):
         """ setup default values if none obtained """
-        logger.LOG( logger.LOG_DEBUG, "Settings: [used default settings]" )
+        #TODO: verifier pourquoi la ligne suivante fait planter XBMC sous Mac
+        #logger.LOG( logger.LOG_DEBUG, "Settings: [used default settings]" )
         settings = {}
         defaults = self._settings_defaults_values()
         for key, value in defaults.items():
