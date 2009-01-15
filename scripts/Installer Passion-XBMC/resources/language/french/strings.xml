@@ -5,6 +5,7 @@
   <string id="1">Forum</string>
   <string id="2">Options</string>
   <string id="3">Aide</string>
+  <string id="4">A propos</string>
 
   <string id="10">Sélection</string>
   <string id="11">Thèmes</string>
@@ -159,5 +160,17 @@
   <string id="610">Anglais</string>
   <string id="611">Multilangues</string>
   <string id="612">Inconnu</string>
+  
+  <!--ABOUT STRINGS -->
+  <string id="700">Version</string>
+  <string id="701">Equipe des créateurs</string>
+  <string id="702">Développeurs</string>
+  <string id="703">Conception Graphique</string>
+  <string id="704">Crée sur une idée de %s</string>
+  <string id="705">Un grand merci à %s</string>  
+  <string id="706">Conseils et soutien</string>  
+  <string id="707">Date</string>  
+  <string id="708">SVN</string>  
+  <string id="710">This script allows direct install of skins, scripts, plugins and scrapers available on Passion-XBMC (passion-xbmc.org) FTP server maintained by our team.</string>  
 </strings>
   

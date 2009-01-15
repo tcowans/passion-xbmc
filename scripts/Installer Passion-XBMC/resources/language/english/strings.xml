@@ -5,6 +5,7 @@
   <string id="1">Forum</string>
   <string id="2">Settings</string>
   <string id="3">Help</string>
+  <string id="4">About</string>
 
   <string id="10">Selection</string>
   <string id="11">Skins</string>
@@ -159,5 +160,17 @@
   <string id="610">English</string>
   <string id="611">Multilanguages</string>
   <string id="612">Unknown</string>
+  
+  <!--ABOUT STRINGS -->
+  <string id="700">Version</string>
+  <string id="701">Team Credits</string>
+  <string id="702">Developers</string>
+  <string id="703">Graphic design</string>
+  <string id="704">Created on an idea of %s</string>
+  <string id="705">Special thanks to %s</string>  
+  <string id="706">Advices and support</string>  
+  <string id="707">Date</string>  
+  <string id="708">SVN</string>  
+  <string id="710">Ce script permet d'installer directement depuis XBMC lds thèmes, scripts, plugins et scrapers disponibles sur le serveur FTP de Passion-XBMC (passion-xbmc.org) maintenu par la Team Passion-XBMC.</string>  
 </strings>
   

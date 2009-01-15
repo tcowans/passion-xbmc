@@ -96,6 +96,23 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
         # setlabel pour les controles du dialog qui a comme info exemple: id="100" et pour avoir son controle on fait un getControl( 100 )
         try:
             self.getControl( self.CONTROL_VERSION_LABEL ).setLabel( _( 499 ) % ( __version__, ) )
+            
+            # Tab 'a propos'
+            self.getControl( 601 ).reset()
+            list_item = xbmcgui.ListItem( sys.modules[ "__main__" ].__version_l1__, sys.modules[ "__main__" ].__version_r1__ )
+            self.getControl( 601 ).addItem( list_item )
+            list_item = xbmcgui.ListItem( sys.modules[ "__main__" ].__version_l2__, sys.modules[ "__main__" ].__version_r2__ )
+            self.getControl( 601 ).addItem( list_item )
+            list_item = xbmcgui.ListItem( sys.modules[ "__main__" ].__version_l3__, sys.modules[ "__main__" ].__version_r3__ )
+            self.getControl( 601 ).addItem( list_item )
+            
+            self.getControl( 602 ).reset()
+            list_item = xbmcgui.ListItem( sys.modules[ "__main__" ].__credits_l1__, sys.modules[ "__main__" ].__credits_r1__ )
+            self.getControl( 602 ).addItem( list_item )
+            list_item = xbmcgui.ListItem( sys.modules[ "__main__" ].__credits_l2__, sys.modules[ "__main__" ].__credits_r2__ )
+            self.getControl( 602 ).addItem( list_item )
+            list_item = xbmcgui.ListItem( sys.modules[ "__main__" ].__credits_l3__, sys.modules[ "__main__" ].__credits_r3__ )
+            self.getControl( 602 ).addItem( list_item )
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
