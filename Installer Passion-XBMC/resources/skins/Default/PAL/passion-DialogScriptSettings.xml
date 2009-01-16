@@ -151,14 +151,14 @@
 				<visible>false</visible>
 			</control>
 			<control type="button" id="60">
-				<description>credits Button</description>
+				<description>help Button</description>
 				<posx>388</posx>
 				<posy>0</posy>
 				<width>95</width>
 				<height>30</height>
 				<align>center</align>
 				<aligny>center</aligny>
-				<label>470</label>
+				<label>SCRIPT3</label>
 				<font>font10</font>
 				<textcolor>ffffffff</textcolor>
 				<disabledcolor>60ffffff</disabledcolor>
@@ -173,13 +173,14 @@
 			</control>
 			<control type="button" id="70">
 				<description>help Button</description>
+				<description>about Button</description>
 				<posx>485</posx>
 				<posy>0</posy>
 				<width>95</width>
 				<height>30</height>
 				<align>center</align>
 				<aligny>center</aligny>
-				<label>SCRIPT3</label>
+				<label>SCRIPT4</label>
 				<font>font10</font>
 				<textcolor>ffffffff</textcolor>
 				<disabledcolor>60ffffff</disabledcolor>
@@ -648,46 +649,12 @@
 			</control>
 		</control>
 
-		<!-- credits section -->
-		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
-		<!-- ** Required ** Do not change id's or type's -->
-		<control type="grouplist" id="9006">
-			<description>credits section</description>
-			<visible>Skin.String(PassionSettings,5)</visible>
-			<posx>75</posx>
-			<posy>154</posy>
-			<width>580</width>
-			<height>272</height>
-			<itemgap>0</itemgap>
-			<pagecontrol>-</pagecontrol>
-			<orientation>vertical</orientation>
-			<onleft>9000</onleft>
-			<onright>9000</onright>
-			<onup>1000</onup>
-			<ondown>9000</ondown>
-			<usecontrolcoords>true</usecontrolcoords>
-			<control type="label" id="600">
-				<description>credits - temporaire label</description>
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>580</width>
-				<height>272</height>
-				<label>!</label>
-				<font>special12</font>
-				<align>center</align>
-				<aligny>center</aligny>
-				<textcolor>ffffffff</textcolor>
-				<shadowcolor>$INFO[Container.Property(Skin-Colours)]</shadowcolor>
-				<animation effect="zoom" loop="true" center="auto" start="10" end="500" time="2000" acceleration="-2" condition="Control.IsVisible(9006)">conditional</animation>
-			</control>
-		</control>
-
 		<!-- help section -->
 		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
 		<!-- ** Required ** Do not change id's or type's -->
 		<control type="grouplist" id="9007">
 			<description>help section</description>
-			<visible>Skin.String(PassionSettings,6)</visible>
+			<visible>Skin.String(PassionSettings,5)</visible>
 			<posx>75</posx>
 			<posy>154</posy>
 			<width>580</width>
@@ -713,6 +680,167 @@
 				<textcolor>ffffffff</textcolor>
 				<shadowcolor>$INFO[Container.Property(Skin-Colours)]</shadowcolor>
 				<animation effect="zoom" loop="true" center="auto" start="10" end="500" time="2000" acceleration="-2" condition="Control.IsVisible(9007)">conditional</animation>
+			</control>
+		</control>
+
+		<!-- about section -->
+		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+		<!-- ** Required ** Do not change id's or type's -->
+		<control type="grouplist" id="9006">
+			<description>about section</description>
+			<visible>Skin.String(PassionSettings,6)</visible>
+			<posx>75</posx>
+			<posy>154</posy>
+			<width>580</width>
+			<height>272</height>
+			<itemgap>0</itemgap>
+			<pagecontrol>-</pagecontrol>
+			<orientation>vertical</orientation>
+			<onleft>9000</onleft>
+			<onright>9000</onright>
+			<onup>1000</onup>
+			<ondown>9000</ondown>
+			<usecontrolcoords>true</usecontrolcoords>
+
+			<control type="label">
+				<description>Version label</description>
+				<posx>28</posx>
+				<posy>5</posy>
+				<width>250</width>
+				<align>left</align>
+				<font>special13</font>
+				<textcolor>60ffffff</textcolor>
+				<label>$LOCALIZE[SCRIPT700]:</label>
+			</control>
+			<!-- ** Required ** Do not change <id> or <type> -->
+			<control type="list" id="601">
+				<description>Version List</description>
+				<posx>33</posx>
+				<posy>20</posy>
+				<width>508</width>
+				<height>60</height>
+				<scrolltime>200</scrolltime>
+				<itemlayout height="20">
+					<control type="label">
+						<posx>3</posx>
+						<posy>1</posy>
+						<width>200</width>
+						<height>20</height>
+						<font>font13</font>
+						<align>left</align>
+						<info>ListItem.Label</info>
+					</control>
+					<control type="label">
+						<posx>508</posx>
+						<posy>1</posy>
+						<width>200</width>
+						<height>20</height>
+						<font>font13</font>
+						<align>right</align>
+						<info>ListItem.Label2</info>
+					</control>
+				</itemlayout>
+				<focusedlayout height="20">
+					<control type="label">
+						<posx>3</posx>
+						<posy>1</posy>
+						<width>200</width>
+						<height>20</height>
+						<font>font13</font>
+						<align>left</align>
+						<info>ListItem.Label</info>
+					</control>
+					<control type="label">
+						<posx>508</posx>
+						<posy>1</posy>
+						<width>200</width>
+						<height>20</height>
+						<font>font13</font>
+						<align>right</align>
+						<info>ListItem.Label2</info>
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="label">
+				<description>Description Label</description>
+				<posx>28</posx>
+				<posy>5</posy>
+				<width>250</width>
+				<align>left</align>
+				<font>special13</font>
+				<textcolor>60ffffff</textcolor>
+				<label>$LOCALIZE[SCRIPT600]:</label>
+			</control>
+			<control type="textbox">
+				<description>Description content</description>
+				<posx>33</posx>
+				<posy>25</posy>
+				<width>508</width>
+				<height>50</height>
+				<font>font13</font>
+				<align>justify</align>
+				<label>SCRIPT710</label>
+				<autoscroll time="2000" delay="3000">Skin.HasSetting(AutoScroll)</autoscroll>
+			</control>
+
+			<control type="label">
+				<description>Team Credits Label</description>
+				<posx>28</posx>
+				<posy>0</posy>
+				<width>250</width>
+				<align>left</align>
+				<font>special13</font>
+				<textcolor>60ffffff</textcolor>
+				<label>$LOCALIZE[SCRIPT701]:</label>
+			</control>
+			<!-- ** Required ** Do not change <id> or <type> -->
+			<control type="list" id="602">
+				<description>Team Credits List</description>
+				<posx>33</posx>
+				<posy>25</posy>
+				<width>508</width>
+				<height>60</height>
+				<scrolltime>200</scrolltime>
+				<itemlayout height="20">
+					<control type="label">
+						<posx>3</posx>
+						<posy>1</posy>
+						<width>200</width>
+						<height>20</height>
+						<font>font13</font>
+						<align>left</align>
+						<info>ListItem.Label</info>
+					</control>
+					<control type="label">
+						<posx>508</posx>
+						<posy>1</posy>
+						<width>200</width>
+						<height>20</height>
+						<font>font13</font>
+						<align>right</align>
+						<info>ListItem.Label2</info>
+					</control>
+				</itemlayout>
+				<focusedlayout height="20">
+					<control type="label">
+						<posx>3</posx>
+						<posy>1</posy>
+						<width>200</width>
+						<height>20</height>
+						<font>font13</font>
+						<align>left</align>
+						<info>ListItem.Label</info>
+					</control>
+					<control type="label">
+						<posx>508</posx>
+						<posy>1</posy>
+						<width>200</width>
+						<height>20</height>
+						<font>font13</font>
+						<align>right</align>
+						<info>ListItem.Label2</info>
+					</control>
+				</focusedlayout>
 			</control>
 		</control>
 
@@ -776,6 +904,7 @@
 				<onright>80</onright>
 				<onup>1000</onup>
 				<ondown>1000</ondown>
+				<visible>Skin.String(PassionSettings,1) | Skin.String(PassionSettings,2) | Skin.String(PassionSettings,3)</visible>
 			</control>
 		</control>
 	</controls>

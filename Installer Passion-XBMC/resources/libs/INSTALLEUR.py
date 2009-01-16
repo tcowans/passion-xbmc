@@ -17,9 +17,10 @@ from htmlentitydefs import name2codepoint
 import elementtree.HTMLTreeBuilder as HTB
 from StringIO import StringIO
 
+from dialog_item_descript import ItemInfosManager
+
 #from string import * #a verifier si on a besoin de cette methode import *
 from BeautifulSoup import BeautifulStoneSoup, Tag, NavigableString  #librairie de traitement XML
-
 
 #modules XBMC
 import xbmc
@@ -311,7 +312,6 @@ class ftpDownloadCtrl:
         try:
             #self.ftp.cwd( pathsrc ) # c'est cette commande qui genere l'exception dans le cas d'un fichier
             self.ftp.Command( self.ftp.cwd, pathsrc ) # c'est cette commande qui genere l'exception dans le cas d'un fichier
-
             # Pas d'excpetion => il s'agit d'un dossier
             logger.LOG( logger.LOG_DEBUG, "isDir: %s EST un DOSSIER", pathsrc )
         except:
@@ -366,13 +366,18 @@ class ftpDownloadCtrl:
 
         self.curLocalDirRoot = self.localdirList[ typeIndex ]
         self.curRemoteDirRoot = rootdirsrc
+        
+        if typeIndex == "Themes":
+            isSingleFile = False
+        else:
+            isSingleFile = True
 
         # Appel de la fonction privee en charge du download - on passe en parametre l'index correspondant au type
-        status = self._download( pathsrc, progressbar_cb, dialogProgressWin, 0, 1 )
+        status = self._download( pathsrc, isSingleFile, progressbar_cb, dialogProgressWin, 0, 1 )
         return  status # retour du status du download recupere
 
 
-    def _download( self, pathsrc, progressbar_cb=None, dialogProgressWin=None, curPercent=0, coeff=1 ):
+    def _download( self, pathsrc, isSingleFile=False, progressbar_cb=None, dialogProgressWin=None, curPercent=0, coeff=1 ):
         """
         Fonction privee ( ne pouvant etre appelee que par la classe ftpDownloadCtrl elle meme )
         Telecharge un element sur le server FTP
@@ -416,7 +421,7 @@ class ftpDownloadCtrl:
                     # pathsrc est un fichier
 
                     # Telechargement du fichier
-                    self._downloadfichier( i, dialogProgressWin=dialogProgressWin, curPercent=percentBefore, coeff=coeff*curDirListSize )
+                    self._downloadfichier( i, isSingleFile=isSingleFile, dialogProgressWin=dialogProgressWin, curPercent=percentBefore, coeff=coeff*curDirListSize )
 
                 percentAfter = min( curPercent + int( ( float( curDirList.index( i )+1 )*100 )/( curDirListSize * coeff ) ), 100 )
 
@@ -483,7 +488,7 @@ class ftpDownloadCtrl:
             # Repertoire non vide - lancement du download ( !!!APPEL RECURSIF!!! )
             self._download( dirsrc, dialogProgressWin=dialogProgressWin, curPercent=curPercent, coeff=coeff )
 
-    def _downloadfichier( self, filesrc, dialogProgressWin=None, curPercent=0, coeff=1 ):
+    def _downloadfichier( self, filesrc, isSingleFile=False, dialogProgressWin=None, curPercent=0, coeff=1 ):
         """
         Fonction privee ( ne pouvant etre appelee que par la classe ftpDownloadCtrl elle meme )
         Telecharge un fichier sur le server FTP
@@ -502,7 +507,7 @@ class ftpDownloadCtrl:
                 # Dans le cas ou un fichier n'a pas une taille valide ou corrompue
                 remoteFileSize = 1
         except:
-            logger.LOG( logger.LOG_DEBUG, "_downloaddossier: Exception - Impossible de creer le dossier: %s", localAbsDirPath )
+            logger.LOG( logger.LOG_DEBUG, "_downloadfichier: Exception - Impossible de recuperer la taille du fichier: %s", filesrc )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
         # Créé le chemin du repertorie local
@@ -519,13 +524,14 @@ class ftpDownloadCtrl:
         localFile = open( localAbsFilePath, "wb" )
         try:
             # Creation de la fonction callback appele a chaque block_size telecharge
-            ftpCB = FtpCallback( remoteFileSize, localFile, filesrc, dialogProgressWin, curPercent, coeff*remoteFileSize )
+            ftpCB = FtpCallback( remoteFileSize, localFile, filesrc, dialogProgressWin, curPercent, coeff*remoteFileSize, isSingleFile=isSingleFile )
 
             # Telecahrgement ( on passe la CB en parametre )
             # !!NOTE!!: on utilise un implemenation locale et non celle de ftplib qui ne supporte pas l'interuption d'un telechargement
-            self.retrbinary( 'RETR ' + filesrc, ftpCB, block_size )
+            result = self.retrbinary( 'RETR ' + filesrc, ftpCB, block_size )
+            logger.LOG( logger.LOG_DEBUG, "Response Server FTP sur retrieve: %s", repr( result ) )
         except:
-            logger.LOG( logger.LOG_DEBUG, "_downloaddossier: Exception - Impossible de creer le dossier: %s", localAbsDirPath )
+            logger.LOG( logger.LOG_DEBUG, "_downloadfichier: Exception - Impossible de telecharger le fichier: %s", filesrc )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         # On ferme le fichier
         localFile.close()
@@ -535,6 +541,7 @@ class ftpDownloadCtrl:
         Cette version de retrbinary permet d'interompte un telechargement en cours alors que la version de ftplib ne le permet pas
         Inspirée du code dispo a http://www.archivum.info/python-bugs-list@python.org/2007-03/msg00465.html
         """
+        abort = False
         #self.ftp.voidcmd( 'TYPE I' )
         self.ftp.Command( self.ftp.voidcmd, 'TYPE I' )
         #conn = self.ftp.transfercmd( cmd, rest )
@@ -547,11 +554,14 @@ class ftpDownloadCtrl:
             try:
                 callback( data )
             except cancelRequest:
+                abort = True
                 logger.LOG( logger.LOG_NOTICE, "retrbinary: Download ARRETE par l'utilisateur" )
                 logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
                 break
         fp.close()
         conn.close()
+        if abort:
+            self.ftp.Command( self.ftp.abort ) # Afin d'eviter un blockage dans le cas d'un cancel et puis d'un self.ftp.voidresp
         #return self.ftp.voidresp()
         return self.ftp.Command( self.ftp.voidresp )
 
@@ -562,14 +572,15 @@ class FtpCallback( object ):
     Inspired from source Justin Ezequiel ( Thanks )
     http://coding.derkeiler.com/pdf/Archive/Python/comp.lang.python/2006-09/msg02008.pdf
     """
-    def __init__( self, filesize, localfile, filesrc, dp=None, curPercent=0, coeff=1 ):
-        self.filesize = filesize
-        self.localfile = localfile
-        self.srcName = filesrc
-        self.received = 0
-        self.curPercent = curPercent # Pourcentage total telecharger ( et non du fichier en cours )
-        self.coeff = coeff
-        self.dp = dp
+    def __init__( self, filesize, localfile, filesrc, dp=None, curPercent=0, coeff=1 , isSingleFile=False ):
+        self.filesize       = filesize
+        self.localfile      = localfile
+        self.srcName        = filesrc
+        self.received       = 0
+        self.curPercent     = curPercent # Pourcentage total telecharger ( et non du fichier en cours )
+        self.isSingleFile   = isSingleFile  # Flag indiquant si on telecharge un fichier seul, dans ce cas on met a jour le string %
+        self.coeff          = coeff
+        self.dp             = dp
 
     def __call__( self, data ):
         if self.dp != None:
@@ -586,8 +597,10 @@ class FtpCallback( object ):
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
             percent = 100
 
+        if self.isSingleFile:
+            self.curPercent = percent
         if self.dp != None:
-            self.dp.update( 100, _( 123 ) % self.curPercent, self.srcName )
+            self.dp.update( percent, _( 123 ) % self.curPercent, self.srcName )
 
 
 class userDataXML:
@@ -668,7 +681,7 @@ class directorySpy:
         Capture le contenu d'un repertoire a l'init
         On s'en servira comme reference dans le future pour observer les modifications dans ce repertoire
         """
-        self.dirPath = dirpath
+        self.dirPath            = dirpath
         self.dirContentInitList = []
         if os.path.isdir( dirpath ):
             # On capture le contenu du repertoire et on le sauve
@@ -789,31 +802,30 @@ class MainWindow( xbmcgui.WindowXML ):
         # Creation du configCtrl
         self.configManager = configCtrl()
 
-        self.host = host
-        self.user = user
-        self.rssfeed = rssfeed
-        self.password = password
-        self.remotedirList = remoteDirLst
-        self.localdirList = localDirLst
-        self.downloadTypeList = downloadTypeLst
+        self.host               = host
+        self.user               = user
+        self.rssfeed            = rssfeed
+        self.password           = password
+        self.remotedirList      = remoteDirLst
+        self.localdirList       = localDirLst
+        self.downloadTypeList   = downloadTypeLst
 
-        self.racineDisplayList = racineDisplayLst
-        self.pluginDisplayList = pluginDisplayLst
-        self.pluginsDirSpyList = []
+        self.racineDisplayList  = racineDisplayLst
+        self.pluginDisplayList  = pluginDisplayLst
+        self.pluginsDirSpyList  = []
 
-
-        self.curDirList = []
-        self.connected = False # status de la connection ( inutile pour le moment )
-        self.index = ""
-        self.scraperDir = scraperDir
-        self.type = "racine"
-        self.USRPath = USRPath
-        self.rightstest = ""
-        self.scriptDir = scriptDir
-        self.extracter = scriptextracter() # On cree un instance d'extracter
-        self.CacheDir = CACHEDIR
-        self.userDataDir = userdatadir # userdata directory
-        self.targetDir = ""
+        self.curDirList         = []
+        self.connected          = False # status de la connection ( inutile pour le moment )
+        self.index              = ""
+        self.scraperDir         = scraperDir
+        self.type               = "racine"
+        self.USRPath            = USRPath
+        self.rightstest         = ""
+        self.scriptDir          = scriptDir
+        #self.extracter          = scriptextracter() # On cree un instance d'extracter
+        self.CacheDir           = CACHEDIR
+        self.userDataDir        = userdatadir # userdata directory
+        self.targetDir          = ""
 
         # Verifie si le repertoire cacher existe et le cree s'il n'existent pas encore
         if os.path.exists( CACHEDIR ):
@@ -865,7 +877,10 @@ class MainWindow( xbmcgui.WindowXML ):
                     self.pluginsDirSpyList.append( directorySpy( self.localdirList[ self.downloadTypeList.index( type ) ] ) )
                 else:
                     self.pluginsDirSpyList.append( None )
-
+                    
+            # Creons ItemInfosManager afin de recuperer les description
+            self.itemInfosManager = ItemInfosManager( mainwin=self )
+            
             # Close the Loading Window
             DIALOG_PROGRESS.close()
 
@@ -940,28 +955,30 @@ class MainWindow( xbmcgui.WindowXML ):
     def _on_action_control( self, act_ctrl_id ):
         try:
             #button_code_F1_keyboard = 61552
-            if ( act_ctrl_id in ( self.CONTROL_FORUM_BUTTON, 61552, ) ):
+            if ( act_ctrl_id in ( self.CONTROL_FORUM_BUTTON, 61552 ) ):
                 from dialog_direct_infos import show_direct_infos
                 show_direct_infos( self )
                 #on a plus besoin, on le delete
                 del show_direct_infos
 
-            elif ( act_ctrl_id in ( ACTION_CONTEXT_MENU, self.CONTROL_OPTIONS_BUTTON, ) ):
+            elif ( act_ctrl_id in ( ACTION_CONTEXT_MENU, self.CONTROL_OPTIONS_BUTTON ) ):
                 from dialog_script_settings import show_settings
                 show_settings( self )
                 #on a plus besoin du settins, on le delete
                 del show_settings
 
             #button_code_F3_keyboard = 61554
-            elif ( act_ctrl_id in ( ACTION_SHOW_INFO, 61554, ) ):
-                if ( not self.type.lower() in ( "racine", "plugins", ) ) and ( self.getFocusId() == self.CONTROL_MAIN_LIST ):
-                    currentListIndex = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()
-                    if currentListIndex >= 0:
-                        selectedItem = os.path.basename( self.curDirList[ currentListIndex ] )
-                        from dialog_item_descript import show_descript
-                        show_descript( self, selectedItem, self.type )
-                        #on a plus besoin du descript, on le delete
-                        del show_descript
+            # Temporarement desactivé en attendant une solution
+            # Note: dans xbmc la touche I du clavier correspond a ACTION_SHOW_INFO (pourquoi utiliser F3)
+            #elif ( act_ctrl_id in ( ACTION_SHOW_INFO, 61554 ) ):
+            #    if ( not self.type.lower() in ( "racine", "plugins", ) ) and ( self.getFocusId() == self.CONTROL_MAIN_LIST ):
+            #        currentListIndex = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()
+            #        if currentListIndex >= 0:
+            #            selectedItem = os.path.basename( self.curDirList[ currentListIndex ] )
+            #            from dialog_item_descript import show_descript
+            #            show_descript( self, selectedItem, self.type )
+            #            #on a plus besoin du descript, on le delete
+            #            del show_descript
 
             else:
                 pass
@@ -972,10 +989,7 @@ class MainWindow( xbmcgui.WindowXML ):
         """
         Remonte l'arborescence et quitte le script
         """
-        self._on_action_control( action )
-        self._on_action_control( action.getButtonCode() )
         try:
-
             if action == ACTION_PREVIOUS_MENU:
                 # Sortie du script
 
@@ -1050,7 +1064,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 #on ferme tout
                 self._close_script()
 
-            if action == ACTION_PARENT_DIR:
+            elif action == ACTION_PARENT_DIR:
                 # remonte l'arborescence
                 # On verifie si on est a l'interieur d'un ses sous section plugin
                 #if ( self.type == "Plugins Musique" ) or ( self.type == "Plugins Images" ) or ( self.type == "Plugins Programmes" ) or ( self.type == "Plugins Vidéos" ):
@@ -1070,13 +1084,30 @@ class MainWindow( xbmcgui.WindowXML ):
 
                 if self.main_list_last_pos:
                     self.getControl( self.CONTROL_MAIN_LIST ).selectItem( self.main_list_last_pos.pop() )
+
+            elif action == ACTION_SHOW_INFO :
+                # Affiche la description de l'item selectionné
+                if ( not self.type.lower() in ( "racine", "plugins", ) ) and ( self.getFocusId() == self.CONTROL_MAIN_LIST ):
+                    currentListIndex = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()
+                    if currentListIndex >= 0:
+                        selectedItem = os.path.basename( self.curDirList[ currentListIndex ] )
+                        self.itemInfosManager.show_descript( selectedItem, self.type )
+            else:
+                self._on_action_control( action )
+                self._on_action_control( action.getButtonCode() )
+
         except:
             logger.LOG( logger.LOG_DEBUG, "Window::onAction: Exception" )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
+
+
     def _close_script( self ):
-        #on ferme tout
+        #**IMPORTANT** faut annuler les thread avant de fermer le script, sinon xbmc risque de planter
+        #NB: le meme scenario va ce produire si vous fermer ou redemarrer xbmc avec le script en marche
+        #on annule les thread
         self._stop_rss_timer()
+        #on ferme le script
         self.close()
 
     def onFocus( self, controlID ):
@@ -1089,7 +1120,6 @@ class MainWindow( xbmcgui.WindowXML ):
         """
         Traitement si selection d'un element de la liste
         """
-        self._on_action_control( controlID )
         try:
             if controlID == self.CONTROL_MAIN_LIST:
                 try: self.main_list_last_pos.append( self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition() )
@@ -1168,7 +1198,7 @@ class MainWindow( xbmcgui.WindowXML ):
                             # Type est desormais reellement le type de download, on utlise alors les liste pour recuperer le chemin que l'on doit toujours passer
                             # on appel la classe passionFTPCtrl avec la source a telecharger
                             downloadStatus = self.passionFTPCtrl.download( source, self.remotedirList[ self.downloadTypeList.index( self.type ) ], self.downloadTypeList.index( self.type ), progressbar_cb=self.updateProgress_cb, dialogProgressWin = dp )
-                            dp.close()
+                            #dp.close()
 
                             if downloadStatus == -1:
                                 # Telechargment annule par l'utilisateur
@@ -1176,21 +1206,19 @@ class MainWindow( xbmcgui.WindowXML ):
                                 message1 = "%s: %s" % ( self.type, downloadItem )
                                 message2 = _( 125 )
                                 message3 = _( 126 )
-                                dialogInfo = xbmcgui.Dialog()
-                                if dialogInfo.yesno( title, message1, message2, message3 ):
+                                if xbmcgui.Dialog().yesno( title, message1, message2, message3 ):
                                     logger.LOG( logger.LOG_WARNING, "Suppression du repertoire %s", localDirPath )
-                                    dialogInfo2 = xbmcgui.Dialog()
                                     if os.path.isdir( localDirPath ):
                                         if self.deleteDir( localDirPath ):
-                                            dialogInfo2.ok( _( 127 ), _( 128 ), localDirPath, _( 129 ) )
+                                            xbmcgui.Dialog().ok( _( 127 ), _( 128 ), localDirPath, _( 129 ) )
                                         else:
-                                            dialogInfo2.ok( _( 111 ), _( 130 ), localDirPath )
+                                            xbmcgui.Dialog().ok( _( 111 ), _( 130 ), localDirPath )
                                     else:
                                         try:
                                             os.remove( localDirPath )
-                                            dialogInfo2.ok( _( 131 ), _( 132 ), localDirPath, _( 129 ) )
+                                            xbmcgui.Dialog().ok( _( 131 ), _( 132 ), localDirPath, _( 129 ) )
                                         except Exception, e:
-                                            dialogInfo2.ok( _( 111 ), _( 133 ), localDirPath )
+                                            xbmcgui.Dialog().ok( _( 111 ), _( 133 ), localDirPath )
                             else:
                                 title = _( 134 )
                                 message1 = "%s: %s" % ( self.type, downloadItem )
@@ -1198,8 +1226,7 @@ class MainWindow( xbmcgui.WindowXML ):
                                 message3 = self.localdirList[ self.downloadTypeList.index( self.type ) ]
 
                                 self._save_downloaded_property()
-                                dialogInfo = xbmcgui.Dialog()
-                                dialogInfo.ok( title, message1, message2, message3 )
+                                xbmcgui.Dialog().ok( title, message1, message2, message3 )
 
                             #TODO: Attention correctionPM3bidon n'est pa defini dans le cas d'un scraper ou script
                             #      Je l'ai donc defini a False au debut
@@ -1214,83 +1241,104 @@ class MainWindow( xbmcgui.WindowXML ):
                                 if downloadStatus != -1:
                                     installCancelled = False
                                     installError = None
-                                    dp = xbmcgui.DialogProgress()
-                                    dp.create( _( 136 ) % downloadItem, _( 123 ) % percent )
-                                    dialogUI = xbmcgui.DialogProgress()
-                                    dialogUI.create( _( 137 ), _( 138 ) % downloadItem, _( 110 ) )
+                                    #dp = xbmcgui.DialogProgress()
+                                    #dp.create( _( 136 ) % downloadItem, _( 123 ) % percent )
+                                    #dialogUI = xbmcgui.DialogProgress()
+                                    dp.create( _( 137 ), _( 138 ) % downloadItem, _( 110 ) )
 
                                     #Appel de la classe d'extraction des archives
                                     remoteDirPath = self.remotedirList[ self.downloadTypeList.index( self.type ) ]#chemin ou a ete telecharge le script
                                     localDirPath = self.localdirList[ self.downloadTypeList.index( self.type ) ]
                                     archive = source.replace( remoteDirPath, localDirPath + os.sep )#remplacement du chemin de l'archive distante par le chemin local temporaire
-                                    self.localdirList[ self.downloadTypeList.index( self.type ) ]= self.targetDir
-                                    fichierfinal0 = archive.replace( localDirPath, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
-                                    if fichierfinal0.endswith( '.zip' ):
-                                        fichierfinal = fichierfinal0.replace( '.zip', '' )
-                                    elif fichierfinal0.endswith( '.rar' ):
-                                        fichierfinal = fichierfinal0.replace( '.rar', '' )
+                                    self.localdirList[ self.downloadTypeList.index( self.type ) ] = self.targetDir
+                                    #fichierfinal0 = archive.replace( localDirPath, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
+                                    #if fichierfinal0.endswith( '.zip' ):
+                                    #    fichierfinal = fichierfinal0.replace( '.zip', '' )
+                                    #elif fichierfinal0.endswith( '.rar' ):
+                                    #    fichierfinal = fichierfinal0.replace( '.rar', '' )
 
+                                    import extractor
+                                    process_error = False
+                                    # on extrat tous dans le cache et si c'est OK on copy par la suite
+                                    file_path, OK = extractor.extract( archive, report=True )
+                                    #print OK, file_path
                                     if self.type == "Scrapers":
                                         # cas des Scrapers
                                         # ----------------
-                                        self.extracter.extract( archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
+                                        #self.extracter.extract( archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
+                                        destination = self.localdirList[ self.downloadTypeList.index( self.type ) ]
+                                        if ( OK == bool( file_path ) ) and os.path.exists( file_path ):
+                                            extractor.copy_inside_dir( file_path, destination )
                                     else:
                                         # Cas des scripts et plugins
                                         # --------------------------
-
                                         # Recuperons le nom du repertorie a l'interieur de l'archive:
-                                        dirName = self.extracter.getDirName( archive )
+                                        dirName = ""
+                                        if ( OK == bool( file_path ) ) and os.path.exists( file_path ):
+                                            dirName = os.path.basename( file_path )#self.extracter.getDirName( archive )
+                                            destination = os.path.join( self.localdirList[ self.downloadTypeList.index( self.type ) ], os.path.basename( file_path ) )
 
                                         if dirName == "":
                                             installError = _( 139 ) % archive
                                             logger.LOG( logger.LOG_ERROR, "Erreur durant l'extraction de %s - impossible d'extraire le nom du repertoire", archive )
                                         else:
-                                            destination = os.path.join( self.localdirList[ self.downloadTypeList.index( self.type ) ], dirName )
+                                            #destination = os.path.join( self.localdirList[ self.downloadTypeList.index( self.type ) ], dirName )
                                             logger.LOG( logger.LOG_NOTICE, destination )
                                             if os.path.exists( destination ):
                                                 # Repertoire déja présent
                                                 # On demande a l'utilisateur ce qu'il veut faire
                                                 if self.processOldDownload( destination ):
                                                     try:
-                                                        logger.LOG( logger.LOG_NOTICE, "Extraction de %s vers %s", archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
-                                                        self.extracter.extract( archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
+                                                        #logger.LOG( logger.LOG_NOTICE, "Extraction de %s vers %s", archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
+                                                        #self.extracter.extract( archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
+                                                        if ( OK == bool( file_path ) ) and os.path.exists( file_path ):
+                                                            extractor.copy_dir( file_path, destination )
                                                     except:
-                                                        installError = _( 140 ) % archive
-                                                        logger.LOG( logger.LOG_ERROR, "Exception durant l'extraction de %s", archive )
-                                                        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                                                        process_error = True
                                                 else:
                                                     installCancelled = True
                                                     logger.LOG( logger.LOG_WARNING, "L'installation de %s a ete annulee par l'utilisateur", downloadItem  )
                                             else:
                                                 # Le Repertoire n'est pas present localement -> on peut deplacer le repertoire depuis cache
                                                 try:
-                                                    logger.LOG( logger.LOG_NOTICE, "Extraction de %s vers %s", archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
-                                                    self.extracter.extract( archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
+                                                    #logger.LOG( logger.LOG_NOTICE, "Extraction de %s vers %s", archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
+                                                    #self.extracter.extract( archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
+                                                    if ( OK == bool( file_path ) ) and os.path.exists( file_path ):
+                                                        extractor.copy_dir( file_path, destination )
                                                 except:
-                                                    installError = _( 140 ) % archive
-                                                    logger.LOG( logger.LOG_ERROR, "Exception durant l'extraction de %s", archive )
-                                                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                                                    process_error = True
 
+                                    del extractor
                                     # Close the Loading Window
-                                    dialogUI.close()
+                                    #dialogUI.close()
 
-                                    dialogInfo = xbmcgui.Dialog()
+                                    if process_error:
+                                        installError = _( 140 ) % archive
+                                        logger.LOG( logger.LOG_ERROR, "Exception durant l'extraction de %s", archive )
+                                        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+
                                     if installCancelled == False and installError == None:
                                         self._save_downloaded_property()
-                                        dialogInfo.ok( _( 141 ), _( 142 ) % downloadItem, _( 143 ) )
+                                        xbmcgui.Dialog().ok( _( 141 ), _( 142 ) % downloadItem, _( 143 ) )
                                     else:
                                         if installError != None:
                                             # Erreur durant l'install ( meme si on a annule )
-                                            dialogInfo.ok( _( 144 ), installError, _( 145 ) )
+                                            xbmcgui.Dialog().ok( _( 144 ), installError, _( 145 ) )
                                         elif installCancelled == True:
                                             # Install annulee
-                                            dialogInfo.ok( _( 146 ), _( 147 ) % downloadItem )
+                                            xbmcgui.Dialog().ok( _( 146 ), _( 147 ) % downloadItem )
                                         else:
                                             # Install annulee
-                                            dialogInfo.ok( _( 144 ), _( 148 ), _( 145 ) )
+                                            xbmcgui.Dialog().ok( _( 144 ), _( 148 ), _( 145 ) )
                                 else:
                                     # On remet a la bonne valeur initiale self.localdirList
-                                    self.localdirList[ self.downloadTypeList.index( self.type ) ]= self.targetDir
+                                    self.localdirList[ self.downloadTypeList.index( self.type ) ] = self.targetDir
+
+                            # Close the Loading Window
+                            dp.close()
+
+            else:
+                self._on_action_control( controlID )
 
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
@@ -1300,7 +1348,7 @@ class MainWindow( xbmcgui.WindowXML ):
             file_path = os.path.join( logger.DIRECTORY_DATA, "downloaded.txt" )
             self.downloaded_property = eval( file( file_path, "r" ).read() )
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            logger.EXC_INFO( logger.LOG_DEBUG, sys.exc_info(), self )
             self.downloaded_property = set()
 
     def _save_downloaded_property( self ):
@@ -1618,8 +1666,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 if ( keyboard.isConfirmed() ):
                     inputText = keyboard.getText()
                     os.rename( localAbsDirPath, localAbsDirPath.replace( os.path.basename( localAbsDirPath ), inputText ) )
-                    dialogInfo = xbmcgui.Dialog()
-                    dialogInfo.ok( _( 155 ), localAbsDirPath.replace( os.path.basename( localAbsDirPath ), inputText ) )
+                    xbmcgui.Dialog().ok( _( 155 ), localAbsDirPath.replace( os.path.basename( localAbsDirPath ), inputText ) )
                 del keyboard
             elif chosenIndex == 2: # Ecraser
                 pass
@@ -1709,7 +1756,7 @@ graphicdesigner = 'Jahnrik'
 ##############################################################################
 #les infos auteur, version et graphic, etc sont deja dans le LOG et dans le future dans le "dialog_credits.py + passion-dialog_credits.xml"
 #logger.LOG( logger.LOG_DEBUG, "===================================================================" )
-#logger.LOG( logger.LOG_DEBUG, "Passion XBMC Installeur %s STARTS".center( 85 ), __version__ )
+#logger.LOG( logger.LOG_DEBUG, "Installer Passion-XBMC %s STARTS".center( 85 ), __version__ )
 #logger.LOG( logger.LOG_DEBUG, "Auteurs : %s".center( 85 ), __author__ )
 #logger.LOG( logger.LOG_DEBUG, "===================================================================" )
 
