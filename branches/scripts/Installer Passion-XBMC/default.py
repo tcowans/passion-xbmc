@@ -1,14 +1,14 @@
 
 # script constants
-__script__ = "Installeur-Passion"
-__plugin__ = "Unknown"
-__author__ = "Team Passion-XBMC"
-__url__    = "http://passion-xbmc.org/index.php"
-__svn_url__ = "http://code.google.com/p/passion-xbmc/source/browse/#svn/trunk/Scripts/Installeur-Passion"
-__credits__ = "Team XBMC, http://xbmc.org/"
-__platform__  = "xbmc media center"
-__date__    = "17-12-2008"
-__version__ = "pre-1.0.0"
+__script__       = "Installer Passion-XBMC"
+__plugin__       = "Unknown"
+__author__       = "Team Passion-XBMC"
+__url__          = "http://passion-xbmc.org/index.php"
+__svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/Installer%20Passion-XBMC/"
+__credits__      = "Team XBMC, http://xbmc.org/"
+__platform__     = "xbmc media center"
+__date__         = "14-01-2009"
+__version__      = "pre-1.0.0"
 __svn_revision__ = 0
 
 
@@ -32,6 +32,22 @@ ROOTDIR = os.getcwd().replace( ";", "" )
 __language__ = xbmc.Language( ROOTDIR, "french" ).getLocalizedString
 
 DIALOG_PROGRESS = xbmcgui.DialogProgress()
+
+# Info version
+__version_l1__ = __language__( 700 )#"version"
+__version_r1__ = __version__
+__version_l2__ = __language__( 707 )#"date"
+__version_r2__ = __date__
+__version_l3__ = __language__( 708 )#"SVN"
+__version_r3__ = str( __svn_revision__ )
+
+# team credits
+__credits_l1__ = __language__( 702 )#"Développeurs"
+__credits_r1__ = "Frost & Seb & Temhil"
+__credits_l2__ = __language__( 703 )#"Conception Graphique"
+__credits_r2__ = "Frost & Jahnrik & Temhil"
+__credits_l3__ = __language__( 706 )#"Conseils et soutien"
+__credits_r3__ = "Alexsolex & Shaitan"
 
 
 def MAIN():
