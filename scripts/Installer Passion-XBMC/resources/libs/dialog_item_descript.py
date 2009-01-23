@@ -208,12 +208,12 @@ class InfoWarehouseXMLFTP( InfoWarehouse ):
 
 class ItemDescription( xbmcgui.WindowXMLDialog ):
     # control id's
-    CONTROL_TITLE_LABEL = 100
-    CONTROL_VERSION_LABEL = 101
-    CONTROL_LANGUAGE_LABEL = 110
-    CONTROL_PREVIEW_IMAGE = 200
-    CONTROL_DESC_TEXTBOX = 250
-    CONTROL_CANCEL_BUTTON = 301
+    CONTROL_TITLE_LABEL     = 100
+    CONTROL_VERSION_LABEL   = 101
+    CONTROL_LANGUAGE_LABEL  = 110
+    CONTROL_PREVIEW_IMAGE   = 200
+    CONTROL_DESC_TEXTBOX    = 250
+    CONTROL_CANCEL_BUTTON   = 301
     CONTROL_DOWNLOAD_BUTTON = 302
 
     def __init__( self, *args, **kwargs ):
@@ -364,7 +364,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
 
 class ItemInfosManager:
     """
-    Class gerant toutes les description quelquesoit luer provenance (FTp, SQL ...)
+    Class gerant toutes les description quelquesoit luer provenance (FTP, SQL ...)
     """
     def __init__( self, *args, **kwargs ):
         self.mainwin = kwargs[ "mainwin" ]
