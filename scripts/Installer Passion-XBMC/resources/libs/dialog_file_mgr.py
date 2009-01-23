@@ -132,20 +132,20 @@ class fileMgr:
         try:
             #print("verifrep check if directory: " + folder + " exists")
             if not os.path.exists(folder):
-                print("verifrep Impossible to find the directory - trying to create the directory: " + folder)
+                logger.LOG( logger.LOG_DEBUG, "verifrep: Impossible de trouver le repertoire - Tentative de creation du repertoire: %s", folder )
                 os.makedirs(folder)
         except Exception, e:
-            print("Exception while creating folder " + folder)
-            print(str(e))
+            logger.LOG( logger.LOG_DEBUG, "verifrep: Exception durant la suppression du reperoire: %s", folder )
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
             
     def listDirFiles(self, path):
         """
         List the files of a directory
         @param path:
         """
-        print("List File of directory = " + path)
-        dirList = os.listdir( str( path ) )
-        #print dirList
+        logger.LOG( logger.LOG_DEBUG, "listDirFiles: Liste le repertoire: %s", path )
+        dirList = os.listdir( str( path ) )        
+
         return dirList
         
     def deleteFile(self, filename):
@@ -165,6 +165,40 @@ class fileMgr:
         for root, dirs, files in os.walk(folder , topdown=False):
             for name in files:
                 os.remove(os.path.join(root, name))
+
+    def deleteDir( self, path ):
+        """
+        Efface un repertoire et tout son contenu ( le repertoire n'a pas besoin d'etre vide )
+        retourne True si le repertoire est effece False sinon
+        """
+        result = True
+        if os.path.isdir( path ):
+            dirItems=os.listdir( path )
+            for item in dirItems:
+                itemFullPath=os.path.join( path, item )
+                try:
+                    if os.path.isfile( itemFullPath ):
+                        # Fichier
+                        os.remove( itemFullPath )
+                    elif os.path.isdir( itemFullPath ):
+                        # Repertoire
+                        self.deleteDir( itemFullPath )
+                except:
+                    result = False
+                    logger.LOG( logger.LOG_DEBUG, "deleteDir: Exception la suppression du reperoire: %s", path )
+                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            # Suppression du repertoire pere
+            try:
+                os.rmdir( path )
+            except:
+                result = False
+                logger.LOG( logger.LOG_DEBUG, "deleteDir: Exception la suppression du reperoire: %s", path )
+                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+        else:
+            logger.LOG( logger.LOG_DEBUG, "deleteDir: %s n'est pas un repertoire", path )
+            result = False
+
+        return result
     
     def  extract(self,archive,targetDir):
         """
@@ -291,16 +325,12 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                     try: self.main_list_last_pos.append( self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition() )
                     except: self.main_list_last_pos.append( 0 )
                 try:
-                    print "self.curListType before:"
-                    print self.curListType
                     # on verifie si on est un sous plugin
                     if TYPE_PLUGIN + ' ' in self.curListType:
                         self.curListType = TYPE_PLUGIN
                     else:
                         # cas standard
                         self.curListType = TYPE_ROOT
-                    print "self.curListType after:"
-                    print self.curListType
                     self.updateData()
                     self.updateList()
                 except:
@@ -371,18 +401,14 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         """
         Mise a jour des donnnees de la liste courante
         """
-        print "+" * 15
-        print "updateData starts"
         try:
             # Vide la liste
             del self.currentItemList[:]
             
-    #        if not xbmc.getCondVisibility( "Window.IsActive(progressdialog)" ):
-    #            DIALOG_PROGRESS.create( _( 0 ), _( 104 ), _( 110 ) )
+            if not xbmc.getCondVisibility( "Window.IsActive(progressdialog)" ):
+                DIALOG_PROGRESS.create( _( 0 ), _( 104 ), _( 110 ) )
                 
             # Recuperation des infos
-            print 'self.curListType : '
-            print self.curListType
             if ( self.curListType == TYPE_ROOT ):
                 for index, filterIdx in enumerate( self.rootDisplayList ):
                     item = ListItemObject( type=self.itemTypeList[ filterIdx ], name=self.itemTypeList[ filterIdx ], local_path=self.localdirList[ filterIdx ], thumb=self.itemThumbList[ filterIdx ] )
@@ -400,15 +426,10 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                     item = ListItemObject( type=self.curListType, name=item, local_path=os.path.join(self.localdirList[ self.itemTypeList.index(self.curListType) ],item), thumb=self.itemThumbList[ self.itemTypeList.index(self.curListType) ] )
                     self.currentItemList.append(item)
         except:
-            #EXC_INFO( LOG_ERROR, sys.exc_info(), self )
-            print "Error while updating data"
-            print  (str( sys.exc_info()[0] ) )
-            traceback.print_exc()
+            logger.LOG( logger.LOG_DEBUG, "FileMgrWindow: Exception durant la recuperation des donnees" )
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
-        print "self.currentItemList"
-        print self.currentItemList
-        print "updateData Ends"
-#        DIALOG_PROGRESS.close()
+        DIALOG_PROGRESS.close()
 
     
     def updateList( self ):
