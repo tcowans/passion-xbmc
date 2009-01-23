@@ -11,4 +11,4 @@
 == [http://xbmc.svn.sourceforge.net/viewvc/xbmc/branches/linuxport/XBMC/tools/EventClients/README.txt Pour plus d'infos lisez le readme.txt du EventClients] [http://xbmc.svn.sourceforge.net/viewvc/xbmc/branches/linuxport/XBMC/tools/EventClients/ Download tool EventClients] ==
 
 
-=== Dernière MAJ: 10 Janvier 2009 avec [http://xbmc.svn.sourceforge.net/viewvc/xbmc/branches/linuxport/?pathrev=17283 XBMC rev 17283] ===
+=== Dernière MAJ: 23 Janvier 2009 avec [http://xbmc.svn.sourceforge.net/viewvc/xbmc/branches/linuxport/?pathrev=17283 XBMC rev 17283] ===
