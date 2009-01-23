@@ -60,6 +60,16 @@ BASE_SETTINGS_PATH = os.path.join( xbmc.translatePath( "P:\\script_data" ), __sc
 RSS_FEEDS_XML = os.path.join( CWD, "resources", "RssFeeds.xml" )
 
 
+class cancelRequest( Exception ):
+    """
+    Exception, merci a Alexsolex
+    """
+    def __init__( self, value ):
+        self.value = value
+    def __str__( self ):
+        return repr( self.value )
+
+
 def get_system_platform():
     """ fonction: pour recuperer la platform que xbmc tourne """
     platform = "unknown"

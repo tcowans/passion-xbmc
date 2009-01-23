@@ -73,14 +73,14 @@ CLOSE_CONTEXT_MENU = ( ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, ACTION_CONTEXT_M
 
 #############################################################################
 
-class cancelRequest( Exception ):
-    """
-    Exception, merci a Alexsolex
-    """
-    def __init__( self, value ):
-        self.value = value
-    def __str__( self ):
-        return repr( self.value )
+#class cancelRequest( Exception ):
+#    """
+#    Exception, merci a Alexsolex
+#    """
+#    def __init__( self, value ):
+#        self.value = value
+#    def __str__( self ):
+#        return repr( self.value )
 
 
 class rssReader:
@@ -777,15 +777,16 @@ class configCtrl:
 
 class MainWindow( xbmcgui.WindowXML ):
     # control id's
-    CONTROL_MAIN_LIST = 150
-    CONTROL_FORUM_BUTTON = 300
-    CONTROL_OPTIONS_BUTTON = 310
+    CONTROL_MAIN_LIST       = 150
+    CONTROL_FORUM_BUTTON    = 300
+    CONTROL_FILE_MGR_BUTTON = 305
+    CONTROL_OPTIONS_BUTTON  = 310
 
     def __init__( self, *args, **kwargs ):
-        xbmcgui.WindowXML.__init__( self, *args, **kwargs )
         """
         Initialisation de l'interface
         """
+        xbmcgui.WindowXML.__init__( self, *args, **kwargs )
         self.main_list_last_pos = []
 
         # Display Loading Window while we are loading the information from the website
@@ -966,6 +967,14 @@ class MainWindow( xbmcgui.WindowXML ):
                 show_settings( self )
                 #on a plus besoin du settins, on le delete
                 del show_settings
+                
+            elif ( act_ctrl_id in ( self.CONTROL_FILE_MGR_BUTTON, ) ):
+                from dialog_file_mgr import show_file_manager
+                show_file_manager( self )
+                #on a plus besoin du settins, on le delete
+                del show_file_manager
+            
+                
 
             #button_code_F3_keyboard = 61554
             # Temporarement desactivé en attendant une solution
