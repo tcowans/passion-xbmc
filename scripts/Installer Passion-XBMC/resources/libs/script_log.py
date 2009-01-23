@@ -140,7 +140,7 @@ def create_log_file():
             LOG( LOG_NOTICE, "Starting %s (version: %s).  Built on %s", __script__, __version__, __date__ )
             platform = ( os.environ.get( "OS", "" ).lower() or "Unknown" )
             platform = platform.replace( "linux", "GNU/Linux" ).replace( "osx", "Mac OS X" ).replace( "win32", "Windows" ).replace( "xbox", "XBox" ).replace( "os x", "Mac OS X" )
-            LOG( LOG_NOTICE, "XBMC, Platform: %s.  Built on %s", platform, xbmc.getInfoLabel( "System.BuildDate" ) )
+            LOG( LOG_NOTICE, "XBMC, Platform: %s (version: %s).  Built on %s", platform, xbmc.getInfoLabel( "System.BuildVersion" ), xbmc.getInfoLabel( "System.BuildDate" ) )
             LOG( LOG_NOTICE, "Q is mapped to: %s", xbmc.translatePath( ( "U:\\", "Q:\\", )[ ( platform == "XBox" ) ] ) )
             LOG( LOG_NOTICE, "The executable script running is: %s", os.path.join( os.getcwd().rstrip( ";" ), sys.modules[ "__main__" ].__file__ ) )
             LOG( LOG_NOTICE, "Log File is located: %s", LOG_SCRIPT )

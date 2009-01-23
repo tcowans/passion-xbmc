@@ -79,7 +79,7 @@
 			<posy>250</posy>
 			<width>200</width>
 			<height>30</height>
-			<label>$LOCALIZE[SCRIPT612]</label>
+			<label>SCRIPT612</label>
 			<font>font13</font>
 			<textcolor>ffffffff</textcolor>
 		</control>
@@ -104,7 +104,7 @@
 			<textcolor>ffffffff</textcolor>
 			<font>font13</font>
 			<align>justify</align>
-			<label>$LOCALIZE[SCRIPT604]</label>
+			<label>SCRIPT604</label>
 			<autoscroll time="2000" delay="3000">Skin.HasSetting(AutoScroll)</autoscroll>
 		</control>
 		<control type="group">
