@@ -406,7 +406,7 @@
 			<control type="image">
 				<posx>90</posx>
 				<posy>0</posy>
-				<width>85</width>
+				<width>100</width>
 				<height>25</height>
 				<texture>$INFO[Container.Property(Skin-Colours-path),,\passion-list-header.png]</texture>
 				<visible>!Control.HasFocus(300)</visible>
@@ -415,7 +415,7 @@
 				<description>forum button</description>
 				<posx>90</posx>
 				<posy>0</posy>
-				<width>85</width>
+				<width>100</width>
 				<height>25</height>
 				<align>center</align>
 				<label>SCRIPT1</label>
@@ -430,18 +430,18 @@
 				<ondown>150</ondown>
 			</control>
 			<control type="image">
-				<posx>180</posx>
+				<posx>195</posx>
 				<posy>0</posy>
-				<width>85</width>
+				<width>100</width>
 				<height>25</height>
 				<texture>$INFO[Container.Property(Skin-Colours-path),,\passion-list-header.png]</texture>
 				<visible>!Control.HasFocus(305)</visible>
 			</control>
 			<control type="button" id="305">
 				<description>file manager button</description>
-				<posx>180</posx>
+				<posx>195</posx>
 				<posy>0</posy>
-				<width>85</width>
+				<width>100</width>
 				<height>25</height>
 				<align>center</align>
 				<label>SCRIPT5</label>
@@ -456,18 +456,18 @@
 				<ondown>150</ondown>
 			</control>
 			<control type="image">
-				<posx>270</posx>
+				<posx>300</posx>
 				<posy>0</posy>
-				<width>85</width>
+				<width>100</width>
 				<height>25</height>
 				<texture>$INFO[Container.Property(Skin-Colours-path),,\passion-list-header.png]</texture>
 				<visible>!Control.HasFocus(310)</visible>
 			</control>
 			<control type="button" id="310">
 				<description>option button</description>
-				<posx>270</posx>
+				<posx>300</posx>
 				<posy>0</posy>
-				<width>85</width>
+				<width>100</width>
 				<height>25</height>
 				<align>center</align>
 				<label>SCRIPT2</label>
@@ -482,9 +482,9 @@
 				<ondown>150</ondown>
 			</control>
 			<control type="image">
-				<posx>360</posx>
+				<posx>405</posx>
 				<posy>0</posy>
-				<width>85</width>
+				<width>100</width>
 				<height>25</height>
 				<texture>$INFO[Container.Property(Skin-Colours-path),,\passion-list-header.png]</texture>
 				<visible>!Control.HasFocus(320) + Control.IsVisible(320)</visible>
@@ -492,9 +492,9 @@
             <!--moved in settings xml-->
 			<control type="button" id="320">
 				<description>help button</description>
-				<posx>360</posx>
+				<posx>405</posx>
 				<posy>0</posy>
-				<width>85</width>
+				<width>100</width>
 				<height>25</height>
 				<align>center</align>
 				<label>SCRIPT0</label>
