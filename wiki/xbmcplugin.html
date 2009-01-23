@@ -27,6 +27,20 @@ totalItems&nbsp;&nbsp;:&nbsp;[opt]&nbsp;integer&nbsp;-&nbsp;total&nbsp;number&nb
 &nbsp;<br>
 example:<br>
 &nbsp;&nbsp;-&nbsp;if&nbsp;not&nbsp;xbmcplugin.<a href="#-addDirectoryItem">addDirectoryItem</a>(int(sys.argv[1]),&nbsp;'F:\\Trailers\\300.mov',&nbsp;listitem,&nbsp;totalItems=50):&nbsp;break</tt></dd></dl>
+ <dl><dt><a name="-addDirectoryItems"><strong>addDirectoryItems</strong></a>(...)</dt><dd><tt><a href="#-addDirectoryItems">addDirectoryItems</a>(handle,&nbsp;items&nbsp;[,totalItems])&nbsp;--&nbsp;Callback&nbsp;function&nbsp;to&nbsp;pass&nbsp;directory&nbsp;contents&nbsp;back&nbsp;to&nbsp;XBMC&nbsp;as&nbsp;a&nbsp;list.<br>
+&nbsp;-&nbsp;Returns&nbsp;a&nbsp;bool&nbsp;for&nbsp;successful&nbsp;completion.<br>
+&nbsp;<br>
+handle&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;integer&nbsp;-&nbsp;handle&nbsp;the&nbsp;plugin&nbsp;was&nbsp;started&nbsp;with.<br>
+items&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;List&nbsp;-&nbsp;list&nbsp;of&nbsp;(url,&nbsp;listitem[,&nbsp;isFolder])&nbsp;as&nbsp;a&nbsp;tuple&nbsp;to&nbsp;add.<br>
+totalItems&nbsp;&nbsp;:&nbsp;[opt]&nbsp;integer&nbsp;-&nbsp;total&nbsp;number&nbsp;of&nbsp;items&nbsp;that&nbsp;will&nbsp;be&nbsp;passed.(used&nbsp;for&nbsp;progressbar)<br>
+&nbsp;<br>
+*Note,&nbsp;You&nbsp;can&nbsp;use&nbsp;the&nbsp;above&nbsp;as&nbsp;keywords&nbsp;for&nbsp;arguments.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Large&nbsp;lists&nbsp;benefit&nbsp;over&nbsp;using&nbsp;the&nbsp;standard&nbsp;<a href="#-addDirectoryItem">addDirectoryItem</a>()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You&nbsp;may&nbsp;call&nbsp;this&nbsp;more&nbsp;than&nbsp;once&nbsp;to&nbsp;add&nbsp;items&nbsp;in&nbsp;chunks<br>
+&nbsp;<br>
+example:<br>
+&nbsp;&nbsp;-&nbsp;if&nbsp;not&nbsp;xbmcplugin.<a href="#-addDirectoryItems">addDirectoryItems</a>(int(sys.argv[1]),&nbsp;[(url,&nbsp;listitem,&nbsp;False,)]:&nbsp;raise</tt></dd></dl>
  <dl><dt><a name="-addSortMethod"><strong>addSortMethod</strong></a>(...)</dt><dd><tt><a href="#-addSortMethod">addSortMethod</a>(handle,&nbsp;sortMethod)&nbsp;--&nbsp;Adds&nbsp;a&nbsp;sorting&nbsp;method&nbsp;for&nbsp;the&nbsp;media&nbsp;list.<br>
 &nbsp;<br>
 handle&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;integer&nbsp;-&nbsp;handle&nbsp;the&nbsp;plugin&nbsp;was&nbsp;started&nbsp;with.<br>

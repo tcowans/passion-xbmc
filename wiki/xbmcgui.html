@@ -1413,12 +1413,22 @@ example:<br>
 </dl>
 <hr>
 Methods defined here:<br>
-<dl><dt><a name="ControlList-addItem"><strong>addItem</strong></a>(...)</dt><dd><tt><a href="#ControlList-addItem">addItem</a>(item)&nbsp;--&nbsp;Add&nbsp;a&nbsp;new&nbsp;item&nbsp;to&nbsp;this&nbsp;control&nbsp;list.<br>
+<dl><dt><a name="ControlList-addItem"><strong>addItem</strong></a>(...)</dt><dd><tt><a href="#ControlList-addItem">addItem</a>(item)&nbsp;--&nbsp;Add&nbsp;a&nbsp;new&nbsp;item&nbsp;to&nbsp;this&nbsp;list&nbsp;control.<br>
 &nbsp;<br>
 item&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string,&nbsp;unicode&nbsp;or&nbsp;<a href="#ListItem">ListItem</a>&nbsp;-&nbsp;item&nbsp;to&nbsp;add.<br>
 &nbsp;<br>
 example:<br>
 &nbsp;&nbsp;-&nbsp;cList.<a href="#ControlList-addItem">addItem</a>('Reboot&nbsp;XBMC')</tt></dd></dl>
+
+<dl><dt><a name="ControlList-addItems"><strong>addItems</strong></a>(...)</dt><dd><tt><a href="#ControlList-addItems">addItems</a>(items)&nbsp;--&nbsp;Adds&nbsp;a&nbsp;list&nbsp;of&nbsp;listitems&nbsp;or&nbsp;strings&nbsp;to&nbsp;this&nbsp;list&nbsp;control.<br>
+&nbsp;<br>
+items&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;List&nbsp;-&nbsp;list&nbsp;of&nbsp;strings,&nbsp;unicode&nbsp;objects&nbsp;or&nbsp;ListItems&nbsp;to&nbsp;add.<br>
+&nbsp;<br>
+*Note,&nbsp;You&nbsp;can&nbsp;use&nbsp;the&nbsp;above&nbsp;as&nbsp;keywords&nbsp;for&nbsp;arguments.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Large&nbsp;lists&nbsp;benefit&nbsp;considerably,&nbsp;than&nbsp;using&nbsp;the&nbsp;standard&nbsp;<a href="#ControlList-addItem">addItem</a>()<br>
+example:<br>
+&nbsp;&nbsp;-&nbsp;cList.<a href="#ControlList-addItems">addItems</a>(items=listitems)</tt></dd></dl>
 
 <dl><dt><a name="ControlList-getItemHeight"><strong>getItemHeight</strong></a>(...)</dt><dd><tt><a href="#ControlList-getItemHeight">getItemHeight</a>()&nbsp;--&nbsp;Returns&nbsp;the&nbsp;control's&nbsp;current&nbsp;item&nbsp;height&nbsp;as&nbsp;an&nbsp;integer.<br>
 &nbsp;<br>
@@ -1504,6 +1514,15 @@ space&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb
 &nbsp;<br>
 example:<br>
 &nbsp;&nbsp;-&nbsp;cList.<a href="#ControlList-setSpace">setSpace</a>(5)</tt></dd></dl>
+
+<dl><dt><a name="ControlList-setStaticContent"><strong>setStaticContent</strong></a>(...)</dt><dd><tt><a href="#ControlList-setStaticContent">setStaticContent</a>(items)&nbsp;--&nbsp;Fills&nbsp;a&nbsp;static&nbsp;list&nbsp;with&nbsp;a&nbsp;list&nbsp;of&nbsp;listitems.<br>
+&nbsp;<br>
+items&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;List&nbsp;-&nbsp;list&nbsp;of&nbsp;listitems&nbsp;to&nbsp;add.<br>
+&nbsp;<br>
+*Note,&nbsp;You&nbsp;can&nbsp;use&nbsp;the&nbsp;above&nbsp;as&nbsp;keywords&nbsp;for&nbsp;arguments.<br>
+&nbsp;<br>
+example:<br>
+&nbsp;&nbsp;-&nbsp;cList.<a href="#ControlList-setStaticContent">setStaticContent</a>(items=listitems)</tt></dd></dl>
 
 <dl><dt><a name="ControlList-size"><strong>size</strong></a>(...)</dt><dd><tt><a href="#ControlList-size">size</a>()&nbsp;--&nbsp;Returns&nbsp;the&nbsp;total&nbsp;number&nbsp;of&nbsp;items&nbsp;in&nbsp;this&nbsp;list&nbsp;control&nbsp;as&nbsp;an&nbsp;integer.<br>
 &nbsp;<br>
@@ -2166,13 +2185,6 @@ example:<br>
 </dl>
 <hr>
 Methods defined here:<br>
-<dl><dt><a name="ControlTextBox-getSpinControl"><strong>getSpinControl</strong></a>(...)</dt><dd><tt><a href="#ControlTextBox-getSpinControl">getSpinControl</a>()&nbsp;--&nbsp;Returns&nbsp;the&nbsp;associated&nbsp;ControlSpin.<br>
--&nbsp;Not&nbsp;working&nbsp;completely&nbsp;yet&nbsp;-<br>
-After&nbsp;adding&nbsp;this&nbsp;textbox&nbsp;to&nbsp;a&nbsp;window&nbsp;it&nbsp;is&nbsp;not&nbsp;possible&nbsp;to&nbsp;change<br>
-the&nbsp;settings&nbsp;of&nbsp;this&nbsp;spin&nbsp;control.<br>
-example:<br>
-&nbsp;&nbsp;-&nbsp;id&nbsp;=&nbsp;self.<strong>textbox</strong>.<a href="#ControlTextBox-getSpinControl">getSpinControl</a>()</tt></dd></dl>
-
 <dl><dt><a name="ControlTextBox-reset"><strong>reset</strong></a>(...)</dt><dd><tt><a href="#ControlTextBox-reset">reset</a>()&nbsp;--&nbsp;Clear's&nbsp;this&nbsp;textbox.<br>
 &nbsp;<br>
 example:<br>
@@ -2501,15 +2513,19 @@ Data and other attributes defined here:<br>
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
 <td colspan=2><tt><a href="#ListItem">ListItem</a>&nbsp;class.<br>
 &nbsp;<br>
-<a href="#ListItem">ListItem</a>([label,&nbsp;label2,&nbsp;iconImage,&nbsp;thumbnailImage])&nbsp;--&nbsp;Creates&nbsp;a&nbsp;new&nbsp;<a href="#ListItem">ListItem</a>.<br>
+<a href="#ListItem">ListItem</a>([label,&nbsp;label2,&nbsp;iconImage,&nbsp;thumbnailImage,&nbsp;path])&nbsp;--&nbsp;Creates&nbsp;a&nbsp;new&nbsp;<a href="#ListItem">ListItem</a>.<br>
 &nbsp;<br>
 label&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;[opt]&nbsp;string&nbsp;or&nbsp;unicode&nbsp;-&nbsp;label1&nbsp;text.<br>
 label2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;[opt]&nbsp;string&nbsp;or&nbsp;unicode&nbsp;-&nbsp;label2&nbsp;text.<br>
 iconImage&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;[opt]&nbsp;string&nbsp;-&nbsp;icon&nbsp;filename.<br>
 thumbnailImage&nbsp;:&nbsp;[opt]&nbsp;string&nbsp;-&nbsp;thumbnail&nbsp;filename.<br>
+path&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;[opt]&nbsp;string&nbsp;or&nbsp;unicode&nbsp;-&nbsp;listitem's&nbsp;path.<br>
+&nbsp;<br>
+*Note,&nbsp;You&nbsp;can&nbsp;use&nbsp;the&nbsp;above&nbsp;as&nbsp;keywords&nbsp;for&nbsp;arguments&nbsp;and&nbsp;skip&nbsp;certain&nbsp;optional&nbsp;arguments.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Once&nbsp;you&nbsp;use&nbsp;a&nbsp;keyword,&nbsp;all&nbsp;following&nbsp;arguments&nbsp;require&nbsp;the&nbsp;keyword.<br>
 &nbsp;<br>
 example:<br>
-&nbsp;&nbsp;-&nbsp;listitem&nbsp;=&nbsp;xbmcgui.<a href="#ListItem">ListItem</a>('Casino&nbsp;Royale',&nbsp;'[PG-13]',&nbsp;'blank-poster.tbn',&nbsp;'poster.tbn')<br>&nbsp;</tt></td></tr>
+&nbsp;&nbsp;-&nbsp;listitem&nbsp;=&nbsp;xbmcgui.<a href="#ListItem">ListItem</a>('Casino&nbsp;Royale',&nbsp;'[PG-13]',&nbsp;'blank-poster.tbn',&nbsp;'poster.tbn',&nbsp;path='f:\\movies\\casino_royale.mov')<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%">Methods defined here:<br>
 <dl><dt><a name="ListItem-addContextMenuItems"><strong>addContextMenuItems</strong></a>(...)</dt><dd><tt><a href="#ListItem-addContextMenuItems">addContextMenuItems</a>([(label,&nbsp;action,)*],&nbsp;replaceItems)&nbsp;--&nbsp;Adds&nbsp;item(s)&nbsp;to&nbsp;the&nbsp;context&nbsp;menu&nbsp;for&nbsp;media&nbsp;lists.<br>
@@ -2595,6 +2611,15 @@ label2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string&nbsp;o
 &nbsp;<br>
 example:<br>
 &nbsp;&nbsp;-&nbsp;self.<strong>list</strong>.getSelectedItem().<a href="#ListItem-setLabel2">setLabel2</a>('[pg-13]')</tt></dd></dl>
+
+<dl><dt><a name="ListItem-setPath"><strong>setPath</strong></a>(...)</dt><dd><tt><a href="#ListItem-setPath">setPath</a>(path)&nbsp;--&nbsp;Sets&nbsp;the&nbsp;listitem's&nbsp;path.<br>
+&nbsp;<br>
+path&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string&nbsp;or&nbsp;unicode&nbsp;-&nbsp;path,&nbsp;activated&nbsp;when&nbsp;item&nbsp;is&nbsp;clicked.<br>
+&nbsp;<br>
+*Note,&nbsp;You&nbsp;can&nbsp;use&nbsp;the&nbsp;above&nbsp;as&nbsp;keywords&nbsp;for&nbsp;arguments.<br>
+&nbsp;<br>
+example:<br>
+&nbsp;&nbsp;-&nbsp;self.<strong>list</strong>.getSelectedItem().<a href="#ListItem-setPath">setPath</a>(path='ActivateWindow(Weather)')</tt></dd></dl>
 
 <dl><dt><a name="ListItem-setProperty"><strong>setProperty</strong></a>(...)</dt><dd><tt><a href="#ListItem-setProperty">setProperty</a>(key,&nbsp;value)&nbsp;--&nbsp;Sets&nbsp;a&nbsp;listitem&nbsp;property,&nbsp;similar&nbsp;to&nbsp;an&nbsp;infolabel.<br>
 &nbsp;<br>
