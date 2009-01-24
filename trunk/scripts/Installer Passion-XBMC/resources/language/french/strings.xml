@@ -7,6 +7,7 @@
   <string id="3">Aide</string>
   <string id="4">A propos</string>
   <string id="5">Gestionnaire</string>
+  <string id="6">Gestionnaire des Installations</string>
 
   <string id="10">Sélection</string>
   <string id="11">Thèmes</string>
@@ -81,6 +82,11 @@
   <string id="153">Annuler</string>
   <string id="154">Saisir le nouveau nom:</string>
   <string id="155">L'élément a été renommé:</string>
+  <string id="156">Supprimer %s</string>
+  <string id="157">Renommer %s</string>
+  <string id="158">Suppression de %s</string>
+  <string id="159">Etes vous sur de vouloir supprimer %s ?</string>
+  <string id="160">Lancer %s</string>
 
   <!--FORUM DIRECT INFOS STRINGS -->
   <string id="199">Informations en direct</string>
