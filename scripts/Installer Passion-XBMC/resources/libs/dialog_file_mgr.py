@@ -148,24 +148,28 @@ class fileMgr:
 
         return dirList
         
+    def renameItem( self, base_path, old_name, new_name):
+        """
+        Renomme un fichier ou repertoire
+        """
+        os.rename( os.path.join(base_path, old_name), os.path.join(base_path, new_name) )
+    
+    def deleteItem( self, item_path):
+        """
+        Supprime un element (repertoire ou fichier)
+        """
+        if os.path.isdir(item_path):
+            self.deleteDir(item_path)
+        else:
+            self.deleteFile(item_path)
+            
     def deleteFile(self, filename):
         """
         Delete a file form download directory
         @param filename:
         """
         os.remove(filename)
-        
-    def delFiles(self,folder):
-        """
-        From Joox
-        Deletes all files in a given folder and sub-folders.
-        Note that the sub-folders itself are not deleted.
-        Parameters : folder=path to local folder
-        """
-        for root, dirs, files in os.walk(folder , topdown=False):
-            for name in files:
-                os.remove(os.path.join(root, name))
-
+            
     def deleteDir( self, path ):
         """
         Efface un repertoire et tout son contenu ( le repertoire n'a pas besoin d'etre vide )
@@ -205,6 +209,38 @@ class fileMgr:
         Extract an archive in targetDir
         """
         xbmc.executebuiltin('XBMC.Extract(%s,%s)'%(archive,targetDir) )
+        
+
+    def linux_is_write_access( self, path ):
+        """
+        Linux
+        Verifie si on a les dorit en ecriture sur un element
+        """
+        Wtest = os.access( path, os.W_OK )
+        if Wtest == True:
+            rightstest = True
+            logger.LOG( logger.LOG_NOTICE, "linux chmod rightest OK for %s"%path )
+        else:
+            logger.LOG( logger.LOG_NOTICE, "linux chmod rightest NOT OK for %s"%path )
+            rightstest = False
+        return rightstest
+        
+    def linux_set_write_access( self, path, password ):
+        """
+        Linux
+        Effectue un chmod sur un repertoire pour ne plus etre bloque par les droits root sur plateforme linux
+        Retourne True en cas de succes ou False dans le cas contraire
+        """
+        PassStr = "echo %s | "%password
+        ChmodStr = "sudo -S chmod 777 -R %s"%path
+        try:
+            os.system( PassStr + ChmodStr )
+            rightstest = True
+        except:
+            rightstest = False
+            logger.LOG( logger.LOG_ERROR, "erreur CHMOD %s", path )
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+        return rightstest
 
 
 class FileMgrWindow( xbmcgui.WindowXML ):
@@ -236,6 +272,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         self.scriptDir         = self.mainwin.scriptDir
         self.CacheDir          = self.mainwin.CacheDir
         self.userDataDir       = self.mainwin.userDataDir
+        #self.rightstest         = ""
         
         self.curListType        = TYPE_ROOT
         self.currentItemList    = []
@@ -269,7 +306,10 @@ class FileMgrWindow( xbmcgui.WindowXML ):
 
         self._get_settings()
         self._set_skin_colours()
-
+        
+        # Verifications des permissions sur les repertoires
+        self.check_w_rights()
+        
         if self.is_started:
             self.is_started = False
 
@@ -290,19 +330,61 @@ class FileMgrWindow( xbmcgui.WindowXML ):
             if controlID == self.CONTROL_MAIN_LIST:
                 try: self.main_list_last_pos.append( self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition() )
                 except: self.main_list_last_pos.append( 0 )
-                if ( self.curListType == TYPE_ROOT or TYPE_PLUGIN in self.curListType):
-                    self.index = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()
+                
+                self.index = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()
+                if ( self.curListType == TYPE_ROOT or self.curListType == TYPE_PLUGIN):
                     self.curListType = self.currentItemList[ self.index ].type # On extrait le type de l'item selectionne
                     self.updateData() # On met a jour les donnees
                     self.updateList() # On raffraichit la page pour afficher le contenu
 
                 else:
                     # On va ici afficher un menu des options du gestionnaire de fichiers
-                    pass
+                    #dialog = xbmcgui.Dialog()
+                    #dialog.ok( _( 117 ), _( 117 ) )
+                    item_path     = self.currentItemList[ self.index ].local_path # On extrait le chemin de l'item
+                    item_basename = os.path.basename( item_path )
+                    
+                    menuList = [ _( 160 )%item_basename,  _( 157 )%item_basename, _( 156 )%item_basename, _( 153 ) ]
                     dialog = xbmcgui.Dialog()
-                    dialog.ok( _( 117 ), _( 117 ) )
-                    downloadOK = False
+                    chosenIndex = dialog.select( "%s : %s"%( _( 5 ), item_basename), menuList )
+                    if chosenIndex == 0: # Executer/Lancer
+                        if ( self.itemTypeList.index(self.curListType) in self.pluginDisplayList ):
+                            # Cas d'un sous-plugin (video, musique ...)
+                            if ( self.curListType == TYPE_PLUGIN_VIDEO ):
+                                rel_plugin_basedir = "video"
+                            elif ( self.curListType == TYPE_PLUGIN_MUSIC ):
+                                rel_plugin_basedir = "music"
+                            elif ( self.curListType == TYPE_PLUGIN_PROGRAMS ):
+                                rel_plugin_basedir = "programs"
+                            elif ( self.curListType == TYPE_PLUGIN_PICTURES ):
+                                rel_plugin_basedir = "pictures"
+                            xbmc.executebuiltin( "XBMC.ActivateWindow(10001,plugin://%s/%s/)"%( rel_plugin_basedir,item_basename ) )
+                        elif ( self.curListType == TYPE_SCRIPT ):
+                            xbmc.executescript( os.path.join(item_path, "default.py") )
+                            
+                    elif chosenIndex == 1: # Renommer
+                        # Renommer l'element
+                        item_dirname  = os.path.dirname( item_path )
+                        keyboard = xbmc.Keyboard( item_basename, _( 154 ) )
+                        keyboard.doModal()
+                        if ( keyboard.isConfirmed() ):
+                            inputText = keyboard.getText()
+                            self.fileMgr.renameItem( item_dirname, item_basename, inputText )
+                            xbmcgui.Dialog().ok( _( 155 ), inputText )
+                            self.updateData() # On met a jour les donnees
+                            self.updateList() # On raffraichit la page pour afficher le contenu
+                            
+                    elif chosenIndex == 2:
+                        # Supprimer l'element
+                        if xbmcgui.Dialog().yesno( _( 158 )%item_basename, _( 159 )%item_basename ):
+                            self.fileMgr.deleteItem( item_path )
+                            self.updateData() # On met a jour les donnees
+                            self.updateList() # On raffraichit la page pour afficher le contenu
+                            
+                            
 
+                    else:
+                        pass
 
             else:
                 self._on_action_control( controlID )
@@ -326,7 +408,8 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                     except: self.main_list_last_pos.append( 0 )
                 try:
                     # on verifie si on est un sous plugin
-                    if TYPE_PLUGIN + ' ' in self.curListType:
+                    #if ( TYPE_PLUGIN + ' ' in self.curListType ):
+                    if ( self.itemTypeList.index(self.curListType) in self.pluginDisplayList ): 
                         self.curListType = TYPE_PLUGIN
                     else:
                         # cas standard
@@ -418,6 +501,17 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                     item = ListItemObject( type=self.itemTypeList[ filterIdx ], name=self.itemTypeList[ filterIdx ], local_path=self.localdirList[ filterIdx ], thumb=self.itemThumbList[ filterIdx ] )
                     self.currentItemList.append(item)
             #elif TYPE_PLUGIN + ' ' in self.curListType:
+            elif ( ( self.curListType == TYPE_SCRIPT ) or ( self.itemTypeList.index(self.curListType) in self.pluginDisplayList ) ):
+                listdir = self.fileMgr.listDirFiles( self.localdirList[ self.itemTypeList.index(self.curListType) ] )
+                for index, item  in enumerate( listdir ):
+                    # Note:  dans le futur on pourra ici initialiser 'thumb' avec l'icone du script, plugin, themes ... 
+                    #        pour le moment on prend l'icone correspondant au type
+                    script_path    = os.path.join(self.localdirList[ self.itemTypeList.index(self.curListType) ],item)
+                    thumbnail_path = os.path.join(script_path, "default.tbn")
+                    if not os.path.exists(thumbnail_path):
+                        thumbnail_path = self.itemThumbList[ self.itemTypeList.index(self.curListType) ]
+                    item = ListItemObject( type=self.curListType, name=item, local_path=script_path, thumb=thumbnail_path )
+                    self.currentItemList.append(item)
             else:
                 listdir = self.fileMgr.listDirFiles( self.localdirList[ self.itemTypeList.index(self.curListType) ] )
                 for index, item  in enumerate( listdir ):
@@ -467,6 +561,35 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         xbmcgui.unlock()
 
         DIALOG_PROGRESS.close()
+
+
+    def check_w_rights(self):
+        """
+        Verifie les droits en ecriture des repertoires principaux dont on a besoin
+        """
+        set_write_access = False
+        if ( ( SYSTEM_PLATFORM == "linux" ) or ( SYSTEM_PLATFORM == "osx" ) ):
+            # On fait un check rapide pour voir si on a les droit en ecriture
+            for index, filterIdx in enumerate( self.rootDisplayList ):
+                local_path=self.localdirList[ filterIdx ]
+                if self.fileMgr.linux_is_write_access( local_path ):
+                    # Au moins un element n'a pas les droit, on ne pas pas plus loin et on demande le mot de passe
+                    set_write_access = True
+                    break
+                
+            if ( set_write_access == True ):
+                # On parcoure tous les repertoire et on met a jour les droits si besoin
+                xbmcgui.Dialog().ok( _( 19 ), _( 20 ) )
+                keyboard = xbmc.Keyboard( "", _( 21 ), True )
+                keyboard.doModal()
+                if keyboard.isConfirmed():
+                    password = keyboard.getText()
+                    for index, filterIdx in enumerate( self.rootDisplayList ):
+                        local_path=self.localdirList[ filterIdx ]
+                        if self.fileMgr.linux_is_write_access( local_path ):
+                            self.fileMgr.linux_set_write_access( local_path, password )
+        
+        
 
 
 def show_file_manager( mainwin ):

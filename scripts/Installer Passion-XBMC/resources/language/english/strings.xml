@@ -7,6 +7,7 @@
   <string id="3">Help</string>
   <string id="4">About</string>
   <string id="5">Manager</string>
+  <string id="6">Install Manager</string>
 
   <string id="10">Selection</string>
   <string id="11">Skins</string>
@@ -81,6 +82,11 @@
   <string id="153">Cancel</string>
   <string id="154">Enter the new name:</string>
   <string id="155">Element has been renamed:</string>
+  <string id="156">Delete %s</string>
+  <string id="157">Rename %s</string>
+  <string id="158">Delete of %s</string>
+  <string id="159">Are you sure you want to delete %s ?</string>
+  <string id="160">Run %s</string>
 
   <!--FORUM DIRECT INFOS STRINGS -->
   <string id="199">News</string>

@@ -6,6 +6,8 @@
   <string id="2">Asetukset</string>
   <string id="3">Ohje</string>
   <string id="4">About</string>
+  <string id="5">Manager</string>
+  <string id="6">Install Manager</string>
 
   <string id="10">Valinta</string>
   <string id="11">Skinit</string>
@@ -80,6 +82,11 @@
   <string id="153">Peruuta</string>
   <string id="154">Anna uusi nimi:</string>
   <string id="155">Nimettiin uudelleen:</string>
+  <string id="156">Delete %s</string>
+  <string id="157">Rename %s</string>
+  <string id="158">Delete of %s</string>
+  <string id="159">Are you sure you want to delete %s ?</string>
+  <string id="160">Run %s</string>
 
   <!--FORUM DIRECT INFOS STRINGS -->
   <string id="199">Uutiset</string>
