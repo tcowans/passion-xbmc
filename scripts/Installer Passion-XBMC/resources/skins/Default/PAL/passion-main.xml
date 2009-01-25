@@ -235,7 +235,8 @@
 						<selectedcolor>FFe2ff43</selectedcolor>
 						<textcolor>60000000</textcolor>
 						<align>right</align>
-						<info>ListItem.Label2</info>
+						<!--<info>ListItem.Label2</info>-->
+						<label>$INFO[ListItem.Property(date),$LOCALIZE[SCRIPT613]]</label>
 						<animation effect="slide" start="0,0" end="-26,0" time="0" condition="Control.IsVisible(2050)">conditional</animation>
 					</control>
 				</itemlayout>
@@ -315,7 +316,7 @@
 						<textcolor>60000000</textcolor>
 						<align>right</align>
 						<!--<info>ListItem.Label2</info>-->
-						<label>$INFO[ListItem.Label2,[B],[/B]]</label>
+						<label>$INFO[ListItem.Property(date),$LOCALIZE[SCRIPT613]]</label>
 						<animation effect="slide" start="0,0" end="-26,0" time="0" condition="Control.IsVisible(2050)">conditional</animation>
 					</control>
 				</focusedlayout>

@@ -90,7 +90,8 @@ class InfoWarehouseXMLFTP( InfoWarehouse ):
             previewPicture = None
         
         # Notifie la callback de mettre a jour l'image
-        updateImage_cb(previewPicture)
+        try: updateImage_cb(previewPicture)
+        except TypeError: pass
 
     def getInfo( self, itemName = None, itemType=None, itemId = None, updateImage_cb= None ):
         """ 
