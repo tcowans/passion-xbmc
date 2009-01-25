@@ -1109,13 +1109,13 @@ class MainWindow( xbmcgui.WindowXML ):
             logger.LOG( logger.LOG_DEBUG, "Window::onAction: Exception" )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
-
-
     def _close_script( self ):
         #**IMPORTANT** faut annuler les thread avant de fermer le script, sinon xbmc risque de planter
         #NB: le meme scenario va ce produire si vous fermer ou redemarrer xbmc avec le script en marche
         #on annule les thread
         self._stop_rss_timer()
+        try: self.itemInfosManager.infoWarehouseFTP.getImage_thread.cancel()
+        except: pass
         #on ferme le script
         self.close()
 
@@ -1409,7 +1409,7 @@ class MainWindow( xbmcgui.WindowXML ):
             #liste physique d'une section sur le ftp
             self.curDirList = self.passionFTPCtrl.getDirList( self.remotedirList[ self.index ] )
 
-        xbmcgui.lock()
+        #xbmcgui.lock()
 
         # Clear all ListItems in this control list
         self.getControl( self.CONTROL_MAIN_LIST ).reset()
@@ -1505,6 +1505,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 # nettoyage du nom: replace les souligner pas un espace et enleve l'extension
                 try: item2download = os.path.splitext( ItemListPath[ lenindex: ] )[ 0 ].replace( "_", " " )
                 except: item2download = ItemListPath[ lenindex: ]
+                DIALOG_PROGRESS.update( -1, _( 103 ), item2download, _( 110 ) )
 
                 if self.downloaded_property.__contains__( md5.new( item2download ).hexdigest() ):
                     already_downloaded = "true"
@@ -1513,7 +1514,9 @@ class MainWindow( xbmcgui.WindowXML ):
 
                 displayListItem = xbmcgui.ListItem( item2download, "", thumbnailImage = imagePath )
                 displayListItem.setProperty( "Downloaded", already_downloaded )
+                self.set_item_info( displayListItem, ItemListPath )
                 self.getControl( self.CONTROL_MAIN_LIST ).addItem( displayListItem )
+                DIALOG_PROGRESS.update( -1, _( 103 ), item2download, _( 110 ) )
 
             else:
                 # Element de la liste
@@ -1537,6 +1540,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 # nettoyage du nom: replace les souligner pas un espace et enleve l'extension
                 try: item2download = os.path.splitext( ItemListPath[ lenindex: ] )[ 0 ].replace( "_", " " )
                 except: item2download = ItemListPath[ lenindex: ]
+                DIALOG_PROGRESS.update( -1, _( 103 ), item2download, _( 110 ) )
 
                 if self.downloaded_property.__contains__( md5.new( item2download ).hexdigest() ):
                     already_downloaded = "true"
@@ -1545,10 +1549,28 @@ class MainWindow( xbmcgui.WindowXML ):
 
                 displayListItem = xbmcgui.ListItem( item2download, "", thumbnailImage = imagePath )
                 displayListItem.setProperty( "Downloaded", already_downloaded )
+                self.set_item_info( displayListItem, ItemListPath )
                 self.getControl( self.CONTROL_MAIN_LIST ).addItem( displayListItem )
-        xbmcgui.unlock()
+                DIALOG_PROGRESS.update( -1, _( 103 ), item2download, _( 110 ) )
+        #xbmcgui.unlock()
 
         DIALOG_PROGRESS.close()
+
+    def set_item_info( self, listitem, ipath ):
+        #infos = fileName, title, version, language, date , previewPicture, previewVideoURL, description_fr, description_en
+        try:
+            infos = self.itemInfosManager.infoWarehouseFTP.getInfo( itemName=os.path.basename( ipath ), itemType=self.type )
+            listitem.setProperty( "fileName",        infos[ 0 ] or "" )
+            listitem.setProperty( "title",           infos[ 1 ] or "" )
+            listitem.setProperty( "version",         infos[ 2 ] or "" )
+            listitem.setProperty( "language",        infos[ 3 ] or "" )
+            listitem.setProperty( "date",            infos[ 4 ] or "N/D" )
+            listitem.setProperty( "previewPicture",  infos[ 5 ] or "" )
+            listitem.setProperty( "previewVideoURL", infos[ 6 ] or "" )
+            listitem.setProperty( "description_fr",  infos[ 7 ] or "" )
+            listitem.setProperty( "description_en",  infos[ 8 ] or "" )
+        except:
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def deleteDir( self, path ):
         """
