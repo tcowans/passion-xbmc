@@ -82,11 +82,30 @@
   <string id="153">Cancel</string>
   <string id="154">Enter the new name:</string>
   <string id="155">Element has been renamed:</string>
-  <string id="156">Delete %s</string>
-  <string id="157">Rename %s</string>
+  <string id="156">Delete</string>
+  <string id="157">Rename</string>
   <string id="158">Delete of %s</string>
   <string id="159">Are you sure you want to delete %s ?</string>
-  <string id="160">Run %s</string>
+  <string id="160">Run</string>
+  <string id="161">Copy</string>
+  <string id="162">Move</string>
+  <string id="163">Confirm file copy</string>
+  <string id="164">Confirm file move</string>
+  <string id="165">Copy these files?</string>
+  <string id="166">Move these files?</string>
+  <string id="167">Browse for copy: %s</string>
+  <string id="168">Browse for move: %s</string>
+  <string id="169">Operation was aborted</string>
+  <string id="170">Copy failed</string>
+  <string id="171">Failed to copy atleast one file</string>
+  <string id="172">Move failed</string>
+  <string id="173">Failed to move atleast one file</string>  
+  <string id="174">Delete failed</string>
+  <string id="175">Failed to delete atleast one file</string>
+  <string id="176">Copy...</string>
+  <string id="177">Moving...</string>
+  <string id="178">From:&#32;</string>
+  <string id="179">To:&#32;</string>
 
   <!--FORUM DIRECT INFOS STRINGS -->
   <string id="199">News</string>

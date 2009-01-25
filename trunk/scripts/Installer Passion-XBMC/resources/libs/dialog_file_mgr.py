@@ -1,4 +1,3 @@
-# -*- coding: cp1252 -*-
 
 #Modules general
 import os
@@ -10,8 +9,9 @@ import xbmc
 import xbmcgui
 
 #modules custom
+import shutil2
 from utilities import *
-from convert_utc_time import set_local_time
+#from convert_utc_time import set_local_time
 
 #module logger
 try:
@@ -19,7 +19,7 @@ try:
 except:
     import script_log as logger
     
-import traceback
+#import traceback
 
 # INITIALISATION CHEMIN RACINE
 ROOTDIR = os.getcwd().replace( ";", "" )
@@ -28,11 +28,6 @@ ROOTDIR = os.getcwd().replace( ";", "" )
 _ = sys.modules[ "__main__" ].__language__
 
 DIALOG_PROGRESS = xbmcgui.DialogProgress()
-
-# script constants
-__svn_revision__ = sys.modules[ "__main__" ].__svn_revision__ or "0"
-__version__ = "%s.%s" % ( sys.modules[ "__main__" ].__version__, __svn_revision__ )
-__author__ = sys.modules[ "__main__" ].__author__
 
 
 ############################################################################
@@ -53,7 +48,7 @@ ACTION_SHOW_INFO = 11
 #ACTION_STOP = 13
 #ACTION_NEXT_ITEM = 14
 #ACTION_PREV_ITEM = 15
-ACTION_CONTEXT_MENU = 117
+ACTION_CONTEXT_MENU = 117 # ACTION_MOUSE_RIGHT_CLICK *sa marche maintenant avec les derniere SVN*
 CLOSE_CONTEXT_MENU = ( ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, ACTION_CONTEXT_MENU, )
 
 
@@ -94,6 +89,13 @@ rootDisplayList   = [ INDEX_SKIN, INDEX_SCRAPER, INDEX_SCRIPT, INDEX_PLUGIN ]   
 pluginDisplayList = [ INDEX_PLUGIN_MUSIC, INDEX_PLUGIN_PICTURES, INDEX_PLUGIN_PROGRAMS, INDEX_PLUGIN_VIDEO ] # Liste des plugins : Cette liste est un filtre ( utilisant l'index ) sur les listes ci-dessus
 
 
+def copy_func( cpt_blk, taille_blk, total_taille ):
+    updt_val = int( ( cpt_blk * taille_blk ) / 10.0 / total_taille )
+    if updt_val > 100: updt_val = 100
+    DIALOG_PROGRESS.update( updt_val )
+    # DON'T ALLOW Progress().iscanceled() BUG CREATE, FIXED SOON
+    #if xbmcgui.DialogProgress().iscanceled():
+    #    xbmcgui.DialogProgress().close()
 
 
 class ListItemObject:
@@ -281,14 +283,6 @@ class FileMgrWindow( xbmcgui.WindowXML ):
 
         self.fileMgr             = fileMgr()
 
-#        # Display Loading Window while we are loading the information from the website
-#        if xbmc.getCondVisibility( "Window.IsActive(progressdialog)" ):
-#            #si le dialog PROGRESS est visible update
-#            DIALOG_PROGRESS.update( -1, _( 103 ), _( 110 ) )
-#        else:
-#            #si le dialog PROGRESS n'est pas visible affiche le dialog
-#            DIALOG_PROGRESS.create( _( 0 ), _( 103 ), _( 110 ) )
-
         #TODO: TOUTES ces varibales devraient etre passees en parametre du constructeur de la classe ( __init__ si tu preferes )
         # On ne devraient pas utiliser de variables globale ou rarement en prog objet
 
@@ -313,8 +307,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         if self.is_started:
             self.is_started = False
 
-            self.updateData()
-            self.updateList()
+            self.updateDataAndList()
             
     def onFocus( self, controlID ):
         #self.controlID = controlID
@@ -328,78 +321,136 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         """
         try:
             if controlID == self.CONTROL_MAIN_LIST:
-                try: self.main_list_last_pos.append( self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition() )
-                except: self.main_list_last_pos.append( 0 )
-                
-                self.index = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()
-                if ( self.curListType == TYPE_ROOT or self.curListType == TYPE_PLUGIN):
-                    self.curListType = self.currentItemList[ self.index ].type # On extrait le type de l'item selectionne
-                    self.updateData() # On met a jour les donnees
-                    self.updateList() # On raffraichit la page pour afficher le contenu
-
-                else:
-                    # On va ici afficher un menu des options du gestionnaire de fichiers
-                    #dialog = xbmcgui.Dialog()
-                    #dialog.ok( _( 117 ), _( 117 ) )
-                    item_path     = self.currentItemList[ self.index ].local_path # On extrait le chemin de l'item
-                    item_basename = os.path.basename( item_path )
-                    
-                    menuList = [ _( 160 )%item_basename,  _( 157 )%item_basename, _( 156 )%item_basename, _( 153 ) ]
-                    dialog = xbmcgui.Dialog()
-                    chosenIndex = dialog.select( "%s : %s"%( _( 5 ), item_basename), menuList )
-                    if chosenIndex == 0: # Executer/Lancer
-                        if ( self.itemTypeList.index(self.curListType) in self.pluginDisplayList ):
-                            # Cas d'un sous-plugin (video, musique ...)
-                            if ( self.curListType == TYPE_PLUGIN_VIDEO ):
-                                rel_plugin_basedir = "video"
-                            elif ( self.curListType == TYPE_PLUGIN_MUSIC ):
-                                rel_plugin_basedir = "music"
-                            elif ( self.curListType == TYPE_PLUGIN_PROGRAMS ):
-                                rel_plugin_basedir = "programs"
-                            elif ( self.curListType == TYPE_PLUGIN_PICTURES ):
-                                rel_plugin_basedir = "pictures"
-                            xbmc.executebuiltin( "XBMC.ActivateWindow(10001,plugin://%s/%s/)"%( rel_plugin_basedir,item_basename ) )
-                        elif ( self.curListType == TYPE_SCRIPT ):
-                            xbmc.executescript( os.path.join(item_path, "default.py") )
-                            
-                    elif chosenIndex == 1: # Renommer
-                        # Renommer l'element
-                        item_dirname  = os.path.dirname( item_path )
-                        keyboard = xbmc.Keyboard( item_basename, _( 154 ) )
-                        keyboard.doModal()
-                        if ( keyboard.isConfirmed() ):
-                            inputText = keyboard.getText()
-                            self.fileMgr.renameItem( item_dirname, item_basename, inputText )
-                            xbmcgui.Dialog().ok( _( 155 ), inputText )
-                            self.updateData() # On met a jour les donnees
-                            self.updateList() # On raffraichit la page pour afficher le contenu
-                            
-                    elif chosenIndex == 2:
-                        # Supprimer l'element
-                        if xbmcgui.Dialog().yesno( _( 158 )%item_basename, _( 159 )%item_basename ):
-                            self.fileMgr.deleteItem( item_path )
-                            self.updateData() # On met a jour les donnees
-                            self.updateList() # On raffraichit la page pour afficher le contenu
-                            
-                            
-
-                    else:
-                        pass
-
-            else:
-                self._on_action_control( controlID )
-
+                self.show_context_menu()
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-            
+
+    def show_context_menu( self ):
+        try: self.main_list_last_pos.append( self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition() )
+        except: self.main_list_last_pos.append( 0 )
+        
+        self.index = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()
+        if ( self.curListType == TYPE_ROOT or self.curListType == TYPE_PLUGIN):
+            self.curListType = self.currentItemList[ self.index ].type # On extrait le type de l'item selectionne
+            self.updateDataAndList()
+
+        else:
+            # On va ici afficher un menu des options du gestionnaire de fichiers
+            item_path     = self.currentItemList[ self.index ].local_path # On extrait le chemin de l'item
+            item_basename = os.path.basename( item_path )
+
+            if ( self.curListType == TYPE_SCRIPT ) or ( self.itemTypeList.index(self.curListType) in self.pluginDisplayList ):
+                # liste des options pour plugins et scripts
+                menuList = [ _( 160 ), _( 157 ), _( 156 ), _( 161 ), _( 162 ), _( 153 ) ]
+                #menuList = [ _( 160 ) % item_basename, _( 157 ) % item_basename, _( 156 ) % item_basename, _( 153 ) ]
+            else:
+                # liste des options pour skins et scrapers
+                menuList = [ _( 157 ), _( 156 ), _( 161 ), _( 162 ), _( 153 ) ]
+                #menuList = [ _( 157 ) % item_basename, _( 156 ) % item_basename, _( 153 ) ]
+            chosenIndex = xbmcgui.Dialog().select( "%s : %s" % ( _( 5 ), bold_text( item_basename ) ), menuList )
+            if chosenIndex != -1:
+                # si liste des options est pour les skins et scrapers, augmente la valeur de +1
+                if len( menuList ) == 5:
+                    chosenIndex += 1
+                if chosenIndex == 0: # Executer/Lancer
+                    if ( self.itemTypeList.index(self.curListType) in self.pluginDisplayList ):
+                        # Cas d'un sous-plugin (video, musique ...)
+                        # window id's : http://xbmc.org/wiki/?title=Window_IDs
+                        if ( self.curListType == TYPE_PLUGIN_VIDEO ):
+                            command = "XBMC.ActivateWindow(10025,plugin://video/%s/)" % ( item_basename, )
+                        elif ( self.curListType == TYPE_PLUGIN_MUSIC ):
+                            command = "XBMC.ActivateWindow(10502,plugin://music/%s/)" % ( item_basename, )
+                        elif ( self.curListType == TYPE_PLUGIN_PROGRAMS ):
+                            command = "XBMC.ActivateWindow(10001,plugin://programs/%s/)" % ( item_basename, )
+                        elif ( self.curListType == TYPE_PLUGIN_PICTURES ):
+                            command = "XBMC.ActivateWindow(10002,plugin://pictures/%s/)" % ( item_basename, )
+                    elif ( self.curListType == TYPE_SCRIPT ):
+                        command = "XBMC.RunScript(%s)" % ( os.path.join( item_path, "default.py" ), )
+
+                    #on ferme le script en court pour pas generer des conflits
+                    self._close_dialog()
+                    self.mainwin._close_script()
+                    #maintenant qu'il y a plus de conflit possible, on execute la command
+                    xbmc.executebuiltin( command )
+
+                elif chosenIndex == 1: # Renommer
+                    # Renommer l'element
+                    item_dirname  = os.path.dirname( item_path )
+                    keyboard = xbmc.Keyboard( item_basename, _( 154 ) )
+                    keyboard.doModal()
+                    if ( keyboard.isConfirmed() ):
+                        inputText = keyboard.getText()
+                        self.fileMgr.renameItem( item_dirname, item_basename, inputText )
+                        xbmcgui.Dialog().ok( _( 155 ), inputText )
+                        self.updateDataAndList()
+
+                elif chosenIndex == 2:
+                    # Supprimer l'element
+                    if xbmcgui.Dialog().yesno( _( 158 )%item_basename, _( 159 )%item_basename ):
+                        self.fileMgr.deleteItem( item_path )
+                        self.updateDataAndList() 
+
+                elif chosenIndex == 3:
+                    # copier l'element
+                    new_path = xbmcgui.Dialog().browse( 3, _( 167 ) % item_basename, "files" )
+                    if bool( new_path ):
+                        src = os.path.normpath( item_path )
+                        dst = os.path.normpath( os.path.join( new_path, item_basename ) )
+                        if xbmcgui.Dialog().yesno( _( 163 ), _( 165 ), src, dst ):
+                            DIALOG_PROGRESS.create( _( 176 ), _( 178 ) + src, _( 179 ) + dst, _( 110 ) )
+                            try:
+                                if os.path.isdir( src ):
+                                    if not os.path.isdir( os.path.dirname( dst ) ):
+                                        os.makedirs( os.path.dirname( dst ) )
+                                    shutil2.copytree( src, dst, reportcopy=copy_func, overwrite=True )
+                                else:
+                                    shutil2.copy( src, dst, reportcopy=copy_func, overwrite=True )
+                            except:
+                                xbmcgui.Dialog().ok( _( 169 ), _( 170 ), _( 171 ) )
+                                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                                #import traceback; traceback.print_exc()
+                            #self.updateDataAndList()
+                            DIALOG_PROGRESS.close()
+
+                elif chosenIndex == 4:
+                    # deplacer l'element
+                    new_path = xbmcgui.Dialog().browse( 3, _( 168 ) % item_basename, "files" )
+                    if bool( new_path ):
+                        src = os.path.normpath( item_path )
+                        dst = os.path.normpath( os.path.join( new_path, item_basename ) )
+                        if xbmcgui.Dialog().yesno( _( 164 ), _( 166 ), src, dst ):
+                            DIALOG_PROGRESS.create( _( 177 ), _( 178 ) + src, _( 179 ) + dst, _( 110 ) )
+                            try:
+                                if os.path.isdir( src ):
+                                    if not os.path.isdir( os.path.dirname( dst ) ):
+                                        os.makedirs( os.path.dirname( dst ) )
+                                    shutil2.copytree( src, dst, reportcopy=copy_func, overwrite=True )
+                                else:
+                                    shutil2.copy( src, dst, reportcopy=copy_func, overwrite=True )
+                                self.fileMgr.deleteItem( src )
+                            except:
+                                xbmcgui.Dialog().ok( _( 169 ), _( 172 ), _( 173 ) )
+                                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                                #import traceback; traceback.print_exc()
+                            self.updateDataAndList()
+                            DIALOG_PROGRESS.close()
+
+    def _close_dialog( self ):
+        #xbmc.sleep( 100 )
+        self.close()
+
     def onAction( self, action ):
         """
         Remonte l'arborescence et quitte le script
         """
         try:
-            if ( action == ACTION_PREVIOUS_MENU ):
+            if ( action == ACTION_CONTEXT_MENU ) and not ( self.curListType == TYPE_ROOT or self.curListType == TYPE_PLUGIN ):
+                # Affiche les options pour l'utilisateur
+                self.show_context_menu()
+
+            elif ( action == ACTION_PREVIOUS_MENU ):
                 # Sortie du script
-                self.close()
+                self._close_dialog()
 
             elif ( action == ACTION_PARENT_DIR ):
                 # remonte l'arborescence
@@ -414,8 +465,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                     else:
                         # cas standard
                         self.curListType = TYPE_ROOT
-                    self.updateData()
-                    self.updateList()
+                    self.updateDataAndList()
                 except:
                     logger.LOG( logger.LOG_DEBUG, "FileMgrWindow::onAction::ACTION_PREVIOUS_MENU: Exception durant updateList()" )
                     logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
@@ -426,32 +476,9 @@ class FileMgrWindow( xbmcgui.WindowXML ):
             elif ( action == ACTION_SHOW_INFO ):
                 # Affiche la description de l'item selectionné
                 pass
-            else:
-                self._on_action_control( action )
-                self._on_action_control( action.getButtonCode() )
 
         except:
             logger.LOG( logger.LOG_DEBUG, "FileMgrWindow::onAction: Exception" )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-
-    def _on_action_control( self, act_ctrl_id ):
-        try:
-            pass
-#            #button_code_F1_keyboard = 61552
-#            if ( act_ctrl_id in ( self.CONTROL_FORUM_BUTTON, 61552 ) ):
-#                from dialog_direct_infos import show_direct_infos
-#                show_direct_infos( self )
-#                #on a plus besoin, on le delete
-#                del show_direct_infos
-#
-#            elif ( act_ctrl_id in ( ACTION_CONTEXT_MENU, self.CONTROL_OPTIONS_BUTTON ) ):
-#                from dialog_script_settings import show_settings
-#                show_settings( self )
-#                #on a plus besoin du settins, on le delete
-#                del show_settings
-#            else:
-#                pass
-        except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def _get_settings( self, defaults=False ):
@@ -468,7 +495,6 @@ class FileMgrWindow( xbmcgui.WindowXML ):
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         #xbmcgui.unlock()
 
-
     def updateProgress_cb( self, percent, dp=None ):
         """
         Met a jour la barre de progression
@@ -480,6 +506,15 @@ class FileMgrWindow( xbmcgui.WindowXML ):
             percent = 100
             dp.update( percent )
 
+    def updateDataAndList( self ):
+        DIALOG_PROGRESS.create( _( 0 ), _( 104 ), _( 110 ) )
+        try:
+            self.updateData() # On met a jour les donnees
+            self.updateList() # On raffraichit la page pour afficher le contenu
+        except:
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+        DIALOG_PROGRESS.close()
+
     def updateData( self ):
         """
         Mise a jour des donnnees de la liste courante
@@ -488,8 +523,8 @@ class FileMgrWindow( xbmcgui.WindowXML ):
             # Vide la liste
             del self.currentItemList[:]
             
-            if not xbmc.getCondVisibility( "Window.IsActive(progressdialog)" ):
-                DIALOG_PROGRESS.create( _( 0 ), _( 104 ), _( 110 ) )
+            #if xbmc.getCondVisibility( "!Window.IsActive(progressdialog)" ):
+            #    DIALOG_PROGRESS.create( _( 0 ), _( 104 ), _( 110 ) )
                 
             # Recuperation des infos
             if ( self.curListType == TYPE_ROOT ):
@@ -523,17 +558,16 @@ class FileMgrWindow( xbmcgui.WindowXML ):
             logger.LOG( logger.LOG_DEBUG, "FileMgrWindow: Exception durant la recuperation des donnees" )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
-        DIALOG_PROGRESS.close()
+        #DIALOG_PROGRESS.close()
 
-    
     def updateList( self ):
         """
         Mise a jour de la liste affichee
         """
-        if not xbmc.getCondVisibility( "Window.IsActive(progressdialog)" ):
-            DIALOG_PROGRESS.create( _( 0 ), _( 104 ), _( 110 ) )
+        #if xbmc.getCondVisibility( "!Window.IsActive(progressdialog)" ):
+        #    DIALOG_PROGRESS.create( _( 0 ), _( 104 ), _( 110 ) )
 
-        xbmcgui.lock()
+        #xbmcgui.lock()
 
         # Clear all ListItems in this control list
         self.getControl( self.CONTROL_MAIN_LIST ).reset()
@@ -544,24 +578,18 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         # Titre de la categorie
         self.setProperty( "Category", self.curListType )
 
+        cur_skin = xbmc.getSkinDir()
         for index, item  in enumerate( self.currentItemList ):
-            displayListItem = xbmcgui.ListItem( item.name, "", thumbnailImage = item.thumb )
-            #displayListItem.setProperty( "Downloaded", "" )
+            if ( item.local_path == ROOTDIR ) or ( item.name == cur_skin ):
+                label1 = item.name + " (Running)"
+            else:
+                label1 = item.name
+            displayListItem = xbmcgui.ListItem( label1, "", thumbnailImage = item.thumb )
             self.getControl( self.CONTROL_MAIN_LIST ).addItem( displayListItem )
 
-#            # nettoyage du nom: replace les souligner pas un espace et enleve l'extension
-#            try: item2download = os.path.splitext( ItemListPath[ lenindex: ] )[ 0 ].replace( "_", " " )
-#            except: item2download = ItemListPath[ lenindex: ]
-#
-#            if self.downloaded_property.__contains__( md5.new( item2download ).hexdigest() ):
-#                already_downloaded = "true"
-#            else:
-#                already_downloaded = ""
+        #xbmcgui.unlock()
 
-        xbmcgui.unlock()
-
-        DIALOG_PROGRESS.close()
-
+        #DIALOG_PROGRESS.close()
 
     def check_w_rights(self):
         """

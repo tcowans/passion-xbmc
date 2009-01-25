@@ -13,6 +13,7 @@ Module de partage des fonctions et des constantes
 #which were imported and used within the module).
 __all__ = [
     # public names
+    "cancelRequest",
     "SYSTEM_PLATFORM",
     "XBMC_ROOT",
     "parse_rss_xml",
@@ -227,9 +228,9 @@ def set_xbmc_carriage_return( text ):
     """ only for xbmc """
     text = text.replace( "\r\n", "[CR]" )
     text = text.replace( "\n\n", "[CR]" )
-    text = text.replace( "\n", "[CR]" )
+    text = text.replace( "\n",   "[CR]" )
     text = text.replace( "\r\r", "[CR]" )
-    text = text.replace( "\r", "[CR]" )
+    text = text.replace( "\r",   "[CR]" )
     return text
 
 
