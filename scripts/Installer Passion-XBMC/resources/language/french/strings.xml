@@ -82,11 +82,30 @@
   <string id="153">Annuler</string>
   <string id="154">Saisir le nouveau nom:</string>
   <string id="155">L'élément a été renommé:</string>
-  <string id="156">Supprimer %s</string>
-  <string id="157">Renommer %s</string>
+  <string id="156">Supprimer</string>
+  <string id="157">Renommer</string>
   <string id="158">Suppression de %s</string>
-  <string id="159">Etes vous sur de vouloir supprimer %s ?</string>
-  <string id="160">Lancer %s</string>
+  <string id="159">Êtes-vous sûr de vouloir supprimer %s ?</string>
+  <string id="160">Lancer</string>
+  <string id="161">Copier</string>
+  <string id="162">Déplacer</string>
+  <string id="163">Confirmer copie du fichier</string>
+  <string id="164">Confirmer déplacement du fichier</string>
+  <string id="165">Êtes-vous sûr de copier ce(s) fichier(s)?</string>
+  <string id="166">Êtes-vous sûr de déplacer ce(s) fichier(s)?</string>
+  <string id="167">Parcourir pour copier : %s</string>
+  <string id="168">Parcourir pour déplacer : %s</string>
+  <string id="169">Opération annulée</string>
+  <string id="170">La copie a échouée</string>
+  <string id="171">Un ou plusieurs fichiers n’ont pas été copiés</string>
+  <string id="172">Le déplacement a échoué</string>
+  <string id="173">Un ou plusieurs fichiers n’ont pas été déplacés</string>
+  <string id="174">La suppression a échouée</string>
+  <string id="175">Un ou plusieurs fichiers n’ont pas été supprimés</string>
+  <string id="176">Copie...</string>
+  <string id="177">Déplacement...</string>
+  <string id="178">De :&#32;</string>
+  <string id="179">Vers :&#32;</string>
 
   <!--FORUM DIRECT INFOS STRINGS -->
   <string id="199">Informations en direct</string>
