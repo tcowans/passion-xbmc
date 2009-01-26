@@ -7,7 +7,9 @@
   <string id="3">Help</string>
   <string id="4">About</string>
   <string id="5">Manager</string>
-  <string id="6">Install Manager</string>
+  <string id="6">Add-ons Manager</string>
+  <string id="7">Installer</string>
+  <string id="8">Exit</string>
 
   <string id="10">Selection</string>
   <string id="11">Skins</string>

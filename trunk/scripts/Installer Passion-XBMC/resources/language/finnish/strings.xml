@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
-<strings> <!--  Finnish 7.1.2008 -->
+<!--  Finnish 7.1.2009 -->
+<strings>
   <!--GENERAL STRINGS -->
   <string id="0">Installer Passion-XBMC</string>
   <string id="1">Keskustelualue</string>
@@ -7,7 +8,9 @@
   <string id="3">Ohje</string>
   <string id="4">About</string>
   <string id="5">Manager</string>
-  <string id="6">Install Manager</string>
+  <string id="6">Add-ons Manager</string>
+  <string id="7">Installer</string>
+  <string id="8">Exit</string>
 
   <string id="10">Valinta</string>
   <string id="11">Skinit</string>

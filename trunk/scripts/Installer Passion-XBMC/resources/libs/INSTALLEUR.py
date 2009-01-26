@@ -778,9 +778,10 @@ class configCtrl:
 class MainWindow( xbmcgui.WindowXML ):
     # control id's
     CONTROL_MAIN_LIST       = 150
-    CONTROL_FORUM_BUTTON    = 300
-    CONTROL_FILE_MGR_BUTTON = 305
+    CONTROL_FORUM_BUTTON    = 305
+    CONTROL_FILE_MGR_BUTTON = 300
     CONTROL_OPTIONS_BUTTON  = 310
+    CONTROL_EXIT_BUTTON      = 320
 
     def __init__( self, *args, **kwargs ):
         """
@@ -1346,6 +1347,8 @@ class MainWindow( xbmcgui.WindowXML ):
                             # Close the Loading Window
                             dp.close()
 
+            elif controlID == self.CONTROL_EXIT_BUTTON:
+                self._close_script()
             else:
                 self._on_action_control( controlID )
 
@@ -1512,7 +1515,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 else:
                     already_downloaded = ""
 
-                displayListItem = xbmcgui.ListItem( item2download, "", thumbnailImage = imagePath )
+                displayListItem = xbmcgui.ListItem( item2download, "", iconImage=imagePath, thumbnailImage=imagePath )
                 displayListItem.setProperty( "Downloaded", already_downloaded )
                 self.set_item_info( displayListItem, ItemListPath )
                 self.getControl( self.CONTROL_MAIN_LIST ).addItem( displayListItem )
@@ -1547,7 +1550,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 else:
                     already_downloaded = ""
 
-                displayListItem = xbmcgui.ListItem( item2download, "", thumbnailImage = imagePath )
+                displayListItem = xbmcgui.ListItem( item2download, "", iconImage=imagePath, thumbnailImage=imagePath )
                 displayListItem.setProperty( "Downloaded", already_downloaded )
                 self.set_item_info( displayListItem, ItemListPath )
                 self.getControl( self.CONTROL_MAIN_LIST ).addItem( displayListItem )
@@ -1569,6 +1572,9 @@ class MainWindow( xbmcgui.WindowXML ):
             listitem.setProperty( "previewVideoURL", infos[ 6 ] or "" )
             listitem.setProperty( "description_fr",  infos[ 7 ] or "" )
             listitem.setProperty( "description_en",  infos[ 8 ] or "" )
+            if infos[ 5 ]:
+                #print infos[ 5 ]
+                listitem.setThumbnailImage( infos[ 5 ] )
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 

@@ -247,9 +247,12 @@ class fileMgr:
 
 class FileMgrWindow( xbmcgui.WindowXML ):
     # control id's
-    CONTROL_MAIN_LIST      = 150
-    CONTROL_FORUM_BUTTON   = 300
-    CONTROL_OPTIONS_BUTTON = 310
+    CONTROL_MAIN_LIST_START  = 50
+    CONTROL_MAIN_LIST_END    = 59
+    CONTROL_FORUM_BUTTON     = 305
+    CONTROL_INSTALLER_BUTTON = 300
+    CONTROL_OPTIONS_BUTTON   = 310
+    CONTROL_EXIT_BUTTON      = 320
 
     def __init__( self, *args, **kwargs ):
         """
@@ -297,6 +300,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
     def onInit( self ):
         # Title of the current pages
         self.setProperty( "Category", _( 10 ) )
+        #self.controlID = 2
 
         self._get_settings()
         self._set_skin_colours()
@@ -304,11 +308,11 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         # Verifications des permissions sur les repertoires
         self.check_w_rights()
         
-        if self.is_started:
-            self.is_started = False
+        #if self.is_started:
+        #    self.is_started = False
+        self.updateDataAndList()
+        xbmc.executebuiltin( "Container.SetViewMode(%i)" % self.settings.get( "manager_view_mode", self.CONTROL_MAIN_LIST_START ) )
 
-            self.updateDataAndList()
-            
     def onFocus( self, controlID ):
         #self.controlID = controlID
         #cette fonction n'est pas utiliser ici, mais dans les XML si besoin
@@ -316,20 +320,30 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         pass
 
     def onClick( self, controlID ):
-        """
-        Traitement si selection d'un element de la liste
-        """
         try:
-            if controlID == self.CONTROL_MAIN_LIST:
+            if ( self.CONTROL_MAIN_LIST_START <= controlID <= self.CONTROL_MAIN_LIST_END ):
+                #Traitement si selection d'un element de la liste
                 self.show_context_menu()
+            elif controlID == self.CONTROL_INSTALLER_BUTTON:
+                self._close_dialog()
+            elif controlID == self.CONTROL_FORUM_BUTTON:
+                self.mainwin._on_action_control( self.mainwin.CONTROL_FORUM_BUTTON )
+            elif controlID == self.CONTROL_OPTIONS_BUTTON:
+                self.mainwin._on_action_control( self.mainwin.CONTROL_OPTIONS_BUTTON )
+                #on prend pas de chance reload ces fonctions
+                self._get_settings()
+                self._set_skin_colours()
+            elif controlID == self.CONTROL_EXIT_BUTTON:
+                self._close_dialog()
+                self.mainwin._close_script()
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def show_context_menu( self ):
-        try: self.main_list_last_pos.append( self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition() )
+        try: self.main_list_last_pos.append( self.getCurrentListPosition() )
         except: self.main_list_last_pos.append( 0 )
         
-        self.index = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()
+        self.index = self.getCurrentListPosition()
         if ( self.curListType == TYPE_ROOT or self.curListType == TYPE_PLUGIN):
             self.curListType = self.currentItemList[ self.index ].type # On extrait le type de l'item selectionne
             self.updateDataAndList()
@@ -437,6 +451,14 @@ class FileMgrWindow( xbmcgui.WindowXML ):
 
     def _close_dialog( self ):
         #xbmc.sleep( 100 )
+        for id in range( self.CONTROL_MAIN_LIST_START, self.CONTROL_MAIN_LIST_END + 1 ):
+            try: 
+                if xbmc.getCondVisibility( "Control.IsVisible(%i)" % id ):
+                    self.settings[ "manager_view_mode" ] = id
+                    Settings().save_settings( self.settings )
+                    break
+            except:
+                pass
         self.close()
 
     def onAction( self, action ):
@@ -455,7 +477,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
             elif ( action == ACTION_PARENT_DIR ):
                 # remonte l'arborescence
                 if not self.main_list_last_pos:
-                    try: self.main_list_last_pos.append( self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition() )
+                    try: self.main_list_last_pos.append( self.getCurrentListPosition() )
                     except: self.main_list_last_pos.append( 0 )
                 try:
                     # on verifie si on est un sous plugin
@@ -471,7 +493,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                     logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
                 if self.main_list_last_pos:
-                    self.getControl( self.CONTROL_MAIN_LIST ).selectItem( self.main_list_last_pos.pop() )
+                    self.setCurrentListPosition( self.main_list_last_pos.pop() )
 
             elif ( action == ACTION_SHOW_INFO ):
                 # Affiche la description de l'item selectionné
@@ -570,7 +592,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         #xbmcgui.lock()
 
         # Clear all ListItems in this control list
-        self.getControl( self.CONTROL_MAIN_LIST ).reset()
+        self.clearList()
 
         # Calcul du nombre d'elements de la liste
         itemnumber = len( self.currentItemList )
@@ -585,7 +607,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
             else:
                 label1 = item.name
             displayListItem = xbmcgui.ListItem( label1, "", thumbnailImage = item.thumb )
-            self.getControl( self.CONTROL_MAIN_LIST ).addItem( displayListItem )
+            self.addItem( displayListItem )
 
         #xbmcgui.unlock()
 
