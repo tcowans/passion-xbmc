@@ -286,15 +286,12 @@ class Slideshow:
 class Settings:
     """ this function comes from apple movie trailer """
     def _settings_defaults_values( self ):
-        rss_src = "0"
-        if xbmc.getLanguage().lower() == "french":
-            rss_src = "1" # Si on n'est pas en Francais, pas de flux RSS
         defaults = {
             # GENERAL
             "updating": False,
             "update_startup": True,
             "xbmc_xml_update": False,
-            "rss_feed": rss_src,
+            "rss_feed": ( "0", "1", )[ ( xbmc.getLanguage().lower() == "french" ) ],
             "script_debug": False,
             # SKINS
             "skin_colours_path": "default",
