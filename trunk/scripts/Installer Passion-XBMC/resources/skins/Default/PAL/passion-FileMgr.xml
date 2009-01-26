@@ -336,7 +336,7 @@
 				<scrolltime>200</scrolltime>
 				<viewtype label="536">icon</viewtype>
 				<pagecontrol>2050</pagecontrol>
-				<itemlayout height="141" width="120">
+				<itemlayout height="181" width="130">
 					<control type="image">
 						<posx>10</posx>
 						<posy>10</posy>
@@ -353,7 +353,7 @@
 					</control>
 					<control type="label">
 						<posx>60</posx>
-						<posy>115</posy>
+						<posy>120</posy>
 						<width>110</width>
 						<height>22</height>
 						<font>font13</font>
@@ -363,7 +363,7 @@
 						<info>ListItem.Label</info>
 					</control>
 				</itemlayout>
-				<focusedlayout height="141" width="120">
+				<focusedlayout height="181" width="130">
 					<control type="image">
 						<width>110</width>
 						<height>110</height>
@@ -396,7 +396,7 @@
 					</control>
 					<control type="label">
 						<posx>60</posx>
-						<posy>115</posy>
+						<posy>120</posy>
 						<width>110</width>
 						<height>22</height>
 						<font>font13</font>
