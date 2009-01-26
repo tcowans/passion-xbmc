@@ -27,6 +27,25 @@ _ = sys.modules[ "__main__" ].__language__
 
 DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
+try: __script__ = sys.modules[ "__main__" ].__script__
+except: __script__ = os.path.basename( CWD )
+
+BASE_THUMBS_PATH = os.path.join( xbmc.translatePath( "P:\\script_data" ), __script__, "Thumbnails" )
+
+def get_thumbnail( path ):
+    try:
+        fpath = path
+        # make the proper cache filename and path so duplicate caching is unnecessary
+        filename = xbmc.getCacheThumbName( fpath )
+        thumbnail = os.path.join( BASE_THUMBS_PATH, filename[ 0 ], filename )
+        # if the cached thumbnail does not exist check for dir does not exist create dir
+        if not os.path.isdir( os.path.dirname( thumbnail ) ):
+            os.makedirs( os.path.dirname( thumbnail ) )
+        return thumbnail
+    except:
+        print_exc()
+        return ""
+
 class InfoWarehouse:
     """
     Class Abstraite contenant toutes les informations necessaires a la description d'un item
@@ -66,7 +85,7 @@ class InfoWarehouseXMLFTP( InfoWarehouse ):
         self._get_settings()
         
         # On recupere le fichier de description des items
-        self._downloadFile(self.srvItemDescripDir + self.srvItemDescripFile)
+        self._downloadFile( self.srvItemDescripDir + self.srvItemDescripFile, isTBN=False )
         self.soup =  BeautifulStoneSoup((open(os.path.join(self.mainwin.CacheDir,self.srvItemDescripFile), 'r')).read())
     
     def _getImage( self, pictureURL, updateImage_cb=None ):
@@ -83,7 +102,7 @@ class InfoWarehouseXMLFTP( InfoWarehouse ):
         """
         # Telechargement de l'image
         self._downloadFile(pictureURL)
-        checkPathPic = os.path.join(self.mainwin.CacheDir, os.path.basename(pictureURL))
+        checkPathPic = get_thumbnail( os.path.basename( pictureURL ) )#os.path.join(self.mainwin.CacheDir, os.path.basename(pictureURL))
         if os.path.exists(checkPathPic):
             previewPicture = checkPathPic
         else:
@@ -152,12 +171,13 @@ class InfoWarehouseXMLFTP( InfoWarehouse ):
                                         previewPictureURL = item.previewpictureurl.string.encode("utf-8")
                                         
                                         # On verifie si l'image serait deja la
-                                        checkPathPic = os.path.join(self.mainwin.CacheDir, os.path.basename(previewPictureURL))
+                                        #checkPathPic = os.path.join(self.mainwin.CacheDir, os.path.basename(previewPictureURL))
+                                        checkPathPic = get_thumbnail( os.path.basename( previewPictureURL ) )
                                         if os.path.exists(checkPathPic):
                                             previewPicture = checkPathPic
                                         else:
                                             # Telechargement et mise a jour de l'image (thread de separe)
-                                            previewPicture = "downloading"
+                                            previewPicture = checkPathPic#"downloading"
                                             self._getImage( previewPictureURL, updateImage_cb=updateImage_cb )
                                             
                                 if hasattr(item.previewvideourl,'string'):
@@ -190,18 +210,22 @@ class InfoWarehouseXMLFTP( InfoWarehouse ):
         logger.LOG( logger.LOG_DEBUG,self.srvHost)
         logger.LOG( logger.LOG_DEBUG,self.srvItemDescripDir)
 
-    def _downloadFile(self,remoteFilePath):
+    def _downloadFile( self, remoteFilePath, isTBN=True ):
         """
         Fonction de telechargement commune : version, archive, script de mise a jour
         """
         try:
-            ftp = ftplib.FTP(self.srvHost,self.srvUser,self.srvPassword)
-            filetodlUrl   = remoteFilePath
-            localFilePath = os.path.join(self.mainwin.CacheDir, os.path.basename(remoteFilePath))
-            localFile = open(str(localFilePath), "wb")
-            ftp.retrbinary('RETR ' + filetodlUrl, localFile.write)
-            localFile.close()
-            ftp.quit()
+            filetodlUrl = remoteFilePath
+            if isTBN:
+                localFilePath = get_thumbnail( os.path.basename( remoteFilePath ) )
+            else:
+                localFilePath = os.path.join(self.mainwin.CacheDir, os.path.basename(remoteFilePath))
+            if not os.path.isfile( localFilePath ):
+                ftp = ftplib.FTP(self.srvHost,self.srvUser,self.srvPassword)
+                localFile = open(str(localFilePath), "wb")
+                ftp.retrbinary('RETR ' + filetodlUrl, localFile.write)
+                localFile.close()
+                ftp.quit()
         except:
             logger.LOG( logger.LOG_DEBUG, "_downloaddossier: Exception - Impossible de telecharger le fichier: %s", remoteFilePath )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
@@ -302,7 +326,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
             self.getControl( self.CONTROL_LANGUAGE_LABEL ).setLabel( label )
             
             if self.previewPicture != None:
-                if self.previewPicture == "downloading":
+                if self.previewPicture == "downloading" or not os.path.exists(self.previewPicture):
                     self.getControl( 200 ).setVisible( 0 ) # auto busy
                 else:
                     # Image deja presente 

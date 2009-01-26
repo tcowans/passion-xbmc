@@ -121,22 +121,25 @@
 			</control>
 		</control>
 
+		<control type="label">
+			<description>date | time label</description>
+			<posx>680</posx>
+			<posy>86</posy>
+			<label>$INFO[System.Date] [COLOR=60ffffff] |  $INFO[System.Time][/COLOR]</label>
+			<align>right</align>
+			<aligy>center</aligy>
+			<font>special12</font>
+			<animation effect="slide" start="0,0" end="0,-50" time="0" condition="!IsEmpty(Container.Property(style_PMIII.HD))">conditional</animation>
+			<animation effect="fade" start="0" end="100" delay="200" time="100" condition="!Skin.HasSetting(animated)">WindowOpen</animation>
+			<animation effect="fade" start="100" end="0" delay="0" time="100" condition="!Skin.HasSetting(animated)">WindowClose</animation>
+			<visible>!Control.IsVisible(100)</visible>
+		</control>
+
 		<control type="group">
 			<animation effect="slide" time="200" start="720,0" end="0,0" acceleration="-1" condition="!Skin.HasSetting(animated)">WindowOpen</animation>
 			<animation effect="slide" time="200" start="0,0" end="720,0" acceleration="1.1" condition="!Skin.HasSetting(animated)">WindowClose</animation>
 
 			<!-- LABELS -->
-			<control type="label">
-				<description>date | time label</description>
-				<posx>680</posx>
-				<posy>86</posy>
-				<label>$INFO[System.Date] [COLOR=60ffffff] |  $INFO[System.Time][/COLOR]</label>
-				<align>right</align>
-				<aligy>center</aligy>
-				<font>special12</font>
-                <animation effect="slide" start="0,0" end="0,-50" time="0" condition="!IsEmpty(Container.Property(style_PMIII.HD))">conditional</animation>
-				<visible>!Control.IsVisible(100)</visible>
-			</control>
 			<control type="label">
 				<description>category label</description>
 				<posx>27</posx>
@@ -316,7 +319,7 @@
 						<textcolor>60000000</textcolor>
 						<align>right</align>
 						<!--<info>ListItem.Label2</info>-->
-						<label>$INFO[ListItem.Property(date),$LOCALIZE[SCRIPT613]]</label>
+						<label>$INFO[ListItem.Property(date),[B]$LOCALIZE[SCRIPT613],[/B]]</label>
 						<animation effect="slide" start="0,0" end="-26,0" time="0" condition="Control.IsVisible(2050)">conditional</animation>
 					</control>
 				</focusedlayout>
@@ -374,14 +377,14 @@
 		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
 		<!-- ** Required ** Do not change id's or type's -->
 		<control type="group" id="9000">
-			<posx>-70</posx>
+			<posx>20</posx>
 			<posy>117</posy>
 			<animation effect="slide" time="200" start="720,0" end="0,0" acceleration="-1" condition="!Skin.HasSetting(animated)">WindowOpen</animation>
 			<animation effect="slide" time="200" start="0,0" end="720,0" acceleration="1.1" condition="!Skin.HasSetting(animated)">WindowClose</animation>
-			<!--<control type="image">
+			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
-				<width>85</width>
+				<width>100</width>
 				<height>25</height>
 				<texture>$INFO[Container.Property(Skin-Colours-path),,\passion-list-header.png]</texture>
 				<visible>!Control.HasFocus(2)</visible>
@@ -390,7 +393,7 @@
 				<description>View As Icons button</description>
 				<posx>0</posx>
 				<posy>0</posy>
-				<width>85</width>
+				<width>100</width>
 				<height>25</height>
 				<align>center</align>
 				<label>101</label>
@@ -403,9 +406,9 @@
 				<onright>300</onright>
 				<onup>150</onup>
 				<ondown>150</ondown>
-			</control>-->
+			</control>
 			<control type="image">
-				<posx>90</posx>
+				<posx>105</posx>
 				<posy>0</posy>
 				<width>100</width>
 				<height>25</height>
@@ -413,25 +416,25 @@
 				<visible>!Control.HasFocus(300)</visible>
 			</control>
 			<control type="button" id="300">
-				<description>forum button</description>
-				<posx>90</posx>
+				<description>Add-ons Manager button</description>
+				<posx>105</posx>
 				<posy>0</posy>
 				<width>100</width>
 				<height>25</height>
 				<align>center</align>
-				<label>SCRIPT1</label>
+				<label>SCRIPT5</label>
 				<texturenofocus>-</texturenofocus>
 				<texturefocus>passion-list-focus.png</texturefocus>
 				<textcolor>ffffffff</textcolor>
 				<colordiffuse>ffffffff</colordiffuse>
 				<disabledcolor>60d0d0d0</disabledcolor>
-				<onleft>320</onleft>
+				<onleft>2</onleft>
 				<onright>305</onright>
 				<onup>150</onup>
 				<ondown>150</ondown>
 			</control>
 			<control type="image">
-				<posx>195</posx>
+				<posx>210</posx>
 				<posy>0</posy>
 				<width>100</width>
 				<height>25</height>
@@ -439,13 +442,13 @@
 				<visible>!Control.HasFocus(305)</visible>
 			</control>
 			<control type="button" id="305">
-				<description>file manager button</description>
-				<posx>195</posx>
+				<description>forum button</description>
+				<posx>210</posx>
 				<posy>0</posy>
 				<width>100</width>
 				<height>25</height>
 				<align>center</align>
-				<label>SCRIPT5</label>
+				<label>SCRIPT1</label>
 				<texturenofocus>-</texturenofocus>
 				<texturefocus>passion-list-focus.png</texturefocus>
 				<textcolor>ffffffff</textcolor>
@@ -457,7 +460,7 @@
 				<ondown>150</ondown>
 			</control>
 			<control type="image">
-				<posx>300</posx>
+				<posx>315</posx>
 				<posy>0</posy>
 				<width>100</width>
 				<height>25</height>
@@ -466,7 +469,7 @@
 			</control>
 			<control type="button" id="310">
 				<description>option button</description>
-				<posx>300</posx>
+				<posx>315</posx>
 				<posy>0</posy>
 				<width>100</width>
 				<height>25</height>
@@ -483,32 +486,30 @@
 				<ondown>150</ondown>
 			</control>
 			<control type="image">
-				<posx>405</posx>
+				<posx>420</posx>
 				<posy>0</posy>
 				<width>100</width>
 				<height>25</height>
 				<texture>$INFO[Container.Property(Skin-Colours-path),,\passion-list-header.png]</texture>
 				<visible>!Control.HasFocus(320) + Control.IsVisible(320)</visible>
 			</control>
-            <!--moved in settings xml-->
 			<control type="button" id="320">
-				<description>help button</description>
-				<posx>405</posx>
+				<description>exit button</description>
+				<posx>420</posx>
 				<posy>0</posy>
 				<width>100</width>
 				<height>25</height>
 				<align>center</align>
-				<label>SCRIPT0</label>
+				<label>SCRIPT8</label>
 				<texturenofocus>-</texturenofocus>
 				<texturefocus>passion-list-focus.png</texturefocus>
 				<textcolor>ffffffff</textcolor>
 				<colordiffuse>ffffffff</colordiffuse>
 				<disabledcolor>60d0d0d0</disabledcolor>
 				<onleft>310</onleft>
-				<onright>300</onright>
+				<onright>2</onright>
 				<onup>150</onup>
 				<ondown>150</ondown>
-				<visible>false</visible>
 			</control>
 		</control>
 

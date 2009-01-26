@@ -293,6 +293,8 @@ class Settings:
             "xbmc_xml_update": False,
             "rss_feed": ( "0", "1", )[ ( xbmc.getLanguage().lower() == "french" ) ],
             "script_debug": False,
+            "manager_view_mode": 50,
+            "main_view_mode": 50,
             # SKINS
             "skin_colours_path": "default",
             "skin_colours": "",

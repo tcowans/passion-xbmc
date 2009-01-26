@@ -229,7 +229,7 @@
 				<height>100</height>
 				<aspectratio align="center" aligny="center">keep</aspectratio>
 				<texture>$INFO[Container(150).ListItem.ActualIcon,icones\]</texture>
-				<visible>Control.HasFocus(150)</visible>
+				<!--<visible>Control.HasFocus(150)</visible>-->
 				<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
 			</control>
 			<control type="image">
@@ -239,7 +239,7 @@
 				<height>50</height>
 				<texture flipy="true" diffuse="passion-diffuse_mirror.png">$INFO[Container(150).ListItem.ActualIcon,icones\]</texture>
 				<aspectratio align="center" aligny="top">stretch</aspectratio>
-				<visible>Control.HasFocus(150)</visible>
+				<!--<visible>Control.HasFocus(150)</visible>-->
 				<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
 			</control>
 			<control type="group">
@@ -408,7 +408,7 @@
 				<height>100</height>
 				<aspectratio align="center" aligny="center">keep</aspectratio>
 				<texture>$INFO[Container(191).ListItem.ActualIcon,icones\]</texture>
-				<visible>!Control.HasFocus(150)</visible>
+				<!--<visible>!Control.HasFocus(150)</visible>-->
 				<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
 			</control>
 			<control type="image">
@@ -418,7 +418,7 @@
 				<height>50</height>
 				<texture flipy="true" diffuse="passion-diffuse_mirror.png">$INFO[Container(191).ListItem.ActualIcon,icones\]</texture>
 				<aspectratio align="center" aligny="top">stretch</aspectratio>
-				<visible>!Control.HasFocus(150)</visible>
+				<!--<visible>!Control.HasFocus(150)</visible>-->
 				<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
 			</control>
 

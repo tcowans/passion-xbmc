@@ -5,9 +5,11 @@
   <string id="1">Forum</string>
   <string id="2">Options</string>
   <string id="3">Aide</string>
-  <string id="4">A propos</string>
+  <string id="4">À propos</string>
   <string id="5">Gestionnaire</string>
-  <string id="6">Gestionnaire des Installations</string>
+  <string id="6">Gestionnaire des add-ons</string>
+  <string id="7">Installer</string>
+  <string id="8">Quitter</string>
 
   <string id="10">Sélection</string>
   <string id="11">Thèmes</string>
