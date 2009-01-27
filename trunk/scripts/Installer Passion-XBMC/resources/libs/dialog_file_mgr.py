@@ -551,15 +551,16 @@ class FileMgrWindow( xbmcgui.WindowXML ):
             # Recuperation des infos
             if ( self.curListType == TYPE_ROOT ):
                 for index, filterIdx in enumerate( self.rootDisplayList ):
-                    item = ListItemObject( type=self.itemTypeList[ filterIdx ], name=self.itemTypeList[ filterIdx ], local_path=self.localdirList[ filterIdx ], thumb=self.itemThumbList[ filterIdx ] )
-                    self.currentItemList.append(item)
+                    listItemObj = ListItemObject( type=self.itemTypeList[ filterIdx ], name=self.itemTypeList[ filterIdx ], local_path=self.localdirList[ filterIdx ], thumb=self.itemThumbList[ filterIdx ] )
+                    self.currentItemList.append(listItemObj)
             elif ( self.curListType == TYPE_PLUGIN ):
                 for index, filterIdx in enumerate( self.pluginDisplayList ):
-                    item = ListItemObject( type=self.itemTypeList[ filterIdx ], name=self.itemTypeList[ filterIdx ], local_path=self.localdirList[ filterIdx ], thumb=self.itemThumbList[ filterIdx ] )
-                    self.currentItemList.append(item)
+                    listItemObj = ListItemObject( type=self.itemTypeList[ filterIdx ], name=self.itemTypeList[ filterIdx ], local_path=self.localdirList[ filterIdx ], thumb=self.itemThumbList[ filterIdx ] )
+                    self.currentItemList.append(listItemObj)
             #elif TYPE_PLUGIN + ' ' in self.curListType:
             elif ( ( self.curListType == TYPE_SCRIPT ) or ( self.itemTypeList.index(self.curListType) in self.pluginDisplayList ) ):
                 listdir = self.fileMgr.listDirFiles( self.localdirList[ self.itemTypeList.index(self.curListType) ] )
+                listdir.sort( key=str.lower )
                 for index, item  in enumerate( listdir ):
                     # Note:  dans le futur on pourra ici initialiser 'thumb' avec l'icone du script, plugin, themes ... 
                     #        pour le moment on prend l'icone correspondant au type
@@ -567,15 +568,38 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                     thumbnail_path = os.path.join(script_path, "default.tbn")
                     if not os.path.exists(thumbnail_path):
                         thumbnail_path = self.itemThumbList[ self.itemTypeList.index(self.curListType) ]
-                    item = ListItemObject( type=self.curListType, name=item, local_path=script_path, thumb=thumbnail_path )
-                    self.currentItemList.append(item)
+                    listItemObj = ListItemObject( type=self.curListType, name=item, local_path=script_path, thumb=thumbnail_path )
+                    self.currentItemList.append(listItemObj)
+            elif ( self.curListType == TYPE_SCRAPER ):
+                listdir = self.fileMgr.listDirFiles( self.localdirList[ self.itemTypeList.index(self.curListType) ] )
+                listdir.sort( key=str.lower )
+                for index, item  in enumerate( listdir ):
+                    if (item.endswith( '.xml' )):
+                        # on cherche l'image
+                        scraper_base_path    = self.localdirList[ self.itemTypeList.index(self.curListType) ]
+                        scraper_thumb = None
+                        if ( os.path.splitext(item)[0] + '.gif' in listdir ):
+                            scraper_thumb = os.path.join(scraper_base_path, os.path.splitext(item)[0] + '.gif' )
+                        elif ( os.path.splitext(item)[0] + '.jpg' in listdir ):
+                            scraper_thumb = os.path.join(scraper_base_path, os.path.splitext(item)[0] + '.jpg' )
+                        elif ( os.path.splitext(item)[0] + '.png' in listdir ):
+                            scraper_thumb = os.path.join(scraper_base_path, os.path.splitext(item)[0] + '.png' )
+                        elif ( os.path.splitext(item)[0] + '.jpeg' in listdir ):
+                            scraper_thumb = os.path.join(scraper_base_path, os.path.splitext(item)[0] + '.jpeg' )
+                        elif ( os.path.splitext(item)[0] + '.tbn' in listdir ):
+                            scraper_thumb = os.path.join(scraper_base_path, os.path.splitext(item)[0] + '.tbn' )
+                        else:
+                            scraper_thumb = self.itemThumbList[ self.itemTypeList.index(self.curListType) ]
+                        listItemObj = ListItemObject( type=self.curListType, name=os.path.splitext(item)[0], local_path=os.path.join(self.localdirList[ self.itemTypeList.index(self.curListType) ],item), thumb=scraper_thumb )
+                        self.currentItemList.append(listItemObj)
             else:
                 listdir = self.fileMgr.listDirFiles( self.localdirList[ self.itemTypeList.index(self.curListType) ] )
+                listdir.sort( key=str.lower )
                 for index, item  in enumerate( listdir ):
                     # Note:  dans le futur on pourra ici initialiser 'thumb' avec l'icone du script, plugin, themes ... 
                     #        pour le moment on prend l'icone correspondant au type
-                    item = ListItemObject( type=self.curListType, name=item, local_path=os.path.join(self.localdirList[ self.itemTypeList.index(self.curListType) ],item), thumb=self.itemThumbList[ self.itemTypeList.index(self.curListType) ] )
-                    self.currentItemList.append(item)
+                    listItemObj = ListItemObject( type=self.curListType, name=item, local_path=os.path.join(self.localdirList[ self.itemTypeList.index(self.curListType) ],item), thumb=self.itemThumbList[ self.itemTypeList.index(self.curListType) ] )
+                    self.currentItemList.append(listItemObj)
         except:
             logger.LOG( logger.LOG_DEBUG, "FileMgrWindow: Exception durant la recuperation des donnees" )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
