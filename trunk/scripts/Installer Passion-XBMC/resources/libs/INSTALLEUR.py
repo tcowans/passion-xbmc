@@ -889,6 +889,7 @@ class MainWindow( xbmcgui.WindowXML ):
     def _get_settings( self, defaults=False ):
         """ reads settings """
         self.settings = Settings().get_settings( defaults=defaults )
+        self.getControl( self.CONTROL_FORUM_BUTTON ).setVisible( not self.settings.get( "hide_forum", False ) )
 
     def _set_skin_colours( self ):
         #xbmcgui.lock()

@@ -387,7 +387,7 @@
 				<width>100</width>
 				<height>25</height>
 				<texture>$INFO[Container.Property(Skin-Colours-path),,\passion-list-header.png]</texture>
-				<visible>!Control.HasFocus(2)</visible>
+				<visible>!Control.HasFocus(2) + Control.IsVisible(2)</visible>
 			</control>
 			<control type="button" id="2">
 				<description>View As Icons button</description>
@@ -413,7 +413,7 @@
 				<width>100</width>
 				<height>25</height>
 				<texture>$INFO[Container.Property(Skin-Colours-path),,\passion-list-header.png]</texture>
-				<visible>!Control.HasFocus(300)</visible>
+				<visible>!Control.HasFocus(300) + Control.IsVisible(300)</visible>
 			</control>
 			<control type="button" id="300">
 				<description>Add-ons Manager button</description>
@@ -439,7 +439,7 @@
 				<width>100</width>
 				<height>25</height>
 				<texture>$INFO[Container.Property(Skin-Colours-path),,\passion-list-header.png]</texture>
-				<visible>!Control.HasFocus(305)</visible>
+				<visible>!Control.HasFocus(305) + Control.IsVisible(305)</visible>
 			</control>
 			<control type="button" id="305">
 				<description>forum button</description>
@@ -465,7 +465,8 @@
 				<width>100</width>
 				<height>25</height>
 				<texture>$INFO[Container.Property(Skin-Colours-path),,\passion-list-header.png]</texture>
-				<visible>!Control.HasFocus(310)</visible>
+				<visible>!Control.HasFocus(310) + Control.IsVisible(310)</visible>
+				<animation effect="slide" start="0,0" end="-105,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
 			</control>
 			<control type="button" id="310">
 				<description>option button</description>
@@ -484,6 +485,7 @@
 				<onright>320</onright>
 				<onup>150</onup>
 				<ondown>150</ondown>
+				<animation effect="slide" start="0,0" end="-105,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
 			</control>
 			<control type="image">
 				<posx>420</posx>
@@ -492,6 +494,7 @@
 				<height>25</height>
 				<texture>$INFO[Container.Property(Skin-Colours-path),,\passion-list-header.png]</texture>
 				<visible>!Control.HasFocus(320) + Control.IsVisible(320)</visible>
+				<animation effect="slide" start="0,0" end="-105,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
 			</control>
 			<control type="button" id="320">
 				<description>exit button</description>
@@ -510,6 +513,7 @@
 				<onright>2</onright>
 				<onup>150</onup>
 				<ondown>150</ondown>
+				<animation effect="slide" start="0,0" end="-105,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
 			</control>
 		</control>
 

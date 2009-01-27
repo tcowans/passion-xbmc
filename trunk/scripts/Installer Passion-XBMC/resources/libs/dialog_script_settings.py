@@ -31,25 +31,26 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
     TOPIC_LIMIT = _( 504 ).split( "|" ) #values[ "00", "5", "10", "25", "50", "100" ]
 
     # control id's
-    CONTROL_OK_BUTTON = 80
-    CONTROL_CANCEL_BUTTON = 81
-    CONTROL_RESET_BUTTON = 82
-    CONTROL_VERSION_LABEL = 99
-    CONTROL_XML_UPDATE_BUTTON = 130
+    CONTROL_OK_BUTTON             = 80
+    CONTROL_CANCEL_BUTTON         = 81
+    CONTROL_RESET_BUTTON          = 82
+    CONTROL_VERSION_LABEL         = 99
+    CONTROL_XML_UPDATE_BUTTON     = 130
     CONTROL_UPDATE_STARTUP_BUTTON = 140
-    CONTROL_SCRIPT_DEBUG_BUTTON = 150
+    CONTROL_SCRIPT_DEBUG_BUTTON   = 150
     CONTROL_DECREASE_COLOR_BUTTON = 200
     CONTROL_INCREASE_COLOR_BUTTON = 210
-    CONTROL_SKIN_COLOR_LABEL = 220
-    CONTROL_CUSTOM_BACKGROUND_BUTTON = 230
-    CONTROL_DECREASE_RSS_BUTTON = 100
-    CONTROL_INCREASE_RSS_BUTTON = 110
-    CONTROL_RSS_FEEDS_LABEL = 120
+    CONTROL_SKIN_COLOR_LABEL      = 220
+    CONTROL_CUSTOM_BG_BUTTON      = 230
+    CONTROL_DECREASE_RSS_BUTTON   = 100
+    CONTROL_INCREASE_RSS_BUTTON   = 110
+    CONTROL_RSS_FEEDS_LABEL       = 120
     CONTROL_DECREASE_TOPIC_BUTTON = 300
     CONTROL_INCREASE_TOPIC_BUTTON = 310
-    CONTROL_LIMIT_TOPIC_LABEL = 320
-    CONTROL_WEB_BUTTON = 330
-    CONTROL_WIN32_WAIT_BUTTON = 340
+    CONTROL_LIMIT_TOPIC_LABEL     = 320
+    CONTROL_HIDE_FORUM_BUTTON     = 350
+    CONTROL_WEB_BUTTON            = 330
+    CONTROL_WIN32_WAIT_BUTTON     = 340
 
     def __init__( self, *args, **kwargs ):
         xbmcgui.WindowXMLDialog.__init__( self, *args, **kwargs )
@@ -137,6 +138,8 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             self.getControl( self.CONTROL_SCRIPT_DEBUG_BUTTON ).setSelected( self.settings[ "script_debug" ] )
             #le bouton valider les changements ont le desactive, il va etre reactiver seulement s'il y a un changement dans les settings
             self.getControl( self.CONTROL_OK_BUTTON ).setEnabled( False )
+            #selon l'etat de self.settings[ "hide_forum" ], l'image du radiobutton sera blanc ou non visible
+            self.getControl( self.CONTROL_HIDE_FORUM_BUTTON ).setSelected( self.settings.get( "hide_forum", False ) )
             # boutons pour le web
             self._set_control_web_visibility()
         except:
@@ -247,10 +250,13 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             elif controlID == self.CONTROL_RESET_BUTTON:
                 #bouton reset settings, ont recup les settings par default
                 self._get_defaults()
-            elif controlID == self.CONTROL_CUSTOM_BACKGROUND_BUTTON:
+            elif controlID == self.CONTROL_CUSTOM_BG_BUTTON:
                 #bouton custom background a ete activer depuis le xml
                 #balise utiliser: <onclick>Skin.ToggleSetting(use_passion_custom_background)</onclick>
                 self.getControl( self.CONTROL_OK_BUTTON ).setEnabled( True )
+            elif controlID == self.CONTROL_HIDE_FORUM_BUTTON:
+                #bouton pour masquer le bouton forum du menu principal
+                self._set_bool_setting( "hide_forum" )
             elif controlID == self.CONTROL_WEB_BUTTON:
                 #bouton pour choisir le navigateur web
                 self._set_web_navigator()

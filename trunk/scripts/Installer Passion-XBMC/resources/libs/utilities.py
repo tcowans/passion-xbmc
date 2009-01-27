@@ -305,6 +305,7 @@ class Settings:
             # FORUM
             "topics_limit": "5",
             "web_title": "",
+            "hide_forum": False,
             "web_navigator": "",
             "win32_exec_wait": False,
             }
