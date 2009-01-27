@@ -300,7 +300,6 @@ class FileMgrWindow( xbmcgui.WindowXML ):
     def onInit( self ):
         # Title of the current pages
         self.setProperty( "Category", _( 10 ) )
-        #self.controlID = 2
 
         self._get_settings()
         self._set_skin_colours()
@@ -506,6 +505,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
     def _get_settings( self, defaults=False ):
         """ reads settings """
         self.settings = Settings().get_settings( defaults=defaults )
+        self.getControl( self.CONTROL_FORUM_BUTTON ).setVisible( not self.settings.get( "hide_forum", False ) )
         
     def _set_skin_colours( self ):
         #xbmcgui.lock()

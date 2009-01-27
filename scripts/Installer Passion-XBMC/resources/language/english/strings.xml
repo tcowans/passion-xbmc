@@ -168,6 +168,7 @@
   <string id="510">Enable update check on startup</string>
   <string id="511">RSS Feed</string>
   <string id="512">Enable [B]*script*[/B] debug mode</string>
+  <string id="513">Hide the button forum in main menu</string>
 
   <string id="518">Web Browser</string>
   <string id="519">Block XBMC until Web Browser is closed</string>
