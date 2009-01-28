@@ -28,7 +28,7 @@ _ = sys.modules[ "__main__" ].__language__
 DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
 try: __script__ = sys.modules[ "__main__" ].__script__
-except: __script__ = os.path.basename( CWD )
+except: __script__ = os.path.basename( os.getcwd().rstrip( ";" ) )
 
 BASE_THUMBS_PATH = os.path.join( xbmc.translatePath( "P:\\script_data" ), __script__, "Thumbnails" )
 
@@ -43,7 +43,7 @@ def get_thumbnail( path ):
             os.makedirs( os.path.dirname( thumbnail ) )
         return thumbnail
     except:
-        print_exc()
+        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
         return ""
 
 class InfoWarehouse:
@@ -89,13 +89,12 @@ class InfoWarehouseXMLFTP( InfoWarehouse ):
         self.soup =  BeautifulStoneSoup((open(os.path.join(self.mainwin.CacheDir,self.srvItemDescripFile), 'r')).read())
     
     def _getImage( self, pictureURL, updateImage_cb=None ):
-        try: 
-            self.getImage_thread.cancel()
-        except: 
-            pass
-        self.getImage_thread = Thread( target=self._thread_getImage, args=(pictureURL, updateImage_cb) )
-        self.getImage_thread.start()
-        
+        if not os.path.exists( get_thumbnail( os.path.basename( pictureURL ) ) ):
+            try: self.getImage_thread.cancel()
+            except: pass
+            self.getImage_thread = Thread( target=self._thread_getImage, args=(pictureURL, updateImage_cb) )
+            self.getImage_thread.start()
+
     def _thread_getImage( self, pictureURL, updateImage_cb=None ):
         """
         Recupere l'image dans un thread separe

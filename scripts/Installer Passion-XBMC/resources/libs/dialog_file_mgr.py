@@ -18,7 +18,7 @@ try:
     logger = sys.modules[ "__main__" ].logger
 except:
     import script_log as logger
-    
+
 #import traceback
 
 # INITIALISATION CHEMIN RACINE
@@ -339,10 +339,10 @@ class FileMgrWindow( xbmcgui.WindowXML ):
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def show_context_menu( self ):
-        try: self.main_list_last_pos.append( self.getCurrentListPosition() )
-        except: self.main_list_last_pos.append( 0 )
-        
         self.index = self.getCurrentListPosition()
+        try: self.main_list_last_pos.append( self.index )
+        except: self.main_list_last_pos.append( 0 )
+
         if ( self.curListType == TYPE_ROOT or self.curListType == TYPE_PLUGIN):
             self.curListType = self.currentItemList[ self.index ].type # On extrait le type de l'item selectionne
             self.updateDataAndList()
@@ -355,11 +355,9 @@ class FileMgrWindow( xbmcgui.WindowXML ):
             if ( self.curListType == TYPE_SCRIPT ) or ( self.itemTypeList.index(self.curListType) in self.pluginDisplayList ):
                 # liste des options pour plugins et scripts
                 menuList = [ _( 160 ), _( 157 ), _( 156 ), _( 161 ), _( 162 ), _( 153 ) ]
-                #menuList = [ _( 160 ) % item_basename, _( 157 ) % item_basename, _( 156 ) % item_basename, _( 153 ) ]
             else:
                 # liste des options pour skins et scrapers
                 menuList = [ _( 157 ), _( 156 ), _( 161 ), _( 162 ), _( 153 ) ]
-                #menuList = [ _( 157 ) % item_basename, _( 156 ) % item_basename, _( 153 ) ]
             chosenIndex = xbmcgui.Dialog().select( "%s : %s" % ( _( 5 ), bold_text( item_basename ) ), menuList )
             if chosenIndex != -1:
                 # si liste des options est pour les skins et scrapers, augmente la valeur de +1
