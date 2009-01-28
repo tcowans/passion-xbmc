@@ -1,0 +1,241 @@
+<window>
+	<defaultcontrol>1000</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+
+	<coordinates>
+		<system>1</system>
+		<posx>230</posx>
+		<posy>200</posy>
+		<!--<origin x="230" y="311">!Control.IsVisible(1004)</origin>-->
+		<origin x="230" y="274">!Control.IsVisible(1005)</origin>
+		<origin x="230" y="237">!Control.IsVisible(1006)</origin>
+	</coordinates>
+
+	<animation effect="fade" time="200">WindowOpen</animation>
+	<animation effect="fade" time="200">WindowClose</animation>
+
+	<controls>
+		<!-- BACKGROUNDS DIALOG CONTEXT -->
+		<control type="group">
+			<animation effect="fade" time="300">VisibleChange</animation>
+			<control type="image">
+				<description>background top image</description>
+				<posx>0</posx>
+				<posy>-25</posy>
+				<width>245</width>
+				<height>26</height>
+				<texture>passion-dialog-context-top.png</texture>
+			</control>
+			<control type="image">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>245</width>
+				<height>250</height>
+				<texture>passion-dialog-context-middle.png</texture>
+				<visible>Control.IsVisible(1006)</visible>
+			</control>
+			<control type="image">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>245</width>
+				<height>213</height>
+				<texture>passion-dialog-context-middle.png</texture>
+				<visible>Control.IsVisible(1005) + !Control.IsVisible(1006)</visible>
+			</control>
+			<control type="image">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>245</width>
+				<height>176</height>
+				<texture>passion-dialog-context-middle.png</texture>
+				<visible>Control.IsVisible(1004) + !Control.IsVisible(1005)</visible>
+			</control>
+			<control type="image">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>245</width>
+				<height>139</height>
+				<texture>passion-dialog-context-middle.png</texture>
+				<visible>Control.IsVisible(1003) + !Control.IsVisible(1004)</visible>
+			</control>
+			<control type="image">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>245</width>
+				<height>102</height>
+				<texture>passion-dialog-context-middle.png</texture>
+				<visible>Control.IsVisible(1002) + !Control.IsVisible(1003)</visible>
+			</control>
+			<control type="image">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>245</width>
+				<height>65</height>
+				<texture>passion-dialog-context-middle.png</texture>
+				<visible>Control.IsVisible(1001) + !Control.IsVisible(1002)</visible>
+			</control>
+			<control type="image">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>245</width>
+				<height>28</height>
+				<texture>passion-dialog-context-middle.png</texture>
+				<visible>Control.IsVisible(1000) + !Control.IsVisible(1001)</visible>
+			</control>
+			<control type="image">
+				<description>background bottom image</description>
+				<posx>0</posx>
+				<posy>250</posy>
+				<width>245</width>
+				<height>25</height>
+				<texture>passion-dialog-context-bottom.png</texture>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1006)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1005)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1004)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1003)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1002)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1001)">conditional</animation>
+			</control>
+		</control>
+
+		<!-- MENU PRINCIPAL -->
+		<control type="group">
+			<animation effect="fade" time="300">VisibleChange</animation>
+			<control type="button" id="1000">
+				<description>context menu button 0</description>
+				<posx>22</posx>
+				<posy>-2</posy>
+				<width>210</width>
+				<height>32</height>
+				<texturenofocus>passion-keyboard-btn-space.png</texturenofocus>
+				<texturefocus>passion-keyboard-btn-space-focus2.png</texturefocus>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>MPlayer ($LOCALIZE[571])</label>
+				<onup>1006</onup>
+				<ondown>1001</ondown>
+			</control>
+			<control type="button" id="1001">
+				<description>context menu button 1</description>
+				<posx>22</posx>
+				<posy>35</posy>
+				<width>210</width>
+				<height>32</height>
+				<texturenofocus>passion-keyboard-btn-space.png</texturenofocus>
+				<texturefocus>passion-keyboard-btn-space-focus2.png</texturefocus>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>DVDPlayer</label>
+				<onup>1000</onup>
+				<ondown>1002</ondown>
+			</control>
+			<control type="button" id="1002">
+				<description>context menu button 2</description>
+				<posx>22</posx>
+				<posy>72</posy>
+				<width>210</width>
+				<height>32</height>
+				<texturenofocus>passion-keyboard-btn-space.png</texturenofocus>
+				<texturefocus>passion-keyboard-btn-space-focus2.png</texturefocus>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>13350</label>
+				<onclick>XBMC.ActivateWindow(videoplaylist)</onclick>
+				<onup>1001</onup>
+				<ondown>1003</ondown>
+			</control>
+			<control type="button" id="1003">
+				<description>context menu button 3</description>
+				<posx>22</posx>
+				<posy>109</posy>
+				<width>210</width>
+				<height>32</height>
+				<texturenofocus>passion-keyboard-btn-space.png</texturenofocus>
+				<texturefocus>passion-keyboard-btn-space-focus2.png</texturefocus>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>264</label>
+				<onup>1002</onup>
+				<ondown>1004</ondown>
+			</control>
+			<control type="button" id="1004">
+				<description>context menu button 4</description>
+				<posx>22</posx>
+				<posy>146</posy>
+				<width>210</width>
+				<height>32</height>
+				<texturenofocus>passion-keyboard-btn-space.png</texturenofocus>
+				<texturefocus>passion-keyboard-btn-space-focus2.png</texturefocus>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>-</label>
+				<onup>1003</onup>
+				<ondown>1005</ondown>
+			</control>
+			<control type="button" id="1005">
+				<description>context menu button 5</description>
+				<posx>22</posx>
+				<posy>183</posy>
+				<width>210</width>
+				<height>32</height>
+				<texturenofocus>passion-keyboard-btn-space.png</texturenofocus>
+				<texturefocus>passion-keyboard-btn-space-focus2.png</texturefocus>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>-</label>
+				<onup>1004</onup>
+				<ondown>1006</ondown>
+			</control>
+			<control type="button" id="1006">
+				<description>context menu button 6</description>
+				<posx>22</posx>
+				<posy>220</posy>
+				<width>210</width>
+				<height>32</height>
+				<texturenofocus>passion-keyboard-btn-space.png</texturenofocus>
+				<texturefocus>passion-keyboard-btn-space-focus2.png</texturefocus>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>-</label>
+				<onup>1005</onup>
+				<ondown>1000</ondown>
+			</control>
+		</control>
+
+	</controls>
+</window>
