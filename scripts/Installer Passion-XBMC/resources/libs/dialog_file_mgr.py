@@ -348,174 +348,186 @@ class FileMgrWindow( xbmcgui.WindowXML ):
             self.updateDataAndList()
 
         else:
-            # On va ici afficher un menu des options du gestionnaire de fichiers
-            item_path     = self.currentItemList[ self.index ].local_path # On extrait le chemin de l'item
-            item_basename = os.path.basename( item_path )
+            try:
+                # On va ici afficher un menu des options du gestionnaire de fichiers
+                item_path     = self.currentItemList[ self.index ].local_path # On extrait le chemin de l'item
+                item_basename = os.path.basename( item_path )
+                # à ne pas oublier lors du changement des ID des listes ( self.getFocusId() == self.CONTROL_MAIN_LIST ), car bug en vue :)
+                from context_menu import show_context_menu
+                #buttons = { 1000 : ( "teste 1", "disabled" ), 1001 : "teste 2", 1002 : "teste 3",
+                #    1003 : "teste 4", 1004 : ( "teste 5", "disabled" ), 1005 : "teste 6", 1006 : "teste 7" }
 
-            if ( self.curListType == TYPE_SCRIPT ) or ( self.itemTypeList.index(self.curListType) in self.pluginDisplayList ):
-                # liste des options pour plugins et scripts
-                menuList = [ _( 160 ), _( 157 ), _( 156 ), _( 161 ), _( 162 ), _( 153 ) ]
-            else:
-                # liste des options pour skins et scrapers
-                menuList = [ _( 157 ), _( 156 ), _( 161 ), _( 162 ), _( 153 ) ]
-            chosenIndex = xbmcgui.Dialog().select( "%s : %s" % ( _( 5 ), bold_text( item_basename ) ), menuList )
-            if chosenIndex != -1:
-                # si liste des options est pour les skins et scrapers, augmente la valeur de +1
-                if len( menuList ) == 5:
-                    chosenIndex += 1
-                if chosenIndex == 0: # Executer/Lancer
-                    if ( self.itemTypeList.index(self.curListType) in self.pluginDisplayList ):
-                        # Cas d'un sous-plugin (video, musique ...)
-                        # window id's : http://xbmc.org/wiki/?title=Window_IDs
-                        if ( self.curListType == TYPE_PLUGIN_VIDEO ):
-                            command = "XBMC.ActivateWindow(10025,plugin://video/%s/)" % ( item_basename, )
-                        elif ( self.curListType == TYPE_PLUGIN_MUSIC ):
-                            command = "XBMC.ActivateWindow(10502,plugin://music/%s/)" % ( item_basename, )
-                        elif ( self.curListType == TYPE_PLUGIN_PROGRAMS ):
-                            command = "XBMC.ActivateWindow(10001,plugin://programs/%s/)" % ( item_basename, )
-                        elif ( self.curListType == TYPE_PLUGIN_PICTURES ):
-                            command = "XBMC.ActivateWindow(10002,plugin://pictures/%s/)" % ( item_basename, )
-                    elif ( self.curListType == TYPE_SCRIPT ):
-                        command = "XBMC.RunScript(%s)" % ( os.path.join( item_path, "default.py" ), )
+                if ( self.curListType == TYPE_SCRIPT ) or ( self.itemTypeList.index(self.curListType) in self.pluginDisplayList ):
+                    # liste des options pour plugins et scripts
+                    buttons = { 1000 : _( 160 ), 1001 : _( 157 ) , 1002 : _( 156 ) , 1003 : _( 161 ) , 1004 : _( 162 ) , 1005 : _( 153 ) }
+                else:
+                    # liste des options pour skins et scrapers
+                    #buttons = { 1000 : ( _( 160 ), "disabled" ) , 1001 : _( 157 ) , 1002 : _( 156 ) , 1003 : _( 161 ) , 1004 : _( 162 ) , 1005 : _( 153 ) }
+                    buttons = { 1000 : _( 157 ) , 1001 : _( 156 ) , 1002 : _( 161 ) , 1003 : _( 162 ) , 1004 : _( 153 ) }
 
-                    #on ferme le script en court pour pas generer des conflits
-                    self._close_dialog()
-                    self.mainwin._close_script()
-                    #maintenant qu'il y a plus de conflit possible, on execute la command
-                    xbmc.executebuiltin( command )
-
-                elif chosenIndex == 1: # Renommer
-                    # Renommer l'element
-                    item_dirname  = os.path.dirname( item_path )
-                    
-                    if ( self.curListType == TYPE_SCRAPER ):
-                        icon_path     = self.currentItemList[ self.index ].thumb # On extrait le chemin de l'icone
-                        icon_basename = os.path.basename( icon_path )
-                        keyboard = xbmc.Keyboard( os.path.splitext(item_basename)[0], _( 154 ) )
-                        keyboard.doModal()
-                        if ( keyboard.isConfirmed() ):
-                            inputText = keyboard.getText()
-                            self.fileMgr.renameItem( item_dirname, item_basename, inputText + '.xml' )
-                            if not icon_path in self.itemThumbList:
-                                self.fileMgr.renameItem( item_dirname, icon_basename, icon_basename.replace( os.path.splitext(icon_basename)[0], inputText) )
-                            xbmcgui.Dialog().ok( _( 155 ), inputText )
-                            self.updateDataAndList()
-                    else:
-                        keyboard = xbmc.Keyboard( item_basename, _( 154 ) )
-                        keyboard.doModal()
-                        if ( keyboard.isConfirmed() ):
-                            inputText = keyboard.getText()
-                            self.fileMgr.renameItem( item_dirname, item_basename, inputText )
-                            xbmcgui.Dialog().ok( _( 155 ), inputText )
-                            self.updateDataAndList()
-
-                elif chosenIndex == 2:
-                    # Supprimer l'element
-                    if ( self.curListType == TYPE_SCRAPER ):
-                        icon_path      = self.currentItemList[ self.index ].thumb # On extrait le chemin de l'icone
-                        item_shortname = os.path.splitext(item_basename)[0] # Sans extension
-                        if xbmcgui.Dialog().yesno( _( 158 )%item_shortname, _( 159 )%item_shortname ):
-                            self.fileMgr.deleteItem( item_path )
-                            if not icon_path in self.itemThumbList:
-                                self.fileMgr.deleteItem( icon_path )
-                            self.updateDataAndList() 
-                    else:    
-                        if xbmcgui.Dialog().yesno( _( 158 )%item_basename, _( 159 )%item_basename ):
-                            self.fileMgr.deleteItem( item_path )
-                            self.updateDataAndList() 
-
-                elif chosenIndex == 3:
-                    # copier l'element
-                    if ( self.curListType == TYPE_SCRAPER ):
-                        #TODO : A optimiser, on doit pouvoir faire mieux
-                        item_dirname   = os.path.dirname( item_path )
-                        item_shortname = os.path.splitext(item_basename)[0] # Sans extension
-                        icon_path      = self.currentItemList[ self.index ].thumb # On extrait le chemin de l'icone
-                        icon_ext       = os.path.splitext(os.path.basename( icon_path ))[1]
-                        new_path       = xbmcgui.Dialog().browse( 3, _( 167 ) % item_shortname, "files" )
-                        if bool( new_path ):
-                            src = os.path.normpath( os.path.join( item_dirname, item_shortname ) )
-                            dst = os.path.normpath( os.path.join( new_path, item_shortname ) )
-                            if xbmcgui.Dialog().yesno( _( 163 ), _( 165 ), src, dst ):
-                                DIALOG_PROGRESS.create( _( 176 ), _( 178 ) + src, _( 179 ) + dst, _( 110 ) )
-                                try:
-                                    shutil2.copy( src + ".xml", dst + ".xml", reportcopy=copy_func, overwrite=True )
-                                    if os.path.exists( src + icon_ext ):
-                                        shutil2.copy( src + icon_ext, dst + icon_ext, reportcopy=copy_func, overwrite=True )
-                                except:
-                                    xbmcgui.Dialog().ok( _( 169 ), _( 170 ), _( 171 ) )
-                                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-                                    #import traceback; traceback.print_exc()
-                                #self.updateDataAndList()
-                                DIALOG_PROGRESS.close()
-                    else:
-                        new_path = xbmcgui.Dialog().browse( 3, _( 167 ) % item_basename, "files" )
-                        if bool( new_path ):
-                            src = os.path.normpath( item_path )
-                            dst = os.path.normpath( os.path.join( new_path, item_basename ) )
-                            if xbmcgui.Dialog().yesno( _( 163 ), _( 165 ), src, dst ):
-                                DIALOG_PROGRESS.create( _( 176 ), _( 178 ) + src, _( 179 ) + dst, _( 110 ) )
-                                try:
-                                    if os.path.isdir( src ):
-                                        if not os.path.isdir( os.path.dirname( dst ) ):
-                                            os.makedirs( os.path.dirname( dst ) )
-                                        shutil2.copytree( src, dst, reportcopy=copy_func, overwrite=True )
-                                    else:
-                                        shutil2.copy( src, dst, reportcopy=copy_func, overwrite=True )
-                                except:
-                                    xbmcgui.Dialog().ok( _( 169 ), _( 170 ), _( 171 ) )
-                                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-                                    #import traceback; traceback.print_exc()
-                                #self.updateDataAndList()
-                                DIALOG_PROGRESS.close()
-
-                elif chosenIndex == 4:
-                    # deplacer l'element
-                    if ( self.curListType == TYPE_SCRAPER ):
-                        #TODO : A optimiser, on doit pouvoir faire mieux
-                        item_dirname   = os.path.dirname( item_path )
-                        item_shortname = os.path.splitext(item_basename)[0] # Sans extension
-                        icon_path      = self.currentItemList[ self.index ].thumb # On extrait le chemin de l'icone
-                        icon_ext       = os.path.splitext(os.path.basename( icon_path ))[1]
-                        new_path       = xbmcgui.Dialog().browse( 3, _( 167 ) % item_shortname, "files" )
-                        if bool( new_path ):
-                            src = os.path.normpath( os.path.join( item_dirname, item_shortname ) )
-                            dst = os.path.normpath( os.path.join( new_path, item_shortname ) )
-                            if xbmcgui.Dialog().yesno( _( 164 ), _( 166 ), src, dst ):
-                                DIALOG_PROGRESS.create( _( 177 ), _( 178 ) + src, _( 179 ) + dst, _( 110 ) )
-                                try:
-                                    shutil2.copy( src + ".xml", dst + ".xml", reportcopy=copy_func, overwrite=True )
-                                    self.fileMgr.deleteItem( src + ".xml" )
-                                    if os.path.exists( src + icon_ext ):
-                                        shutil2.copy( src + icon_ext, dst + icon_ext, reportcopy=copy_func, overwrite=True )
-                                        self.fileMgr.deleteItem( src + icon_ext )
-                                except:
-                                    xbmcgui.Dialog().ok( _( 169 ), _( 172 ), _( 173 ) )
-                                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-                                    #import traceback; traceback.print_exc()
+                selected = show_context_menu( buttons )
+                del show_context_menu
+            
+                if selected != -1:
+                    # si liste des options est pour les skins et scrapers, augmente la valeur de +1
+                    if len( buttons ) == 5:
+                        selected += 1
+                    if selected == 1000: # Executer/Lancer
+                        if ( self.itemTypeList.index(self.curListType) in self.pluginDisplayList ):
+                            # Cas d'un sous-plugin (video, musique ...)
+                            # window id's : http://xbmc.org/wiki/?title=Window_IDs
+                            if ( self.curListType == TYPE_PLUGIN_VIDEO ):
+                                command = "XBMC.ActivateWindow(10025,plugin://video/%s/)" % ( item_basename, )
+                            elif ( self.curListType == TYPE_PLUGIN_MUSIC ):
+                                command = "XBMC.ActivateWindow(10502,plugin://music/%s/)" % ( item_basename, )
+                            elif ( self.curListType == TYPE_PLUGIN_PROGRAMS ):
+                                command = "XBMC.ActivateWindow(10001,plugin://programs/%s/)" % ( item_basename, )
+                            elif ( self.curListType == TYPE_PLUGIN_PICTURES ):
+                                command = "XBMC.ActivateWindow(10002,plugin://pictures/%s/)" % ( item_basename, )
+                        elif ( self.curListType == TYPE_SCRIPT ):
+                            command = "XBMC.RunScript(%s)" % ( os.path.join( item_path, "default.py" ), )
+    
+                        #on ferme le script en court pour pas generer des conflits
+                        self._close_dialog()
+                        self.mainwin._close_script()
+                        #maintenant qu'il y a plus de conflit possible, on execute la command
+                        xbmc.executebuiltin( command )
+    
+                    elif selected == 1001: # Renommer
+                        # Renommer l'element
+                        item_dirname  = os.path.dirname( item_path )
+                        
+                        if ( self.curListType == TYPE_SCRAPER ):
+                            icon_path     = self.currentItemList[ self.index ].thumb # On extrait le chemin de l'icone
+                            icon_basename = os.path.basename( icon_path )
+                            keyboard = xbmc.Keyboard( os.path.splitext(item_basename)[0], _( 154 ) )
+                            keyboard.doModal()
+                            if ( keyboard.isConfirmed() ):
+                                inputText = keyboard.getText()
+                                self.fileMgr.renameItem( item_dirname, item_basename, inputText + '.xml' )
+                                if not icon_path in self.itemThumbList:
+                                    self.fileMgr.renameItem( item_dirname, icon_basename, icon_basename.replace( os.path.splitext(icon_basename)[0], inputText) )
+                                xbmcgui.Dialog().ok( _( 155 ), inputText )
                                 self.updateDataAndList()
-                                DIALOG_PROGRESS.close()
-                    else:
-                        new_path = xbmcgui.Dialog().browse( 3, _( 168 ) % item_basename, "files" )
-                        if bool( new_path ):
-                            src = os.path.normpath( item_path )
-                            dst = os.path.normpath( os.path.join( new_path, item_basename ) )
-                            if xbmcgui.Dialog().yesno( _( 164 ), _( 166 ), src, dst ):
-                                DIALOG_PROGRESS.create( _( 177 ), _( 178 ) + src, _( 179 ) + dst, _( 110 ) )
-                                try:
-                                    if os.path.isdir( src ):
-                                        if not os.path.isdir( os.path.dirname( dst ) ):
-                                            os.makedirs( os.path.dirname( dst ) )
-                                        shutil2.copytree( src, dst, reportcopy=copy_func, overwrite=True )
-                                    else:
-                                        shutil2.copy( src, dst, reportcopy=copy_func, overwrite=True )
-                                    self.fileMgr.deleteItem( src )
-                                except:
-                                    xbmcgui.Dialog().ok( _( 169 ), _( 172 ), _( 173 ) )
-                                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-                                    #import traceback; traceback.print_exc()
+                        else:
+                            keyboard = xbmc.Keyboard( item_basename, _( 154 ) )
+                            keyboard.doModal()
+                            if ( keyboard.isConfirmed() ):
+                                inputText = keyboard.getText()
+                                self.fileMgr.renameItem( item_dirname, item_basename, inputText )
+                                xbmcgui.Dialog().ok( _( 155 ), inputText )
                                 self.updateDataAndList()
-                                DIALOG_PROGRESS.close()
+    
+                    elif selected == 1002:
+                        # Supprimer l'element
+                        if ( self.curListType == TYPE_SCRAPER ):
+                            icon_path      = self.currentItemList[ self.index ].thumb # On extrait le chemin de l'icone
+                            item_shortname = os.path.splitext(item_basename)[0] # Sans extension
+                            if xbmcgui.Dialog().yesno( _( 158 )%item_shortname, _( 159 )%item_shortname ):
+                                self.fileMgr.deleteItem( item_path )
+                                if not icon_path in self.itemThumbList:
+                                    self.fileMgr.deleteItem( icon_path )
+                                self.updateDataAndList() 
+                        else:    
+                            if xbmcgui.Dialog().yesno( _( 158 )%item_basename, _( 159 )%item_basename ):
+                                self.fileMgr.deleteItem( item_path )
+                                self.updateDataAndList() 
+    
+                    elif selected == 1003:
+                        # copier l'element
+                        if ( self.curListType == TYPE_SCRAPER ):
+                            #TODO : A optimiser, on doit pouvoir faire mieux
+                            item_dirname   = os.path.dirname( item_path )
+                            item_shortname = os.path.splitext(item_basename)[0] # Sans extension
+                            icon_path      = self.currentItemList[ self.index ].thumb # On extrait le chemin de l'icone
+                            icon_ext       = os.path.splitext(os.path.basename( icon_path ))[1]
+                            new_path       = xbmcgui.Dialog().browse( 3, _( 167 ) % item_shortname, "files" )
+                            if bool( new_path ):
+                                src = os.path.normpath( os.path.join( item_dirname, item_shortname ) )
+                                dst = os.path.normpath( os.path.join( new_path, item_shortname ) )
+                                if xbmcgui.Dialog().yesno( _( 163 ), _( 165 ), src, dst ):
+                                    DIALOG_PROGRESS.create( _( 176 ), _( 178 ) + src, _( 179 ) + dst, _( 110 ) )
+                                    try:
+                                        shutil2.copy( src + ".xml", dst + ".xml", reportcopy=copy_func, overwrite=True )
+                                        if os.path.exists( src + icon_ext ):
+                                            shutil2.copy( src + icon_ext, dst + icon_ext, reportcopy=copy_func, overwrite=True )
+                                    except:
+                                        xbmcgui.Dialog().ok( _( 169 ), _( 170 ), _( 171 ) )
+                                        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                                        #import traceback; traceback.print_exc()
+                                    #self.updateDataAndList()
+                                    DIALOG_PROGRESS.close()
+                        else:
+                            new_path = xbmcgui.Dialog().browse( 3, _( 167 ) % item_basename, "files" )
+                            if bool( new_path ):
+                                src = os.path.normpath( item_path )
+                                dst = os.path.normpath( os.path.join( new_path, item_basename ) )
+                                if xbmcgui.Dialog().yesno( _( 163 ), _( 165 ), src, dst ):
+                                    DIALOG_PROGRESS.create( _( 176 ), _( 178 ) + src, _( 179 ) + dst, _( 110 ) )
+                                    try:
+                                        if os.path.isdir( src ):
+                                            if not os.path.isdir( os.path.dirname( dst ) ):
+                                                os.makedirs( os.path.dirname( dst ) )
+                                            shutil2.copytree( src, dst, reportcopy=copy_func, overwrite=True )
+                                        else:
+                                            shutil2.copy( src, dst, reportcopy=copy_func, overwrite=True )
+                                    except:
+                                        xbmcgui.Dialog().ok( _( 169 ), _( 170 ), _( 171 ) )
+                                        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                                        #import traceback; traceback.print_exc()
+                                    #self.updateDataAndList()
+                                    DIALOG_PROGRESS.close()
+    
+                    elif selected == 1004:
+                        # deplacer l'element
+                        if ( self.curListType == TYPE_SCRAPER ):
+                            #TODO : A optimiser, on doit pouvoir faire mieux
+                            item_dirname   = os.path.dirname( item_path )
+                            item_shortname = os.path.splitext(item_basename)[0] # Sans extension
+                            icon_path      = self.currentItemList[ self.index ].thumb # On extrait le chemin de l'icone
+                            icon_ext       = os.path.splitext(os.path.basename( icon_path ))[1]
+                            new_path       = xbmcgui.Dialog().browse( 3, _( 167 ) % item_shortname, "files" )
+                            if bool( new_path ):
+                                src = os.path.normpath( os.path.join( item_dirname, item_shortname ) )
+                                dst = os.path.normpath( os.path.join( new_path, item_shortname ) )
+                                if xbmcgui.Dialog().yesno( _( 164 ), _( 166 ), src, dst ):
+                                    DIALOG_PROGRESS.create( _( 177 ), _( 178 ) + src, _( 179 ) + dst, _( 110 ) )
+                                    try:
+                                        shutil2.copy( src + ".xml", dst + ".xml", reportcopy=copy_func, overwrite=True )
+                                        self.fileMgr.deleteItem( src + ".xml" )
+                                        if os.path.exists( src + icon_ext ):
+                                            shutil2.copy( src + icon_ext, dst + icon_ext, reportcopy=copy_func, overwrite=True )
+                                            self.fileMgr.deleteItem( src + icon_ext )
+                                    except:
+                                        xbmcgui.Dialog().ok( _( 169 ), _( 172 ), _( 173 ) )
+                                        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                                        #import traceback; traceback.print_exc()
+                                    self.updateDataAndList()
+                                    DIALOG_PROGRESS.close()
+                        else:
+                            new_path = xbmcgui.Dialog().browse( 3, _( 168 ) % item_basename, "files" )
+                            if bool( new_path ):
+                                src = os.path.normpath( item_path )
+                                dst = os.path.normpath( os.path.join( new_path, item_basename ) )
+                                if xbmcgui.Dialog().yesno( _( 164 ), _( 166 ), src, dst ):
+                                    DIALOG_PROGRESS.create( _( 177 ), _( 178 ) + src, _( 179 ) + dst, _( 110 ) )
+                                    try:
+                                        if os.path.isdir( src ):
+                                            if not os.path.isdir( os.path.dirname( dst ) ):
+                                                os.makedirs( os.path.dirname( dst ) )
+                                            shutil2.copytree( src, dst, reportcopy=copy_func, overwrite=True )
+                                        else:
+                                            shutil2.copy( src, dst, reportcopy=copy_func, overwrite=True )
+                                        self.fileMgr.deleteItem( src )
+                                    except:
+                                        xbmcgui.Dialog().ok( _( 169 ), _( 172 ), _( 173 ) )
+                                        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                                        #import traceback; traceback.print_exc()
+                                    self.updateDataAndList()
+                                    DIALOG_PROGRESS.close()
+            except:
+                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+
 
     def _close_dialog( self ):
         #xbmc.sleep( 100 )
