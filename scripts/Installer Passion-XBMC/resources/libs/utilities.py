@@ -362,7 +362,6 @@ class Settings:
 
 
 try:
-    import xbmc
     """
     getRegion(id) -- Returns your regions setting as a string for the specified id.
      
