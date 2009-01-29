@@ -272,7 +272,6 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         self.rootDisplayList   = rootDisplayList   # Liste de la racine: Cette liste est un filtre ( utilisant l'index ) sur les listes downloadTypeList et localdirList
         self.pluginDisplayList = pluginDisplayList # Liste des plugins : Cette liste est un filtre ( utilisant l'index ) sur les listes downloadTypeList et localdirList
         self.scraperDir        = self.mainwin.scraperDir
-        self.USRPath           = self.mainwin.USRPath
         self.rightstest        = self.mainwin.rightstest
         self.scriptDir         = self.mainwin.scriptDir
         self.CacheDir          = self.mainwin.CacheDir
@@ -284,17 +283,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         self.index              = ""
         self.main_list_last_pos = []
 
-        self.fileMgr             = fileMgr()
-
-        #TODO: TOUTES ces varibales devraient etre passees en parametre du constructeur de la classe ( __init__ si tu preferes )
-        # On ne devraient pas utiliser de variables globale ou rarement en prog objet
-
-
-        #TODO: A nettoyer, ton PMIIIDir n'est pas defini pour XBOX sans le test si dessous
-        if self.USRPath == True:
-            self.PMIIIDir = PMIIIDir
-
-        self.is_started = True
+        self.fileMgr            = fileMgr()
 
 
     def onInit( self ):
@@ -307,8 +296,6 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         # Verifications des permissions sur les repertoires
         self.check_w_rights()
         
-        #if self.is_started:
-        #    self.is_started = False
         self.updateDataAndList()
         xbmc.executebuiltin( "Container.SetViewMode(%i)" % self.settings.get( "manager_view_mode", self.CONTROL_MAIN_LIST_START ) )
 
