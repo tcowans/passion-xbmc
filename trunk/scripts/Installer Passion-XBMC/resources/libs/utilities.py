@@ -30,12 +30,14 @@ __all__ = [
     "strip_off",
     "Slideshow",
     "Settings",
+    "get_infos_path",
     ]
 
 #Modules general
 import os
 import re
 import sys
+import time
 import urllib
 import urllib2
 import elementtree.ElementTree as ET
@@ -357,3 +359,67 @@ class Settings:
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
             return False
+
+
+try:
+    import xbmc
+    """
+    getRegion(id) -- Returns your regions setting as a string for the specified id.
+     
+    id             : string - id of setting to return
+     
+    *Note, choices are (dateshort, datelong, time, meridiem, tempunit, speedunit)
+     
+           You can use the above as keywords for arguments and skip certain optional arguments.
+           Once you use a keyword, all following arguments require the keyword.
+     
+    example:
+      - date_long_format = xbmc.getRegion('datelong')
+    """
+    date_long_format = xbmc.getRegion( "datelong" ).replace( "DDDD, ", "" ).replace( "MMMM", "%m" ).replace( "D", "%d" ).replace( "YYYY", "%Y" )
+    time_format = xbmc.getRegion( "time" ).replace( "H", "%H" ).replace( "mm", "%M" ).replace( "ss", "%S" )
+    DATE_TIME_FORMAT = date_long_format.replace( " ", "-" ) + " | " + time_format
+except:
+    DATE_TIME_FORMAT = "%d-%m-%y | %H:%M:%S"
+
+
+def get_infos_path( path ):
+    # Return the system's ctime which, on some systems (like Unix) is the time of the last change, and, on others (like Windows), is the creation time for path. The return value is a number giving the number of seconds since the epoch (see the time module). Raise os.error if the file does not exist or is inaccessible. New in version 2.3.
+    try: c_time = time.strftime( DATE_TIME_FORMAT, time.localtime( os.path.getctime( path ) ) )
+    except: c_time = ""
+
+    # Return the time of last access of path. The return value is a number giving the number of seconds since the epoch (see the time module). Raise os.error if the file does not exist or is inaccessible. New in version 1.5.2. Changed in version 2.3: If os.stat_float_times() returns True, the result is a floating point number.
+    try: last_access = time.strftime( DATE_TIME_FORMAT, time.localtime( os.path.getatime( path ) ) )
+    except: last_access = ""
+
+    # Return the time of last modification of path. The return value is a number giving the number of seconds since the epoch (see the time module). Raise os.error if the file does not exist or is inaccessible. New in version 1.5.2. Changed in version 2.3: If os.stat_float_times() returns True, the result is a floating point number.
+    try: last_modification = time.strftime( DATE_TIME_FORMAT, time.localtime( os.path.getmtime( path ) ) )
+    except: last_modification = ""
+
+    # Return the size, in bytes, of path. Raise os.error if the file does not exist or is inaccessible. New in version 1.5.2.
+    # calculate dir size "os.walk( path, topdown=False )"
+    try:
+        size = 0
+        if os.path.isfile( path ):
+            try: size += os.path.getsize( fpath )
+            except: pass
+        else:
+            for root, dirs, files in os.walk( path, topdown=False ):
+                for file in files:
+                    try:
+                        fpath = os.path.join( root, file )
+                        size += os.path.getsize( fpath )
+                    except:
+                        pass
+        if size <= 0:
+            size = "0.0 KB"
+        elif 1024.0 > size < ( 1024.0 * 1024.0 ):
+            size = "%00s KB" % round( size / 1024.0, 2 )
+        elif size > ( 1024.0 * 1024.0 ):
+            size = "%00s MB" % round( size / 1024.0 / 1024.0, 2 )
+        else:
+            size = "%00s Bytes" % size
+    except:
+        size = "0.0 KB"
+
+    return size, c_time, last_access, last_modification

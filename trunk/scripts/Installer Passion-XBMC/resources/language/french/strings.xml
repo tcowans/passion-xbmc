@@ -108,6 +108,12 @@
   <string id="177">Déplacement...</string>
   <string id="178">De :&#32;</string>
   <string id="179">Vers :&#32;</string>
+  <string id="180">Emplacement :</string>
+  <string id="181">Taille :</string>
+  <string id="182">Créé le :</string>
+  <string id="183">Modifié le :</string>
+  <string id="184">Dernier accès le :</string>
+  <string id="185"></string>
 
   <!--FORUM DIRECT INFOS STRINGS -->
   <string id="199">Informations en direct</string>
