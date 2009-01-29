@@ -33,7 +33,7 @@
 				<width>245</width>
 				<height>250</height>
 				<texture>passion-dialog-context-middle.png</texture>
-				<visible>Control.IsVisible(1006)</visible>
+				<visible>Skin.String(totals_cm_buttons,7) | IsEmpty(Skin.String(totals_cm_buttons))</visible>
 			</control>
 			<control type="image">
 				<description>background image</description>
@@ -42,7 +42,7 @@
 				<width>245</width>
 				<height>213</height>
 				<texture>passion-dialog-context-middle.png</texture>
-				<visible>Control.IsVisible(1005) + !Control.IsVisible(1006)</visible>
+				<visible>Skin.String(totals_cm_buttons,6)</visible>
 			</control>
 			<control type="image">
 				<description>background image</description>
@@ -51,7 +51,7 @@
 				<width>245</width>
 				<height>176</height>
 				<texture>passion-dialog-context-middle.png</texture>
-				<visible>Control.IsVisible(1004) + !Control.IsVisible(1005)</visible>
+				<visible>Skin.String(totals_cm_buttons,5)</visible>
 			</control>
 			<control type="image">
 				<description>background image</description>
@@ -60,7 +60,7 @@
 				<width>245</width>
 				<height>139</height>
 				<texture>passion-dialog-context-middle.png</texture>
-				<visible>Control.IsVisible(1003) + !Control.IsVisible(1004)</visible>
+				<visible>Skin.String(totals_cm_buttons,4)</visible>
 			</control>
 			<control type="image">
 				<description>background image</description>
@@ -69,7 +69,7 @@
 				<width>245</width>
 				<height>102</height>
 				<texture>passion-dialog-context-middle.png</texture>
-				<visible>Control.IsVisible(1002) + !Control.IsVisible(1003)</visible>
+				<visible>Skin.String(totals_cm_buttons,3)</visible>
 			</control>
 			<control type="image">
 				<description>background image</description>
@@ -78,7 +78,7 @@
 				<width>245</width>
 				<height>65</height>
 				<texture>passion-dialog-context-middle.png</texture>
-				<visible>Control.IsVisible(1001) + !Control.IsVisible(1002)</visible>
+				<visible>Skin.String(totals_cm_buttons,2)</visible>
 			</control>
 			<control type="image">
 				<description>background image</description>
@@ -87,7 +87,7 @@
 				<width>245</width>
 				<height>28</height>
 				<texture>passion-dialog-context-middle.png</texture>
-				<visible>Control.IsVisible(1000) + !Control.IsVisible(1001)</visible>
+				<visible>Skin.String(totals_cm_buttons,1)</visible>
 			</control>
 			<control type="image">
 				<description>background bottom image</description>
@@ -96,12 +96,12 @@
 				<width>245</width>
 				<height>25</height>
 				<texture>passion-dialog-context-bottom.png</texture>
-				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1006)">conditional</animation>
-				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1005)">conditional</animation>
-				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1004)">conditional</animation>
-				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1003)">conditional</animation>
-				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1002)">conditional</animation>
-				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1001)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-37"  time="0" condition="Skin.String(totals_cm_buttons,6)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-74"  time="0" condition="Skin.String(totals_cm_buttons,5)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-111" time="0" condition="Skin.String(totals_cm_buttons,4)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-148" time="0" condition="Skin.String(totals_cm_buttons,3)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-185" time="0" condition="Skin.String(totals_cm_buttons,2)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-222" time="0" condition="Skin.String(totals_cm_buttons,1)">conditional</animation>
 			</control>
 		</control>
 
@@ -143,6 +143,7 @@
 				<label>-</label>
 				<onup>1000</onup>
 				<ondown>1002</ondown>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1000)">conditional</animation>
 			</control>
 			<control type="button" id="1002">
 				<description>context menu button 2</description>
@@ -161,6 +162,8 @@
 				<label>-</label>
 				<onup>1001</onup>
 				<ondown>1003</ondown>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1001)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1000)">conditional</animation>
 			</control>
 			<control type="button" id="1003">
 				<description>context menu button 3</description>
@@ -179,6 +182,9 @@
 				<label>-</label>
 				<onup>1002</onup>
 				<ondown>1004</ondown>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1002)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1001)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1000)">conditional</animation>
 			</control>
 			<control type="button" id="1004">
 				<description>context menu button 4</description>
@@ -197,6 +203,10 @@
 				<label>-</label>
 				<onup>1003</onup>
 				<ondown>1005</ondown>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1003)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1002)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1001)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1000)">conditional</animation>
 			</control>
 			<control type="button" id="1005">
 				<description>context menu button 5</description>
@@ -215,6 +225,11 @@
 				<label>-</label>
 				<onup>1004</onup>
 				<ondown>1006</ondown>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1004)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1003)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1002)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1001)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1000)">conditional</animation>
 			</control>
 			<control type="button" id="1006">
 				<description>context menu button 6</description>
@@ -233,6 +248,12 @@
 				<label>-</label>
 				<onup>1005</onup>
 				<ondown>1000</ondown>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1005)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1004)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1003)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1002)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1001)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1000)">conditional</animation>
 			</control>
 		</control>
 
