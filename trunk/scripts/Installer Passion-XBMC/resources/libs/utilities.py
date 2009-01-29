@@ -382,7 +382,7 @@ except:
     DATE_TIME_FORMAT = "%d-%m-%y | %H:%M:%S"
 
 
-def get_infos_path( path ):
+def get_infos_path( path, get_size=False ):
     # Return the system's ctime which, on some systems (like Unix) is the time of the last change, and, on others (like Windows), is the creation time for path. The return value is a number giving the number of seconds since the epoch (see the time module). Raise os.error if the file does not exist or is inaccessible. New in version 2.3.
     try: c_time = time.strftime( DATE_TIME_FORMAT, time.localtime( os.path.getctime( path ) ) )
     except: c_time = ""
@@ -402,7 +402,7 @@ def get_infos_path( path ):
         if os.path.isfile( path ):
             try: size += os.path.getsize( path )
             except: pass
-        else:
+        elif get_size:
             for root, dirs, files in os.walk( path, topdown=False ):
                 for file in files:
                     try:

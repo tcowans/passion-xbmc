@@ -330,7 +330,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         try: self.main_list_last_pos.append( self.index )
         except: self.main_list_last_pos.append( 0 )
         
-        if ( self.getListItem(self.index).getProperty( "Downloaded" ) == "true" ):
+        if ( self.getListItem(self.index).getProperty( "Running" ) == "true" ):
             # On bloque l'utisateur de faire quoique ce soit
             # TODO: - voir si ne rien faire plutot qu'un popup ne serait pas mieux
             #       - Creer des strings pour un message plus 'user friendly'
@@ -346,26 +346,20 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                     # On va ici afficher un menu des options du gestionnaire de fichiers
                     item_path     = self.currentItemList[ self.index ].local_path # On extrait le chemin de l'item
                     item_basename = os.path.basename( item_path )
+
                     # à ne pas oublier lors du changement des ID des listes ( self.getFocusId() == self.CONTROL_MAIN_LIST ), car bug en vue :)
-                    from context_menu import show_context_menu
-                    #buttons = { 1000 : ( "teste 1", "disabled" ), 1001 : "teste 2", 1002 : "teste 3",
-                    #    1003 : "teste 4", 1004 : ( "teste 5", "disabled" ), 1005 : "teste 6", 1006 : "teste 7" }
-    
                     if ( self.curListType == TYPE_SCRIPT ) or ( self.itemTypeList.index(self.curListType) in self.pluginDisplayList ):
                         # liste des options pour plugins et scripts
                         buttons = { 1000 : _( 160 ), 1001 : _( 157 ) , 1002 : _( 156 ) , 1003 : _( 161 ) , 1004 : _( 162 ) , 1005 : _( 153 ) }
                     else:
                         # liste des options pour skins et scrapers
-                        #buttons = { 1000 : ( _( 160 ), "disabled" ) , 1001 : _( 157 ) , 1002 : _( 156 ) , 1003 : _( 161 ) , 1004 : _( 162 ) , 1005 : _( 153 ) }
-                        buttons = { 1000 : _( 157 ) , 1001 : _( 156 ) , 1002 : _( 161 ) , 1003 : _( 162 ) , 1004 : _( 153 ) }
+                        buttons = { 1001 : _( 157 ) , 1002 : _( 156 ) , 1003 : _( 161 ) , 1004 : _( 162 ) , 1005 : _( 153 ) }
     
+                    from context_menu import show_context_menu
                     selected = show_context_menu( buttons )
                     del show_context_menu
-                
+
                     if selected in range( 1000, 1007 ):
-                        # si liste des options est pour les skins et scrapers, augmente la valeur de +1
-                        if len( buttons ) == 5:
-                            selected += 1
                         if selected == 1000: # Executer/Lancer
                             if ( self.itemTypeList.index(self.curListType) in self.pluginDisplayList ):
                                 # Cas d'un sous-plugin (video, musique ...)
@@ -394,24 +388,29 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                             if ( self.curListType == TYPE_SCRAPER ):
                                 icon_path     = self.currentItemList[ self.index ].thumb # On extrait le chemin de l'icone
                                 icon_basename = os.path.basename( icon_path )
-                                keyboard = xbmc.Keyboard( os.path.splitext(item_basename)[0], _( 154 ) )
+                                default_basename = os.path.splitext( item_basename )[ 0 ]
+                                keyboard = xbmc.Keyboard( default_basename, _( 154 ) )
                                 keyboard.doModal()
                                 if ( keyboard.isConfirmed() ):
                                     inputText = keyboard.getText()
-                                    self.fileMgr.renameItem( item_dirname, item_basename, inputText + '.xml' )
-                                    if not icon_path in self.itemThumbList:
-                                        self.fileMgr.renameItem( item_dirname, icon_basename, icon_basename.replace( os.path.splitext(icon_basename)[0], inputText) )
-                                    xbmcgui.Dialog().ok( _( 155 ), inputText )
-                                    self.updateDataAndList()
+                                    # ne renomme pas l'item si le nouveau nom est le meme que le default
+                                    if default_basename != inputText:
+                                        self.fileMgr.renameItem( item_dirname, item_basename, inputText + '.xml' )
+                                        if not icon_path in self.itemThumbList:
+                                            self.fileMgr.renameItem( item_dirname, icon_basename, icon_basename.replace( os.path.splitext(icon_basename)[0], inputText) )
+                                        xbmcgui.Dialog().ok( _( 155 ), inputText )
+                                        self.updateDataAndList()
                             else:
                                 keyboard = xbmc.Keyboard( item_basename, _( 154 ) )
                                 keyboard.doModal()
                                 if ( keyboard.isConfirmed() ):
                                     inputText = keyboard.getText()
-                                    self.fileMgr.renameItem( item_dirname, item_basename, inputText )
-                                    xbmcgui.Dialog().ok( _( 155 ), inputText )
-                                    self.updateDataAndList()
-        
+                                    # ne renomme pas l'item si le nouveau nom est le meme que le default
+                                    if item_basename != inputText:
+                                        self.fileMgr.renameItem( item_dirname, item_basename, inputText )
+                                        xbmcgui.Dialog().ok( _( 155 ), inputText )
+                                        self.updateDataAndList()
+
                         elif selected == 1002:
                             # Supprimer l'element
                             if ( self.curListType == TYPE_SCRAPER ):
@@ -708,11 +707,10 @@ class FileMgrWindow( xbmcgui.WindowXML ):
             else:
                 label1 = item.name
                 disable = ""
-            #TODO: remplacer 'Downloaded' dans le xml par un nom plus parlant genre 'disable' ...
             displayListItem = xbmcgui.ListItem( label1, "", thumbnailImage = item.thumb )
             DIALOG_PROGRESS.update( -1, _( 104 ), label1, _( 110 ) )
             size, c_time, last_access, last_modification = get_infos_path( item.local_path )
-            displayListItem.setProperty( "Downloaded", disable )
+            displayListItem.setProperty( "Running", disable )
             displayListItem.setProperty( "size", size )
             displayListItem.setProperty( "created", c_time )
             displayListItem.setProperty( "last_modification", last_modification )
