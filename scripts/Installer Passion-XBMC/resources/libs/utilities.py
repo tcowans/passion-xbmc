@@ -400,7 +400,7 @@ def get_infos_path( path ):
     try:
         size = 0
         if os.path.isfile( path ):
-            try: size += os.path.getsize( fpath )
+            try: size += os.path.getsize( path )
             except: pass
         else:
             for root, dirs, files in os.walk( path, topdown=False ):
