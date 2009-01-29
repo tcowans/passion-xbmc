@@ -122,7 +122,7 @@
 				<disabledcolor>60d0d0d0</disabledcolor>
 				<align>center</align>
 				<aligny>center</aligny>
-				<label>MPlayer ($LOCALIZE[571])</label>
+				<label>-</label>
 				<onup>1006</onup>
 				<ondown>1001</ondown>
 			</control>
@@ -140,7 +140,7 @@
 				<disabledcolor>60d0d0d0</disabledcolor>
 				<align>center</align>
 				<aligny>center</aligny>
-				<label>DVDPlayer</label>
+				<label>-</label>
 				<onup>1000</onup>
 				<ondown>1002</ondown>
 			</control>
@@ -158,8 +158,7 @@
 				<disabledcolor>60d0d0d0</disabledcolor>
 				<align>center</align>
 				<aligny>center</aligny>
-				<label>13350</label>
-				<onclick>XBMC.ActivateWindow(videoplaylist)</onclick>
+				<label>-</label>
 				<onup>1001</onup>
 				<ondown>1003</ondown>
 			</control>
@@ -177,7 +176,7 @@
 				<disabledcolor>60d0d0d0</disabledcolor>
 				<align>center</align>
 				<aligny>center</aligny>
-				<label>264</label>
+				<label>-</label>
 				<onup>1002</onup>
 				<ondown>1004</ondown>
 			</control>

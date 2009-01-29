@@ -622,6 +622,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
             self.updateData() # On met a jour les donnees
             self.updateList() # On raffraichit la page pour afficher le contenu
         except:
+            #import traceback; traceback.print_exc()
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         DIALOG_PROGRESS.close()
 
@@ -722,7 +723,14 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                 disable = ""
             #TODO: remplacer 'Downloaded' dans le xml par un nom plus parlant genre 'disable' ...
             displayListItem = xbmcgui.ListItem( label1, "", thumbnailImage = item.thumb )
+            DIALOG_PROGRESS.update( -1, _( 104 ), label1, _( 110 ) )
+            size, c_time, last_access, last_modification = get_infos_path( item.local_path )
             displayListItem.setProperty( "Downloaded", disable )
+            displayListItem.setProperty( "size", size )
+            displayListItem.setProperty( "created", c_time )
+            displayListItem.setProperty( "last_modification", last_modification )
+            displayListItem.setProperty( "last_access", last_access )
+            displayListItem.setProperty( "path", item.local_path )
             self.addItem( displayListItem )
 
         #xbmcgui.unlock()
