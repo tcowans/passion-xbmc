@@ -286,7 +286,7 @@
 				<texturefocus>passion-scroll-down-focus.png</texturefocus>
 				<onleft>9000</onleft>
 				<onright>110</onright>
-				<ondown>130</ondown>
+				<ondown>160</ondown>
 				<onup>1000</onup>
 			</control>
 			<control type="button" id="110">
@@ -299,7 +299,7 @@
 				<texturefocus>passion-scroll-up-focus.png</texturefocus>
 				<onleft>100</onleft>
 				<onright>9000</onright>
-				<ondown>130</ondown>
+				<ondown>160</ondown>
 				<onup>1000</onup>
 			</control>
 			<control type="button" id="120">
@@ -320,7 +320,7 @@
 				<texturenofocus>-</texturenofocus>
 				<onleft>110</onleft>
 				<onright>100</onright>
-				<ondown>130</ondown>
+				<ondown>160</ondown>
 				<onup>1000</onup>
 			</control>
 		</control>
@@ -339,6 +339,50 @@
 			<onup>9001</onup>
 			<ondown>9000</ondown>
 			<!-- <usecontrolcoords>true</usecontrolcoords> -->
+			<control type="image" id="129">
+				<description>separator image</description>
+				<posx>-5</posx>
+				<posy>0</posy>
+				<width>580</width>
+				<height>5</height>
+				<texture>passion-separator.png</texture>
+			</control>
+			<control type="radiobutton" id="160">
+				<description>button general 4</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>580</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT514</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<aligny>center</aligny>
+				<texturefocus>passion-input-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<textureradiofocus>passion-settings-check-box.png</textureradiofocus>
+				<textureradionofocus>passion-settings-check-boxNF.png</textureradionofocus>
+			</control>
+			<control type="radiobutton" id="170">
+				<description>button general 5</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>580</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT515</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<aligny>center</aligny>
+				<texturefocus>passion-input-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<textureradiofocus>passion-settings-check-box.png</textureradiofocus>
+				<textureradionofocus>passion-settings-check-boxNF.png</textureradionofocus>
+			</control>
 			<control type="radiobutton" id="130">
 				<description>button general 1</description>
 				<posx>0</posx>
@@ -356,6 +400,14 @@
 				<texturenofocus>-</texturenofocus>
 				<textureradiofocus>passion-settings-check-box.png</textureradiofocus>
 				<textureradionofocus>passion-settings-check-boxNF.png</textureradionofocus>
+			</control>
+			<control type="image" id="139">
+				<description>separator image</description>
+				<posx>-5</posx>
+				<posy>0</posy>
+				<width>580</width>
+				<height>5</height>
+				<texture>passion-separator.png</texture>
 			</control>
 			<control type="radiobutton" id="140">
 				<description>button general 2</description>

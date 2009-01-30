@@ -6,9 +6,8 @@
 		<system>1</system>
 		<posx>230</posx>
 		<posy>200</posy>
-		<!--<origin x="230" y="311">!Control.IsVisible(1004)</origin>-->
-		<origin x="230" y="274">!Control.IsVisible(1005)</origin>
-		<origin x="230" y="237">!Control.IsVisible(1006)</origin>
+		<origin x="230" y="274">Skin.String(totals_cm_buttons,5) | Skin.String(totals_cm_buttons,4) | Skin.String(totals_cm_buttons,3) | Skin.String(totals_cm_buttons,2) | Skin.String(totals_cm_buttons,1)</origin>
+		<origin x="230" y="237">Skin.String(totals_cm_buttons,6)</origin>
 	</coordinates>
 
 	<animation effect="fade" time="200">WindowOpen</animation>

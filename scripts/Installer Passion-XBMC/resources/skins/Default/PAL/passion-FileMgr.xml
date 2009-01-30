@@ -239,7 +239,7 @@
 						<selectedcolor>FFe2ff43</selectedcolor>
 						<textcolor>60000000</textcolor>
 						<align>right</align>
-						<info>ListItem.Label2</info>
+						<label>$INFO[ListItem.Property(size),$LOCALIZE[SCRIPT181] ]</label>
 						<animation effect="slide" start="0,0" end="-26,0" time="0" condition="Control.IsVisible(2050)">conditional</animation>
 					</control>
 				</itemlayout>
@@ -319,7 +319,7 @@
 						<textcolor>60000000</textcolor>
 						<align>right</align>
 						<!--<info>ListItem.Label2</info>-->
-						<label>$INFO[ListItem.Label2,[B],[/B]]</label>
+						<label>$INFO[ListItem.Property(size),$LOCALIZE[SCRIPT181] ]</label>
 						<animation effect="slide" start="0,0" end="-26,0" time="0" condition="Control.IsVisible(2050)">conditional</animation>
 					</control>
 				</focusedlayout>
@@ -441,7 +441,7 @@
 							<width>100</width>
 							<height>200</height>
 							<info>ListItem.Icon</info>
-							<texture flipy="true" diffuse="diffuse_mirror.png" /> 
+							<texture flipy="true" diffuse="passion-diffuse_mirror.png" /> 
 							<aspectratio aligny="top">keep</aspectratio>
 						</control>
 						<control type="image">
@@ -469,7 +469,7 @@
 							<width>100</width>
 							<height>200</height>
 							<info>ListItem.Icon</info>
-							<texture flipy="true" diffuse="diffuse_mirror.png" /> 
+							<texture flipy="true" diffuse="passion-diffuse_mirror.png" /> 
 							<aspectratio aligny="top">keep</aspectratio>
 							<animation effect="zoom" start="2,250,100,200" end="-15,280,150,300" time="200">focus</animation>
 							<animation effect="zoom" end="2,250,100,200" start="-15,280,150,300" time="150">unfocus</animation>
@@ -486,21 +486,22 @@
 					</focusedlayout>
 				</control>
 				<control type="label">
-					<posx>200</posx>
+					<posx>27</posx>
 					<posy>390</posy>
-					<width>410</width>
+					<width>666</width>
 					<height>16</height>
 					<font>special13</font>
 					<selectedcolor>FFe2ff43</selectedcolor>
 					<textcolor>98000000</textcolor>
 					<scroll>true</scroll>
+					<align>center</align>
 					<info>ListItem.Label</info>
 					<visible>Control.IsVisible(56)</visible>
 				</control>
 				<control type="label">
-					<posx>200</posx>
+					<posx>27</posx>
 					<posy>420</posy>
-					<width>410</width>
+					<width>333</width>
 					<height>16</height>
 					<font>font13</font>
 					<textcolor>FF000000</textcolor>
@@ -509,20 +510,43 @@
 					<visible>Control.IsVisible(56)</visible>
 				</control>
 				<control type="label">
-					<posx>200</posx>
+					<posx>27</posx>
 					<posy>445</posy>
-					<width>410</width>
+					<width>333</width>
 					<height>16</height>
 					<font>font13</font>
 					<textcolor>FF000000</textcolor>
 					<scroll>true</scroll>
+					<label>SCRIPT180</label>
+					<visible>Control.IsVisible(56) + !IsEmpty(ListItem.Property(path))</visible>
+				</control>
+				<control type="label">
+					<posx>27</posx>
+					<posy>470</posy>
+					<width>333</width>
+					<height>16</height>
+					<font>font13</font>
+					<textcolor>FF000000</textcolor>
+					<scroll>true</scroll>
+					<label>$INFO[ListItem.Property(path)]</label>
+					<visible>Control.IsVisible(56)</visible>
+				</control>
+				<control type="label">
+					<posx>690</posx>
+					<posy>420</posy>
+					<width>333</width>
+					<height>16</height>
+					<font>font13</font>
+					<textcolor>FF000000</textcolor>
+					<scroll>true</scroll>
+					<align>right</align>
 					<label>$INFO[ListItem.Property(created),$LOCALIZE[SCRIPT182] ]</label>
 					<visible>Control.IsVisible(56)</visible>
 				</control>
 				<control type="label">
-					<posx>670</posx>
-					<posy>420</posy>
-					<width>410</width>
+					<posx>690</posx>
+					<posy>445</posy>
+					<width>333</width>
 					<height>16</height>
 					<font>font13</font>
 					<textcolor>FF000000</textcolor>
@@ -532,26 +556,15 @@
 					<visible>Control.IsVisible(56)</visible>
 				</control>
 				<control type="label">
-					<posx>670</posx>
-					<posy>445</posy>
-					<width>410</width>
+					<posx>690</posx>
+					<posy>470</posy>
+					<width>333</width>
 					<height>16</height>
 					<font>font13</font>
 					<textcolor>FF000000</textcolor>
 					<scroll>true</scroll>
 					<align>right</align>
 					<label>$INFO[ListItem.Property(last_access),$LOCALIZE[SCRIPT184] ]</label>
-					<visible>Control.IsVisible(56)</visible>
-				</control>
-				<control type="label">
-					<posx>200</posx>
-					<posy>470</posy>
-					<width>430</width>
-					<height>16</height>
-					<font>font13</font>
-					<textcolor>FF000000</textcolor>
-					<scroll>true</scroll>
-					<label>$INFO[ListItem.Property(path),$LOCALIZE[SCRIPT180] ]</label>
 					<visible>Control.IsVisible(56)</visible>
 				</control>
 			</control>

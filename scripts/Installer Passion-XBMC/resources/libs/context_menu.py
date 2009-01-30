@@ -23,13 +23,13 @@ class ContextMenu( xbmcgui.WindowXMLDialog ):
         xbmcgui.WindowXMLDialog.__init__( self, *args, **kwargs )
         self.control_enabled_buttons = range( self.CONTROL_CM_BUTTON_START, ( self.CONTROL_CM_BUTTON_END + 1 ) )
         self.buttons = kwargs.get( "buttons", {} )
+        xbmc.executebuiltin( "Skin.SetString(totals_cm_buttons,%i)" % ( len( self.buttons ), ) )
         self.selected = 0
 
     def onInit( self ):
         try:
             xbmcgui.lock()
             if self.buttons == {}: raise
-            xbmc.executebuiltin( "Skin.SetString(totals_cm_buttons,%i)" % ( len( self.buttons ), ) )
             first_cm_button = sorted( self.buttons.keys() )[ 0 ]
             for key in self.CONTROL_CM_BUTTONS:
                 label = self.buttons.get( key )
