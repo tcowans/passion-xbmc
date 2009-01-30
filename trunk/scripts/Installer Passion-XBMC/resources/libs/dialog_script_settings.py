@@ -38,6 +38,8 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
     CONTROL_XML_UPDATE_BUTTON     = 130
     CONTROL_UPDATE_STARTUP_BUTTON = 140
     CONTROL_SCRIPT_DEBUG_BUTTON   = 150
+    CONTROL_PARENT_DIR_BUTTON     = 160
+    CONTROL_EXTENTION_BUTTON      = 170
     CONTROL_DECREASE_COLOR_BUTTON = 200
     CONTROL_INCREASE_COLOR_BUTTON = 210
     CONTROL_SKIN_COLOR_LABEL      = 220
@@ -140,6 +142,10 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             self.getControl( self.CONTROL_OK_BUTTON ).setEnabled( False )
             #selon l'etat de self.settings[ "hide_forum" ], l'image du radiobutton sera blanc ou non visible
             self.getControl( self.CONTROL_HIDE_FORUM_BUTTON ).setSelected( self.settings.get( "hide_forum", False ) )
+            #selon l'etat de self.settings[ "pardir_not_hidden" ], l'image du radiobutton sera blanc ou non visible
+            self.getControl( self.CONTROL_PARENT_DIR_BUTTON ).setSelected( not self.settings.get( "pardir_not_hidden", 1 ) )
+            #selon l'etat de self.settings[ "hide_extention" ], l'image du radiobutton sera blanc ou non visible
+            self.getControl( self.CONTROL_EXTENTION_BUTTON ).setSelected( self.settings.get( "hide_extention", True ) )
             # boutons pour le web
             self._set_control_web_visibility()
         except:
@@ -232,6 +238,12 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
                 self.toggle_color_control( controlID )
             elif controlID in ( self.CONTROL_DECREASE_RSS_BUTTON, self.CONTROL_INCREASE_RSS_BUTTON ):
                 self.toggle_rss_control( controlID )
+            elif controlID == self.CONTROL_PARENT_DIR_BUTTON:
+                #bouton pour activer desactiver le repertoire parent dans les listes
+                self._set_bool_setting( "pardir_not_hidden" )
+            elif controlID == self.CONTROL_EXTENTION_BUTTON:
+                #bouton pour activer desactiver les extentions dans les noms des items
+                self._set_bool_setting( "hide_extention" )
             elif controlID == self.CONTROL_XML_UPDATE_BUTTON:
                 #bouton pour activer desactiver la modification du fichier sources.xml
                 self._set_bool_setting( "xbmc_xml_update" )

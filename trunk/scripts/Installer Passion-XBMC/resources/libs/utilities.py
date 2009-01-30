@@ -291,6 +291,8 @@ class Settings:
         defaults = {
             # GENERAL
             "updating": False,
+            "pardir_not_hidden": 1,
+            "hide_extention": True,
             "update_startup": True,
             "xbmc_xml_update": False,
             "rss_feed": ( "0", "1", )[ ( xbmc.getLanguage().lower() == "french" ) ],
@@ -382,7 +384,7 @@ except:
     DATE_TIME_FORMAT = "%d-%m-%y | %H:%M:%S"
 
 
-def get_infos_path( path, get_size=False ):
+def get_infos_path( path, get_size=False, report_progress=None ):
     # Return the system's ctime which, on some systems (like Unix) is the time of the last change, and, on others (like Windows), is the creation time for path. The return value is a number giving the number of seconds since the epoch (see the time module). Raise os.error if the file does not exist or is inaccessible. New in version 2.3.
     try: c_time = time.strftime( DATE_TIME_FORMAT, time.localtime( os.path.getctime( path ) ) )
     except: c_time = ""
@@ -400,7 +402,10 @@ def get_infos_path( path, get_size=False ):
     try:
         size = 0
         if os.path.isfile( path ):
-            try: size += os.path.getsize( path )
+            try:
+                size += os.path.getsize( path )
+                if report_progress:
+                    report_progress.update( -1, sys.modules[ "__main__" ].__language__( 186 ), path, sys.modules[ "__main__" ].__language__( 181 ) + " %00s KB" % round( size / 1024.0, 2 ) )
             except: pass
         elif get_size:
             for root, dirs, files in os.walk( path, topdown=False ):
@@ -408,6 +413,8 @@ def get_infos_path( path, get_size=False ):
                     try:
                         fpath = os.path.join( root, file )
                         size += os.path.getsize( fpath )
+                        if report_progress:
+                            report_progress.update( -1, sys.modules[ "__main__" ].__language__( 186 ), fpath, sys.modules[ "__main__" ].__language__( 181 ) + " %00s KB" % round( size / 1024.0, 2 ) )
                     except:
                         pass
         if size <= 0:

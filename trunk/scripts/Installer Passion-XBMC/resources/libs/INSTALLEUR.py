@@ -127,69 +127,6 @@ class rssReader:
             return "", ( add_pretty_color( _( 107 ), color=self.titlecolor ) + _( 108 ) )
 
 
-class scriptextracter:
-    """
-    Extracteur de script, dezip ou derar une archive et l'efface
-    """
-    def zipfolder ( self ):
-        self.zfile = zipfile.ZipFile( self.archive, 'r' )
-        for i in self.zfile.namelist():  # On parcourt l'ensemble des fichiers de l'archive
-            if i.endswith( '/' ):
-                dossier = self.pathdst + os.sep + i
-                try:
-                    os.makedirs( dossier )
-                except:
-                    logger.LOG( logger.LOG_DEBUG, "Erreur creation dossier de l'archive!" )
-                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-            else:
-                logger.LOG( logger.LOG_DEBUG, "File Case: %s", repr( i ) )
-
-        # On ferme l'archive
-        self.zfile.close()
-
-    def  extract( self, archive, TargetDir ):
-        self.pathdst = TargetDir
-        self.archive = archive
-        logger.LOG( logger.LOG_DEBUG, "self.pathdst = %s", self.pathdst )
-        logger.LOG( logger.LOG_DEBUG, "self.archive = %s", self.archive )
-
-        if archive.endswith( 'zip' ):
-            self.zipfolder() #generation des dossiers dans le cas d'un zip
-        #extraction de l'archive
-        xbmc.executebuiltin( 'XBMC.Extract(%s, %s)'%( self.archive, self.pathdst ) )
-
-    def getDirName( self, archive ):
-        """
-        Retourne le nom du repertorie root a l'interieur d'un archive
-        Attention il s'agit du nom et non du chemin du repertoire
-        """
-        dirName = ""
-        if archive.endswith( 'zip' ):
-            zfile = zipfile.ZipFile( archive, 'r' )
-            dirName = zfile.namelist()[ 0 ].split( '/' )[ 0 ]
-            logger.LOG( logger.LOG_DEBUG, "scriptextracter::getDirName: dirName = %s", dirName )
-            logger.LOG( logger.LOG_DEBUG, repr( zfile.namelist() ) )
-            # On verifie que la chaine de caractere est bien un repertoire
-            if zfile.namelist()[ 0 ].find( dirName + '/' ) == -1:
-                logger.LOG( logger.LOG_DEBUG, "%s n'est pas un repertoire", dirName )
-                dirName = ""
-            logger.LOG( logger.LOG_DEBUG, "Zip dirname:" )
-            logger.LOG( logger.LOG_DEBUG, dirName )
-        elif archive.endswith( 'rar' ):
-            rfile = rarfile.RarFile( archive, 'r' )
-            dirName = rfile.namelist()[ 0 ].split( "\\" )[ 0 ]
-            logger.LOG( logger.LOG_DEBUG, "Rar dirname:" )
-            logger.LOG( logger.LOG_DEBUG, dirName )
-            # On verifie que la chaine de caractere est bien un repertoire
-            if rfile.getinfo( dirName ).isdir() == False:
-                logger.LOG( logger.LOG_DEBUG, "%s n'est pas un repertoire", dirName )
-                dirName = ""
-        else:
-            logger.LOG( logger.LOG_DEBUG, "Format d'archive non supporter" )
-        return dirName
-
-
-
 class GDDFTP( ftplib.FTP ):
     """
     Gère la reconnexion au serveur FTP quand la connexion est perdu au moment de l'exécution de la requête.
@@ -824,7 +761,6 @@ class MainWindow( xbmcgui.WindowXML ):
         self.USRPath            = USRPath
         self.rightstest         = ""
         self.scriptDir          = scriptDir
-        #self.extracter          = scriptextracter() # On cree un instance d'extracter
         self.CacheDir           = CACHEDIR
         self.userDataDir        = userdatadir # userdata directory
         self.targetDir          = ""
@@ -1532,8 +1468,12 @@ class MainWindow( xbmcgui.WindowXML ):
                     imagePath = "passion-icone-video.png"
 
                 # nettoyage du nom: replace les souligner pas un espace et enleve l'extension
-                try: item2download = os.path.splitext( ItemListPath[ lenindex: ] )[ 0 ].replace( "_", " " )
-                except: item2download = ItemListPath[ lenindex: ]
+                try:
+                    item2download = ItemListPath[ lenindex: ].replace( "_", " " )
+                    if self.settings.get( "hide_extention", True ):
+                        item2download = os.path.splitext( item2download )[ 0 ]
+                except:
+                    item2download = ItemListPath[ lenindex: ]
                 DIALOG_PROGRESS.update( -1, _( 103 ), item2download, _( 110 ) )
 
                 if self.downloaded_property.__contains__( md5.new( item2download ).hexdigest() ):
@@ -1567,8 +1507,12 @@ class MainWindow( xbmcgui.WindowXML ):
                     imagePath = "icone_script.png"
 
                 # nettoyage du nom: replace les souligner pas un espace et enleve l'extension
-                try: item2download = os.path.splitext( ItemListPath[ lenindex: ] )[ 0 ].replace( "_", " " )
-                except: item2download = ItemListPath[ lenindex: ]
+                try:
+                    item2download = ItemListPath[ lenindex: ].replace( "_", " " )
+                    if self.settings.get( "hide_extention", True ):
+                        item2download = os.path.splitext( item2download )[ 0 ]
+                except:
+                    item2download = ItemListPath[ lenindex: ]
                 DIALOG_PROGRESS.update( -1, _( 103 ), item2download, _( 110 ) )
 
                 if self.downloaded_property.__contains__( md5.new( item2download ).hexdigest() ):

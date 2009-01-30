@@ -35,7 +35,7 @@
   <string id="104">Chargement des informations</string>
   <string id="105">Une nouvelle version est disponible</string>
   <string id="106">Voulez-vous faire une mise à jour?</string>
-  <string id="107"> Flux RSS:</string>
+  <string id="107">Flux RSS:</string>
   <string id="108">&#32;Non disponible!</string>
 
   <string id="110">Veuillez patienter...</string>
@@ -113,7 +113,8 @@
   <string id="182">Créé le :</string>
   <string id="183">Modifié le :</string>
   <string id="184">Dernier accès le :</string>
-  <string id="185"></string>
+  <string id="185">Calculer la Taille</string>
+  <string id="186">Calcule de la taille du répertoire</string>
 
   <!--FORUM DIRECT INFOS STRINGS -->
   <string id="199">Informations en direct</string>
@@ -175,6 +176,8 @@
   <string id="511">Flux RSS</string>
   <string id="512">Activer le mode débogue du [B]*script*[/B]</string>
   <string id="513">Masquer le bouton forum dans le menu principal</string>
+  <string id="514">Masquer l'accès au répertoire parent</string>
+  <string id="515">Masquer les extensions des fichiers</string>
 
   <string id="518">Navigateur Web</string>
   <string id="519">Bloquer XBMC jusqu'à ce que le navigateur Web est été fermé</string>
