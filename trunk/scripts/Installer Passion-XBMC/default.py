@@ -7,7 +7,7 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/Installer%20Passion-XBMC/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center"
-__date__         = "25-01-2009"
+__date__         = "31-01-2009"
 __version__      = "pre-1.0.0"
 __svn_revision__ = 0
 
@@ -28,8 +28,10 @@ import resources.libs.script_log as logger
 # INITIALISATION CHEMIN RACINE
 ROOTDIR = os.getcwd().replace( ";", "" )
 
+#frost: changer la langue par default pour l'anglais, car de cette maniere on ai pas obliger de rejouter le sctrings manquant dans les autres language
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE. ( ex: __language__( 0 ) = id="0" du fichier strings.xml )
-__language__ = xbmc.Language( ROOTDIR, "french" ).getLocalizedString
+#__language__ = xbmc.Language( ROOTDIR, "french" ).getLocalizedString
+__language__ = xbmc.Language( ROOTDIR ).getLocalizedString
 
 DIALOG_PROGRESS = xbmcgui.DialogProgress()
 

@@ -325,9 +325,11 @@
 				</focusedlayout>
 			</control>
 			<control type="group">
+				<visible>![Window.IsVisible(passion-ContextMenu.xml) | Window.IsVisible(passion-DialogScriptSettings.xml) | Window.IsVisible(passion-ItemDescript.xml)]</visible>
+				<visible>![Window.IsVisible(yesnodialog) | Window.IsVisible(progressdialog) | Window.IsVisible(okdialog) | Window.IsVisible(selectdialog)]</visible>
 				<posx>673</posx>
 				<posy>197</posy>
-				<animation effect="slide" start="50,0" end="0,0" time="300" condition="Control.IsVisible(2050)">conditional</animation>
+				<animation effect="slide" start="50,0" end="0,0" time="300" reversible="true" condition="Control.IsVisible(2050)">conditional</animation>
 				<control type="button">
 					<description>Page Up for base list</description>
 					<posx>0</posx>
