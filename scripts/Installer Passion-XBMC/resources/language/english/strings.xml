@@ -26,6 +26,8 @@
 
   <string id="24">Page</string>
   <string id="25">Item(s)</string>
+  <string id="26">Item</string>
+  <string id="27">of</string>
 
   <!--MISC STRINGS -->
   <string id="100">Please select XBMC install directory</string>
@@ -108,6 +110,13 @@
   <string id="177">Moving...</string>
   <string id="178">From:&#32;</string>
   <string id="179">To:&#32;</string>
+  <string id="180">Path:</string>
+  <string id="181">Size:</string>
+  <string id="182">Created:</string>
+  <string id="183">Last modified:</string>
+  <string id="184">Last accessed:</string>
+  <string id="185">Calculate Size</string>
+  <string id="186">Calculating folder size</string>
 
   <!--FORUM DIRECT INFOS STRINGS -->
   <string id="199">News</string>
@@ -153,6 +162,18 @@
   <string id="240">Information not available!</string>
   <string id="241">Impossible to retrieve information!</string>
 
+  <!-- STRINGS FOR LIST VIEW MODE -->
+  <string id="350">List</string>
+  <string id="351">Media Info</string>
+  <string id="352">Icons</string>
+  <string id="353"></string>
+  <string id="354"></string>
+  <string id="355"></string>
+  <string id="356">Media 1</string>
+  <string id="357"></string>
+  <string id="358"></string>
+  <string id="359">Carousel</string>
+
   <!--SETTINGS STRINGS -->
   <string id="499">Version: %s</string>
   <string id="500">Settings</string>
@@ -169,6 +190,8 @@
   <string id="511">RSS Feed</string>
   <string id="512">Enable [B]*script*[/B] debug mode</string>
   <string id="513">Hide the button forum in main menu</string>
+  <string id="514">Hide Parent Folder Items</string>
+  <string id="515">Hide Media Extensions</string>
 
   <string id="518">Web Browser</string>
   <string id="519">Block XBMC until Web Browser is closed</string>

@@ -26,6 +26,8 @@
 
   <string id="24">Page</string>
   <string id="25">Objet(s)</string>
+  <string id="26">Objet</string>
+  <string id="27">de</string>
 
   <!--DIVERS STRINGS -->
   <string id="100">Choisissez le dossier d'installation d'XBMC</string>
@@ -159,6 +161,18 @@
   <string id="239">Récupération des topics...</string>
   <string id="240">Infos non disponible!</string>
   <string id="241">Impossible de récupérer les informations!</string>
+
+  <!-- STRINGS FOR LIST VIEW MODE -->
+  <string id="350">Liste</string>
+  <string id="351">Infos Média</string>
+  <string id="352">Icônes</string>
+  <string id="353"></string>
+  <string id="354"></string>
+  <string id="355"></string>
+  <string id="356">Média 1</string>
+  <string id="357"></string>
+  <string id="358"></string>
+  <string id="359">Carrousel</string>
 
   <!--SETTINGS STRINGS -->
   <string id="499">Version: %s</string>

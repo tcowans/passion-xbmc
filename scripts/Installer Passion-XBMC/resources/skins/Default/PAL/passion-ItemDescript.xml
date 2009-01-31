@@ -143,9 +143,8 @@
 				<texturesliderbarfocus border="4">passion-scrollbar_bar_focus.png</texturesliderbarfocus>
 				<textureslidernib>-</textureslidernib>
 				<textureslidernibfocus>-</textureslidernibfocus>
-				<ondown>9000</ondown>
-				<onleft>9000</onleft>
-				<onright>9000</onright>
+				<onleft>301</onleft>
+				<onright>302</onright>
 				<showonepage>false</showonepage>
 				<orientation>vertical</orientation>
 			</control>
@@ -208,7 +207,7 @@
 				<textcolor>ffffffff</textcolor>
 				<colordiffuse>ffffffff</colordiffuse>
 				<disabledcolor>60d0d0d0</disabledcolor>
-				<onleft>301</onleft>
+				<onleft>251</onleft>
 				<onright>300</onright>
 				<onup>251</onup>
 				<ondown>251</ondown>
@@ -245,18 +244,16 @@
 		<!-- ITEM PICTURES -->
 		<control type="image" id="200">
 			<description>Item picture</description>
-			<posx>210</posx>
+			<posx>260</posx>
 			<posy>100</posy>
-			<width>300</width>
+			<width>200</width>
 			<height>150</height>
-			<aspectratio>keep</aspectratio>
+			<!-- <aspectratio>keep</aspectratio> -->
 			<texture>passion-noImageAvailable.jpg</texture>
 			<animation condition="Control.HasFocus(300)" type="Conditional" reversible="true">
 				<effect type="slide" end="0,112" time="1000" />
-				<effect type="zoom" center="auto" start="100" end="380" time="1000" />
+				<effect type="zoom" center="auto" start="100" end="0,0,720,576" time="1000" />
 			</animation>
-			<!-- <animation condition="Control.HasFocus(300)" effect="zoom" reversible="false" center="auto" start="100" end="340" time="100">Conditional</animation> -->
-			<!-- <animation condition="!Control.HasFocus(300)" effect="zoom" reversible="false" center="auto" start="340" end="100" time="100">Conditional</animation> -->
 		</control>
 
 	</controls>
