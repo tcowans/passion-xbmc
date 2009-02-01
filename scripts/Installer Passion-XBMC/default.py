@@ -7,7 +7,7 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/Installer%20Passion-XBMC/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center"
-__date__         = "31-01-2009"
+__date__         = "01-02-2009"
 __version__      = "pre-1.0.0"
 __svn_revision__ = 0
 
@@ -28,7 +28,7 @@ import resources.libs.script_log as logger
 # INITIALISATION CHEMIN RACINE
 ROOTDIR = os.getcwd().replace( ";", "" )
 
-#frost: changer la langue par default pour l'anglais, car de cette maniere on ai pas obliger de rejouter le sctrings manquant dans les autres language
+#frost: changer la langue par default pour l'anglais, car de cette maniere on ai pas obliger de rejouter le strings manquant dans les autres language
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE. ( ex: __language__( 0 ) = id="0" du fichier strings.xml )
 #__language__ = xbmc.Language( ROOTDIR, "french" ).getLocalizedString
 __language__ = xbmc.Language( ROOTDIR ).getLocalizedString
@@ -44,7 +44,7 @@ __version_l3__ = __language__( 708 )#"SVN"
 __version_r3__ = str( __svn_revision__ )
 
 # team credits
-__credits_l1__ = __language__( 702 )#"Développeurs"
+__credits_l1__ = __language__( 702 )#"Developpeurs"
 __credits_r1__ = "Frost & Seb & Temhil"
 __credits_l2__ = __language__( 703 )#"Conception Graphique"
 __credits_r2__ = "Frost & Jahnrik & Temhil"
