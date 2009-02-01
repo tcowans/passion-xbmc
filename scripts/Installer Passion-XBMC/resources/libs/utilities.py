@@ -377,24 +377,24 @@ try:
     example:
       - date_long_format = xbmc.getRegion('datelong')
     """
-    date_long_format = xbmc.getRegion( "datelong" ).replace( "DDDD, ", "" ).replace( "MMMM", "%m" ).replace( "D", "%d" ).replace( "YYYY", "%Y" )
-    time_format = xbmc.getRegion( "time" ).replace( "H", "%H" ).replace( "mm", "%M" ).replace( "ss", "%S" )
-    DATE_TIME_FORMAT = date_long_format.replace( " ", "-" ) + " | " + time_format
+    date_short_format = xbmc.getRegion( "dateshort" ).replace( "MM", "M" ).replace( "DD", "D" ).replace( "M", "%m" ).replace( "D", "%d" ).replace( "YYYYY", "%Y" ).replace( "YYYY", "%Y" )
+    time_format = xbmc.getRegion( "time" ).replace( "h", "%I" ).replace( "H", "%H" ).replace( "mm", "%M" ).replace( "ss", "%S" ).replace( "xx", "%p" )
+    DATE_TIME_FORMAT = date_short_format + " | " + time_format
 except:
     DATE_TIME_FORMAT = "%d-%m-%y | %H:%M:%S"
 
 
 def get_infos_path( path, get_size=False, report_progress=None ):
     # Return the system's ctime which, on some systems (like Unix) is the time of the last change, and, on others (like Windows), is the creation time for path. The return value is a number giving the number of seconds since the epoch (see the time module). Raise os.error if the file does not exist or is inaccessible. New in version 2.3.
-    try: c_time = time.strftime( DATE_TIME_FORMAT, time.localtime( os.path.getctime( path ) ) )
+    try: c_time = time.strftime( DATE_TIME_FORMAT, time.localtime( os.path.getctime( path ) ) )#.replace( " | 0", " |  " )
     except: c_time = ""
 
     # Return the time of last access of path. The return value is a number giving the number of seconds since the epoch (see the time module). Raise os.error if the file does not exist or is inaccessible. New in version 1.5.2. Changed in version 2.3: If os.stat_float_times() returns True, the result is a floating point number.
-    try: last_access = time.strftime( DATE_TIME_FORMAT, time.localtime( os.path.getatime( path ) ) )
+    try: last_access = time.strftime( DATE_TIME_FORMAT, time.localtime( os.path.getatime( path ) ) )#.replace( " | 0", " |  " )
     except: last_access = ""
 
     # Return the time of last modification of path. The return value is a number giving the number of seconds since the epoch (see the time module). Raise os.error if the file does not exist or is inaccessible. New in version 1.5.2. Changed in version 2.3: If os.stat_float_times() returns True, the result is a floating point number.
-    try: last_modification = time.strftime( DATE_TIME_FORMAT, time.localtime( os.path.getmtime( path ) ) )
+    try: last_modification = time.strftime( DATE_TIME_FORMAT, time.localtime( os.path.getmtime( path ) ) )#.replace( " | 0", " |  " )
     except: last_modification = ""
 
     # Return the size, in bytes, of path. Raise os.error if the file does not exist or is inaccessible. New in version 1.5.2.

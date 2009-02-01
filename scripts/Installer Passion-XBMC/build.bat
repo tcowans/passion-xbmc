@@ -119,7 +119,7 @@ IF EXIST "%XBMC_EXE%" (
         ECHO Starting XBMC in fullscreen.
         ECHO.
         ECHO ======================================================================
-        start /D"%XBMC_EXE%" XBMC.exe -fs
+        start /D"%XBMC_EXE%" XBMC.exe -fs -p
         )
 
     GOTO END
