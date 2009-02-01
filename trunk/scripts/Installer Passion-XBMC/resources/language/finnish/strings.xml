@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+Ôªø<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <strings> <!--  Finnish 15.1.2008 -->
   <!--GENERAL STRINGS -->
   <string id="0">Installer Passion-XBMC</string>
@@ -15,43 +15,43 @@
   <string id="11">Skinit</string>
   <string id="12">Hakupaikat</string>
   <string id="13">Skriptit</string>
-  <string id="14">Lis‰kkeet</string>
-  <string id="15">Musiikki-lis‰kkeet</string>
-  <string id="16">Kuva-lis‰kkeet</string>
-  <string id="17">Ohjelma-lis‰kkeet</string>
-  <string id="18">Video-lis‰kkeet</string>
+  <string id="14">Lis√§kkeet</string>
+  <string id="15">Musiikki-lis√§kkeet</string>
+  <string id="16">Kuva-lis√§kkeet</string>
+  <string id="17">Ohjelma-lis√§kkeet</string>
+  <string id="18">Video-lis√§kkeet</string>
   <string id="19">Salasana vaaditaan</string>
-  <string id="20">Anna j‰rjestelm‰nvalvojan salasana</string>
-  <string id="21">J‰rjestelm‰nvalvojan salasana</string>
+  <string id="20">Anna j√§rjestelm√§nvalvojan salasana</string>
+  <string id="21">J√§rjestelm√§nvalvojan salasana</string>
 
   <string id="24">Sivu</string>
   <string id="25">Kohdetta</string>
 
   <!--MISC STRINGS -->
   <string id="100">Valitse XBMC:n asennushakemisto</string>
-  <string id="101">J‰rjestelm‰n kokoonpano</string>
-  <string id="102">Tarkistetaan p‰ivityksi‰</string>
-  <string id="103">Luodaan k‰yttˆliittym‰‰</string>
+  <string id="101">J√§rjestelm√§n kokoonpano</string>
+  <string id="102">Tarkistetaan p√§ivityksi√§</string>
+  <string id="103">Luodaan k√§ytt√∂liittym√§√§</string>
   <string id="104">Ladataan tietoja</string>
   <string id="105">Uusi ohjelmaversio on saatavilla</string>
-  <string id="106">Haluatko p‰ivitt‰‰ ohjelman?</string>
-  <string id="107">RSS syˆte:</string>
+  <string id="106">Haluatko p√§ivitt√§√§ ohjelman?</string>
+  <string id="107">RSS sy√∂te:</string>
   <string id="108">&#32;Ei ole saatavilla!</string>
 
   <string id="110">Odota hetki...</string>
   <string id="111">Virhe</string>
   <string id="112">Ilmeni odottamaton poikkeus</string>
-  <string id="113">P‰ivit‰ asetukset ja poistu</string>
-  <string id="114">P‰ivit‰ asetukset ja k‰ynnist‰ uudelleen</string>
+  <string id="113">P√§ivit√§ asetukset ja poistu</string>
+  <string id="114">P√§ivit√§ asetukset ja k√§ynnist√§ uudelleen</string>
   <string id="115">Poistu tallentamatta</string>
-  <string id="116">Muutetaan sources.xml tiedostoa, haluatko tehd‰ t‰m‰n?</string>
+  <string id="116">Muutetaan sources.xml tiedostoa, haluatko tehd√§ t√§m√§n?</string>
   <string id="117">Toiminto ei onnistu</string>
-  <string id="118">Et voi korvata k‰ytˆss‰ olevaa skini‰</string>
-  <string id="119">Vaihda k‰ytˆss‰ oleva skini[CR]toiseen ennen lataamista</string>
-  <string id="120">Et voi asentaa skini‰ ilman[CR]j‰rjestelm‰nvalvojan oikeuksia</string>
-  <string id="121">Et voi asentaa tietojen hakupaikkaa ilman[CR]j‰rjestelm‰nvalvojan oikeuksia</string>
+  <string id="118">Et voi korvata k√§yt√∂ss√§ olevaa skini√§</string>
+  <string id="119">Vaihda k√§yt√∂ss√§ oleva skini[CR]toiseen ennen lataamista</string>
+  <string id="120">Et voi asentaa skini√§ ilman[CR]j√§rjestelm√§nvalvojan oikeuksia</string>
+  <string id="121">Et voi asentaa tietojen hakupaikkaa ilman[CR]j√§rjestelm√§nvalvojan oikeuksia</string>
   <string id="122">Lataa: %s</string>
-  <string id="123">Ladattu yhteens‰: %d%%</string>
+  <string id="123">Ladattu yhteens√§: %d%%</string>
   <string id="124">Lataus peruutettu</string>
   <string id="125">Lataus keskeytyi suorituksen aikana</string>
   <string id="126">Haluatko poistaa ladatut tiedostot?</string>
@@ -65,7 +65,7 @@
   <string id="134">Lataus valmis</string>
   <string id="135">Ladattiin kansioon:</string>
   <string id="136">Asenna: %s</string>
-  <string id="137">Asennus k‰ynniss‰ ...</string>
+  <string id="137">Asennus k√§ynniss√§ ...</string>
   <string id="138">Asennetaan %s</string>
   <string id="139">%s:n purun aikana tapahtui virhe</string>
   <string id="140">Odottamaton poikkeus tapahtui %s:n purun aikana</string>
@@ -73,14 +73,14 @@
   <string id="142">%s:n asennus</string>
   <string id="143">on valmis</string>
   <string id="144">Virhe - Asennus ei onnistunut</string>
-  <string id="145">Katso lis‰tietoja lokitiedostosta</string>
+  <string id="145">Katso lis√§tietoja lokitiedostosta</string>
   <string id="146">Asennus peruutettu</string>
   <string id="147">%s:n asennus peruutettiin</string>
   <string id="148">Tuntematon virhe</string>
-  <string id="149">%s on jo olemassa, mit‰ haluat tehd‰?</string>
+  <string id="149">%s on jo olemassa, mit√§ haluat tehd√§?</string>
   <string id="150">Poista hakemisto</string>
-  <string id="151">Nime‰ hakemisto uudelleen</string>
-  <string id="152">P‰‰llekirjoita hakemisto</string>
+  <string id="151">Nime√§ hakemisto uudelleen</string>
+  <string id="152">P√§√§llekirjoita hakemisto</string>
   <string id="153">Peruuta</string>
   <string id="154">Anna uusi nimi:</string>
   <string id="155">Nimettiin uudelleen:</string>
@@ -111,17 +111,17 @@
 
   <!--FORUM DIRECT INFOS STRINGS -->
   <string id="199">Uudet</string>
-  <string id="200">Yleist‰</string>
+  <string id="200">Yleist√§</string>
   <string id="201">Julkaisut ja uutiset</string>
   <string id="202">XBMC</string>
-  <string id="203">M‰‰rit‰ tietojen hakupaikka</string>
+  <string id="203">M√§√§rit√§ tietojen hakupaikka</string>
   <string id="204">XBMC ohjaus - Kaukoohjain</string>
   <string id="205">Skinit</string>
   <string id="206">Tuontipalvelu</string>
   <string id="207">Skinitiedostot</string>
-  <string id="208">Skini projektit ja keskener‰iset skinit</string>
-  <string id="209">K‰ytt‰jien nurkka</string>
-  <string id="210">Kehitt‰jien nurkka</string>
+  <string id="208">Skini projektit ja keskener√§iset skinit</string>
+  <string id="209">K√§ytt√§jien nurkka</string>
+  <string id="210">Kehitt√§jien nurkka</string>
   <string id="211">Xbmc Live</string>
   <string id="212">Ubuntu</string>
   <string id="213">Ubuntu ja Xbmc ohjeet</string>
@@ -137,20 +137,20 @@
   <string id="223">(Haara) Plex for Mac</string>
   <string id="224">(Vaihtoehtoinen) Boxeetv</string>
   <string id="225">Verkkosivu</string>
-  <string id="226">S‰‰nnˆt - Pakollinen luettava, ‰l‰ v‰it‰ ettei sinua ole varoitettu :)</string>
+  <string id="226">S√§√§nn√∂t - Pakollinen luettava, √§l√§ v√§it√§ ettei sinua ole varoitettu :)</string>
   <string id="227">Kahvia keskustelutaululla</string>
-  <string id="228">J‰senet</string>
+  <string id="228">J√§senet</string>
   <string id="229">Omat asetukset</string>
   <string id="230">Elokuvat ja musiikki</string>
   <string id="231">Kirjat ja sarjakuvat</string>
   <string id="232">Roskat</string>
   <string id="233">Passion-Xbmc Trac</string>
 
-  <string id="236">Vahvista uuden aiheen lis‰ys:</string>
+  <string id="236">Vahvista uuden aiheen lis√§ys:</string>
   <string id="237">Ohita</string>
-  <string id="238">K‰ynnist‰</string>
+  <string id="238">K√§ynnist√§</string>
   <string id="239">Haetaan aiheita...</string>
-  <string id="240">Tietoja ei lˆydy!</string>
+  <string id="240">Tietoja ei l√∂ydy!</string>
   <string id="241">Tietoja ei voida hakea!</string>
 
   <!--SETTINGS STRINGS -->
@@ -160,18 +160,18 @@
   <string id="502">Aiheita sivua kohti</string>
   <string id="503">[B]&#126;&#126;[/B]</string><!--illimited symbol -->
   <string id="504">00|5|10|25|50|100</string><!--LIST LIMIT FOR TOPICS IN DIRECT INFOS: 00=illimited -->
-  <string id="505">Skinin v‰ri</string>
-  <string id="506">Ei k‰ytˆss‰</string>
-  <string id="507">Oma taustakuva k‰ytˆss‰</string>
+  <string id="505">Skinin v√§ri</string>
+  <string id="506">Ei k√§yt√∂ss√§</string>
+  <string id="507">Oma taustakuva k√§yt√∂ss√§</string>
   <string id="508">Polku:</string>
   <string id="509">Haluatko poistaa oman taustakuvan polun?</string>
-  <string id="510">Tarkista p‰ivitykset k‰ynnistyess‰</string>
-  <string id="511">RSS syˆte</string>
-  <string id="512">K‰ynnist‰ [B]*skripti*[/B] ja suorituslokin kirjaus</string>
+  <string id="510">Tarkista p√§ivitykset k√§ynnistyess√§</string>
+  <string id="511">RSS sy√∂te</string>
+  <string id="512">K√§ynnist√§ [B]*skripti*[/B] ja suorituslokin kirjaus</string>
   <string id="513">Hide the button forum in main menu</string>
 
   <string id="518">Nettiselain</string>
-  <string id="519">Est‰ XBMC:n sammutus kunnes nettiselain on suljettu</string>
+  <string id="519">Est√§ XBMC:n sammutus kunnes nettiselain on suljettu</string>
   <string id="520">Valitse nettiselain</string>
   <string id="521">Anna nettiselaimen nimi</string>
 
@@ -179,7 +179,7 @@
   <string id="600">Selite</string>
   <string id="601">Tyyppi</string>
   <string id="602">Versio</string>
-  <string id="603">P‰iv‰ys</string>
+  <string id="603">P√§iv√§ys</string>
   <string id="604">Ei ole saatavilla</string>
   <string id="605">Poistu</string>
   <string id="606">Zoomaus</string>
@@ -194,14 +194,14 @@
   <!--ABOUT STRINGS -->
   <string id="700">Versio</string>
   <string id="701">Kiitokset</string>
-  <string id="702">Kehitt‰j‰t</string>
+  <string id="702">Kehitt√§j√§t</string>
   <string id="703">Ulkoasu</string>
   <string id="704">Pohjautuu %sn ideaan</string>
   <string id="705">Erikoiskiitokset %s</string>  
   <string id="706">Tuki ja avustajat</string>  
-  <string id="707">P‰iv‰ys</string>   
+  <string id="707">P√§iv√§ys</string>   
   <string id="708">SVN</string>  
-  <string id="710">Asennusohjelman p‰ivitykset XBMC:n teemoihin, skripteihin, lis‰kkeisiin ja skripteihin sek‰ hakupaikkoihin tapahtuvat FTP-yhteydell‰ Passion-XBMC (passion-xbmc.org) Team Passion-XBMC:n yll‰pit‰m‰lt‰ sivustolta.</string>  
+  <string id="710">Asennusohjelman p√§ivitykset XBMC:n teemoihin, skripteihin, lis√§kkeisiin ja skripteihin sek√§ hakupaikkoihin tapahtuvat FTP-yhteydell√§ Passion-XBMC (passion-xbmc.org) Team Passion-XBMC:n yll√§pit√§m√§lt√§ sivustolta.</string>  
   
   
   <!--CONTEXT MENU STRINGS -->
