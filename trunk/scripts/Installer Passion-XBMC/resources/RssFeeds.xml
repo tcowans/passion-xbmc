@@ -30,4 +30,8 @@
     <title>Xbmc Passion - Le coin des utilisateurs (Scripts/Plugins)</title>
     <feed updateinterval="30">http://passion-xbmc.org/le-coin-des-utilisateurs/?action=.xml;type=rss2;limit=10</feed>
   </set>
+  <set id="8">
+    <title>Passion-XBMC Project Updates - Google Code</title>
+    <feed updateinterval="30">http://code.google.com/feeds/p/passion-xbmc/updates/basic</feed>
+  </set>
 </rssfeeds>
