@@ -117,10 +117,11 @@ class DirectInfos( xbmcgui.WindowXML ):
     def _set_skin_colours( self ):
         #xbmcgui.lock()
         try:
-            self.setProperty( "style_PMIII.HD", ( "", "true" )[ ( self.settings[ "skin_colours_path" ] == "style_PMIII.HD" ) ] )
-            self.setProperty( "Skin-Colours-path", self.settings[ "skin_colours_path" ] )
-            self.setProperty( "Skin-Colours", ( self.settings[ "skin_colours" ] or get_default_hex_color() ) )
+            xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,%s)" % ( self.settings[ "skin_colours_path" ], ) )
+            xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,%s)" % ( ( self.settings[ "skin_colours" ] or get_default_hex_color() ), ) )
         except:
+            xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,ffffffff)" )
+            xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,default)" )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         #xbmcgui.unlock()
 

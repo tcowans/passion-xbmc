@@ -222,9 +222,15 @@ class InfoWarehouseXMLFTP( InfoWarehouse ):
             if not os.path.isfile( localFilePath ):
                 ftp = ftplib.FTP(self.srvHost,self.srvUser,self.srvPassword)
                 localFile = open(str(localFilePath), "wb")
-                ftp.retrbinary('RETR ' + filetodlUrl, localFile.write)
+                try:
+                    ftp.retrbinary('RETR ' + filetodlUrl, localFile.write)
+                except:
+                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
                 localFile.close()
                 ftp.quit()
+            # remove file if size is 0 bytes and report error if exists error
+            if isTBN and os.path.isfile( localFilePath ) and not os.path.getsize( localFilePath ):
+                os.remove( localFilePath )
         except:
             logger.LOG( logger.LOG_DEBUG, "_downloaddossier: Exception - Impossible de telecharger le fichier: %s", remoteFilePath )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
@@ -243,7 +249,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
     def __init__( self, *args, **kwargs ):
         xbmcgui.WindowXMLDialog.__init__( self, *args, **kwargs )
         # Display Loading Window while we are loading the information from the website
-        DIALOG_PROGRESS.create( _( 0 ), _( 104 ), _( 110 ) )
+        #DIALOG_PROGRESS.create( _( 0 ), _( 104 ), _( 110 ) )
 
         self.mainwin       = kwargs[ "mainwin" ]
         self.infoWareHouse = kwargs[ "infoWareHouse" ]
@@ -279,7 +285,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
             #self._close_dialog()
         xbmcgui.unlock()
         # Close the Loading Window
-        DIALOG_PROGRESS.close()
+        #DIALOG_PROGRESS.close()
 
 
     def _updateThumb_cb (self, imagePath):
@@ -287,14 +293,18 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
             self.getControl( self.CONTROL_PREVIEW_IMAGE ).setImage(imagePath)
         self.getControl( 200 ).setVisible( 1 )
         logger.LOG( logger.LOG_DEBUG, "**** image")
-        
+
     def _set_skin_colours( self ):
-        logger.LOG( logger.LOG_DEBUG, "_set_skin_colours: ItemDescription")        
+        #xbmcgui.lock()
         try:
-            xbmc.executebuiltin( "Skin.SetString(PassionSettingsColours,%s)" % ( self.settings[ "skin_colours_path" ], ) )
+            xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,%s)" % ( self.mainwin.settings[ "skin_colours_path" ], ) )
+            xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,%s)" % ( ( self.mainwin.settings[ "skin_colours" ] or get_default_hex_color() ), ) )
         except:
+            xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,ffffffff)" )
+            xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,default)" )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-        
+        #xbmcgui.unlock()
+
     def _set_controls_labels( self ):
         # setlabel pour les controles du dialog qui a comme info exemple: id="100" et pour avoir son controle on fait un getControl( 100 )
         eval( logger.LOG_SELF_FUNCTION )

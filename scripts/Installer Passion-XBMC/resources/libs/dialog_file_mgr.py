@@ -352,7 +352,6 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                 # liste des options pour skin ou l'add-ons en court d'utilisation
                 buttons = { 1003 : _( 161 ), 1005 : _( 185 ), 1006 : _( 153 ) }
             elif ( self.curListType == TYPE_SCRIPT ) or ( self.itemTypeList.index(self.curListType) in self.pluginDisplayList ):
-                # à ne pas oublier lors du changement des ID des listes ( self.getFocusId() == self.CONTROL_MAIN_LIST ), car bug en vue :)
                 # liste des options pour plugins et scripts
                 buttons = { 1000 : _( 160 ), 1001 : _( 157 ), 1002 : _( 156 ), 1003 : _( 161 ), 1004 : _( 162 ), 1005 : _( 185 ), 1006 : _( 153 ) }
             else:
@@ -590,10 +589,11 @@ class FileMgrWindow( xbmcgui.WindowXML ):
     def _set_skin_colours( self ):
         #xbmcgui.lock()
         try:
-            self.setProperty( "style_PMIII.HD", ( "", "true" )[ ( self.settings[ "skin_colours_path" ] == "style_PMIII.HD" ) ] )
-            self.setProperty( "Skin-Colours-path", self.settings[ "skin_colours_path" ] )
-            self.setProperty( "Skin-Colours", ( self.settings[ "skin_colours" ] or get_default_hex_color() ) )
+            xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,%s)" % ( self.settings[ "skin_colours_path" ], ) )
+            xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,%s)" % ( ( self.settings[ "skin_colours" ] or get_default_hex_color() ), ) )
         except:
+            xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,ffffffff)" )
+            xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,default)" )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         #xbmcgui.unlock()
 
@@ -691,11 +691,13 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         """
         Mise a jour de la liste affichee
         """
+        # Clear all ListItems in this control list
+        if hasattr( self, 'clearProperties' ):
+            self.clearProperties()
+        self.clearList()
+
         # Titre de la categorie
         self.setProperty( "Category", self.curListType )
-
-        # Clear all ListItems in this control list
-        self.clearList()
 
         #test pour avoir le choix du parent dir avec la souris
         if self.pardir_not_hidden:

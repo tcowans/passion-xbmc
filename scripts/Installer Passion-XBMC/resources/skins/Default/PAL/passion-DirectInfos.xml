@@ -10,7 +10,7 @@
 			<posy>0</posy>
 			<width>720</width>
 			<height>576</height>
-			<texture>$INFO[Container.Property(Skin-Colours-path),,\passion-background-plain.png]</texture>
+			<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-background-plain.png]</texture>
 		</control>
 		<control type="image">
 			<description>passion logo image</description>
@@ -19,7 +19,7 @@
 			<width>250</width>
 			<height>74</height>
 			<aspectratio>keep</aspectratio>
-			<texture>$INFO[Container.Property(Skin-Colours-path),,\passion-logo.png]</texture>
+			<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-logo.png]</texture>
 		</control>
 		<control type="multiimage">
 			<description>animation plasma</description>
@@ -31,14 +31,13 @@
 			<imagepath>passion-plasma</imagepath>
 			<timeperimage>4000</timeperimage>
 			<fadetime>2000</fadetime>
-			<visible>IsEmpty(Container.Property(style_PMIII.HD))</visible>
-			<!-- <animation effect="fade" time="0">VisibleChange</animation> -->
+			<visible>!Skin.String(PassionSkinColourPath,style_PMIII.HD)</visible>
 		</control>
 
 		<!-- CONTENT PANEL -->
 		<control type="group">
-			<animation effect="slide" time="200" start="720,0" end="0,0" acceleration="-1" condition="!Skin.HasSetting(animated)">WindowOpen</animation>
-			<animation effect="slide" time="200" start="0,0" end="720,0" acceleration="1.1" condition="!Skin.HasSetting(animated)">WindowClose</animation>
+			<animation effect="slide" time="200" start="720,0" end="0,0" acceleration="-1">WindowOpen</animation>
+			<animation effect="slide" time="200" start="0,0" end="720,0" acceleration="1.1">WindowClose</animation>
 			<control type="image">
 				<description>contentpanel slice</description>
 				<posx>19</posx>
@@ -72,7 +71,7 @@
 				<posy>151</posy>
 				<width>679</width>
 				<height>41</height>
-				<texture>$INFO[Container.Property(Skin-Colours-path),,\passion-list-header.png]</texture>
+				<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
 			</control>
 			<control type="image">
 				<description>separator image for list of feeds and text of topic</description>
@@ -82,13 +81,13 @@
 				<height>5</height>
 				<texture>passion-separator.png</texture>
 				<aspectratio align="center" />
-				<colordiffuse>$INFO[Container.Property(Skin-Colours)]</colordiffuse>
+				<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 			</control>
 		</control>
 
 		<control type="group">
-			<animation effect="fade" start="0" end="100" delay="200" time="100" condition="!Skin.HasSetting(animated)">WindowOpen</animation>
-			<animation effect="fade" start="100" end="0" delay="0" time="100" condition="!Skin.HasSetting(animated)">WindowClose</animation>
+			<animation effect="fade" start="0" end="100" delay="200" time="100">WindowOpen</animation>
+			<animation effect="fade" start="100" end="0" delay="0" time="100">WindowClose</animation>
 
 			<!-- LABELS -->
 			<control type="label">
@@ -99,7 +98,7 @@
 				<align>right</align>
 				<aligy>center</aligy>
 				<font>special12</font>
-				<animation effect="slide" start="0,0" end="0,-50" time="0" condition="!IsEmpty(Container.Property(style_PMIII.HD))">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-50" time="0" condition="Skin.String(PassionSkinColourPath,style_PMIII.HD)">conditional</animation>
 			</control>
 			<control type="label">
 				<description>tilte - category label</description>
@@ -120,7 +119,7 @@
 				<width>340</width>
 				<height>25</height>
 				<texture border="4">passion-scrollbar_background_hor.png</texture>
-				<colordiffuse>$INFO[Container.Property(Skin-Colours)]</colordiffuse>
+				<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 			</control>
 			<control type="button">
 				<description>Page up for RSS feeds</description>
@@ -131,7 +130,7 @@
 				<onclick>PageUp(250)</onclick>
 				<texturefocus border="4">passion-scrollbar_arrow_up_focus_hor.png</texturefocus>
 				<texturenofocus border="4">passion-scrollbar_arrow_up_hor.png</texturenofocus>
-				<colordiffuse>$INFO[Container.Property(Skin-Colours)]</colordiffuse>
+				<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 			</control>
 			<control type="button">
 				<description>Page Down for RSS feeds</description>
@@ -142,7 +141,7 @@
 				<onclick>PageDown(250)</onclick>
 				<texturefocus border="4">passion-scrollbar_arrow_down_focus_hor.png</texturefocus>
 				<texturenofocus border="4">passion-scrollbar_arrow_down_hor.png</texturenofocus>
-				<colordiffuse>$INFO[Container.Property(Skin-Colours)]</colordiffuse>
+				<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 			</control>
 			<control type="image">
 				<width>340</width>
@@ -150,7 +149,7 @@
 				<posx>190</posx>
 				<posy>117</posy>
 				<visible>!Control.HasFocus(150)</visible>
-				<texture>$INFO[Container.Property(Skin-Colours-path),,\passion-list-header.png]</texture>
+				<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
 			</control>
 			<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
 			<!-- ** Required ** Do not change id's or type's -->
@@ -252,7 +251,7 @@
 					<height>21</height>
 					<texture>passion-infoicon.png</texture>
 					<aspectratio aligny="bottom">keep</aspectratio>
-					<colordiffuse>$INFO[Container.Property(Skin-Colours)]</colordiffuse>
+					<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 					<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
 				</control>
 				<control type="image">
@@ -263,7 +262,7 @@
 					<height>21</height>
 					<texture flipy="true" diffuse="passion-diffuse_mirror.png">passion-infoicon.png</texture>
 					<aspectratio aligny="top">keep</aspectratio>
-					<colordiffuse>$INFO[Container.Property(Skin-Colours)]</colordiffuse>
+					<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 					<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
 				</control>
 			</control>
@@ -368,7 +367,7 @@
 					<texturefocus border="4">passion-scrollbar_arrow_up_focus.png</texturefocus>
 					<texturenofocus border="4">passion-scrollbar_arrow_up.png</texturenofocus>
 					<visible>Control.IsVisible(193)</visible>
-					<colordiffuse>$INFO[Container.Property(Skin-Colours)]</colordiffuse>
+					<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 				</control>
 				<control type="button">
 					<description>Page Down for list of feeds</description>
@@ -380,7 +379,7 @@
 					<texturefocus border="4">passion-scrollbar_arrow_down_focus.png</texturefocus>
 					<texturenofocus border="4">passion-scrollbar_arrow_down.png</texturenofocus>
 					<visible>Control.IsVisible(193)</visible>
-					<colordiffuse>$INFO[Container.Property(Skin-Colours)]</colordiffuse>
+					<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 				</control>
 				<control type="scrollbar" id="193">
 					<description>Scroll Bar for list of feeds</description>
@@ -397,7 +396,7 @@
 					<onright>194</onright>
 					<showonepage>false</showonepage>
 					<orientation>vertical</orientation>
-					<colordiffuse>$INFO[Container.Property(Skin-Colours)]</colordiffuse>
+					<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 				</control>
 			</control>
 			<control type="image">
@@ -463,7 +462,7 @@
 					<texturefocus border="4">passion-scrollbar_arrow_up_focus.png</texturefocus>
 					<texturenofocus border="4">passion-scrollbar_arrow_up.png</texturenofocus>
 					<visible>Control.IsVisible(194)</visible>
-					<colordiffuse>$INFO[Container.Property(Skin-Colours)]</colordiffuse>
+					<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 				</control>
 				<control type="button">
 					<description>Page Down for text of topic</description>
@@ -475,7 +474,7 @@
 					<texturefocus border="4">passion-scrollbar_arrow_down_focus.png</texturefocus>
 					<texturenofocus border="4">passion-scrollbar_arrow_down.png</texturenofocus>
 					<visible>Control.IsVisible(194)</visible>
-					<colordiffuse>$INFO[Container.Property(Skin-Colours)]</colordiffuse>
+					<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 				</control>
 				<control type="scrollbar" id="194">
 					<description>Scroll Bar for text of topic</description>
@@ -492,7 +491,7 @@
 					<onright>191</onright>
 					<showonepage>false</showonepage>
 					<orientation>vertical</orientation>
-					<colordiffuse>$INFO[Container.Property(Skin-Colours)]</colordiffuse>
+					<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 					<visible>!IsEmpty(Container(191).ListItem.Property(Topic))</visible>
 				</control>
 			</control>

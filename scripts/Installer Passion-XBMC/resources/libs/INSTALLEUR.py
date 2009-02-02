@@ -73,15 +73,6 @@ CLOSE_CONTEXT_MENU = ( ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, ACTION_CONTEXT_M
 
 #############################################################################
 
-#class cancelRequest( Exception ):
-#    """
-#    Exception, merci a Alexsolex
-#    """
-#    def __init__( self, value ):
-#        self.value = value
-#    def __str__( self ):
-#        return repr( self.value )
-
 
 class rssReader:
     """
@@ -113,7 +104,7 @@ class rssReader:
     def GetRssInfo( self ):
         try:
             if self.rssPage is None: raise
-            items_listed = self.rssPage
+            items_listed = self.rssPage[ :10 ]
             if not self.rss_title: maintitle = _( 107 )
             else: maintitle = self.rss_title
             items = add_pretty_color( maintitle + ": ", color=self.titlecolor )
@@ -130,7 +121,7 @@ class rssReader:
 
             if self.tags[ 1 ] == "entry":
                 items = strip_off( set_xbmc_carriage_return( items ).replace( "[CR]", " " ) )
-            return maintitle, items
+            return maintitle, items.replace( "&quot;", '"' ).replace( "&#39;", "'" )
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
             return "", ( add_pretty_color( _( 107 ), color=self.titlecolor ) + _( 108 ) )
@@ -723,11 +714,13 @@ class configCtrl:
 
 class MainWindow( xbmcgui.WindowXML ):
     # control id's
-    CONTROL_MAIN_LIST       = 150
+    CONTROL_MAIN_LIST_START = 50
+    CONTROL_MAIN_LIST_END   = 59
+    #CONTROL_MAIN_LIST       = 150
     CONTROL_FORUM_BUTTON    = 305
     CONTROL_FILE_MGR_BUTTON = 300
     CONTROL_OPTIONS_BUTTON  = 310
-    CONTROL_EXIT_BUTTON      = 320
+    CONTROL_EXIT_BUTTON     = 320
 
     def __init__( self, *args, **kwargs ):
         """
@@ -790,9 +783,6 @@ class MainWindow( xbmcgui.WindowXML ):
 
 
     def onInit( self ):
-        # Title of the current pages
-        self.setProperty( "Category", _( 10 ) )
-
         self._get_settings()
         self._set_skin_colours()
 
@@ -817,6 +807,10 @@ class MainWindow( xbmcgui.WindowXML ):
                 logger.LOG( logger.LOG_DEBUG, "Impossible de se connecter au serveur FTP: %s", self.host )
                 logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
+            # Title of the current pages
+            self.setProperty( "Category", _( 10 ) )
+            xbmc.executebuiltin( "Container.SetViewMode(%i)" % self.settings.get( "main_view_mode", self.CONTROL_MAIN_LIST_START ) )
+
             # Capturons le contenu des sous-repertoires plugins
             for type in self.downloadTypeList:
                 if type.find( "Plugins" ) != -1:
@@ -830,6 +824,17 @@ class MainWindow( xbmcgui.WindowXML ):
             
             # Close the Loading Window
             DIALOG_PROGRESS.close()
+        else:
+            # pas le choix avec les nouvelles vue
+            self.updateList()
+            #for id in range( self.CONTROL_MAIN_LIST_START, self.CONTROL_MAIN_LIST_END + 1 ):
+            #    try: 
+            #        if xbmc.getCondVisibility( "Control.IsVisible(%i)" % id ):
+            #            self.getControl( id ).setVisible( 1 )
+            #            self.setFocusId( id )
+            #    except:
+            #        pass
+
 
     def _get_settings( self, defaults=False ):
         """ reads settings """
@@ -839,10 +844,11 @@ class MainWindow( xbmcgui.WindowXML ):
     def _set_skin_colours( self ):
         #xbmcgui.lock()
         try:
-            self.setProperty( "style_PMIII.HD", ( "", "true" )[ ( self.settings[ "skin_colours_path" ] == "style_PMIII.HD" ) ] )
-            self.setProperty( "Skin-Colours-path", self.settings[ "skin_colours_path" ] )
-            self.setProperty( "Skin-Colours", ( self.settings[ "skin_colours" ] or get_default_hex_color() ) )
+            xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,%s)" % ( self.settings[ "skin_colours_path" ], ) )
+            xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,%s)" % ( ( self.settings[ "skin_colours" ] or get_default_hex_color() ), ) )
         except:
+            xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,ffffffff)" )
+            xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,default)" )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         #xbmcgui.unlock()
 
@@ -931,8 +937,8 @@ class MainWindow( xbmcgui.WindowXML ):
         try:
             # Affiche la description de l'item selectionné
             # à pas oublier lors du changement des ID des listes ( self.getFocusId() == self.CONTROL_MAIN_LIST ), car bug en vue :)
-            if ( not self.type.lower() in ( "racine", "plugins", ) ) and ( self.getFocusId() == self.CONTROL_MAIN_LIST ):
-                currentListIndex = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()
+            if ( not self.type.lower() in ( "racine", "plugins", ) ) and ( self.CONTROL_MAIN_LIST_START <= self.getFocusId() <= self.CONTROL_MAIN_LIST_END ):#( self.getFocusId() == self.CONTROL_MAIN_LIST ):
+                currentListIndex = self.getCurrentListPosition()
                 if currentListIndex >= 0:
                     selectedItem = os.path.basename( self.curDirList[ currentListIndex ] )
                     self.itemInfosManager.show_descript( selectedItem, self.type )
@@ -942,7 +948,7 @@ class MainWindow( xbmcgui.WindowXML ):
     def _show_context_menu( self ):
         try:
             # à pas oublier lors du changement des ID des listes ( self.getFocusId() == self.CONTROL_MAIN_LIST ), car bug en vue :)
-            if ( not self.type.lower() in ( "racine", "plugins", ) ) and ( self.getFocusId() == self.CONTROL_MAIN_LIST ):
+            if ( not self.type.lower() in ( "racine", "plugins", ) ) and ( self.CONTROL_MAIN_LIST_START <= self.getFocusId() <= self.CONTROL_MAIN_LIST_END ):#( self.getFocusId() == self.CONTROL_MAIN_LIST ):
                 from context_menu import show_context_menu
                 #buttons = { 1000 : ( "teste 1", "disabled" ), 1001 : "teste 2", 1002 : "teste 3",
                 #    1003 : "teste 4", 1004 : ( "teste 5", "disabled" ), 1005 : "teste 6", 1006 : "teste 7" }
@@ -1041,7 +1047,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 # On verifie si on est a l'interieur d'un ses sous section plugin
                 #if ( self.type == "Plugins Musique" ) or ( self.type == "Plugins Images" ) or ( self.type == "Plugins Programmes" ) or ( self.type == "Plugins Vidéos" ):
                 if not self.main_list_last_pos:
-                    try: self.main_list_last_pos.append( self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition() )
+                    try: self.main_list_last_pos.append( self.getCurrentListPosition() )
                     except: self.main_list_last_pos.append( 0 )
                 try:
                     if "Plugins " in self.type:
@@ -1055,7 +1061,7 @@ class MainWindow( xbmcgui.WindowXML ):
                     logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
                 if self.main_list_last_pos:
-                    self.getControl( self.CONTROL_MAIN_LIST ).selectItem( self.main_list_last_pos.pop() )
+                    self.setCurrentListPosition( self.main_list_last_pos.pop() )
 
             elif action == ACTION_SHOW_INFO:
                  self._show_descript()
@@ -1079,7 +1085,7 @@ class MainWindow( xbmcgui.WindowXML ):
         try:
             downloadOK = True
             correctionPM3bidon = False
-            self.index = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()
+            self.index = self.getCurrentListPosition()
 
             source = self.curDirList[ self.index ]
 
@@ -1288,6 +1294,14 @@ class MainWindow( xbmcgui.WindowXML ):
         self._stop_rss_timer()
         try: self.itemInfosManager.infoWarehouseFTP.getImage_thread.cancel()
         except: pass
+        for id in range( self.CONTROL_MAIN_LIST_START, self.CONTROL_MAIN_LIST_END + 1 ):
+            try: 
+                if xbmc.getCondVisibility( "Control.IsVisible(%i)" % id ):
+                    self.settings[ "main_view_mode" ] = id
+                    Settings().save_settings( self.settings )
+                    break
+            except:
+                pass
         #on ferme le script
         self.close()
 
@@ -1302,17 +1316,17 @@ class MainWindow( xbmcgui.WindowXML ):
         Traitement si selection d'un element de la liste
         """
         try:
-            if controlID == self.CONTROL_MAIN_LIST:
-                try: self.main_list_last_pos.append( self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition() )
+            if ( self.CONTROL_MAIN_LIST_START <= controlID <= self.CONTROL_MAIN_LIST_END ):
+                try: self.main_list_last_pos.append( self.getCurrentListPosition() )
                 except: self.main_list_last_pos.append( 0 )
                 if ( self.type == "racine" ):
-                    self.index = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()
-                    self.type = self.downloadTypeList[ self.racineDisplayList[ self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition() ] ] # On utilise le filtre
+                    self.index = self.getCurrentListPosition()
+                    self.type = self.downloadTypeList[ self.racineDisplayList[ self.getCurrentListPosition() ] ] # On utilise le filtre
                     self.updateList() #on raffraichit la page pour afficher le contenu
 
                 elif ( self.type == "Plugins" ):
-                    self.index = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition()
-                    self.type = self.downloadTypeList[ self.pluginDisplayList[ self.getControl( self.CONTROL_MAIN_LIST ).getSelectedPosition() ] ] # On utilise le filtre
+                    self.index = self.getCurrentListPosition()
+                    self.type = self.downloadTypeList[ self.pluginDisplayList[ self.getCurrentListPosition() ] ] # On utilise le filtre
                     self.updateList() #on raffraichit la page pour afficher le contenu
 
                 else:
@@ -1337,14 +1351,14 @@ class MainWindow( xbmcgui.WindowXML ):
     def _save_downloaded_property( self ):
         try:
             self._load_downloaded_property()
-            selected_label = self.getControl( self.CONTROL_MAIN_LIST ).getSelectedItem().getLabel()
+            selected_label = self.getListItem( self.getCurrentListPosition() ).getLabel()
             self.downloaded_property.update( [ md5.new( selected_label ).hexdigest() ] )
             file_path = os.path.join( logger.DIRECTORY_DATA, "downloaded.txt" )
             file( file_path, "w" ).write( repr( self.downloaded_property ) )
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         else:
-            self.getControl( self.CONTROL_MAIN_LIST ).getSelectedItem().setProperty( "Downloaded", "isDownloaded" )
+            self.getListItem( self.getCurrentListPosition() ).setProperty( "Downloaded", "isDownloaded" )
 
     def updateProgress_cb( self, percent, dp=None ):
         """
@@ -1386,7 +1400,9 @@ class MainWindow( xbmcgui.WindowXML ):
         #xbmcgui.lock()
 
         # Clear all ListItems in this control list
-        self.getControl( self.CONTROL_MAIN_LIST ).reset()
+        if hasattr( self, 'clearProperties' ):
+            self.clearProperties()
+        self.clearList()
 
         # Calcul du nombre d'elements de la liste
         itemnumber = len( self.curDirList )
@@ -1421,7 +1437,7 @@ class MainWindow( xbmcgui.WindowXML ):
 
                 displayListItem = xbmcgui.ListItem( sectionLocTitle, "", thumbnailImage = imagePath )
                 displayListItem.setProperty( "Downloaded", "" )
-                self.getControl( self.CONTROL_MAIN_LIST ).addItem( displayListItem )
+                self.addItem( displayListItem )
                 
             elif ( self.type == "Plugins" ):
                 # Nom de la section
@@ -1448,7 +1464,7 @@ class MainWindow( xbmcgui.WindowXML ):
 
                 displayListItem = xbmcgui.ListItem( sectionLocTitle, "", thumbnailImage = imagePath )
                 displayListItem.setProperty( "Downloaded", "" )
-                self.getControl( self.CONTROL_MAIN_LIST ).addItem( displayListItem )
+                self.addItem( displayListItem )
             
             
             #elif ( self.type == "Plugins Musique" ) or ( self.type == "Plugins Images" ) or ( self.type == "Plugins Programmes" ) or ( self.type == "Plugins Vidéos" ):
@@ -1493,7 +1509,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 displayListItem = xbmcgui.ListItem( item2download, "", iconImage=imagePath, thumbnailImage=imagePath )
                 displayListItem.setProperty( "Downloaded", already_downloaded )
                 self.set_item_info( displayListItem, ItemListPath )
-                self.getControl( self.CONTROL_MAIN_LIST ).addItem( displayListItem )
+                self.addItem( displayListItem )
                 DIALOG_PROGRESS.update( -1, _( 103 ), item2download, _( 110 ) )
 
             else:
@@ -1532,7 +1548,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 displayListItem = xbmcgui.ListItem( item2download, "", iconImage=imagePath, thumbnailImage=imagePath )
                 displayListItem.setProperty( "Downloaded", already_downloaded )
                 self.set_item_info( displayListItem, ItemListPath )
-                self.getControl( self.CONTROL_MAIN_LIST ).addItem( displayListItem )
+                self.addItem( displayListItem )
                 DIALOG_PROGRESS.update( -1, _( 103 ), item2download, _( 110 ) )
         #xbmcgui.unlock()
 
@@ -1542,18 +1558,19 @@ class MainWindow( xbmcgui.WindowXML ):
         #infos = fileName, title, version, language, date , previewPicture, previewVideoURL, description_fr, description_en
         try:
             infos = self.itemInfosManager.infoWarehouseFTP.getInfo( itemName=os.path.basename( ipath ), itemType=self.type )
-            listitem.setProperty( "fileName",        infos[ 0 ] or "" )
-            listitem.setProperty( "title",           infos[ 1 ] or "" )
+            #listitem.setProperty( "fileName",        infos[ 0 ] or "" )
+            #listitem.setProperty( "title",           infos[ 1 ] or "" )
             listitem.setProperty( "version",         infos[ 2 ] or "" )
             listitem.setProperty( "language",        infos[ 3 ] or "" )
-            listitem.setProperty( "date",            infos[ 4 ] or "N/D" )
-            listitem.setProperty( "previewPicture",  infos[ 5 ] or "" )
-            listitem.setProperty( "previewVideoURL", infos[ 6 ] or "" )
-            listitem.setProperty( "description_fr",  infos[ 7 ] or "" )
-            listitem.setProperty( "description_en",  infos[ 8 ] or "" )
-            if infos[ 5 ]:
+            listitem.setProperty( "date",            infos[ 4 ] or "" )
+            #listitem.setProperty( "previewVideoURL", infos[ 6 ] or "" )
+            #listitem.setProperty( "description_fr",  infos[ 7 ] or "" )
+            #listitem.setProperty( "description_en",  infos[ 8 ] or "" )
+
+            #desactiver sa prend trop de memoire voir pour moi "frost" j'ai vue 100mo :O et xbmc libere pas la memoire ????
+            #if infos[ 5 ]:
                 #print infos[ 5 ]
-                listitem.setThumbnailImage( infos[ 5 ] )
+            #    listitem.setThumbnailImage( infos[ 5 ] )
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
