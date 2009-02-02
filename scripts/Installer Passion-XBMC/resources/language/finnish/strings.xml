@@ -1,15 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<strings> <!--  Finnish 15.1.2008 -->
+<strings>
+<!--Finnish 2.2.2008-->
+<!--  revision 297  -->
   <!--GENERAL STRINGS -->
   <string id="0">Installer Passion-XBMC</string>
   <string id="1">Keskustelut</string>
   <string id="2">Asetukset</string>
   <string id="3">Ohje</string>
-  <string id="4">About</string>
-  <string id="5">Manager</string>
-  <string id="6">Add-ons Manager</string>
-  <string id="7">Installer</string>
-  <string id="8">Exit</string>
+  <string id="4">Tietoja</string>
+  <string id="5">Hallinta</string>
+  <string id="6">Lisäkkeiden hallinta</string>
+  <string id="7">Asentaja</string>
+  <string id="8">Lopeta</string>
 
   <string id="10">Valinta</string>
   <string id="11">Skinit</string>
@@ -26,6 +28,8 @@
 
   <string id="24">Sivu</string>
   <string id="25">Kohdetta</string>
+  <string id="26">Kohde</string>
+  <string id="27">/</string>
 
   <!--MISC STRINGS -->
   <string id="100">Valitse XBMC:n asennushakemisto</string>
@@ -84,30 +88,37 @@
   <string id="153">Peruuta</string>
   <string id="154">Anna uusi nimi:</string>
   <string id="155">Nimettiin uudelleen:</string>
-  <string id="156">Delete</string>
-  <string id="157">Rename</string>
-  <string id="158">Delete of %s</string>
-  <string id="159">Are you sure you want to delete %s ?</string>
-  <string id="160">Run</string>
-  <string id="161">Copy</string>
-  <string id="162">Move</string>
-  <string id="163">Confirm file copy</string>
-  <string id="164">Confirm file move</string>
-  <string id="165">Copy these files?</string>
-  <string id="166">Move these files?</string>
-  <string id="167">Browse for copy: %s</string>
-  <string id="168">Browse for move: %s</string>
-  <string id="169">Operation was aborted</string>
-  <string id="170">Copy failed</string>
-  <string id="171">Failed to copy atleast one file</string>
-  <string id="172">Move failed</string>
-  <string id="173">Failed to move atleast one file</string>  
-  <string id="174">Delete failed</string>
-  <string id="175">Failed to delete atleast one file</string>
-  <string id="176">Copy...</string>
-  <string id="177">Moving...</string>
-  <string id="178">From:&#32;</string>
-  <string id="179">To:&#32;</string>
+  <string id="156">Poista</string>
+  <string id="157">Nimeä uudelleen</string>
+  <string id="158">%s:n poisto</string>
+  <string id="159">Oletko varma, että haluat poistaa %s:n ?</string>
+  <string id="160">Käynnistä</string>
+  <string id="161">Kopioi</string>
+  <string id="162">Siirrä</string>
+  <string id="163">Varmista tiedoston kopiointi</string>
+  <string id="164">Varmista tiedoston siirto</string>
+  <string id="165">Kopioidaanko valitut tiedostot?</string>
+  <string id="166">Siirretäänkö valitut tiedostot?</string>
+  <string id="167">Valitse kopiointi: %s</string>
+  <string id="168">Valitse siirto: %s</string>
+  <string id="169">Toiminto keskeytettiin</string>
+  <string id="170">Kopiointi epäonnistui</string>
+  <string id="171">Vähintään yhden tiedoston kopiointi epäonnistui</string>
+  <string id="172">Siirto epäonnistui</string>
+  <string id="173">Vähintään yhden tiedoston siirto epäonnistui</string>  
+  <string id="174">Poisto epäonnistui</string>
+  <string id="175">Vähintään yhden tiedoston poisto epäonnistui</string>
+  <string id="176">Kopioidaan...</string>
+  <string id="177">Siirretään...</string>
+  <string id="178">Sijainnista:&#32;</string>
+  <string id="179">Kohteeseen:&#32;</string>
+  <string id="180">Polku:</string>
+  <string id="181">Koko:</string>
+  <string id="182">Luotu:</string>
+  <string id="183">Viimeksi muokattu:</string>
+  <string id="184">Viimeksi käytetty:</string>
+  <string id="185">Laske koko</string>
+  <string id="186">Lasketaan kansion kokoa</string>
 
   <!--FORUM DIRECT INFOS STRINGS -->
   <string id="199">Uudet</string>
@@ -115,7 +126,7 @@
   <string id="201">Julkaisut ja uutiset</string>
   <string id="202">XBMC</string>
   <string id="203">Määritä tietojen hakupaikka</string>
-  <string id="204">XBMC ohjaus - Kaukoohjain</string>
+  <string id="204">XBMC ohjaus - Kauko-ohjain</string>
   <string id="205">Skinit</string>
   <string id="206">Tuontipalvelu</string>
   <string id="207">Skinitiedostot</string>
@@ -153,6 +164,18 @@
   <string id="240">Tietoja ei löydy!</string>
   <string id="241">Tietoja ei voida hakea!</string>
 
+  <!-- STRINGS FOR LIST VIEW MODE -->
+  <string id="350">Lista</string>
+  <string id="351">Media tiedot</string>
+  <string id="352">Ikonit</string>
+  <string id="353"></string>
+  <string id="354"></string>
+  <string id="355"></string>
+  <string id="356">Media 1</string>
+  <string id="357"></string>
+  <string id="358"></string>
+  <string id="359">Karuselli</string>
+
   <!--SETTINGS STRINGS -->
   <string id="499">Versio: %s</string>
   <string id="500">Asetukset</string>
@@ -168,7 +191,9 @@
   <string id="510">Tarkista päivitykset käynnistyessä</string>
   <string id="511">RSS syöte</string>
   <string id="512">Käynnistä [B]*skripti*[/B] ja suorituslokin kirjaus</string>
-  <string id="513">Hide the button forum in main menu</string>
+  <string id="513">Piilota keskustelupaikka painike päävalikosta</string>
+  <string id="514">Piilota alihakemiston kohteet</string>
+  <string id="515">Piilota median tiedostopäätteet</string>
 
   <string id="518">Nettiselain</string>
   <string id="519">Estä XBMC:n sammutus kunnes nettiselain on suljettu</string>
@@ -189,7 +214,7 @@
   <string id="610">Englanti</string>
   <string id="611">Monikielinen</string>
   <string id="612">Tuntematon</string>
-  <string id="613">Date added:&#32;</string>
+  <string id="613">Lisäys päivä:&#32;</string>
 
   <!--ABOUT STRINGS -->
   <string id="700">Versio</string>
@@ -202,11 +227,10 @@
   <string id="707">Päiväys</string>   
   <string id="708">SVN</string>  
   <string id="710">Asennusohjelman päivitykset XBMC:n teemoihin, skripteihin, lisäkkeisiin ja skripteihin sekä hakupaikkoihin tapahtuvat FTP-yhteydellä Passion-XBMC (passion-xbmc.org) Team Passion-XBMC:n ylläpitämältä sivustolta.</string>  
-  
-  
+    
   <!--CONTEXT MENU STRINGS -->
-  <string id="1000">Install</string>
-  <string id="1001">Information</string>
+  <string id="1000">Asenna</string>
+  <string id="1001">Tietoja</string>
   <string id="1002"></string>
   <string id="1003"></string>
   <string id="1004"></string>
