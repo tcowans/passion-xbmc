@@ -35,7 +35,7 @@
 			<posy>70</posy>
 			<width>620</width>
 			<height>430</height>
-			<texture>$INFO[Skin.String(PassionSettingsColours),,\passion-dialog-panel.png]</texture>
+			<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-dialog-panel.png]</texture>
 		</control>
 
 		<!-- LABELS DIALOG -->
@@ -209,7 +209,7 @@
 				<posy>28</posy>
 				<width>93</width>
 				<height>3</height>
-				<texture>$INFO[Skin.String(PassionSettingsColours),,\passion-solid_tab.png]</texture>
+				<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-solid_tab.png]</texture>
 				<visible>Skin.String(PassionSettings,1)</visible>
 			</control>
 			<control type="image">
@@ -218,7 +218,7 @@
 				<posy>28</posy>
 				<width>92</width>
 				<height>3</height>
-				<texture>$INFO[Skin.String(PassionSettingsColours),,\passion-solid_tab.png]</texture>
+				<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-solid_tab.png]</texture>
 				<visible>Skin.String(PassionSettings,2)</visible>
 			</control>
 			<control type="image">
@@ -227,7 +227,7 @@
 				<posy>28</posy>
 				<width>92</width>
 				<height>3</height>
-				<texture>$INFO[Skin.String(PassionSettingsColours),,\passion-solid_tab.png]</texture>
+				<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-solid_tab.png]</texture>
 				<visible>Skin.String(PassionSettings,3)</visible>
 			</control>
 			<control type="image">
@@ -236,7 +236,7 @@
 				<posy>28</posy>
 				<width>92</width>
 				<height>3</height>
-				<texture>$INFO[Skin.String(PassionSettingsColours),,\passion-solid_tab.png]</texture>
+				<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-solid_tab.png]</texture>
 				<visible>Skin.String(PassionSettings,4)</visible>
 			</control>
 			<control type="image">
@@ -245,7 +245,7 @@
 				<posy>28</posy>
 				<width>92</width>
 				<height>3</height>
-				<texture>$INFO[Skin.String(PassionSettingsColours),,\passion-solid_tab.png]</texture>
+				<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-solid_tab.png]</texture>
 				<visible>Skin.String(PassionSettings,5)</visible>
 			</control>
 			<control type="image">
@@ -254,7 +254,7 @@
 				<posy>28</posy>
 				<width>92</width>
 				<height>3</height>
-				<texture>$INFO[Skin.String(PassionSettingsColours),,\passion-solid_tab.png]</texture>
+				<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-solid_tab.png]</texture>
 				<visible>Skin.String(PassionSettings,6)</visible>
 			</control>
 		</control>
@@ -748,7 +748,7 @@
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>ffffffff</textcolor>
-				<shadowcolor>$INFO[Container.Property(Skin-Colours)]</shadowcolor>
+				<shadowcolor>$INFO[Skin.String(PassionSkinHexColour)]</shadowcolor>
 				<animation effect="zoom" loop="true" center="auto" start="10" end="500" time="2000" acceleration="-2" condition="Control.IsVisible(9007)">conditional</animation>
 			</control>
 		</control>

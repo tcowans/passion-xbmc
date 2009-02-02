@@ -2,10 +2,10 @@
 	<!-- SCRIPT SKIN COLOURS -->
 	<!-- by FrostBox -->
 	<!-- NOTE: -->
-	<!-- name is used with "self.setProperty( "Skin-Colours-path", name )" in .py file -->
-	<!-- and "$INFO[Container.Property(Skin-Colours-path),,\passion-background-plain.png]" in .xml file -->
-	<!-- hex color is used with "self.setProperty( "Skin-Colours", hex color ) in .py file -->
-	<!-- and "$INFO[Container.Property(Skin-Colours)]" in .xml file -->
+	<!-- name is used with "Skin.SetString(PassionSkinColourPath,name)" in .py file -->
+	<!-- and "$INFO[Skin.String(PassionSkinColourPath,,\passion-background-plain.png]" in .xml file -->
+	<!-- hex color is used with "Skin.SetString(PassionSkinHexColour,hex color) in .py file -->
+	<!-- and "$INFO[Skin.String(PassionSkinHexColour)]" in .xml file -->
 	<!-- END NOTE -->
 	<color name="default">FFD8A259</color>
 	<color name="lightbrown">FFA67259</color>

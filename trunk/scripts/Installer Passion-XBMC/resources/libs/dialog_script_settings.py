@@ -90,10 +90,15 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
                 xbmc.executebuiltin( "Skin.Reset(passion_custom_background)" )
 
     def _set_skin_colours( self ):
+        #xbmcgui.lock()
         try:
-            xbmc.executebuiltin( "Skin.SetString(PassionSettingsColours,%s)" % ( self.settings[ "skin_colours_path" ], ) )
+            xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,%s)" % ( self.settings[ "skin_colours_path" ], ) )
+            xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,%s)" % ( ( self.settings[ "skin_colours" ] or get_default_hex_color() ), ) )
         except:
+            xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,ffffffff)" )
+            xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,default)" )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+        #xbmcgui.unlock()
 
     def _set_controls_labels( self ):
         # setlabel pour les controles du dialog qui a comme info exemple: id="100" et pour avoir son controle on fait un getControl( 100 )
