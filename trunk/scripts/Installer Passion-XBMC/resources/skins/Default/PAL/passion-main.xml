@@ -46,7 +46,7 @@
 			<imagepath>passion-plasma</imagepath>
 			<timeperimage>4000</timeperimage>
 			<fadetime>2000</fadetime>
-            <visible>!Skin.String(PassionSkinColourPath,style_PMIII.HD)</visible>
+			<visible>!Skin.String(PassionSkinColourPath,style_PMIII.HD)</visible>
 		</control>
 
 		<!-- CONTENT PANEL -->
@@ -78,7 +78,18 @@
 				<!--<aspectratio scalediffuse="false">scale</aspectratio>-->
 				<texture diffuse="passion_diffuse.png" />
 				<info>Skin.String(passion_custom_background)</info>
-				<visible>Skin.HasSetting(use_passion_custom_background)</visible>
+				<visible>Skin.HasSetting(use_passion_custom_background) + !Control.IsVisible(10)</visible>
+			</control>
+			<control type="image" id="10">
+				<description>contentpanel slice previewPicture background</description>
+				<posx>20</posx>
+				<posy>193</posy>
+				<width>679</width>
+				<height>372</height>
+				<!--<aspectratio scalediffuse="false">scale</aspectratio>-->
+				<texture diffuse="passion_diffuse.png" />
+				<info>Container.ListItem.Property(previewPicture)</info>
+				<visible>!IsEmpty(Container.ListItem.Property(previewPicture)) + Skin.HasSetting(PassionShowFanart)</visible>
 			</control>
 			<control type="image">
 				<description>contentpanel slice</description>
@@ -120,17 +131,17 @@
 				<texturefocus>-</texturefocus>
 			</control>
 
-		<control type="label">
-			<description>date | time label</description>
-			<posx>660</posx>
-			<posy>0</posy>
-			<label>$INFO[System.Date] [COLOR=60ffffff] |  $INFO[System.Time][/COLOR]</label>
-			<align>right</align>
-			<aligy>center</aligy>
-			<font>special12</font>
-			<animation effect="slide" start="0,0" end="0,-30" time="0" condition="Skin.String(PassionSkinColourPath,style_PMIII.HD)">conditional</animation>
-			<visible>Skin.String(PassionSkinColourPath,style_PMIII.HD | !Control.IsVisible(100)</visible>
-		</control>
+			<control type="label">
+				<description>date | time label</description>
+				<posx>660</posx>
+				<posy>0</posy>
+				<label>$INFO[System.Date] [COLOR=60ffffff] |  $INFO[System.Time][/COLOR]</label>
+				<align>right</align>
+				<aligy>center</aligy>
+				<font>special12</font>
+				<animation effect="slide" start="0,0" end="0,-30" time="0" condition="Skin.String(PassionSkinColourPath,style_PMIII.HD)">conditional</animation>
+				<visible>Skin.String(PassionSkinColourPath,style_PMIII.HD) | !Control.IsVisible(100)</visible>
+			</control>
 		</control>
 
 		<control type="group">
@@ -145,7 +156,7 @@
 				<width>679</width>
 				<height>30</height>
 				<align>left</align>
-				<label>$INFO[Container.Property(Category)]</label>
+				<label>$INFO[Container.Property(Category),$LOCALIZE[SCRIPT7]: ]</label>
 				<font>special13</font>
 			</control>
 			<control type="label">
@@ -173,6 +184,149 @@
 				<align>right</align>
 				<label>$LOCALIZE[SCRIPT26] $INFO[Container.CurrentPage] $LOCALIZE[SCRIPT27] $INFO[Container.NumPages]</label>
 				<visible>Control.IsVisible(59)</visible>
+			</control>
+
+			<!-- GROUPE OPTION MENU -->
+			<!-- NOTE: CES BOUTONS ONT LE LANGUAGE D'XBMC ET NON DU SCRIPT -->
+			<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+			<!-- ** Required ** Do not change id's or type's -->
+			<control type="group" id="9000">
+				<posx>20</posx>
+				<posy>117</posy>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>100</width>
+					<height>25</height>
+					<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
+					<visible>!Control.HasFocus(2) + Control.IsVisible(2)</visible>
+				</control>
+				<control type="button" id="2">
+					<description>View As Icons button</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>100</width>
+					<height>25</height>
+					<align>center</align>
+					<label>101</label>
+					<texturenofocus>-</texturenofocus>
+					<texturefocus>passion-list-focus.png</texturefocus>
+					<textcolor>ffffffff</textcolor>
+					<colordiffuse>ffffffff</colordiffuse>
+					<disabledcolor>60d0d0d0</disabledcolor>
+					<onleft>320</onleft>
+					<onright>300</onright>
+					<onup>50</onup>
+					<ondown>50</ondown>
+				</control>
+				<control type="image">
+					<posx>105</posx>
+					<posy>0</posy>
+					<width>100</width>
+					<height>25</height>
+					<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
+					<visible>!Control.HasFocus(300) + Control.IsVisible(300)</visible>
+				</control>
+				<control type="button" id="300">
+					<description>Add-ons Manager button</description>
+					<posx>105</posx>
+					<posy>0</posy>
+					<width>100</width>
+					<height>25</height>
+					<align>center</align>
+					<label>SCRIPT5</label>
+					<texturenofocus>-</texturenofocus>
+					<texturefocus>passion-list-focus.png</texturefocus>
+					<textcolor>ffffffff</textcolor>
+					<colordiffuse>ffffffff</colordiffuse>
+					<disabledcolor>60d0d0d0</disabledcolor>
+					<onleft>2</onleft>
+					<onright>305</onright>
+					<onup>50</onup>
+					<ondown>50</ondown>
+				</control>
+				<control type="image">
+					<posx>210</posx>
+					<posy>0</posy>
+					<width>100</width>
+					<height>25</height>
+					<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
+					<visible>!Control.HasFocus(305) + Control.IsVisible(305)</visible>
+				</control>
+				<control type="button" id="305">
+					<description>forum button</description>
+					<posx>210</posx>
+					<posy>0</posy>
+					<width>100</width>
+					<height>25</height>
+					<align>center</align>
+					<label>SCRIPT1</label>
+					<texturenofocus>-</texturenofocus>
+					<texturefocus>passion-list-focus.png</texturefocus>
+					<textcolor>ffffffff</textcolor>
+					<colordiffuse>ffffffff</colordiffuse>
+					<disabledcolor>60d0d0d0</disabledcolor>
+					<onleft>300</onleft>
+					<onright>310</onright>
+					<onup>50</onup>
+					<ondown>50</ondown>
+				</control>
+				<control type="image">
+					<posx>315</posx>
+					<posy>0</posy>
+					<width>100</width>
+					<height>25</height>
+					<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
+					<visible>!Control.HasFocus(310) + Control.IsVisible(310)</visible>
+					<animation effect="slide" start="0,0" end="-105,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
+				</control>
+				<control type="button" id="310">
+					<description>option button</description>
+					<posx>315</posx>
+					<posy>0</posy>
+					<width>100</width>
+					<height>25</height>
+					<align>center</align>
+					<label>SCRIPT2</label>
+					<texturenofocus>-</texturenofocus>
+					<texturefocus>passion-list-focus.png</texturefocus>
+					<textcolor>ffffffff</textcolor>
+					<colordiffuse>ffffffff</colordiffuse>
+					<disabledcolor>60d0d0d0</disabledcolor>
+					<onleft>305</onleft>
+					<onright>320</onright>
+					<onup>50</onup>
+					<ondown>50</ondown>
+					<animation effect="slide" start="0,0" end="-105,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
+				</control>
+				<control type="image">
+					<posx>420</posx>
+					<posy>0</posy>
+					<width>100</width>
+					<height>25</height>
+					<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
+					<visible>!Control.HasFocus(320) + Control.IsVisible(320)</visible>
+					<animation effect="slide" start="0,0" end="-105,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
+				</control>
+				<control type="button" id="320">
+					<description>exit button</description>
+					<posx>420</posx>
+					<posy>0</posy>
+					<width>100</width>
+					<height>25</height>
+					<align>center</align>
+					<label>SCRIPT8</label>
+					<texturenofocus>-</texturenofocus>
+					<texturefocus>passion-list-focus.png</texturefocus>
+					<textcolor>ffffffff</textcolor>
+					<colordiffuse>ffffffff</colordiffuse>
+					<disabledcolor>60d0d0d0</disabledcolor>
+					<onleft>310</onleft>
+					<onright>2</onright>
+					<onup>50</onup>
+					<ondown>50</ondown>
+					<animation effect="slide" start="0,0" end="-105,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
+				</control>
 			</control>
 
 			<!-- BASE LIST -->
@@ -216,7 +370,7 @@
 						<posy>3</posy>
 						<width>36</width>
 						<height>36</height>
-						<info>ListItem.Icon</info>
+						<info>ListItem.ActualIcon</info>
 						<visible>IsEmpty(ListItem.Property(Downloaded))</visible>
 					</control>
 					<control type="image">
@@ -224,7 +378,7 @@
 						<posy>3</posy>
 						<width>36</width>
 						<height>36</height>
-						<info>ListItem.Icon</info>
+						<info>ListItem.ActualIcon</info>
 						<visible>!IsEmpty(ListItem.Property(Downloaded))</visible>
 						<colordiffuse>60ffffff</colordiffuse>
 					</control>
@@ -295,7 +449,7 @@
 						<posy>3</posy>
 						<width>36</width>
 						<height>36</height>
-						<info>ListItem.Icon</info>
+						<info>ListItem.ActualIcon</info>
 						<visible>IsEmpty(ListItem.Property(Downloaded))</visible>
 					</control>
 					<control type="image">
@@ -303,7 +457,7 @@
 						<posy>3</posy>
 						<width>36</width>
 						<height>36</height>
-						<info>ListItem.Icon</info>
+						<info>ListItem.ActualIcon</info>
 						<visible>!IsEmpty(ListItem.Property(Downloaded))</visible>
 						<colordiffuse>60ffffff</colordiffuse>
 					</control>
@@ -1482,151 +1636,6 @@
 					<orientation>vertical</orientation>
 					<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 				</control>
-			</control>
-		</control>
-
-		<!-- GROUPE OPTION MENU -->
-		<!-- NOTE: CES BOUTONS ONT LE LANGUAGE D'XBMC ET NON DU SCRIPT -->
-		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
-		<!-- ** Required ** Do not change id's or type's -->
-		<control type="group" id="9000">
-			<posx>20</posx>
-			<posy>117</posy>
-			<animation effect="slide" time="200" start="720,0" end="0,0" acceleration="-1">WindowOpen</animation>
-			<animation effect="slide" time="200" start="0,0" end="720,0" acceleration="1.1">WindowClose</animation>
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>100</width>
-				<height>25</height>
-				<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
-				<visible>!Control.HasFocus(2) + Control.IsVisible(2)</visible>
-			</control>
-			<control type="button" id="2">
-				<description>View As Icons button</description>
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>100</width>
-				<height>25</height>
-				<align>center</align>
-				<label>101</label>
-				<texturenofocus>-</texturenofocus>
-				<texturefocus>passion-list-focus.png</texturefocus>
-				<textcolor>ffffffff</textcolor>
-				<colordiffuse>ffffffff</colordiffuse>
-				<disabledcolor>60d0d0d0</disabledcolor>
-				<onleft>320</onleft>
-				<onright>300</onright>
-				<onup>50</onup>
-				<ondown>50</ondown>
-			</control>
-			<control type="image">
-				<posx>105</posx>
-				<posy>0</posy>
-				<width>100</width>
-				<height>25</height>
-				<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
-				<visible>!Control.HasFocus(300) + Control.IsVisible(300)</visible>
-			</control>
-			<control type="button" id="300">
-				<description>Add-ons Manager button</description>
-				<posx>105</posx>
-				<posy>0</posy>
-				<width>100</width>
-				<height>25</height>
-				<align>center</align>
-				<label>SCRIPT5</label>
-				<texturenofocus>-</texturenofocus>
-				<texturefocus>passion-list-focus.png</texturefocus>
-				<textcolor>ffffffff</textcolor>
-				<colordiffuse>ffffffff</colordiffuse>
-				<disabledcolor>60d0d0d0</disabledcolor>
-				<onleft>2</onleft>
-				<onright>305</onright>
-				<onup>50</onup>
-				<ondown>50</ondown>
-			</control>
-			<control type="image">
-				<posx>210</posx>
-				<posy>0</posy>
-				<width>100</width>
-				<height>25</height>
-				<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
-				<visible>!Control.HasFocus(305) + Control.IsVisible(305)</visible>
-			</control>
-			<control type="button" id="305">
-				<description>forum button</description>
-				<posx>210</posx>
-				<posy>0</posy>
-				<width>100</width>
-				<height>25</height>
-				<align>center</align>
-				<label>SCRIPT1</label>
-				<texturenofocus>-</texturenofocus>
-				<texturefocus>passion-list-focus.png</texturefocus>
-				<textcolor>ffffffff</textcolor>
-				<colordiffuse>ffffffff</colordiffuse>
-				<disabledcolor>60d0d0d0</disabledcolor>
-				<onleft>300</onleft>
-				<onright>310</onright>
-				<onup>50</onup>
-				<ondown>50</ondown>
-			</control>
-			<control type="image">
-				<posx>315</posx>
-				<posy>0</posy>
-				<width>100</width>
-				<height>25</height>
-				<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
-				<visible>!Control.HasFocus(310) + Control.IsVisible(310)</visible>
-				<animation effect="slide" start="0,0" end="-105,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
-			</control>
-			<control type="button" id="310">
-				<description>option button</description>
-				<posx>315</posx>
-				<posy>0</posy>
-				<width>100</width>
-				<height>25</height>
-				<align>center</align>
-				<label>SCRIPT2</label>
-				<texturenofocus>-</texturenofocus>
-				<texturefocus>passion-list-focus.png</texturefocus>
-				<textcolor>ffffffff</textcolor>
-				<colordiffuse>ffffffff</colordiffuse>
-				<disabledcolor>60d0d0d0</disabledcolor>
-				<onleft>305</onleft>
-				<onright>320</onright>
-				<onup>50</onup>
-				<ondown>50</ondown>
-				<animation effect="slide" start="0,0" end="-105,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
-			</control>
-			<control type="image">
-				<posx>420</posx>
-				<posy>0</posy>
-				<width>100</width>
-				<height>25</height>
-				<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
-				<visible>!Control.HasFocus(320) + Control.IsVisible(320)</visible>
-				<animation effect="slide" start="0,0" end="-105,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
-			</control>
-			<control type="button" id="320">
-				<description>exit button</description>
-				<posx>420</posx>
-				<posy>0</posy>
-				<width>100</width>
-				<height>25</height>
-				<align>center</align>
-				<label>SCRIPT8</label>
-				<texturenofocus>-</texturenofocus>
-				<texturefocus>passion-list-focus.png</texturefocus>
-				<textcolor>ffffffff</textcolor>
-				<colordiffuse>ffffffff</colordiffuse>
-				<disabledcolor>60d0d0d0</disabledcolor>
-				<onleft>310</onleft>
-				<onright>2</onright>
-				<onup>50</onup>
-				<ondown>50</ondown>
-				<animation effect="slide" start="0,0" end="-105,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
 			</control>
 		</control>
 

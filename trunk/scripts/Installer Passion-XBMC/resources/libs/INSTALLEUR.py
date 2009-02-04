@@ -780,7 +780,9 @@ class MainWindow( xbmcgui.WindowXML ):
             self.PMIIIDir = PMIIIDir
 
         self.is_started = True
-
+        # utiliser pour remettre la liste courante a jour lorsqu'on reviens sur cette fenetre depuis le forum ou le manager
+        self.listitems = []
+        self.current_cat = ""
 
     def onInit( self ):
         self._get_settings()
@@ -825,16 +827,13 @@ class MainWindow( xbmcgui.WindowXML ):
             # Close the Loading Window
             DIALOG_PROGRESS.close()
         else:
-            # pas le choix avec les nouvelles vue
-            self.updateList()
-            #for id in range( self.CONTROL_MAIN_LIST_START, self.CONTROL_MAIN_LIST_END + 1 ):
-            #    try: 
-            #        if xbmc.getCondVisibility( "Control.IsVisible(%i)" % id ):
-            #            self.getControl( id ).setVisible( 1 )
-            #            self.setFocusId( id )
-            #    except:
-            #        pass
-
+            # pas le choix avec les nouvelles vue, mais on lui joue un tour avec une listitems deja ready :P
+            if xbmc.getCondVisibility( "Window.IsActive(passion-main.xml)" ):
+                if self.listitems: self.re_updateList()
+                else: self.updateList()
+            # .addItems( items=listitems )
+            # print "self.addItems( items= )", hasattr( self, 'addItems' )
+            # for ControlList only :(
 
     def _get_settings( self, defaults=False ):
         """ reads settings """
@@ -906,33 +905,6 @@ class MainWindow( xbmcgui.WindowXML ):
             except:
                 logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
-    def _on_action_control( self, act_ctrl_id ):
-        # a changer pas tres bonne idee en fin du compte
-        try:
-            #button_code_F1_keyboard = 61552
-            if ( act_ctrl_id in ( self.CONTROL_FORUM_BUTTON, 61552 ) ):
-                from dialog_direct_infos import show_direct_infos
-                show_direct_infos( self )
-                #on a plus besoin, on le delete
-                del show_direct_infos
-
-            elif ( act_ctrl_id in ( self.CONTROL_OPTIONS_BUTTON, ) ):
-                from dialog_script_settings import show_settings
-                show_settings( self )
-                #on a plus besoin du settings, on le delete
-                del show_settings
-
-            elif ( act_ctrl_id in ( self.CONTROL_FILE_MGR_BUTTON, ) ):
-                from dialog_file_mgr import show_file_manager
-                show_file_manager( self )
-                #on a plus besoin du manager, on le delete
-                del show_file_manager
-
-            else:
-                pass
-        except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-
     def _show_descript( self ):
         try:
             # Affiche la description de l'item selectionné
@@ -942,6 +914,27 @@ class MainWindow( xbmcgui.WindowXML ):
                 if currentListIndex >= 0:
                     selectedItem = os.path.basename( self.curDirList[ currentListIndex ] )
                     self.itemInfosManager.show_descript( selectedItem, self.type )
+        except:
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+
+    def _show_settings( self ):
+        try:
+            thumb_size_on_load = self.settings[ "thumb_size" ]
+            from dialog_script_settings import show_settings
+            show_settings( self )
+            #on a plus besoin du settings, on le delete
+            del show_settings
+            if thumb_size_on_load != self.settings[ "thumb_size" ]:
+                self.updateList() #on raffraichit la page pour afficher la taille des vignettes
+        except:
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+
+    def _show_direct_infos( self ):
+        try:
+            from dialog_direct_infos import show_direct_infos
+            show_direct_infos( self )
+            #on a plus besoin, on le delete
+            del show_direct_infos
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
@@ -1070,9 +1063,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 self._show_context_menu()
 
             else:
-                # a changer pas tres bonne idee en fin du compte
-                self._on_action_control( action )
-                self._on_action_control( action.getButtonCode() )
+                pass
 
         except:
             logger.LOG( logger.LOG_DEBUG, "Window::onAction: Exception" )
@@ -1332,10 +1323,26 @@ class MainWindow( xbmcgui.WindowXML ):
                 else:
                     self.install_add_ons()
 
+            elif controlID == self.CONTROL_OPTIONS_BUTTON:
+                self._show_settings()
+
+            elif controlID == self.CONTROL_FILE_MGR_BUTTON:
+                thumb_size_on_load = self.settings[ "thumb_size" ]
+                from dialog_file_mgr import show_file_manager
+                show_file_manager( self )
+                #on a plus besoin du manager, on le delete
+                del show_file_manager
+                if thumb_size_on_load != self.settings[ "thumb_size" ]:
+                    self.updateList() #on raffraichit la page pour afficher la taille des vignettes
+
+            elif controlID == self.CONTROL_FORUM_BUTTON:
+                self._show_direct_infos()
+
             elif controlID == self.CONTROL_EXIT_BUTTON:
                 self._close_script()
+
             else:
-                self._on_action_control( controlID )
+                pass
 
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
@@ -1371,6 +1378,18 @@ class MainWindow( xbmcgui.WindowXML ):
             percent = 100
             dp.update( percent )
 
+    def re_updateList( self ):
+        try:
+            # Clear all ListItems in this control list
+            if hasattr( self, 'clearProperties' ):
+                self.clearProperties()
+            self.clearList()
+            self.setProperty( "Category", self.current_cat )
+            for item in self.listitems:
+                self.addItem( item )
+        except:
+            self.updateList()
+
     def updateList( self ):
         """
         Mise a jour de la liste affichee
@@ -1403,6 +1422,7 @@ class MainWindow( xbmcgui.WindowXML ):
         if hasattr( self, 'clearProperties' ):
             self.clearProperties()
         self.clearList()
+        self.listitems = []
 
         # Calcul du nombre d'elements de la liste
         itemnumber = len( self.curDirList )
@@ -1435,7 +1455,7 @@ class MainWindow( xbmcgui.WindowXML ):
                     imagePath = "icone_script.png"
                     sectionLocTitle = _( 14 )
 
-                displayListItem = xbmcgui.ListItem( sectionLocTitle, "", thumbnailImage = imagePath )
+                displayListItem = xbmcgui.ListItem( sectionLocTitle, "", iconImage=imagePath, thumbnailImage=imagePath )
                 displayListItem.setProperty( "Downloaded", "" )
                 self.addItem( displayListItem )
                 
@@ -1462,7 +1482,7 @@ class MainWindow( xbmcgui.WindowXML ):
                     imagePath = "passion-icone-video.png"
                     sectionLocTitle = _( 18 )
 
-                displayListItem = xbmcgui.ListItem( sectionLocTitle, "", thumbnailImage = imagePath )
+                displayListItem = xbmcgui.ListItem( sectionLocTitle, "", iconImage=imagePath, thumbnailImage=imagePath )
                 displayListItem.setProperty( "Downloaded", "" )
                 self.addItem( displayListItem )
             
@@ -1550,19 +1570,24 @@ class MainWindow( xbmcgui.WindowXML ):
                 self.set_item_info( displayListItem, ItemListPath )
                 self.addItem( displayListItem )
                 DIALOG_PROGRESS.update( -1, _( 103 ), item2download, _( 110 ) )
+
+            # utiliser pour remettre la liste courante a jour lorsqu'on reviens sur cette fenetre depuis le forum ou le manager
+            self.listitems.append( displayListItem )
+        self.current_cat = unicode( xbmc.getInfoLabel( 'Container.Property(Category)' ), 'utf-8')
         #xbmcgui.unlock()
 
         DIALOG_PROGRESS.close()
 
     def set_item_info( self, listitem, ipath ):
-        #infos = fileName, title, version, language, date , previewPicture, previewVideoURL, description_fr, description_en
+        #infos = fileName, title, version, language, date , previewPicture, previewVideoURL, description_fr, description_en, thumbnail
         try:
-            infos = self.itemInfosManager.infoWarehouseFTP.getInfo( itemName=os.path.basename( ipath ), itemType=self.type )
+            infos = self.itemInfosManager.infoWarehouseFTP.getInfo( itemName=os.path.basename( ipath ), itemType=self.type, listitem=listitem )
             #listitem.setProperty( "fileName",        infos[ 0 ] or "" )
             #listitem.setProperty( "title",           infos[ 1 ] or "" )
             listitem.setProperty( "version",         infos[ 2 ] or "" )
             listitem.setProperty( "language",        infos[ 3 ] or "" )
             listitem.setProperty( "date",            infos[ 4 ] or "" )
+            listitem.setProperty( "previewPicture",  infos[ 5 ] or "" ) # used for simulate fanart
             #listitem.setProperty( "previewVideoURL", infos[ 6 ] or "" )
             #listitem.setProperty( "description_fr",  infos[ 7 ] or "" )
             #listitem.setProperty( "description_en",  infos[ 8 ] or "" )

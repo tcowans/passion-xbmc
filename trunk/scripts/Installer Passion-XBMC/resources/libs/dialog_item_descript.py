@@ -2,6 +2,7 @@
 #Modules general
 import os
 import sys
+import shutil
 import ftplib
 
 #Other module
@@ -14,6 +15,7 @@ import xbmcgui
 
 #modules custom
 from utilities import *
+from pil_util import makeThumbnails
 
 #module logger
 try:
@@ -32,19 +34,22 @@ except: __script__ = os.path.basename( os.getcwd().rstrip( ";" ) )
 
 BASE_THUMBS_PATH = os.path.join( xbmc.translatePath( "P:\\script_data" ), __script__, "Thumbnails" )
 
-def get_thumbnail( path ):
+def set_cache_thumb_name( path ):
     try:
         fpath = path
         # make the proper cache filename and path so duplicate caching is unnecessary
         filename = xbmc.getCacheThumbName( fpath )
         thumbnail = os.path.join( BASE_THUMBS_PATH, filename[ 0 ], filename )
+        preview_pic = os.path.join( BASE_THUMBS_PATH, "originals", filename[ 0 ], filename )
         # if the cached thumbnail does not exist check for dir does not exist create dir
+        if not os.path.isdir( os.path.dirname( preview_pic ) ):
+            os.makedirs( os.path.dirname( preview_pic ) )
         if not os.path.isdir( os.path.dirname( thumbnail ) ):
             os.makedirs( os.path.dirname( thumbnail ) )
-        return thumbnail
+        return thumbnail, preview_pic
     except:
         logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
-        return ""
+        return "", ""
 
 class InfoWarehouse:
     """
@@ -65,11 +70,12 @@ class InfoWarehouse:
         language        = None
         date            = None
         previewPicture  = None
+        thumbnail       = ""
         previewVideoURL = None
         description_fr  = None
         description_en  = None
 
-        return fileName, title, version, language, date , previewPicture, previewVideoURL, description_fr, description_en
+        return fileName, title, version, language, date , previewPicture, previewVideoURL, description_fr, description_en, thumbnail
 
 
 class InfoWarehouseXMLFTP( InfoWarehouse ):
@@ -83,35 +89,51 @@ class InfoWarehouseXMLFTP( InfoWarehouse ):
         self.mainwin  = kwargs[ "mainwin" ]
 
         self._get_settings()
+        self.thumb_size_on_load = self.mainwin.settings[ "thumb_size" ]
         
         # On recupere le fichier de description des items
         self._downloadFile( self.srvItemDescripDir + self.srvItemDescripFile, isTBN=False )
         self.soup =  BeautifulStoneSoup((open(os.path.join(self.mainwin.CacheDir,self.srvItemDescripFile), 'r')).read())
     
-    def _getImage( self, pictureURL, updateImage_cb=None ):
-        if not os.path.exists( get_thumbnail( os.path.basename( pictureURL ) ) ):
+    def _getImage( self, pictureURL, updateImage_cb=None, listitem=None ):
+        cached_thumbs = set_cache_thumb_name( pictureURL )
+        if not os.path.exists( cached_thumbs[ 0 ] ) or not os.path.exists( cached_thumbs[ 1 ] ):
             try: self.getImage_thread.cancel()
             except: pass
-            self.getImage_thread = Thread( target=self._thread_getImage, args=(pictureURL, updateImage_cb) )
+            self.getImage_thread = Thread( target=self._thread_getImage, args=( pictureURL, updateImage_cb, listitem ) )
             self.getImage_thread.start()
 
-    def _thread_getImage( self, pictureURL, updateImage_cb=None ):
+    def _thread_getImage( self, pictureURL, updateImage_cb=None, listitem=None ):
         """
         Recupere l'image dans un thread separe
         """
         # Telechargement de l'image
-        self._downloadFile(pictureURL)
-        checkPathPic = get_thumbnail( os.path.basename( pictureURL ) )#os.path.join(self.mainwin.CacheDir, os.path.basename(pictureURL))
-        if os.path.exists(checkPathPic):
-            previewPicture = checkPathPic
+        self._downloadFile( pictureURL, listitem=listitem )
+        #checkPathPic = set_cache_thumb_name( pictureURL )#os.path.join(self.mainwin.CacheDir, os.path.basename(pictureURL))
+        
+        cached_thumbs = set_cache_thumb_name( pictureURL )
+
+        if os.path.exists( cached_thumbs[ 1 ] ):
+            previewPicture = cached_thumbs[ 1 ]
         else:
             previewPicture = None
         
         # Notifie la callback de mettre a jour l'image
-        try: updateImage_cb(previewPicture)
-        except TypeError: pass
+        if updateImage_cb:
+            try: updateImage_cb( cached_thumbs[ 1 ] )
+            except TypeError: pass
 
-    def getInfo( self, itemName = None, itemType=None, itemId = None, updateImage_cb= None ):
+    def check_thumb_size( self ):
+        if self.thumb_size_on_load != self.mainwin.settings[ "thumb_size" ]:
+            self.thumb_size_on_load = self.mainwin.settings[ "thumb_size" ]
+            try:
+                BASE_THUMBS_PATH = os.path.join( xbmc.translatePath( "P:\\script_data" ), __script__, "Thumbnails" )
+                shutil.rmtree( BASE_THUMBS_PATH )
+            except:
+                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+
+    def getInfo( self, itemName=None, itemType=None, itemId=None, updateImage_cb=None, listitem=None ):
+        self.check_thumb_size()
         """ 
         Lit les info 
         retourne fileName, title, version, language, date , previewPicture, previewVideoURL, description_fr, description_en
@@ -124,6 +146,7 @@ class InfoWarehouseXMLFTP( InfoWarehouse ):
         language        = None
         date            = None
         previewPicture  = None
+        thumbnail       = ""
         previewVideoURL = None
         description_fr  = None
         description_en  = None
@@ -171,13 +194,16 @@ class InfoWarehouseXMLFTP( InfoWarehouse ):
                                         
                                         # On verifie si l'image serait deja la
                                         #checkPathPic = os.path.join(self.mainwin.CacheDir, os.path.basename(previewPictureURL))
-                                        checkPathPic = get_thumbnail( os.path.basename( previewPictureURL ) )
+                                        thumbnail, checkPathPic = set_cache_thumb_name( previewPictureURL )
+                                        if thumbnail and os.path.isfile( thumbnail ) and hasattr( listitem, 'setThumbnailImage' ):
+                                            #if listitem and hasattr( listitem, 'setThumbnailImage' ):
+                                            listitem.setThumbnailImage( thumbnail )
                                         if os.path.exists(checkPathPic):
                                             previewPicture = checkPathPic
                                         else:
                                             # Telechargement et mise a jour de l'image (thread de separe)
                                             previewPicture = checkPathPic#"downloading"
-                                            self._getImage( previewPictureURL, updateImage_cb=updateImage_cb )
+                                            self._getImage( previewPictureURL, updateImage_cb=updateImage_cb, listitem=listitem )
                                             
                                 if hasattr(item.previewvideourl,'string'):
                                     if item.previewvideourl.string != None:
@@ -195,7 +221,7 @@ class InfoWarehouseXMLFTP( InfoWarehouse ):
         except Exception, e:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         
-        return fileName, title, version, language, date , previewPicture, previewVideoURL, description_fr, description_en
+        return fileName, title, version, language, date , previewPicture, previewVideoURL, description_fr, description_en, thumbnail
 
     def _get_settings( self, defaults=False  ):
         """ reads settings from conf file """
@@ -209,28 +235,39 @@ class InfoWarehouseXMLFTP( InfoWarehouse ):
         logger.LOG( logger.LOG_DEBUG,self.srvHost)
         logger.LOG( logger.LOG_DEBUG,self.srvItemDescripDir)
 
-    def _downloadFile( self, remoteFilePath, isTBN=True ):
+    def _downloadFile( self, remoteFilePath, isTBN=True, listitem=None ):
         """
         Fonction de telechargement commune : version, archive, script de mise a jour
         """
         try:
             filetodlUrl = remoteFilePath
             if isTBN:
-                localFilePath = get_thumbnail( os.path.basename( remoteFilePath ) )
+                thumbnail, localFilePath = set_cache_thumb_name( remoteFilePath )
             else:
-                localFilePath = os.path.join(self.mainwin.CacheDir, os.path.basename(remoteFilePath))
+                thumbnail = ""
+                localFilePath = os.path.join( self.mainwin.CacheDir, os.path.basename( remoteFilePath ) )
+
             if not os.path.isfile( localFilePath ):
-                ftp = ftplib.FTP(self.srvHost,self.srvUser,self.srvPassword)
-                localFile = open(str(localFilePath), "wb")
+                ftp = ftplib.FTP( self.srvHost, self.srvUser, self.srvPassword )
+                localFile = open( localFilePath, "wb" )
                 try:
-                    ftp.retrbinary('RETR ' + filetodlUrl, localFile.write)
+                    ftp.retrbinary( 'RETR ' + filetodlUrl, localFile.write )
                 except:
                     logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
                 localFile.close()
                 ftp.quit()
+
             # remove file if size is 0 bytes and report error if exists error
-            if isTBN and os.path.isfile( localFilePath ) and not os.path.getsize( localFilePath ):
-                os.remove( localFilePath )
+            if isTBN and os.path.isfile( localFilePath ):
+                if os.path.getsize( localFilePath ) <= 0:
+                    os.remove( localFilePath )
+                else:
+                    thumb_size = int( self.thumb_size_on_load )
+                    thumbnail = makeThumbnails( localFilePath, thumbnail, w_h=( thumb_size, thumb_size ) )
+
+            if thumbnail and os.path.isfile( thumbnail ) and hasattr( listitem, 'setThumbnailImage' ):
+                #if listitem and hasattr( listitem, 'setThumbnailImage' ):
+                listitem.setThumbnailImage( thumbnail )
         except:
             logger.LOG( logger.LOG_DEBUG, "_downloaddossier: Exception - Impossible de telecharger le fichier: %s", remoteFilePath )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
@@ -267,7 +304,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
             
             self.getControl( 200 ).setVisible( 0 ) # auto busy
             
-            self.fileName, self.title, self.version, self.language, self.date, self.previewPicture, self.previewVideoURL, self.description_fr, self.description_en = self.infoWareHouse.getInfo( itemName=self.itemName, itemType=self.itemType, updateImage_cb=self._updateThumb_cb )
+            self.fileName, self.title, self.version, self.language, self.date, self.previewPicture, self.previewVideoURL, self.description_fr, self.description_en, thumbnail = self.infoWareHouse.getInfo( itemName=self.itemName, itemType=self.itemType, updateImage_cb=self._updateThumb_cb )
             #logger.LOG( logger.LOG_DEBUG, self.fileName)
             #logger.LOG( logger.LOG_DEBUG, self.title)
             #logger.LOG( logger.LOG_DEBUG, self.version)

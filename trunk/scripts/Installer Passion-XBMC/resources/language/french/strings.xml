@@ -110,11 +110,7 @@
   <string id="177">Déplacement...</string>
   <string id="178">De :&#32;</string>
   <string id="179">Vers :&#32;</string>
-  <string id="180">Emplacement :</string>
-  <string id="181">Taille :</string>
-  <string id="182">Créé le :</string>
-  <string id="183">Modifié le :</string>
-  <string id="184">Dernier accès le :</string>
+
   <string id="185">Calculer la Taille</string>
   <string id="186">Calcule de la taille du répertoire</string>
 
@@ -173,6 +169,11 @@
   <string id="357"></string>
   <string id="358"></string>
   <string id="359">Carrousel</string>
+  <string id="360">Emplacement :</string>
+  <string id="361">Taille :</string>
+  <string id="362">Créé le :</string>
+  <string id="363">Modifié le :</string>
+  <string id="364">Dernier accès le :</string>
 
   <!--SETTINGS STRINGS -->
   <string id="499">Version: %s</string>
@@ -183,7 +184,7 @@
   <string id="504">00|5|10|25|50|100</string><!--LIST LIMIT FOR TOPICS IN DIRECT INFOS: 00=illimited -->
   <string id="505">Couleur du thème</string>
   <string id="506">Aucun</string>
-  <string id="507">Activer l'arrière-plan personnel</string>
+  <string id="507">Activer un arrière-plan personnalisé</string>
   <string id="508">Chemin:</string>
   <string id="509">Voulez-vous effacer le chemin de l'arrière-plan?</string>
   <string id="510">Activer la vérification de la mise à jour au démarrage</string>
@@ -192,6 +193,8 @@
   <string id="513">Masquer le bouton forum dans le menu principal</string>
   <string id="514">Masquer l'accès au répertoire parent</string>
   <string id="515">Masquer les extensions des fichiers</string>
+  <string id="516">Activer l'image des add-ons comme fanart</string>
+  <string id="517">Taille des vignettes</string>
 
   <string id="518">Navigateur Web</string>
   <string id="519">Bloquer XBMC jusqu'à ce que le navigateur Web est été fermé</string>

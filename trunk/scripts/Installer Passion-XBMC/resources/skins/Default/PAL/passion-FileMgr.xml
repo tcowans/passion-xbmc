@@ -130,7 +130,7 @@
 				<aligy>center</aligy>
 				<font>special12</font>
 				<animation effect="slide" start="0,0" end="0,-30" time="0" condition="Skin.String(PassionSkinColourPath,style_PMIII.HD)">conditional</animation>
-				<visible>!Control.IsVisible(100)</visible>
+				<visible>Skin.String(PassionSkinColourPath,style_PMIII.HD) | !Control.IsVisible(100)</visible>
 			</control>
 		</control>
 
@@ -183,8 +183,6 @@
 			<control type="group" id="9000">
 				<posx>20</posx>
 				<posy>117</posy>
-				<animation effect="slide" time="200" start="720,0" end="0,0" acceleration="-1">WindowOpen</animation>
-				<animation effect="slide" time="200" start="0,0" end="720,0" acceleration="1.1">WindowClose</animation>
 				<control type="image">
 					<posx>0</posx>
 					<posy>0</posy>
@@ -397,7 +395,7 @@
 						<selectedcolor>FFe2ff43</selectedcolor>
 						<textcolor>60000000</textcolor>
 						<align>right</align>
-						<label>$INFO[ListItem.Property(size),$LOCALIZE[SCRIPT181] ]</label>
+						<label>$INFO[ListItem.Property(size),$LOCALIZE[SCRIPT361] ,]</label>
 						<animation effect="slide" start="0,0" end="-26,0" time="0" condition="Control.IsVisible(2050)">conditional</animation>
 					</control>
 				</itemlayout>
@@ -463,7 +461,6 @@
 						<selectedcolor>FFe2ff43</selectedcolor>
 						<textcolor>FF000000</textcolor>
 						<align>left</align>
-						<!--<info>ListItem.Label</info>-->
 						<label>$INFO[ListItem.Label,[B],[/B]]</label>
 					</control>
 					<control type="label">
@@ -476,8 +473,7 @@
 						<selectedcolor>FFe2ff43</selectedcolor>
 						<textcolor>60000000</textcolor>
 						<align>right</align>
-						<!--<info>ListItem.Label2</info>-->
-						<label>$INFO[ListItem.Property(size),$LOCALIZE[SCRIPT181] ]</label>
+						<label>$INFO[ListItem.Property(size),$LOCALIZE[SCRIPT361] ,]</label>
 						<animation effect="slide" start="0,0" end="-26,0" time="0" condition="Control.IsVisible(2050)">conditional</animation>
 					</control>
 				</focusedlayout>
@@ -669,7 +665,7 @@
 					<font>font13</font>
 					<textcolor>FF000000</textcolor>
 					<scroll>true</scroll>
-					<label>$INFO[ListItem.Property(size),$LOCALIZE[SCRIPT181] ]</label>
+					<label>$INFO[ListItem.Property(size),$LOCALIZE[SCRIPT361] ,]</label>
 					<visible>Control.IsVisible(56)</visible>
 				</control>
 				<control type="label">
@@ -680,7 +676,7 @@
 					<font>font13</font>
 					<textcolor>FF000000</textcolor>
 					<scroll>true</scroll>
-					<label>SCRIPT180</label>
+					<label>SCRIPT360</label>
 					<visible>Control.IsVisible(56) + !IsEmpty(ListItem.Property(path))</visible>
 				</control>
 				<control type="label">
@@ -703,7 +699,7 @@
 					<textcolor>FF000000</textcolor>
 					<scroll>true</scroll>
 					<align>right</align>
-					<label>$INFO[ListItem.Property(created),$LOCALIZE[SCRIPT182] ]</label>
+					<label>$INFO[ListItem.Property(created),$LOCALIZE[SCRIPT362] ]</label>
 					<visible>Control.IsVisible(56)</visible>
 				</control>
 				<control type="label">
@@ -715,7 +711,7 @@
 					<textcolor>FF000000</textcolor>
 					<scroll>true</scroll>
 					<align>right</align>
-					<label>$INFO[ListItem.Property(last_modification),$LOCALIZE[SCRIPT183] ]</label>
+					<label>$INFO[ListItem.Property(last_modification),$LOCALIZE[SCRIPT363] ]</label>
 					<visible>Control.IsVisible(56)</visible>
 				</control>
 				<control type="label">
@@ -727,7 +723,7 @@
 					<textcolor>FF000000</textcolor>
 					<scroll>true</scroll>
 					<align>right</align>
-					<label>$INFO[ListItem.Property(last_access),$LOCALIZE[SCRIPT184] ]</label>
+					<label>$INFO[ListItem.Property(last_access),$LOCALIZE[SCRIPT364] ]</label>
 					<visible>Control.IsVisible(56)</visible>
 				</control>
 			</control>

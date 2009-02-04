@@ -302,6 +302,7 @@ class Settings:
             # SKINS
             "skin_colours_path": "default",
             "skin_colours": "",
+            "thumb_size": ( "512", "192" )[ ( SYSTEM_PLATFORM == "xbox" ) ],
             # SERVEUR FTP
             "host": "stock.passionxbmc.org",
             "user": "anonymous",

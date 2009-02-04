@@ -263,7 +263,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         """
         xbmcgui.WindowXML.__init__( self, *args, **kwargs )
 
-        self.mainwin           = kwargs[ "mainwin" ]
+        self.mainwin           = kwargs[ "mainwin" ] # depuis les nouvelles listes cette methode est pas trop bonne! a changer...
         self.configManager     = self.mainwin.configManager
         self.localdirList      = self.mainwin.localdirList      # Liste des repertoire locaux
 
@@ -325,9 +325,9 @@ class FileMgrWindow( xbmcgui.WindowXML ):
             elif controlID == self.CONTROL_INSTALLER_BUTTON:
                 self._close_dialog()
             elif controlID == self.CONTROL_FORUM_BUTTON:
-                self.mainwin._on_action_control( self.mainwin.CONTROL_FORUM_BUTTON )
+                self.mainwin._show_direct_infos()
             elif controlID == self.CONTROL_OPTIONS_BUTTON:
-                self.mainwin._on_action_control( self.mainwin.CONTROL_OPTIONS_BUTTON )
+                self.mainwin._show_settings()
                 #on prend pas de chance reload ces fonctions
                 self._get_settings()
                 self._set_skin_colours()
