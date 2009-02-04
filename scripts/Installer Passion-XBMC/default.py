@@ -7,7 +7,7 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/Installer%20Passion-XBMC/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center"
-__date__         = "02-02-2009"
+__date__         = "03-02-2009"
 __version__      = "pre-1.0.0"
 __svn_revision__ = 0
 
@@ -20,6 +20,13 @@ from ConfigParser import ConfigParser
 #modules XBMC
 import xbmc
 import xbmcgui
+
+# Shared resources
+BASE_RESOURCE_PATH = os.path.join( os.getcwd(), "resources" )
+#sys.path.append( os.path.join( BASE_RESOURCE_PATH, "libs" ) )
+# append the proper platforms folder to our path, xbox is the same as win32
+env = ( os.environ.get( "OS", "win32" ), "win32", )[ os.environ.get( "OS", "win32" ) == "xbox" ]
+sys.path.append( os.path.join( BASE_RESOURCE_PATH, "platform_libraries", env ) )
 
 #modules custom
 import resources.libs.script_log as logger

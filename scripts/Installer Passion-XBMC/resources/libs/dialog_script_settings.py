@@ -29,6 +29,7 @@ __version__ = "%s.%s" % ( sys.modules[ "__main__" ].__version__, __svn_revision_
 
 class ScriptSettings( xbmcgui.WindowXMLDialog ):
     TOPIC_LIMIT = _( 504 ).split( "|" ) #values[ "00", "5", "10", "25", "50", "100" ]
+    TSIZE_LIMIT = [ "192", "256", "384", "512", "1024" ]
 
     # control id's
     CONTROL_OK_BUTTON             = 80
@@ -44,6 +45,10 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
     CONTROL_INCREASE_COLOR_BUTTON = 210
     CONTROL_SKIN_COLOR_LABEL      = 220
     CONTROL_CUSTOM_BG_BUTTON      = 230
+    CONTROL_SHOW_FANART_BUTTON    = 250
+    CONTROL_DECREASE_TSIZE_BUTTON = 260
+    CONTROL_INCREASE_TSIZE_BUTTON = 270
+    CONTROL_THUMB_SIZE_LABEL      = 280
     CONTROL_DECREASE_RSS_BUTTON   = 100
     CONTROL_INCREASE_RSS_BUTTON   = 110
     CONTROL_RSS_FEEDS_LABEL       = 120
@@ -59,7 +64,11 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
         # __init__ normal de python
         # On recupere le "self" de le fenetre principal pour benificier de ces variables.
         self.mainwin = kwargs[ "mainwin" ]
+
+        # recupere la valeur sur le demarrage, utiliser pour rafraifir en temps reel, si l'etat est pas le meme 
+        self.passion_show_fanart = xbmc.getCondVisibility( "!Skin.HasSetting(PassionShowFanart)" )
         self.use_custom_background = xbmc.getCondVisibility( "!Skin.HasSetting(use_passion_custom_background)" )
+        self.custom_background = unicode( xbmc.getInfoLabel( 'Skin.String(passion_custom_background)' ), 'utf-8')
 
     def onInit( self ):
         # onInit est pour le windowXML seulement
@@ -83,11 +92,8 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
         self.settings = Settings().get_settings( defaults=defaults )
         if defaults:
             xbmc.executebuiltin( "Skin.Reset(use_passion_custom_background)" )
-            #solution temporaire questionne le user pour le background
-            #la bonne solution serai que le bouton reset est ete activer et confirmer avec ok apres.
-            custom_path = bool( xbmc.getInfoLabel( "Skin.String(passion_custom_background)" ) )
-            if custom_path and xbmcgui.Dialog().yesno( _( 500 ), _( 509 ) ):
-                xbmc.executebuiltin( "Skin.Reset(passion_custom_background)" )
+            xbmc.executebuiltin( "Skin.Reset(passion_custom_background)" )
+            xbmc.executebuiltin( "Skin.Reset(PassionShowFanart)" )
 
     def _set_skin_colours( self ):
         #xbmcgui.lock()
@@ -104,7 +110,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
         # setlabel pour les controles du dialog qui a comme info exemple: id="100" et pour avoir son controle on fait un getControl( 100 )
         try:
             self.getControl( self.CONTROL_VERSION_LABEL ).setLabel( _( 499 ) % ( __version__, ) )
-            
+
             # Tab 'a propos'
             self.getControl( 601 ).reset()
             list_item = xbmcgui.ListItem( sys.modules[ "__main__" ].__version_l1__, sys.modules[ "__main__" ].__version_r1__ )
@@ -127,11 +133,12 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
     def _set_controls_values( self ):
         xbmcgui.lock()
         try:
-            #
-            # boutons pour lflux rss
+            # boutons pour le flux rss
             self._set_control_rss_feeds()
             # boutons pour la couleur du theme
             self._set_control_colors()
+            #boutons pour la taille des vignettes
+            self._set_control_tbn_size()
             # boutons pour la limitation des topics
             self._set_control_limit_topics()
             # pour bouton activer desactiver la modification du fichier sources.xml, si la version d'xbmc est compatible atlantis
@@ -176,6 +183,20 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             self.getControl( self.CONTROL_LIMIT_TOPIC_LABEL ).setLabel( _( 502 ), label2=limit )
         except:
             self.getControl( self.CONTROL_LIMIT_TOPIC_LABEL ).setLabel( _( 502 ), label2=_( 503 ) )
+
+    def _set_control_tbn_size( self ):
+        try:
+            self.thumb_size = self.settings[ "thumb_size" ]
+            self.thumbs_size = deque( self.TSIZE_LIMIT )
+            if not self.thumbs_size[ 0 ] == self.thumb_size:
+                self.thumbs_size.rotate( -( int( self.TSIZE_LIMIT.index( self.thumb_size ) ) ) )
+            limit = self.thumbs_size[ 0 ]
+            self.getControl( self.CONTROL_THUMB_SIZE_LABEL ).setLabel( _( 517 ), label2=str( limit ) )
+        except:
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            #default_thumb_size = self.settings.get( "thumb_size" ) or ( "512", "192" )[ ( SYSTEM_PLATFORM == "xbox" ) ]
+            #self.getControl( self.CONTROL_THUMB_SIZE_LABEL ).setLabel( _( 517 ), label2=str( default_thumb_size ) )
+
 
     def _set_control_colors( self ):
         enable_control = False
@@ -243,6 +264,8 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
                 self.toggle_color_control( controlID )
             elif controlID in ( self.CONTROL_DECREASE_RSS_BUTTON, self.CONTROL_INCREASE_RSS_BUTTON ):
                 self.toggle_rss_control( controlID )
+            elif controlID in ( self.CONTROL_DECREASE_TSIZE_BUTTON, self.CONTROL_INCREASE_TSIZE_BUTTON ):
+                self.toggle_tbn_size_control( controlID )
             elif controlID == self.CONTROL_PARENT_DIR_BUTTON:
                 #bouton pour activer desactiver le repertoire parent dans les listes
                 self._set_bool_setting( "pardir_not_hidden" )
@@ -267,6 +290,10 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             elif controlID == self.CONTROL_RESET_BUTTON:
                 #bouton reset settings, ont recup les settings par default
                 self._get_defaults()
+            elif controlID == self.CONTROL_SHOW_FANART_BUTTON:
+                #bouton fanart background a ete activer depuis le xml
+                #balise utiliser: <onclick>Skin.ToggleSetting(PassionShowFanart)</onclick>
+                self.getControl( self.CONTROL_OK_BUTTON ).setEnabled( True )
             elif controlID == self.CONTROL_CUSTOM_BG_BUTTON:
                 #bouton custom background a ete activer depuis le xml
                 #balise utiliser: <onclick>Skin.ToggleSetting(use_passion_custom_background)</onclick>
@@ -344,6 +371,25 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
+    def toggle_tbn_size_control( self, controlID ):
+        try:
+            try:
+                if controlID == self.CONTROL_DECREASE_TSIZE_BUTTON: self.thumbs_size.rotate( 1 )
+                elif controlID == self.CONTROL_INCREASE_TSIZE_BUTTON: self.thumbs_size.rotate( -1 )
+            except: pass
+            toggle_preset = False
+            limit = self.thumbs_size[ 0 ]
+            try:
+                self.getControl( self.CONTROL_THUMB_SIZE_LABEL ).setLabel( _( 517 ), label2=str( limit ) )
+                toggle_preset = True
+            except: pass
+            if toggle_preset:
+                self.thumb_size = limit
+                self.settings[ "thumb_size" ] = self.thumb_size
+                self.getControl( self.CONTROL_OK_BUTTON ).setEnabled( True )
+        except:
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+
     def toggle_color_control( self, controlID ):
         try:
             try:
@@ -389,8 +435,13 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
 
     def _close_dialog( self, OK=False ):
         # verifie si l'option default a ete utilise, si oui remets l'etat du custom backgroung
-        if not OK and ( self.use_custom_background != xbmc.getCondVisibility( "!Skin.HasSetting(use_passion_custom_background)" ) ):
-            xbmc.executebuiltin( "Skin.ToggleSetting(use_passion_custom_background)" )
+        if not OK:
+            if ( self.passion_show_fanart != xbmc.getCondVisibility( "!Skin.HasSetting(PassionShowFanart)" ) ):
+                xbmc.executebuiltin( "Skin.ToggleSetting(PassionShowFanart)" )
+            if ( self.use_custom_background != xbmc.getCondVisibility( "!Skin.HasSetting(use_passion_custom_background)" ) ):
+                xbmc.executebuiltin( "Skin.ToggleSetting(use_passion_custom_background)" )
+            if ( self.custom_background != unicode( xbmc.getInfoLabel( 'Skin.String(passion_custom_background)' ), 'utf-8') ):
+                xbmc.executebuiltin( "Skin.SetString(passion_custom_background,%s)" % ( self.custom_background, ) )
         xbmc.sleep( 100 )
         self.close()
 

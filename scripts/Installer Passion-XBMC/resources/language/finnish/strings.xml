@@ -112,11 +112,7 @@
   <string id="177">Siirretään...</string>
   <string id="178">Sijainnista:&#32;</string>
   <string id="179">Kohteeseen:&#32;</string>
-  <string id="180">Polku:</string>
-  <string id="181">Koko:</string>
-  <string id="182">Luotu:</string>
-  <string id="183">Viimeksi muokattu:</string>
-  <string id="184">Viimeksi käytetty:</string>
+
   <string id="185">Laske koko</string>
   <string id="186">Lasketaan kansion kokoa</string>
 
@@ -175,6 +171,11 @@
   <string id="357"></string>
   <string id="358"></string>
   <string id="359">Karuselli</string>
+  <string id="360">Polku:</string>
+  <string id="361">Koko:</string>
+  <string id="362">Luotu:</string>
+  <string id="363">Viimeksi muokattu:</string>
+  <string id="364">Viimeksi käytetty:</string>
 
   <!--SETTINGS STRINGS -->
   <string id="499">Versio: %s</string>

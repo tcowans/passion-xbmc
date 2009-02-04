@@ -474,7 +474,7 @@
 				<texturefocus>passion-scroll-down-focus.png</texturefocus>
 				<onleft>9000</onleft>
 				<onright>210</onright>
-				<ondown>230</ondown>
+				<ondown>9022</ondown>
 				<onup>1000</onup>
 			</control>
 			<control type="button" id="210">
@@ -487,7 +487,7 @@
 				<texturefocus>passion-scroll-up-focus.png</texturefocus>
 				<onleft>200</onleft>
 				<onright>9000</onright>
-				<ondown>230</ondown>
+				<ondown>9022</ondown>
 				<onup>1000</onup>
 			</control>
 			<control type="button" id="220">
@@ -508,14 +508,85 @@
 				<texturenofocus>-</texturenofocus>
 				<onleft>210</onleft>
 				<onright>200</onright>
-				<ondown>230</ondown>
+				<ondown>9022</ondown>
 				<onup>1000</onup>
+			</control>
+			<control type="image" id="249">
+				<description>separator image</description>
+				<posx>-5</posx>
+				<posy>34</posy>
+				<width>580</width>
+				<height>5</height>
+				<texture>passion-separator.png</texture>
+				<visible></visible>
+			</control>
+		</control>
+		<control type="group" id="9022">
+			<description>theme button 2</description>
+			<posx>75</posx>
+			<posy>193</posy>
+			<visible>Skin.String(PassionSettings,2)</visible>
+			<control type="image" id="1">
+				<description>colour background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>580</width>
+				<height>34</height>
+				<texture>passion-input-focus.png</texture>
+				<visible>ControlGroup(9022).HasFocus()</visible>
+			</control>
+			<control type="button" id="260">
+				<description>Decrease thumb size button</description>
+				<posx>535</posx>
+				<posy>9</posy>
+				<width>18</width>
+				<height>16</height>
+				<texturenofocus>passion-scroll-down.png</texturenofocus>
+				<texturefocus>passion-scroll-down-focus.png</texturefocus>
+				<onleft>9000</onleft>
+				<onright>270</onright>
+				<ondown>250</ondown>
+				<onup>9002</onup>
+			</control>
+			<control type="button" id="270">
+				<description>Increase thumb size button</description>
+				<posx>553</posx>
+				<posy>9</posy>
+				<width>18</width>
+				<height>16</height>
+				<texturenofocus>passion-scroll-up.png</texturenofocus>
+				<texturefocus>passion-scroll-up-focus.png</texturefocus>
+				<onleft>260</onleft>
+				<onright>9000</onright>
+				<ondown>250</ondown>
+				<onup>9002</onup>
+			</control>
+			<control type="button" id="280">
+				<description>thumb size label</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>535</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT517</label>
+				<label2></label2>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<aligny>center</aligny>
+				<texturefocus>-</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<onleft>270</onleft>
+				<onright>260</onright>
+				<ondown>250</ondown>
+				<onup>9002</onup>
 			</control>
 		</control>
 		<control type="grouplist" id="9020">
 			<visible>Skin.String(PassionSettings,2)</visible>
 			<posx>75</posx>
-			<posy>188</posy>
+			<posy>227</posy>
 			<width>580</width>
 			<height>238</height>
 			<itemgap>0</itemgap>
@@ -523,8 +594,28 @@
 			<orientation>vertical</orientation>
 			<onleft>9000</onleft>
 			<onright>9000</onright>
-			<onup>9002</onup>
+			<onup>9022</onup>
 			<ondown>9000</ondown>
+			<control type="radiobutton" id="250">
+				<description>theme button 5</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>580</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT516</label>
+				<onclick>Skin.ToggleSetting(PassionShowFanart)</onclick>
+				<selected>Skin.HasSetting(PassionShowFanart)</selected>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<aligny>center</aligny>
+				<texturefocus>passion-input-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<textureradiofocus>passion-settings-check-box.png</textureradiofocus>
+				<textureradionofocus>passion-settings-check-boxNF.png</textureradionofocus>
+			</control>
 			<control type="image" id="229">
 				<description>separator image</description>
 				<posx>-5</posx>
@@ -535,7 +626,7 @@
 				<visible>Control.IsVisible(230) | Control.IsVisible(240)</visible>
 			</control>
 			<control type="radiobutton" id="230">
-				<description>theme button 1</description>
+				<description>theme button 3</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>580</width>
@@ -555,7 +646,7 @@
 				<textureradionofocus>passion-settings-check-boxNF.png</textureradionofocus>
 			</control>
 			<control type="button" id="240">
-				<description>theme button 2</description>
+				<description>theme button 4</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>580</width>

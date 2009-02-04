@@ -282,7 +282,7 @@ class DirectInfos( xbmcgui.WindowXML ):
         #( ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, ACTION_CONTEXT_MENU, )
         if action in ( 9, 10, 117, ): self._close_dialog()
         # show settings dialog
-        #if action == 117: self.mainwin._on_action_control( action )
+        #if action == 117: self.mainwin._show_settings()
         # show slideshow
         if action == 11:
             try:
