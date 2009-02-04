@@ -1,0 +1,101 @@
+AUTO ; kulkuneuvo
+JUNA ; kulkuneuvo
+POIKA ; ihminen
+TYTTÖ ; ihminen
+LENTOKONE ; kulkuneuvo
+RAUTATIE ; yhteysväylä
+LELU ; viihdyke
+KOTI ; majapaikka
+KEITTIÖ ; asuintila
+SAUNA ; lämminpaikka
+KYLPYAMME ; lämminpaikka
+TIETOKONE ; työväline
+PAPERI ; rapisee
+KISSA ; eläinkunnasta
+KOIRA ; eläinkunnasta
+HEVONEN ; eläinkunnasta
+LAMMAS ; eläinkunnasta
+KAURIS ; eläinkunnasta
+KARHU ; eläinkunnasta
+JÄNIS ; eläinkunnasta
+RÖLLI ; satuhahmo
+PEIKKO ; satuhahmo
+TONTTU ; satuhahmo
+JOULUPUKKI ; satuhahmo
+LEHMÄ ; eläinkunnasta
+PORO ; eläinkunnasta
+KAHVIKUPPI ; ruokapöydässä
+MAITO ; ruokapöydässä
+PULLO ;säilytykseen
+KEPPI ; apuväline
+KERMA ; rasvaisempi
+KANSAKOULU ; tiedonlähde
+KOULU ; tiedonlähde
+LEIKKIKOULU ; tiedonlähde
+PUUTARHA ; viihdytyspaikka
+AUTOTALLI ; apurakennus
+ZORRO ; satuhahmo
+KIRJOITUSKONE ; työväline
+OLOHUONE ; aputila
+NURMIKKO ; pehmeämatto
+RUOHONLEIKKURI ; työväline
+JÄÄHALLI ; iso rakennus
+LUISTINRATA ; liukaspaikka
+MAILA ; käden jatke
+LUU ; ruumiinosa
+KITALAKI ; ruumiinosa
+SILMÄLASIT ; apuväline
+LAMPPU ; kirkas
+AURINKO ; ulkona
+KUU ; ulkona
+TAIVAS ; ulkona
+PILVI ; ulkona
+KYNÄ ; muistiinpanoon
+PENAALI ; säilytyspaikka
+BENSIINIASEMA
+BENSIINITANKKI
+NUKKE ; viihdyke
+NALLEKARHU ; viihdyke
+HELIKOPTERI ; lentää
+LUMIAURA ; työkone
+TRAKTORI ; työkone
+KIRJA ; viihdyke
+KIRJASTO ; lukupaikka
+LEIKKIKENTTÄ ; lastenalue
+KEINU ; heiluu
+VARPUNEN ; lentää
+LENNOKKI ; lentää
+LEPAKKO ;lentää
+MUUTTOHAUKKA ;lentää
+KOTKA ;lentää
+VARIS ;lentää
+KUORMURI ; kuljettaa
+VETURI ; kuljettaa
+MAANTIE ; kulkupaikka
+NEITI ; ei ole vaimo
+NETTA ; nimi
+SANA ; puheessa
+ARVOITUS ; kysymys
+NIITTYLEINIKKI ; kasvimaailmasta
+VOIKUKKA ; kasvimaailmasta
+KUUSI ; kasvimaailmasta
+MÄNTY ; kasvimaailmasta
+HOPEA ; mineraali
+KULTAINEN ; kiiltävä
+LAUTANEN ; ruokapöydässä
+LUSIKKA ; ruokapöydässä
+HAARUKKA ; ruokapöydässä
+VEITSI ; ruokapöydässä
+KATTILA ; keittiössä
+PAISTINPANNU ; keittiössä
+PIHVILIHA ; paistia
+PIHVIKARJA ; saadaan ruokaa
+SUUNNIKAS ; matemaattinen muoto
+KOLMIO ; matemaattinen muoto
+LAATIKKO ; yksinkertainen astia
+HUONEISTO ; residenssi
+SOUTUVENE ; vesillä
+LIIDOKKI ; lentää
+KATAJA ; kasvimaailmasta
+LEIKKIMÖKKI ; pienimaja
+SANOMALEHTI ; voi katsoa
