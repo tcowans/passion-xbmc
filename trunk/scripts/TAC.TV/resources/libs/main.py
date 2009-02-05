@@ -676,6 +676,8 @@ class SelectCollectionWebpage:
             self.language = "fr-ca"
         elif language == "english":
             self.language = "en"
+        elif language == "finnish":
+            self.language = "en"
         else:
             print "setCollectionLanguage : Unsupported language : %s - defined french as default language"%language
             self.language = "fr-ca"
@@ -706,6 +708,8 @@ class SelectCollectionWebpage:
         self.subcollecIdx = listIdx
         if language == "french":
             self.language = "fr-ca"
+        elif language == "finnish":
+            self.language = "en"
         elif language == "english":
             self.language = "en"
         else:
@@ -773,6 +777,8 @@ class SelectCollectionWebpage:
             if language == "french":
                 self.language = "fr-ca"
             elif language == "english":
+                self.language = "en"
+            elif language == "finnish":
                 self.language = "en"
             else:
                 print "updateCollectionData : Unsupported language : %s - defined french as default language"%language
@@ -925,11 +931,11 @@ class FirstStartWindow( xbmcgui.Window ):
             self.language = 'french'
             xbmc.sleep( 100 )
             self.close()
-            
+
     def onAction(self, action):
         if action == ACTION_PREVIOUS_MENU:
             dialogError = xbmcgui.Dialog()
-            #dialogError.ok("Error", "You need to select a language the fisrt time", "in order to use this script", "You will be able to change it later on if necessary")
+            #dialogError.ok("Error", "You need to select a language the first time", "in order to use this script", "You will be able to change it later on if necessary")
             dialogError.ok( self.__loc_language__( 32111 ), self.__loc_language__( 32116 ), self.__loc_language__( 32117 ), self.__loc_language__( 32118 ) )
 
             #close the window
@@ -953,6 +959,9 @@ class TacMainWindow( xbmcgui.WindowXML ):
         if ( self.configManager.getDefaultLanguage() == 'french' ):
             lang.setLanguage( "french" )
             print "french"
+        elif ( self.configManager.getDefaultLanguage() == 'finnish' ):
+            lang.setLanguage( "finnish" )
+            print "finnish"
         else:
             lang.setLanguage( "english" )
             print "english"
@@ -1475,8 +1484,8 @@ class TacMainWindow( xbmcgui.WindowXML ):
 
     def _set_language_setting_label( self, update="startup" ):
         defaultLanguageTitleLabel = __language__( 32504 ) # Langue: 
-        languageMenuList          = [__language__( 32505 ), __language__( 32506 ), __language__( 32515 )] # "French","English"
-        languageList              = ["french","english","none"] # Languages - strings used in conf file
+        languageMenuList          = [__language__( 32506 ), __language__( 32517), __language__( 32505 ), __language__( 32515 )] # "English","Finnish","French","none"
+        languageList              = ["english","finnish","french","none"] # Languages - strings used in conf file
         
         if update == "default":
             self.defaultLanguageDisplay = "none"
@@ -1515,9 +1524,9 @@ class TacMainWindow( xbmcgui.WindowXML ):
         self.getControl( 233 ).setLabel( defaultLanguageTitleLabel, label2=defaultLanguageContentLabel )
 
     def _set_current_language_setting_label( self, update="startup" ):
-        currentLanguageTitleLabel   = __language__( 32516 ) # Langue: 
-        languageMenuList            = [__language__( 32505 ), __language__( 32506 )] # "French","English"
-        languageList                = ["french","english"] # Languages - strings used in conf file
+        currentLanguageTitleLabel   = __language__( 32516 ) # Languae: 
+        languageMenuList            = [__language__( 32506 ), __language__( 32517 ), __language__( 32505 )] # "English", "Finnish", "French"
+        languageList                = ["english","finnish","french"] # Languages - strings used in conf file
         currentLanguageUpdated      = False
         
         if update == "startup":
@@ -1561,6 +1570,10 @@ class TacMainWindow( xbmcgui.WindowXML ):
             # Go to English
             self.CollectionSelector.setCollectionLanguage( 'english' )
             lang.setLanguage( "english" )
+        elif language == 'finnish':
+            # Go to English
+            self.CollectionSelector.setCollectionLanguage( 'english' )
+            lang.setLanguage( "finnish" )
         else:
             # Go to French
             self.CollectionSelector.setCollectionLanguage( 'french' )
