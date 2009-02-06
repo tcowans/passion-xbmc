@@ -199,7 +199,7 @@
 					<width>110</width>
 					<height>25</height>
 					<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
-					<visible>!Control.HasFocus(2) + Control.IsVisible(2)</visible>
+					<visible>Control.IsVisible(2)</visible>
 				</control>
 				<control type="button" id="2">
 					<description>View As Icons button</description>
