@@ -64,7 +64,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
             #logger.LOG( logger.LOG_DEBUG, self.itemType )
             
             self.getControl( 200 ).setVisible( 0 ) # auto busy
-            self.fileName, self.title, self.version, self.language, self.date, self.previewPicture, self.previewVideoURL, self.description_fr, self.description_en, thumbnail = self.infoWareHouse.getInfo( itemName=self.itemName, itemType=self.itemType, updateImage_cb=self._updateThumb_cb )
+            self.fileName, self.title, self.version, self.language, self.date, self.added, self.previewPicture, self.previewVideoURL, self.description_fr, self.description_en, thumbnail, author = self.infoWareHouse.getInfo( itemName=self.itemName, itemType=self.itemType, updateImage_cb=self._updateThumb_cb )
             #logger.LOG( logger.LOG_DEBUG, self.fileName)
             #logger.LOG( logger.LOG_DEBUG, self.title)
             #logger.LOG( logger.LOG_DEBUG, self.version)
