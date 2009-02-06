@@ -329,167 +329,8 @@
 				</control>
 			</control>
 
-			<!-- BASE LIST -->
 			<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
 			<!-- ** Required ** Do not change id's or type's -->
-			<control type="list" id="50">
-				<description>base list</description>
-				<posx>27</posx>
-				<posy>197</posy>
-				<width>666</width>
-				<height>368</height>
-				<viewtype label="535">list</viewtype>
-				<orientation>vertical</orientation>
-				<pagecontrol>2050</pagecontrol>
-				<scrolltime>200</scrolltime>
-				<onleft>2050</onleft>
-				<onright>2050</onright>
-				<onup>9000</onup>
-				<ondown>9000</ondown>
-				<itemlayout width="250" height="46">
-					<control type="image">
-						<width>640</width>
-						<height>42</height>
-						<posx>0</posx>
-						<posy>0</posy>
-						<texture>passion-list-nofocus.png</texture>
-						<colordiffuse>50ffffff</colordiffuse>
-						<visible>Control.IsVisible(2050)</visible>
-					</control>
-					<control type="image">
-						<width>666</width>
-						<height>42</height>
-						<posx>0</posx>
-						<posy>0</posy>
-						<texture>passion-list-nofocus.png</texture>
-						<colordiffuse>50ffffff</colordiffuse>
-						<visible>!Control.IsVisible(2050)</visible>
-					</control>
-					<control type="image">
-						<posx>3</posx>
-						<posy>3</posy>
-						<width>36</width>
-						<height>36</height>
-						<info>ListItem.ActualIcon</info>
-						<visible>IsEmpty(ListItem.Property(Downloaded))</visible>
-					</control>
-					<control type="image">
-						<posx>3</posx>
-						<posy>3</posy>
-						<width>36</width>
-						<height>36</height>
-						<info>ListItem.ActualIcon</info>
-						<visible>!IsEmpty(ListItem.Property(Downloaded))</visible>
-						<colordiffuse>60ffffff</colordiffuse>
-					</control>
-					<control type="label">
-						<posx>42</posx>
-						<posy>0</posy>
-						<width>400</width>
-						<height>42</height>
-						<font>font13</font>
-						<aligny>center</aligny>
-						<selectedcolor>FFe2ff43</selectedcolor>
-						<textcolor>FF000000</textcolor>
-						<align>left</align>
-						<info>ListItem.Label</info>
-					</control>
-					<control type="label">
-						<posx>661</posx>
-						<posy>0</posy>
-						<width>320</width>
-						<height>42</height>
-						<font>font13</font>
-						<aligny>center</aligny>
-						<selectedcolor>FFe2ff43</selectedcolor>
-						<textcolor>60000000</textcolor>
-						<align>right</align>
-						<!--<info>ListItem.Label2</info>-->
-						<label>$INFO[ListItem.Property(date),$LOCALIZE[SCRIPT613]]</label>
-						<animation effect="slide" start="0,0" end="-26,0" time="0" condition="Control.IsVisible(2050)">conditional</animation>
-					</control>
-				</itemlayout>
-				<focusedlayout height="46" width="250">
-					<control type="image">
-						<width>640</width>
-						<height>42</height>
-						<posx>0</posx>
-						<posy>0</posy>
-						<texture>passion-list-nofocus.png</texture>
-						<colordiffuse>50ffffff</colordiffuse>
-						<visible>!Control.HasFocus(50) + Control.IsVisible(2050)</visible>
-					</control>
-					<control type="image">
-						<width>666</width>
-						<height>42</height>
-						<posx>0</posx>
-						<posy>0</posy>
-						<texture>passion-list-nofocus.png</texture>
-						<colordiffuse>50ffffff</colordiffuse>
-						<visible>!Control.HasFocus(50) + !Control.IsVisible(2050)</visible>
-					</control>
-					<control type="image">
-						<width>640</width>
-						<height>42</height>
-						<posx>0</posx>
-						<posy>0</posy>
-						<texture>passion-list-focus.png</texture>
-						<visible>Control.HasFocus(50) + Control.IsVisible(2050)</visible>
-					</control>
-					<control type="image">
-						<width>666</width>
-						<height>42</height>
-						<posx>0</posx>
-						<posy>0</posy>
-						<texture>passion-list-focus.png</texture>
-						<visible>Control.HasFocus(50) + !Control.IsVisible(2050)</visible>
-					</control>
-					<control type="image">
-						<posx>3</posx>
-						<posy>3</posy>
-						<width>36</width>
-						<height>36</height>
-						<info>ListItem.ActualIcon</info>
-						<visible>IsEmpty(ListItem.Property(Downloaded))</visible>
-					</control>
-					<control type="image">
-						<posx>3</posx>
-						<posy>3</posy>
-						<width>36</width>
-						<height>36</height>
-						<info>ListItem.ActualIcon</info>
-						<visible>!IsEmpty(ListItem.Property(Downloaded))</visible>
-						<colordiffuse>60ffffff</colordiffuse>
-					</control>
-					<control type="label">
-						<posx>42</posx>
-						<posy>0</posy>
-						<width>400</width>
-						<height>42</height>
-						<font>special13</font>
-						<aligny>center</aligny>
-						<selectedcolor>FFe2ff43</selectedcolor>
-						<textcolor>FF000000</textcolor>
-						<align>left</align>
-						<!--<info>ListItem.Label</info>-->
-						<label>$INFO[ListItem.Label,[B],[/B]]</label>
-					</control>
-					<control type="label">
-						<posx>661</posx>
-						<posy>0</posy>
-						<width>320</width>
-						<height>42</height>
-						<font>font13</font>
-						<aligny>center</aligny>
-						<selectedcolor>FFe2ff43</selectedcolor>
-						<textcolor>60000000</textcolor>
-						<align>right</align>
-						<!--<info>ListItem.Label2</info>-->
-						<label>$INFO[ListItem.Property(date),[B]$LOCALIZE[SCRIPT613],[/B]]</label>
-						<animation effect="slide" start="0,0" end="-26,0" time="0" condition="Control.IsVisible(2050)">conditional</animation>
-					</control>
-				</focusedlayout>
-			</control>
 
 			<!-- MEDIA INFOS LIST -->
 			<control type="group">
@@ -500,10 +341,10 @@
 					<width>480</width>
 					<height>145</height>
 					<viewtype label="SCRIPT351">list</viewtype>
-					<onleft>194</onleft>
+					<onleft>9000</onleft>
 					<onright>193</onright>
-					<onup>150</onup>
-					<ondown>150</ondown>
+					<onup>51</onup>
+					<ondown>51</ondown>
 					<orientation>vertical</orientation>
 					<pagecontrol>193</pagecontrol>
 					<scrolltime>200</scrolltime>
@@ -794,6 +635,166 @@
 				</control>
 			</control>
 
+			<!-- BASE LIST -->
+			<control type="list" id="50">
+				<description>base list</description>
+				<posx>27</posx>
+				<posy>197</posy>
+				<width>666</width>
+				<height>368</height>
+				<viewtype label="535">list</viewtype>
+				<orientation>vertical</orientation>
+				<pagecontrol>2050</pagecontrol>
+				<scrolltime>200</scrolltime>
+				<onleft>9000</onleft>
+				<onright>2050</onright>
+				<onup>50</onup>
+				<ondown>50</ondown>
+				<itemlayout width="250" height="46">
+					<control type="image">
+						<width>640</width>
+						<height>42</height>
+						<posx>0</posx>
+						<posy>0</posy>
+						<texture>passion-list-nofocus.png</texture>
+						<colordiffuse>50ffffff</colordiffuse>
+						<visible>Control.IsVisible(2050)</visible>
+					</control>
+					<control type="image">
+						<width>666</width>
+						<height>42</height>
+						<posx>0</posx>
+						<posy>0</posy>
+						<texture>passion-list-nofocus.png</texture>
+						<colordiffuse>50ffffff</colordiffuse>
+						<visible>!Control.IsVisible(2050)</visible>
+					</control>
+					<control type="image">
+						<posx>3</posx>
+						<posy>3</posy>
+						<width>36</width>
+						<height>36</height>
+						<info>ListItem.ActualIcon</info>
+						<visible>IsEmpty(ListItem.Property(Downloaded))</visible>
+					</control>
+					<control type="image">
+						<posx>3</posx>
+						<posy>3</posy>
+						<width>36</width>
+						<height>36</height>
+						<info>ListItem.ActualIcon</info>
+						<visible>!IsEmpty(ListItem.Property(Downloaded))</visible>
+						<colordiffuse>60ffffff</colordiffuse>
+					</control>
+					<control type="label">
+						<posx>42</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>42</height>
+						<font>font13</font>
+						<aligny>center</aligny>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<textcolor>FF000000</textcolor>
+						<align>left</align>
+						<info>ListItem.Label</info>
+					</control>
+					<control type="label">
+						<posx>661</posx>
+						<posy>0</posy>
+						<width>320</width>
+						<height>42</height>
+						<font>font13</font>
+						<aligny>center</aligny>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<textcolor>60000000</textcolor>
+						<align>right</align>
+						<!--<info>ListItem.Label2</info>-->
+						<label>$INFO[ListItem.Property(date),$LOCALIZE[SCRIPT613]]</label>
+						<animation effect="slide" start="0,0" end="-26,0" time="0" condition="Control.IsVisible(2050)">conditional</animation>
+					</control>
+				</itemlayout>
+				<focusedlayout height="46" width="250">
+					<control type="image">
+						<width>640</width>
+						<height>42</height>
+						<posx>0</posx>
+						<posy>0</posy>
+						<texture>passion-list-nofocus.png</texture>
+						<colordiffuse>50ffffff</colordiffuse>
+						<visible>!Control.HasFocus(50) + Control.IsVisible(2050)</visible>
+					</control>
+					<control type="image">
+						<width>666</width>
+						<height>42</height>
+						<posx>0</posx>
+						<posy>0</posy>
+						<texture>passion-list-nofocus.png</texture>
+						<colordiffuse>50ffffff</colordiffuse>
+						<visible>!Control.HasFocus(50) + !Control.IsVisible(2050)</visible>
+					</control>
+					<control type="image">
+						<width>640</width>
+						<height>42</height>
+						<posx>0</posx>
+						<posy>0</posy>
+						<texture>passion-list-focus.png</texture>
+						<visible>Control.HasFocus(50) + Control.IsVisible(2050)</visible>
+					</control>
+					<control type="image">
+						<width>666</width>
+						<height>42</height>
+						<posx>0</posx>
+						<posy>0</posy>
+						<texture>passion-list-focus.png</texture>
+						<visible>Control.HasFocus(50) + !Control.IsVisible(2050)</visible>
+					</control>
+					<control type="image">
+						<posx>3</posx>
+						<posy>3</posy>
+						<width>36</width>
+						<height>36</height>
+						<info>ListItem.ActualIcon</info>
+						<visible>IsEmpty(ListItem.Property(Downloaded))</visible>
+					</control>
+					<control type="image">
+						<posx>3</posx>
+						<posy>3</posy>
+						<width>36</width>
+						<height>36</height>
+						<info>ListItem.ActualIcon</info>
+						<visible>!IsEmpty(ListItem.Property(Downloaded))</visible>
+						<colordiffuse>60ffffff</colordiffuse>
+					</control>
+					<control type="label">
+						<posx>42</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>42</height>
+						<font>special13</font>
+						<aligny>center</aligny>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<textcolor>FF000000</textcolor>
+						<align>left</align>
+						<!--<info>ListItem.Label</info>-->
+						<label>$INFO[ListItem.Label,[B],[/B]]</label>
+					</control>
+					<control type="label">
+						<posx>661</posx>
+						<posy>0</posy>
+						<width>320</width>
+						<height>42</height>
+						<font>font13</font>
+						<aligny>center</aligny>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<textcolor>60000000</textcolor>
+						<align>right</align>
+						<!--<info>ListItem.Label2</info>-->
+						<label>$INFO[ListItem.Property(date),[B]$LOCALIZE[SCRIPT613],[/B]]</label>
+						<animation effect="slide" start="0,0" end="-26,0" time="0" condition="Control.IsVisible(2050)">conditional</animation>
+					</control>
+				</focusedlayout>
+			</control>
+
 			<!-- PANEL LIST -->
 			<control type="panel" id="52">
 				<description>icons panel</description>
@@ -803,8 +804,8 @@
 				<height>368</height>
 				<onleft>9000</onleft>
 				<onright>2050</onright>
-				<onup>9000</onup>
-				<ondown>9000</ondown>
+				<onup>52</onup>
+				<ondown>52</ondown>
 				<scrolltime>200</scrolltime>
 				<viewtype label="SCRIPT352">icon</viewtype>
 				<pagecontrol>2050</pagecontrol>
