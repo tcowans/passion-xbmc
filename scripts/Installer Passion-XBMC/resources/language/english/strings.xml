@@ -228,7 +228,7 @@
   <string id="706">Advices and support</string>  
   <string id="707">Date</string>  
   <string id="708">SVN</string>  
-  <string id="710">Ce script permet d'installer directement depuis XBMC lds thèmes, scripts, plugins et scrapers disponibles sur le serveur FTP de Passion-XBMC (passion-xbmc.org) maintenu par la Team Passion-XBMC.</string>
+  <string id="710">This script allows direct install of skins, scripts, plugins and scrapers available on Passion-XBMC (passion-xbmc.org) FTP server maintained by our team.</string>
 
   <!--CONTEXT MENU STRINGS -->
   <string id="1000">Install</string>
