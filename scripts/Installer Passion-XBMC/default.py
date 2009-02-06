@@ -7,7 +7,7 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/Installer%20Passion-XBMC/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center"
-__date__         = "03-02-2009"
+__date__         = "06-02-2009"
 __version__      = "pre-1.0.0"
 __svn_revision__ = 0
 
@@ -55,8 +55,10 @@ __credits_l1__ = __language__( 702 )#"Developpeurs"
 __credits_r1__ = "Frost & Seb & Temhil"
 __credits_l2__ = __language__( 703 )#"Conception Graphique"
 __credits_r2__ = "Frost & Jahnrik & Temhil"
-__credits_l3__ = __language__( 706 )#"Conseils et soutien"
-__credits_r3__ = "Alexsolex & Shaitan"
+__credits_l3__ = __language__( 709 )#"Langues"
+__credits_r3__ = "Frost & Kottis & Temhil"
+__credits_l4__ = __language__( 706 )#"Conseils et soutien"
+__credits_r4__ = "Alexsolex & Shaitan"
 
 
 def MAIN():

@@ -127,6 +127,8 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             self.getControl( 602 ).addItem( list_item )
             list_item = xbmcgui.ListItem( sys.modules[ "__main__" ].__credits_l3__, sys.modules[ "__main__" ].__credits_r3__ )
             self.getControl( 602 ).addItem( list_item )
+            list_item = xbmcgui.ListItem( sys.modules[ "__main__" ].__credits_l4__, sys.modules[ "__main__" ].__credits_r4__ )
+            self.getControl( 602 ).addItem( list_item )
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
