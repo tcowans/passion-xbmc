@@ -190,6 +190,9 @@ class InfoWarehouseBSoupXMLFTP( InfoWarehouse ):
                                 if hasattr(item.date,'string'):
                                     if item.date.string != None:
                                         date = item.date.string.encode("cp1252")
+                                if hasattr(item.added,'string'):
+                                    if item.added.string != None:
+                                        added = item.added.string.encode("cp1252")
                                 if hasattr(item.previewpictureurl,'string'):
                                     if item.previewpictureurl.string != None:
                                         previewPictureURL = item.previewpictureurl.string.encode("utf-8")
@@ -217,6 +220,9 @@ class InfoWarehouseBSoupXMLFTP( InfoWarehouse ):
                                 if hasattr(item.description_en,'string'):
                                     if item.description_en.string != None:
                                         description_en = item.description_en.string.encode("cp1252")
+                                if hasattr(item.author,'string'):
+                                    if item.author.string != None:
+                                        author = item.author.string.encode("cp1252")
                                 # We exit the loop since we found the file we were looking for
                                 break
                
@@ -225,6 +231,7 @@ class InfoWarehouseBSoupXMLFTP( InfoWarehouse ):
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         
         return fileName, title, version, language, date , previewPicture, previewVideoURL, description_fr, description_en, thumbnail
+        return fileName, title, version, language, date, added, previewPicture, previewVideoURL, description_fr, description_en, thumbnail, author
 
     def _get_settings( self, defaults=False  ):
         """ reads settings from conf file """
@@ -393,6 +400,9 @@ class InfoWarehouseEltTreeXMLFTP( InfoWarehouse ):
                             date_raw = item.findtext('date')
                             if ( date_raw not in ('', None) ):
                                 date = date_raw
+                            added_raw = item.findtext('added')
+                            if ( added_raw not in ('', None) ):
+                                added = added_raw
                             previewPictureURL_raw = item.findtext('previewPictureURL')
                             if ( previewPictureURL_raw not in ('', None) ):
                                 previewPictureURL = previewPictureURL_raw
@@ -418,6 +428,10 @@ class InfoWarehouseEltTreeXMLFTP( InfoWarehouse ):
                             if ( description_en_raw != '' ):
                                 description_en = description_en_raw
                                 
+                            author_raw = item.findtext('author')
+                            if ( author_raw not in ('', None) ):
+                                author = author_raw
+                                
                             # We exit the loop since we found the file we were looking for
                             #item.clear()
                             break
@@ -428,7 +442,7 @@ class InfoWarehouseEltTreeXMLFTP( InfoWarehouse ):
             #import traceback; traceback.print_exc()
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         
-        return fileName, title, version, language, date , previewPicture, previewVideoURL, description_fr, description_en, thumbnail
+        return fileName, title, version, language, date, added, previewPicture, previewVideoURL, description_fr, description_en, thumbnail, author
 
     def _get_settings( self, defaults=False  ):
         """ reads settings from conf file """

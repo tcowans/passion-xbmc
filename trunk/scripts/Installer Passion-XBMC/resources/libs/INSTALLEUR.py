@@ -1588,10 +1588,13 @@ class MainWindow( xbmcgui.WindowXML ):
             listitem.setProperty( "version",         infos[ 2 ] or "" )
             listitem.setProperty( "language",        infos[ 3 ] or "" )
             listitem.setProperty( "date",            infos[ 4 ] or "" )
-            listitem.setProperty( "previewPicture",  infos[ 5 ] or "" ) # used for simulate fanart
-            #listitem.setProperty( "previewVideoURL", infos[ 6 ] or "" )
-            #listitem.setProperty( "description_fr",  infos[ 7 ] or "" )
-            #listitem.setProperty( "description_en",  infos[ 8 ] or "" )
+            listitem.setProperty( "added",           infos[ 5 ] or infos[ 4 ] or "" )
+            listitem.setProperty( "previewPicture",  infos[ 6 ] or "" ) # used for simulate fanart
+            #listitem.setProperty( "previewVideoURL", infos[ 7 ] or "" )
+            #listitem.setProperty( "description_fr",  infos[ 8 ] or "" )
+            #listitem.setProperty( "description_en",  infos[ 9 ] or "" )
+            listitem.setProperty( "author",          infos[ 11 ] or "" )
+            
 
             #desactiver sa prend trop de memoire voir pour moi "frost" j'ai vue 100mo :O et xbmc libere pas la memoire ????
             #if infos[ 5 ]:
