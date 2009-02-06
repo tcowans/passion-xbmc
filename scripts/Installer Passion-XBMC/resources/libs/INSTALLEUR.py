@@ -1584,22 +1584,23 @@ class MainWindow( xbmcgui.WindowXML ):
         try:
             infos = self.itemInfosManager.get_info_warehouse().getInfo( itemName=os.path.basename( ipath ), itemType=self.type, listitem=listitem )
             #listitem.setProperty( "fileName",        infos[ 0 ] or "" )
-            #listitem.setProperty( "title",           infos[ 1 ] or "" )
+            listitem.setProperty( "title",           infos[ 1 ] or "" )
             listitem.setProperty( "version",         infos[ 2 ] or "" )
             listitem.setProperty( "language",        infos[ 3 ] or "" )
             listitem.setProperty( "date",            infos[ 4 ] or "" )
             listitem.setProperty( "added",           infos[ 5 ] or infos[ 4 ] or "" )
             listitem.setProperty( "previewPicture",  infos[ 6 ] or "" ) # used for simulate fanart
             #listitem.setProperty( "previewVideoURL", infos[ 7 ] or "" )
-            #listitem.setProperty( "description_fr",  infos[ 8 ] or "" )
-            #listitem.setProperty( "description_en",  infos[ 9 ] or "" )
-            listitem.setProperty( "author",          infos[ 11 ] or "" )
-            
 
-            #desactiver sa prend trop de memoire voir pour moi "frost" j'ai vue 100mo :O et xbmc libere pas la memoire ????
-            #if infos[ 5 ]:
-                #print infos[ 5 ]
-            #    listitem.setThumbnailImage( infos[ 5 ] )
+            desc_fr = infos[ 8 ] or ""
+            desc_us = infos[ 9 ] or ""
+            if ( xbmc.getLanguage().lower() == "french" ):
+                listitem.setProperty( "description", desc_fr or desc_us )
+            else:
+                listitem.setProperty( "description", desc_us or desc_fr )
+
+            listitem.setProperty( "author", infos[ 11 ] or "" )
+
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
