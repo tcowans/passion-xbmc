@@ -67,11 +67,13 @@ class InfoWarehouse:
         version         = None
         language        = None
         date            = None
+        added           = None
         previewPicture  = None
         thumbnail       = ""
         previewVideoURL = None
         description_fr  = None
         description_en  = None
+        author          = None
 
         return fileName, title, version, language, date , previewPicture, previewVideoURL, description_fr, description_en, thumbnail
 
@@ -147,11 +149,13 @@ class InfoWarehouseBSoupXMLFTP( InfoWarehouse ):
         version         = None
         language        = None
         date            = None
+        added           = None
         previewPicture  = None
         thumbnail       = ""
         previewVideoURL = None
         description_fr  = None
         description_en  = None
+        author          = None
 
         cat = None
         
@@ -358,12 +362,14 @@ class InfoWarehouseEltTreeXMLFTP( InfoWarehouse ):
         version         = None
         language        = None
         date            = None
+        added           = None
         previewPicture  = None
         thumbnail       = ""
         #thumbnail       = None
         previewVideoURL = None
         description_fr  = None
         description_en  = None
+        author          = None
 
         cat = None
         try:
