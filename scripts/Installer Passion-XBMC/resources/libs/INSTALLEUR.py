@@ -946,7 +946,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 from context_menu import show_context_menu
                 #buttons = { 1000 : ( "teste 1", "disabled" ), 1001 : "teste 2", 1002 : "teste 3",
                 #    1003 : "teste 4", 1004 : ( "teste 5", "disabled" ), 1005 : "teste 6", 1006 : "teste 7" }
-                buttons = { 1000 : _( 1000 ), 1001 : _( 1001 ) }
+                buttons = { 1000: _( 1000 ), 1001: _( 1001 ), 1002: _( 1002 ) }
                 selected = show_context_menu( buttons )
                 del show_context_menu
                 if selected == 1000:
@@ -954,8 +954,50 @@ class MainWindow( xbmcgui.WindowXML ):
                     self.install_add_ons()
                 elif selected == 1001:
                     self._show_descript()
+                elif selected == 1002:
+                    self._switch_media()
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+
+    def _switch_media( self ):
+        try:
+            from context_menu import show_context_menu
+            buttons = { 1000: _( 11 ), 1001: _( 12 ), 1002: _( 13 ), 1003: _( 14 ),
+                1004: _( 18 ), 1005: _( 16 ), 1006: _( 15 ), 1007: _( 17 ) }
+            selected = show_context_menu( buttons )
+            del show_context_menu
+            switch = None
+            if selected == 1000:
+                switch = "Themes"
+                self.index = 0
+            elif selected == 1001:
+                switch = "Scrapers"
+                self.index = 1
+            elif selected == 1002:
+                switch = "Scripts"
+                self.index = 2
+            elif selected == 1003:
+                switch = "Plugins"
+                self.index = 3
+            elif selected == 1004:
+                switch = "Plugins Vidéos"
+                self.index = 3
+            elif selected == 1005:
+                switch = "Plugins Images"
+                self.index = 1
+            elif selected == 1006:
+                switch = "Plugins Musique"
+                self.index = 0
+            elif selected == 1007:
+                switch = "Plugins Programmes"
+                self.index = 2
+            if switch:
+                self.type = switch
+                self.index = self.index
+                self.updateList() #on raffraichit la page pour afficher le contenu
+        except:
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+        
 
     def onAction( self, action ):
         """

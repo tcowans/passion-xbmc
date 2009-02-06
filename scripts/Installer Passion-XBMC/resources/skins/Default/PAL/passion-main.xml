@@ -1939,6 +1939,7 @@
 					<showonepage>false</showonepage>
 					<orientation>vertical</orientation>
 					<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+					<visible>!Control.IsVisible(50)</visible>
 				</control>
 			</control>
 		</control>
