@@ -30,9 +30,18 @@
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>245</width>
+				<height>287</height>
+				<texture>passion-dialog-context-middle.png</texture>
+				<visible>Skin.String(totals_cm_buttons,8) | IsEmpty(Skin.String(totals_cm_buttons))</visible>
+			</control>
+			<control type="image">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>245</width>
 				<height>250</height>
 				<texture>passion-dialog-context-middle.png</texture>
-				<visible>Skin.String(totals_cm_buttons,7) | IsEmpty(Skin.String(totals_cm_buttons))</visible>
+				<visible>Skin.String(totals_cm_buttons,7)</visible>
 			</control>
 			<control type="image">
 				<description>background image</description>
@@ -91,16 +100,17 @@
 			<control type="image">
 				<description>background bottom image</description>
 				<posx>0</posx>
-				<posy>250</posy>
+				<posy>287</posy>
 				<width>245</width>
 				<height>25</height>
 				<texture>passion-dialog-context-bottom.png</texture>
-				<animation effect="slide" start="0,0" end="0,-37"  time="0" condition="Skin.String(totals_cm_buttons,6)">conditional</animation>
-				<animation effect="slide" start="0,0" end="0,-74"  time="0" condition="Skin.String(totals_cm_buttons,5)">conditional</animation>
-				<animation effect="slide" start="0,0" end="0,-111" time="0" condition="Skin.String(totals_cm_buttons,4)">conditional</animation>
-				<animation effect="slide" start="0,0" end="0,-148" time="0" condition="Skin.String(totals_cm_buttons,3)">conditional</animation>
-				<animation effect="slide" start="0,0" end="0,-185" time="0" condition="Skin.String(totals_cm_buttons,2)">conditional</animation>
-				<animation effect="slide" start="0,0" end="0,-222" time="0" condition="Skin.String(totals_cm_buttons,1)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-37"  time="0" condition="Skin.String(totals_cm_buttons,7)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-74"  time="0" condition="Skin.String(totals_cm_buttons,6)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-11"  time="0" condition="Skin.String(totals_cm_buttons,5)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-148" time="0" condition="Skin.String(totals_cm_buttons,4)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-185" time="0" condition="Skin.String(totals_cm_buttons,3)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-222" time="0" condition="Skin.String(totals_cm_buttons,2)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-259" time="0" condition="Skin.String(totals_cm_buttons,1)">conditional</animation>
 			</control>
 		</control>
 
@@ -122,7 +132,7 @@
 				<align>center</align>
 				<aligny>center</aligny>
 				<label>-</label>
-				<onup>1006</onup>
+				<onup>1007</onup>
 				<ondown>1001</ondown>
 			</control>
 			<control type="button" id="1001">
@@ -246,7 +256,32 @@
 				<aligny>center</aligny>
 				<label>-</label>
 				<onup>1005</onup>
+				<ondown>1007</ondown>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1005)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1004)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1003)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1002)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1001)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1000)">conditional</animation>
+			</control>
+			<control type="button" id="1007">
+				<description>context menu button 7</description>
+				<posx>22</posx>
+				<posy>257</posy>
+				<width>210</width>
+				<height>32</height>
+				<texturenofocus>passion-keyboard-btn-space.png</texturenofocus>
+				<texturefocus>passion-keyboard-btn-space-focus2.png</texturefocus>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>-</label>
+				<onup>1006</onup>
 				<ondown>1000</ondown>
+				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1006)">conditional</animation>
 				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1005)">conditional</animation>
 				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1004)">conditional</animation>
 				<animation effect="slide" start="0,0" end="0,-37" time="0" condition="!Control.IsVisible(1003)">conditional</animation>
