@@ -17,7 +17,7 @@ from htmlentitydefs import name2codepoint
 import elementtree.HTMLTreeBuilder as HTB
 from StringIO import StringIO
 
-from dialog_item_descript import ItemInfosManager
+from info_item import ItemInfosManager
 
 #from string import * #a verifier si on a besoin de cette methode import *
 from BeautifulSoup import BeautifulStoneSoup, Tag, NavigableString  #librairie de traitement XML
@@ -821,7 +821,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 else:
                     self.pluginsDirSpyList.append( None )
                     
-            # Creons ItemInfosManager afin de recuperer les description
+            # Creons ItemInfosManager afin de recuperer les descriptions des items
             self.itemInfosManager = ItemInfosManager( mainwin=self )
             
             # Close the Loading Window
@@ -913,7 +913,8 @@ class MainWindow( xbmcgui.WindowXML ):
                 currentListIndex = self.getCurrentListPosition()
                 if currentListIndex >= 0:
                     selectedItem = os.path.basename( self.curDirList[ currentListIndex ] )
-                    self.itemInfosManager.show_descript( selectedItem, self.type )
+                    from dialog_item_descript import show_item_descript_window
+                    show_item_descript_window( self, self.itemInfosManager, selectedItem, self.type )
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
@@ -1283,7 +1284,7 @@ class MainWindow( xbmcgui.WindowXML ):
         #NB: le meme scenario va ce produire si vous fermer ou redemarrer xbmc avec le script en marche
         #on annule les thread
         self._stop_rss_timer()
-        try: self.itemInfosManager.infoWarehouseFTP.getImage_thread.cancel()
+        try: self.itemInfosManager.get_info_warehouse().getImage_thread.cancel()
         except: pass
         for id in range( self.CONTROL_MAIN_LIST_START, self.CONTROL_MAIN_LIST_END + 1 ):
             try: 
@@ -1581,7 +1582,7 @@ class MainWindow( xbmcgui.WindowXML ):
     def set_item_info( self, listitem, ipath ):
         #infos = fileName, title, version, language, date , previewPicture, previewVideoURL, description_fr, description_en, thumbnail
         try:
-            infos = self.itemInfosManager.infoWarehouseFTP.getInfo( itemName=os.path.basename( ipath ), itemType=self.type, listitem=listitem )
+            infos = self.itemInfosManager.get_info_warehouse().getInfo( itemName=os.path.basename( ipath ), itemType=self.type, listitem=listitem )
             #listitem.setProperty( "fileName",        infos[ 0 ] or "" )
             #listitem.setProperty( "title",           infos[ 1 ] or "" )
             listitem.setProperty( "version",         infos[ 2 ] or "" )
