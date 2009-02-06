@@ -228,12 +228,13 @@
   <string id="706">Tuki ja avustajat</string>  
   <string id="707">Päiväys</string>   
   <string id="708">SVN</string>  
+  <string id="709">Languages</string>  
   <string id="710">Asennusohjelman päivitykset XBMC:n teemoihin, skripteihin, lisäkkeisiin ja skripteihin sekä hakupaikkoihin tapahtuvat FTP-yhteydellä Passion-XBMC (passion-xbmc.org) Team Passion-XBMC:n ylläpitämältä sivustolta.</string>  
     
   <!--CONTEXT MENU STRINGS -->
   <string id="1000">Asenna</string>
   <string id="1001">Tietoja</string>
-  <string id="1002"></string>
+  <string id="1002">Switch Media</string>
   <string id="1003"></string>
   <string id="1004"></string>
   <string id="1005"></string>

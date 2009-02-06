@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
 <strings>
   <!--GENERAL STRINGS -->
   <string id="0">Installer Passion-XBMC</string>
@@ -228,12 +228,13 @@
   <string id="706">Advices and support</string>  
   <string id="707">Date</string>  
   <string id="708">SVN</string>  
+  <string id="709">Languages</string>  
   <string id="710">This script allows direct install of skins, scripts, plugins and scrapers available on Passion-XBMC (passion-xbmc.org) FTP server maintained by our team.</string>
 
   <!--CONTEXT MENU STRINGS -->
   <string id="1000">Install</string>
   <string id="1001">Information</string>
-  <string id="1002"></string>
+  <string id="1002">Switch Media</string>
   <string id="1003"></string>
   <string id="1004"></string>
   <string id="1005"></string>

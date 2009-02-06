@@ -835,7 +835,7 @@
 				<width>580</width>
 				<height>272</height>
 				<label>?</label>
-				<font>special12</font>
+				<font>special13</font>
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>ffffffff</textcolor>
@@ -844,14 +844,14 @@
 			</control>
 		</control>
 
-		<!-- about section -->
+		<!-- About section -->
 		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
 		<!-- ** Required ** Do not change id's or type's -->
 		<control type="grouplist" id="9006">
 			<description>about section</description>
 			<visible>Skin.String(PassionSettings,6)</visible>
 			<posx>75</posx>
-			<posy>154</posy>
+			<posy>150</posy>
 			<width>580</width>
 			<height>272</height>
 			<itemgap>0</itemgap>
@@ -866,18 +866,18 @@
 			<control type="label">
 				<description>Version label</description>
 				<posx>0</posx>
-				<posy>5</posy>
+				<posy>-2</posy>
 				<width>580</width>
 				<align>center</align>
-				<font>special13</font>
+				<font>special12</font>
 				<textcolor>60ffffff</textcolor>
 				<label>SCRIPT700</label>
 			</control>
 			<!-- ** Required ** Do not change <id> or <type> -->
 			<control type="list" id="601">
 				<description>Version List</description>
-				<posx>5</posx>
-				<posy>20</posy>
+				<posx>3</posx>
+				<posy>23</posy>
 				<width>580</width>
 				<height>60</height>
 				<scrolltime>200</scrolltime>
@@ -887,7 +887,7 @@
 						<posy>1</posy>
 						<width>200</width>
 						<height>20</height>
-						<font>font13</font>
+						<font>font10</font>
 						<align>left</align>
 						<info>ListItem.Label</info>
 					</control>
@@ -896,7 +896,7 @@
 						<posy>1</posy>
 						<width>200</width>
 						<height>20</height>
-						<font>font13</font>
+						<font>font10</font>
 						<align>right</align>
 						<info>ListItem.Label2</info>
 					</control>
@@ -907,7 +907,7 @@
 						<posy>1</posy>
 						<width>200</width>
 						<height>20</height>
-						<font>font13</font>
+						<font>font10</font>
 						<align>left</align>
 						<info>ListItem.Label</info>
 					</control>
@@ -916,7 +916,7 @@
 						<posy>1</posy>
 						<width>200</width>
 						<height>20</height>
-						<font>font13</font>
+						<font>font10</font>
 						<align>right</align>
 						<info>ListItem.Label2</info>
 					</control>
@@ -925,8 +925,8 @@
 
 			<control type="image">
 				<description>separator image</description>
-				<posx>-5</posx>
-				<posy>0</posy>
+				<posx>0</posx>
+				<posy>3</posy>
 				<width>580</width>
 				<height>5</height>
 				<texture>passion-separator.png</texture>
@@ -934,20 +934,20 @@
 			<control type="label">
 				<description>Team Credits Label</description>
 				<posx>0</posx>
-				<posy>5</posy>
+				<posy>-2</posy>
 				<width>580</width>
 				<align>center</align>
-				<font>special13</font>
+				<font>special12</font>
 				<textcolor>60ffffff</textcolor>
 				<label>SCRIPT701</label>
 			</control>
 			<!-- ** Required ** Do not change <id> or <type> -->
 			<control type="list" id="602">
 				<description>Team Credits List</description>
-				<posx>5</posx>
-				<posy>25</posy>
+				<posx>3</posx>
+				<posy>23</posy>
 				<width>580</width>
-				<height>60</height>
+				<height>80</height>
 				<scrolltime>200</scrolltime>
 				<itemlayout height="20">
 					<control type="label">
@@ -955,7 +955,7 @@
 						<posy>1</posy>
 						<width>200</width>
 						<height>20</height>
-						<font>font13</font>
+						<font>font10</font>
 						<align>left</align>
 						<info>ListItem.Label</info>
 					</control>
@@ -964,7 +964,7 @@
 						<posy>1</posy>
 						<width>200</width>
 						<height>20</height>
-						<font>font13</font>
+						<font>font10</font>
 						<align>right</align>
 						<info>ListItem.Label2</info>
 					</control>
@@ -975,7 +975,7 @@
 						<posy>1</posy>
 						<width>200</width>
 						<height>20</height>
-						<font>font13</font>
+						<font>font10</font>
 						<align>left</align>
 						<info>ListItem.Label</info>
 					</control>
@@ -984,7 +984,7 @@
 						<posy>1</posy>
 						<width>200</width>
 						<height>20</height>
-						<font>font13</font>
+						<font>font10</font>
 						<align>right</align>
 						<info>ListItem.Label2</info>
 					</control>
@@ -993,8 +993,8 @@
 
 			<control type="image">
 				<description>separator image</description>
-				<posx>-5</posx>
-				<posy>0</posy>
+				<posx>0</posx>
+				<posy>3</posy>
 				<width>580</width>
 				<height>5</height>
 				<texture>passion-separator.png</texture>
@@ -1002,20 +1002,20 @@
 			<control type="label">
 				<description>Description Label</description>
 				<posx>0</posx>
-				<posy>5</posy>
+				<posy>-2</posy>
 				<width>580</width>
 				<align>center</align>
-				<font>special13</font>
+				<font>special12</font>
 				<textcolor>60ffffff</textcolor>
 				<label>SCRIPT600</label>
 			</control>
 			<control type="textbox">
 				<description>Description content</description>
-				<posx>5</posx>
+				<posx>3</posx>
 				<posy>25</posy>
 				<width>572</width>
 				<height>50</height>
-				<font>font13</font>
+				<font>font10</font>
 				<align>justify</align>
 				<label>SCRIPT710</label>
 				<autoscroll time="2000" delay="3000">Skin.HasSetting(AutoScroll)</autoscroll>
