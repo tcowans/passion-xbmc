@@ -407,7 +407,7 @@ def get_infos_path( path, get_size=False, report_progress=None ):
                 size += os.path.getsize( path )
                 if report_progress:
                     #logger.LOG( logger.LOG_INFO, "Size: %s", path )
-                    report_progress.update( -1, sys.modules[ "__main__" ].__language__( 186 ), path, sys.modules[ "__main__" ].__language__( 181 ) + " %00s KB" % round( size / 1024.0, 2 ) )
+                    report_progress.update( -1, sys.modules[ "__main__" ].__language__( 186 ), path, sys.modules[ "__main__" ].__language__( 361 ) + " %00s KB" % round( size / 1024.0, 2 ) )
             except: pass
         elif get_size:
             for root, dirs, files in os.walk( path, topdown=False ):
@@ -417,15 +417,15 @@ def get_infos_path( path, get_size=False, report_progress=None ):
                         size += os.path.getsize( fpath )
                         if report_progress:
                             #logger.LOG( logger.LOG_INFO, "Size: %s", fpath )
-                            report_progress.update( -1, sys.modules[ "__main__" ].__language__( 186 ), fpath, sys.modules[ "__main__" ].__language__( 181 ) + " %00s KB" % round( size / 1024.0, 2 ) )
+                            report_progress.update( -1, sys.modules[ "__main__" ].__language__( 186 ), fpath, sys.modules[ "__main__" ].__language__( 361 ) + " %00s KB" % round( size / 1024.0, 2 ) )
                     except:
                         logger.LOG( logger.LOG_ERROR, "Size: %s", fpath )
                         pass
         if size <= 0:
             size = "0.0 KB"
-        elif 1024.0 > size < ( 1024.0 * 1024.0 ):
+        elif size <= ( 1024.0 * 1024.0 ):
             size = "%00s KB" % round( size / 1024.0, 2 )
-        elif size > ( 1024.0 * 1024.0 ):
+        elif size >= ( 1024.0 * 1024.0 ):
             size = "%00s MB" % round( size / 1024.0 / 1024.0, 2 )
         else:
             size = "%00s Bytes" % size

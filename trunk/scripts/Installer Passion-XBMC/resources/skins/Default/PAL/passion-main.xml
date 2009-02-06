@@ -196,7 +196,7 @@
 				<control type="image">
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>100</width>
+					<width>110</width>
 					<height>25</height>
 					<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
 					<visible>!Control.HasFocus(2) + Control.IsVisible(2)</visible>
@@ -205,7 +205,7 @@
 					<description>View As Icons button</description>
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>100</width>
+					<width>110</width>
 					<height>25</height>
 					<align>center</align>
 					<label>101</label>
@@ -220,18 +220,18 @@
 					<ondown>50</ondown>
 				</control>
 				<control type="image">
-					<posx>105</posx>
+					<posx>115</posx>
 					<posy>0</posy>
-					<width>100</width>
+					<width>110</width>
 					<height>25</height>
 					<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
 					<visible>!Control.HasFocus(300) + Control.IsVisible(300)</visible>
 				</control>
 				<control type="button" id="300">
 					<description>Add-ons Manager button</description>
-					<posx>105</posx>
+					<posx>115</posx>
 					<posy>0</posy>
-					<width>100</width>
+					<width>110</width>
 					<height>25</height>
 					<align>center</align>
 					<label>SCRIPT5</label>
@@ -246,18 +246,18 @@
 					<ondown>50</ondown>
 				</control>
 				<control type="image">
-					<posx>210</posx>
+					<posx>230</posx>
 					<posy>0</posy>
-					<width>100</width>
+					<width>110</width>
 					<height>25</height>
 					<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
 					<visible>!Control.HasFocus(305) + Control.IsVisible(305)</visible>
 				</control>
 				<control type="button" id="305">
 					<description>forum button</description>
-					<posx>210</posx>
+					<posx>230</posx>
 					<posy>0</posy>
-					<width>100</width>
+					<width>110</width>
 					<height>25</height>
 					<align>center</align>
 					<label>SCRIPT1</label>
@@ -272,9 +272,9 @@
 					<ondown>50</ondown>
 				</control>
 				<control type="image">
-					<posx>315</posx>
+					<posx>345</posx>
 					<posy>0</posy>
-					<width>100</width>
+					<width>110</width>
 					<height>25</height>
 					<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
 					<visible>!Control.HasFocus(310) + Control.IsVisible(310)</visible>
@@ -282,9 +282,9 @@
 				</control>
 				<control type="button" id="310">
 					<description>option button</description>
-					<posx>315</posx>
+					<posx>345</posx>
 					<posy>0</posy>
-					<width>100</width>
+					<width>110</width>
 					<height>25</height>
 					<align>center</align>
 					<label>SCRIPT2</label>
@@ -300,9 +300,9 @@
 					<animation effect="slide" start="0,0" end="-105,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
 				</control>
 				<control type="image">
-					<posx>420</posx>
+					<posx>460</posx>
 					<posy>0</posy>
-					<width>100</width>
+					<width>110</width>
 					<height>25</height>
 					<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
 					<visible>!Control.HasFocus(320) + Control.IsVisible(320)</visible>
@@ -310,9 +310,9 @@
 				</control>
 				<control type="button" id="320">
 					<description>exit button</description>
-					<posx>420</posx>
+					<posx>460</posx>
 					<posy>0</posy>
-					<width>100</width>
+					<width>110</width>
 					<height>25</height>
 					<align>center</align>
 					<label>SCRIPT8</label>
@@ -489,6 +489,309 @@
 						<animation effect="slide" start="0,0" end="-26,0" time="0" condition="Control.IsVisible(2050)">conditional</animation>
 					</control>
 				</focusedlayout>
+			</control>
+
+			<!-- MEDIA INFOS LIST -->
+			<control type="group">
+				<description>media infos list</description>
+				<control type="list" id="51">
+					<posx>27</posx>
+					<posy>198</posy>
+					<width>480</width>
+					<height>145</height>
+					<viewtype label="SCRIPT351">list</viewtype>
+					<onleft>194</onleft>
+					<onright>193</onright>
+					<onup>150</onup>
+					<ondown>150</ondown>
+					<orientation>vertical</orientation>
+					<pagecontrol>193</pagecontrol>
+					<scrolltime>200</scrolltime>
+					<itemlayout width="250" height="29">
+						<control type="image">
+							<width>480</width>
+							<height>26</height>
+							<posx>0</posx>
+							<posy>0</posy>
+							<texture>passion-list-nofocus.png</texture>
+							<visible>false</visible>
+						</control>
+						<control type="label">
+							<posx>5</posx>
+							<posy>2</posy>
+							<width>400</width>
+							<height>22</height>
+							<font>font13</font>
+							<aligny>center</aligny>
+							<selectedcolor>FFe2ff43</selectedcolor>
+							<textcolor>FF000000</textcolor>
+							<align>left</align>
+							<info>ListItem.Label</info>
+						</control>
+						<control type="label">
+							<posx>475</posx>
+							<posy>2</posy>
+							<width>320</width>
+							<height>22</height>
+							<font>font13</font>
+							<aligny>center</aligny>
+							<selectedcolor>FFe2ff43</selectedcolor>
+							<textcolor>60000000</textcolor>
+							<align>right</align>
+							<label>$INFO[ListItem.Property(added),$LOCALIZE[SCRIPT613]]</label>
+						</control>
+					</itemlayout>
+					<focusedlayout height="29" width="250">
+						<control type="image">
+							<width>480</width>
+							<height>26</height>
+							<posx>0</posx>
+							<posy>0</posy>
+							<texture>passion-list-focus.png</texture>
+							<visible>Control.HasFocus(51)</visible>
+						</control>
+						<control type="label">
+							<posx>5</posx>
+							<posy>2</posy>
+							<width>400</width>
+							<height>22</height>
+							<font>special13</font>
+							<aligny>center</aligny>
+							<selectedcolor>FFe2ff43</selectedcolor>
+							<textcolor>FF000000</textcolor>
+							<align>left</align>
+							<label>$INFO[ListItem.Label,[B],[/B]]</label>
+						</control>
+						<control type="label">
+							<posx>475</posx>
+							<posy>2</posy>
+							<width>320</width>
+							<height>22</height>
+							<font>font13</font>
+							<aligny>center</aligny>
+							<selectedcolor>FFe2ff43</selectedcolor>
+							<textcolor>60000000</textcolor>
+							<align>right</align>
+							<label>$INFO[ListItem.Property(added),[B]$LOCALIZE[SCRIPT613],[/B]]</label>
+						</control>
+					</focusedlayout>
+				</control>
+				<control type="group">
+					<visible>Control.IsVisible(51)</visible>
+					<posx>512</posx>
+					<posy>198</posy>
+					<control type="button">
+						<description>Page Up for list</description>
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>20</width>
+						<height>20</height>
+						<onclick>PageUp(193)</onclick>
+						<texturefocus border="4">passion-scrollbar_arrow_up_focus.png</texturefocus>
+						<texturenofocus border="4">passion-scrollbar_arrow_up.png</texturenofocus>
+						<visible>Control.IsVisible(193)</visible>
+						<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+					</control>
+					<control type="button">
+						<description>Page Down for list</description>
+						<posx>0</posx>
+						<posy>125</posy>
+						<width>20</width>
+						<height>20</height>
+						<onclick>PageDown(193)</onclick>
+						<texturefocus border="4">passion-scrollbar_arrow_down_focus.png</texturefocus>
+						<texturenofocus border="4">passion-scrollbar_arrow_down.png</texturenofocus>
+						<visible>Control.IsVisible(193)</visible>
+						<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+					</control>
+					<control type="scrollbar" id="193">
+						<description>Scroll Bar for list</description>
+						<posx>0</posx>
+						<posy>20</posy>
+						<width>20</width>
+						<height>105</height>
+						<texturesliderbackground border="4">passion-scrollbar_background.png</texturesliderbackground>
+						<texturesliderbar border="4">passion-scrollbar_bar.png</texturesliderbar>
+						<texturesliderbarfocus border="4">passion-scrollbar_bar_focus.png</texturesliderbarfocus>
+						<textureslidernib>-</textureslidernib>
+						<textureslidernibfocus>-</textureslidernibfocus>
+						<onleft>51</onleft>
+						<onright>194</onright>
+						<showonepage>false</showonepage>
+						<orientation>vertical</orientation>
+						<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+					</control>
+				</control>
+				<control type="group">
+					<visible>Control.IsVisible(51)</visible>
+					<control type="image">
+						<description>icon</description>
+						<posx>566</posx>
+						<posy>220</posy>
+						<width>100</width>
+						<height>100</height>
+						<aspectratio align="center" aligny="center">keep</aspectratio>
+						<info>Container(51).ListItem.Icon</info>
+						<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
+					</control>
+					<control type="image">
+						<posx>566</posx>
+						<posy>320</posy>
+						<width>100</width>
+						<height>50</height>
+						<info>Container(51).ListItem.Icon</info>
+						<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+						<aspectratio align="center" aligny="top">stretch</aspectratio>
+						<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
+					</control>
+					<control type="image">
+						<description>separator image for list and text</description>
+						<posx>20</posx>
+						<posy>345</posy>
+						<width>679</width>
+						<height>5</height>
+						<texture>passion-separator.png</texture>
+						<aspectratio align="center" />
+						<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+					</control>
+				</control>
+
+				<control type="group">
+					<visible>Control.IsVisible(51)</visible>
+					<control type="label">
+						<posx>27</posx>
+						<posy>352</posy>
+						<width>333</width>
+						<height>16</height>
+						<font>special13</font>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<textcolor>ff000000</textcolor>
+						<scroll>true</scroll>
+						<info>Container(51).ListItem.Property(title)</info>
+					</control>
+					<control type="label">
+						<posx>692</posx>
+						<posy>352</posy>
+						<width>333</width>
+						<height>16</height>
+						<font>font13</font>
+						<textcolor>FF000000</textcolor>
+						<scroll>true</scroll>
+						<align>right</align>
+						<info>Container(51).ListItem.Property(date)</info>
+					</control>
+					<control type="label">
+						<posx>27</posx>
+						<posy>541</posy>
+						<width>333</width>
+						<height>16</height>
+						<font>font13</font>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<textcolor>ff000000</textcolor>
+						<scroll>true</scroll>
+						<label>$INFO[ListItem.Property(language),$LOCALIZE[SCRIPT608]: ]</label>
+					</control>
+					<control type="label">
+						<posx>692</posx>
+						<posy>541</posy>
+						<width>333</width>
+						<height>16</height>
+						<font>font13</font>
+						<textcolor>FF000000</textcolor>
+						<scroll>true</scroll>
+						<align>right</align>
+						<label>$INFO[ListItem.Property(version),$LOCALIZE[SCRIPT602]: ]</label>
+					</control>
+					<control type="textbox">
+						<description>Text small</description>
+						<posx>27</posx>
+						<posy>375</posy>
+						<width>640</width>
+						<height>166</height>
+						<pagecontrol>194</pagecontrol>
+						<textcolor>FF000000</textcolor>
+						<font>font13</font>
+						<align>justify</align>
+						<label>$INFO[Container(51).ListItem.Property(description)]</label>
+						<autoscroll time="2000" delay="3000">Skin.HasSetting(AutoScroll)</autoscroll>
+						<visible>Control.IsVisible(194)</visible>
+					</control>
+					<control type="textbox">
+						<description>Text large</description>
+						<posx>27</posx>
+						<posy>375</posy>
+						<width>666</width>
+						<height>166</height>
+						<pagecontrol>194</pagecontrol>
+						<textcolor>FF000000</textcolor>
+						<font>font13</font>
+						<align>justify</align>
+						<label>$INFO[Container(51).ListItem.Property(description)]</label>
+						<autoscroll time="2000" delay="3000">Skin.HasSetting(AutoScroll)</autoscroll>
+						<visible>!Control.IsVisible(194)</visible>
+					</control>
+					<control type="label">
+						<description>Text large</description>
+						<posx>27</posx>
+						<posy>375</posy>
+						<width>666</width>
+						<height>166</height>
+						<textcolor>FF000000</textcolor>
+						<font>font13</font>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>SCRIPT614</label>
+						<visible>IsEmpty(Container(51).ListItem.Property(description))</visible>
+					</control>
+				</control>
+
+				<control type="group">
+					<visible>Control.IsVisible(51)</visible>
+					<posx>672</posx>
+					<posy>375</posy>
+					<control type="button">
+						<description>Page Up for text</description>
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>20</width>
+						<height>20</height>
+						<onclick>PageUp(194)</onclick>
+						<texturefocus border="4">passion-scrollbar_arrow_up_focus.png</texturefocus>
+						<texturenofocus border="4">passion-scrollbar_arrow_up.png</texturenofocus>
+						<visible>Control.IsVisible(194)</visible>
+						<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+					</control>
+					<control type="button">
+						<description>Page Down for text</description>
+						<posx>0</posx>
+						<posy>145</posy>
+						<width>20</width>
+						<height>20</height>
+						<onclick>PageDown(194)</onclick>
+						<texturefocus border="4">passion-scrollbar_arrow_down_focus.png</texturefocus>
+						<texturenofocus border="4">passion-scrollbar_arrow_down.png</texturenofocus>
+						<visible>Control.IsVisible(194)</visible>
+						<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+					</control>
+					<control type="scrollbar" id="194">
+						<description>Scroll Bar for text</description>
+						<posx>0</posx>
+						<posy>20</posy>
+						<width>20</width>
+						<height>125</height>
+						<texturesliderbackground border="4">passion-scrollbar_background.png</texturesliderbackground>
+						<texturesliderbar border="4">passion-scrollbar_bar.png</texturesliderbar>
+						<texturesliderbarfocus border="4">passion-scrollbar_bar_focus.png</texturesliderbarfocus>
+						<textureslidernib>-</textureslidernib>
+						<textureslidernibfocus>-</textureslidernibfocus>
+						<onleft>193</onleft>
+						<onright>51</onright>
+						<showonepage>false</showonepage>
+						<orientation>vertical</orientation>
+						<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+						<visible>!IsEmpty(Container(51).ListItem.Property(description))</visible>
+					</control>
+				</control>
 			</control>
 
 			<!-- PANEL LIST -->
