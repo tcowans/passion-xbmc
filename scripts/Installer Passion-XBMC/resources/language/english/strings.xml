@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <strings>
   <!--GENERAL STRINGS -->
   <string id="0">Installer Passion-XBMC</string>
@@ -216,6 +216,7 @@
   <string id="611">Multilanguages</string>
   <string id="612">Unknown</string>
   <string id="613">Date added:&#32;</string>
+  <string id="614">Description : Not available</string>
   
   <!--ABOUT STRINGS -->
   <string id="700">Version</string>
