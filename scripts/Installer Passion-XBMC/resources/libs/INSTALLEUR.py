@@ -956,6 +956,8 @@ class MainWindow( xbmcgui.WindowXML ):
                     self._show_descript()
                 elif selected == 1002:
                     self._switch_media()
+                else:
+                    pass
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
@@ -997,7 +999,6 @@ class MainWindow( xbmcgui.WindowXML ):
                 self.updateList() #on raffraichit la page pour afficher le contenu
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-        
 
     def onAction( self, action ):
         """
