@@ -335,8 +335,8 @@
 				<scrolltime>200</scrolltime>
 				<onleft>9000</onleft>
 				<onright>2050</onright>
-				<onup>9000</onup>
-				<ondown>9000</ondown>
+				<onup>50</onup>
+				<ondown>50</ondown>
 				<itemlayout width="250" height="46">
 					<control type="image">
 						<width>640</width>
@@ -488,8 +488,8 @@
 				<height>368</height>
 				<onleft>9000</onleft>
 				<onright>2050</onright>
-				<onup>9000</onup>
-				<ondown>9000</ondown>
+				<onup>52</onup>
+				<ondown>52</ondown>
 				<scrolltime>200</scrolltime>
 				<viewtype label="SCRIPT352">icon</viewtype>
 				<pagecontrol>2050</pagecontrol>
