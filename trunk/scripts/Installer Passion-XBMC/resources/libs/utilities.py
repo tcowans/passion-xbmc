@@ -19,7 +19,6 @@ __all__ = [
     "parse_rss_xml",
     "set_web_navigator",
     "is_playable_media",
-    "get_html_source",
     "getUserSkin",
     "getSkinColors",
     "get_default_hex_color",
@@ -28,7 +27,6 @@ __all__ = [
     "italic_text",
     "set_xbmc_carriage_return",
     "strip_off",
-    "Slideshow",
     "Settings",
     "get_infos_path",
     ]
@@ -148,21 +146,6 @@ def is_playable_media( filename, media="picture" ):
         # si on arrive ici le retour est automatiquement None
 
 
-def get_html_source( url ):
-    """ fetch the html source """
-    try:
-        if os.path.isfile( url ):
-            sock = open( url, "r" )
-        else:
-            sock = urllib.urlopen( url )
-        htmlsource = sock.read()
-        sock.close()
-        return htmlsource
-    except:
-        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
-        return ""
-
-
 def getUserSkin():
     """ FONCTION POUR RECUPERER LE THEME UTILISE PAR L'UTILISATEUR """
     current_skin = xbmc.getSkinDir()
@@ -241,48 +224,6 @@ def strip_off( text, by="", xbmc_labels_formatting=False ):
     if xbmc_labels_formatting:
         text = text.replace( "[", "<" ).replace( "]", ">" )
     return re.sub( "(?s)<[^>]*>", by, text )
-
-
-class Slideshow:
-    def clearPlayList( self, m3u ):
-        #xbmc.PlayList(0).clear()
-        #xbmc.PlayList(1).clear()
-        try: os.unlink( m3u )
-        except: pass
-
-
-    def playSlideshow( self, screens=[] ):
-        if not screens: return
-        elif len( screens ) == 1:
-            xbmc.executehttpapi( "ShowPicture(%s)" % ( screens[ 0 ], ) )
-        else:
-            #Clears the slideshow playlist.
-            #print xbmc.executehttpapi( "ClearSlideshow" )
-
-            #AddToSlideshow(media;[mask];[recursive])
-            #Adds a file or folder (media is either a file or a folder) to the slideshow playlist. To specify a file mask use mask e.g. .jpg|.bmp
-            #[Added 4 Jan 08] If recursive = "1" and media is a folder then all appropriate media within subfolders beneath media will be added otherwise only media within the folder media
-            #will be added. Default behaviour is to be recursive. [Added 5 Jan 08] mask can now also be set to one of the
-            #following values [music], [video], [pictures], [files] in which case XBMC's current set of file extensions for the
-            #type specified will be used as the mask. (Note it only makes much sense for this command to use a value of [pictures].
-
-            m3u = os.path.join( xbmc.translatePath( "Z:\\" ), "passion_slideshow.m3u" )
-            #clearPlayList is not very necessary, because next line "w" is used. "w" == write new file.
-            self.clearPlayList( m3u )
-
-            file = open( m3u, "w+" )
-            file.write( "#EXTM3U" )
-            for count, screen in enumerate( screens ):
-                #thumb = xbmc.getCacheThumbName( screen )
-                #print thumb
-                file.write( "\n#EXTINF:0,%i - %s\n%s" % ( ( count + 1 ), os.path.basename( screen ), screen, ) )
-                #print xbmc.executehttpapi( "AddToSlideshow(%s)" % ( screen, ) )
-            file.close()
-
-            #PlaySlideshow([directory];[recursive])
-            #Starts the slideshow. Directory specifies a folder of images to add to the slideshow playlist.
-            #If recursive has a value of True then all directories beneath directory are searched for images and added to the slideshow playlist.
-            xbmc.executehttpapi( "PlaySlideshow(%s;false)" % ( m3u, ) )
 
 
 class Settings:
@@ -402,25 +343,27 @@ def get_infos_path( path, get_size=False, report_progress=None ):
     # calculate dir size "os.walk( path, topdown=False )"
     try:
         size = 0
-        if os.path.isfile( path ):
-            try:
-                size += os.path.getsize( path )
-                if report_progress:
-                    #logger.LOG( logger.LOG_INFO, "Size: %s", path )
-                    report_progress.update( -1, sys.modules[ "__main__" ].__language__( 186 ), path, sys.modules[ "__main__" ].__language__( 361 ) + " %00s KB" % round( size / 1024.0, 2 ) )
-            except: pass
-        elif get_size:
-            for root, dirs, files in os.walk( path, topdown=False ):
-                for file in files:
-                    try:
-                        fpath = os.path.join( root, file )
-                        size += os.path.getsize( fpath )
-                        if report_progress:
-                            #logger.LOG( logger.LOG_INFO, "Size: %s", fpath )
-                            report_progress.update( -1, sys.modules[ "__main__" ].__language__( 186 ), fpath, sys.modules[ "__main__" ].__language__( 361 ) + " %00s KB" % round( size / 1024.0, 2 ) )
-                    except:
-                        logger.LOG( logger.LOG_ERROR, "Size: %s", fpath )
-                        pass
+        if os.access( path, os.R_OK ):
+            if os.path.isfile( path ):
+                try:
+                    size += os.path.getsize( path )
+                    if report_progress:
+                        #logger.LOG( logger.LOG_INFO, "Size: %s", path )
+                        report_progress.update( -1, sys.modules[ "__main__" ].__language__( 186 ), path, sys.modules[ "__main__" ].__language__( 361 ) + " %00s KB" % round( size / 1024.0, 2 ) )
+                except: pass
+            elif get_size:
+                for root, dirs, files in os.walk( path ):#, topdown=False ):
+                    for file in files:
+                        try:
+                            fpath = os.path.join( root, file )
+                            if os.access( fpath, os.R_OK ):
+                                size += os.path.getsize( fpath )
+                                if report_progress:
+                                    #logger.LOG( logger.LOG_INFO, "Size: %s", fpath )
+                                    report_progress.update( -1, sys.modules[ "__main__" ].__language__( 186 ), fpath, sys.modules[ "__main__" ].__language__( 361 ) + " %00s KB" % round( size / 1024.0, 2 ) )
+                        except:
+                            logger.LOG( logger.LOG_ERROR, "Size: %s", fpath )
+                            pass
         if size <= 0:
             size = "0.0 KB"
         elif size <= ( 1024.0 * 1024.0 ):
