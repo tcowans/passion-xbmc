@@ -53,7 +53,7 @@ class LIST_CONTAINER_150( dict ):
         self[ 3 ]  = DIRECT_INFOS % ( "/scraper-alocine", ), "xbmc.png"
         self[ 4 ]  = DIRECT_INFOS % ( "/pilotage-telecommande", ), "xbmc.png"
         self[ 5 ]  = DIRECT_INFOS % ( "/skins", ), "skin.png"
-        self[ 6 ]  = DIRECT_INFOS % ( "/service-importation", ), "skin.png"
+        #self[ 6 ]  = DIRECT_INFOS % ( "/service-importation", ), "skin.png"
         self[ 7 ]  = DIRECT_INFOS % ( "/fiches-des-skins", ), "skin.png"
         self[ 8 ]  = DIRECT_INFOS % ( "/skins-en-projets-et-skins-abandonnes", ), "skin.png"
         self[ 9 ]  = DIRECT_INFOS % ( "/le-coin-des-utilisateurs", ), "script.png"
@@ -61,13 +61,13 @@ class LIST_CONTAINER_150( dict ):
         self[ 11 ] = DIRECT_INFOS % ( "/xbmc-live-cd", ), "livecd.png"
         self[ 12 ] = DIRECT_INFOS % ( "/ubuntu", ), "ubuntu.png"
         self[ 13 ] = DIRECT_INFOS % ( "/tutos-ubuntu-et-xbmc", ), "ubuntu.png"
-        self[ 14 ] = DIRECT_INFOS % ( "/usb-creator-pour-ubuntu", ), "ubuntu.png"
+        #self[ 14 ] = DIRECT_INFOS % ( "/usb-creator-pour-ubuntu", ), "ubuntu.png"
         self[ 15 ] = DIRECT_INFOS % ( "/windows", ), "windows.png"
-        self[ 16 ] = DIRECT_INFOS % ( "/usb-creator-pour-windows", ), "windows.png"
+        #self[ 16 ] = DIRECT_INFOS % ( "/usb-creator-pour-windows", ), "windows.png"
         self[ 17 ] = DIRECT_INFOS % ( "/xbox", ), "xbox.png"
         self[ 18 ] = DIRECT_INFOS % ( "/support-modification-consoles", ), "xbox.png"
         self[ 19 ] = DIRECT_INFOS % ( "/mac-osx-(-leopard-et-tiger)", ), "mac.png"
-        self[ 20 ] = DIRECT_INFOS % ( "/usb-creator-pour-mac-intel", ), "mac.png"
+        #self[ 20 ] = DIRECT_INFOS % ( "/usb-creator-pour-mac-intel", ), "mac.png"
         self[ 21 ] = DIRECT_INFOS % ( "/usb-creator-pour-apple-tv", ), "mac.png"
         self[ 22 ] = DIRECT_INFOS % ( "/forks", ), "fork.png"
         self[ 23 ] = DIRECT_INFOS % ( "/plex-pour-mac", ), "fork.png"
@@ -79,7 +79,7 @@ class LIST_CONTAINER_150( dict ):
         self[ 29 ] = DIRECT_INFOS % ( "/vos-configs", ), "config.png"
         self[ 30 ] = DIRECT_INFOS % ( "/films-et-musique", ), "video.png"
         self[ 31 ] = DIRECT_INFOS % ( "/livres-et-bd", ), "book.png"
-        self[ 32 ] = DIRECT_INFOS % ( "/corbeille", ), "trash.png"
+        #self[ 32 ] = DIRECT_INFOS % ( "/corbeille", ), "trash.png"
         #self[ 33 ] = "http://trac.passion-xbmc.org/index.php?type=rss;action=.xml", "bar.png"
 
 
@@ -127,6 +127,7 @@ class DirectInfos( xbmcgui.WindowXML ):
 
     def set_list_container_150( self ):
         list_container = sorted( self.list_container_150.items(), key=lambda id: id[ 0 ] )
+        self.rss_id = [ rss[ 0 ] for rss in list_container ]
         label2 = ""#not used
         for key, value in list_container:
             label1 = _( 200 + key )
@@ -207,7 +208,7 @@ class DirectInfos( xbmcgui.WindowXML ):
             if controlID == self.CONTROL_RSS_LIST:
                 pos = self.getControl( self.CONTROL_RSS_LIST ).getSelectedPosition()
                 if pos >= 0:
-                    self.set_list_container_191( pos )
+                    self.set_list_container_191( self.rss_id[ pos ] )
             elif controlID == self.CONTROL_FEEDS_LIST:
                 pos = self.getControl( self.CONTROL_FEEDS_LIST ).getSelectedPosition()
                 if pos >= 0:
@@ -288,7 +289,19 @@ class DirectInfos( xbmcgui.WindowXML ):
             try:
                 pos = self.getControl( self.CONTROL_FEEDS_LIST ).getSelectedPosition()
                 if pos >= 0:
-                    Slideshow().playSlideshow( self.list_infos[ pos ][ 1 ] )
+                    screens = self.list_infos[ pos ][ 1 ]
+                    if screens and len( screens ) == 1:
+                        xbmc.executehttpapi( "ShowPicture(%s)" % ( screens[ 0 ], ) )
+                    elif screens:
+                        TEMP_DIR = xbmc.translatePath( "special://temp/" )
+                        if not os.path.isdir( TEMP_DIR ): TEMP_DIR = xbmc.translatePath( "Z:\\" )
+                        m3u = os.path.join( TEMP_DIR, "passion_slideshow.m3u" )
+                        f = open( m3u, "w+" )
+                        f.write( "#EXTM3U" )
+                        for count, screen in enumerate( screens ):
+                            f.write( "\n#EXTINF:0,%i - %s\n%s" % ( ( count + 1 ), os.path.basename( screen ), screen, ) )
+                        f.close()
+                        xbmc.executehttpapi( "PlaySlideshow(%s;false)" % ( m3u, ) )
             except:
                 logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 

@@ -7,6 +7,27 @@ frost
 import re
 import time
 
+try:
+    from xbmc import getRegion
+    """
+    getRegion(id) -- Returns your regions setting as a string for the specified id.
+     
+    id             : string - id of setting to return
+     
+    *Note, choices are (dateshort, datelong, time, meridiem, tempunit, speedunit)
+     
+           You can use the above as keywords for arguments and skip certain optional arguments.
+           Once you use a keyword, all following arguments require the keyword.
+     
+    example:
+      - date_long_format = xbmc.getRegion('datelong')
+    """
+    date_short_format = getRegion( "dateshort" ).replace( "MM", "M" ).replace( "DD", "D" ).replace( "M", "%m" ).replace( "D", "%d" ).replace( "YYYYY", "%Y" ).replace( "YYYY", "%Y" )
+    time_format = getRegion( "time" ).replace( "h", "%I" ).replace( "H", "%H" ).replace( "mm", "%M" ).replace( "ss", "%S" ).replace( "xx", "%p" )
+    DATE_TIME_FORMAT = date_short_format + " | " + time_format
+except:
+    DATE_TIME_FORMAT = "%d-%m-%y | %H:%M:%S"
+
 
 def utc_to_local( utc_string ):
     # convert time in string format "%Y-%m-%d %H:%M:%S" to local time in same format
@@ -23,7 +44,7 @@ def utc_to_local( utc_string ):
     utcsecs = time.mktime( time.localtime( utctuple ) ) - secdiff
     # Now we have real UTC time and can convert that into a local time string
     #return time.strftime( "%Y-%m-%d %H:%M:%S", time.localtime( utcsecs ) )
-    return time.strftime( "%d-%m-%y %H:%M:%S", time.localtime( utcsecs ) )
+    return time.strftime( DATE_TIME_FORMAT, time.localtime( utcsecs ) )
 
 
 # Day Of Week
@@ -46,7 +67,8 @@ def set_local_time( utc_string ):
             _month = str( "Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec".split( "|" ).index( _.group( 3 ) ) + 1 )
             _year = _.group( 4 )
             _time = _.group( 5 )
-            utc_string = "%s, %s" % ( _dayofweek, utc_to_local( "%s-%s-%s %s" % ( _year, _month, _day, _time ) ), )
+            #utc_string = "%s, %s" % ( _dayofweek, utc_to_local( "%s-%s-%s %s" % ( _year, _month, _day, _time ) ), )
+            utc_string = utc_to_local( "%s-%s-%s %s" % ( _year, _month, _day, _time ) )
     except:
         pass
     return utc_string
