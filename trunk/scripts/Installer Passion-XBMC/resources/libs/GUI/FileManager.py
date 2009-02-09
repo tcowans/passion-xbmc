@@ -356,7 +356,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                 # liste des options pour skins et scrapers
                 buttons = { 1001: _( 157 ), 1002: _( 156 ), 1003: _( 161 ), 1004: _( 162 ), 1005: _( 185 ), 1006: _( 1002 ) }
 
-            from context_menu import show_context_menu
+            from DialogContextMenu import show_context_menu
             selected = show_context_menu( buttons )
             del show_context_menu
 
@@ -535,7 +535,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
 
     def _switch_media( self ):
         try:
-            from context_menu import show_context_menu
+            from DialogContextMenu import show_context_menu
             buttons = { 1000: _( 11 ), 1001: _( 12 ), 1002: _( 13 ), 1003: _( 14 ), 1004: _( 18 ), 1005: _( 16 ), 1006: _( 15 ), 1007: _( 17 ) }
             selected = show_context_menu( buttons )
             del show_context_menu
