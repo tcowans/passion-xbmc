@@ -973,7 +973,8 @@ class MainWindow( xbmcgui.WindowXML ):
             listitem.setProperty( "language",        infos[ 3 ] or "" )
             listitem.setProperty( "date",            infos[ 4 ] or "" )
             listitem.setProperty( "added",           infos[ 5 ] or infos[ 4 ] or "" )
-            listitem.setProperty( "previewPicture",  infos[ 6 ] or "passion-noImageAvailable.jpg" ) # used for simulate fanart
+            listitem.setProperty( "previewPicture",  infos[ 6 ] or "passion-noImageAvailable.jpg" ) 
+            listitem.setProperty( "fanartpicture",   infos[ 6 ] or "" ) # used for simulate fanart
             #listitem.setProperty( "previewVideoURL", infos[ 7 ] or "" )
 
             desc_fr = infos[ 8 ] or ""

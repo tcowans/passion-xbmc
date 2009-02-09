@@ -88,8 +88,8 @@
 				<height>372</height>
 				<!--<aspectratio scalediffuse="false">scale</aspectratio>-->
 				<texture diffuse="passion_diffuse.png" />
-				<info>Container.ListItem.Property(previewPicture)</info>
-				<visible>!IsEmpty(Container.ListItem.Property(previewPicture)) + Skin.HasSetting(PassionShowFanart)</visible>
+				<info>Container.ListItem.Property(fanartpicture)</info>
+				<visible>!IsEmpty(Container.ListItem.Property(fanartpicture)) + Skin.HasSetting(PassionShowFanart)</visible>
 			</control>
 			<control type="image">
 				<description>contentpanel slice</description>
