@@ -189,7 +189,7 @@
 					<width>100</width>
 					<height>25</height>
 					<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
-					<visible>!Control.HasFocus(2) + Control.IsVisible(2)</visible>
+					<visible>Control.IsVisible(2)</visible>
 				</control>
 				<control type="button" id="2">
 					<description>View As Icons button</description>
@@ -201,7 +201,7 @@
 					<label>101</label>
                     <scroll>true</scroll>
 					<texturenofocus>-</texturenofocus>
-					<texturefocus>passion-list-focus.png</texturefocus>
+					<texturefocus>passion-mbutton-focus.png</texturefocus>
 					<textcolor>ffffffff</textcolor>
 					<colordiffuse>ffffffff</colordiffuse>
 					<disabledcolor>60d0d0d0</disabledcolor>
@@ -216,7 +216,7 @@
 					<width>100</width>
 					<height>25</height>
 					<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
-					<visible>!Control.HasFocus(300) + Control.IsVisible(300)</visible>
+					<visible>Control.IsVisible(300)</visible>
 				</control>
 				<control type="button" id="300">
 					<description>installer button</description>
@@ -227,7 +227,7 @@
 					<align>center</align>
 					<label>SCRIPT7</label>
 					<texturenofocus>-</texturenofocus>
-					<texturefocus>passion-list-focus.png</texturefocus>
+					<texturefocus>passion-mbutton-focus.png</texturefocus>
 					<textcolor>ffffffff</textcolor>
 					<colordiffuse>ffffffff</colordiffuse>
 					<disabledcolor>60d0d0d0</disabledcolor>
@@ -242,7 +242,7 @@
 					<width>100</width>
 					<height>25</height>
 					<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
-					<visible>!Control.HasFocus(305) + Control.IsVisible(305)</visible>
+					<visible>Control.IsVisible(305)</visible>
 				</control>
 				<control type="button" id="305">
 					<description>forum button</description>
@@ -253,7 +253,7 @@
 					<align>center</align>
 					<label>SCRIPT1</label>
 					<texturenofocus>-</texturenofocus>
-					<texturefocus>passion-list-focus.png</texturefocus>
+					<texturefocus>passion-mbutton-focus.png</texturefocus>
 					<textcolor>ffffffff</textcolor>
 					<colordiffuse>ffffffff</colordiffuse>
 					<disabledcolor>60d0d0d0</disabledcolor>
@@ -268,7 +268,7 @@
 					<width>100</width>
 					<height>25</height>
 					<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
-					<visible>!Control.HasFocus(310) + Control.IsVisible(310)</visible>
+					<visible>Control.IsVisible(310)</visible>
 					<animation effect="slide" start="0,0" end="-105,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
 				</control>
 				<control type="button" id="310">
@@ -280,7 +280,7 @@
 					<align>center</align>
 					<label>SCRIPT2</label>
 					<texturenofocus>-</texturenofocus>
-					<texturefocus>passion-list-focus.png</texturefocus>
+					<texturefocus>passion-mbutton-focus.png</texturefocus>
 					<textcolor>ffffffff</textcolor>
 					<colordiffuse>ffffffff</colordiffuse>
 					<disabledcolor>60d0d0d0</disabledcolor>
@@ -296,7 +296,7 @@
 					<width>100</width>
 					<height>25</height>
 					<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
-					<visible>!Control.HasFocus(320) + Control.IsVisible(320)</visible>
+					<visible>Control.IsVisible(320)</visible>
 					<animation effect="slide" start="0,0" end="-105,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
 				</control>
 				<control type="button" id="320">
@@ -308,7 +308,7 @@
 					<align>center</align>
 					<label>SCRIPT8</label>
 					<texturenofocus>-</texturenofocus>
-					<texturefocus>passion-list-focus.png</texturefocus>
+					<texturefocus>passion-mbutton-focus.png</texturefocus>
 					<textcolor>ffffffff</textcolor>
 					<colordiffuse>ffffffff</colordiffuse>
 					<disabledcolor>60d0d0d0</disabledcolor>
