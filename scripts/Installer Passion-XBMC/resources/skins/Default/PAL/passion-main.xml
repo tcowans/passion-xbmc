@@ -357,23 +357,23 @@
 							<texture>passion-list-nofocus.png</texture>
 							<visible>false</visible>
 						</control>
-                        <control type="image">
-                            <posx>3</posx>
-                            <posy>3</posy>
-                            <width>21</width>
-                            <height>21</height>
-                            <info>ListItem.ActualIcon</info>
-                            <visible>IsEmpty(ListItem.Property(Downloaded))</visible>
-                        </control>
-                        <control type="image">
-                            <posx>3</posx>
-                            <posy>3</posy>
-                            <width>21</width>
-                            <height>21</height>
-                            <info>ListItem.ActualIcon</info>
-                            <visible>!IsEmpty(ListItem.Property(Downloaded))</visible>
-                            <colordiffuse>60ffffff</colordiffuse>
-                        </control>
+						<control type="image">
+							<posx>3</posx>
+							<posy>3</posy>
+							<width>21</width>
+							<height>21</height>
+							<info>ListItem.ActualIcon</info>
+							<visible>IsEmpty(ListItem.Property(Downloaded))</visible>
+						</control>
+						<control type="image">
+							<posx>3</posx>
+							<posy>3</posy>
+							<width>21</width>
+							<height>21</height>
+							<info>ListItem.ActualIcon</info>
+							<visible>!IsEmpty(ListItem.Property(Downloaded))</visible>
+							<colordiffuse>60ffffff</colordiffuse>
+						</control>
 						<control type="label">
 							<posx>28</posx>
 							<posy>2</posy>
@@ -416,14 +416,23 @@
 							<texture>passion-list-nofocus.png</texture>
 							<visible>false</visible>
 						</control>
-                        <control type="image">
-                            <posx>3</posx>
-                            <posy>3</posy>
-                            <width>21</width>
-                            <height>21</height>
-                            <info>ListItem.ActualIcon</info>
-                            <visible>IsEmpty(ListItem.Property(Downloaded))</visible>
-                        </control>
+						<control type="image">
+ 							<posx>3</posx>
+							<posy>3</posy>
+							<width>21</width>
+							<height>21</height>
+ 							<info>ListItem.ActualIcon</info>
+							<visible>IsEmpty(ListItem.Property(Downloaded))</visible>
+						</control>
+						<control type="image">
+							<posx>3</posx>
+							<posy>3</posy>
+							<width>21</width>
+							<height>21</height>
+							<info>ListItem.ActualIcon</info>
+							<visible>!IsEmpty(ListItem.Property(Downloaded))</visible>
+							<colordiffuse>60ffffff</colordiffuse>
+						</control>
 						<control type="label">
 							<posx>28</posx>
 							<posy>2</posy>
