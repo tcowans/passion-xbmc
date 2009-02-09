@@ -234,7 +234,7 @@ class InfoWarehouseBSoupXMLFTP( InfoWarehouse ):
             #import traceback; traceback.print_exc()
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         
-        return fileName, title, version, language, date , previewPicture, previewVideoURL, description_fr, description_en, thumbnail
+        #return fileName, title, version, language, date , previewPicture, previewVideoURL, description_fr, description_en, thumbnail
         return fileName, title, version, language, date, added, previewPicture, previewVideoURL, description_fr, description_en, thumbnail, author
 
     def _get_settings( self, defaults=False  ):

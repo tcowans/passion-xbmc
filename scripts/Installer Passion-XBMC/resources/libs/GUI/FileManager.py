@@ -109,6 +109,8 @@ class ListItemObject:
         self.local_path = local_path
         self.thumb      = thumb
 
+    def __repr__(self):
+        return "(%s, %s, %s, %s)" % ( self.type, self.name, self.local_path, self.thumb ) 
 
 
 class fileMgr:
@@ -207,7 +209,7 @@ class fileMgr:
 
         return result
     
-    def  extract(self,archive,targetDir):
+    def extract(self,archive,targetDir):
         """
         Extract an archive in targetDir
         """
