@@ -2,7 +2,7 @@
 import os
 import sys
 import ftplib
-import ConfigParser
+from ConfigParser import ConfigParser
 
 import xbmc
 import xbmcgui
@@ -37,10 +37,16 @@ class CheckMAJ:
         ##############################################################################
         #                   Initialisation conf.cfg                                  #
         ##############################################################################
-        self.fichier = os.path.join(self.rootdir, "resources", "conf.cfg")
-        self.localConfParser = ConfigParser.ConfigParser()
-        self.localConfParser.read(self.fichier)
+        try: __script__ = sys.modules[ "__main__" ].__script__
+        except: __script__ = os.path.basename( CWD )
 
+        userdata_conf = xbmc.translatePath( "special://profile/" )
+        if not os.path.exists( userdata_conf ): userdata_conf = xbmc.translatePath( "P:\\" )
+        self.fichier = os.path.join( userdata_conf, "script_data" , __script__, "conf.cfg" )
+        #self.fichier = os.path.join(self.rootdir, "resources", "conf.cfg")
+
+        import CONF
+        self.localConfParser = CONF.ReadConfig()
         ##############################################################################
         #                   Initialisation parametres locaux                         #
         ##############################################################################
@@ -127,7 +133,7 @@ class CheckMAJ:
             self.download()
 
             #Lecture des parametres du nouveau fichier de version
-            remoteConfParser = ConfigParser.ConfigParser()
+            remoteConfParser = ConfigParser()
             remoteConfParser.read(self.completedfile)
             self.newversion = remoteConfParser.get('Lastversion','lastversion')
             
@@ -168,7 +174,7 @@ class CheckMAJ:
         """
         Creation du fichier de conf qui servira au script de mise a jour
         """
-        configMAJParser = ConfigParser.ConfigParser()
+        configMAJParser = ConfigParser()
         configMAJParser.add_section('Localparam')
         configMAJParser.set('Localparam', 'PassionDir', self.rootdir)
         configMAJParser.set('Localparam', 'Archive', self.archive)

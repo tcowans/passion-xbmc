@@ -1981,7 +1981,7 @@
 					<showonepage>false</showonepage>
 					<orientation>vertical</orientation>
 					<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
-					<visible>!Control.IsVisible(50)</visible>
+					<visible>![Control.IsVisible(50) | Control.IsVisible(59)]</visible>
 				</control>
 			</control>
 		</control>

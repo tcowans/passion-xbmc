@@ -13,7 +13,6 @@ Module de partage des fonctions et des constantes
 #which were imported and used within the module).
 __all__ = [
     # public names
-    "cancelRequest",
     "SYSTEM_PLATFORM",
     "XBMC_ROOT",
     "parse_rss_xml",
@@ -57,18 +56,10 @@ CWD = os.getcwd().rstrip( ";" )
 try: __script__ = sys.modules[ "__main__" ].__script__
 except: __script__ = os.path.basename( CWD )
 
-BASE_SETTINGS_PATH = os.path.join( xbmc.translatePath( "P:\\script_data" ), __script__, "settings.txt" )
+USERDATA_PATH = xbmc.translatePath( "special://profile/" )
+if not os.path.exists( USERDATA_PATH ): USERDATA_PATH = xbmc.translatePath( "P:\\" )
+BASE_SETTINGS_PATH = os.path.join( USERDATA_PATH, "script_data", __script__, "settings.txt" )
 RSS_FEEDS_XML = os.path.join( CWD, "resources", "RssFeeds.xml" )
-
-
-class cancelRequest( Exception ):
-    """
-    Exception, merci a Alexsolex
-    """
-    def __init__( self, value ):
-        self.value = value
-    def __str__( self ):
-        return repr( self.value )
 
 
 def get_system_platform():

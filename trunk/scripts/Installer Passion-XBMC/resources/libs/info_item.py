@@ -171,7 +171,7 @@ class InfoWarehouseBSoupXMLFTP( InfoWarehouse ):
             cat = self.soup.find("pictureplugin")
         elif itemType == "Plugins Programmes":
             cat = self.soup.find("programplugin")
-        elif itemType == "Plugins Vidéos":
+        elif itemType == "Plugins Videos":
             cat = self.soup.find("videoplugin")
 
         try:
@@ -385,7 +385,7 @@ class InfoWarehouseEltTreeXMLFTP( InfoWarehouse ):
                 cat = self.elemroot.find('plugins').find('pictureplugin')
             elif itemType == "Plugins Programmes":
                 cat = self.elemroot.find('plugins').find('programplugin')
-            elif itemType == "Plugins Vidéos":
+            elif itemType == "Plugins Videos":
                 cat = self.elemroot.find('plugins').find('videoplugin')
                 
             if cat != None:

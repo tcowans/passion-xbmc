@@ -7,7 +7,7 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/Installer%20Passion-XBMC/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center"
-__date__         = "08-02-2009"
+__date__         = "09-02-2009"
 __version__      = "pre-1.0.0"
 __svn_revision__ = 0
 
@@ -15,7 +15,6 @@ __svn_revision__ = 0
 #Modules general
 import os
 import sys
-from ConfigParser import ConfigParser
 
 #modules XBMC
 import xbmc
@@ -71,16 +70,13 @@ def MAIN():
 
     try:
         # INITIALISATION CHEMINS DE FICHIER LOCAUX
-        fichier = os.path.join( ROOTDIR, "resources", "conf.cfg" )
-        config = ConfigParser()
-        config.read( fichier )
+        import CONF
+        config = CONF.ReadConfig()
 
         DIALOG_PROGRESS.update( -1, __language__( 101 ), __language__( 110 ) )
         if not config.getboolean( 'InstallPath', 'pathok' ):
             # GENERATION DES INFORMATIONS LOCALES
-            import CONF
             CONF.SetConfiguration()
-            del CONF
 
         # VERIFICATION DE LA MISE A JOUR
         import CHECKMAJ
@@ -95,14 +91,15 @@ def MAIN():
         CHECKMAJ.go()
         del CHECKMAJ
 
-        config.read( fichier )
+        config = CONF.ReadConfig()
+        del CONF
 
         dialog_error = False
         if not config.getboolean( 'Version', 'UPDATING' ):
             try:
                 # LANCEMENT DU SCRIPT
-                import INSTALLEUR
-                INSTALLEUR.go()
+                import MainGui
+                MainGui.show_main()
             except:
                 logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
                 dialog_error = True
@@ -112,8 +109,8 @@ def MAIN():
                 scriptmaj = config.get( 'Version', 'SCRIPTMAJ' )
                 xbmc.executescript( scriptmaj )
 
-                #import INSTALLEUR
-                #INSTALLEUR.go()
+                #import MainGui
+                #MainGui.show_main()
             except:
                 logger.LOG( logger.LOG_DEBUG, "default : Exception pendant le chargement et/ou La mise a jour" )
                 logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
