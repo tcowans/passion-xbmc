@@ -21,19 +21,22 @@ from ConfigParser import ConfigParser
 import xbmc
 import xbmcgui
 
+# INITIALISATION CHEMIN RACINE
+ROOTDIR = os.getcwd().replace( ";", "" )
+
 # Shared resources
-BASE_RESOURCE_PATH = os.path.join( os.getcwd(), "resources" )
-#sys.path.append( os.path.join( BASE_RESOURCE_PATH, "libs" ) )
+BASE_RESOURCE_PATH = os.path.join( ROOTDIR, "resources" )
+# append the proper libs folder to our path
+sys.path.append( os.path.join( BASE_RESOURCE_PATH, "libs" ) )
+# append the proper GUI folder to our path
+sys.path.append( os.path.join( BASE_RESOURCE_PATH, "libs", "GUI" ) )
 # append the proper platforms folder to our path, xbox is the same as win32
 env = ( os.environ.get( "OS", "win32" ), "win32", )[ os.environ.get( "OS", "win32" ) == "xbox" ]
 sys.path.append( os.path.join( BASE_RESOURCE_PATH, "platform_libraries", env ) )
 
 #modules custom
-import resources.libs.script_log as logger
+import script_log as logger
 
-
-# INITIALISATION CHEMIN RACINE
-ROOTDIR = os.getcwd().replace( ";", "" )
 
 #frost: changer la langue par default pour l'anglais, car de cette maniere on ai pas obliger de rejouter le strings manquant dans les autres language
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE. ( ex: __language__( 0 ) = id="0" du fichier strings.xml )
@@ -75,13 +78,14 @@ def MAIN():
         DIALOG_PROGRESS.update( -1, __language__( 101 ), __language__( 110 ) )
         if not config.getboolean( 'InstallPath', 'pathok' ):
             # GENERATION DES INFORMATIONS LOCALES
-            from resources.libs import CONF
+            import CONF
             CONF.SetConfiguration()
+            del CONF
 
         # VERIFICATION DE LA MISE A JOUR
-        from resources.libs import CHECKMAJ
+        import CHECKMAJ
         try:
-            from resources.libs.utilities import Settings
+            from utilities import Settings
             CHECKMAJ.UPDATE_STARTUP = Settings().get_settings().get( "update_startup", True )
             del Settings
         except:
@@ -89,6 +93,7 @@ def MAIN():
         if CHECKMAJ.UPDATE_STARTUP:
             DIALOG_PROGRESS.update( -1, __language__( 102 ), __language__( 110 ) )
         CHECKMAJ.go()
+        del CHECKMAJ
 
         config.read( fichier )
 
@@ -96,7 +101,7 @@ def MAIN():
         if not config.getboolean( 'Version', 'UPDATING' ):
             try:
                 # LANCEMENT DU SCRIPT
-                from resources.libs import INSTALLEUR
+                import INSTALLEUR
                 INSTALLEUR.go()
             except:
                 logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
@@ -107,7 +112,7 @@ def MAIN():
                 scriptmaj = config.get( 'Version', 'SCRIPTMAJ' )
                 xbmc.executescript( scriptmaj )
 
-                #from resources.libs import INSTALLEUR
+                #import INSTALLEUR
                 #INSTALLEUR.go()
             except:
                 logger.LOG( logger.LOG_DEBUG, "default : Exception pendant le chargement et/ou La mise a jour" )
