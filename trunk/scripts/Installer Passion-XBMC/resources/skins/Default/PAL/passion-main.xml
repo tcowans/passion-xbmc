@@ -357,8 +357,25 @@
 							<texture>passion-list-nofocus.png</texture>
 							<visible>false</visible>
 						</control>
+                        <control type="image">
+                            <posx>3</posx>
+                            <posy>3</posy>
+                            <width>21</width>
+                            <height>21</height>
+                            <info>ListItem.ActualIcon</info>
+                            <visible>IsEmpty(ListItem.Property(Downloaded))</visible>
+                        </control>
+                        <control type="image">
+                            <posx>3</posx>
+                            <posy>3</posy>
+                            <width>21</width>
+                            <height>21</height>
+                            <info>ListItem.ActualIcon</info>
+                            <visible>!IsEmpty(ListItem.Property(Downloaded))</visible>
+                            <colordiffuse>60ffffff</colordiffuse>
+                        </control>
 						<control type="label">
-							<posx>5</posx>
+							<posx>28</posx>
 							<posy>2</posy>
 							<width>400</width>
 							<height>22</height>
@@ -391,8 +408,24 @@
 							<texture>passion-list-focus.png</texture>
 							<visible>Control.HasFocus(50)</visible>
 						</control>
+						<control type="image">
+							<width>480</width>
+							<height>26</height>
+							<posx>0</posx>
+							<posy>0</posy>
+							<texture>passion-list-nofocus.png</texture>
+							<visible>false</visible>
+						</control>
+                        <control type="image">
+                            <posx>3</posx>
+                            <posy>3</posy>
+                            <width>21</width>
+                            <height>21</height>
+                            <info>ListItem.ActualIcon</info>
+                            <visible>IsEmpty(ListItem.Property(Downloaded))</visible>
+                        </control>
 						<control type="label">
-							<posx>5</posx>
+							<posx>28</posx>
 							<posy>2</posy>
 							<width>400</width>
 							<height>22</height>
@@ -472,7 +505,7 @@
 						<width>100</width>
 						<height>100</height>
 						<aspectratio align="center" aligny="center">keep</aspectratio>
-						<info>Container(50).ListItem.Icon</info>
+						<info>Container.ListItem.Property(previewPicture)</info>
 						<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
 					</control>
 					<control type="image">
@@ -480,7 +513,7 @@
 						<posy>320</posy>
 						<width>100</width>
 						<height>50</height>
-						<info>Container(50).ListItem.Icon</info>
+						<info>Container.ListItem.Property(previewPicture)</info>
 						<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
 						<aspectratio align="center" aligny="top">stretch</aspectratio>
 						<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
