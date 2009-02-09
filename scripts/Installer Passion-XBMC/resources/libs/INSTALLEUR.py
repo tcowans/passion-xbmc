@@ -913,7 +913,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 currentListIndex = self.getCurrentListPosition()
                 if currentListIndex >= 0:
                     selectedItem = os.path.basename( self.curDirList[ currentListIndex ] )
-                    from dialog_item_descript import show_item_descript_window
+                    from DialogItemDescription import show_item_descript_window
                     show_item_descript_window( self, self.itemInfosManager, selectedItem, self.type )
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
@@ -921,7 +921,7 @@ class MainWindow( xbmcgui.WindowXML ):
     def _show_settings( self ):
         try:
             thumb_size_on_load = self.settings[ "thumb_size" ]
-            from dialog_script_settings import show_settings
+            from DialogSettings import show_settings
             show_settings( self )
             #on a plus besoin du settings, on le delete
             del show_settings
@@ -932,7 +932,7 @@ class MainWindow( xbmcgui.WindowXML ):
 
     def _show_direct_infos( self ):
         try:
-            from dialog_direct_infos import show_direct_infos
+            from ForumDirectInfos import show_direct_infos
             show_direct_infos( self )
             #on a plus besoin, on le delete
             del show_direct_infos
@@ -943,7 +943,7 @@ class MainWindow( xbmcgui.WindowXML ):
         try:
             # à pas oublier lors du changement des ID des listes ( self.getFocusId() == self.CONTROL_MAIN_LIST ), car bug en vue :)
             if ( not self.type.lower() in ( "racine", "plugins", ) ) and ( self.CONTROL_MAIN_LIST_START <= self.getFocusId() <= self.CONTROL_MAIN_LIST_END ):#( self.getFocusId() == self.CONTROL_MAIN_LIST ):
-                from context_menu import show_context_menu
+                from DialogContextMenu import show_context_menu
                 #buttons = { 1000 : ( "teste 1", "disabled" ), 1001 : "teste 2", 1002 : "teste 3",
                 #    1003 : "teste 4", 1004 : ( "teste 5", "disabled" ), 1005 : "teste 6", 1006 : "teste 7" }
                 buttons = { 1000: _( 1000 ), 1001: _( 1001 ), 1002: _( 1002 ) }
@@ -963,7 +963,7 @@ class MainWindow( xbmcgui.WindowXML ):
 
     def _switch_media( self ):
         try:
-            from context_menu import show_context_menu
+            from DialogContextMenu import show_context_menu
             buttons = { 1000: _( 11 ), 1001: _( 12 ), 1002: _( 13 ), 1003: _( 14 ),
                 1004: _( 18 ), 1005: _( 16 ), 1006: _( 15 ), 1007: _( 17 ) }
             selected = show_context_menu( buttons )
@@ -1372,7 +1372,7 @@ class MainWindow( xbmcgui.WindowXML ):
 
             elif controlID == self.CONTROL_FILE_MGR_BUTTON:
                 thumb_size_on_load = self.settings[ "thumb_size" ]
-                from dialog_file_mgr import show_file_manager
+                from FileManager import show_file_manager
                 show_file_manager( self )
                 #on a plus besoin du manager, on le delete
                 del show_file_manager
