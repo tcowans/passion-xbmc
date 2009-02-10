@@ -258,23 +258,27 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         Initialisation de l'interface
         """
         xbmcgui.WindowXML.__init__( self, *args, **kwargs )
+        from CONF import configCtrl
+        self.configManager = configCtrl()
+        if not self.configManager.is_conf_valid: raise
 
-        self.mainwin           = kwargs[ "mainwin" ] # depuis les nouvelles listes cette methode est pas trop bonne! a changer...
-        self.configManager     = self.mainwin.configManager
-        self.localdirList      = self.mainwin.localdirList      # Liste des repertoire locaux
+        self.rightstest        = kwargs[ "rightstest" ]
+        self._show_settings    = kwargs[ "mainfunctions" ][ 0 ]
+        self._close_script     = kwargs[ "mainfunctions" ][ 1 ]
 
-        #self.ItemTypeList      = self.mainwin.downloadTypeList  # Liste des types des items geres (plugins, scripts, skins ...)
-        #self.racineDisplayList = self.mainwin.racineDisplayList # Liste de la racine: Cette liste est un filtre ( utilisant l'index ) sur les listes downloadTypeList et localdirList
-        #self.pluginDisplayList = self.mainwin.pluginDisplayList # Liste des plugins : Cette liste est un filtre ( utilisant l'index ) sur les listes downloadTypeList et localdirList
+        self.localdirList      = self.configManager.localdirList      # Liste des repertoire locaux
+
+        #self.ItemTypeList      = self.configManager.downloadTypeLst  # Liste des types des items geres (plugins, scripts, skins ...)
+        #self.racineDisplayList = [ 0, 1, 2, 3 ] # Liste de la racine: Cette liste est un filtre ( utilisant l'index ) sur les listes downloadTypeList et localdirList
+        #self.pluginDisplayList = [ 4, 5, 6, 7 ] # Liste des plugins : Cette liste est un filtre ( utilisant l'index ) sur les listes downloadTypeList et localdirList
         self.itemTypeList      = typeList          # Liste des types des items geres (plugins, scripts, skins ...)
         self.itemThumbList     = thumbList         # Liste des icones standards
         self.rootDisplayList   = rootDisplayList   # Liste de la racine: Cette liste est un filtre ( utilisant l'index ) sur les listes downloadTypeList et localdirList
         self.pluginDisplayList = pluginDisplayList # Liste des plugins : Cette liste est un filtre ( utilisant l'index ) sur les listes downloadTypeList et localdirList
-        self.scraperDir        = self.mainwin.scraperDir
-        self.rightstest        = self.mainwin.rightstest
-        self.scriptDir         = self.mainwin.scriptDir
-        self.CacheDir          = self.mainwin.CacheDir
-        self.userDataDir       = self.mainwin.userDataDir
+        self.scraperDir        = self.configManager.scraperDir
+        self.scriptDir         = self.configManager.scriptDir
+        self.CacheDir          = self.configManager.CACHEDIR
+        self.userDataDir       = self.configManager.userdatadir
         #self.rightstest         = ""
 
         self.curListType        = TYPE_ROOT
@@ -321,9 +325,9 @@ class FileMgrWindow( xbmcgui.WindowXML ):
             elif controlID == self.CONTROL_INSTALLER_BUTTON:
                 self._close_dialog()
             elif controlID == self.CONTROL_FORUM_BUTTON:
-                self.mainwin._show_direct_infos()
+                self._show_direct_infos()
             elif controlID == self.CONTROL_OPTIONS_BUTTON:
-                self.mainwin._show_settings()
+                self._show_settings()
                 #on prend pas de chance reload ces fonctions
                 self._get_settings()
                 self._set_skin_colours()
@@ -332,7 +336,16 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                     self.updateDataAndList()
             elif controlID == self.CONTROL_EXIT_BUTTON:
                 self._close_dialog()
-                self.mainwin._close_script()
+                self._close_script()
+        except:
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+
+    def _show_direct_infos( self ):
+        try:
+            import ForumDirectInfos
+            ForumDirectInfos.show_direct_infos()
+            #on a plus besoin, on le delete
+            del ForumDirectInfos
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
@@ -375,7 +388,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
 
                 #on ferme le script en court pour pas generer des conflits
                 self._close_dialog()
-                self.mainwin._close_script()
+                self._close_script()
                 #maintenant qu'il y a plus de conflit possible, on execute la command
                 xbmc.executebuiltin( command )
 
@@ -807,7 +820,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         self.close()
 
 
-def show_file_manager( mainwin ):
+def show_file_manager( mainfunctions, rightstest="" ):
     """
     Affiche la fenetre du gestionnaire de fichier
     Merci a Frost pour l'algo
@@ -817,6 +830,6 @@ def show_file_manager( mainwin ):
     #recupere le nom du skin et si force_fallback est vrai, il va chercher les images du defaultSkin.
     current_skin, force_fallback = getUserSkin() # Appel fonction dans Utilities
 
-    w = FileMgrWindow( file_xml, dir_path, current_skin, force_fallback, mainwin=mainwin )
+    w = FileMgrWindow( file_xml, dir_path, current_skin, force_fallback, mainfunctions=mainfunctions, rightstest=rightstest )
     w.doModal()
     del w
