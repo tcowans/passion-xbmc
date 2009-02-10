@@ -24,6 +24,8 @@ except:
     import script_log as logger
 
 
+SPECIAL_SCRIPT_DATA = sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA
+
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
 _ = sys.modules[ "__main__" ].__language__
 
@@ -261,10 +263,10 @@ class MainWindow( xbmcgui.WindowXML ):
     def _show_settings( self ):
         try:
             thumb_size_on_load = self.settings[ "thumb_size" ]
-            from DialogSettings import show_settings
-            show_settings( self )
+            import DialogSettings
+            DialogSettings.show_settings( self )
             #on a plus besoin du settings, on le delete
-            del show_settings
+            del DialogSettings
             if thumb_size_on_load != self.settings[ "thumb_size" ]:
                 self.updateList() #on raffraichit la page pour afficher la taille des vignettes
         except:
@@ -272,22 +274,22 @@ class MainWindow( xbmcgui.WindowXML ):
 
     def _show_direct_infos( self ):
         try:
-            from ForumDirectInfos import show_direct_infos
-            show_direct_infos( self )
+            import ForumDirectInfos
+            ForumDirectInfos.show_direct_infos()
             #on a plus besoin, on le delete
-            del show_direct_infos
+            del ForumDirectInfos
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def _show_context_menu( self ):
         try:
             if ( not self.type.lower() in ( "racine", "plugins", ) ) and ( self.CONTROL_MAIN_LIST_START <= self.getFocusId() <= self.CONTROL_MAIN_LIST_END ):#( self.getFocusId() == self.CONTROL_MAIN_LIST ):
-                from DialogContextMenu import show_context_menu
+                import DialogContextMenu
                 #buttons = { 1000 : ( "teste 1", "disabled" ), 1001 : "teste 2", 1002 : "teste 3",
                 #    1003 : "teste 4", 1004 : ( "teste 5", "disabled" ), 1005 : "teste 6", 1006 : "teste 7" }
                 buttons = { 1000: _( 1000 ), 1001: _( 1001 ), 1002: _( 1002 ) }
-                selected = show_context_menu( buttons )
-                del show_context_menu
+                selected = DialogContextMenu.show_context_menu( buttons )
+                del sDialogContextMenu
                 if selected == 1000:
                     #installe add-ons
                     self.install_add_ons()
@@ -302,11 +304,11 @@ class MainWindow( xbmcgui.WindowXML ):
 
     def _switch_media( self ):
         try:
-            from DialogContextMenu import show_context_menu
+            import DialogContextMenu
             buttons = { 1000: _( 11 ), 1001: _( 12 ), 1002: _( 13 ), 1003: _( 14 ),
                 1004: _( 18 ), 1005: _( 16 ), 1006: _( 15 ), 1007: _( 17 ) }
-            selected = show_context_menu( buttons )
-            del show_context_menu
+            selected = DialogContextMenu.show_context_menu( buttons )
+            del DialogContextMenu
             switch = None
             if selected == 1000:
                 switch = "Themes"
@@ -711,10 +713,10 @@ class MainWindow( xbmcgui.WindowXML ):
 
             elif controlID == self.CONTROL_FILE_MGR_BUTTON:
                 thumb_size_on_load = self.settings[ "thumb_size" ]
-                from FileManager import show_file_manager
-                show_file_manager( self )
+                import FileManager
+                FileManager.show_file_manager( self )
                 #on a plus besoin du manager, on le delete
-                del show_file_manager
+                del FileManager
                 if thumb_size_on_load != self.settings[ "thumb_size" ]:
                     self.updateList() #on raffraichit la page pour afficher la taille des vignettes
 
@@ -731,19 +733,20 @@ class MainWindow( xbmcgui.WindowXML ):
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def _load_downloaded_property( self ):
+        self.downloaded_property = set()
         try:
-            file_path = os.path.join( logger.DIRECTORY_DATA, "downloaded.txt" )
-            self.downloaded_property = eval( file( file_path, "r" ).read() )
+            file_path = os.path.join( SPECIAL_SCRIPT_DATA, "downloaded.txt" )
+            if os.path.exists( file_path ):
+                self.downloaded_property = eval( file( file_path, "r" ).read() )
         except:
             logger.EXC_INFO( logger.LOG_DEBUG, sys.exc_info(), self )
-            self.downloaded_property = set()
 
     def _save_downloaded_property( self ):
         try:
             self._load_downloaded_property()
             selected_label = self.getListItem( self.getCurrentListPosition() ).getLabel()
             self.downloaded_property.update( [ md5.new( selected_label ).hexdigest() ] )
-            file_path = os.path.join( logger.DIRECTORY_DATA, "downloaded.txt" )
+            file_path = os.path.join( SPECIAL_SCRIPT_DATA, "downloaded.txt" )
             file( file_path, "w" ).write( repr( self.downloaded_property ) )
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
@@ -1056,7 +1059,6 @@ class MainWindow( xbmcgui.WindowXML ):
             result = False
 
         return result
-
 
     def verifrep( self, folder ):
         """

@@ -15,6 +15,8 @@ except:
     print_exc()
 
 
+SPECIAL_SCRIPT_DATA = sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA
+
 #for use DEBUG_MODE change value [ 0 ] to [ 1 ], and all LOG(...) will be written in the xbmc.log
 DEBUG_MODE = ( None, "DEBUGS", )[ 0 ]
 
@@ -22,8 +24,6 @@ DEBUG_MODE = ( None, "DEBUGS", )[ 0 ]
 try:
     try: __script__ = sys.modules[ "__main__" ].__script__
     except: __script__ = "Installer Passion-XBMC"
-    DIRECTORY_DATA = os.path.join( xbmc.translatePath( "T:\\script_data" ), __script__ )
-    if not os.path.isdir( DIRECTORY_DATA ): os.makedirs( DIRECTORY_DATA )
 
     try: __svn_revision__ = sys.modules[ "__main__" ].__svn_revision__
     except: __svn_revision__ = 0
@@ -35,8 +35,8 @@ try:
     try: __date__ = sys.modules[ "__main__" ].__date__
     except: __date__ = CURRENT_DATE
 
-    LOG_SCRIPT = os.path.join( DIRECTORY_DATA, "%s.log" % ( __script__, ) )
-    LOG_OLD = os.path.join( DIRECTORY_DATA, "%s.old.log" % ( __script__, ) )
+    LOG_SCRIPT = os.path.join( SPECIAL_SCRIPT_DATA, "%s.log" % ( __script__, ) )
+    LOG_OLD = os.path.join( SPECIAL_SCRIPT_DATA, "%s.old.log" % ( __script__, ) )
 
     SEPARATOR = str( "-" * 85 )
 
@@ -141,7 +141,7 @@ def create_log_file():
             platform = ( os.environ.get( "OS", "" ).lower() or "Unknown" )
             platform = platform.replace( "linux", "GNU/Linux" ).replace( "osx", "Mac OS X" ).replace( "win32", "Windows" ).replace( "xbox", "XBox" ).replace( "os x", "Mac OS X" )
             LOG( LOG_NOTICE, "XBMC, Platform: %s (version: %s).  Built on %s", platform, xbmc.getInfoLabel( "System.BuildVersion" ), xbmc.getInfoLabel( "System.BuildDate" ) )
-            LOG( LOG_NOTICE, "Q is mapped to: %s", xbmc.translatePath( ( "U:\\", "Q:\\", )[ ( platform == "XBox" ) ] ) )
+            LOG( LOG_NOTICE, "Q is mapped to: %s", sys.modules[ "__main__" ].SPECIAL_XBMC_HOME )
             LOG( LOG_NOTICE, "The executable script running is: %s", os.path.join( os.getcwd().rstrip( ";" ), sys.modules[ "__main__" ].__file__ ) )
             LOG( LOG_NOTICE, "Log File is located: %s", LOG_SCRIPT )
             LOG( LOG_NOTICE, SEPARATOR )

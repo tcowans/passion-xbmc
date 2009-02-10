@@ -10,9 +10,7 @@ import xbmc
 
 
 #set temp file path
-TEMP_DIR = xbmc.translatePath( "special://temp/" )
-if not os.path.isdir( TEMP_DIR ): TEMP_DIR = xbmc.translatePath( "Z:\\" )
-TEMP_FILE = os.path.join( TEMP_DIR, "temp.jpg" )
+TEMP_FILE = os.path.join( sys.modules[ "__main__" ].SPECIAL_TEMP_DIR, "temp.jpg" )
 
 
 def _samefile( src, dst ):

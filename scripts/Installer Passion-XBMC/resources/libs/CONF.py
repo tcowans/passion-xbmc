@@ -14,28 +14,25 @@ try:
 except:
     import script_log as logger
 
-try: __script__ = sys.modules[ "__main__" ].__script__
-except: __script__ = os.path.basename( os.getcwd().replace( ";", "" ) )
 
 default_conf = os.path.join( os.getcwd().replace( ";", "" ), "resources", "conf.cfg" )
-userdata_conf = xbmc.translatePath( "special://profile/" )
-if not os.path.exists( userdata_conf ): userdata_conf = xbmc.translatePath( "P:\\" )
-fichier = os.path.join( userdata_conf, "script_data" , __script__, "conf.cfg" )
+profile_conf = os.path.join( sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA, "conf.cfg" )
 
 
 def ReadConfig():
     config = ConfigParser()
-    if not os.path.exists( fichier ):
+    if not os.path.exists( profile_conf ):
         config.read( default_conf )
-        config.write( open( fichier, "w" ) )
+        config.write( open( profile_conf, "w" ) )
 
-    config.read( fichier )
+    config.read( profile_conf )
     return config
 
 
 def SetConfiguration():
     """ Definit les repertoires locaux de l'utilisateur """
-    from utilities import SYSTEM_PLATFORM, XBMC_ROOT
+    from utilities import SYSTEM_PLATFORM
+    XBMC_ROOT = sys.modules[ "__main__" ].SPECIAL_XBMC_HOME
 
     logger.LOG( logger.LOG_DEBUG, str( "*" * 85 ) )
     logger.LOG( logger.LOG_DEBUG, "Setting Configuration".center( 85 ) )
@@ -90,7 +87,7 @@ def SetConfiguration():
 
     #Save configuration
     config.set( "InstallPath", "pathok", True )
-    config.write( open( fichier, "w" ) )
+    config.write( open( profile_conf, "w" ) )
 
 
 class configCtrl:

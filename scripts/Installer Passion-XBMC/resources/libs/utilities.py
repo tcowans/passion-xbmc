@@ -14,7 +14,6 @@ Module de partage des fonctions et des constantes
 __all__ = [
     # public names
     "SYSTEM_PLATFORM",
-    "XBMC_ROOT",
     "parse_rss_xml",
     "set_web_navigator",
     "is_playable_media",
@@ -53,12 +52,7 @@ except:
 #REPERTOIRE RACINE ( default.py )
 CWD = os.getcwd().rstrip( ";" )
 
-try: __script__ = sys.modules[ "__main__" ].__script__
-except: __script__ = os.path.basename( CWD )
-
-USERDATA_PATH = xbmc.translatePath( "special://profile/" )
-if not os.path.exists( USERDATA_PATH ): USERDATA_PATH = xbmc.translatePath( "P:\\" )
-BASE_SETTINGS_PATH = os.path.join( USERDATA_PATH, "script_data", __script__, "settings.txt" )
+BASE_SETTINGS_PATH = os.path.join( sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA, "settings.txt" )
 RSS_FEEDS_XML = os.path.join( CWD, "resources", "RssFeeds.xml" )
 
 
@@ -76,8 +70,6 @@ def get_system_platform():
     return platform
 
 SYSTEM_PLATFORM = get_system_platform()
-# we use "U:\\" for linux, windows and osx for platform mode and "Q:\\" for xbox
-XBMC_ROOT = xbmc.translatePath( ( "U:\\", "Q:\\", )[ ( SYSTEM_PLATFORM == "xbox" ) ] )
 
 
 def parse_rss_xml( xml_path=RSS_FEEDS_XML ):

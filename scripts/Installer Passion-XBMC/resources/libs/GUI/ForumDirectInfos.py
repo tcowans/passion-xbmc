@@ -24,6 +24,8 @@ except:
     import script_log as logger
 
 
+SPECIAL_TEMP_DIR = sys.modules[ "__main__" ].SPECIAL_TEMP_DIR
+
 DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
@@ -91,7 +93,6 @@ class DirectInfos( xbmcgui.WindowXML ):
     def __init__( self, *args, **kwargs ):
         xbmcgui.WindowXML.__init__( self, *args, **kwargs )
         self.list_container_150 = LIST_CONTAINER_150()
-        self.mainwin = kwargs[ "mainwin" ]
         self.is_started = True
 
     def onInit( self ):
@@ -255,9 +256,6 @@ class DirectInfos( xbmcgui.WindowXML ):
                     except:
                         os.system( "%s %s" % ( web_navigator, url, ) )
 
-            #self._close_dialog()
-            #self.mainwin._close_script()
-
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
@@ -282,8 +280,6 @@ class DirectInfos( xbmcgui.WindowXML ):
     def onAction( self, action ):
         #( ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, ACTION_CONTEXT_MENU, )
         if action in ( 9, 10, 117, ): self._close_dialog()
-        # show settings dialog
-        #if action == 117: self.mainwin._show_settings()
         # show slideshow
         if action == 11:
             try:
@@ -293,9 +289,7 @@ class DirectInfos( xbmcgui.WindowXML ):
                     if screens and len( screens ) == 1:
                         xbmc.executehttpapi( "ShowPicture(%s)" % ( screens[ 0 ], ) )
                     elif screens:
-                        TEMP_DIR = xbmc.translatePath( "special://temp/" )
-                        if not os.path.isdir( TEMP_DIR ): TEMP_DIR = xbmc.translatePath( "Z:\\" )
-                        m3u = os.path.join( TEMP_DIR, "passion_slideshow.m3u" )
+                        m3u = os.path.join( SPECIAL_TEMP_DIR, "passion_slideshow.m3u" )
                         f = open( m3u, "w+" )
                         f.write( "#EXTM3U" )
                         for count, screen in enumerate( screens ):
@@ -310,12 +304,12 @@ class DirectInfos( xbmcgui.WindowXML ):
         self.close()
 
 
-def show_direct_infos( mainwin ):
+def show_direct_infos():
     file_xml = "passion-DirectInfos.xml"
     dir_path = os.getcwd().rstrip( ";" )
     #recupere le nom du skin et si force_fallback est vrai, il va chercher les images du defaultSkin.
     current_skin, force_fallback = getUserSkin()
 
-    w = DirectInfos( file_xml, dir_path, current_skin, force_fallback, mainwin=mainwin )
+    w = DirectInfos( file_xml, dir_path, current_skin, force_fallback )
     w.doModal()
     del w

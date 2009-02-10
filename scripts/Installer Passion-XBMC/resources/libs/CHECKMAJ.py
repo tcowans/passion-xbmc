@@ -37,12 +37,8 @@ class CheckMAJ:
         ##############################################################################
         #                   Initialisation conf.cfg                                  #
         ##############################################################################
-        try: __script__ = sys.modules[ "__main__" ].__script__
-        except: __script__ = os.path.basename( CWD )
 
-        userdata_conf = xbmc.translatePath( "special://profile/" )
-        if not os.path.exists( userdata_conf ): userdata_conf = xbmc.translatePath( "P:\\" )
-        self.fichier = os.path.join( userdata_conf, "script_data" , __script__, "conf.cfg" )
+        self.fichier = os.path.join( sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA, "conf.cfg" )
         #self.fichier = os.path.join(self.rootdir, "resources", "conf.cfg")
 
         import CONF
