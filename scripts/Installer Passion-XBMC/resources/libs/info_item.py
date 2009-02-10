@@ -333,12 +333,14 @@ class InfoWarehouseEltTreeXMLFTP( InfoWarehouse ):
         if os.path.exists( cached_thumbs[ 1 ] ):
             previewPicture = cached_thumbs[ 1 ]
         else:
-            previewPicture = None
+            previewPicture = set_cache_thumb_name( "passion-noImageAvailable.jpg" )
         
         # Notifie la callback de mettre a jour l'image
         if updateImage_cb:
-            try: updateImage_cb( cached_thumbs[ 1 ] )
-            except TypeError: pass
+            try: 
+                updateImage_cb( previewPicture, listitem )
+            except TypeError: 
+                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def check_thumb_size( self ):
         if self.thumb_size_on_load != self.mainwin.settings[ "thumb_size" ]:

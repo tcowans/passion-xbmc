@@ -86,7 +86,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
         #DIALOG_PROGRESS.close()
 
 
-    def _updateThumb_cb (self, imagePath):
+    def _updateThumb_cb (self, imagePath, listitem=None):
         if imagePath != None:
             self.getControl( self.CONTROL_PREVIEW_IMAGE ).setImage(imagePath)
         self.getControl( 200 ).setVisible( 1 )
