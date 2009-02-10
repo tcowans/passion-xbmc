@@ -9,7 +9,7 @@ __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center"
 __date__         = "08-02-2009"
 __version__      = "pre-1.0.0"
-__svn_revision__ = 
+__svn_revision__ = 0
 
 
 #Modules general
