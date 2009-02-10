@@ -18,24 +18,27 @@ import sys
 from xbmc import translatePath
 
 
+PLATFORM_MAC = os.environ.get( "OS", "" ).lower() == "os x"
+
+
 try: scriptname = sys.modules[ "__main__" ].__script__
 except: scriptname = os.path.basename( os.getcwd() )
 
 
 SPECIAL_XBMC_DIR = translatePath( "special://xbmc/" )
-if not os.path.isdir( SPECIAL_XBMC_DIR  ): SPECIAL_XBMC_DIR = translatePath( "Q:\\" )
+if PLATFORM_MAC or not os.path.isdir( SPECIAL_XBMC_DIR  ): SPECIAL_XBMC_DIR = translatePath( "Q:\\" )
 
 SPECIAL_HOME_DIR = translatePath( "special://home/" )
-if not os.path.isdir( SPECIAL_HOME_DIR  ): SPECIAL_HOME_DIR = translatePath( "U:\\" )
+if PLATFORM_MAC or not os.path.isdir( SPECIAL_HOME_DIR  ): SPECIAL_HOME_DIR = translatePath( "U:\\" )
 
 SPECIAL_TEMP_DIR = translatePath( "special://temp/" )
-if not os.path.isdir( SPECIAL_TEMP_DIR  ): SPECIAL_TEMP_DIR = translatePath( "Z:\\" )
+if PLATFORM_MAC or not os.path.isdir( SPECIAL_TEMP_DIR  ): SPECIAL_TEMP_DIR = translatePath( "Z:\\" )
 
 SPECIAL_PROFILE_DIR = translatePath( "special://profile/" )
-if not os.path.isdir( SPECIAL_PROFILE_DIR  ): SPECIAL_PROFILE_DIR = translatePath( "P:\\" )
+if PLATFORM_MAC or not os.path.isdir( SPECIAL_PROFILE_DIR  ): SPECIAL_PROFILE_DIR = translatePath( "P:\\" )
 
 SPECIAL_MASTERPROFILE_DIR = translatePath( "special://masterprofile/" )
-if not os.path.isdir( SPECIAL_MASTERPROFILE_DIR  ): SPECIAL_MASTERPROFILE_DIR = translatePath( "T:\\" )
+if PLATFORM_MAC or not os.path.isdir( SPECIAL_MASTERPROFILE_DIR  ): SPECIAL_MASTERPROFILE_DIR = translatePath( "T:\\" )
 
 SPECIAL_XBMC_HOME = ( SPECIAL_HOME_DIR, SPECIAL_XBMC_DIR )[ ( os.environ.get( "OS", "xbox" ).lower() == "xbox" ) ]
 
