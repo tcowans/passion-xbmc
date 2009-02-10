@@ -1,4 +1,7 @@
 
+# GET AND PRINT ALL STATS OF SCRIPT 
+TEST_PERFORMANCE = False
+
 # script constants
 __script__       = "Installer Passion-XBMC"
 __plugin__       = "Unknown"
@@ -125,7 +128,14 @@ def MAIN():
 if __name__ == "__main__":
     try:
         DIALOG_PROGRESS.create( __language__( 0 ), "", "" )
-        MAIN()
+        if TEST_PERFORMANCE:
+            import profile, pstats
+            report_file = os.path.join( ROOTDIR, "MainPerform.profile.log" )
+            profile.run( "MAIN()", report_file )
+            pstats.Stats( report_file ).sort_stats( "time", "name" ).print_stats()
+        else:
+            MAIN()
     except:
+        #import traceback; traceback.print_exc()
         logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
         DIALOG_PROGRESS.close()
