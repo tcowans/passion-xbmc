@@ -299,14 +299,10 @@ class Settings:
 try:
     """
     getRegion(id) -- Returns your regions setting as a string for the specified id.
-     
     id             : string - id of setting to return
-     
     *Note, choices are (dateshort, datelong, time, meridiem, tempunit, speedunit)
-     
            You can use the above as keywords for arguments and skip certain optional arguments.
            Once you use a keyword, all following arguments require the keyword.
-     
     example:
       - date_long_format = xbmc.getRegion('datelong')
     """

@@ -964,7 +964,7 @@ class MainWindow( xbmcgui.WindowXML ):
 
         DIALOG_PROGRESS.close()
 
-    def _updateListThumb_cb (self, imagePath, listitem ):
+    def _updateListThumb_cb( self, imagePath, listitem ):
         if ( imagePath != None and listitem != None ) :
             listitem.setThumbnailImage( imagePath )
 

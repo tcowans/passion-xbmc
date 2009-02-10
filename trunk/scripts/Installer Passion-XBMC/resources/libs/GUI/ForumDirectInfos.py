@@ -111,8 +111,8 @@ class DirectInfos( xbmcgui.WindowXML ):
         self.settings = Settings().get_settings( defaults=defaults )
         #voir les settings il a une erreur avec ~~
         self.topics_limit = self.settings[ "topics_limit" ]
-        if ( self.topics_limit == "00" ) or ( "~" in self.topics_limit ):
-            self.topics_limit = "500"
+        #if ( self.topics_limit == "00" ) or ( "~" in self.topics_limit ):
+        #    self.topics_limit = "500"
 
     def _set_skin_colours( self ):
         #xbmcgui.lock()

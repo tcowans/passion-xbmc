@@ -56,9 +56,9 @@ CLOSE_CONTEXT_MENU = ( ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, ACTION_CONTEXT_M
 
 TYPE_ROOT            = _( 10 )
 TYPE_SKIN            = _( 11 )
-TYPE_SCRAPER         = _( 12 )      
-TYPE_SCRIPT          = _( 13 )      
-TYPE_PLUGIN          = _( 14 )  
+TYPE_SCRAPER         = _( 12 )
+TYPE_SCRIPT          = _( 13 )
+TYPE_PLUGIN          = _( 14 )
 TYPE_PLUGIN_MUSIC    = _( 15 )
 TYPE_PLUGIN_PICTURES = _( 16 )
 TYPE_PLUGIN_PROGRAMS = _( 17 )
@@ -66,14 +66,13 @@ TYPE_PLUGIN_VIDEO    = _( 18 )
 
 #INDEX_ROOT            = None
 INDEX_SKIN            = 0
-INDEX_SCRAPER         = 1      
-INDEX_SCRIPT          = 2      
-INDEX_PLUGIN          = 3  
+INDEX_SCRAPER         = 1
+INDEX_SCRIPT          = 2
+INDEX_PLUGIN          = 3
 INDEX_PLUGIN_MUSIC    = 4
 INDEX_PLUGIN_PICTURES = 5
 INDEX_PLUGIN_PROGRAMS = 6
 INDEX_PLUGIN_VIDEO    = 7
-
 
 
 
@@ -110,21 +109,19 @@ class ListItemObject:
         self.thumb      = thumb
 
     def __repr__(self):
-        return "(%s, %s, %s, %s)" % ( self.type, self.name, self.local_path, self.thumb ) 
+        return "(%s, %s, %s, %s)" % ( self.type, self.name, self.local_path, self.thumb )
 
 
 class fileMgr:
     """
-    
     File manager
-    
     """
 #    #TODO: Create superclass, inherit and overwrite init
 #    def __init__(self,checkList):
 ##        self.verifrep(checkList[0]) #CACHEDIR
 ##        self.verifrep(checkList[1]) #DOWNLOADDIR
 #        for i in range(len(checkList)):
-#            self.verifrep(checkList[i]) 
+#            self.verifrep(checkList[i])
 #
 #        # Set variables needed by NABBOX module
 #        NABBOX.HTMLFOLDER = checkList[0] #CACHEDIR
@@ -142,23 +139,23 @@ class fileMgr:
         except Exception, e:
             logger.LOG( logger.LOG_DEBUG, "verifrep: Exception durant la suppression du reperoire: %s", folder )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-            
+
     def listDirFiles(self, path):
         """
         List the files of a directory
         @param path:
         """
         logger.LOG( logger.LOG_DEBUG, "listDirFiles: Liste le repertoire: %s", path )
-        dirList = os.listdir( str( path ) )        
+        dirList = os.listdir( str( path ) )
 
         return dirList
-        
+
     def renameItem( self, base_path, old_name, new_name):
         """
         Renomme un fichier ou repertoire
         """
         os.rename( os.path.join(base_path, old_name), os.path.join(base_path, new_name) )
-    
+
     def deleteItem( self, item_path):
         """
         Supprime un element (repertoire ou fichier)
@@ -167,14 +164,14 @@ class fileMgr:
             self.deleteDir(item_path)
         else:
             self.deleteFile(item_path)
-            
+
     def deleteFile(self, filename):
         """
         Delete a file form download directory
         @param filename:
         """
         os.remove(filename)
-            
+
     def deleteDir( self, path ):
         """
         Efface un repertoire et tout son contenu ( le repertoire n'a pas besoin d'etre vide )
@@ -208,13 +205,12 @@ class fileMgr:
             result = False
 
         return result
-    
+
     def extract(self,archive,targetDir):
         """
         Extract an archive in targetDir
         """
         xbmc.executebuiltin('XBMC.Extract(%s,%s)'%(archive,targetDir) )
-        
 
     def linux_is_write_access( self, path ):
         """
@@ -229,7 +225,7 @@ class fileMgr:
             logger.LOG( logger.LOG_NOTICE, "linux chmod rightest NOT OK for %s"%path )
             rightstest = False
         return rightstest
-        
+
     def linux_set_write_access( self, path, password ):
         """
         Linux
@@ -280,7 +276,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         self.CacheDir          = self.mainwin.CacheDir
         self.userDataDir       = self.mainwin.userDataDir
         #self.rightstest         = ""
-        
+
         self.curListType        = TYPE_ROOT
         self.currentItemList    = []
         self.index              = ""
@@ -296,10 +292,10 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         self._get_settings()
         self._set_skin_colours()
         self.pardir_not_hidden = self.settings.get( "pardir_not_hidden", 1 )
-        
+
         # Verifications des permissions sur les repertoires
         self.check_w_rights()
-        
+
         self.updateDataAndList()
         xbmc.executebuiltin( "Container.SetViewMode(%i)" % self.settings.get( "manager_view_mode", self.CONTROL_MAIN_LIST_START ) )
 
@@ -386,7 +382,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
             elif selected == 1001: # Renommer
                 # Renommer l'element
                 item_dirname  = os.path.dirname( item_path )
-                
+
                 if ( self.curListType == TYPE_SCRAPER ):
                     icon_path     = self.currentItemList[ self.index-self.pardir_not_hidden ].thumb # On extrait le chemin de l'icone
                     icon_basename = os.path.basename( icon_path )
@@ -422,11 +418,11 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                         self.fileMgr.deleteItem( item_path )
                         if not icon_path in self.itemThumbList:
                             self.fileMgr.deleteItem( icon_path )
-                        self.updateDataAndList() 
-                else:    
+                        self.updateDataAndList()
+                else:
                     if xbmcgui.Dialog().yesno( _( 158 )%item_basename, _( 159 )%item_basename ):
                         self.fileMgr.deleteItem( item_path )
-                        self.updateDataAndList() 
+                        self.updateDataAndList()
 
             elif selected == 1003:
                 # copier l'element
@@ -581,7 +577,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
             try:
                 # on verifie si on est un sous plugin
                 #if ( TYPE_PLUGIN + ' ' in self.curListType ):
-                if ( self.itemTypeList.index(self.curListType) in self.pluginDisplayList ): 
+                if ( self.itemTypeList.index(self.curListType) in self.pluginDisplayList ):
                     self.curListType = TYPE_PLUGIN
                 else:
                     # cas standard
@@ -665,10 +661,10 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         try:
             # Vide la liste
             del self.currentItemList[:]
-            
+
             #if xbmc.getCondVisibility( "!Window.IsActive(progressdialog)" ):
             #    DIALOG_PROGRESS.create( _( 0 ), _( 104 ), _( 110 ) )
-                
+
             # Recuperation des infos
             if ( self.curListType == TYPE_ROOT ):
                 for index, filterIdx in enumerate( self.rootDisplayList ):
@@ -683,7 +679,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                 listdir = self.fileMgr.listDirFiles( self.localdirList[ self.itemTypeList.index(self.curListType) ] )
                 listdir.sort( key=str.lower )
                 for index, item  in enumerate( listdir ):
-                    # Note:  dans le futur on pourra ici initialiser 'thumb' avec l'icone du script, plugin, themes ... 
+                    # Note:  dans le futur on pourra ici initialiser 'thumb' avec l'icone du script, plugin, themes ...
                     #        pour le moment on prend l'icone correspondant au type
                     script_path    = os.path.join(self.localdirList[ self.itemTypeList.index(self.curListType) ],item)
                     thumbnail_path = os.path.join(script_path, "default.tbn")
@@ -717,7 +713,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                 listdir = self.fileMgr.listDirFiles( self.localdirList[ self.itemTypeList.index(self.curListType) ] )
                 listdir.sort( key=str.lower )
                 for index, item  in enumerate( listdir ):
-                    # Note:  dans le futur on pourra ici initialiser 'thumb' avec l'icone du script, plugin, themes ... 
+                    # Note:  dans le futur on pourra ici initialiser 'thumb' avec l'icone du script, plugin, themes ...
                     #        pour le moment on prend l'icone correspondant au type
                     listItemObj = ListItemObject( type=self.curListType, name=item, local_path=os.path.join(self.localdirList[ self.itemTypeList.index(self.curListType) ],item), thumb=self.itemThumbList[ self.itemTypeList.index(self.curListType) ] )
                     self.currentItemList.append(listItemObj)
@@ -785,7 +781,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                     # Au moins un element n'a pas les droit, on ne pas pas plus loin et on demande le mot de passe
                     set_write_access = True
                     break
-                
+
             if ( set_write_access == True ):
                 # On parcoure tous les repertoire et on met a jour les droits si besoin
                 xbmcgui.Dialog().ok( _( 19 ), _( 20 ) )
@@ -801,7 +797,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
     def _close_dialog( self ):
         #xbmc.sleep( 100 )
         for id in range( self.CONTROL_MAIN_LIST_START, self.CONTROL_MAIN_LIST_END + 1 ):
-            try: 
+            try:
                 if xbmc.getCondVisibility( "Control.IsVisible(%i)" % id ):
                     self.settings[ "manager_view_mode" ] = id
                     Settings().save_settings( self.settings )

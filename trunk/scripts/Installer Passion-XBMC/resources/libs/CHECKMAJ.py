@@ -111,7 +111,7 @@ class CheckMAJ:
         self.ftp.retrbinary('RETR ' + self.filetodl, localFile.write)
         localFile.close()
         self.ftp.quit()
-        
+
     def orientation(self):
         """
         Oriente le script vers une mise a jour ou non
@@ -136,7 +136,7 @@ class CheckMAJ:
             remoteConfParser = ConfigParser()
             remoteConfParser.read(self.completedfile)
             self.newversion = remoteConfParser.get('Lastversion','lastversion')
-            
+
             # Suppression de l'instance du config parser de remoteConf
             del remoteConfParser
         else:
@@ -151,7 +151,7 @@ class CheckMAJ:
             # Message a l'utilisateur pour l'update
             dialog = xbmcgui.Dialog()
             if dialog.yesno( _( 0 ), _( 105 ), _( 106 ) ):
-            
+
                 #Telechargement de la nouvelle archive
                 self.filetodl = self.newscript
                 self.download()
@@ -160,7 +160,7 @@ class CheckMAJ:
                 self.filetodl = self.installmaj
                 self.download()
                 scriptmaj = self.completedfile
-    
+
                 self.localConfParser.set("Version", "UPDATING", True)
                 self.localConfParser.set("Version", "scriptMAJ", scriptmaj)
                 self.localConfParser.write(open(self.fichier,'w'))

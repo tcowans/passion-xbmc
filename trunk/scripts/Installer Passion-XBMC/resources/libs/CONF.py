@@ -36,7 +36,7 @@ def ReadConfig():
 def SetConfiguration():
     """ Definit les repertoires locaux de l'utilisateur """
     from utilities import SYSTEM_PLATFORM, XBMC_ROOT
-    
+
     logger.LOG( logger.LOG_DEBUG, str( "*" * 85 ) )
     logger.LOG( logger.LOG_DEBUG, "Setting Configuration".center( 85 ) )
     logger.LOG( logger.LOG_DEBUG, str( "*" * 85 ) )
