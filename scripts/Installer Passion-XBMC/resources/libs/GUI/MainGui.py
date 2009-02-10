@@ -839,8 +839,8 @@ class MainWindow( xbmcgui.WindowXML ):
                     sectionLocTitle = _( 14 )
 
                 displayListItem = xbmcgui.ListItem( sectionLocTitle, "", iconImage=imagePath, thumbnailImage=imagePath )
+                displayListItem.setProperty( "title", sectionLocTitle )
                 displayListItem.setProperty( "Downloaded", "" )
-                displayListItem.setProperty( "previewPicture",  imagePath )
                 self.addItem( displayListItem )
                 
             elif ( self.type == "Plugins" ):
@@ -867,8 +867,8 @@ class MainWindow( xbmcgui.WindowXML ):
                     sectionLocTitle = _( 18 )
 
                 displayListItem = xbmcgui.ListItem( sectionLocTitle, "", iconImage=imagePath, thumbnailImage=imagePath )
+                displayListItem.setProperty( "title", sectionLocTitle )
                 displayListItem.setProperty( "Downloaded", "" )
-                displayListItem.setProperty( "previewPicture",  imagePath )
                 self.addItem( displayListItem )
             
             
@@ -973,9 +973,10 @@ class MainWindow( xbmcgui.WindowXML ):
             listitem.setProperty( "language",        infos[ 3 ] or "" )
             listitem.setProperty( "date",            infos[ 4 ] or "" )
             listitem.setProperty( "added",           infos[ 5 ] or infos[ 4 ] or "" )
-            listitem.setProperty( "previewPicture",  infos[ 6 ] or "passion-noImageAvailable.jpg" ) 
+            #listitem.setProperty( "previewPicture",  infos[ 6 ] or "passion-noImageAvailable.jpg" ) 
             listitem.setProperty( "fanartpicture",   infos[ 6 ] or "" ) # used for simulate fanart
             #listitem.setProperty( "previewVideoURL", infos[ 7 ] or "" )
+            #listitem.setThumbnailImage( "passion-noImageAvailable.jpg" )
 
             desc_fr = infos[ 8 ] or ""
             desc_us = infos[ 9 ] or ""
