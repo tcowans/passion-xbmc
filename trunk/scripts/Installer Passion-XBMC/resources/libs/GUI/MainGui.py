@@ -86,7 +86,7 @@ class MainWindow( xbmcgui.WindowXML ):
         self.rssfeed            = self.configManager.rssfeed
         self.password           = self.configManager.password
         self.remotedirList      = self.configManager.remotedirList
-        
+
         self.localdirList       = self.configManager.localdirList
         self.downloadTypeList   = self.configManager.downloadTypeLst
 
@@ -159,10 +159,10 @@ class MainWindow( xbmcgui.WindowXML ):
                     self.pluginsDirSpyList.append( directorySpy( self.localdirList[ self.downloadTypeList.index( type ) ] ) )
                 else:
                     self.pluginsDirSpyList.append( None )
-                    
+
             # Creons ItemInfosManager afin de recuperer les descriptions des items
             self.itemInfosManager = ItemInfosManager( mainwin=self )
-            
+
             # Close the Loading Window
             DIALOG_PROGRESS.close()
         else:
@@ -669,7 +669,7 @@ class MainWindow( xbmcgui.WindowXML ):
         try: self.itemInfosManager.get_info_warehouse().getImage_thread.cancel()
         except: pass
         for id in range( self.CONTROL_MAIN_LIST_START, self.CONTROL_MAIN_LIST_END + 1 ):
-            try: 
+            try:
                 if xbmc.getCondVisibility( "Control.IsVisible(%i)" % id ):
                     self.settings[ "main_view_mode" ] = id
                     Settings().save_settings( self.settings )
@@ -840,51 +840,52 @@ class MainWindow( xbmcgui.WindowXML ):
 
                 displayListItem = xbmcgui.ListItem( sectionLocTitle, "", iconImage=imagePath, thumbnailImage=imagePath )
                 displayListItem.setProperty( "title", sectionLocTitle )
+                displayListItem.setProperty( "description", " " )
                 displayListItem.setProperty( "Downloaded", "" )
                 self.addItem( displayListItem )
-                
+
             elif ( self.type == "Plugins" ):
                 # Nom de la section
                 sectionName = self.downloadTypeList[ self.pluginDisplayList[ j ] ] # On utilise le filtre
                 # Met a jour le titre:
                 self.setProperty( "Category", _( 14 ) )
-            
-                if sectionName == self.downloadTypeList[ 4 ]:  
+
+                if sectionName == self.downloadTypeList[ 4 ]:
                     # Music
                     imagePath = "passion-icone-music.png"
                     sectionLocTitle = _( 15 )
-                elif sectionName == self.downloadTypeList[ 5 ]: 
+                elif sectionName == self.downloadTypeList[ 5 ]:
                     # Pictures
                     imagePath = "passion-icone-pictures.png"
                     sectionLocTitle = _( 16 )
-                elif sectionName == self.downloadTypeList[ 6 ]: 
+                elif sectionName == self.downloadTypeList[ 6 ]:
                     # Programs
                     imagePath = "passion-icone-programs.png"
                     sectionLocTitle = _( 17 )
-                elif sectionName == self.downloadTypeList[ 7 ]: 
+                elif sectionName == self.downloadTypeList[ 7 ]:
                     # Video
                     imagePath = "passion-icone-video.png"
                     sectionLocTitle = _( 18 )
 
                 displayListItem = xbmcgui.ListItem( sectionLocTitle, "", iconImage=imagePath, thumbnailImage=imagePath )
                 displayListItem.setProperty( "title", sectionLocTitle )
+                displayListItem.setProperty( "description", " " )
                 displayListItem.setProperty( "Downloaded", "" )
                 self.addItem( displayListItem )
-            
-            
-            #elif ( self.type == "Plugins Musique" ) or ( self.type == "Plugins Images" ) or ( self.type == "Plugins Programmes" ) or ( self.type == "Plugins Videos" ):
+
             elif "Plugins " in self.type:
                 # Element de la liste
                 ItemListPath = self.curDirList[ j ]
 
-                lenindex = len( self.remotedirList[ self.pluginDisplayList[ self.index ] ] ) # on a tjrs besoin de connaitre la taille du chemin de base pour le soustraire/retirer du chemin global plus tard
+                # on a tjrs besoin de connaitre la taille du chemin de base pour le soustraire/retirer du chemin global plus tard
+                lenindex = len( self.remotedirList[ self.pluginDisplayList[ self.index ] ] )
 
                 # Met a jour le titre et les icones:
-                if self.type == self.downloadTypeList[ 4 ]:  
+                if self.type == self.downloadTypeList[ 4 ]:
                     # Music
                     self.setProperty( "Category", _( 15 ) )
                     imagePath = "passion-icone-music.png"
-                elif self.type == self.downloadTypeList[ 5 ]: 
+                elif self.type == self.downloadTypeList[ 5 ]:
                     # Pictures
                     self.setProperty( "Category", _( 16 ) )
                     imagePath = "passion-icone-pictures.png"
@@ -966,7 +967,7 @@ class MainWindow( xbmcgui.WindowXML ):
     def _updateListThumb_cb (self, imagePath, listitem ):
         if ( imagePath != None and listitem != None ) :
             listitem.setThumbnailImage( imagePath )
-        
+
     def set_item_info( self, listitem, ipath ):
         #infos = fileName, title, version, language, date , previewPicture, previewVideoURL, description_fr, description_en, thumbnail
         try:
@@ -977,7 +978,7 @@ class MainWindow( xbmcgui.WindowXML ):
             listitem.setProperty( "language",        infos[ 3 ] or "" )
             listitem.setProperty( "date",            infos[ 4 ] or "" )
             listitem.setProperty( "added",           infos[ 5 ] or infos[ 4 ] or "" )
-            #listitem.setProperty( "previewPicture",  infos[ 6 ] or "passion-noImageAvailable.jpg" ) 
+            #listitem.setProperty( "previewPicture",  infos[ 6 ] or "passion-noImageAvailable.jpg" )
             listitem.setProperty( "fanartpicture",   infos[ 6 ] or "" ) # used for simulate fanart
             #listitem.setProperty( "previewVideoURL", infos[ 7 ] or "" )
             #listitem.setThumbnailImage( "passion-noImageAvailable.jpg" )
