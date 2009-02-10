@@ -2,6 +2,7 @@
 
 __all__ = [
     # public names
+    "XBMC_IS_HOME",
     "SPECIAL_XBMC_DIR",
     "SPECIAL_HOME_DIR",
     "SPECIAL_TEMP_DIR",
@@ -15,6 +16,10 @@ __all__ = [
 import os
 import sys
 from xbmc import translatePath
+
+
+try: scriptname = sys.modules[ "__main__" ].__script__
+except: scriptname = os.path.basename( os.getcwd() )
 
 
 SPECIAL_XBMC_DIR = translatePath( "special://xbmc/" )
@@ -34,8 +39,7 @@ if not os.path.isdir( SPECIAL_MASTERPROFILE_DIR  ): SPECIAL_MASTERPROFILE_DIR = 
 
 SPECIAL_XBMC_HOME = ( SPECIAL_HOME_DIR, SPECIAL_XBMC_DIR )[ ( os.environ.get( "OS", "xbox" ).lower() == "xbox" ) ]
 
-try: scriptname = sys.modules[ "__main__" ].__script__
-except: scriptname = os.path.basename( os.getcwd() )
+XBMC_IS_HOME = SPECIAL_HOME_DIR == SPECIAL_XBMC_DIR
 
 SPECIAL_SCRIPT_DATA = os.path.join( SPECIAL_PROFILE_DIR, "script_data", scriptname )
 if not os.path.isdir( SPECIAL_SCRIPT_DATA ): os.makedirs( SPECIAL_SCRIPT_DATA )

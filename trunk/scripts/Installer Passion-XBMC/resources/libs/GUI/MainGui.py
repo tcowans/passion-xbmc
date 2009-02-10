@@ -714,7 +714,8 @@ class MainWindow( xbmcgui.WindowXML ):
             elif controlID == self.CONTROL_FILE_MGR_BUTTON:
                 thumb_size_on_load = self.settings[ "thumb_size" ]
                 import FileManager
-                FileManager.show_file_manager( self )
+                mainfunctions = [ self._show_settings, self._close_script ]
+                FileManager.show_file_manager( mainfunctions, self.rightstest )
                 #on a plus besoin du manager, on le delete
                 del FileManager
                 if thumb_size_on_load != self.settings[ "thumb_size" ]:
