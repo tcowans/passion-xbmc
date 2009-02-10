@@ -62,7 +62,6 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
         try:
             #logger.LOG( logger.LOG_DEBUG, self.itemName )
             #logger.LOG( logger.LOG_DEBUG, self.itemType )
-            
             self.getControl( 200 ).setVisible( 0 ) # auto busy
             self.fileName, self.title, self.version, self.language, self.date, self.added, self.previewPicture, self.previewVideoURL, self.description_fr, self.description_en, thumbnail, author = self.infoWareHouse.getInfo( itemName=self.itemName, itemType=self.itemType, updateImage_cb=self._updateThumb_cb )
             #logger.LOG( logger.LOG_DEBUG, self.fileName)
@@ -86,7 +85,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
         #DIALOG_PROGRESS.close()
 
 
-    def _updateThumb_cb (self, imagePath, listitem=None):
+    def _updateThumb_cb( self, imagePath, listitem=None ):
         if imagePath != None:
             self.getControl( self.CONTROL_PREVIEW_IMAGE ).setImage(imagePath)
         self.getControl( 200 ).setVisible( 1 )
@@ -109,13 +108,13 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
         try:
             if self.title != None:
                 self.getControl( self.CONTROL_TITLE_LABEL ).setLabel( self.title )
-                
+
             if self.version != None:
                 self.getControl( self.CONTROL_VERSION_LABEL ).setLabel( _( 499 ) % ( self.version, ) )
             else:
                 self.getControl( self.CONTROL_VERSION_LABEL ).setLabel( _( 499 ) % ( '-', ) )
-                
-            label = _( 612 ) # Default value to display for language 
+
+            label = _( 612 ) # Default value to display for language
             if self.language != None:
                 langList = self.language.split('-')
                 label = ""
@@ -131,19 +130,19 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
                     if langList.index(lang) < (len(langList) - 1):
                         label = label + ' / '
             self.getControl( self.CONTROL_LANGUAGE_LABEL ).setLabel( label )
-            
+
             if self.previewPicture != None:
                 if self.previewPicture == "downloading" or not os.path.exists(self.previewPicture):
                     self.getControl( 200 ).setVisible( 0 ) # auto busy
                 else:
-                    # Image deja presente 
+                    # Image deja presente
                     self.getControl( self.CONTROL_PREVIEW_IMAGE ).setImage(self.previewPicture)
                     self.getControl( 200 ).setVisible( 1 )
                     logger.LOG( logger.LOG_DEBUG, "**** image")
             else:
                 # On affiche l'image par defaut (NoImage)
-                self.getControl( 200 ).setVisible( 1 ) 
-            
+                self.getControl( 200 ).setVisible( 1 )
+
             logger.LOG( logger.LOG_DEBUG,"Current language")
             logger.LOG( logger.LOG_DEBUG,xbmc.getLanguage())
             if xbmc.getLanguage() == 'French':
@@ -163,7 +162,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
         xbmcgui.lock()
         try:
             self.getControl( self.CONTROL_DOWNLOAD_BUTTON ).setEnabled( False )
-            self.getControl( self.CONTROL_DOWNLOAD_BUTTON ).setVisible( False ) 
+            self.getControl( self.CONTROL_DOWNLOAD_BUTTON ).setVisible( False )
         except:
             #import traceback; traceback.print_exc()
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
@@ -196,7 +195,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
         #xbmc.sleep( 100 )
         self.close()
 
-    
+
 def show_item_descript_window( mainwin, itemInfosManager, selectedItem , typeItem ):
     """
     Affiche une fenetre contenant les informations sur un item

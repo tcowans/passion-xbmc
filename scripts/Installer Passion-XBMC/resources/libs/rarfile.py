@@ -185,7 +185,7 @@ class RarFile:
         id = fd.read(len(RAR_ID))
         if id != RAR_ID:
             raise Exception("Not a Rar")
-        
+
         volume = 0  # first vol (.rar) is 0
         more_vols = 0
         while 1:
@@ -384,7 +384,7 @@ class RarFile:
 
             volume += 1
 
-        return buf            
+        return buf
 
     # put file compressed data into temporary .rar archive, and run
     # unrar on that, thus avoiding unrar going over whole archive

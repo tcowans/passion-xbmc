@@ -1,5 +1,5 @@
 
-# GET AND PRINT ALL STATS OF SCRIPT 
+# GET AND PRINT ALL STATS OF SCRIPT
 TEST_PERFORMANCE = False
 
 # script constants
@@ -10,7 +10,7 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/Installer%20Passion-XBMC/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center"
-__date__         = "09-02-2009"
+__date__         = "10-02-2009"
 __version__      = "pre-1.0.0"
 __svn_revision__ = 0
 

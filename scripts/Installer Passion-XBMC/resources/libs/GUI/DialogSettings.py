@@ -28,7 +28,7 @@ __version__ = "%s.%s" % ( sys.modules[ "__main__" ].__version__, __svn_revision_
 
 
 class ScriptSettings( xbmcgui.WindowXMLDialog ):
-    TOPIC_LIMIT = _( 504 ).split( "|" ) #values[ "00", "5", "10", "25", "50", "100" ]
+    TOPIC_LIMIT = [ "5", "10", "15", "20" ] #_( 504 ).split( "|" ) #values[ "00", "5", "10", "25", "50", "100" ]
     TSIZE_LIMIT = [ "192", "256", "384", "512", "1024" ]
 
     # control id's
@@ -65,7 +65,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
         # On recupere le "self" de le fenetre principal pour benificier de ces variables.
         self.mainwin = kwargs[ "mainwin" ]
 
-        # recupere la valeur sur le demarrage, utiliser pour rafraifir en temps reel, si l'etat est pas le meme 
+        # recupere la valeur sur le demarrage, utiliser pour rafraifir en temps reel, si l'etat est pas le meme
         self.passion_show_fanart = xbmc.getCondVisibility( "!Skin.HasSetting(PassionShowFanart)" )
         self.use_custom_background = xbmc.getCondVisibility( "!Skin.HasSetting(use_passion_custom_background)" )
         self.custom_background = unicode( xbmc.getInfoLabel( 'Skin.String(passion_custom_background)' ), 'utf-8')
@@ -78,7 +78,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             self._set_controls_labels()
             self._set_controls_values()
 
-            # recupere la valeur sur le démarrage, utiliser pour rafraifir en temps reel, si l'etat est pas le meme 
+            # recupere la valeur sur le démarrage, utiliser pour rafraifir en temps reel, si l'etat est pas le meme
             self.coulour_on_load = self.settings[ "skin_colours_path" ]
             self.rss_on_load = self.settings[ "rss_feed" ]
         except:
@@ -119,7 +119,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             self.getControl( 601 ).addItem( list_item )
             list_item = xbmcgui.ListItem( sys.modules[ "__main__" ].__version_l3__, sys.modules[ "__main__" ].__version_r3__ )
             self.getControl( 601 ).addItem( list_item )
-            
+
             self.getControl( 602 ).reset()
             list_item = xbmcgui.ListItem( sys.modules[ "__main__" ].__credits_l1__, sys.modules[ "__main__" ].__credits_r1__ )
             self.getControl( 602 ).addItem( list_item )
@@ -181,7 +181,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             if not self.topic_limit[ 0 ] == self.topics_limit:
                 self.topic_limit.rotate( -( int( self.TOPIC_LIMIT.index( self.topics_limit ) ) ) )
             limit = self.topic_limit[ 0 ]
-            if limit == "00": limit = _( 503 )
+            #if limit == "00": limit = _( 503 )
             self.getControl( self.CONTROL_LIMIT_TOPIC_LABEL ).setLabel( _( 502 ), label2=limit )
         except:
             self.getControl( self.CONTROL_LIMIT_TOPIC_LABEL ).setLabel( _( 502 ), label2=_( 503 ) )
@@ -362,7 +362,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             toggle_preset = False
             limit = self.topic_limit[ 0 ]
             try:
-                if limit == "00": limit = _( 503 )
+                #if limit == "00": limit = _( 503 )
                 self.getControl( self.CONTROL_LIMIT_TOPIC_LABEL ).setLabel( _( 502 ), label2=limit )
                 toggle_preset = True
             except: pass

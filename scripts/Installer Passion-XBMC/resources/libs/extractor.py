@@ -36,7 +36,7 @@ def get_time_sleep( filename ):
         slp = 0
     if slp < 1000: slp = 1000
     return slp
-    
+
 
 def unrar( filename, destination=None, report=False ):
     from rarfile import RarFile
@@ -61,7 +61,7 @@ def unrar( filename, destination=None, report=False ):
                 #print root_dir in i, i
                 if not root_dir in i:
                     is_root_dir = False
-                    break 
+                    break
         if not is_root_dir:#rar.getinfo( root_dir ).isdir():
             root_dir = os.path.basename( os.path.splitext( filename )[ 0 ] )
         base_dir = os.path.join( destination, root_dir )
@@ -145,7 +145,7 @@ def unzip( filename, destination=None, report=False ):
                 #print root_dir in i, i
                 if not root_dir in i:
                     is_root_dir = False
-                    break 
+                    break
         base_dir = os.path.join( destination, root_dir.rstrip( "/" ) )
         if not is_root_dir:#root_dir.endswith( "/" ) and ( zip.getinfo( root_dir ).file_size > 0 ):
             root_dir = os.path.basename( os.path.splitext( filename )[ 0 ] )

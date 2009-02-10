@@ -2,7 +2,7 @@
   <defaultresolution>pal</defaultresolution>
   <defaultresolutionwide>pal16x9</defaultresolutionwide>
   <version>2.1</version>
-  <skinversion>156</skinversion>
+  <skinversion>340</skinversion>
 
   <!-- amount to zoom skin to remove overscan compensation -->
   <zoom>0</zoom>

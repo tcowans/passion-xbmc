@@ -6,7 +6,7 @@ import sys
 import ftplib
 
 #librairie de traitement XML
-from BeautifulSoup import BeautifulStoneSoup, Tag, NavigableString 
+from BeautifulSoup import BeautifulStoneSoup, Tag, NavigableString
 
 #modules XBMC
 import xbmc
@@ -208,7 +208,7 @@ class ftpDownloadCtrl:
 
         self.curLocalDirRoot = self.localdirList[ typeIndex ]
         self.curRemoteDirRoot = rootdirsrc
-        
+
         if typeIndex == "Themes":
             isSingleFile = False
         else:
