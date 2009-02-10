@@ -963,6 +963,10 @@ class MainWindow( xbmcgui.WindowXML ):
 
         DIALOG_PROGRESS.close()
 
+    def _updateListThumb_cb (self, imagePath, listitem ):
+        if ( imagePath != None and listitem != None ) :
+            listitem.setThumbnailImage( imagePath )
+        
     def set_item_info( self, listitem, ipath ):
         #infos = fileName, title, version, language, date , previewPicture, previewVideoURL, description_fr, description_en, thumbnail
         try:
