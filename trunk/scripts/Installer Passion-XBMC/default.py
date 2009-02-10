@@ -37,6 +37,7 @@ env = ( os.environ.get( "OS", "win32" ), "win32", )[ os.environ.get( "OS", "win3
 sys.path.append( os.path.join( BASE_RESOURCE_PATH, "platform_libraries", env ) )
 
 #modules custom
+from specialpath import *
 import script_log as logger
 
 
