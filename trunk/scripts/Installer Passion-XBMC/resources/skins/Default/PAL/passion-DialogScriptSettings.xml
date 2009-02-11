@@ -74,7 +74,7 @@
 				<align>center</align>
 				<aligny>center</aligny>
 				<label>SCRIPT200</label>
-				<font>font10</font>
+				<font>font12</font>
 				<textcolor>ffffffff</textcolor>
 				<disabledcolor>60ffffff</disabledcolor>
 				<textoffsetx>17</textoffsetx>
@@ -95,7 +95,7 @@
 				<align>center</align>
 				<aligny>center</aligny>
 				<label>SCRIPT11</label>
-				<font>font10</font>
+				<font>font12</font>
 				<textcolor>ffffffff</textcolor>
 				<disabledcolor>60ffffff</disabledcolor>
 				<textoffsetx>17</textoffsetx>
@@ -116,7 +116,7 @@
 				<align>center</align>
 				<aligny>center</aligny>
 				<label>SCRIPT1</label>
-				<font>font10</font>
+				<font>font12</font>
 				<textcolor>ffffffff</textcolor>
 				<disabledcolor>60ffffff</disabledcolor>
 				<textoffsetx>17</textoffsetx>
@@ -137,7 +137,7 @@
 				<align>center</align>
 				<aligny>center</aligny>
 				<label>More...</label>
-				<font>font10</font>
+				<font>font12</font>
 				<textcolor>ffffffff</textcolor>
 				<disabledcolor>60ffffff</disabledcolor>
 				<textoffsetx>17</textoffsetx>
@@ -159,7 +159,7 @@
 				<align>center</align>
 				<aligny>center</aligny>
 				<label>SCRIPT3</label>
-				<font>font10</font>
+				<font>font12</font>
 				<textcolor>ffffffff</textcolor>
 				<disabledcolor>60ffffff</disabledcolor>
 				<textoffsetx>17</textoffsetx>
@@ -172,7 +172,6 @@
 				<ondown>9006</ondown>
 			</control>
 			<control type="button" id="70">
-				<description>help Button</description>
 				<description>about Button</description>
 				<posx>485</posx>
 				<posy>0</posy>
@@ -181,7 +180,7 @@
 				<align>center</align>
 				<aligny>center</aligny>
 				<label>SCRIPT4</label>
-				<font>font10</font>
+				<font>font12</font>
 				<textcolor>ffffffff</textcolor>
 				<disabledcolor>60ffffff</disabledcolor>
 				<textoffsetx>17</textoffsetx>
