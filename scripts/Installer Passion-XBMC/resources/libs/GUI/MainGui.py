@@ -289,7 +289,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 #    1003 : "teste 4", 1004 : ( "teste 5", "disabled" ), 1005 : "teste 6", 1006 : "teste 7" }
                 buttons = { 1000: _( 1000 ), 1001: _( 1001 ), 1002: _( 1002 ) }
                 selected = DialogContextMenu.show_context_menu( buttons )
-                del sDialogContextMenu
+                del DialogContextMenu
                 if selected == 1000:
                     #installe add-ons
                     self.install_add_ons()
