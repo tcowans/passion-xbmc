@@ -77,10 +77,10 @@
 				<font>font12</font>
 				<textcolor>ffffffff</textcolor>
 				<disabledcolor>60ffffff</disabledcolor>
-				<textoffsetx>17</textoffsetx>
-				<texturenofocus border="3">passion-button-nofocus2.png</texturenofocus>
-				<texturefocus border="3">passion-button-focus2.png</texturefocus>
-				<onfocus>Skin.SetString(PassionSettings,1)</onfocus>
+				<textoffsetx>10</textoffsetx>
+                		<texturefocus>passion-sbutton-focus.png</texturefocus>
+              			<texturenofocus>passion-sbutton-nofocus.png</texturenofocus>
+ 				<onfocus>Skin.SetString(PassionSettings,1)</onfocus>
 				<onleft>70</onleft>
 				<onright>20</onright>
 				<onup>9000</onup>
@@ -98,9 +98,9 @@
 				<font>font12</font>
 				<textcolor>ffffffff</textcolor>
 				<disabledcolor>60ffffff</disabledcolor>
-				<textoffsetx>17</textoffsetx>
-				<texturenofocus border="3">passion-button-nofocus2.png</texturenofocus>
-				<texturefocus border="3">passion-button-focus2.png</texturefocus>
+				<textoffsetx>10</textoffsetx>
+                		<texturefocus>passion-sbutton-focus.png</texturefocus>
+              			<texturenofocus>passion-sbutton-nofocus.png</texturenofocus>
 				<onfocus>Skin.SetString(PassionSettings,2)</onfocus>
 				<onleft>10</onleft>
 				<onright>30</onright>
@@ -119,9 +119,9 @@
 				<font>font12</font>
 				<textcolor>ffffffff</textcolor>
 				<disabledcolor>60ffffff</disabledcolor>
-				<textoffsetx>17</textoffsetx>
-				<texturenofocus border="3">passion-button-nofocus2.png</texturenofocus>
-				<texturefocus border="3">passion-button-focus2.png</texturefocus>
+				<textoffsetx>10</textoffsetx>
+                		<texturefocus>passion-sbutton-focus.png</texturefocus>
+              			<texturenofocus>passion-sbutton-nofocus.png</texturenofocus>
 				<onfocus>Skin.SetString(PassionSettings,3)</onfocus>
 				<onleft>20</onleft>
 				<onright>40</onright>
@@ -140,9 +140,9 @@
 				<font>font12</font>
 				<textcolor>ffffffff</textcolor>
 				<disabledcolor>60ffffff</disabledcolor>
-				<textoffsetx>17</textoffsetx>
-				<texturenofocus border="3">passion-button-nofocus2.png</texturenofocus>
-				<texturefocus border="3">passion-button-focus2.png</texturefocus>
+				<textoffsetx>10</textoffsetx>
+                		<texturefocus>passion-sbutton-focus.png</texturefocus>
+              			<texturenofocus>passion-sbutton-nofocus.png</texturenofocus>
 				<onfocus>Skin.SetString(PassionSettings,4)</onfocus>
 				<onleft>30</onleft>
 				<onright>60</onright>
@@ -162,9 +162,9 @@
 				<font>font12</font>
 				<textcolor>ffffffff</textcolor>
 				<disabledcolor>60ffffff</disabledcolor>
-				<textoffsetx>17</textoffsetx>
-				<texturenofocus border="3">passion-button-nofocus2.png</texturenofocus>
-				<texturefocus border="3">passion-button-focus2.png</texturefocus>
+				<textoffsetx>10</textoffsetx>
+                		<texturefocus>passion-sbutton-focus.png</texturefocus>
+              			<texturenofocus>passion-sbutton-nofocus.png</texturenofocus>
 				<onfocus>Skin.SetString(PassionSettings,5)</onfocus>
 				<onleft>40</onleft>
 				<onright>70</onright>
@@ -183,9 +183,9 @@
 				<font>font12</font>
 				<textcolor>ffffffff</textcolor>
 				<disabledcolor>60ffffff</disabledcolor>
-				<textoffsetx>17</textoffsetx>
-				<texturenofocus border="3">passion-button-nofocus2.png</texturenofocus>
-				<texturefocus border="3">passion-button-focus2.png</texturefocus>
+				<textoffsetx>10</textoffsetx>
+                		<texturefocus>passion-sbutton-focus.png</texturefocus>
+              			<texturenofocus>passion-sbutton-nofocus.png</texturenofocus>
 				<onfocus>Skin.SetString(PassionSettings,6)</onfocus>
 				<onleft>60</onleft>
 				<onright>10</onright>
@@ -196,66 +196,12 @@
 			<control type="image">
 				<description>divider</description>
 				<posx>-7</posx>
-				<posy>29</posy>
+				<posy>34</posy>
 				<width>597</width>
 				<height>2</height>
 				<texture>passion-tab.png</texture>
 			</control>
-			<!-- Selected tab images -->
-			<control type="image">
-				<description>tab1 selected</description>
-				<posx>1</posx>
-				<posy>28</posy>
-				<width>93</width>
-				<height>3</height>
-				<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-solid_tab.png]</texture>
-				<visible>Skin.String(PassionSettings,1)</visible>
-			</control>
-			<control type="image">
-				<description>tab2 selected</description>
-				<posx>99</posx>
-				<posy>28</posy>
-				<width>92</width>
-				<height>3</height>
-				<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-solid_tab.png]</texture>
-				<visible>Skin.String(PassionSettings,2)</visible>
-			</control>
-			<control type="image">
-				<description>tab3 selected</description>
-				<posx>196</posx>
-				<posy>28</posy>
-				<width>92</width>
-				<height>3</height>
-				<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-solid_tab.png]</texture>
-				<visible>Skin.String(PassionSettings,3)</visible>
-			</control>
-			<control type="image">
-				<description>tab4 selected</description>
-				<posx>293</posx>
-				<posy>28</posy>
-				<width>92</width>
-				<height>3</height>
-				<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-solid_tab.png]</texture>
-				<visible>Skin.String(PassionSettings,4)</visible>
-			</control>
-			<control type="image">
-				<description>tab5 selected</description>
-				<posx>390</posx>
-				<posy>28</posy>
-				<width>92</width>
-				<height>3</height>
-				<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-solid_tab.png]</texture>
-				<visible>Skin.String(PassionSettings,5)</visible>
-			</control>
-			<control type="image">
-				<description>tab6 selected</description>
-				<posx>487</posx>
-				<posy>28</posy>
-				<width>92</width>
-				<height>3</height>
-				<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-solid_tab.png]</texture>
-				<visible>Skin.String(PassionSettings,6)</visible>
-			</control>
+	
 		</control>
 
 		<!-- MENU GENERAL -->
