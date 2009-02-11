@@ -161,7 +161,7 @@
 			</control>
 			<control type="label">
 				<description>Date added label</description>
-				<posx>510</posx>
+				<posx>500</posx>
 				<posy>160</posy>
 				<width>679</width>
 				<height>30</height>
