@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<strings>  <!--Finnish 7.2.2008-->
+<strings>  <!--Finnish 11.2.2008-->
   <!--GENERAL STRINGS -->
   <string id="0">Installer Passion-XBMC</string>
   <string id="1">Keskustelut</string>
@@ -8,7 +8,7 @@
   <string id="4">Tietoja</string>
   <string id="5">Hallinta</string>
   <string id="6">Lisäkkeiden hallinta</string>
-  <string id="7">Asentaja</string>
+  <strng id="7">Asentaja</string>
   <string id="8">Lopeta</string>
 
   <string id="10">Valinta</string>
@@ -165,7 +165,7 @@
   <string id="353"></string>
   <string id="354"></string>
   <string id="355"></string>
-  <string id="356">Media 1</string>
+  <string id="356">Media</string>
   <string id="357"></string>
   <string id="358"></string>
   <string id="359">Karuselli</string>
@@ -206,7 +206,7 @@
   <string id="601">Tyyppi</string>
   <string id="602">Versio</string>
   <string id="603">Päiväys</string>
-  <string id="604">Ei ole saatavilla</string>
+  <string id="604">Selitettä ei ole saatavilla</string>
   <string id="605">Poistu</string>
   <string id="606">Zoomaus</string>
   <string id="607">Lataa</string>
@@ -215,7 +215,7 @@
   <string id="610">Englanti</string>
   <string id="611">Monikielinen</string>
   <string id="612">Tuntematon</string>
-  <string id="613">Lisäys päivä:&#32;</string>
+  <string id="613">Lisätty:&#32;</string>
   <string id="614">Selite : Ei saatavilla</string>
 
   <!--ABOUT STRINGS -->
