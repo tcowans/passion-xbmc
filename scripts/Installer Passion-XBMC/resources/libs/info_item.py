@@ -52,6 +52,20 @@ def set_cache_thumb_name( path ):
         return "", ""
 
 
+class ImageQueueElement:
+    """
+    Structure d'un element a mettre dans la FIFO des images a telecharger
+    """
+    def __init__( self, url, updateImage_cb=None, listitem=None ):
+        self.url            = url
+        self.updateImage_cb = updateImage_cb
+        self.listitem       = listitem
+        
+    def __repr__( self ):
+        return "(%s, %s, %s)" % ( self.url, self.updateImage_cb, self.listitem ) 
+        
+
+
 class InfoWarehouse:
     """
     Class Abstraite contenant toutes les informations necessaires a la description d'un item
@@ -78,7 +92,8 @@ class InfoWarehouse:
         description_en  = None
         author          = None
 
-        return fileName, title, version, language, date , previewPicture, previewVideoURL, description_fr, description_en, thumbnail
+        return fileName, title, version, language, date, added, previewPicture, \
+            previewVideoURL, description_fr, description_en, thumbnail, author
 
 
 class InfoWarehouseEltTreeXMLFTP( InfoWarehouse ):
@@ -101,13 +116,54 @@ class InfoWarehouseEltTreeXMLFTP( InfoWarehouse ):
         self.mainwin  = kwargs[ "mainwin" ]
 
         self.thumb_size_on_load = self.mainwin.settings[ "thumb_size" ]
+        
+        # FIFO des images a telecharger
+        self.image_queue = []
 
         # On recupere le fichier de description des items
         self._downloadFile( self.srvItemDescripDir + self.srvItemDescripFile, isTBN=False )
 
         self.parse_xml_sections()
 
+
+    def update_Images( self ):
+        """
+        Recupere toutes les image dans la FIFO et met a jour l'appelant via la callBack
+        """
+        #print "update_Images"
+        #print self.image_queue
+        if ( len(self.image_queue) > 0 ):
+            try: self.getImagesQueue_thread.cancel()
+            except: pass
+            self.getImagesQueue_thread = Thread( target=self._thread_getImagesQueue )
+            self.getImagesQueue_thread.start()
+            
+    def _thread_getImagesQueue( self ):
+        while ( len(self.image_queue) > 0 ):
+            imageElt = self.image_queue.pop()
+            cached_thumbs = set_cache_thumb_name( imageElt.url )
+            if not os.path.exists( cached_thumbs[ 0 ] ) or not os.path.exists( cached_thumbs[ 1 ] ):
+                # Telechargement de l'image
+                self._downloadFile( imageElt.url, listitem=imageElt.listitem )
+                
+                if os.path.exists( cached_thumbs[ 1 ] ):
+                    previewPicture = cached_thumbs[ 1 ]
+                else:
+                    previewPicture = set_cache_thumb_name( "passion-noImageAvailable.jpg" )[ 1 ]
+        
+                # Notifie la callback de mettre a jour l'image
+                if imageElt.updateImage_cb:
+                    try:
+                        imageElt.updateImage_cb( previewPicture, imageElt.listitem )
+                    except TypeError:
+                        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+
+    
     def _getImage( self, pictureURL, updateImage_cb=None, listitem=None ):
+        """
+        Lance le telechargement une image dans un thread
+        TODO: abandonner cette fonction dans le futur
+        """
         cached_thumbs = set_cache_thumb_name( pictureURL )
         if not os.path.exists( cached_thumbs[ 0 ] ) or not os.path.exists( cached_thumbs[ 1 ] ):
             try: self.getImage_thread.cancel()
@@ -118,6 +174,7 @@ class InfoWarehouseEltTreeXMLFTP( InfoWarehouse ):
     def _thread_getImage( self, pictureURL, updateImage_cb=None, listitem=None ):
         """
         Recupere l'image dans un thread separe
+        TODO: abandonner cette fonction dans le futur
         """
         # Telechargement de l'image
         self._downloadFile( pictureURL, listitem=listitem )
@@ -220,7 +277,10 @@ class InfoWarehouseEltTreeXMLFTP( InfoWarehouse ):
                                 else:
                                     # Telechargement et mise a jour de l'image (thread de separe)
                                     previewPicture = checkPathPic#"downloading"
-                                    self._getImage( previewPictureURL, updateImage_cb=updateImage_cb, listitem=listitem )
+                                    
+                                    # Ajout a de l'image a la queue de telechargement
+                                    #self._getImage( previewPictureURL, updateImage_cb=updateImage_cb, listitem=listitem )
+                                    self.image_queue.append( ImageQueueElement(previewPictureURL, updateImage_cb, listitem ) ) 
                             notfound = False
                             break
 

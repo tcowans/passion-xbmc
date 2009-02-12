@@ -802,6 +802,7 @@ class MainWindow( xbmcgui.WindowXML ):
 
             #liste physique d'une section sur le ftp
             self.curDirList = self.passionFTPCtrl.getDirList( self.remotedirList[ self.index ] )
+            
 
         #xbmcgui.lock()
 
@@ -964,6 +965,10 @@ class MainWindow( xbmcgui.WindowXML ):
             # utiliser pour remettre la liste courante a jour lorsqu'on reviens sur cette fenetre depuis le forum ou le manager
             self.listitems.append( displayListItem )
         self.current_cat = unicode( xbmc.getInfoLabel( 'Container.Property(Category)' ), 'utf-8')
+
+        if ( self.type != "racine" ) and ( self.type != "Plugins" ):
+            # Mise a jour des images
+            self.set_list_images()
         #xbmcgui.unlock()
 
         DIALOG_PROGRESS.close()
@@ -972,6 +977,16 @@ class MainWindow( xbmcgui.WindowXML ):
         if ( imagePath != None and listitem != None ) :
             listitem.setThumbnailImage( imagePath )
 
+    def set_list_images( self ):
+        """
+        Recuperation de toutes les images dans la FIFO et mise a jour dans la liste via appel sur la callback _updateListThumb_cb
+        """
+        try:
+            self.itemInfosManager.get_info_warehouse().update_Images()
+        except:
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+
+    
     def set_item_info( self, listitem, ipath ):
         #infos = fileName, title, version, language, date , previewPicture, previewVideoURL, description_fr, description_en, thumbnail
         try:

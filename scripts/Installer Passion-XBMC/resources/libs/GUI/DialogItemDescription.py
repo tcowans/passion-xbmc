@@ -134,6 +134,9 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
             if self.previewPicture != None:
                 if self.previewPicture == "downloading" or not os.path.exists(self.previewPicture):
                     self.getControl( 200 ).setVisible( 0 ) # auto busy
+                    
+                    # Recuperation de l'image dans la FIFO
+                    self.infoWareHouse.update_Images()
                 else:
                     # Image deja presente
                     self.getControl( self.CONTROL_PREVIEW_IMAGE ).setImage(self.previewPicture)
