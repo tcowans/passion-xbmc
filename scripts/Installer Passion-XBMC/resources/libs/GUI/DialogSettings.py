@@ -78,7 +78,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             self._set_controls_labels()
             self._set_controls_values()
 
-            # recupere la valeur sur le démarrage, utiliser pour rafraifir en temps reel, si l'etat est pas le meme
+            # recupere la valeur sur le demarrage, utiliser pour rafraifir en temps reel, si l'etat est pas le meme
             self.coulour_on_load = self.settings[ "skin_colours_path" ]
             self.rss_on_load = self.settings[ "rss_feed" ]
         except:
