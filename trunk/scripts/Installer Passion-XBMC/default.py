@@ -10,7 +10,7 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/Installer%20Passion-XBMC/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center"
-__date__         = "10-02-2009"
+__date__         = "12-02-2009"
 __version__      = "pre-1.0.0"
 __svn_revision__ = 0
 
@@ -28,13 +28,17 @@ ROOTDIR = os.getcwd().replace( ";", "" )
 
 # Shared resources
 BASE_RESOURCE_PATH = os.path.join( ROOTDIR, "resources" )
+# append the proper platforms folder to our path, xbox is the same as win32
+env = ( os.environ.get( "OS", "win32" ), "win32", )[ os.environ.get( "OS", "win32" ) == "xbox" ]
+sys.path.append( os.path.join( BASE_RESOURCE_PATH, "platform_libraries", env ) )
 # append the proper libs folder to our path
 sys.path.append( os.path.join( BASE_RESOURCE_PATH, "libs" ) )
 # append the proper GUI folder to our path
 sys.path.append( os.path.join( BASE_RESOURCE_PATH, "libs", "GUI" ) )
-# append the proper platforms folder to our path, xbox is the same as win32
-env = ( os.environ.get( "OS", "win32" ), "win32", )[ os.environ.get( "OS", "win32" ) == "xbox" ]
-sys.path.append( os.path.join( BASE_RESOURCE_PATH, "platform_libraries", env ) )
+# recompile all modules, but script start slowly
+#from compileall import compile_dir
+#compile_dir( os.path.join( BASE_RESOURCE_PATH, "libs" ), force=True, quiet=True )
+
 
 #modules custom
 from specialpath import *
