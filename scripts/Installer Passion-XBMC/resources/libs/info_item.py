@@ -15,10 +15,7 @@ import xbmc
 #modules custom
 from utilities import *
 from CONF import configCtrl
-try:
-    from pil_util import makeThumbnails
-except ImportError:
-    makeThumbnails = None
+from pil_util import makeThumbnails
 
 #module logger
 try:
@@ -29,6 +26,8 @@ except:
 
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
 _ = sys.modules[ "__main__" ].__language__
+LANGUAGE_IS_FRENCH = ( xbmc.getLanguage().lower() == "french" )
+
 
 BASE_THUMBS_PATH = os.path.join( sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA, "Thumbnails" )
 
@@ -52,51 +51,72 @@ def set_cache_thumb_name( path ):
         return "", ""
 
 
+class InfosWarehouse:
+    """ Class Abstraite contenant toutes les informations necessaires a la description d'un item """
+    def __init__( self, kwargs ):
+        self.fileName        = kwargs.get( "fileName" )        or ""
+        self.title           = kwargs.get( "itemName" )        or ""
+        self.version         = kwargs.get( "version" )         or ""
+        #self.language        = kwargs.get( "language" )        or ""
+        self.date            = kwargs.get( "date" )            or ""
+        self.added           = kwargs.get( "added" )           or ""
+        self.previewPicture  = kwargs.get( "previewPicture" )  or ""
+        self.thumbnail       = kwargs.get( "thumbnail" )       or ""
+        self.previewVideoURL = kwargs.get( "previewVideoURL" ) or ""
+        #self.description_fr  = kwargs.get( "description_fr" )  or ""
+        #self.description_en  = kwargs.get( "description_en" )  or ""
+        #self.description     = kwargs.get( "description" )     or ""
+        self.author          = kwargs.get( "author" )          or ""
+        self.itemType        = kwargs.get( "itemType" )        or ""
+        self.itemId          = kwargs.get( "itemId" )          or ""
+
+
+class updateIWH( InfosWarehouse ):
+    def __init__( self, kwargs ):
+        InfosWarehouse.__init__( self, kwargs )
+        self.set_description( kwargs )
+        self.set_lang( kwargs )
+
+    def set_description( self, kwargs ):
+        self.description = ""
+        try:
+            desc_fr = kwargs.get( "description_fr" )
+            desc_us = kwargs.get( "description_en" )
+            if LANGUAGE_IS_FRENCH:
+                self.description = desc_fr or desc_us or ""
+            else:
+                self.description = desc_us or desc_fr or ""
+        except:
+            pass
+
+    def set_lang( self, kwargs ):
+        label = ""
+        try:
+            langList = ( kwargs.get( "language" ) or "" ).split( "-" )
+            for lang in langList:
+                if   lang.lower() == 'fr':    label = label + _( 609 )
+                elif lang.lower() == 'en':    label = label + _( 610 )
+                elif lang.lower() == 'multi': label = label + _( 611 )
+                else: label = label + _( 612 )
+                if langList.index( lang ) < ( len( langList ) - 1 ):
+                    label += ' / '
+        except:
+            pass
+        self.language = label or _( 612 )
+
+
 class ImageQueueElement:
-    """
-    Structure d'un element a mettre dans la FIFO des images a telecharger
-    """
+    """ Structure d'un element a mettre dans la FIFO des images a telecharger """
     def __init__( self, url, updateImage_cb=None, listitem=None ):
         self.url            = url
         self.updateImage_cb = updateImage_cb
         self.listitem       = listitem
-        
+
     def __repr__( self ):
-        return "(%s, %s, %s)" % ( self.url, self.updateImage_cb, self.listitem ) 
-        
+        return "(%s, %s, %s)" % ( self.url, self.updateImage_cb, self.listitem )
 
 
-class InfoWarehouse:
-    """
-    Class Abstraite contenant toutes les informations necessaires a la description d'un item
-    """
-    def __init__( self, *args, **kwargs ):
-        pass
-    
-    def getInfo( self, itemName = None, iTemType=None, itemId = None, ):
-        """ 
-        Lit les info 
-        retourne fileName, title, version, language, date , previewPicture, previewVideoURL, description_fr, description_en
-        Fonction abstraite
-        """
-        fileName        = itemName # Default value if we don't find itemname
-        title           = itemName # Default value if we don't find itemname
-        version         = None
-        language        = None
-        date            = None
-        added           = None
-        previewPicture  = None
-        thumbnail       = ""
-        previewVideoURL = None
-        description_fr  = None
-        description_en  = None
-        author          = None
-
-        return fileName, title, version, language, date, added, previewPicture, \
-            previewVideoURL, description_fr, description_en, thumbnail, author
-
-
-class InfoWarehouseEltTreeXMLFTP( InfoWarehouse ):
+class InfoWarehouseEltTreeXMLFTP:
     """
     Class contenant tous les informations dans un fichier XML sur serveur FTP necessaires a la description d'un item
     Pour des raisons de performance, on instanciera cette classe une seule fois au demarrage du script
@@ -116,7 +136,7 @@ class InfoWarehouseEltTreeXMLFTP( InfoWarehouse ):
         self.mainwin  = kwargs[ "mainwin" ]
 
         self.thumb_size_on_load = self.mainwin.settings[ "thumb_size" ]
-        
+
         # FIFO des images a telecharger
         self.image_queue = []
 
@@ -124,7 +144,6 @@ class InfoWarehouseEltTreeXMLFTP( InfoWarehouse ):
         self._downloadFile( self.srvItemDescripDir + self.srvItemDescripFile, isTBN=False )
 
         self.parse_xml_sections()
-
 
     def update_Images( self ):
         """
@@ -137,20 +156,20 @@ class InfoWarehouseEltTreeXMLFTP( InfoWarehouse ):
             except: pass
             self.getImagesQueue_thread = Thread( target=self._thread_getImagesQueue )
             self.getImagesQueue_thread.start()
-            
+
     def _thread_getImagesQueue( self ):
-        while ( len(self.image_queue) > 0 ):
-            imageElt = self.image_queue.pop(0)
+        while ( len( self.image_queue ) > 0 ):
+            imageElt = self.image_queue.pop( 0 )
             cached_thumbs = set_cache_thumb_name( imageElt.url )
             if not os.path.exists( cached_thumbs[ 0 ] ) or not os.path.exists( cached_thumbs[ 1 ] ):
                 # Telechargement de l'image
                 self._downloadFile( imageElt.url, listitem=imageElt.listitem )
-                
+
                 if os.path.exists( cached_thumbs[ 1 ] ):
                     previewPicture = cached_thumbs[ 1 ]
                 else:
                     previewPicture = set_cache_thumb_name( "passion-noImageAvailable.jpg" )[ 1 ]
-        
+
                 # Notifie la callback de mettre a jour l'image
                 if imageElt.updateImage_cb:
                     try:
@@ -158,7 +177,6 @@ class InfoWarehouseEltTreeXMLFTP( InfoWarehouse ):
                     except TypeError:
                         logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
-    
     def _getImage( self, pictureURL, updateImage_cb=None, listitem=None ):
         """
         Lance le telechargement une image dans un thread
@@ -226,16 +244,16 @@ class InfoWarehouseEltTreeXMLFTP( InfoWarehouse ):
         """ reads info """
         fileName        = itemName # default value if we don't find itemname
         title           = itemName # default value if we don't find itemname
-        version         = None
-        language        = None
-        date            = None
-        added           = None
-        previewPicture  = None
-        thumbnail       = ""
-        previewVideoURL = None
-        description_fr  = None
-        description_en  = None
-        author          = None
+        #version         = None
+        #language        = None
+        #date            = None
+        #added           = None
+        #previewPicture  = None
+        #thumbnail       = ""
+        #previewVideoURL = None
+        #description_fr  = None
+        #description_en  = None
+        #author          = None
 
         try:
             category = None
@@ -277,22 +295,24 @@ class InfoWarehouseEltTreeXMLFTP( InfoWarehouse ):
                                 else:
                                     # Telechargement et mise a jour de l'image (thread de separe)
                                     previewPicture = checkPathPic#"downloading"
-                                    
                                     # Ajout a de l'image a la queue de telechargement
                                     #self._getImage( previewPictureURL, updateImage_cb=updateImage_cb, listitem=listitem )
-                                    self.image_queue.append( ImageQueueElement(previewPictureURL, updateImage_cb, listitem ) ) 
+                                    self.image_queue.append( ImageQueueElement(previewPictureURL, updateImage_cb, listitem ) )
                             notfound = False
                             break
 
             if notfound and hasattr( listitem, "setThumbnailImage" ):
                 listitem.setThumbnailImage( "passion-noImageAvailable.jpg" )
 
+            #i = updateIWH( locals() )
+            #print i.fileName, i.description
         except:
             #import traceback; traceback.print_exc()
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
-        return fileName, title, version, language, date, added, previewPicture, \
-            previewVideoURL, description_fr, description_en, thumbnail, author
+        return updateIWH( locals() )
+        #return fileName, title, version, language, date, added, previewPicture, \
+        #    previewVideoURL, description_fr, description_en, thumbnail, author
 
     def _downloadFile( self, remoteFilePath, isTBN=True, listitem=None ):
         """
@@ -326,10 +346,8 @@ class InfoWarehouseEltTreeXMLFTP( InfoWarehouse ):
                     os.remove( localFilePath )
                 else:
                     thumb_size = int( self.thumb_size_on_load )
-                    if makeThumbnails:
-                        thumbnail = makeThumbnails( localFilePath, thumbnail, w_h=( thumb_size, thumb_size ) )
-                    else:
-                        thumbnail = localFilePath
+                    thumbnail = makeThumbnails( localFilePath, thumbnail, w_h=( thumb_size, thumb_size ) )
+                    if thumbnail == "": thumbnail = localFilePath
 
             if thumbnail and os.path.isfile( thumbnail ) and hasattr( listitem, "setThumbnailImage" ):
                 listitem.setThumbnailImage( thumbnail )
