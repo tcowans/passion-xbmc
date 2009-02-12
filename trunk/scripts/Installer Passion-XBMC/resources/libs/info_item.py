@@ -140,7 +140,7 @@ class InfoWarehouseEltTreeXMLFTP( InfoWarehouse ):
             
     def _thread_getImagesQueue( self ):
         while ( len(self.image_queue) > 0 ):
-            imageElt = self.image_queue.pop()
+            imageElt = self.image_queue.pop(0)
             cached_thumbs = set_cache_thumb_name( imageElt.url )
             if not os.path.exists( cached_thumbs[ 0 ] ) or not os.path.exists( cached_thumbs[ 1 ] ):
                 # Telechargement de l'image
