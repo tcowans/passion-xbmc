@@ -55,7 +55,7 @@ class InfosWarehouse:
     """ Class Abstraite contenant toutes les informations necessaires a la description d'un item """
     def __init__( self, kwargs ):
         self.fileName        = kwargs.get( "fileName" )        or ""
-        self.title           = kwargs.get( "title" )        or ""
+        self.title           = kwargs.get( "title" )           or ""
         self.version         = kwargs.get( "version" )         or ""
         #self.language        = kwargs.get( "language" )        or ""
         self.date            = kwargs.get( "date" )            or ""
@@ -90,19 +90,8 @@ class updateIWH( InfosWarehouse ):
             pass
 
     def set_lang( self, kwargs ):
-        label = ""
-        try:
-            langList = ( kwargs.get( "language" ) or "" ).split( "-" )
-            for lang in langList:
-                if   lang.lower() == 'fr':    label = label + _( 609 )
-                elif lang.lower() == 'en':    label = label + _( 610 )
-                elif lang.lower() == 'multi': label = label + _( 611 )
-                else: label = label + _( 612 )
-                if langList.index( lang ) < ( len( langList ) - 1 ):
-                    label += ' / '
-        except:
-            pass
-        self.language = label or _( 612 )
+        lang = ( kwargs.get( "language" ) or "" ).lower().replace( "fr", _( 609 ) ).replace( "en", _( 610 ) ).replace( "multi", _( 611 ) )
+        self.language = ( lang or _( 612 ) ).replace( "-", " / " )
 
 
 class ImageQueueElement:
