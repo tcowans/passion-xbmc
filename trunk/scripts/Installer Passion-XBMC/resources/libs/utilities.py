@@ -27,6 +27,7 @@ __all__ = [
     "strip_off",
     "Settings",
     "get_infos_path",
+    "replaceStrs",
     ]
 
 #Modules general
@@ -208,7 +209,17 @@ def strip_off( text, by="", xbmc_labels_formatting=False ):
         text = text.replace( "[", "<" ).replace( "]", ">" )
     return re.sub( "(?s)<[^>]*>", by, text )
 
-
+def replaceStrs( s, *args ): 
+    """
+    Replace all ``(frm, to)`` tuples in `args` in string `s`.
+    By Alexander Schmolck ( http://markmail.org/message/r67z77skcqcbo5nr )
+    replaceStrs("nothing is better than warm beer", ... ('nothing','warm beer'), ('warm beer','nothing')) 'warm beer is better than nothing'
+    """ 
+    if args == (): 
+        return s 
+    mapping = dict([(frm, to) for frm, to in args]) 
+    return re.sub("|".join(map(re.escape, mapping.keys())), lambda match:mapping[match.group(0)], s)
+    
 class Settings:
     """ this function comes from apple movie trailer """
     def _settings_defaults_values( self ):

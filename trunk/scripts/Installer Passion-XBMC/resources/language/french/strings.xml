@@ -217,6 +217,11 @@
   <string id="612">Inconnu</string>
   <string id="613">Date d'ajout :&#32;</string>
   <string id="614">Description : Non disponible</string>
+  <string id="615">Allemand</string>
+  <string id="616">Espagnol</string>
+  <string id="617">Hollandais</string>
+  <string id="618">Finnois</string>
+  <string id="619">Suédois</string>
   
   <!--ABOUT STRINGS -->
   <string id="700">Version</string>
