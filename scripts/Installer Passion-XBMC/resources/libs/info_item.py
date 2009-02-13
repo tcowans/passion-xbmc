@@ -90,7 +90,10 @@ class updateIWH( InfosWarehouse ):
             pass
 
     def set_lang( self, kwargs ):
-        lang = ( kwargs.get( "language" ) or "" ).lower().replace( "fr", _( 609 ) ).replace( "en", _( 610 ) ).replace( "multi", _( 611 ) )
+        # We use ISO 2 Letter Language Codes ( http://reference.sitepoint.com/html/lang-codes )
+        # fr <-> French / en <-> English / fr <-> French / multi <-> Multilanguages / de <-> German / es <-> Spanish / nl <-> Dutch / fi <-> Finnish / sv <-> Swedish
+        #lang = ( kwargs.get( "language" ) or "" ).lower().replace( "fr", _( 609 ) ).replace( "en", _( 610 ) ).replace( "multi", _( 611 ) ).replace( "de", _( 615 ) ).replace( "es", _( 616 ) ).replace( "nl", _( 617 ) ).replace( "fi", _( 618 ) ).replace( "sv", _( 619 ) )
+        lang = replaceStrs(( kwargs.get( "language" ) or "" ).lower(), ( "fr", _( 609 ) ), ( "en", _( 610 ) ), ( "multi", _( 611 ) ), ( "de", _( 615 ) ), ( "es", _( 616 ) ), ( "nl", _( 617 ) ), ( "fi", _( 618 ) ), ( "sv", _( 619 ) ) )
         self.language = ( lang or _( 612 ) ).replace( "-", " / " )
 
 

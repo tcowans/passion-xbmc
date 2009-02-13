@@ -217,6 +217,11 @@
   <string id="612">Tuntematon</string>
   <string id="613">Lisätty:&#32;</string>
   <string id="614">Selite : Ei saatavilla</string>
+  <string id="615">German</string>
+  <string id="616">Spanish</string>
+  <string id="617">Dutch</string>
+  <string id="618">Finnish</string>
+  <string id="619">Swedish</string>
 
   <!--ABOUT STRINGS -->
   <string id="700">Versio</string>
