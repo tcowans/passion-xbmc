@@ -55,7 +55,7 @@ class InfosWarehouse:
     """ Class Abstraite contenant toutes les informations necessaires a la description d'un item """
     def __init__( self, kwargs ):
         self.fileName        = kwargs.get( "fileName" )        or ""
-        self.title           = kwargs.get( "itemName" )        or ""
+        self.title           = kwargs.get( "title" )        or ""
         self.version         = kwargs.get( "version" )         or ""
         #self.language        = kwargs.get( "language" )        or ""
         self.date            = kwargs.get( "date" )            or ""
