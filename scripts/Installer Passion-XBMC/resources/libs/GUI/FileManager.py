@@ -18,6 +18,7 @@ try:
 except:
     import script_log as logger
 
+from CONF import *
 
 # INITIALISATION CHEMIN RACINE
 ROOTDIR = os.getcwd().replace( ";", "" )
@@ -54,36 +55,36 @@ CLOSE_CONTEXT_MENU = ( ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, ACTION_CONTEXT_M
 
 ##################################################
 
-TYPE_ROOT            = _( 10 )
-TYPE_SKIN            = _( 11 )
-TYPE_SCRAPER         = _( 12 )
-TYPE_SCRIPT          = _( 13 )
-TYPE_PLUGIN          = _( 14 )
-TYPE_PLUGIN_MUSIC    = _( 15 )
-TYPE_PLUGIN_PICTURES = _( 16 )
-TYPE_PLUGIN_PROGRAMS = _( 17 )
-TYPE_PLUGIN_VIDEO    = _( 18 )
+#TYPE_ROOT            = _( 10 )
+#TYPE_SKIN            = _( 11 )
+#TYPE_SCRAPER         = _( 12 )
+#TYPE_SCRIPT          = _( 13 )
+#TYPE_PLUGIN          = _( 14 )
+#TYPE_PLUGIN_MUSIC    = _( 15 )
+#TYPE_PLUGIN_PICTURES = _( 16 )
+#TYPE_PLUGIN_PROGRAMS = _( 17 )
+#TYPE_PLUGIN_VIDEO    = _( 18 )
+#
+##INDEX_ROOT            = None
+#INDEX_SKIN            = 0
+#INDEX_SCRAPER         = 1
+#INDEX_SCRIPT          = 2
+#INDEX_PLUGIN          = 3
+#INDEX_PLUGIN_MUSIC    = 4
+#INDEX_PLUGIN_PICTURES = 5
+#INDEX_PLUGIN_PROGRAMS = 6
+#INDEX_PLUGIN_VIDEO    = 7
 
-#INDEX_ROOT            = None
-INDEX_SKIN            = 0
-INDEX_SCRAPER         = 1
-INDEX_SCRIPT          = 2
-INDEX_PLUGIN          = 3
-INDEX_PLUGIN_MUSIC    = 4
-INDEX_PLUGIN_PICTURES = 5
-INDEX_PLUGIN_PROGRAMS = 6
-INDEX_PLUGIN_VIDEO    = 7
 
 
-
-typeList  = [ TYPE_SKIN,         TYPE_SCRAPER,         TYPE_SCRIPT,        TYPE_PLUGIN,        TYPE_PLUGIN_MUSIC,         TYPE_PLUGIN_PICTURES,         TYPE_PLUGIN_PROGRAMS,         TYPE_PLUGIN_VIDEO ] # Note: TYPE_ROOT est en dehors de la liste
-thumbList = [ "icone_theme.png", "icone_scrapper.png", "icone_script.png", "icone_script.png", "passion-icone-music.png", "passion-icone-pictures.png", "passion-icone-programs.png", "passion-icone-video.png" ] # Note: TYPE_ROOT est en dehors de la liste
+#typeList  = [ TYPE_SKIN,         TYPE_SCRAPER,         TYPE_SCRIPT,        TYPE_PLUGIN,        TYPE_PLUGIN_MUSIC,         TYPE_PLUGIN_PICTURES,         TYPE_PLUGIN_PROGRAMS,         TYPE_PLUGIN_VIDEO ] # Note: TYPE_ROOT est en dehors de la liste
+#thumbList = [ "icone_theme.png", "icone_scrapper.png", "icone_script.png", "icone_script.png", "passion-icone-music.png", "passion-icone-pictures.png", "passion-icone-programs.png", "passion-icone-video.png" ] # Note: TYPE_ROOT est en dehors de la liste
 
 #TODO: mettre les chemins des rep sur le serveur dans le fichier de conf
 #localDirLst = [ themesDir, scraperDir, scriptDir, pluginDir, pluginMusDir, pluginPictDir, pluginProgDir, pluginVidDir ]
 
-rootDisplayList   = [ INDEX_SKIN, INDEX_SCRAPER, INDEX_SCRIPT, INDEX_PLUGIN ]                                # Liste de la racine: Cette liste est un filtre ( utilisant l'index ) sur les listes ci-dessus
-pluginDisplayList = [ INDEX_PLUGIN_MUSIC, INDEX_PLUGIN_PICTURES, INDEX_PLUGIN_PROGRAMS, INDEX_PLUGIN_VIDEO ] # Liste des plugins : Cette liste est un filtre ( utilisant l'index ) sur les listes ci-dessus
+#rootDisplayList   = [ INDEX_SKIN, INDEX_SCRAPER, INDEX_SCRIPT, INDEX_PLUGIN ]                                # Liste de la racine: Cette liste est un filtre ( utilisant l'index ) sur les listes ci-dessus
+#pluginDisplayList = [ INDEX_PLUGIN_MUSIC, INDEX_PLUGIN_PICTURES, INDEX_PLUGIN_PROGRAMS, INDEX_PLUGIN_VIDEO ] # Liste des plugins : Cette liste est un filtre ( utilisant l'index ) sur les listes ci-dessus
 
 
 def copy_func( cpt_blk, taille_blk, total_taille ):
@@ -258,7 +259,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         Initialisation de l'interface
         """
         xbmcgui.WindowXML.__init__( self, *args, **kwargs )
-        from CONF import configCtrl
+        #from CONF import configCtrl
         self.configManager = configCtrl()
         if not self.configManager.is_conf_valid: raise
 
@@ -271,10 +272,10 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         #self.ItemTypeList      = self.configManager.downloadTypeLst  # Liste des types des items geres (plugins, scripts, skins ...)
         #self.racineDisplayList = [ 0, 1, 2, 3 ] # Liste de la racine: Cette liste est un filtre ( utilisant l'index ) sur les listes downloadTypeList et localdirList
         #self.pluginDisplayList = [ 4, 5, 6, 7 ] # Liste des plugins : Cette liste est un filtre ( utilisant l'index ) sur les listes downloadTypeList et localdirList
-        self.itemTypeList      = typeList          # Liste des types des items geres (plugins, scripts, skins ...)
-        self.itemThumbList     = thumbList         # Liste des icones standards
-        self.rootDisplayList   = rootDisplayList   # Liste de la racine: Cette liste est un filtre ( utilisant l'index ) sur les listes downloadTypeList et localdirList
-        self.pluginDisplayList = pluginDisplayList # Liste des plugins : Cette liste est un filtre ( utilisant l'index ) sur les listes downloadTypeList et localdirList
+        self.itemTypeList      = self.configManager.typeList          # Liste des types des items geres (plugins, scripts, skins ...)
+        self.itemThumbList     = self.configManager.thumbList         # Liste des icones standards
+        self.rootDisplayList   = self.configManager.rootDisplayList   # Liste de la racine: Cette liste est un filtre ( utilisant l'index ) sur les listes downloadTypeList et localdirList
+        self.pluginDisplayList = self.configManager.pluginDisplayList # Liste des plugins : Cette liste est un filtre ( utilisant l'index ) sur les listes downloadTypeList et localdirList
         self.scraperDir        = self.configManager.scraperDir
         self.scriptDir         = self.configManager.scriptDir
         self.CacheDir          = self.configManager.CACHEDIR
