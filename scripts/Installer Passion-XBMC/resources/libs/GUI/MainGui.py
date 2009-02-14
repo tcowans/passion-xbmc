@@ -177,6 +177,9 @@ class MainWindow( xbmcgui.WindowXML ):
             # print "self.addItems( items= )", hasattr( self, 'addItems' )
             # for ControlList only :(
 
+        # desactive le splash
+        self.getControl( 999 ).setVisible( 0 )
+
     def _get_settings( self, defaults=False ):
         """ reads settings """
         self.settings = Settings().get_settings( defaults=defaults )
@@ -255,10 +258,9 @@ class MainWindow( xbmcgui.WindowXML ):
             if ( not self.type.lower() in ( "racine", "plugins", ) ) and ( self.CONTROL_MAIN_LIST_START <= self.getFocusId() <= self.CONTROL_MAIN_LIST_END ):
                 currentListIndex = self.getCurrentListPosition()
                 if currentListIndex >= 0:
-                    selectedItem = os.path.basename( self.curDirList[ currentListIndex ] )
                     import DialogItemDescription
                     reload( DialogItemDescription )
-                    DialogItemDescription.show_item_descript_window( self, self.itemInfosManager, selectedItem, self.type )
+                    DialogItemDescription.show_description( self )
                     del DialogItemDescription
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
@@ -290,7 +292,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 import DialogContextMenu
                 #buttons = { 1000 : ( "teste 1", "disabled" ), 1001 : "teste 2", 1002 : "teste 3",
                 #    1003 : "teste 4", 1004 : ( "teste 5", "disabled" ), 1005 : "teste 6", 1006 : "teste 7" }
-                buttons = { 1000: _( 1000 ), 1001: _( 1001 ), 1002: _( 1002 ) }
+                buttons = { 1000: _( 1000 ), 1001: _( 1001 ), 1002: _( 184 ), 1003: _( 1002 ) }
                 selected = DialogContextMenu.show_context_menu( buttons )
                 del DialogContextMenu
                 if selected == 1000:
@@ -299,6 +301,8 @@ class MainWindow( xbmcgui.WindowXML ):
                 elif selected == 1001:
                     self._show_descript()
                 elif selected == 1002:
+                    self.refresh_item()
+                elif selected == 1003:
                     self._switch_media()
                 else:
                     pass
@@ -467,6 +471,8 @@ class MainWindow( xbmcgui.WindowXML ):
             self.index = self.getCurrentListPosition()
 
             source = self.curDirList[ self.index ]
+
+            if not xbmcgui.Dialog().yesno( _( 180 ), _( 181 ), source ): return
 
             if self.type == self.downloadTypeList[ 0 ]:   #Themes
                 # Verifions le themes en cours d'utilisation
@@ -922,7 +928,7 @@ class MainWindow( xbmcgui.WindowXML ):
 
                 displayListItem = xbmcgui.ListItem( item2download, "", iconImage=imagePath, thumbnailImage=imagePath )
                 displayListItem.setProperty( "Downloaded", already_downloaded )
-                self.set_item_info( displayListItem, ItemListPath )
+                self.set_item_infos( displayListItem, ItemListPath )
                 self.addItem( displayListItem )
                 DIALOG_PROGRESS.update( -1, _( 103 ), item2download, _( 110 ) )
 
@@ -961,7 +967,7 @@ class MainWindow( xbmcgui.WindowXML ):
 
                 displayListItem = xbmcgui.ListItem( item2download, "", iconImage=imagePath, thumbnailImage=imagePath )
                 displayListItem.setProperty( "Downloaded", already_downloaded )
-                self.set_item_info( displayListItem, ItemListPath )
+                self.set_item_infos( displayListItem, ItemListPath )
                 self.addItem( displayListItem )
                 DIALOG_PROGRESS.update( -1, _( 103 ), item2download, _( 110 ) )
 
@@ -976,20 +982,37 @@ class MainWindow( xbmcgui.WindowXML ):
 
         DIALOG_PROGRESS.close()
 
-    def _updateListThumb_cb( self, imagePath, listitem ):
-        if imagePath and hasattr( listitem, "setThumbnailImage" ):
-            listitem.setThumbnailImage( imagePath )
-
-    def set_list_images( self ):
-        """
-        Recuperation de toutes les images dans la FIFO et mise a jour dans la liste via appel sur la callback _updateListThumb_cb
-        """
+    def clear_item_infos( self, listitem ):
         try:
-            self.infoswarehouse.update_Images()
+            listitem.setProperty( "itemId",          "" )
+            listitem.setProperty( "fileName",        "" )
+            listitem.setProperty( "date",            "" )
+            listitem.setProperty( "title",           "" )
+            listitem.setProperty( "author",          "" )
+            listitem.setProperty( "version",         "" )
+            listitem.setProperty( "language",        "" )
+            listitem.setProperty( "description",     "" )
+            listitem.setProperty( "added",           "" )
+            listitem.setProperty( "fanartpicture",   "" )
+            listitem.setProperty( "previewVideoURL", "" )
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-    
-    def set_item_info( self, listitem, ipath ):
+
+    def refresh_item( self ):
+        DIALOG_PROGRESS.create( _( 0 ), _( 104 ), _( 110 ) )
+        try:
+            self.index = self.getCurrentListPosition()
+            listitem = self.getListItem( self.index )
+            self.clear_item_infos( listitem )
+            self.itemInfosManager = ItemInfosManager( mainwin=self )
+            self.infoswarehouse = self.itemInfosManager.get_info_warehouse()
+            self.set_item_infos( listitem, self.curDirList[ self.index ] )
+        except:
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+        DIALOG_PROGRESS.close()
+        return listitem
+
+    def set_item_infos( self, listitem, ipath ):
         try:
             infos = self.infoswarehouse.getInfo( itemName=os.path.basename( ipath ), itemType=self.type, listitem=listitem )
             listitem.setProperty( "itemId",          infos.itemId )
@@ -1003,6 +1026,19 @@ class MainWindow( xbmcgui.WindowXML ):
             listitem.setProperty( "added",           infos.added or infos.date )
             listitem.setProperty( "fanartpicture",   infos.previewPicture )
             listitem.setProperty( "previewVideoURL", infos.previewVideoURL )
+        except:
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+
+    def _updateListThumb_cb( self, imagePath, listitem ):
+        if imagePath and hasattr( listitem, "setThumbnailImage" ):
+            listitem.setThumbnailImage( imagePath )
+
+    def set_list_images( self ):
+        """
+        Recuperation de toutes les images dans la FIFO et mise a jour dans la liste via appel sur la callback _updateListThumb_cb
+        """
+        try:
+            self.infoswarehouse.update_Images()
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 

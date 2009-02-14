@@ -33,13 +33,12 @@ BASE_THUMBS_PATH = os.path.join( sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA, 
 
 class ItemDescription( xbmcgui.WindowXMLDialog ):
     # control id's
-    CONTROL_TITLE_LABEL     = 100
-    CONTROL_VERSION_LABEL   = 101
-    CONTROL_LANGUAGE_LABEL  = 110
-    CONTROL_PREVIEW_IMAGE   = 200
-    CONTROL_DESC_TEXTBOX    = 250
-    CONTROL_CANCEL_BUTTON   = 301
-    CONTROL_DOWNLOAD_BUTTON = 302
+    CONTROL_DOWNLOAD_BUTTON     = 5
+    CONTROL_REFRESH_BUTTON      = 6
+    CONTROL_GET_THUMB_BUTTON    = 10
+    CONTROL_PLAY_PREVIEW_BUTTON = 11
+    CONTROL_CANCEL_BUTTON       = 12
+    CONTROL_CANCEL2_BUTTON      = 303 # bouton mouse only
 
     # autre facon de recuperer tous les infos d'un item dans la liste.
     i_thumbnail       = xbmc.getInfoImage( "ListItem.Thumb" )
@@ -58,36 +57,83 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
 
     def __init__( self, *args, **kwargs ):
         xbmcgui.WindowXMLDialog.__init__( self, *args, **kwargs )
-
-        self.mainwin       = kwargs[ "mainwin" ]
-        self.infoWareHouse = kwargs[ "infoWareHouse" ]
-        self.itemName      = kwargs[ "itemName" ]
-        self.itemType      = kwargs[ "itemType" ]
-
+        self.mainwin = kwargs[ "mainwin" ]
         self._set_skin_colours()
 
     def onInit( self ):
         # onInit est pour le windowXML seulement
-        xbmcgui.lock()
         try:
-            self.getControl( self.CONTROL_PREVIEW_IMAGE ).setVisible( 0 ) # auto busy
-
             self._set_controls_labels()
-            self._set_controls_visible()
+        except:
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+
+    def _set_controls_labels( self ):
+        xbmcgui.lock()
+        self.i_itemId = self.i_itemId or str( self.mainwin.getCurrentListPosition()+1 )
+        try:
+            self.getControl( 48 ).reset()
+            listitem = xbmcgui.ListItem( self.i_title, "", self.i_thumbnail, self.i_thumbnail )
+            listitem.setProperty( "type", self.i_type )
+            listitem.setProperty( "date", self.i_date )#
+            listitem.setProperty( "title", self.i_title )
+            listitem.setProperty( "added", self.i_added )
+            listitem.setProperty( "itemId", self.i_itemId )
+            listitem.setProperty( "author", self.i_author )
+            listitem.setProperty( "version", self.i_version )
+            listitem.setProperty( "language", self.i_language )
+            listitem.setProperty( "fileName", self.i_fileName )
+            listitem.setProperty( "description", self.i_description or _( 604 ) )
+            listitem.setProperty( "fanartpicture", self.i_previewPicture )
+            listitem.setProperty( "previewVideoURL", self.i_previewVideoURL )
+            self.getControl( 48 ).addItem( listitem )
+        except:
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+        try:
+            self.getControl( 49 ).reset()
+
+            listitem = xbmcgui.ListItem( "ID", self.i_itemId or _( 612 ) )
+            self.getControl( 49 ).addItem( listitem )
+
+            listitem = xbmcgui.ListItem( _( 601 ), self.i_type or _( 612 ) )
+            self.getControl( 49 ).addItem( listitem )
+
+            listitem = xbmcgui.ListItem( _( 608 ), self.i_language or _( 612 ) )
+            self.getControl( 49 ).addItem( listitem )
+
+            listitem = xbmcgui.ListItem( _( 602 ), self.i_version or _( 612 ) )
+            self.getControl( 49 ).addItem( listitem )
+
+            listitem = xbmcgui.ListItem( _( 603 ), self.i_date or _( 612 ) )
+            self.getControl( 49 ).addItem( listitem )
+
+            listitem = xbmcgui.ListItem( _( 620 ), self.i_author or _( 612 ) )
+            self.getControl( 49 ).addItem( listitem )
+
+            listitem = xbmcgui.ListItem( _( 613 ), self.i_added or _( 612 ) )
+            self.getControl( 49 ).addItem( listitem )
+
+            listitem = xbmcgui.ListItem( _( 621 ), self.i_fileName or _( 612 ) )
+            self.getControl( 49 ).addItem( listitem )
 
         except:
-            #import traceback; traceback.print_exc()
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         xbmcgui.unlock()
-        # Close the Loading Window
-        #DIALOG_PROGRESS.close()
 
-
-    def _updateThumb_cb( self, imagePath, listitem=None ):
-        if imagePath:
-            self.getControl( self.CONTROL_PREVIEW_IMAGE ).setImage(imagePath)
-        self.getControl( self.CONTROL_PREVIEW_IMAGE ).setVisible( 1 )
-        logger.LOG( logger.LOG_DEBUG, "**** image")
+    def get_item_infos( self, main_listitem ):
+        try:
+            self.i_date            = unicode( main_listitem.getProperty( "date" ), 'utf-8')
+            self.i_added           = unicode( main_listitem.getProperty( "added" ), 'utf-8')
+            self.i_title           = unicode( main_listitem.getProperty( "title" ), 'utf-8')
+            self.i_itemId          = unicode( main_listitem.getProperty( "itemId" ), 'utf-8') or str( self.mainwin.getCurrentListPosition()+1 )
+            self.i_author          = unicode( main_listitem.getProperty( "author" ), 'utf-8')
+            self.i_version         = unicode( main_listitem.getProperty( "version" ), 'utf-8')
+            self.i_language        = unicode( main_listitem.getProperty( "language" ), 'utf-8')
+            self.i_fileName        = unicode( main_listitem.getProperty( "fileName" ), 'utf-8')
+            self.i_description     = unicode( main_listitem.getProperty( "description" ), 'utf-8')
+            self.i_previewPicture  = unicode( main_listitem.getProperty( "fanartpicture" ), 'utf-8')
+            self.i_previewVideoURL = unicode( main_listitem.getProperty( "previewVideoURL" ), 'utf-8')
+        except:
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def _set_skin_colours( self ):
         #xbmcgui.lock()
@@ -100,44 +146,6 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         #xbmcgui.unlock()
 
-    def _set_controls_labels( self ):
-        # setlabel pour les controles du dialog qui a comme info exemple: id="100" et pour avoir son controle on fait un getControl( 100 )
-        try:
-            self.getControl( self.CONTROL_TITLE_LABEL ).setLabel( self.i_type + ": " + self.i_title )
-
-            self.getControl( self.CONTROL_VERSION_LABEL ).setLabel( _( 499 ) % ( self.i_version or _( 612 ), ) )
-
-            self.getControl( self.CONTROL_LANGUAGE_LABEL ).setLabel( self.i_language )
-
-            self.getControl( self.CONTROL_DESC_TEXTBOX ).setText( self.i_description or _( 604 ) )
-
-            if self.i_previewPicture:
-                if not os.path.exists( self.i_previewPicture ):
-                    self.getControl( self.CONTROL_PREVIEW_IMAGE ).setVisible( 0 ) # auto busy
-                    # Recuperation de l'image dans la FIFO
-                    self.infoWareHouse.getInfo( itemName=self.itemName, itemType=self.itemType, updateImage_cb=self._updateThumb_cb )
-                    self.infoWareHouse.update_Images()
-                else:
-                    # Image deja presente
-                    self.getControl( self.CONTROL_PREVIEW_IMAGE ).setImage( self.i_previewPicture )
-                    self.getControl( self.CONTROL_PREVIEW_IMAGE ).setVisible( 1 )
-            else:
-                # On affiche l'image par defaut (NoImage)
-                self.getControl( self.CONTROL_PREVIEW_IMAGE ).setVisible( 1 )
-        except:
-            #import traceback; traceback.print_exc()
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-
-    def _set_controls_visible( self ):
-        xbmcgui.lock()
-        try:
-            self.getControl( self.CONTROL_DOWNLOAD_BUTTON ).setEnabled( False )
-            self.getControl( self.CONTROL_DOWNLOAD_BUTTON ).setVisible( False )
-        except:
-            #import traceback; traceback.print_exc()
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-        xbmcgui.unlock()
-
     def onFocus( self, controlID ):
         #cette fonction n'est pas utiliser ici, mais dans les XML si besoin
         #Note: Mais il faut la declarer :)
@@ -145,12 +153,27 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
 
     def onClick( self, controlID ):
         try:
-            if controlID == self.CONTROL_CANCEL_BUTTON:
+            if controlID in ( self.CONTROL_CANCEL_BUTTON, self.CONTROL_CANCEL2_BUTTON ):
                 # bouton quitter, on ferme le dialog
                 self._close_dialog()
-            #elif controlID == self.CONTROL_DOWNLOAD_BUTTON:
-            #    #bouton downlaod, non utilise pour le moment (desactive)
-            #    pass
+            elif controlID == self.CONTROL_DOWNLOAD_BUTTON:
+                #bouton downlaod ou installer
+                self.mainwin.install_add_ons()
+            elif controlID == self.CONTROL_REFRESH_BUTTON:
+                #bouton pour rafraichir l'item en temps reel ds le dialog et l'item de la liste en court
+                self.getControl( 48 ).reset()
+                self.getControl( 49 ).reset()
+                main_listitem = self.mainwin.refresh_item()
+                self.get_item_infos( main_listitem )
+                self._set_controls_labels()
+            elif controlID == self.CONTROL_GET_THUMB_BUTTON:
+                #bouton pour choisir une vignette quand le add-ons est downloader
+                #non utilise pour le moment (desactive)
+                pass
+            elif controlID == self.CONTROL_PLAY_PREVIEW_BUTTON:
+                #bouton pour ecouter un add-ons si disponible
+                #non utilise pour le moment (desactive)
+                pass
             else:
                 pass
         except:
@@ -166,7 +189,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
         self.close()
 
 
-def show_item_descript_window( mainwin, itemInfosManager, selectedItem , typeItem ):
+def show_description( mainwin ):
     """
     Affiche une fenetre contenant les informations sur un item
     """
@@ -178,6 +201,6 @@ def show_item_descript_window( mainwin, itemInfosManager, selectedItem , typeIte
 
     #TODO: ajouter check si infoWarehouse n'a pas ete cree
 
-    w = ItemDescription( file_xml, dir_path, current_skin, force_fallback, mainwin=mainwin, infoWareHouse=itemInfosManager.infoWarehouseFTP,itemName=selectedItem, itemType=typeItem )
+    w = ItemDescription( file_xml, dir_path, current_skin, force_fallback, mainwin=mainwin )
     w.doModal()
     del w

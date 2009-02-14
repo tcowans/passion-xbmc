@@ -210,7 +210,7 @@
 					<align>center</align>
 					<label>101</label>
 					<texturenofocus>-</texturenofocus>
-					<texturefocus>passion-mbutton-focus.png</texturefocus>
+					<texturefocus border="5">passion-mbutton-focus.png</texturefocus>
 					<textcolor>ffffffff</textcolor>
 					<colordiffuse>ffffffff</colordiffuse>
 					<disabledcolor>60d0d0d0</disabledcolor>
@@ -236,7 +236,7 @@
 					<align>center</align>
 					<label>SCRIPT5</label>
 					<texturenofocus>-</texturenofocus>
-					<texturefocus>passion-mbutton-focus.png</texturefocus>
+					<texturefocus border="5">passion-mbutton-focus.png</texturefocus>
 					<textcolor>ffffffff</textcolor>
 					<colordiffuse>ffffffff</colordiffuse>
 					<disabledcolor>60d0d0d0</disabledcolor>
@@ -262,7 +262,7 @@
 					<align>center</align>
 					<label>SCRIPT1</label>
 					<texturenofocus>-</texturenofocus>
-					<texturefocus>passion-mbutton-focus.png</texturefocus>
+					<texturefocus border="5">passion-mbutton-focus.png</texturefocus>
 					<textcolor>ffffffff</textcolor>
 					<colordiffuse>ffffffff</colordiffuse>
 					<disabledcolor>60d0d0d0</disabledcolor>
@@ -289,7 +289,7 @@
 					<align>center</align>
 					<label>SCRIPT2</label>
 					<texturenofocus>-</texturenofocus>
-					<texturefocus>passion-mbutton-focus.png</texturefocus>
+					<texturefocus border="5">passion-mbutton-focus.png</texturefocus>
 					<textcolor>ffffffff</textcolor>
 					<colordiffuse>ffffffff</colordiffuse>
 					<disabledcolor>60d0d0d0</disabledcolor>
@@ -317,7 +317,7 @@
 					<align>center</align>
 					<label>SCRIPT8</label>
 					<texturenofocus>-</texturenofocus>
-					<texturefocus>passion-mbutton-focus.png</texturefocus>
+					<texturefocus border="5">passion-mbutton-focus.png</texturefocus>
 					<textcolor>ffffffff</textcolor>
 					<colordiffuse>ffffffff</colordiffuse>
 					<disabledcolor>60d0d0d0</disabledcolor>
@@ -396,7 +396,7 @@
 							<selectedcolor>FFe2ff43</selectedcolor>
 							<textcolor>60000000</textcolor>
 							<align>right</align>
-							<label>$INFO[ListItem.Property(added),$LOCALIZE[SCRIPT613]]</label>
+							<label>$INFO[ListItem.Property(added),$LOCALIZE[SCRIPT613]: ]</label>
 						</control>
 					</itemlayout>
 					<focusedlayout height="29" width="250">
@@ -455,7 +455,7 @@
 							<selectedcolor>FFe2ff43</selectedcolor>
 							<textcolor>60000000</textcolor>
 							<align>right</align>
-							<label>$INFO[ListItem.Property(added),[B]$LOCALIZE[SCRIPT613],[/B]]</label>
+							<label>$INFO[ListItem.Property(added),[B]$LOCALIZE[SCRIPT613]: ,[/B]]</label>
 						</control>
 					</focusedlayout>
 				</control>
@@ -751,7 +751,7 @@
 						<textcolor>60000000</textcolor>
 						<align>right</align>
 						<!--<info>ListItem.Label2</info>-->
-						<label>$INFO[ListItem.Property(date),$LOCALIZE[SCRIPT613]]</label>
+						<label>$INFO[ListItem.Property(date),$LOCALIZE[SCRIPT613]: ]</label>
 						<animation effect="slide" start="0,0" end="-26,0" time="0" condition="Control.IsVisible(2050)">conditional</animation>
 					</control>
 				</itemlayout>
@@ -831,7 +831,7 @@
 						<textcolor>60000000</textcolor>
 						<align>right</align>
 						<!--<info>ListItem.Label2</info>-->
-						<label>$INFO[ListItem.Property(date),[B]$LOCALIZE[SCRIPT613],[/B]]</label>
+						<label>$INFO[ListItem.Property(date),[B]$LOCALIZE[SCRIPT613]: ,[/B]]</label>
 						<animation effect="slide" start="0,0" end="-26,0" time="0" condition="Control.IsVisible(2050)">conditional</animation>
 					</control>
 				</focusedlayout>
@@ -1057,7 +1057,7 @@
 					<textcolor>FF000000</textcolor>
 					<scroll>true</scroll>
 					<align>right</align>
-					<label>$INFO[ListItem.Property(date),$LOCALIZE[SCRIPT613]]</label>
+					<label>$INFO[ListItem.Property(date),$LOCALIZE[SCRIPT613]: ]</label>
 					<visible>Control.IsVisible(56)</visible>
 					<visible>false</visible>
 				</control>
@@ -1070,7 +1070,7 @@
 					<textcolor>FF000000</textcolor>
 					<scroll>true</scroll>
 					<align>right</align>
-					<label>$INFO[ListItem.Property(date),$LOCALIZE[SCRIPT613]]</label>
+					<label>$INFO[ListItem.Property(date),$LOCALIZE[SCRIPT613]: ]</label>
 					<visible>Control.IsVisible(56)</visible>
 					<visible>false</visible>
 				</control>
@@ -1083,7 +1083,7 @@
 					<textcolor>FF000000</textcolor>
 					<scroll>true</scroll>
 					<align>right</align>
-					<label>$INFO[ListItem.Property(date),$LOCALIZE[SCRIPT613]]</label>
+					<label>$INFO[ListItem.Property(date),$LOCALIZE[SCRIPT613]: ]</label>
 					<visible>Control.IsVisible(56)</visible>
 					<visible>false</visible>
 				</control>
@@ -1986,5 +1986,30 @@
 			</control>
 		</control>
 
+		<control type="group">
+            <animation effect="fade" start="100" end="0" time="200" condition="!Control.IsVisible(999)">conditional</animation>
+			<control type="image">
+				<description>splash black screen</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>720</width>
+				<height>576</height>
+				<texture>passion-list-border.png</texture>
+			</control>
+			<control type="image" id="999">
+				<description>splash image</description>
+				<posx>361</posx>
+				<posy>283</posy>
+				<width>10</width>
+				<height>10</height>
+				<texture>passion-splash.png</texture>
+				<aspectratio>keep</aspectratio>
+				<!--<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>-->
+				<animation type="WindowOpen" reversible="false">
+					<effect type="rotatey" center="auto" start="-360" end="360" time="1600" />
+					<effect type="zoom" center="auto" start="361,283,10,10" end="0,0,520,416" time="2000" delay="200" />
+				</animation>
+			</control>
+		</control>
 	</controls>
 </window>

@@ -110,7 +110,10 @@
   <string id="177">Déplacement...</string>
   <string id="178">De :&#32;</string>
   <string id="179">Vers :&#32;</string>
+  <string id="180">Confirmer téléchargement du fichier</string>
+  <string id="181">Êtes-vous sûr de télécharger ce(s) fichier(s)?</string>
 
+  <string id="184">Rafraîchir</string>
   <string id="185">Calculer la Taille</string>
   <string id="186">Calcule de la taille du répertoire</string>
 
@@ -215,13 +218,15 @@
   <string id="610">Anglais</string>
   <string id="611">Multilangues</string>
   <string id="612">Inconnu</string>
-  <string id="613">Date d'ajout :&#32;</string>
+  <string id="613">Date ajoutée</string>
   <string id="614">Description : Non disponible</string>
   <string id="615">Allemand</string>
   <string id="616">Espagnol</string>
   <string id="617">Hollandais</string>
   <string id="618">Finnois</string>
   <string id="619">Suédois</string>
+  <string id="620">Auteur</string>
+  <string id="621">Nom du fichier</string>
   
   <!--ABOUT STRINGS -->
   <string id="700">Version</string>
