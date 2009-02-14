@@ -35,7 +35,7 @@
 			<posy>70</posy>
 			<width>620</width>
 			<height>430</height>
-			<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-dialog-panel.png]</texture>
+			<texture border="20,10,10,30">$INFO[Skin.String(PassionSkinColourPath),,\passion-dialog-panel.png]</texture>
 		</control>
 
 		<!-- LABELS DIALOG -->
