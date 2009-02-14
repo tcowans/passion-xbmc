@@ -399,6 +399,7 @@
 					<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 				</control>
 			</control>
+<!--
 			<control type="image">
 				<description>icon forum section</description>
 				<posx>566</posx>
@@ -407,7 +408,6 @@
 				<height>100</height>
 				<aspectratio align="center" aligny="center">keep</aspectratio>
 				<texture>$INFO[Container(191).ListItem.ActualIcon,icones\]</texture>
-				<!--<visible>!Control.HasFocus(150)</visible>-->
 				<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
 			</control>
 			<control type="image">
@@ -417,10 +417,9 @@
 				<height>50</height>
 				<texture flipy="true" diffuse="passion-diffuse_mirror.png">$INFO[Container(191).ListItem.ActualIcon,icones\]</texture>
 				<aspectratio align="center" aligny="top">stretch</aspectratio>
-				<!--<visible>!Control.HasFocus(150)</visible>-->
 				<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
 			</control>
-
+-->
 			<control type="textbox">
 				<description>Text of topic small</description>
 				<posx>27</posx>
