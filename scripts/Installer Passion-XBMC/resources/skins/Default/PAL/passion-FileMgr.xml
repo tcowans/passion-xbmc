@@ -186,7 +186,7 @@
 				<control type="image">
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>100</width>
+					<width>110</width>
 					<height>25</height>
 					<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
 					<visible>Control.IsVisible(2)</visible>
@@ -195,7 +195,7 @@
 					<description>View As Icons button</description>
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>100</width>
+					<width>110</width>
 					<height>25</height>
 					<align>center</align>
 					<label>101</label>
@@ -211,18 +211,18 @@
 					<ondown>50</ondown>
 				</control>
 				<control type="image">
-					<posx>105</posx>
+					<posx>115</posx>
 					<posy>0</posy>
-					<width>100</width>
+					<width>110</width>
 					<height>25</height>
 					<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
 					<visible>Control.IsVisible(300)</visible>
 				</control>
 				<control type="button" id="300">
 					<description>installer button</description>
-					<posx>105</posx>
+					<posx>115</posx>
 					<posy>0</posy>
-					<width>100</width>
+					<width>110</width>
 					<height>25</height>
 					<align>center</align>
 					<label>SCRIPT7</label>
@@ -237,18 +237,18 @@
 					<ondown>50</ondown>
 				</control>
 				<control type="image">
-					<posx>210</posx>
+					<posx>230</posx>
 					<posy>0</posy>
-					<width>100</width>
+					<width>110</width>
 					<height>25</height>
 					<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
 					<visible>Control.IsVisible(305)</visible>
 				</control>
 				<control type="button" id="305">
 					<description>forum button</description>
-					<posx>210</posx>
+					<posx>230</posx>
 					<posy>0</posy>
-					<width>100</width>
+					<width>110</width>
 					<height>25</height>
 					<align>center</align>
 					<label>SCRIPT1</label>
@@ -263,19 +263,19 @@
 					<ondown>50</ondown>
 				</control>
 				<control type="image">
-					<posx>315</posx>
+					<posx>345</posx>
 					<posy>0</posy>
-					<width>100</width>
+					<width>110</width>
 					<height>25</height>
 					<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
 					<visible>Control.IsVisible(310)</visible>
-					<animation effect="slide" start="0,0" end="-105,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
+					<animation effect="slide" start="0,0" end="-115,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
 				</control>
 				<control type="button" id="310">
 					<description>option button</description>
-					<posx>315</posx>
+					<posx>345</posx>
 					<posy>0</posy>
-					<width>100</width>
+					<width>110</width>
 					<height>25</height>
 					<align>center</align>
 					<label>SCRIPT2</label>
@@ -288,22 +288,22 @@
 					<onright>320</onright>
 					<onup>50</onup>
 					<ondown>50</ondown>
-					<animation effect="slide" start="0,0" end="-105,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
+					<animation effect="slide" start="0,0" end="-115,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
 				</control>
 				<control type="image">
-					<posx>420</posx>
+					<posx>460</posx>
 					<posy>0</posy>
-					<width>100</width>
+					<width>110</width>
 					<height>25</height>
 					<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
 					<visible>Control.IsVisible(320)</visible>
-					<animation effect="slide" start="0,0" end="-105,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
+					<animation effect="slide" start="0,0" end="-115,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
 				</control>
 				<control type="button" id="320">
 					<description>exit button</description>
-					<posx>420</posx>
+					<posx>460</posx>
 					<posy>0</posy>
-					<width>100</width>
+					<width>110</width>
 					<height>25</height>
 					<align>center</align>
 					<label>SCRIPT8</label>
@@ -316,7 +316,7 @@
 					<onright>2</onright>
 					<onup>50</onup>
 					<ondown>50</ondown>
-					<animation effect="slide" start="0,0" end="-105,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
+					<animation effect="slide" start="0,0" end="-115,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
 				</control>
 			</control>
 
