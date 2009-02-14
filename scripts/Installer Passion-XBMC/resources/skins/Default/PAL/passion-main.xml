@@ -358,14 +358,13 @@
 							<visible>false</visible>
 						</control>
 						<control type="image">
-							<posx>3</posx>
-							<posy>3</posy>
-							<width>21</width>
-							<height>21</height>
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>27</width>
+							<height>27</height>
 							<info>ListItem.ActualIcon</info>
 							<visible>IsEmpty(ListItem.Property(Downloaded))</visible>
 						</control>
-<!--
 						<control type="image">
 							<posx>3</posx>
 							<posy>3</posy>
@@ -375,7 +374,6 @@
 							<visible>!IsEmpty(ListItem.Property(Downloaded))</visible>
 							<colordiffuse>60ffffff</colordiffuse>
 						</control>
--->
 						<control type="label">
 							<posx>28</posx>
 							<posy>2</posy>
@@ -426,7 +424,6 @@
  							<info>ListItem.ActualIcon</info>
 							<visible>IsEmpty(ListItem.Property(Downloaded))</visible>
 						</control>
-<!--
 						<control type="image">
 							<posx>3</posx>
 							<posy>3</posy>
@@ -436,7 +433,6 @@
 							<visible>!IsEmpty(ListItem.Property(Downloaded))</visible>
 							<colordiffuse>60ffffff</colordiffuse>
 						</control>
--->
 						<control type="label">
 							<posx>28</posx>
 							<posy>2</posy>
