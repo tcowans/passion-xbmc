@@ -13,6 +13,8 @@ print "****************************************************************"
 print "                Updating Installer-passion script               "
 print "****************************************************************"
 
+DIALOG_PROGRESS = xbmcgui.DialogProgress()
+
 def get_system_platform():
     """ 
     fonction pour recuperer la platform que xbmc tourne 
@@ -38,37 +40,42 @@ def zipextraction (archive,pathdst):
     zfile = zipfile.ZipFile(archive, 'r')
     compteurdossier = 0
     compteurfichier = 0
-    for i in zfile.namelist():  ## On parcourt l'ensemble des fichiers de l'archive
-        if idracine == False:
-            filedst = pathdst + os.sep + i
-        else:
-            filedtst = pathdst + os.sep + i[len(root):]
-
-        print filedst
-
-        if i.endswith('/'): 
-            #Creation des repertoires avant extraction
-            compteurdossier = compteurdossier + 1
-
-            if compteurdossier == 1 and compteurfichier == 0:
-            #On determine le repertoire racine s'il existe pour le retirer du chemin d'extraction
-                idracine = True
-                root = i
-
+    try:
+        for i in zfile.namelist():  ## On parcourt l'ensemble des fichiers de l'archive
+            if idracine == False:
+                filedst = xbmc.translatePath( pathdst + os.sep + i )
             else:
-                try:
-                    os.makedirs(filedtst)
-                except Exception, e:
-                    print "Error during directory creation for archive = ",e
-
-        else:
-            #Extraction des fichiers
-            compteurfichier = compteurfichier + 1
-            data = zfile.read(i)        ## lecture du fichier compresse
-            fp = open(filedtst, "wb")   ## creation en local du nouveau fichier
-            fp.write(data)              ## ajout des donnees du fichier compresse dans le fichier local
-            fp.close()
-    zfile.close()
+                filedtst = xbmc.translatePath( pathdst + os.sep + i[len(root):] )
+    
+            if i.endswith('/'): 
+                #Creation des repertoires avant extraction
+                compteurdossier = compteurdossier + 1
+    
+                if compteurdossier == 1 and compteurfichier == 0:
+                #On determine le repertoire racine s'il existe pour le retirer du chemin d'extraction
+                    idracine = True
+                    root = i
+    
+                else:
+                    try:
+                        #os.makedirs(filedtst.rstrip( "/" ))
+                        os.makedirs(filedtst)
+                        #print "creating directory %s"%filedtst
+                    except Exception, e:
+                        print "Error during directory creation for archive = ",e
+    
+            else:
+                #Extraction des fichiers
+                compteurfichier = compteurfichier + 1
+                data = zfile.read(i)        ## lecture du fichier compresse
+                fp = open(filedtst, "wb")   ## creation en local du nouveau fichier
+                fp.write(data)              ## ajout des donnees du fichier compresse dans le fichier local
+                fp.close()
+        zfile.close()
+    except:
+        print "deleteDir: Exception during zipextraction of %s"%archive 
+        print ("error/INSTALLMAJ go: " + str(sys.exc_info()[0]))
+        traceback.print_exc()
     
 
 def deleteDir(path,keep=[]):
@@ -114,54 +121,88 @@ def deleteDir(path,keep=[]):
 
 def go():
     try:
-        if get_system_platform() == "osx":
-            print "Platform is MAC OSX : Current update is not compatible with MACOSX"
-            print "Stopping update ..."
-            
-            dialogInfo = xbmcgui.Dialog()
-            if __language__ == 'french':
-                result = dialogInfo.ok("Installeur Passion-XBMC - Mise a jour", "Désolé, cette mise a jour n'est pas encore disponible pour MAC OSX", "Mise a jour annulée")
-            else:
-                result = dialogInfo.ok("Installer Passion-XBMC - Update", "Sorry this update is not yet available for MAC OSX", "Update cancelled")
+        print "Starting update ..."
+        dialog_lang  = []
+        PLATFORM_MAC = get_system_platform() == "osx"
+        
+        if __language__.lower() == 'french':
+            dialog_lang = [ "Installeur Passion-XBMC - Mise a jour", "Mise a jour du script en cours", "Veuillez patienter...", "Recuperation des parametre locaux", 
+                           "Suppression de l'ancienne version ","Suppression de des donnees locales de l'ancienne version","Extraction et installation de la mise a jour" ]
         else:
-            print "Other platforme"
-            print "Starting update ..."
-        
-            rootdir = os.path.dirname(os.getcwd().replace(';',''))
-            curdir = os.path.join(rootdir, "cache")
-        
-            confmaj = os.path.join(curdir, "confmaj.cfg")
-            config = ConfigParser.ConfigParser()
-            config.read(confmaj)
-        
-            passiondir  = config.get('Localparam', 'passiondir')
-            installDir  = config.get('Localparam', 'scriptDir')
-            archive     = config.get('Localparam', 'Archive')
-            script      = config.get('Localparam', 'Scripttolaunch')       
+            dialog_lang = [ "Installer Passion-XBMC - Update", "Script update in progress", "Please wait...", "Retrieving local settings", 
+                           "Deleting old version", "Deleting local data of the old version", "Extracting and installing update" ]
+            
 
-            dirs2keep = [ passiondir , os.path.dirname(archive) ]
-            
-            # Nettoyage du repertoire du script avant installation de la nouvelle version
-            deleteDir(passiondir,keep=dirs2keep)
-            
-            print "%s content deleted"%passiondir
-
-            sys.path.append(passiondir)
+        DIALOG_PROGRESS.create( dialog_lang[0], dialog_lang[1], dialog_lang[2] )
         
-            dp = xbmcgui.DialogProgress()
-            if __language__ == 'french':
-                dp.create("Installeur Passion-XBMC - Mise a jour","Mise a jour du script en cours","Veuillez patienter...")
-            else:
-                dp.create("Installer Passion-XBMC - Update","Script update in progress","Please wait...")
-            zipextraction(archive,passiondir)
-            dp.close()
-            del config #On supprime le config parser
+#        if get_system_platform() == "osx":
+#            print "Platform is MAC OSX : Current update is not compatible with MACOSX"
+#            print "Stopping update ..."
+#            
+#            dialogInfo = xbmcgui.Dialog()
+#            if __language__ == 'french':
+#                result = dialogInfo.ok("Installeur Passion-XBMC - Mise a jour", "Désolé, cette mise a jour n'est pas encore disponible pour MAC OSX", "Mise a jour annulée")
+#            else:
+#                result = dialogInfo.ok("Installer Passion-XBMC - Update", "Sorry this update is not yet available for MAC OSX", "Update cancelled")
+#        else:
+#            print "Other platforme"
+
+        DIALOG_PROGRESS.update( -1, dialog_lang[1], dialog_lang[2], dialog_lang[3] )
+        xbmc.sleep(100)
             
-            dialogInfo = xbmcgui.Dialog()
-            if __language__ == 'french':
-                result = dialogInfo.ok("Installeur Passion-XBMC - Mise a jour", "Mise a jour effectuée", "Vous pouvez desormais relancer le script")
-            else:
-                result = dialogInfo.ok("Installer Passion-XBMC - Update", "Update done", "You can now restart the script")
+        rootdir = os.path.dirname(os.getcwd().replace(';',''))
+        curdir = os.path.join(rootdir, "cache")
+    
+        confmaj = os.path.join(curdir, "confmaj.cfg")
+        config = ConfigParser.ConfigParser()
+        config.read(confmaj)
+    
+        passiondir  = config.get('Localparam', 'passiondir')
+        installDir  = config.get('Localparam', 'scriptDir')
+        archive     = config.get('Localparam', 'Archive')
+        script      = config.get('Localparam', 'Scripttolaunch')
+        
+        SPECIAL_PROFILE_DIR = xbmc.translatePath( "special://profile/" )
+        if PLATFORM_MAC or not os.path.isdir( SPECIAL_PROFILE_DIR  ): SPECIAL_PROFILE_DIR = xbmc.translatePath( "P:\\" )
+        
+        SPECIAL_SCRIPT_DATA = os.path.join( SPECIAL_PROFILE_DIR, "script_data", "Installer Passion-XBMC" )
+
+        dirs2keep = [ passiondir , os.path.dirname(archive) ]
+        
+        DIALOG_PROGRESS.update( -1, dialog_lang[1], dialog_lang[2], dialog_lang[4] )
+
+        # Nettoyage du repertoire du script avant installation de la nouvelle version
+        deleteDir(passiondir,keep=dirs2keep)
+        print "%s content deleted"%passiondir
+        
+        try:
+            # Nettoyage des donnes dans user data
+            if os.path.isdir( SPECIAL_SCRIPT_DATA ):
+                DIALOG_PROGRESS.update( -1, dialog_lang[1], dialog_lang[2], dialog_lang[5] )
+                deleteDir(SPECIAL_SCRIPT_DATA)
+                print "%s content deleted"%SPECIAL_SCRIPT_DATA
+        except Exception, e:
+            print "INSTALLMAJ : go(): Impossible to delete script data in user date dir",e
+            print ("error/INSTALLMAJ go: " + str(sys.exc_info()[0]))
+            traceback.print_exc()
+        
+        sys.path.append(passiondir)
+        
+        print "Extracting %s"%archive
+        DIALOG_PROGRESS.update( -1, dialog_lang[1], dialog_lang[2], dialog_lang[6] )
+        zipextraction(archive,passiondir)
+
+        DIALOG_PROGRESS.close()
+        
+        #On supprime le config parser
+        del config 
+        
+        print "Update DONE - Please restart the script"
+        dialogInfo = xbmcgui.Dialog()
+        if __language__.lower() == 'french':
+            result = dialogInfo.ok( "Installeur Passion-XBMC - Mise a jour", "Mise a jour effectuée", "Vous pouvez desormais relancer le script" )
+        else:
+            result = dialogInfo.ok( "Installer Passion-XBMC - Update", "Update done", "You can now restart the script" )
             
         
     except Exception, e:
