@@ -278,7 +278,7 @@
 					<height>25</height>
 					<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
 					<visible>Control.IsVisible(310)</visible>
-					<animation effect="slide" start="0,0" end="-105,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
+					<animation effect="slide" start="0,0" end="-115,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
 				</control>
 				<control type="button" id="310">
 					<description>option button</description>
@@ -297,7 +297,7 @@
 					<onright>320</onright>
 					<onup>50</onup>
 					<ondown>50</ondown>
-					<animation effect="slide" start="0,0" end="-105,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
+					<animation effect="slide" start="0,0" end="-115,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
 				</control>
 				<control type="image">
 					<posx>460</posx>
@@ -306,7 +306,7 @@
 					<height>25</height>
 					<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
 					<visible>Control.IsVisible(320)</visible>
-					<animation effect="slide" start="0,0" end="-105,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
+					<animation effect="slide" start="0,0" end="-115,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
 				</control>
 				<control type="button" id="320">
 					<description>exit button</description>
@@ -325,7 +325,7 @@
 					<onright>2</onright>
 					<onup>50</onup>
 					<ondown>50</ondown>
-					<animation effect="slide" start="0,0" end="-105,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
+					<animation effect="slide" start="0,0" end="-115,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
 				</control>
 			</control>
 
