@@ -720,10 +720,10 @@
 						<visible>IsEmpty(ListItem.Property(Downloaded))</visible>
 					</control>
 					<control type="image">
-						<posx>3</posx>
-						<posy>3</posy>
-						<width>36</width>
-						<height>36</height>
+						<posx>5</posx>
+						<posy>5</posy>
+						<width>32</width>
+						<height>32</height>
 						<info>ListItem.ActualIcon</info>
 						<visible>!IsEmpty(ListItem.Property(Downloaded))</visible>
 						<colordiffuse>60ffffff</colordiffuse>
@@ -799,10 +799,10 @@
 						<visible>IsEmpty(ListItem.Property(Downloaded))</visible>
 					</control>
 					<control type="image">
-						<posx>3</posx>
-						<posy>3</posy>
-						<width>36</width>
-						<height>36</height>
+						<posx>5</posx>
+						<posy>5</posy>
+						<width>32</width>
+						<height>32</height>
 						<info>ListItem.ActualIcon</info>
 						<visible>!IsEmpty(ListItem.Property(Downloaded))</visible>
 						<colordiffuse>60ffffff</colordiffuse>
