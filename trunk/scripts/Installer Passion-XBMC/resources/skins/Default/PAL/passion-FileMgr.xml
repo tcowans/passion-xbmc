@@ -1610,16 +1610,16 @@
 					<posy>20</posy>
 					<width>20</width>
 					<height>323</height>
-					<texturesliderbackground border="4">passion-scrollbar_background.png</texturesliderbackground>
-					<texturesliderbar border="4">passion-scrollbar_bar.png</texturesliderbar>
-					<texturesliderbarfocus border="4">passion-scrollbar_bar_focus.png</texturesliderbarfocus>
-					<textureslidernib>-</textureslidernib>
-					<textureslidernibfocus>-</textureslidernibfocus>
+					<texturesliderbackground border="2,2,2,2">IPX-scrollbar_bar_back2.png</texturesliderbackground>
+					<texturesliderbar border="2,16,2,16">IPX-scrollbar_bar.png</texturesliderbar>
+					<texturesliderbarfocus border="2,16,2,16">IPX-scrollbar_bar_focus.png</texturesliderbarfocus>
+					<textureslidernib>IPX-scrollbar_nib.png</textureslidernib>
+					<textureslidernibfocus>IPX-scrollbar_nib.png</textureslidernibfocus>
 					<onleft>50</onleft>
 					<onright>50</onright>
 					<showonepage>false</showonepage>
 					<orientation>vertical</orientation>
-					<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+					<!-- <colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse> -->
 				</control>
 			</control>
 		</control>
