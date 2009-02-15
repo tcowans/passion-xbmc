@@ -45,7 +45,7 @@
 				<width>681</width>
 				<height>416</height>
 				<texture>passion-list-border.png</texture>
-                <visible>false</visible>
+				<visible>false</visible>
 			</control>
 			<control type="image">
 				<description>contentpanel slice</description>

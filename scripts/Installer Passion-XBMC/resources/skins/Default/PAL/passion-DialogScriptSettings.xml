@@ -115,9 +115,9 @@
 				<pulseonselect>no</pulseonselect>
 				<texturenofocus border="3,3,3,0">passion-button-nofocus2.png</texturenofocus>
 				<texturefocus border="3,3,3,0">IPX-button-focus2.png</texturefocus>
-                <usealttexture>Skin.String(PassionSettings,1)</usealttexture>
-                <alttexturefocus border="3,3,3,0">IPX-button-focus2.png</alttexturefocus>
-                <alttexturenofocus border="3,20,3,0">IPX-button-focus2.png</alttexturenofocus>
+				<usealttexture>Skin.String(PassionSettings,1)</usealttexture>
+				<alttexturefocus border="3,3,3,0">IPX-button-focus2.png</alttexturefocus>
+				<alttexturenofocus border="3,20,3,0">IPX-button-focus2.png</alttexturenofocus>
 				<onfocus>Skin.SetString(PassionSettings,1)</onfocus>
 				<onleft>70</onleft>
 				<onright>20</onright>
@@ -140,9 +140,9 @@
 				<pulseonselect>no</pulseonselect>
 				<texturenofocus border="3,3,3,0">passion-button-nofocus2.png</texturenofocus>
 				<texturefocus border="3,3,3,0">IPX-button-focus2.png</texturefocus>
-                <usealttexture>Skin.String(PassionSettings,2)</usealttexture>
-                <alttexturefocus border="3,3,3,0">IPX-button-focus2.png</alttexturefocus>
-                <alttexturenofocus border="3,20,3,0">IPX-button-focus2.png</alttexturenofocus>
+				<usealttexture>Skin.String(PassionSettings,2)</usealttexture>
+				<alttexturefocus border="3,3,3,0">IPX-button-focus2.png</alttexturefocus>
+				<alttexturenofocus border="3,20,3,0">IPX-button-focus2.png</alttexturenofocus>
 				<onfocus>Skin.SetString(PassionSettings,2)</onfocus>
 				<onleft>10</onleft>
 				<onright>30</onright>
@@ -165,9 +165,9 @@
 				<pulseonselect>no</pulseonselect>
 				<texturenofocus border="3,3,3,0">passion-button-nofocus2.png</texturenofocus>
 				<texturefocus border="3,3,3,0">IPX-button-focus2.png</texturefocus>
-                <usealttexture>Skin.String(PassionSettings,3)</usealttexture>
-                <alttexturefocus border="3,3,3,0">IPX-button-focus2.png</alttexturefocus>
-                <alttexturenofocus border="3,20,3,0">IPX-button-focus2.png</alttexturenofocus>
+				<usealttexture>Skin.String(PassionSettings,3)</usealttexture>
+				<alttexturefocus border="3,3,3,0">IPX-button-focus2.png</alttexturefocus>
+				<alttexturenofocus border="3,20,3,0">IPX-button-focus2.png</alttexturenofocus>
 				<onfocus>Skin.SetString(PassionSettings,3)</onfocus>
 				<onleft>20</onleft>
 				<onright>40</onright>
@@ -190,9 +190,9 @@
 				<pulseonselect>no</pulseonselect>
 				<texturenofocus border="3,3,3,0">passion-button-nofocus2.png</texturenofocus>
 				<texturefocus border="3,3,3,0">IPX-button-focus2.png</texturefocus>
-                <usealttexture>Skin.String(PassionSettings,4)</usealttexture>
-                <alttexturefocus border="3,3,3,0">IPX-button-focus2.png</alttexturefocus>
-                <alttexturenofocus border="3,20,3,0">IPX-button-focus2.png</alttexturenofocus>
+				<usealttexture>Skin.String(PassionSettings,4)</usealttexture>
+				<alttexturefocus border="3,3,3,0">IPX-button-focus2.png</alttexturefocus>
+				<alttexturenofocus border="3,20,3,0">IPX-button-focus2.png</alttexturenofocus>
 				<onfocus>Skin.SetString(PassionSettings,4)</onfocus>
 				<onleft>30</onleft>
 				<onright>60</onright>
@@ -216,9 +216,9 @@
 				<pulseonselect>no</pulseonselect>
 				<texturenofocus border="3,3,3,0">passion-button-nofocus2.png</texturenofocus>
 				<texturefocus border="3,3,3,0">IPX-button-focus2.png</texturefocus>
-                <usealttexture>Skin.String(PassionSettings,5)</usealttexture>
-                <alttexturefocus border="3,3,3,0">IPX-button-focus2.png</alttexturefocus>
-                <alttexturenofocus border="3,20,3,0">IPX-button-focus2.png</alttexturenofocus>
+				<usealttexture>Skin.String(PassionSettings,5)</usealttexture>
+				<alttexturefocus border="3,3,3,0">IPX-button-focus2.png</alttexturefocus>
+				<alttexturenofocus border="3,20,3,0">IPX-button-focus2.png</alttexturenofocus>
 				<onfocus>Skin.SetString(PassionSettings,5)</onfocus>
 				<onleft>40</onleft>
 				<onright>70</onright>
@@ -242,9 +242,9 @@
 				<pulseonselect>no</pulseonselect>
 				<texturenofocus border="3,3,3,0">passion-button-nofocus2.png</texturenofocus>
 				<texturefocus border="3,3,3,0">IPX-button-focus2.png</texturefocus>
-                <usealttexture>Skin.String(PassionSettings,6)</usealttexture>
-                <alttexturefocus border="3,3,3,0">IPX-button-focus2.png</alttexturefocus>
-                <alttexturenofocus border="3,20,3,0">IPX-button-focus2.png</alttexturenofocus>
+				<usealttexture>Skin.String(PassionSettings,6)</usealttexture>
+				<alttexturefocus border="3,3,3,0">IPX-button-focus2.png</alttexturefocus>
+				<alttexturenofocus border="3,20,3,0">IPX-button-focus2.png</alttexturenofocus>
 				<onfocus>Skin.SetString(PassionSettings,6)</onfocus>
 				<onleft>60</onleft>
 				<onright>10</onright>
