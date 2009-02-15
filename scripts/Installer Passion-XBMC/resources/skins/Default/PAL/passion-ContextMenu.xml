@@ -22,7 +22,7 @@
 				<posx>0</posx>
 				<posy>-25</posy>
 				<width>245</width>
-				<height>26</height>
+				<height>25</height>
 				<texture border="20,20,20,0">IPX-ContextMenu_Top.png</texture>
 			</control>
 			<control type="image">
