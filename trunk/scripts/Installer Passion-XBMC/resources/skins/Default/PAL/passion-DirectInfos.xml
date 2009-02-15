@@ -461,7 +461,7 @@
 					<texturefocus border="4">passion-scrollbar_arrow_up_focus.png</texturefocus>
 					<texturenofocus border="4">passion-scrollbar_arrow_up.png</texturenofocus>
 					<visible>Control.IsVisible(194)</visible>
-					<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+					<colordiffuse>FF000000</colordiffuse>
 				</control>
 				<control type="button">
 					<description>Page Down for text of topic</description>
@@ -473,7 +473,7 @@
 					<texturefocus border="4">passion-scrollbar_arrow_down_focus.png</texturefocus>
 					<texturenofocus border="4">passion-scrollbar_arrow_down.png</texturenofocus>
 					<visible>Control.IsVisible(194)</visible>
-					<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+					<colordiffuse>FF000000</colordiffuse>
 				</control>
 				<control type="scrollbar" id="194">
 					<description>Scroll Bar for text of topic</description>
@@ -481,16 +481,16 @@
 					<posy>20</posy>
 					<width>20</width>
 					<height>165</height>
-					<texturesliderbackground border="4">passion-scrollbar_background.png</texturesliderbackground>
-					<texturesliderbar border="4">passion-scrollbar_bar.png</texturesliderbar>
-					<texturesliderbarfocus border="4">passion-scrollbar_bar_focus.png</texturesliderbarfocus>
-					<textureslidernib>-</textureslidernib>
-					<textureslidernibfocus>-</textureslidernibfocus>
+					<texturesliderbackground border="2,2,2,2">IPX-scrollbar_bar_back2.png</texturesliderbackground>
+					<texturesliderbar border="2,16,2,16">IPX-scrollbar_bar.png</texturesliderbar>
+					<texturesliderbarfocus border="2,16,2,16">IPX-scrollbar_bar_focus.png</texturesliderbarfocus>
+					<textureslidernib>IPX-scrollbar_nib.png</textureslidernib>
+					<textureslidernibfocus>IPX-scrollbar_nib.png</textureslidernibfocus>
 					<onleft>193</onleft>
 					<onright>191</onright>
 					<showonepage>false</showonepage>
 					<orientation>vertical</orientation>
-					<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+					<!-- <colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse> -->
 					<visible>!IsEmpty(Container(191).ListItem.Property(Topic))</visible>
 				</control>
 			</control>
