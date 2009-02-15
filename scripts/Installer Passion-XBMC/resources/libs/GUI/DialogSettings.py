@@ -278,7 +278,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
                 #bouton pour activer desactiver la modification du fichier sources.xml
                 self._set_bool_setting( "xbmc_xml_update" )
             elif controlID == self.CONTROL_UPDATE_STARTUP_BUTTON:
-                #bouton pour activer desactiver la verification de la mise à jour au demarrage
+                #bouton pour activer desactiver la verification de la mise a jour au demarrage
                 self._set_bool_setting( "update_startup" )
             elif controlID == self.CONTROL_SCRIPT_DEBUG_BUTTON:
                 #bouton pour activer desactiver la mode debug du script seulement

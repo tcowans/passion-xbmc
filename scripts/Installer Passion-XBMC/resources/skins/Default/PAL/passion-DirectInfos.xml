@@ -79,7 +79,7 @@
 				<posy>345</posy>
 				<width>679</width>
 				<height>5</height>
-				<texture>passion-separator.png</texture>
+				<texture>IPX-separator.png</texture>
 				<aspectratio align="center" />
 				<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 			</control>

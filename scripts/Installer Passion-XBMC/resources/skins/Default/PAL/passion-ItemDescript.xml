@@ -11,7 +11,7 @@
 			<posy>0</posy>
 			<width>720</width>
 			<height>576</height>
-			<texture>passion-black.png</texture>
+			<texture>IPX-black.png</texture>
 			<animation effect="fade" time="1000">WindowOpen</animation>
 		</control>
 		<control type="image">
@@ -19,14 +19,14 @@
 			<posy>0</posy>
 			<width>720</width>
 			<height>576</height>
-			<texture border="20">passion-DialogBack.png</texture>
+			<texture border="20">IPX-DialogBack.png</texture>
 		</control>
 		<control type="image">
 			<posx>0</posx>
 			<posy>0</posy>
 			<width>720</width>
 			<height>576</height>
-			<texture border="20">passion-DialogFront.png</texture>
+			<texture border="20">IPX-DialogFront.png</texture>
 		</control>
 		<control type="button" id="303">
 			<description>Close Window button</description>
@@ -37,8 +37,8 @@
 			<hitrect x="651" y="37" w="30" h="25" />
 			<label>-</label>
 			<font>-</font>
-			<texturefocus>passion-close-windowFO.png</texturefocus>
-			<texturenofocus>passion-close-window.png</texturenofocus>
+			<texturefocus>IPX-close-windowFO.png</texturefocus>
+			<texturenofocus>IPX-close-window.png</texturenofocus>
 			<onleft>9000</onleft>
 			<onright>9000</onright>
 			<onup>9000</onup>
@@ -78,7 +78,7 @@
 			<posy>84</posy>
 			<width>640</width>
 			<height>5</height>
-			<texture>passion-separator.png</texture>
+			<texture>IPX-separator.png</texture>
 		</control>
 
 		<control type="list" id="49">
@@ -127,7 +127,7 @@
 					<width>400</width>
 					<height>30</height>
 					<visible>Control.HasFocus(49)</visible>
-					<texture border="5">passion-button-focus.png</texture>
+					<texture border="5">IPX-button-focus.png</texture>
 					<animation effect="fade" time="200">Visible</animation>
 					<animation effect="fade" time="200">Hidden</animation>
 				</control>
@@ -163,7 +163,7 @@
 			<posy>355</posy>
 			<width>640</width>
 			<height>5</height>
-			<texture>passion-separator.png</texture>
+			<texture>IPX-separator.png</texture>
 		</control>
 		<control type="textbox" id="400">
 			<description>textarea</description>
@@ -230,8 +230,8 @@
 				<shadowcolor>FF000000</shadowcolor>
 				<align>center</align>
 				<aligny>center</aligny>
-				<texturefocus border="5">passion-button-focus.png</texturefocus>
-				<texturenofocus border="5">passion-button-nofocus.png</texturenofocus>
+				<texturefocus border="5">IPX-button-focus.png</texturefocus>
+				<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 				<pulseonselect>no</pulseonselect>
 				<label>SCRIPT607</label>
 				<onleft>61</onleft>
@@ -251,8 +251,8 @@
 				<shadowcolor>FF000000</shadowcolor>
 				<align>center</align>
 				<aligny>center</aligny>
-				<texturefocus border="5">passion-button-focus.png</texturefocus>
-				<texturenofocus border="5">passion-button-nofocus.png</texturenofocus>
+				<texturefocus border="5">IPX-button-focus.png</texturefocus>
+				<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 				<pulseonselect>no</pulseonselect>
 				<label>SCRIPT606</label>
 				<onleft>61</onleft>
@@ -273,8 +273,8 @@
 				<shadowcolor>FF000000</shadowcolor>
 				<align>center</align>
 				<aligny>center</aligny>
-				<texturefocus border="5">passion-button-focus.png</texturefocus>
-				<texturenofocus border="5">passion-button-nofocus.png</texturenofocus>
+				<texturefocus border="5">IPX-button-focus.png</texturefocus>
+				<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 				<pulseonselect>no</pulseonselect>
 				<label>184</label>
 				<onleft>61</onleft>
@@ -294,8 +294,8 @@
 				<shadowcolor>FF000000</shadowcolor>
 				<align>center</align>
 				<aligny>center</aligny>
-				<texturefocus border="5">passion-button-focus.png</texturefocus>
-				<texturenofocus border="5">passion-button-nofocus.png</texturenofocus>
+				<texturefocus border="5">IPX-button-focus.png</texturefocus>
+				<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 				<pulseonselect>no</pulseonselect>
 				<label>SCRIPT605</label>
 				<onleft>61</onleft>
@@ -315,8 +315,8 @@
 				<shadowcolor>FF000000</shadowcolor>
 				<align>center</align>
 				<aligny>center</aligny>
-				<texturefocus border="5">passion-button-focus.png</texturefocus>
-				<texturenofocus border="5">passion-button-nofocus.png</texturenofocus>
+				<texturefocus border="5">IPX-button-focus.png</texturefocus>
+				<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 				<pulseonselect>no</pulseonselect>
 				<label>13405</label>
 				<onleft>61</onleft>
@@ -338,8 +338,8 @@
 				<shadowcolor>FF000000</shadowcolor>
 				<align>center</align>
 				<aligny>center</aligny>
-				<texturefocus border="5">passion-button-focus.png</texturefocus>
-				<texturenofocus border="5">passion-button-nofocus.png</texturenofocus>
+				<texturefocus border="5">IPX-button-focus.png</texturefocus>
+				<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 				<pulseonselect>no</pulseonselect>
 				<label>20410</label>
 				<onleft>61</onleft>
@@ -373,7 +373,7 @@
 				<texture>passion-noImageAvailable.jpg</texture>
 				<info>Container(48).ListItem.Property(fanartpicture)</info>
 				<aspectratio>keep</aspectratio>
-				<bordertexture border="5">passion-folder-focus.png</bordertexture>
+				<bordertexture border="5">IPX-folder-focus.png</bordertexture>
 				<bordersize>5</bordersize>
 				<visible>!Control.HasFocus(8)</visible>
 				<animation effect="fade" time="200" reversible="true">Visible</animation>
