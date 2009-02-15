@@ -1994,7 +1994,7 @@
 				<posy>0</posy>
 				<width>720</width>
 				<height>576</height>
-				<texture>passion-list-border.png</texture>
+				<texture>passion-solid.png</texture>
 			</control>
 			<control type="image" id="999">
 				<description>splash image</description>
