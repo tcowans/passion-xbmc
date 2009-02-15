@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<strings>  <!--Finnish 14.2.2008-->
+<strings>  <!--Finnish 15.2.2008-->
   <!--GENERAL STRINGS -->
   <string id="0">Installer Passion-XBMC</string>
   <string id="1">Keskustelut</string>
@@ -110,10 +110,10 @@
   <string id="177">Siirretään...</string>
   <string id="178">Sijainnista:&#32;</string>
   <string id="179">Kohteeseen:&#32;</string>
-  <string id="180">Confirm file download</string>
-  <string id="181">Do you really want to download this/these file(s)?</string>
+  <string id="180">Hyväksy tiedoston lataus</string>
+  <string id="181">Oletko varma, että haluat ladata valitut tiedostot?</string>
 
-  <string id="184">Refresh</string>
+  <string id="184">Päivitä</string>
   <string id="185">Laske koko</string>
   <string id="186">Lasketaan kansion kokoa</string>
 
@@ -225,8 +225,8 @@
   <string id="617">Hollanti</string>
   <string id="618">Suomi</string>
   <string id="619">Ruotsi</string>
-  <string id="620">Author</string>
-  <string id="621">File name</string>
+  <string id="620">Tekijä</string>
+  <string id="621">Tiedostonimi</string>
 
   <!--ABOUT STRINGS -->
   <string id="700">Versio</string>
