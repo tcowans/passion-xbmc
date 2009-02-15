@@ -199,7 +199,7 @@
 					<height>25</height>
 					<align>center</align>
 					<label>101</label>
-                    <scroll>true</scroll>
+					<scroll>true</scroll>
 					<texturenofocus>-</texturenofocus>
 					<texturefocus>passion-mbutton-focus.png</texturefocus>
 					<textcolor>ffffffff</textcolor>
