@@ -116,8 +116,8 @@
 
 		<!-- MENU PRINCIPAL -->
 		<control type="group">
-            <posx>21</posx>
-            <posy>-2</posy>
+			<posx>21</posx>
+			<posy>-2</posy>
 			<animation effect="fade" time="300">VisibleChange</animation>
 			<control type="button" id="1000">
 				<description>context menu button 0</description>

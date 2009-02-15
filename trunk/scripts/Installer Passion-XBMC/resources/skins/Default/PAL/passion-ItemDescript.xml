@@ -105,7 +105,7 @@
 					<aligny>center</aligny>
 					<textcolor>88FFFFFF</textcolor>
 					<selectedcolor>ffffffff</selectedcolor>
-                    <label>$INFO[ListItem.Label]:</label>
+					<label>$INFO[ListItem.Label]:</label>
 				</control>
 				<control type="label">
 					<posx>150</posx>
@@ -141,7 +141,7 @@
 					<aligny>center</aligny>
 					<textcolor>88FFFFFF</textcolor>
 					<selectedcolor>ffffffff</selectedcolor>
-                    <label>$INFO[ListItem.Label]:</label>
+					<label>$INFO[ListItem.Label]:</label>
 				</control>
 				<control type="label">
 					<posx>150</posx>
