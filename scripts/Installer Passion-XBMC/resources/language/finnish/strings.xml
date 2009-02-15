@@ -110,7 +110,10 @@
   <string id="177">Siirretään...</string>
   <string id="178">Sijainnista:&#32;</string>
   <string id="179">Kohteeseen:&#32;</string>
+  <string id="180">Confirm file download</string>
+  <string id="181">Do you really want to download this/these file(s)?</string>
 
+  <string id="184">Refresh</string>
   <string id="185">Laske koko</string>
   <string id="186">Lasketaan kansion kokoa</string>
 
@@ -222,6 +225,8 @@
   <string id="617">Hollanti</string>
   <string id="618">Suomi</string>
   <string id="619">Ruotsi</string>
+  <string id="620">Author</string>
+  <string id="621">File name</string>
 
   <!--ABOUT STRINGS -->
   <string id="700">Versio</string>
