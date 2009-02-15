@@ -34,6 +34,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
     # control id's
     CONTROL_OK_BUTTON             = 80
     CONTROL_CANCEL_BUTTON         = 81
+    CONTROL_CANCEL2_BUTTON        = 303 # bouton mouse only
     CONTROL_RESET_BUTTON          = 82
     CONTROL_VERSION_LABEL         = 99
     CONTROL_XML_UPDATE_BUTTON     = 130
@@ -286,7 +287,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             elif controlID == self.CONTROL_OK_BUTTON:
                 #bouton ok on save les changements.
                 self._save_settings()
-            elif controlID == self.CONTROL_CANCEL_BUTTON:
+            elif controlID in ( self.CONTROL_CANCEL_BUTTON, self.CONTROL_CANCEL2_BUTTON ):
                 # bouton annuler on ferme le dialog
                 self._close_dialog()
             elif controlID == self.CONTROL_RESET_BUTTON:

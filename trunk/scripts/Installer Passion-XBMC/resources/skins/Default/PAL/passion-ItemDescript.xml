@@ -34,7 +34,7 @@
 			<posy>37</posy>
 			<width>25</width>
 			<height>20</height>
-			<hitrect x="651" y="37" w="30" h="25" />
+			<hitrect x="646" y="37" w="35" h="30" />
 			<label>-</label>
 			<font>-</font>
 			<texturefocus>IPX-close-windowFO.png</texturefocus>
@@ -354,15 +354,16 @@
 			<control type="image">
 				<description>Cover image</description>
 				<posx>65</posx>
-				<posy>160</posy>
+				<posy>165</posy>
 				<width>180</width>
-				<height>100</height>
-				<texture>passion-noImageAvailable.jpg</texture>
+				<height>90</height>
+				<texture>IPX-NotAvailable.png</texture>
 				<info>Container(48).ListItem.Property(fanartpicture)</info>
 				<animation condition="Control.HasFocus(8)" type="Conditional" reversible="true">
 					<effect type="slide" end="205,78" time="1000" />
 					<effect type="zoom" center="auto" start="100" end="0,0,720,576" time="1000" />
 				</animation>
+				<visible>!IsEmpty(Container(48).ListItem.Property(fanartpicture))</visible>
 			</control>
 			<control type="image">
 				<description>Cover image</description>
@@ -370,7 +371,7 @@
 				<posy>70</posy>
 				<width>200</width>
 				<height>300</height>
-				<texture>passion-noImageAvailable.jpg</texture>
+				<texture>IPX-NotAvailable.png</texture>
 				<info>Container(48).ListItem.Property(fanartpicture)</info>
 				<aspectratio>keep</aspectratio>
 				<bordertexture border="5">IPX-folder-focus.png</bordertexture>
