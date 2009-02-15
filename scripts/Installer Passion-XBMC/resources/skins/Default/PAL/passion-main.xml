@@ -553,7 +553,8 @@
 						<selectedcolor>FFe2ff43</selectedcolor>
 						<textcolor>ff000000</textcolor>
 						<scroll>true</scroll>
-						<info>Container(50).ListItem.Property(title)</info>
+						<!-- <info>Container(50).ListItem.Property(title)</info> -->
+						<label>$INFO[Container(50).ListItem.Property(title),[B],[/B]]</label>
 					</control>
 					<control type="label">
 						<posx>692</posx>
@@ -564,8 +565,10 @@
 						<textcolor>FF000000</textcolor>
 						<scroll>true</scroll>
 						<align>right</align>
-						<info>Container(50).ListItem.Property(date)</info>
+						<!-- <info>Container(50).ListItem.Property(date)</info> -->
+						<label>$INFO[ListItem.Property(version),$LOCALIZE[SCRIPT602]: [B],[/B]]&#32;&#32;&#32;$INFO[Container(50).ListItem.Property(date)]&#32;&#32;&#32;$INFO[ListItem.Property(language),[I]&#40;$LOCALIZE[SCRIPT608]: ,&#41;[/I]]&#32;</label>
 					</control>
+<!--
 					<control type="label">
 						<posx>27</posx>
 						<posy>541</posy>
@@ -588,6 +591,7 @@
 						<align>right</align>
 						<label>$INFO[ListItem.Property(version),$LOCALIZE[SCRIPT602]: ]</label>
 					</control>
+-->
 					<control type="textbox">
 						<description>Text small</description>
 						<posx>27</posx>
