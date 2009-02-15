@@ -476,7 +476,7 @@
 						<texturefocus border="4">passion-scrollbar_arrow_up_focus.png</texturefocus>
 						<texturenofocus border="4">passion-scrollbar_arrow_up.png</texturenofocus>
 						<visible>Control.IsVisible(193)</visible>
-						<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+						<colordiffuse>FF000000</colordiffuse>
 					</control>
 					<control type="button">
 						<description>Page Down for list</description>
@@ -488,7 +488,7 @@
 						<texturefocus border="4">passion-scrollbar_arrow_down_focus.png</texturefocus>
 						<texturenofocus border="4">passion-scrollbar_arrow_down.png</texturenofocus>
 						<visible>Control.IsVisible(193)</visible>
-						<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+						<colordiffuse>FF000000</colordiffuse>
 					</control>
 					<control type="scrollbar" id="193">
 						<description>Scroll Bar for list</description>
@@ -645,7 +645,7 @@
 						<texturefocus border="4">passion-scrollbar_arrow_up_focus.png</texturefocus>
 						<texturenofocus border="4">passion-scrollbar_arrow_up.png</texturenofocus>
 						<visible>Control.IsVisible(194)</visible>
-						<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+						<colordiffuse>FF000000</colordiffuse>
 					</control>
 					<control type="button">
 						<description>Page Down for text</description>
@@ -657,7 +657,7 @@
 						<texturefocus border="4">passion-scrollbar_arrow_down_focus.png</texturefocus>
 						<texturenofocus border="4">passion-scrollbar_arrow_down.png</texturenofocus>
 						<visible>Control.IsVisible(194)</visible>
-						<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+						<colordiffuse>FF000000</colordiffuse>
 					</control>
 					<control type="scrollbar" id="194">
 						<description>Scroll Bar for text</description>
@@ -1954,7 +1954,7 @@
 					<texturefocus border="4">passion-scrollbar_arrow_up_focus.png</texturefocus>
 					<texturenofocus border="4">passion-scrollbar_arrow_up.png</texturenofocus>
 					<visible>Control.IsVisible(2050)</visible>
-					<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+					<colordiffuse>FF000000</colordiffuse>
 				</control>
 				<control type="button">
 					<description>Page Down for base list</description>
@@ -1966,7 +1966,7 @@
 					<texturefocus border="4">passion-scrollbar_arrow_down_focus.png</texturefocus>
 					<texturenofocus border="4">passion-scrollbar_arrow_down.png</texturenofocus>
 					<visible>Control.IsVisible(2050)</visible>
-					<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+					<colordiffuse>FF000000</colordiffuse>
 				</control>
 				<control type="scrollbar" id="2050">
 					<description>Scroll Bar for base list</description>
