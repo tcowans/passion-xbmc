@@ -547,7 +547,7 @@
 					<control type="label">
 						<posx>27</posx>
 						<posy>352</posy>
-						<width>333</width>
+						<width>290</width>
 						<height>16</height>
 						<font>special13</font>
 						<selectedcolor>FFe2ff43</selectedcolor>
@@ -559,7 +559,7 @@
 					<control type="label">
 						<posx>692</posx>
 						<posy>352</posy>
-						<width>333</width>
+						<width>376</width>
 						<height>16</height>
 						<font>font13</font>
 						<textcolor>FF000000</textcolor>
@@ -630,7 +630,7 @@
 						<font>font13</font>
 						<align>center</align>
 						<aligny>center</aligny>
-						<label>SCRIPT614</label>
+						<label>SCRIPT604</label>
 						<visible>IsEmpty(Container(50).ListItem.Property(description))</visible>
 					</control>
 				</control>
@@ -654,7 +654,7 @@
 					<control type="button">
 						<description>Page Down for text</description>
 						<posx>0</posx>
-						<posy>145</posy>
+						<posy>165</posy>
 						<width>20</width>
 						<height>20</height>
 						<onclick>PageDown(194)</onclick>
@@ -668,7 +668,7 @@
 						<posx>0</posx>
 						<posy>20</posy>
 						<width>20</width>
-						<height>125</height>
+						<height>145</height>
 						<texturesliderbackground border="2,2,2,2">IPX-scrollbar_bar_back2.png</texturesliderbackground>
 						<texturesliderbar border="2,16,2,16">IPX-scrollbar_bar.png</texturesliderbar>
 						<texturesliderbarfocus border="2,16,2,16">IPX-scrollbar_bar_focus.png</texturesliderbarfocus>
