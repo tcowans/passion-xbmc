@@ -60,6 +60,7 @@
 				<width>681</width>
 				<height>416</height>
 				<texture>passion-list-border.png</texture>
+                <visible>false</visible>
 			</control>
 			<control type="image">
 				<description>contentpanel slice</description>
@@ -68,6 +69,8 @@
 				<width>679</width>
 				<height>372</height>
 				<texture>passion-list-white.png</texture>
+				<bordertexture border="5">IPX-list-border.png</bordertexture>
+				<bordersize>2</bordersize>
 			</control>
 			<control type="image">
 				<description>contentpanel slice Custom background</description>
@@ -79,6 +82,7 @@
 				<texture diffuse="passion_diffuse.png" />
 				<info>Skin.String(passion_custom_background)</info>
 				<visible>Skin.HasSetting(use_passion_custom_background) + !Control.IsVisible(10)</visible>
+				<bordersize>2</bordersize>
 			</control>
 			<control type="image" id="10">
 				<description>contentpanel slice fanartpicture background</description>
@@ -90,6 +94,7 @@
 				<texture diffuse="passion_diffuse.png" />
 				<info>Container.ListItem.Property(fanartpicture)</info>
 				<visible>!IsEmpty(Container.ListItem.Property(fanartpicture)) + Skin.HasSetting(PassionShowFanart)</visible>
+				<bordersize>2</bordersize>
 			</control>
 			<control type="image">
 				<description>contentpanel slice</description>
@@ -98,6 +103,9 @@
 				<width>679</width>
 				<height>41</height>
 				<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
+				<texture>passion-list-white.png</texture>
+				<bordertexture border="5">IPX-list-border.png</bordertexture>
+				<bordersize>2</bordersize>
 			</control>
 		</control>
 

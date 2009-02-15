@@ -901,19 +901,30 @@
 			<onup>1000</onup>
 			<ondown>9000</ondown>
 			<usecontrolcoords>true</usecontrolcoords>
+			<control type="image">
+				<description>Cover image</description>
+				<posx>0</posx>
+				<posy>5</posy>
+				<width>625</width>
+				<height>340</height>
+				<texture>IPX-help.png</texture>
+				<aspectratio>keep</aspectratio>
+				<bordertexture border="5">IPX-folder-focus.png</bordertexture>
+				<bordersize>5</bordersize>
+			</control>
 			<control type="label" id="700">
 				<description>help - temporaire label</description>
 				<posx>0</posx>
-				<posy>0</posy>
+				<posy>-350</posy>
 				<width>625</width>
 				<height>350</height>
 				<label>?</label>
-				<font>special13</font>
+				<font>special12</font>
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>ffffffff</textcolor>
 				<shadowcolor>$INFO[Skin.String(PassionSkinHexColour)]</shadowcolor>
-				<animation effect="zoom" loop="true" center="auto" start="10" end="500" time="2000" acceleration="-2" condition="Control.IsVisible(9007)">conditional</animation>
+				<animation effect="zoom" loop="true" center="auto" start="100" end="500" time="2000" acceleration="-2" condition="Control.IsVisible(9007)">conditional</animation>
 			</control>
 		</control>
 
