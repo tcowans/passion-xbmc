@@ -23,7 +23,7 @@
 				<posy>-25</posy>
 				<width>245</width>
 				<height>26</height>
-				<texture>passion-dialog-context-top.png</texture>
+				<texture border="20,20,20,0">IPX-ContextMenu_Top.png</texture>
 			</control>
 			<control type="image">
 				<description>background image</description>
@@ -31,7 +31,7 @@
 				<posy>0</posy>
 				<width>245</width>
 				<height>287</height>
-				<texture>passion-dialog-context-middle.png</texture>
+				<texture border="20,0,20,0">IPX-ContextMenu_Middle.png</texture>
 				<visible>Skin.String(totals_cm_buttons,8) | IsEmpty(Skin.String(totals_cm_buttons))</visible>
 			</control>
 			<control type="image">
@@ -40,7 +40,7 @@
 				<posy>0</posy>
 				<width>245</width>
 				<height>250</height>
-				<texture>passion-dialog-context-middle.png</texture>
+				<texture border="20,0,20,0">IPX-ContextMenu_Middle.png</texture>
 				<visible>Skin.String(totals_cm_buttons,7)</visible>
 			</control>
 			<control type="image">
@@ -49,7 +49,7 @@
 				<posy>0</posy>
 				<width>245</width>
 				<height>213</height>
-				<texture>passion-dialog-context-middle.png</texture>
+				<texture border="20,0,20,0">IPX-ContextMenu_Middle.png</texture>
 				<visible>Skin.String(totals_cm_buttons,6)</visible>
 			</control>
 			<control type="image">
@@ -58,7 +58,7 @@
 				<posy>0</posy>
 				<width>245</width>
 				<height>176</height>
-				<texture>passion-dialog-context-middle.png</texture>
+				<texture border="20,0,20,0">IPX-ContextMenu_Middle.png</texture>
 				<visible>Skin.String(totals_cm_buttons,5)</visible>
 			</control>
 			<control type="image">
@@ -67,7 +67,7 @@
 				<posy>0</posy>
 				<width>245</width>
 				<height>139</height>
-				<texture>passion-dialog-context-middle.png</texture>
+				<texture border="20,0,20,0">IPX-ContextMenu_Middle.png</texture>
 				<visible>Skin.String(totals_cm_buttons,4)</visible>
 			</control>
 			<control type="image">
@@ -76,7 +76,7 @@
 				<posy>0</posy>
 				<width>245</width>
 				<height>102</height>
-				<texture>passion-dialog-context-middle.png</texture>
+				<texture border="20,0,20,0">IPX-ContextMenu_Middle.png</texture>
 				<visible>Skin.String(totals_cm_buttons,3)</visible>
 			</control>
 			<control type="image">
@@ -85,7 +85,7 @@
 				<posy>0</posy>
 				<width>245</width>
 				<height>65</height>
-				<texture>passion-dialog-context-middle.png</texture>
+				<texture border="20,0,20,0">IPX-ContextMenu_Middle.png</texture>
 				<visible>Skin.String(totals_cm_buttons,2)</visible>
 			</control>
 			<control type="image">
@@ -94,7 +94,7 @@
 				<posy>0</posy>
 				<width>245</width>
 				<height>28</height>
-				<texture>passion-dialog-context-middle.png</texture>
+				<texture border="20,0,20,0">IPX-ContextMenu_Middle.png</texture>
 				<visible>Skin.String(totals_cm_buttons,1)</visible>
 			</control>
 			<control type="image">
@@ -103,7 +103,7 @@
 				<posy>287</posy>
 				<width>245</width>
 				<height>25</height>
-				<texture>passion-dialog-context-bottom.png</texture>
+				<texture border="20,0,20,20">IPX-ContextMenu_Bottom.png</texture>
 				<animation effect="slide" start="0,0" end="0,-37"  time="0" condition="Skin.String(totals_cm_buttons,7)">conditional</animation>
 				<animation effect="slide" start="0,0" end="0,-74"  time="0" condition="Skin.String(totals_cm_buttons,6)">conditional</animation>
 				<animation effect="slide" start="0,0" end="0,-11"  time="0" condition="Skin.String(totals_cm_buttons,5)">conditional</animation>
@@ -116,15 +116,17 @@
 
 		<!-- MENU PRINCIPAL -->
 		<control type="group">
+            <posx>21</posx>
+            <posy>-2</posy>
 			<animation effect="fade" time="300">VisibleChange</animation>
 			<control type="button" id="1000">
 				<description>context menu button 0</description>
-				<posx>22</posx>
-				<posy>-2</posy>
-				<width>210</width>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>202</width>
 				<height>32</height>
-				<texturenofocus>passion-keyboard-btn-space.png</texturenofocus>
-				<texturefocus>passion-keyboard-btn-space-focus2.png</texturefocus>
+				<texturenofocus border="3">IPX-button-nofocus.png</texturenofocus>
+				<texturefocus border="3">IPX-button-focus2.png</texturefocus>
 				<font>font13</font>
 				<textcolor>ffffffff</textcolor>
 				<colordiffuse>ffffffff</colordiffuse>
@@ -137,12 +139,12 @@
 			</control>
 			<control type="button" id="1001">
 				<description>context menu button 1</description>
-				<posx>22</posx>
+				<posx>0</posx>
 				<posy>35</posy>
-				<width>210</width>
+				<width>202</width>
 				<height>32</height>
-				<texturenofocus>passion-keyboard-btn-space.png</texturenofocus>
-				<texturefocus>passion-keyboard-btn-space-focus2.png</texturefocus>
+				<texturenofocus border="3">IPX-button-nofocus.png</texturenofocus>
+				<texturefocus border="3">IPX-button-focus2.png</texturefocus>
 				<font>font13</font>
 				<textcolor>ffffffff</textcolor>
 				<colordiffuse>ffffffff</colordiffuse>
@@ -156,12 +158,12 @@
 			</control>
 			<control type="button" id="1002">
 				<description>context menu button 2</description>
-				<posx>22</posx>
+				<posx>0</posx>
 				<posy>72</posy>
-				<width>210</width>
+				<width>202</width>
 				<height>32</height>
-				<texturenofocus>passion-keyboard-btn-space.png</texturenofocus>
-				<texturefocus>passion-keyboard-btn-space-focus2.png</texturefocus>
+				<texturenofocus border="3">IPX-button-nofocus.png</texturenofocus>
+				<texturefocus border="3">IPX-button-focus2.png</texturefocus>
 				<font>font13</font>
 				<textcolor>ffffffff</textcolor>
 				<colordiffuse>ffffffff</colordiffuse>
@@ -176,12 +178,12 @@
 			</control>
 			<control type="button" id="1003">
 				<description>context menu button 3</description>
-				<posx>22</posx>
+				<posx>0</posx>
 				<posy>109</posy>
-				<width>210</width>
+				<width>202</width>
 				<height>32</height>
-				<texturenofocus>passion-keyboard-btn-space.png</texturenofocus>
-				<texturefocus>passion-keyboard-btn-space-focus2.png</texturefocus>
+				<texturenofocus border="3">IPX-button-nofocus.png</texturenofocus>
+				<texturefocus border="3">IPX-button-focus2.png</texturefocus>
 				<font>font13</font>
 				<textcolor>ffffffff</textcolor>
 				<colordiffuse>ffffffff</colordiffuse>
@@ -197,12 +199,12 @@
 			</control>
 			<control type="button" id="1004">
 				<description>context menu button 4</description>
-				<posx>22</posx>
+				<posx>0</posx>
 				<posy>146</posy>
-				<width>210</width>
+				<width>202</width>
 				<height>32</height>
-				<texturenofocus>passion-keyboard-btn-space.png</texturenofocus>
-				<texturefocus>passion-keyboard-btn-space-focus2.png</texturefocus>
+				<texturenofocus border="3">IPX-button-nofocus.png</texturenofocus>
+				<texturefocus border="3">IPX-button-focus2.png</texturefocus>
 				<font>font13</font>
 				<textcolor>ffffffff</textcolor>
 				<colordiffuse>ffffffff</colordiffuse>
@@ -219,12 +221,12 @@
 			</control>
 			<control type="button" id="1005">
 				<description>context menu button 5</description>
-				<posx>22</posx>
+				<posx>0</posx>
 				<posy>183</posy>
-				<width>210</width>
+				<width>202</width>
 				<height>32</height>
-				<texturenofocus>passion-keyboard-btn-space.png</texturenofocus>
-				<texturefocus>passion-keyboard-btn-space-focus2.png</texturefocus>
+				<texturenofocus border="3">IPX-button-nofocus.png</texturenofocus>
+				<texturefocus border="3">IPX-button-focus2.png</texturefocus>
 				<font>font13</font>
 				<textcolor>ffffffff</textcolor>
 				<colordiffuse>ffffffff</colordiffuse>
@@ -242,12 +244,12 @@
 			</control>
 			<control type="button" id="1006">
 				<description>context menu button 6</description>
-				<posx>22</posx>
+				<posx>0</posx>
 				<posy>220</posy>
-				<width>210</width>
+				<width>202</width>
 				<height>32</height>
-				<texturenofocus>passion-keyboard-btn-space.png</texturenofocus>
-				<texturefocus>passion-keyboard-btn-space-focus2.png</texturefocus>
+				<texturenofocus border="3">IPX-button-nofocus.png</texturenofocus>
+				<texturefocus border="3">IPX-button-focus2.png</texturefocus>
 				<font>font13</font>
 				<textcolor>ffffffff</textcolor>
 				<colordiffuse>ffffffff</colordiffuse>
@@ -266,12 +268,12 @@
 			</control>
 			<control type="button" id="1007">
 				<description>context menu button 7</description>
-				<posx>22</posx>
+				<posx>0</posx>
 				<posy>257</posy>
-				<width>210</width>
+				<width>202</width>
 				<height>32</height>
-				<texturenofocus>passion-keyboard-btn-space.png</texturenofocus>
-				<texturefocus>passion-keyboard-btn-space-focus2.png</texturefocus>
+				<texturenofocus border="3">IPX-button-nofocus.png</texturenofocus>
+				<texturefocus border="3">IPX-button-focus2.png</texturefocus>
 				<font>font13</font>
 				<textcolor>ffffffff</textcolor>
 				<colordiffuse>ffffffff</colordiffuse>

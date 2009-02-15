@@ -26,7 +26,7 @@
 			<posy>0</posy>
 			<width>720</width>
 			<height>576</height>
-			<texture>passion-black.png</texture>
+			<texture>IPX-black.png</texture>
 			<animation effect="fade" time="2000">WindowOpen</animation>
 		</control>
 		<control type="image">
@@ -345,7 +345,7 @@
 				<posy>0</posy>
 				<width>580</width>
 				<height>5</height>
-				<texture>passion-separator.png</texture>
+				<texture>IPX-separator.png</texture>
 			</control>
 			<control type="radiobutton" id="160">
 				<description>button general 4</description>
@@ -407,7 +407,7 @@
 				<posy>0</posy>
 				<width>580</width>
 				<height>5</height>
-				<texture>passion-separator.png</texture>
+				<texture>IPX-separator.png</texture>
 			</control>
 			<control type="radiobutton" id="140">
 				<description>button general 2</description>
@@ -517,7 +517,7 @@
 				<posy>34</posy>
 				<width>580</width>
 				<height>5</height>
-				<texture>passion-separator.png</texture>
+				<texture>IPX-separator.png</texture>
 				<visible></visible>
 			</control>
 		</control>
@@ -622,7 +622,7 @@
 				<posy>0</posy>
 				<width>580</width>
 				<height>5</height>
-				<texture>passion-separator.png</texture>
+				<texture>IPX-separator.png</texture>
 				<visible>Control.IsVisible(230) | Control.IsVisible(240)</visible>
 			</control>
 			<control type="radiobutton" id="230">
@@ -768,7 +768,7 @@
 				<posy>0</posy>
 				<width>580</width>
 				<height>5</height>
-				<texture>passion-separator.png</texture>
+				<texture>IPX-separator.png</texture>
 				<visible>Control.IsVisible(340) | Control.IsVisible(330)</visible>
 			</control>
 			<control type="button" id="330">
@@ -929,7 +929,7 @@
 				<posy>3</posy>
 				<width>580</width>
 				<height>5</height>
-				<texture>passion-separator.png</texture>
+				<texture>IPX-separator.png</texture>
 			</control>
 			<control type="label">
 				<description>Team Credits Label</description>
@@ -997,7 +997,7 @@
 				<posy>3</posy>
 				<width>580</width>
 				<height>5</height>
-				<texture>passion-separator.png</texture>
+				<texture>IPX-separator.png</texture>
 			</control>
 			<control type="label">
 				<description>Description Label</description>
