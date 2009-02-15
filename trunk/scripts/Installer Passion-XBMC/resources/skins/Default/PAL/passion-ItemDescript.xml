@@ -235,7 +235,7 @@
 				<pulseonselect>no</pulseonselect>
 				<label>SCRIPT607</label>
 				<onleft>61</onleft>
-				<onright>49</onright>
+				<onright>61</onright>
 				<onup>11</onup>
 				<ondown>8</ondown>
 			</control>
@@ -256,7 +256,7 @@
 				<pulseonselect>no</pulseonselect>
 				<label>SCRIPT606</label>
 				<onleft>61</onleft>
-				<onright>49</onright>
+				<onright>61</onright>
 				<onup>5</onup>
 				<ondown>6</ondown>
 				<enable>!IsEmpty(Container(48).ListItem.Property(fanartpicture))</enable>
@@ -278,7 +278,7 @@
 				<pulseonselect>no</pulseonselect>
 				<label>184</label>
 				<onleft>61</onleft>
-				<onright>49</onright>
+				<onright>61</onright>
 				<onup>8</onup>
 				<ondown>12</ondown>
 			</control>
@@ -299,7 +299,7 @@
 				<pulseonselect>no</pulseonselect>
 				<label>SCRIPT605</label>
 				<onleft>61</onleft>
-				<onright>49</onright>
+				<onright>61</onright>
 				<onup>6</onup>
 				<ondown>10</ondown>
 			</control>
@@ -320,7 +320,7 @@
 				<pulseonselect>no</pulseonselect>
 				<label>13405</label>
 				<onleft>61</onleft>
-				<onright>49</onright>
+				<onright>61</onright>
 				<onup>12</onup>
 				<ondown>11</ondown>
 				<enable>false</enable>
@@ -343,7 +343,7 @@
 				<pulseonselect>no</pulseonselect>
 				<label>20410</label>
 				<onleft>61</onleft>
-				<onright>49</onright>
+				<onright>61</onright>
 				<onup>10</onup>
 				<ondown>5</ondown>
 				<enable>!IsEmpty(Container(48).ListItem.Property(previewVideoURL))</enable>
