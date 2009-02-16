@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<strings>  <!--Finnish 15.2.2008-->
+<strings>  <!--Finnish 16.2.2008-->
   <!--GENERAL STRINGS -->
   <string id="0">Installer Passion-XBMC</string>
   <string id="1">Keskustelut</string>
@@ -8,7 +8,7 @@
   <string id="4">Tietoja</string>
   <string id="5">Hallinta</string>
   <string id="6">Lisäkkeiden hallinta</string>
-  <string id="7">Asentaja</string>
+  <string id="7">Asennus</string>
   <string id="8">Lopeta</string>
 
   <string id="10">Valinta</string>
