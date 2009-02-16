@@ -44,7 +44,7 @@
 				<posy>150</posy>
 				<width>681</width>
 				<height>416</height>
-				<texture>passion-list-border.png</texture>
+				<texture>IPX-list-border2.png</texture>
 				<visible>false</visible>
 			</control>
 			<control type="image">
@@ -53,7 +53,7 @@
 				<posy>193</posy>
 				<width>679</width>
 				<height>372</height>
-				<texture>passion-list-white.png</texture>
+				<texture>IPX-list-white.png</texture>
 				<bordertexture border="5">IPX-list-border.png</bordertexture>
 				<bordersize>2</bordersize>
 			</control>
@@ -64,7 +64,7 @@
 				<width>679</width>
 				<height>372</height>
 				<!--<aspectratio scalediffuse="false">scale</aspectratio>-->
-				<texture diffuse="passion_diffuse.png" />
+				<texture diffuse="IPX-diffuse.png" />
 				<info>Skin.String(passion_custom_background)</info>
 				<visible>Skin.HasSetting(use_passion_custom_background)</visible>
 				<bordersize>2</bordersize>
@@ -133,7 +133,7 @@
 				<posy>320</posy>
 				<width>100</width>
 				<height>50</height>
-				<texture flipy="true" diffuse="passion-diffuse_mirror.png">$INFO[Container(150).ListItem.ActualIcon,icones\]</texture>
+				<texture flipy="true" diffuse="IPX-diffuse_mirror.png">$INFO[Container(150).ListItem.ActualIcon,icones\]</texture>
 				<aspectratio align="center" aligny="top">stretch</aspectratio>
 				<visible>Control.HasFocus(150)</visible>
 				<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
@@ -146,7 +146,7 @@
 					<posy>299</posy>
 					<width>21</width>
 					<height>21</height>
-					<texture>passion-infoicon.png</texture>
+					<texture>IPX-infoicon.png</texture>
 					<aspectratio aligny="bottom">keep</aspectratio>
 					<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 					<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
@@ -157,7 +157,7 @@
 					<posy>319</posy>
 					<width>21</width>
 					<height>21</height>
-					<texture flipy="true" diffuse="passion-diffuse_mirror.png">passion-infoicon.png</texture>
+					<texture flipy="true" diffuse="IPX-diffuse_mirror.png">IPX-infoicon.png</texture>
 					<aspectratio aligny="top">keep</aspectratio>
 					<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 					<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
@@ -186,7 +186,7 @@
 						<height>26</height>
 						<posx>0</posx>
 						<posy>0</posy>
-						<texture>passion-list-nofocus.png</texture>
+						<texture>IPX-list-nofocus.png</texture>
 						<visible>false</visible>
 					</control>
 					<control type="label">
@@ -220,7 +220,7 @@
 						<height>26</height>
 						<posx>0</posx>
 						<posy>0</posy>
-						<texture>passion-list-focus.png</texture>
+						<texture>IPX-list-focus.png</texture>
 						<visible>Control.HasFocus(191)</visible>
 					</control>
 					<control type="label">
@@ -287,7 +287,7 @@
 				<posy>320</posy>
 				<width>100</width>
 				<height>50</height>
-				<texture flipy="true" diffuse="passion-diffuse_mirror.png">$INFO[Container(191).ListItem.ActualIcon,icones\]</texture>
+				<texture flipy="true" diffuse="IPX-diffuse_mirror.png">$INFO[Container(191).ListItem.ActualIcon,icones\]</texture>
 				<aspectratio align="center" aligny="top">stretch</aspectratio>
 				<visible>!Control.HasFocus(150)</visible>
 				<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
@@ -398,7 +398,7 @@
 						<posx>0</posx>
 						<posy>0</posy>
 						<visible>Control.HasFocus(150)</visible>
-						<texture border="5">passion-mbutton-focus.png</texture>
+						<texture border="5">IPX-button-focus3.png</texture>
 					</control>
 					<control type="label">
 						<posx>165</posx>

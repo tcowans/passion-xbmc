@@ -59,7 +59,7 @@
 				<posy>150</posy>
 				<width>681</width>
 				<height>416</height>
-				<texture>passion-list-border.png</texture>
+				<texture>IPX-list-border2.png</texture>
 				<visible>false</visible>
 			</control>
 			<control type="image">
@@ -68,7 +68,7 @@
 				<posy>193</posy>
 				<width>679</width>
 				<height>372</height>
-				<texture>passion-list-white.png</texture>
+				<texture>IPX-list-white.png</texture>
 				<bordertexture border="5">IPX-list-border.png</bordertexture>
 				<bordersize>2</bordersize>
 			</control>
@@ -79,7 +79,7 @@
 				<width>679</width>
 				<height>372</height>
 				<!--<aspectratio scalediffuse="false">scale</aspectratio>-->
-				<texture diffuse="passion_diffuse.png" />
+				<texture diffuse="IPX-diffuse.png" />
 				<info>Skin.String(passion_custom_background)</info>
 				<visible>Skin.HasSetting(use_passion_custom_background) + !Control.IsVisible(10)</visible>
 				<bordersize>2</bordersize>
@@ -91,7 +91,7 @@
 				<width>679</width>
 				<height>372</height>
 				<!--<aspectratio scalediffuse="false">scale</aspectratio>-->
-				<texture diffuse="passion_diffuse.png" />
+				<texture diffuse="IPX-diffuse.png" />
 				<info>Container.ListItem.Property(fanartpicture)</info>
 				<visible>!IsEmpty(Container.ListItem.Property(fanartpicture)) + Skin.HasSetting(PassionShowFanart)</visible>
 				<bordersize>2</bordersize>
@@ -217,7 +217,7 @@
 					<align>center</align>
 					<label>101</label>
 					<texturenofocus>-</texturenofocus>
-					<texturefocus border="5">passion-mbutton-focus.png</texturefocus>
+					<texturefocus border="5">IPX-button-focus3.png</texturefocus>
 					<textcolor>ffffffff</textcolor>
 					<colordiffuse>ffffffff</colordiffuse>
 					<disabledcolor>60d0d0d0</disabledcolor>
@@ -243,7 +243,7 @@
 					<align>center</align>
 					<label>SCRIPT5</label>
 					<texturenofocus>-</texturenofocus>
-					<texturefocus border="5">passion-mbutton-focus.png</texturefocus>
+					<texturefocus border="5">IPX-button-focus3.png</texturefocus>
 					<textcolor>ffffffff</textcolor>
 					<colordiffuse>ffffffff</colordiffuse>
 					<disabledcolor>60d0d0d0</disabledcolor>
@@ -269,7 +269,7 @@
 					<align>center</align>
 					<label>SCRIPT1</label>
 					<texturenofocus>-</texturenofocus>
-					<texturefocus border="5">passion-mbutton-focus.png</texturefocus>
+					<texturefocus border="5">IPX-button-focus3.png</texturefocus>
 					<textcolor>ffffffff</textcolor>
 					<colordiffuse>ffffffff</colordiffuse>
 					<disabledcolor>60d0d0d0</disabledcolor>
@@ -296,7 +296,7 @@
 					<align>center</align>
 					<label>SCRIPT2</label>
 					<texturenofocus>-</texturenofocus>
-					<texturefocus border="5">passion-mbutton-focus.png</texturefocus>
+					<texturefocus border="5">IPX-button-focus3.png</texturefocus>
 					<textcolor>ffffffff</textcolor>
 					<colordiffuse>ffffffff</colordiffuse>
 					<disabledcolor>60d0d0d0</disabledcolor>
@@ -324,7 +324,7 @@
 					<align>center</align>
 					<label>SCRIPT8</label>
 					<texturenofocus>-</texturenofocus>
-					<texturefocus border="5">passion-mbutton-focus.png</texturefocus>
+					<texturefocus border="5">IPX-button-focus3.png</texturefocus>
 					<textcolor>ffffffff</textcolor>
 					<colordiffuse>ffffffff</colordiffuse>
 					<disabledcolor>60d0d0d0</disabledcolor>
@@ -361,7 +361,7 @@
 							<height>26</height>
 							<posx>0</posx>
 							<posy>0</posy>
-							<texture>passion-list-nofocus.png</texture>
+							<texture>IPX-list-nofocus.png</texture>
 							<visible>false</visible>
 						</control>
 						<control type="image">
@@ -412,7 +412,7 @@
 							<height>26</height>
 							<posx>0</posx>
 							<posy>0</posy>
-							<texture>passion-list-focus.png</texture>
+							<texture>IPX-list-focus.png</texture>
 							<visible>Control.HasFocus(50)</visible>
 						</control>
 						<control type="image">
@@ -420,7 +420,7 @@
 							<height>26</height>
 							<posx>0</posx>
 							<posy>0</posy>
-							<texture>passion-list-nofocus.png</texture>
+							<texture>IPX-list-nofocus.png</texture>
 							<visible>false</visible>
 						</control>
 						<control type="image">
@@ -473,30 +473,6 @@
 					<visible>Control.IsVisible(50)</visible>
 					<posx>512</posx>
 					<posy>198</posy>
-					<!-- <control type="button">
-						<description>Page Up for list</description>
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>20</width>
-						<height>20</height>
-						<onclick>PageUp(193)</onclick>
-						<texturefocus border="4">passion-scrollbar_arrow_up_focus.png</texturefocus>
-						<texturenofocus border="4">passion-scrollbar_arrow_up.png</texturenofocus>
-						<visible>Control.IsVisible(193)</visible>
-						<colordiffuse>FF000000</colordiffuse>
-					</control>
-					<control type="button">
-						<description>Page Down for list</description>
-						<posx>0</posx>
-						<posy>125</posy>
-						<width>20</width>
-						<height>20</height>
-						<onclick>PageDown(193)</onclick>
-						<texturefocus border="4">passion-scrollbar_arrow_down_focus.png</texturefocus>
-						<texturenofocus border="4">passion-scrollbar_arrow_down.png</texturenofocus>
-						<visible>Control.IsVisible(193)</visible>
-						<colordiffuse>FF000000</colordiffuse>
-					</control> -->
 					<control type="scrollbar" id="193">
 						<description>Scroll Bar for list</description>
 						<posx>0</posx>
@@ -533,7 +509,7 @@
 						<width>159</width>
 						<height>148</height>
 						<info>Container(50).ListItem.Icon</info>
-						<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+						<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 						<aspectratio align="center" aligny="top">keep</aspectratio>
 						<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
 					</control>
@@ -648,30 +624,6 @@
 					<visible>Control.IsVisible(50)</visible>
 					<posx>672</posx>
 					<posy>375</posy>
-					<!-- <control type="button">
-						<description>Page Up for text</description>
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>20</width>
-						<height>20</height>
-						<onclick>PageUp(194)</onclick>
-						<texturefocus border="4">passion-scrollbar_arrow_up_focus.png</texturefocus>
-						<texturenofocus border="4">passion-scrollbar_arrow_up.png</texturenofocus>
-						<visible>Control.IsVisible(194)</visible>
-						<colordiffuse>FF000000</colordiffuse>
-					</control>
-					<control type="button">
-						<description>Page Down for text</description>
-						<posx>0</posx>
-						<posy>165</posy>
-						<width>20</width>
-						<height>20</height>
-						<onclick>PageDown(194)</onclick>
-						<texturefocus border="4">passion-scrollbar_arrow_down_focus.png</texturefocus>
-						<texturenofocus border="4">passion-scrollbar_arrow_down.png</texturenofocus>
-						<visible>Control.IsVisible(194)</visible>
-						<colordiffuse>FF000000</colordiffuse>
-					</control> -->
 					<control type="scrollbar" id="194">
 						<description>Scroll Bar for text</description>
 						<posx>0</posx>
@@ -715,7 +667,7 @@
 						<height>42</height>
 						<posx>0</posx>
 						<posy>0</posy>
-						<texture>passion-list-nofocus.png</texture>
+						<texture>IPX-list-nofocus.png</texture>
 						<colordiffuse>50ffffff</colordiffuse>
 						<visible>Control.IsVisible(2050)</visible>
 					</control>
@@ -724,7 +676,7 @@
 						<height>42</height>
 						<posx>0</posx>
 						<posy>0</posy>
-						<texture>passion-list-nofocus.png</texture>
+						<texture>IPX-list-nofocus.png</texture>
 						<colordiffuse>50ffffff</colordiffuse>
 						<visible>!Control.IsVisible(2050)</visible>
 					</control>
@@ -778,7 +730,7 @@
 						<height>42</height>
 						<posx>0</posx>
 						<posy>0</posy>
-						<texture>passion-list-nofocus.png</texture>
+						<texture>IPX-list-nofocus.png</texture>
 						<colordiffuse>50ffffff</colordiffuse>
 						<visible>!Control.HasFocus(51) + Control.IsVisible(2050)</visible>
 					</control>
@@ -787,7 +739,7 @@
 						<height>42</height>
 						<posx>0</posx>
 						<posy>0</posy>
-						<texture>passion-list-nofocus.png</texture>
+						<texture>IPX-list-nofocus.png</texture>
 						<colordiffuse>50ffffff</colordiffuse>
 						<visible>!Control.HasFocus(51) + !Control.IsVisible(2050)</visible>
 					</control>
@@ -796,7 +748,7 @@
 						<height>42</height>
 						<posx>0</posx>
 						<posy>0</posy>
-						<texture>passion-list-focus.png</texture>
+						<texture>IPX-list-focus.png</texture>
 						<visible>Control.HasFocus(51) + Control.IsVisible(2050)</visible>
 					</control>
 					<control type="image">
@@ -804,7 +756,7 @@
 						<height>42</height>
 						<posx>0</posx>
 						<posy>0</posy>
-						<texture>passion-list-focus.png</texture>
+						<texture>IPX-list-focus.png</texture>
 						<visible>Control.HasFocus(51) + !Control.IsVisible(2050)</visible>
 					</control>
 					<control type="image">
@@ -901,7 +853,7 @@
 						<height>110</height>
 						<posx>5</posx>
 						<posy>5</posy>
-						<texture>passion-list-focus.png</texture>
+						<texture>IPX-list-focus.png</texture>
 						<animation effect="zoom" reversible="false" center="auto" start="100" end="110" time="100">focus</animation>
 						<animation type="unfocus">
 							<effect reversible="false" type="fade" start="100" end="0" time="200" />
@@ -975,7 +927,7 @@
 							<width>100</width>
 							<height>200</height>
 							<info>ListItem.Icon</info>
-							<texture flipy="true" diffuse="passion-diffuse_mirror.png" /> 
+							<texture flipy="true" diffuse="IPX-diffuse_mirror.png" /> 
 							<aspectratio aligny="top">keep</aspectratio>
 						</control>
 						<control type="image">
@@ -1003,7 +955,7 @@
 							<width>100</width>
 							<height>200</height>
 							<info>ListItem.Icon</info>
-							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 							<aspectratio aligny="top">keep</aspectratio>
 							<animation effect="zoom" start="2,250,100,200" end="-15,280,150,300" time="200">focus</animation>
 							<animation effect="zoom" end="2,250,100,200" start="-15,280,150,300" time="150">unfocus</animation>
@@ -1176,7 +1128,7 @@
 							<width>45</width>
 							<height>60</height>
 							<info>Container(59).Listitem(5).Icon</info>
-							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 							<aspectratio aligny="top">keep</aspectratio>
 							<colordiffuse>a0ffffff</colordiffuse>
 						</control>
@@ -1204,7 +1156,7 @@
 							<width>50</width>
 							<height>65</height>
 							<info>Container(59).Listitem(4).Icon</info>
-							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 							<aspectratio aligny="top">keep</aspectratio>
 							<colordiffuse>a0ffffff</colordiffuse>
 						</control>
@@ -1232,7 +1184,7 @@
 							<width>65</width>
 							<height>80</height>
 							<info>Container(59).Listitem(3).Icon</info>
-							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 							<aspectratio aligny="top">keep</aspectratio>
 							<colordiffuse>a0ffffff</colordiffuse>
 						</control>
@@ -1260,7 +1212,7 @@
 							<width>80</width>
 							<height>100</height>
 							<info>Container(59).Listitem(2).Icon</info>
-							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 							<aspectratio aligny="top">keep</aspectratio>
 							<colordiffuse>a0ffffff</colordiffuse>
 						</control>
@@ -1288,7 +1240,7 @@
 							<width>95</width>
 							<height>125</height>
 							<info>Container(59).Listitem(1).Icon</info>
-							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 							<aspectratio aligny="top">keep</aspectratio>
 							<colordiffuse>a0ffffff</colordiffuse>
 						</control>
@@ -1316,7 +1268,7 @@
 							<width>140</width>
 							<height>175</height>
 							<info>Container(59).Listitem(0).Icon</info>
-							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 							<aspectratio aligny="top">keep</aspectratio>
 							<colordiffuse>a0ffffff</colordiffuse>
 						</control>
@@ -1344,7 +1296,7 @@
 							<width>95</width>
 							<height>125</height>
 							<info>Container(59).Listitem(-1).Icon</info>
-							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 							<aspectratio aligny="top">keep</aspectratio>
 							<colordiffuse>a0ffffff</colordiffuse>
 						</control>
@@ -1372,7 +1324,7 @@
 							<width>80</width>
 							<height>100</height>
 							<info>Container(59).Listitem(-2).Icon</info>
-							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 							<aspectratio aligny="top">keep</aspectratio>
 							<colordiffuse>a0ffffff</colordiffuse>
 						</control>
@@ -1400,7 +1352,7 @@
 							<width>65</width>
 							<height>80</height>
 							<info>Container(59).Listitem(-3).Icon</info>
-							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 							<aspectratio aligny="top">keep</aspectratio>
 							<colordiffuse>a0ffffff</colordiffuse>
 						</control>
@@ -1428,7 +1380,7 @@
 							<width>50</width>
 							<height>65</height>
 							<info>Container(59).Listitem(-4).Icon</info>
-							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 							<aspectratio aligny="top">keep</aspectratio>
 							<colordiffuse>90ffffff</colordiffuse>
 						</control>
@@ -1463,7 +1415,7 @@
 							<width>45</width>
 							<height>60</height>
 							<info>Container(59).Listitem(5).Icon</info>
-							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 							<aspectratio aligny="top">keep</aspectratio>
 							<colordiffuse>a0ffffff</colordiffuse>
 						</control>
@@ -1491,7 +1443,7 @@
 							<width>50</width>
 							<height>65</height>
 							<info>Container(59).Listitem(4).Icon</info>
-							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 							<aspectratio aligny="top">keep</aspectratio>
 							<colordiffuse>a0ffffff</colordiffuse>
 						</control>
@@ -1519,7 +1471,7 @@
 							<width>65</width>
 							<height>80</height>
 							<info>Container(59).Listitem(3).Icon</info>
-							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 							<aspectratio aligny="top">keep</aspectratio>
 							<colordiffuse>a0ffffff</colordiffuse>
 						</control>
@@ -1547,7 +1499,7 @@
 							<width>80</width>
 							<height>100</height>
 							<info>Container(59).Listitem(2).Icon</info>
-							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 							<aspectratio aligny="top">keep</aspectratio>
 							<colordiffuse>a0ffffff</colordiffuse>
 						</control>
@@ -1575,7 +1527,7 @@
 							<width>95</width>
 							<height>125</height>
 							<info>Container(59).Listitem(1).Icon</info>
-							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 							<aspectratio aligny="top">keep</aspectratio>
 							<colordiffuse>a0ffffff</colordiffuse>
 						</control>
@@ -1603,7 +1555,7 @@
 							<width>140</width>
 							<height>175</height>
 							<info>Container(59).Listitem(0).Icon</info>
-							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 							<aspectratio aligny="top">keep</aspectratio>
 							<colordiffuse>a0ffffff</colordiffuse>
 						</control>
@@ -1631,7 +1583,7 @@
 							<width>95</width>
 							<height>125</height>
 							<info>Container(59).Listitem(-1).Icon</info>
-							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 							<aspectratio aligny="top">keep</aspectratio>
 							<colordiffuse>a0ffffff</colordiffuse>
 						</control>
@@ -1659,7 +1611,7 @@
 							<width>80</width>
 							<height>100</height>
 							<info>Container(59).Listitem(-2).Icon</info>
-							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 							<aspectratio aligny="top">keep</aspectratio>
 							<colordiffuse>a0ffffff</colordiffuse>
 						</control>
@@ -1687,7 +1639,7 @@
 							<width>65</width>
 							<height>80</height>
 							<info>Container(59).Listitem(-3).Icon</info>
-							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 							<aspectratio aligny="top">keep</aspectratio>
 							<colordiffuse>a0ffffff</colordiffuse>
 						</control>
@@ -1715,7 +1667,7 @@
 							<width>50</width>
 							<height>65</height>
 							<info>Container(59).Listitem(-4).Icon</info>
-							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 							<aspectratio aligny="top">keep</aspectratio>
 							<colordiffuse>90ffffff</colordiffuse>
 						</control>
@@ -1743,7 +1695,7 @@
 						<width>45</width>
 						<height>60</height>
 						<info>Container(59).Listitem(5).Icon</info>
-						<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+						<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 						<aspectratio align="center" aligny="top">keep</aspectratio>
 						<colordiffuse>60ffffff</colordiffuse>
 					</control>
@@ -1765,7 +1717,7 @@
 						<width>50</width>
 						<height>65</height>
 						<info>Container(59).Listitem(4).Icon</info>
-						<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+						<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 						<aspectratio align="center" aligny="top">keep</aspectratio>
 						<colordiffuse>90ffffff</colordiffuse>
 					</control>
@@ -1787,7 +1739,7 @@
 						<width>65</width>
 						<height>80</height>
 						<info>Container(59).Listitem(3).Icon</info>
-						<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+						<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 						<aspectratio align="center" aligny="top">keep</aspectratio>
 						<colordiffuse>a0ffffff</colordiffuse>
 					</control>
@@ -1809,7 +1761,7 @@
 						<width>80</width>
 						<height>100</height>
 						<info>Container(59).Listitem(2).Icon</info>
-						<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+						<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 						<aspectratio align="center" aligny="top">keep</aspectratio>
 						<colordiffuse>a0ffffff</colordiffuse>
 					</control>
@@ -1831,7 +1783,7 @@
 						<width>95</width>
 						<height>125</height>
 						<info>Container(59).Listitem(1).Icon</info>
-						<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+						<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 						<aspectratio align="center" aligny="top">keep</aspectratio>
 						<colordiffuse>ffffffff</colordiffuse>
 					</control>
@@ -1844,7 +1796,7 @@
 						<width>140</width>
 						<height>175</height>
 						<info>Container(59).Listitem(0).Icon</info>
-						<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+						<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 						<aspectratio align="center" aligny="top">keep</aspectratio>
 						<animation reversible="true" effect="zoom" center="auto" start="100" end="110" time="100" condition="Control.HasFocus(59)">conditional</animation>
 					</control>
@@ -1877,7 +1829,7 @@
 						<width>95</width>
 						<height>125</height>
 						<info>Container(59).Listitem(-1).Icon</info>
-						<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+						<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 						<aspectratio align="center" aligny="top">keep</aspectratio>
 						<colordiffuse>ffffffff</colordiffuse>
 					</control>
@@ -1899,7 +1851,7 @@
 						<width>80</width>
 						<height>100</height>
 						<info>Container(59).Listitem(-2).Icon</info>
-						<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+						<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 						<aspectratio align="center" aligny="top">keep</aspectratio>
 						<colordiffuse>a0ffffff</colordiffuse>
 					</control>
@@ -1921,7 +1873,7 @@
 						<width>65</width>
 						<height>80</height>
 						<info>Container(59).Listitem(-3).Icon</info>
-						<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+						<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 						<aspectratio align="center" aligny="top">keep</aspectratio>
 						<colordiffuse>a0ffffff</colordiffuse>
 					</control>
@@ -1943,7 +1895,7 @@
 						<width>50</width>
 						<height>65</height>
 						<info>Container(59).Listitem(-4).Icon</info>
-						<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+						<texture flipy="true" diffuse="IPX-diffuse_mirror.png" />
 						<aspectratio align="center" aligny="top">keep</aspectratio>
 						<colordiffuse>90ffffff</colordiffuse>
 					</control>
@@ -1958,30 +1910,6 @@
 				<posx>673</posx>
 				<posy>197</posy>
 				<animation effect="slide" start="50,0" end="0,0" time="300" reversible="true" condition="Control.IsVisible(2050)">conditional</animation>
-				<!-- <control type="button">
-					<description>Page Up for base list</description>
-					<posx>0</posx>
-					<posy>0</posy>
-					<width>20</width>
-					<height>20</height>
-					<onclick>PageUp(2050)</onclick>
-					<texturefocus border="4">passion-scrollbar_arrow_up_focus.png</texturefocus>
-					<texturenofocus border="4">passion-scrollbar_arrow_up.png</texturenofocus>
-					<visible>Control.IsVisible(2050)</visible>
-					<colordiffuse>FF000000</colordiffuse>
-				</control>
-				<control type="button">
-					<description>Page Down for base list</description>
-					<posx>0</posx>
-					<posy>343</posy>
-					<width>20</width>
-					<height>20</height>
-					<onclick>PageDown(2050)</onclick>
-					<texturefocus border="4">passion-scrollbar_arrow_down_focus.png</texturefocus>
-					<texturenofocus border="4">passion-scrollbar_arrow_down.png</texturenofocus>
-					<visible>Control.IsVisible(2050)</visible>
-					<colordiffuse>FF000000</colordiffuse>
-				</control> -->
 				<control type="scrollbar" id="2050">
 					<description>Scroll Bar for base list</description>
 					<posx>0</posx>
@@ -2011,7 +1939,7 @@
 				<posy>0</posy>
 				<width>720</width>
 				<height>576</height>
-				<texture>passion-solid.png</texture>
+				<texture>IPX-solid.png</texture>
 			</control>
 			<control type="image" id="999">
 				<description>splash image</description>

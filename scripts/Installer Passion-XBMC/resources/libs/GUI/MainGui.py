@@ -837,19 +837,19 @@ class MainWindow( xbmcgui.WindowXML ):
                 # -> On compare avec la liste affichee dans l'interface
                 if sectionName == self.downloadTypeList[ 0 ]:
                     # Theme
-                    imagePath = "icone_theme.png"
+                    imagePath = "IPX-defaultSkin.png"
                     sectionLocTitle = _( 11 )
                 elif sectionName == self.downloadTypeList[ 1 ]:
                     # Scraper
-                    imagePath = "icone_scrapper.png"
+                    imagePath = "IPX-defaultScraper.png"
                     sectionLocTitle = _( 12 )
                 elif sectionName == self.downloadTypeList[ 2 ]:
                     # Script
-                    imagePath = "icone_script.png"
+                    imagePath = "IPX-defaultScript_Plugin.png"
                     sectionLocTitle = _( 13 )
                 elif sectionName == self.downloadTypeList[ 3 ]:
                     # Plugin
-                    imagePath = "icone_script.png"
+                    imagePath = "IPX-defaultScript_Plugin.png"
                     sectionLocTitle = _( 14 )
 
                 displayListItem = xbmcgui.ListItem( sectionLocTitle, "", iconImage=imagePath, thumbnailImage=imagePath )
@@ -866,19 +866,19 @@ class MainWindow( xbmcgui.WindowXML ):
 
                 if sectionName == self.downloadTypeList[ 4 ]:
                     # Music
-                    imagePath = "passion-icone-music.png"
+                    imagePath = "IPX-defaultPluginMusic.png"
                     sectionLocTitle = _( 15 )
                 elif sectionName == self.downloadTypeList[ 5 ]:
                     # Pictures
-                    imagePath = "passion-icone-pictures.png"
+                    imagePath = "IPX-defaultPluginPicture.png"
                     sectionLocTitle = _( 16 )
                 elif sectionName == self.downloadTypeList[ 6 ]:
                     # Programs
-                    imagePath = "passion-icone-programs.png"
+                    imagePath = "IPX-defaultPluginProgram.png"
                     sectionLocTitle = _( 17 )
                 elif sectionName == self.downloadTypeList[ 7 ]:
                     # Video
-                    imagePath = "passion-icone-video.png"
+                    imagePath = "IPX-defaultPluginVideo.png"
                     sectionLocTitle = _( 18 )
 
                 displayListItem = xbmcgui.ListItem( sectionLocTitle, "", iconImage=imagePath, thumbnailImage=imagePath )
@@ -898,19 +898,19 @@ class MainWindow( xbmcgui.WindowXML ):
                 if self.type == self.downloadTypeList[ 4 ]:
                     # Music
                     self.setProperty( "Category", _( 15 ) )
-                    imagePath = "passion-icone-music.png"
+                    imagePath = "IPX-defaultPluginMusic.png"
                 elif self.type == self.downloadTypeList[ 5 ]:
                     # Pictures
                     self.setProperty( "Category", _( 16 ) )
-                    imagePath = "passion-icone-pictures.png"
+                    imagePath = "IPX-defaultPluginPicture.png"
                 elif self.type == self.downloadTypeList[ 6 ]:
                     # Programs
                     self.setProperty( "Category", _( 17 ) )
-                    imagePath = "passion-icone-programs.png"
+                    imagePath = "IPX-defaultPluginProgram.png"
                 elif self.type == self.downloadTypeList[ 7 ]:
                     # Video
                     self.setProperty( "Category", _( 18 ) )
-                    imagePath = "passion-icone-video.png"
+                    imagePath = "IPX-defaultPluginVideo.png"
 
                 # nettoyage du nom: replace les souligner pas un espace et enleve l'extension
                 try:
@@ -943,13 +943,13 @@ class MainWindow( xbmcgui.WindowXML ):
                 # Met a jour le titre et les icones:
                 if self.type == self.downloadTypeList[ 0 ]: #Themes
                     self.setProperty( "Category", _( 11 ) )
-                    imagePath = "icone_theme.png"
+                    imagePath = "IPX-defaultSkin.png"
                 elif self.type == self.downloadTypeList[ 1 ]: #Scrapers
                     self.setProperty( "Category", _( 12 ) )
-                    imagePath = "icone_scrapper.png"
+                    imagePath = "IPX-defaultScraper.png"
                 elif self.type == self.downloadTypeList[ 2 ]: #Scripts
                     self.setProperty( "Category", _( 13 ) )
-                    imagePath = "icone_script.png"
+                    imagePath = "IPX-defaultScript_Plugin.png"
 
                 # nettoyage du nom: replace les souligner pas un espace et enleve l'extension
                 try:
