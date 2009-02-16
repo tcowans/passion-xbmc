@@ -204,6 +204,8 @@
   <string id="520">Select Web Browser</string>
   <string id="521">Enter Web Browser Name</string>
 
+  <string id="530">Disable Splash</string>
+
   <!--DESCRIPTION STRINGS -->
   <string id="600">Description</string>
   <string id="601">Type</string>

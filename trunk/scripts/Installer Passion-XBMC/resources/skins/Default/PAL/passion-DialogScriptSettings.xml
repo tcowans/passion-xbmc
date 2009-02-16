@@ -509,6 +509,33 @@
 				<textureradiofocus>IPX-settings-check-box.png</textureradiofocus>
 				<textureradionofocus>IPX-settings-check-boxNF.png</textureradionofocus>
 			</control>
+			<control type="image" id="179">
+				<description>separator image</description>
+				<posx>-5</posx>
+				<posy>0</posy>
+				<width>630</width>
+				<height>5</height>
+				<texture>IPX-separator.png</texture>
+			</control>
+			<control type="radiobutton" id="180">
+				<description>button general 6</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>625</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT530</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<aligny>center</aligny>
+				<texturefocus border="5">IPX-button-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<textureradiofocus>IPX-settings-check-box.png</textureradiofocus>
+				<textureradionofocus>IPX-settings-check-boxNF.png</textureradionofocus>
+			</control>
 		</control>
 
 		<!-- theme colours List Decrease/Increase -->

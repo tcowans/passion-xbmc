@@ -42,6 +42,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
     CONTROL_SCRIPT_DEBUG_BUTTON   = 150
     CONTROL_PARENT_DIR_BUTTON     = 160
     CONTROL_EXTENTION_BUTTON      = 170
+    CONTROL_SHOW_SPLASH_BUTTON    = 180
     CONTROL_DECREASE_COLOR_BUTTON = 200
     CONTROL_INCREASE_COLOR_BUTTON = 210
     CONTROL_SKIN_COLOR_LABEL      = 220
@@ -161,6 +162,8 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             self.getControl( self.CONTROL_PARENT_DIR_BUTTON ).setSelected( not self.settings.get( "pardir_not_hidden", 1 ) )
             #selon l'etat de self.settings[ "hide_extention" ], l'image du radiobutton sera blanc ou non visible
             self.getControl( self.CONTROL_EXTENTION_BUTTON ).setSelected( self.settings.get( "hide_extention", True ) )
+            #selon l'etat de self.settings[ "show_plash"], l'image du radiobutton sera blanc ou non visible
+            self.getControl( self.CONTROL_SHOW_SPLASH_BUTTON ).setSelected( self.settings.get( "show_plash", False ) )
             # boutons pour le web
             self._set_control_web_visibility()
         except:
@@ -263,50 +266,70 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
         try:
             if controlID in ( self.CONTROL_DECREASE_TOPIC_BUTTON, self.CONTROL_INCREASE_TOPIC_BUTTON ):
                 self.toggle_topic_control( controlID )
+
             elif controlID in ( self.CONTROL_DECREASE_COLOR_BUTTON, self.CONTROL_INCREASE_COLOR_BUTTON ):
                 self.toggle_color_control( controlID )
+
             elif controlID in ( self.CONTROL_DECREASE_RSS_BUTTON, self.CONTROL_INCREASE_RSS_BUTTON ):
                 self.toggle_rss_control( controlID )
+
             elif controlID in ( self.CONTROL_DECREASE_TSIZE_BUTTON, self.CONTROL_INCREASE_TSIZE_BUTTON ):
                 self.toggle_tbn_size_control( controlID )
+
+            elif controlID == self.CONTROL_SHOW_SPLASH_BUTTON:
+                #bouton pour activer desactiver le spalsh
+                self._set_bool_setting( "show_plash" )
+
             elif controlID == self.CONTROL_PARENT_DIR_BUTTON:
                 #bouton pour activer desactiver le repertoire parent dans les listes
                 self._set_bool_setting( "pardir_not_hidden" )
+
             elif controlID == self.CONTROL_EXTENTION_BUTTON:
                 #bouton pour activer desactiver les extentions dans les noms des items
                 self._set_bool_setting( "hide_extention" )
+
             elif controlID == self.CONTROL_XML_UPDATE_BUTTON:
                 #bouton pour activer desactiver la modification du fichier sources.xml
                 self._set_bool_setting( "xbmc_xml_update" )
+
             elif controlID == self.CONTROL_UPDATE_STARTUP_BUTTON:
                 #bouton pour activer desactiver la verification de la mise a jour au demarrage
                 self._set_bool_setting( "update_startup" )
+
             elif controlID == self.CONTROL_SCRIPT_DEBUG_BUTTON:
                 #bouton pour activer desactiver la mode debug du script seulement
                 self._set_bool_setting( "script_debug" )
+
             elif controlID == self.CONTROL_OK_BUTTON:
                 #bouton ok on save les changements.
                 self._save_settings()
+
             elif controlID in ( self.CONTROL_CANCEL_BUTTON, self.CONTROL_CANCEL2_BUTTON ):
                 # bouton annuler on ferme le dialog
                 self._close_dialog()
+
             elif controlID == self.CONTROL_RESET_BUTTON:
                 #bouton reset settings, ont recup les settings par default
                 self._get_defaults()
+
             elif controlID == self.CONTROL_SHOW_FANART_BUTTON:
                 #bouton fanart background a ete activer depuis le xml
                 #balise utiliser: <onclick>Skin.ToggleSetting(PassionShowFanart)</onclick>
                 self.getControl( self.CONTROL_OK_BUTTON ).setEnabled( True )
+
             elif controlID == self.CONTROL_CUSTOM_BG_BUTTON:
                 #bouton custom background a ete activer depuis le xml
                 #balise utiliser: <onclick>Skin.ToggleSetting(use_passion_custom_background)</onclick>
                 self.getControl( self.CONTROL_OK_BUTTON ).setEnabled( True )
+
             elif controlID == self.CONTROL_HIDE_FORUM_BUTTON:
                 #bouton pour masquer le bouton forum du menu principal
                 self._set_bool_setting( "hide_forum" )
+
             elif controlID == self.CONTROL_WEB_BUTTON:
                 #bouton pour choisir le navigateur web
                 self._set_web_navigator()
+
             elif controlID == self.CONTROL_WIN32_WAIT_BUTTON:
                 #bouton pour activer desactiver wait state win32 seulement
                 self._set_bool_setting( "win32_exec_wait" )
