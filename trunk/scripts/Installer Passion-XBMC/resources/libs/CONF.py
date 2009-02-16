@@ -85,14 +85,14 @@ SRV_DIR_PLUGIN_PICTURES = "/.passionxbmc/Plugins/Pictures/"
 SRV_DIR_PLUGIN_PROGRAMS = "/.passionxbmc/Plugins/Programs/"
 SRV_DIR_PLUGIN_VIDEO    = "/.passionxbmc/Plugins/Videos/"
 
-THUMB_SKIN              = "icone_theme.png"
-THUMB_SCRAPER           = "icone_scrapper.png"
-THUMB_SCRIPT            = "icone_script.png"
-THUMB_PLUGIN            = "icone_script.png"
-THUMB_PLUGIN_MUSIC      = "passion-icone-music.png"
-THUMB_PLUGIN_PICTURES   = "passion-icone-pictures.png"
-THUMB_PLUGIN_PROGRAMS   = "passion-icone-programs.png"
-THUMB_PLUGIN_VIDEO      = "passion-icone-video.png"  
+THUMB_SKIN              = "IPX-defaultSkin.png"
+THUMB_SCRAPER           = "IPX-defaultScraper.png"
+THUMB_SCRIPT            = "IPX-defaultScript_Plugin.png"
+THUMB_PLUGIN            = THUMB_SCRIPT
+THUMB_PLUGIN_MUSIC      = "IPX-defaultPluginMusic.png"
+THUMB_PLUGIN_PICTURES   = "IPX-defaultPluginPicture.png"
+THUMB_PLUGIN_PROGRAMS   = "IPX-defaultPluginProgram.png"
+THUMB_PLUGIN_VIDEO      = "IPX-defaultPluginVideo.png"  
 
 INDEX_SRV_ITEM_FORMAT_DIR      = 0
 INDEX_SRV_ITEM_FORMAT_FILE_ZIP = 1

@@ -160,7 +160,7 @@ class InfoWarehouseEltTreeXMLFTP:
                 if os.path.exists( cached_thumbs[ 1 ] ):
                     previewPicture = cached_thumbs[ 1 ]
                 else:
-                    previewPicture = set_cache_thumb_name( "passion-noImageAvailable.jpg" )[ 1 ]
+                    previewPicture = set_cache_thumb_name( "IPX-NotAvailable2.png" )[ 1 ]
 
                 # Notifie la callback de mettre a jour l'image
                 if imageElt.updateImage_cb:
@@ -194,7 +194,7 @@ class InfoWarehouseEltTreeXMLFTP:
         if os.path.exists( cached_thumbs[ 1 ] ):
             previewPicture = cached_thumbs[ 1 ]
         else:
-            previewPicture = set_cache_thumb_name( "passion-noImageAvailable.jpg" )[ 1 ]
+            previewPicture = set_cache_thumb_name( "IPX-NotAvailable2.png" )[ 1 ]
 
         # Notifie la callback de mettre a jour l'image
         if updateImage_cb:
@@ -276,7 +276,7 @@ class InfoWarehouseEltTreeXMLFTP:
 
                             previewPictureURL = item.findtext( "previewPictureURL" )
                             if not previewPictureURL and hasattr( listitem, "setThumbnailImage" ):
-                                listitem.setThumbnailImage( "passion-noImageAvailable.jpg" )
+                                listitem.setThumbnailImage( "IPX-NotAvailable2.png" )
                             elif previewPictureURL:
                                 # On verifie si l'image serait deja la
                                 thumbnail, checkPathPic = set_cache_thumb_name( previewPictureURL )
@@ -294,7 +294,7 @@ class InfoWarehouseEltTreeXMLFTP:
                             break
 
             if notfound and hasattr( listitem, "setThumbnailImage" ):
-                listitem.setThumbnailImage( "passion-noImageAvailable.jpg" )
+                listitem.setThumbnailImage( "IPX-NotAvailable2.png" )
 
             #i = updateIWH( locals() )
             #print i.fileName, i.description
