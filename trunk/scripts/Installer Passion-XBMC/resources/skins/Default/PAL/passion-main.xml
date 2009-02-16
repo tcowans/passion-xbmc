@@ -519,19 +519,19 @@
 					<visible>Control.IsVisible(50)</visible>
 					<control type="image">
 						<description>icon</description>
-						<posx>546</posx>
-						<posy>195</posy>
-						<width>140</width>
-						<height>130</height>
+						<posx>535</posx>
+						<posy>196</posy>
+						<width>159</width>
+						<height>148</height>
 						<aspectratio align="center" aligny="center">keep</aspectratio>
 						<info>Container(50).ListItem.Icon</info>
 						<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
 					</control>
 					<control type="image">
-						<posx>546</posx>
-						<posy>330</posy>
-						<width>140</width>
-						<height>130</height>
+						<posx>535</posx>
+						<posy>346</posy>
+						<width>159</width>
+						<height>148</height>
 						<info>Container(50).ListItem.Icon</info>
 						<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
 						<aspectratio align="center" aligny="top">keep</aspectratio>
@@ -604,7 +604,8 @@
 						<posx>27</posx>
 						<posy>375</posy>
 						<width>640</width>
-						<height>166</height>
+						<height>186</height>
+						<!-- <height>166</height> -->
 						<pagecontrol>194</pagecontrol>
 						<textcolor>FF000000</textcolor>
 						<font>font13</font>
@@ -618,7 +619,8 @@
 						<posx>27</posx>
 						<posy>375</posy>
 						<width>666</width>
-						<height>166</height>
+						<height>186</height>
+						<!-- <height>166</height> -->
 						<pagecontrol>194</pagecontrol>
 						<textcolor>FF000000</textcolor>
 						<font>font13</font>
@@ -632,7 +634,7 @@
 						<posx>27</posx>
 						<posy>375</posy>
 						<width>666</width>
-						<height>166</height>
+						<height>183</height>
 						<textcolor>FF000000</textcolor>
 						<font>font13</font>
 						<align>center</align>
@@ -675,8 +677,8 @@
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>20</width>
-						<height>163</height>
-						<!-- <height>183</height> -->
+						<!-- <height>163</height> -->
+						<height>183</height>
 						<texturesliderbackground border="2,2,2,2">IPX-scrollbar_bar_back.png</texturesliderbackground>
 						<texturesliderbar border="2,16,2,16">IPX-scrollbar_bar.png</texturesliderbar>
 						<texturesliderbarfocus border="2,16,2,16">IPX-scrollbar_bar_focus.png</texturesliderbarfocus>
