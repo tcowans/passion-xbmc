@@ -103,7 +103,6 @@
 				<width>679</width>
 				<height>41</height>
 				<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
-				<texture>passion-list-white.png</texture>
 				<bordertexture border="5">IPX-list-border.png</bordertexture>
 				<bordersize>2</bordersize>
 			</control>
@@ -474,7 +473,7 @@
 					<visible>Control.IsVisible(50)</visible>
 					<posx>512</posx>
 					<posy>198</posy>
-					<control type="button">
+					<!-- <control type="button">
 						<description>Page Up for list</description>
 						<posx>0</posx>
 						<posy>0</posy>
@@ -497,21 +496,21 @@
 						<texturenofocus border="4">passion-scrollbar_arrow_down.png</texturenofocus>
 						<visible>Control.IsVisible(193)</visible>
 						<colordiffuse>FF000000</colordiffuse>
-					</control>
+					</control> -->
 					<control type="scrollbar" id="193">
 						<description>Scroll Bar for list</description>
 						<posx>0</posx>
-						<posy>20</posy>
+						<posy>0</posy>
 						<width>20</width>
-						<height>105</height>
-						<texturesliderbackground border="2,2,2,2">IPX-scrollbar_bar_back2.png</texturesliderbackground>
+						<height>145</height>
+						<texturesliderbackground border="2,2,2,2">IPX-scrollbar_bar_back.png</texturesliderbackground>
 						<texturesliderbar border="2,16,2,16">IPX-scrollbar_bar.png</texturesliderbar>
 						<texturesliderbarfocus border="2,16,2,16">IPX-scrollbar_bar_focus.png</texturesliderbarfocus>
 						<textureslidernib>IPX-scrollbar_nib.png</textureslidernib>
 						<textureslidernibfocus>IPX-scrollbar_nib.png</textureslidernibfocus>
 						<onleft>50</onleft>
 						<onright>194</onright>
-						<showonepage>false</showonepage>
+						<showonepage>true</showonepage>
 						<orientation>vertical</orientation>
 						<!-- <colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse> -->
 					</control>
@@ -647,7 +646,7 @@
 					<visible>Control.IsVisible(50)</visible>
 					<posx>672</posx>
 					<posy>375</posy>
-					<control type="button">
+					<!-- <control type="button">
 						<description>Page Up for text</description>
 						<posx>0</posx>
 						<posy>0</posy>
@@ -670,14 +669,15 @@
 						<texturenofocus border="4">passion-scrollbar_arrow_down.png</texturenofocus>
 						<visible>Control.IsVisible(194)</visible>
 						<colordiffuse>FF000000</colordiffuse>
-					</control>
+					</control> -->
 					<control type="scrollbar" id="194">
 						<description>Scroll Bar for text</description>
 						<posx>0</posx>
-						<posy>20</posy>
+						<posy>0</posy>
 						<width>20</width>
-						<height>145</height>
-						<texturesliderbackground border="2,2,2,2">IPX-scrollbar_bar_back2.png</texturesliderbackground>
+						<height>163</height>
+						<!-- <height>183</height> -->
+						<texturesliderbackground border="2,2,2,2">IPX-scrollbar_bar_back.png</texturesliderbackground>
 						<texturesliderbar border="2,16,2,16">IPX-scrollbar_bar.png</texturesliderbar>
 						<texturesliderbarfocus border="2,16,2,16">IPX-scrollbar_bar_focus.png</texturesliderbarfocus>
 						<textureslidernib>IPX-scrollbar_nib.png</textureslidernib>
@@ -1956,7 +1956,7 @@
 				<posx>673</posx>
 				<posy>197</posy>
 				<animation effect="slide" start="50,0" end="0,0" time="300" reversible="true" condition="Control.IsVisible(2050)">conditional</animation>
-				<control type="button">
+				<!-- <control type="button">
 					<description>Page Up for base list</description>
 					<posx>0</posx>
 					<posy>0</posy>
@@ -1979,14 +1979,14 @@
 					<texturenofocus border="4">passion-scrollbar_arrow_down.png</texturenofocus>
 					<visible>Control.IsVisible(2050)</visible>
 					<colordiffuse>FF000000</colordiffuse>
-				</control>
+				</control> -->
 				<control type="scrollbar" id="2050">
 					<description>Scroll Bar for base list</description>
 					<posx>0</posx>
-					<posy>20</posy>
+					<posy>0</posy>
 					<width>20</width>
-					<height>323</height>
-					<texturesliderbackground border="2,2,2,2">IPX-scrollbar_bar_back2.png</texturesliderbackground>
+					<height>363</height>
+					<texturesliderbackground border="2,2,2,2">IPX-scrollbar_bar_back.png</texturesliderbackground>
 					<texturesliderbar border="2,16,2,16">IPX-scrollbar_bar.png</texturesliderbar>
 					<texturesliderbarfocus border="2,16,2,16">IPX-scrollbar_bar_focus.png</texturesliderbarfocus>
 					<textureslidernib>IPX-scrollbar_nib.png</textureslidernib>
