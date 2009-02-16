@@ -193,6 +193,7 @@ class DirectInfos( xbmcgui.WindowXML ):
                         self.list_infos.append( ( guid, list( imgs ) ) )
 
                 self.setProperty( "Category", self.category )
+                self.setFocusId( self.CONTROL_FEEDS_LIST )
             else:
                 xbmcgui.Dialog().ok( _( 199 ), self.category, _( 240 ) )
         except:

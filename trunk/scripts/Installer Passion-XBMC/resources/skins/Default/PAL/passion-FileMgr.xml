@@ -91,7 +91,6 @@
 				<width>679</width>
 				<height>41</height>
 				<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
-				<texture>passion-list-white.png</texture>
 				<bordertexture border="5">IPX-list-border.png</bordertexture>
 				<bordersize>2</bordersize>
 			</control>
@@ -1587,7 +1586,7 @@
 				<posx>673</posx>
 				<posy>197</posy>
 				<animation effect="slide" start="50,0" end="0,0" time="300" reversible="true" condition="Control.IsVisible(2050)">conditional</animation>
-				<control type="button">
+				<!-- <control type="button">
 					<description>Page Up for base list</description>
 					<posx>0</posx>
 					<posy>0</posy>
@@ -1610,14 +1609,14 @@
 					<texturenofocus border="4">passion-scrollbar_arrow_down.png</texturenofocus>
 					<visible>Control.IsVisible(2050)</visible>
 					<colordiffuse>FF000000</colordiffuse>
-				</control>
+				</control> -->
 				<control type="scrollbar" id="2050">
 					<description>Scroll Bar for base list</description>
 					<posx>0</posx>
-					<posy>20</posy>
+					<posy>0</posy>
 					<width>20</width>
-					<height>323</height>
-					<texturesliderbackground border="2,2,2,2">IPX-scrollbar_bar_back2.png</texturesliderbackground>
+					<height>363</height>
+					<texturesliderbackground border="2,2,2,2">IPX-scrollbar_bar_back.png</texturesliderbackground>
 					<texturesliderbar border="2,16,2,16">IPX-scrollbar_bar.png</texturesliderbar>
 					<texturesliderbarfocus border="2,16,2,16">IPX-scrollbar_bar_focus.png</texturesliderbarfocus>
 					<textureslidernib>IPX-scrollbar_nib.png</textureslidernib>

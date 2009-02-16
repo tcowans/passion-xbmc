@@ -183,20 +183,6 @@
 			<pagecontrol>61</pagecontrol>
 			<autoscroll time="3000" delay="4000" repeat="5000">!Control.HasFocus(61) + Skin.HasSetting(AutoScroll)</autoscroll>
 		</control>
-		<control type="spincontrol" id="61">
-			<description>Next page button</description>
-			<posx>640</posx>
-			<posy>513</posy>
-			<subtype>page</subtype>
-			<font>font10</font>
-			<onleft>9000</onleft>
-			<onright>9000</onright>
-			<ondown>49</ondown>
-			<onup>49</onup>
-			<textcolor>ffffffff</textcolor>
-			<showonepage>true</showonepage>
-			<visible>false</visible>
-		</control>
 		<control type="scrollbar" id="61">
 			<posx>655</posx>
 			<posy>365</posy>
