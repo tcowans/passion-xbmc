@@ -235,6 +235,7 @@ class Settings:
             "manager_view_mode": 50,
             "main_view_mode": 50,
             # SKINS
+            "show_plash": False,
             "skin_colours_path": "default",
             "skin_colours": "",
             "thumb_size": ( "512", "192" )[ ( SYSTEM_PLATFORM == "xbox" ) ],

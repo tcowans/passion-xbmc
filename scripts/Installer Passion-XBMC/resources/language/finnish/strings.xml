@@ -204,6 +204,8 @@
   <string id="520">Valitse nettiselain</string>
   <string id="521">Anna nettiselaimen nimi</string>
 
+  <string id="530">Poista Splash</string>
+
   <!--DESCRIPTION STRINGS -->
   <string id="600">Selite</string>
   <string id="601">Tyyppi</string>

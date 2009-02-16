@@ -59,6 +59,7 @@ class MainWindow( xbmcgui.WindowXML ):
     CONTROL_FILE_MGR_BUTTON = 300
     CONTROL_OPTIONS_BUTTON  = 310
     CONTROL_EXIT_BUTTON     = 320
+    CONTROL_SHOW_SPLASH_IMG = 999
 
     def __init__( self, *args, **kwargs ):
         """
@@ -129,6 +130,10 @@ class MainWindow( xbmcgui.WindowXML ):
         self._get_settings()
         self._set_skin_colours()
 
+        if self.settings.get( "show_plash" ) == True:
+            # splash desactive par le user 
+            self.getControl( self.CONTROL_SHOW_SPLASH_IMG ).setVisible( 0 )
+
         if self.is_started:
             self.is_started = False
 
@@ -178,7 +183,7 @@ class MainWindow( xbmcgui.WindowXML ):
             # for ControlList only :(
 
         # desactive le splash
-        self.getControl( 999 ).setVisible( 0 )
+        self.getControl( self.CONTROL_SHOW_SPLASH_IMG ).setVisible( 0 )
 
     def _get_settings( self, defaults=False ):
         """ reads settings """
