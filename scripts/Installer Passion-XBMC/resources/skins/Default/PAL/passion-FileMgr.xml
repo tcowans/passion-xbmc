@@ -152,7 +152,7 @@
 				<width>679</width>
 				<height>30</height>
 				<align>left</align>
-				<label>$INFO[Container.Property(Category),$LOCALIZE[SCRIPT5]: ]</label>
+				<label>$INFO[Container.Property(Category),[B]$LOCALIZE[SCRIPT5]:[/B] ]</label>
 				<font>special13</font>
 			</control>
 			<control type="label">
