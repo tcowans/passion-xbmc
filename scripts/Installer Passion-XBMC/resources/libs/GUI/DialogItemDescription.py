@@ -71,6 +71,13 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
         xbmcgui.lock()
         self.i_itemId = self.i_itemId or str( self.mainwin.getCurrentListPosition()+1 )
         try:
+            if self.i_previewPicture:
+                filename = os.path.basename( self.i_previewPicture )
+                thumbnail = os.path.join( BASE_THUMBS_PATH, filename[ 0 ], filename )
+                if os.path.isfile( thumbnail ): self.i_thumbnail = thumbnail
+        except:
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+        try:
             self.getControl( 48 ).reset()
             listitem = xbmcgui.ListItem( self.i_title, "", self.i_thumbnail, self.i_thumbnail )
             listitem.setProperty( "type", self.i_type )
