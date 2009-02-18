@@ -411,13 +411,13 @@ httpcommand&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string&nbsp;-&nbsp;http&nbsp;command&n
 List&nbsp;of&nbsp;commands&nbsp;-&nbsp;<a href="http://xbmc.org/wiki/?title=WebServerHTTP-API#The_Commands">http://xbmc.org/wiki/?title=WebServerHTTP-API#The_Commands</a>&nbsp;<br>
 &nbsp;<br>
 example:<br>
-&nbsp;&nbsp;-&nbsp;response&nbsp;=&nbsp;xbmc.<a href="#-executehttpapi">executehttpapi</a>('TakeScreenShot(q:\\test.jpg,0,false,200,-1,90)')</tt></dd></dl>
+&nbsp;&nbsp;-&nbsp;response&nbsp;=&nbsp;xbmc.<a href="#-executehttpapi">executehttpapi</a>('TakeScreenShot(special://temp/test.jpg,0,false,200,-1,90)')</tt></dd></dl>
  <dl><dt><a name="-executescript"><strong>executescript</strong></a>(...)</dt><dd><tt><a href="#-executescript">executescript</a>(script)&nbsp;--&nbsp;Execute&nbsp;a&nbsp;python&nbsp;script.<br>
 &nbsp;<br>
 script&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string&nbsp;-&nbsp;script&nbsp;filename&nbsp;to&nbsp;execute.<br>
 &nbsp;<br>
 example:<br>
-&nbsp;&nbsp;-&nbsp;xbmc.<a href="#-executescript">executescript</a>('q:\\scripts\\update.py')</tt></dd></dl>
+&nbsp;&nbsp;-&nbsp;xbmc.<a href="#-executescript">executescript</a>('special://home/scripts/update.py')</tt></dd></dl>
  <dl><dt><a name="-getCacheThumbName"><strong>getCacheThumbName</strong></a>(...)</dt><dd><tt><a href="#-getCacheThumbName">getCacheThumbName</a>(path)&nbsp;--&nbsp;Returns&nbsp;a&nbsp;thumb&nbsp;cache&nbsp;filename.<br>
 &nbsp;<br>
 path&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string&nbsp;or&nbsp;unicode&nbsp;-&nbsp;path&nbsp;to&nbsp;file<br>
@@ -499,7 +499,7 @@ example:<br>
 &nbsp;&nbsp;-&nbsp;date_long_format&nbsp;=&nbsp;xbmc.<a href="#-getRegion">getRegion</a>('datelong')</tt></dd></dl>
  <dl><dt><a name="-getSkinDir"><strong>getSkinDir</strong></a>(...)</dt><dd><tt><a href="#-getSkinDir">getSkinDir</a>()&nbsp;--&nbsp;Returns&nbsp;the&nbsp;active&nbsp;skin&nbsp;directory&nbsp;as&nbsp;a&nbsp;string.<br>
 &nbsp;<br>
-*Note,&nbsp;This&nbsp;is&nbsp;not&nbsp;the&nbsp;full&nbsp;path&nbsp;like&nbsp;'q:\skins\MediaCenter',&nbsp;but&nbsp;only&nbsp;'MediaCenter'.<br>
+*Note,&nbsp;This&nbsp;is&nbsp;not&nbsp;the&nbsp;full&nbsp;path&nbsp;like&nbsp;'special://home/skin/MediaCenter',&nbsp;but&nbsp;only&nbsp;'MediaCenter'.<br>
 &nbsp;<br>
 example:<br>
 &nbsp;&nbsp;-&nbsp;skindir&nbsp;=&nbsp;xbmc.<a href="#-getSkinDir">getSkinDir</a>()</tt></dd></dl>
@@ -560,7 +560,7 @@ example:<br>
 filename&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string&nbsp;-&nbsp;filename&nbsp;of&nbsp;the&nbsp;wav&nbsp;file&nbsp;to&nbsp;play.<br>
 &nbsp;<br>
 example:<br>
-&nbsp;&nbsp;-&nbsp;xbmc.<a href="#-playSFX">playSFX</a>('Q:\\scripts\\dingdong.wav')</tt></dd></dl>
+&nbsp;&nbsp;-&nbsp;xbmc.<a href="#-playSFX">playSFX</a>('special://xbmc/scripts/dingdong.wav')</tt></dd></dl>
  <dl><dt><a name="-restart"><strong>restart</strong></a>(...)</dt><dd><tt><a href="#-restart">restart</a>()&nbsp;--&nbsp;Restart&nbsp;the&nbsp;xbox.<br>
 &nbsp;<br>
 example:<br>
@@ -595,11 +595,11 @@ example:<br>
 path&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string&nbsp;or&nbsp;unicode&nbsp;-&nbsp;Path&nbsp;to&nbsp;format<br>
 &nbsp;<br>
 *Note,&nbsp;Only&nbsp;useful&nbsp;if&nbsp;you&nbsp;are&nbsp;coding&nbsp;for&nbsp;both&nbsp;Linux&nbsp;and&nbsp;the&nbsp;Xbox.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.g.&nbsp;Converts&nbsp;'T:\script_data'&nbsp;-&gt;&nbsp;'/home/user/XBMC/UserData/script_data'<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;on&nbsp;Linux.&nbsp;Would&nbsp;return&nbsp;'T:\script_data'&nbsp;on&nbsp;the&nbsp;Xbox.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.g.&nbsp;Converts&nbsp;'special://masterprofile/script_data'&nbsp;-&gt;&nbsp;'/home/user/XBMC/UserData/script_data'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;on&nbsp;Linux.&nbsp;Would&nbsp;return&nbsp;'special://masterprofile/script_data'&nbsp;on&nbsp;the&nbsp;Xbox.<br>
 &nbsp;<br>
 example:<br>
-&nbsp;&nbsp;-&nbsp;fpath&nbsp;=&nbsp;xbmc.<a href="#-translatePath">translatePath</a>('T:\script_data')</tt></dd></dl>
+&nbsp;&nbsp;-&nbsp;fpath&nbsp;=&nbsp;xbmc.<a href="#-translatePath">translatePath</a>('special://masterprofile/script_data')</tt></dd></dl>
 </td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#55aa55">

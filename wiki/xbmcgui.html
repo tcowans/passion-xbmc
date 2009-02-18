@@ -991,10 +991,9 @@ example:<br>
 <dl><dt><a name="ControlImage-setImage"><strong>setImage</strong></a>(...)</dt><dd><tt><a href="#ControlImage-setImage">setImage</a>(filename,&nbsp;colorKey)&nbsp;--&nbsp;Changes&nbsp;the&nbsp;image.<br>
 &nbsp;<br>
 filename&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string&nbsp;-&nbsp;image&nbsp;filename.<br>
-colorKey&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;[opt]&nbsp;hexString&nbsp;-&nbsp;(example,&nbsp;'0xFFFF3300')<br>
 &nbsp;<br>
 example:<br>
-&nbsp;&nbsp;-&nbsp;self.<strong>image</strong>.<a href="#ControlImage-setImage">setImage</a>('q:\scripts\test.png',&nbsp;'0xFFFF3300')</tt></dd></dl>
+&nbsp;&nbsp;-&nbsp;self.<strong>image</strong>.<a href="#ControlImage-setImage">setImage</a>('special://home/scripts/test.png')</tt></dd></dl>
 
 <hr>
 Data and other attributes defined here:<br>
@@ -2391,7 +2390,7 @@ Types:<br>
 &nbsp;<br>
 example:<br>
 &nbsp;&nbsp;-&nbsp;dialog&nbsp;=&nbsp;xbmcgui.<a href="#Dialog">Dialog</a>()<br>
-&nbsp;&nbsp;-&nbsp;fn&nbsp;=&nbsp;dialog.<a href="#Dialog-browse">browse</a>(3,&nbsp;'XBMC',&nbsp;'files',&nbsp;'',&nbsp;False,&nbsp;False,&nbsp;'T:\script_data\XBMC&nbsp;Lyrics')</tt></dd></dl>
+&nbsp;&nbsp;-&nbsp;fn&nbsp;=&nbsp;dialog.<a href="#Dialog-browse">browse</a>(3,&nbsp;'XBMC',&nbsp;'files',&nbsp;'',&nbsp;False,&nbsp;False,&nbsp;'special://masterprofile/script_data/XBMC&nbsp;Lyrics')</tt></dd></dl>
 
 <dl><dt><a name="Dialog-numeric"><strong>numeric</strong></a>(...)</dt><dd><tt><a href="#Dialog-numeric">numeric</a>(type,&nbsp;heading[,&nbsp;default])&nbsp;--&nbsp;Show&nbsp;a&nbsp;'Numeric'&nbsp;dialog.<br>
 &nbsp;<br>
@@ -2541,7 +2540,7 @@ List&nbsp;of&nbsp;functions&nbsp;-&nbsp;<a href="http://xbmc.org/wiki/?title=Lis
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Once&nbsp;you&nbsp;use&nbsp;a&nbsp;keyword,&nbsp;all&nbsp;following&nbsp;arguments&nbsp;require&nbsp;the&nbsp;keyword.<br>
 &nbsp;<br>
 example:<br>
-&nbsp;&nbsp;-&nbsp;listitem.<a href="#ListItem-addContextMenuItems">addContextMenuItems</a>([('Theater&nbsp;Showtimes',&nbsp;'XBMC.RunScript(q:\\scripts\\showtimes\\default.py,Iron&nbsp;Man)',)])</tt></dd></dl>
+&nbsp;&nbsp;-&nbsp;listitem.<a href="#ListItem-addContextMenuItems">addContextMenuItems</a>([('Theater&nbsp;Showtimes',&nbsp;'XBMC.RunScript(special://home/scripts/showtimes/default.py,Iron&nbsp;Man)',)])</tt></dd></dl>
 
 <dl><dt><a name="ListItem-getLabel"><strong>getLabel</strong></a>(...)</dt><dd><tt><a href="#ListItem-getLabel">getLabel</a>()&nbsp;--&nbsp;Returns&nbsp;the&nbsp;listitem&nbsp;label.<br>
 &nbsp;<br>
