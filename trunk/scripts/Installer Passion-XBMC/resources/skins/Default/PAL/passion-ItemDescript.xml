@@ -358,7 +358,7 @@
 				<width>200</width>
 				<height>300</height>
 				<texture>IPX-NotAvailable.png</texture>
-				<info>Container(48).ListItem.Property(fanartpicture)</info>
+				<info>Container(48).ListItem.Thumb</info>
 				<aspectratio>keep</aspectratio>
 				<bordertexture border="5">IPX-folder-focus.png</bordertexture>
 				<bordersize>5</bordersize>
