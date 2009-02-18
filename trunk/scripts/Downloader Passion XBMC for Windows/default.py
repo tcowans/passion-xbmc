@@ -1,10 +1,15 @@
-# -*- coding: utf-8 -*-
 
-"""
-Downloader Passion XBMC for Windows
+# script constants
+__script__       = "Downloader Passion XBMC for Windows"
+__author__       = "Frost"
+__url__          = "http://passion-xbmc.org/index.php"
+__svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/Downloader%20Passion%20XBMC%20for%20Windows/"
+__credits__      = "Team XBMC, http://xbmc.org/"
+__platform__     = "xbmc media center"
+__date__         = "18-02-2009"
+__version__      = "1.0.0"
+__svn_revision__ = 0
 
-frost
-"""
 
 import os
 import re
@@ -20,9 +25,11 @@ DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
 URL_BASE = "http://passion-xbmc.org/gros_fichiers/windows/index.php"
 
+__language__ = xbmc.Language( os.getcwd().rstrip( ";" ) ).getLocalizedString
+
 
 def launch_install( XBMCSetup ):
-    if xbmcgui.Dialog().yesno( "Confirmer installation", "Désirez-vous installer votre nouvelle version?", "NB: Fermeture automatique de XBMC." ):
+    if xbmcgui.Dialog().yesno( __language__( 32012 ), __language__( 32013 ), __language__( 32014 ) ):
         xbmc.executebuiltin( 'System.Exec("%s")' % ( XBMCSetup ) )
         xbmc.shutdown()
 
@@ -57,7 +64,7 @@ RELEASES.sort( reverse= True )
 
 LIST_SELECT = []
 for ext, release, size, date, time in RELEASES:
-    stritem = release + " | " + size + " MB | " + date + ", " + time
+    stritem = __language__( 32011 ) % ( release, size, date, time, )
     LIST_SELECT.append( stritem )
 LIST_SELECT[ 0 ] = "[B]" + LIST_SELECT[ 0 ] + "[/B]"
 
@@ -70,7 +77,7 @@ class pDialogCanceled( Exception ):
 def _remove( filepath, remove_tries=3 ):
     urllib.urlcleanup()
     try:
-        script = os.path.join( os.getcwd().rstrip( ";" ), "badfile.py" )
+        script = os.path.join( os.getcwd().rstrip( ";" ), "resources", "badfile.py" )
         url = "filepath=%s&&remove_tries=%i" % ( filepath, remove_tries )
         xbmc.executebuiltin( 'XBMC.RunScript(%s,%s)' % ( script, url, ) )
     except:
@@ -84,9 +91,9 @@ def dl_release( heading, url, destination ):
         def _report_hook( count, blocksize, totalsize ):
             _line3_ = ""
             if totalsize > 0:
-                _line3_ += "Size: %.2f / %.2f Mb" % ( ( ( count * blocksize ) / 1024.0 / 1024.0 ), ( totalsize / 1024.0 / 1024.0  ), )
+                _line3_ += __language__( 32009 ) % ( ( ( count * blocksize ) / 1024.0 / 1024.0 ), ( totalsize / 1024.0 / 1024.0  ), )
             else:
-                _line3_ += "Size: %.2f / ?.?? Mb" % ( ( ( count * blocksize ) / 1024.0 / 1024.0 ), )
+                _line3_ += __language__( 32010 ) % ( ( ( count * blocksize ) / 1024.0 / 1024.0 ), )
             percent = int( float( count * blocksize * 100 ) / totalsize )
             strProgressBar = str( percent ) #xbmc.getInfoLabel( "System.Progressbar" )
             if ( percent <= 0 ) or not strProgressBar: strPercent = "0%"
@@ -119,22 +126,22 @@ def get_browse_dialog( default="", heading="", dlg_type=3, shares="files", mask=
 
 
 def select_release():
-    selected = xbmcgui.Dialog().select( "Releases Passion XBMC pour Windows", LIST_SELECT )
+    selected = xbmcgui.Dialog().select( __language__( 32001 ), LIST_SELECT )
     if selected >=0:
         release = RELEASES[ selected ][ 1 ]
         url_release = urljoin( URL_BASE, release )
-        destination = get_browse_dialog( heading="Parcourir pour sauvegarder " + release )
+        destination = get_browse_dialog( heading=__language__( 32002 ) + release )
         if destination and os.path.isdir( destination ):
             destination = os.path.join( destination, release )
             if os.path.isfile( destination ):
-                if not xbmcgui.Dialog().yesno( release, "Voulez-vous télécharger à nouveau cette release?", reduced_path( destination ) ):
+                if not xbmcgui.Dialog().yesno( release, __language__( 32003 ), reduced_path( destination ) ):
                     return launch_install( destination )
-            if xbmcgui.Dialog().yesno( "Confirmer téléchargement du fichier", "Êtes-vous sûr de télécharger ce fichier?", release ):
+            if xbmcgui.Dialog().yesno( __language__( 32004 ), __language__( 32005 ), release ):
                 filepath = dl_release( release, url_release, destination )
                 if filepath and os.path.isfile( filepath ):
-                    xbmcgui.Dialog().ok( "Passion XBMC pour Windows", "Téléchagement terminé avec succès.", reduced_path( destination ) )
+                    xbmcgui.Dialog().ok( __language__( 32006 ), __language__( 32007 ), reduced_path( destination ) )
                     launch_install( filepath )
                 else:
-                    xbmcgui.Dialog().ok( "Passion XBMC pour Windows", "Le fichier n'a pas été téléchargé avec succès!" )
+                    xbmcgui.Dialog().ok( __language__( 32006 ), __language__( 32008 ) )
 
 select_release()

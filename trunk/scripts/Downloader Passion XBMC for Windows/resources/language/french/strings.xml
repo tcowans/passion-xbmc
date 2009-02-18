@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!-- Les strings de 32000 à 32999 sont réservées aux scripts -->
+  <string id="32000">Downloader Passion XBMC pour Windows</string>
+  <string id="32001">Releases Passion XBMC pour Windows</string>
+  <string id="32002">Parcourir pour sauvegarder&#32;</string>
+  <string id="32003">Voulez-vous télécharger à nouveau cette release?</string>
+  <string id="32004">Confirmer téléchargement du fichier</string>
+  <string id="32005">Êtes-vous sûr de télécharger ce fichier?</string>
+  <string id="32006">Passion XBMC pour Windows</string>
+  <string id="32007">Téléchargement terminé avec succès.</string>
+  <string id="32008">Le fichier n'a pas été téléchargé avec succès!</string>
+  <string id="32009">Taille: %.2f / %.2f Mo</string>
+  <string id="32010">Taille: %.2f / ?.?? Mo</string>
+  <string id="32011">%s | %s Mo | %s, %s</string>
+  <string id="32012">Confirmer l'installation</string>
+  <string id="32013">Désirez-vous installer votre nouvelle version?</string>
+  <string id="32014">NB: Fermeture automatique de XBMC.</string>
+</strings>
