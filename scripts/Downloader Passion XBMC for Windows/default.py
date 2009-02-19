@@ -6,7 +6,7 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/Downloader%20Passion%20XBMC%20for%20Windows/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center"
-__date__         = "18-02-2009"
+__date__         = "19-02-2009"
 __version__      = "1.0.0"
 __svn_revision__ = 0
 
@@ -30,8 +30,10 @@ __language__ = xbmc.Language( os.getcwd().rstrip( ";" ) ).getLocalizedString
 
 def launch_install( XBMCSetup ):
     if xbmcgui.Dialog().yesno( __language__( 32012 ), __language__( 32013 ), __language__( 32014 ) ):
-        xbmc.executebuiltin( 'System.Exec("%s")' % ( XBMCSetup ) )
-        xbmc.shutdown()
+        # force shutdownstate to close xbmc and not other state 
+        if ( "OK" in xbmc.executehttpapi( "SetGUISetting(0;system.shutdownstate;0)" ) ):
+            xbmc.executebuiltin( 'System.Exec("%s")' % ( XBMCSetup ) )
+            xbmc.shutdown()
 
 
 def reduced_path( fpath ):
