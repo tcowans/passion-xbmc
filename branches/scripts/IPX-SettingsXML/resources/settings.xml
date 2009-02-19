@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<settings>
+  <!-- GENERAL -->
+  <setting id="rss_feed" value="1" /> <!-- for english "0" is default, settings.py -->
+  <setting id="show_plash" value="false" />
+  <setting id="script_debug" value="false" />
+  <setting id="pardir_not_hidden" value="1" />
+  <setting id="hide_extention" value="true" />
+  <setting id="update_startup" value="true" />
+  <setting id="xbmc_xml_update" value="false" />
+  <setting id="manager_view_mode" value="50" />
+  <setting id="main_view_mode" value="50" />
+
+  <!-- SKINS -->
+  <setting id="skin_colours" value="" />
+  <setting id="skin_colours_path" value="default" />
+  <setting id="thumb_size" value="512" /> <!-- ON XBOX "192" is default, settings.py -->
+
+  <!-- FORUM -->
+  <setting id="web_title" value="" />
+  <setting id="web_navigator" value="" />
+  <setting id="topics_limit" value="5" />
+  <setting id="hide_forum" value="false" />
+  <setting id="win32_exec_wait" value="false" />
+
+  <!-- MISC -->
+  <setting id="updating" value="false" />
+
+  <!-- SERVEUR FTP -->
+  <setting id="host" value="stock.passionxbmc.org" />
+  <setting id="user" value="anonymous" />
+  <setting id="password" value="xxxx" />
+</settings>
