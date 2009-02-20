@@ -1,0 +1,3015 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<installeurContent version="0.1" author="temhil" date="04.12.2008">
+
+	<!-- Template -->
+	<!-- Il y 4 sections, pour les themes, scrapers et script il vous faut creer une entree directement -->
+	<!-- dans la section (cf. exempels ci-dessous) -->
+	<!-- Pour les plugins, c'est la meme chose sauf que les entrees doivent etre crees dans l'une des -->
+	<!-- 4 sous-section plugins (musique / images / programmes / video) -->
+
+	<!--
+	<entry>
+		<fileName></fileName> Nom du fichier ou repertoire sur le serveur (pas de chemin juste le nom)
+		<title></title>   Titre: celui qui sera affiche
+		<date></date> Date de creation si vous l'avez
+		<added></added>   Date de mise a disposition dans l'installer
+		<version></version>   Version
+		<author></author> Auteurs, contributeurs
+		<lang></lang> Langue: 'fr' ou 'en'  ou combinaison 'fr-en' ou 'multi' pour Multilangues
+		<iconURL></iconURL>   Pour plus tard, chemin vers les icones des scripts/plugin (stocke sur le serveur avec les snapshot)
+		<previewPictureURL></previewPictureURL>   Chemin de l'image (snapshot) sur le serveur /.passionxbmc/Installeur-Passion/content/nameimage.ext
+		<previewVideoURL></previewVideoURL>   Pour plus tard, URL video montrant le script, skin ... en action
+		<description_fr></description_fr> Description en Francais, si vous ne mettez rien il sera indiqueee qu'aucune info n'est disponible
+		<description_en></description_en> Description en Anglais, si vous ne mettez rien il sera indiqueee qu'aucune info n'est disponible
+	</entry>
+	-->
+	<!-- FIN Template -->
+
+	<!-- Section Themes -->
+	<skins>
+		<entry>
+			<fileName>Vision2</fileName>
+			<title>Vision 2</title>
+			<version></version>
+			<lang>multi</lang>
+			<author></author>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/Vision2.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>Aeon</fileName>
+			<title>Aeon</title>
+			<version></version>
+			<author></author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/Aeon.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Un projet Ambitieux, différent de tout ce qu'on a pu voir et qui fait école, réservé aux écrans Haute définition. En version Alpha pour le moment, le développement est très long, une première release stable étant prévue pour fin 2008 (j'ai quelques doutes sur cette date)
+Alliant une grande simplicité d'aspect pour l'écran principal à des vues hors normes pour les bibliothèques, Aeon est le genre de thème qui me fait dire qu'on touche à l'art dans la réalisation de l'aspect de Xbmc.
+Les images parlent d'elles mêmes.
+Aeon a aussi une fonction très intéressante, la possibilité d'utiliser la bibliothèque pour un type de vidéo et pas pour un autre, par exemple les films en mode bibliothèque et les Séries TV en mode fichier, cela peut être bien pratique pour des bibliothèques mal organisées. A mon avis cette fonction deviendra commune à tous les thèmes, en tout cas je l'espère.
+L'aspect peu commun peut perturber certains. Heureusement, la personnalisation des profils de Xbmc me permet de l'utiliser chez moi alors que les autres utilisateurs ne s'habituent pas à son ergonomie.
+Sans "Aeon Backpack" Aeon perd une bonne partie de ce qui fait son charme. Les deux sont indissociables.
+Aeon est encore jeune, itsaboy cependant son succès indéniable montre combien il est bien inspiré.
+
+Avis Personnel:
+Je suis en admiration.
+Il est assez probable que j'écrive un article bien plus complet sur Aeon par la suite.</description_fr>
+			<description_en>An ambitous project, designed for HD screens, Aeon is very different from everything we have seen and now is a refrence!</description_en>
+		</entry>
+		<entry>
+			<fileName>Leo</fileName>
+			<title>Leo</title>
+			<version></version>
+			<date></date>
+			<author></author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/Leo.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Le skin pour OSXBMC</description_fr>
+			<description_en>The skin for OSXBMC</description_en>
+		</entry>
+		<entry>
+			<fileName>MediaStream</fileName>
+			<title>MediaStream</title>
+			<version></version>
+			<date></date>
+			<author></author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/Mediastream.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>MediaStream est un themes desormais incontournable, il a été créé autout du concept: "Le média est roi"
+Le support du format 4:3 a été ajouté dans la version 0.90, aussi si vous avez une Tv 4:3 assurez vous d'avoir une version de MediaStream posterieurs a 0.90.</description_fr>
+			<description_en>MediaStream is a skin for the XBMC media center, which means that users of XBMC can download it and use it as an alternative to the default look and feel that comes with the media center. (If you would like to find out more about XBMC please visit xbmc.org). MediaStream has been designed around a central concept that "Media is King", in other words the reason you are using XBMC is to get access to your media and the skin should make that as simple (and as pleasurable) as possible.
+
+WILL IT WORK ON MY 4:3 TV?
+Version 0.90 introduced 4:3 support, so ensure you use a version equal to or later than 0.90 with your 4:3 TV.
+
+HOW DO I INSTALL IT?
+To install on your Xbox please unzip the downloaded Version and just copy the MediaStream folder to the skins folder within XBMC. Then activate via the Appearance settings within XBMC.
+
+WHO CREATED IT?
+MediaStream was created by Team RazorFish.</description_en>
+		</entry>
+		<entry>
+			<fileName>Project Mayhem III</fileName>
+			<title>Project Mayhem III (PMIII)</title>
+			<version></version>
+			<date></date>
+			<author></author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/PMIII.jpg</previewPictureURL>
+			<previewVideoURL>PMIII.jpg</previewVideoURL>
+			<description_fr>Skin vieillissant mais toujours préféré d'un grand nombre d'utilisateurs. (beaucoup ignorent même qu'il existe d'autres Thèmes)
+On peut espérer qu'un jour il subira une refonte complète.
+Ce skin sert souvent de base à ceux qui en développent de nouveaux. C'est en effet le moyen le plus simple de commencer un nouveau skin, en s'appuyant sur celui ci en guise de patron. Réaliser un Skin "From Scratch" demande une grande connaissance dans le domaine.
+
+L'ergonomie est bien pensée car la simplicité est de mise. De plus la consommation mémoire est optimisée.
+Ce skin est toujours à la pointe des dernières avancées de Xbmc.
+
+Note: PMIII n'est pas disponible en téléchargement ici, seuls des mods pour PMIII sont disponibles</description_fr>
+			<description_en>PMIII is not available here, only PMIII mods are available for download</description_en>
+		</entry>
+		<entry>
+			<fileName>7TFT</fileName>
+			<title>7TFT</title>
+			<version></version>
+			<date></date>
+			<author></author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/SevenTft.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>7TFT est un Theme cree pour les petit ecran TFT (voiture, Xbox, écrans portables ...).
+Il fonctionne aussi avec les résolutions 1080i !
+
+Commentaire:
+Skin idéal pour un Car Media Center avec Xbmc comme celui que j'ai dans mes cartons.
+L'apparence est particulière mais extrêmement bien pensée. L'OSD est une réussite magnifique.</description_fr>
+			<description_en>7TFT is an special XBMC skin for mini TFT´s (Car, xbox additive LCD´s - or portable screens)
+It works with 1080i reselution also ! :) Special features of the skin are the big headlines/fonts and the 4 corners control. Each menu has its own color, (Music -> green, Vodeo -> Blue, Picture -> yellow, Programms -> Pink)</description_en>
+		</entry>
+		<entry>
+			<fileName>CINEMA</fileName>
+			<title>Cinema</title>
+			<date></date>
+			<version></version>
+			<author></author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/Cinema.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Seulement pour 16:9[cr]Concept et skin intéréssant. A tester.[CR]Particularité: Existe en version MacOSX</description_fr>
+			<description_en>Only for 16:9[cr]Note: A version exists for MacOSX</description_en>
+		</entry>
+		<entry>
+			<fileName>Focus</fileName>
+			<title>Focus</title>
+			<date></date>
+			<version></version>
+			<author></author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/Focus.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Skin fort sympathique dont le développement devrait connaître des avancées très rapidement.
+A éssayer. Simple et assez beau.</description_fr>
+			<description_en>Focus an XBMC Media Center skin developed to be easy to use by providing a clean interface for xbmc mediacenter where form and function are balanced as efficiently as possible, and by putting your media first and at the center of your mediacenter experience</description_en>
+		</entry>
+		<entry>
+			<fileName>The Orbs</fileName>
+			<title>The Orbs</title>
+			<date></date>
+			<author></author>
+			<version></version>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/TheOrbs.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Un ancien Skin qui a quelque chance de ressusciter</description_fr>
+			<description_en>An old skins which could come back</description_en>
+		</entry>
+		<entry>
+			<fileName>Back-Row</fileName>
+			<title>Back-Row</title>
+			<date></date>
+			<author></author>
+			<version></version>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/Back-Row.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Anciennement Front-Row, Back-Row est un Thème qui propose un grand nombre d'options, des modes de vues complètement inédits. Il est original, sympathique, drôle, customisable, perturbant, surprenant et j'en passe.</description_fr>
+			<description_en>Previosyly Front-Row, Back-Row is a skin with plenty of options, mod totally new. A must!</description_en>
+		</entry>
+		<entry>
+			<fileName>Vinci</fileName>
+			<title>Vinci</title>
+			<date></date>
+			<author></author>
+			<version></version>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/Vinci.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>Lela</fileName>
+			<title>LeLa</title>
+			<version></version>
+			<date></date>
+			<author>djtoll</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/Lela.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>LeLa est un theme cree pour les ecrans de petites tailles (avec des polices plus grosses) comme 7TFT (du meme createur djtoll)</description_fr>
+			<description_en>LeLa is a skin for small screen (with big Fonts) like 7TFT (from same author djtoll)</description_en>
+		</entry>
+		<entry>
+			<fileName>Horizonz - An Aeon Mod vol4</fileName>
+			<title>Skin Horizonz (Aeon) - Volume IV</title>
+			<version></version>
+			<date>03-02-09</date>
+			<added>03-02-09</added>
+			<author></author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/HorizonzVol4.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>La nouvelle version du skin Horizonz</description_fr>
+			<description_en>The new release of Horizonz skin</description_en>
+		</entry>
+		<entry>
+			 <fileName>xTV</fileName>
+			 <title>xTV</title>
+			 <version></version>
+			 <date></date>
+			 <added></added>
+			 <author></author>
+			 <lang>multi</lang>
+			 <iconURL></iconURL>
+			 <previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/xTV.jpg</previewPictureURL>
+			 <previewVideoURL></previewVideoURL>
+			 <description_fr>Un theme pour les amoureux de Mac</description_fr>
+			 <description_en>A skin for Mac lovers</description_en>
+		</entry>
+		<entry>
+			<fileName>Amped</fileName>
+			<title>Amped</title>
+			<version></version>
+			<date></date>
+			<added></added>
+			<author></author>
+			<lang></lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/Amped.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>Basics-101_Media_Center</fileName>
+			<title>Basics-101 Media Center</title>
+			<version></version>
+			<date></date>
+			<added></added>
+			<author></author>
+			<lang></lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/basics-101.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>Basics-101_xbox</fileName>
+			<title>Basics-101 XBOX</title>
+			<version></version>
+			<date></date>
+			<added></added>
+			<author></author>
+			<lang></lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/basics-101.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>Clearity</fileName>
+			<title>Clearity</title>
+			<version></version>
+			<date></date>
+			<added></added>
+			<author></author>
+			<lang></lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/clearity.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>Containment</fileName>
+			<title>Containment</title>
+			<version></version>
+			<date></date>
+			<added></added>
+			<author></author>
+			<lang></lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/containment.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>MC360</fileName>
+			<title>MC360</title>
+			<version></version>
+			<date></date>
+			<added></added>
+			<author></author>
+			<lang></lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/mc360.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>PDM</fileName>
+			<title>PDM</title>
+			<version></version>
+			<date></date>
+			<added></added>
+			<author></author>
+			<lang></lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/pdm.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>Project Mayhem I</fileName>
+			<title>Project Mayhem I</title>
+			<version></version>
+			<date></date>
+			<added></added>
+			<author></author>
+			<lang></lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/PMI.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>Project Mayhem II</fileName>
+			<title>Project Mayhem II</title>
+			<version></version>
+			<date></date>
+			<added></added>
+			<author></author>
+			<lang></lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/PMII.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>Vision</fileName>
+			<title>Vision</title>
+			<version></version>
+			<date></date>
+			<added></added>
+			<author></author>
+			<lang></lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/vision.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>Xbox-Classic</fileName>
+			<title>Xbox-Classic</title>
+			<version></version>
+			<date></date>
+			<added></added>
+			<author></author>
+			<lang></lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/xbox-classic.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>Basics-Vision</fileName>
+			<title>Basic-Vision</title>
+			<version></version>
+			<date></date>
+			<added></added>
+			<author></author>
+			<lang></lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/Basics-Vision.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>MARK-III</fileName>
+			<title>MARK-III</title>
+			<version></version>
+			<date></date>
+			<added></added>
+			<author></author>
+			<lang></lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/MarkIII.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>Water House</fileName>
+			<title>Water House</title>
+			<version></version>
+			<date></date>
+			<added></added>
+			<author></author>
+			<lang></lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/WaterHouse.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>X</fileName>
+			<title>X</title>
+			<version></version>
+			<date></date>
+			<added></added>
+			<author></author>
+			<lang></lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/X.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName></fileName>
+			<title></title>
+			<version></version>
+			<date></date>
+			<added></added>
+			<author></author>
+			<lang></lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+	</skins>
+	<!-- FIN Section Themes -->
+
+	<!-- Section Scrapers -->
+	<scrapers></scrapers>
+	<!-- Fin Section Scrapers -->
+
+	<!-- Section Scripts -->
+	<scripts>
+		<entry>
+			<fileName>Yahtzee_xbmc-game_19-11-08.zip</fileName>
+			<title>Yahtzee (Yam's)</title>
+			<version>1.0.0</version>
+			<date>19-11-08</date>
+			<added>19-11-08</added>
+			<author>Frost</author>
+			<lang>fr-en</lang>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Yahtzee.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Contrôleur D-Pad
+Boutons | Actions
+BACK    | Sortir du jeu
+Y       | Voir les pointages
+X       | Commencer une nouvelle partie
+BLANC   | Permet de passer de la liste de points et revenir sur les dés et vis versa</description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>TAC.TV_v2.0.zip</fileName>
+			<title>TAC.TV</title>
+			<version>2.0</version>
+			<date>26-12-08</date>
+			<author>Temhil</author>
+			<lang>fr-en</lang>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/TAC.TV.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Ce script permet de visionner les vidéos sur le site www.tetesaclaques.tv que je vous le recommande fortement. Attention rires en vue!
+On y découvre chaque semaine un nouveau clip de quelques minutes qui vaut vraiment le détour.
+Si vous aimez les Têtes à claques, merci d'encourager leur createurs
+en visitant leur site web www.tetesaclaques.tv et/ou en achetant le DVD(s)</description_fr>
+			<description_en>This script allows to watch videos on www.tac.tv website which I highly recommend.
+Each week a new short video is added. Watch out! Laughing too much can cause belly pain!
+If you like and enjoy TAC.tv, please support their creators by visiting their website www.tac.tv and/or buying their DVD(s)</description_en>
+		</entry>
+		<entry>
+			<fileName>Blog-Alain-Carraze_v1.1.zip</fileName>
+			<title>Le Blog d'Alain Carraze</title>
+			<version>1.1</version>
+			<lang>fr</lang>
+			<date>24-11-08</date>
+			<added>24-11-08</added>
+			<author>Temhil</author>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/BlogAC.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Ce script vous permet de vous connecter sur le Blog d'Alain Carrazé (http://alaincarraze.blog.canal-plus.com) et de visionner les videos du blog ainsi que d'en lire leur description.
+
+Depuis ses débuts en 1979 en tant que collaborateur de 'Temps X', l'émission de science-fiction, Alain CARRAZE à partagé ses passions pour le cinéma fantastique, les comics et surtout les séries TV à travers des émissions comme 'Fantasy' ( dans le cadre des 'Enfants du Rock' ) et principalement la cultissime 'Destination Séries', sur Canal Jimmy de 1992 à 2000 (pres de 225 éditions) , avec aussi des émissions spéciales comme le 'Marathon Friends', 'La Fête à Jerry Seinfeld', les Emmy Awards ou la 'Nuit Star Trek'.
+A travers des magazines, aussi, comme 'Esode, le magazine de la culture séries', des hors-séries pour Mad Movies ou 'Episodik'. A travers des livres, enfin, avec des ouvrages comme 'Le Prisonnier, chef d'oeuvre télévisionnaire', ou sur 'Chapeau Melon et Bottes de Cuir ', 'Mission: Impossible', 'Les Grandes Séries' et, récemment, la mini-encyclopedie 'Les séries télé' dans la collection 'Toute les Clés '.
+Il travaille sur des bonus de DVD ('Amicalement Vôtre', 'Le Prisonnier', 'Twin Peaks'), chronique aussi les séries à la radio et dans un grand quinzomadaire de programmes télé... et maintenant en exclusivité sur Canalplus.fr !</description_fr>
+			<description_en>This script allow to connect on Canal+ (French private network) blog: "Le blog d'Alain Carraze" - http://alaincarraze.blog.canal-plus.com - and watch videos of this blog and see description of it.
+FYI Alain Carraze is a french expert about TV show of which he is talking about in his blog.
+The interface as well all the videos on the blog are only in French.</description_en>
+		</entry>
+		<entry>
+			<fileName>XBMC_Cache-Clear.rar</fileName>
+			<title>My Wipecache (XBMC Cache Clear)</title>
+			<version></version>
+			<date></date>
+			<author></author>
+			<lang></lang>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Ce script aussi connue sous le nom 'XBMC Cache Clear' permet de nettoyer le cache de XBMC (E:\\Cache\\ et Q:\\UserData\\cache\\).
+Tres utile s'il est plein, car sans ce script vous devrez le faire manuellement.
+Par exemple, un cache plein peut se traduire par l'impossibilité de lire de sous-titre</description_fr>
+			<description_en>This script alos know as 'XBMC Cache Clear' allow to wipe the cache on XBMC (E:\\Cache\\ and Q:\\UserData\\cache\\).
+Very useful!</description_en>
+		</entry>
+		<entry>
+			<fileName>GamekultVideo_Beta1.zip</fileName>
+			<title>Gamekult Video</title>
+			<version>Beta1</version>
+			<date>24-04-08</date>
+			<author>Temhil</author>
+			<lang>fr</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/GamekultVideo.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>GamekultVideo permet de visionner les vidéos de Gamekult, l'émission disponibles sur le site Gamekult video</description_fr>
+			<description_en>GamekultVideo allows to watch Gamekult videos show (French)</description_en>
+		</entry>
+		<entry>
+			<fileName>NABBOX_v1.1.zip</fileName>
+			<title>NABBOX</title>
+			<version>1.1</version>
+			<date>15-10-2008</date>
+			<author>Alexsolex / Temhil</author>
+			<lang>fr</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/NABBOX.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Ce script vous permet de vous connecter via un compte(gratuit) sur le forum www.nabbox.com qui met en ligne des captures TV de vidéos en tout genre (émissions TV francaises pour la plupart).
+Le script NABBOX vous permet de naviguer sur le forum et met a disposition les liens des vidéos que vous pourrez voir et/ou télécharger via XBMC.
+N'oubliez pas d'aller régulièrement sur www.nabbox.com et de remercier les Capseurs pour leur formidable travail.</description_fr>
+			<description_en>This script allow to connect and browse French forum www.nabbox.com which provides TVRip of a lot of french shows.
+You can play videos directly from the script or you can download them using it. Since www.nabbox.com is a french forum, and video stored on it are mostly in french, this script is currently only provided in french. Enjoy!</description_en>
+		</entry>
+		<entry>
+			<fileName>MediaStream_v0.91.zip</fileName>
+			<title>MediaStream</title>
+			<version>0.91</version>
+			<date>17-01-09</date>
+			<author>Oliv</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/MediaStreamScript.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Voila un script crée par Oliv qui permet de lire des émissions télé et radio, principalement suisse et française, mais il est possible de rajouter n'importe quelles autres sources disponible sur le net (la base du script permet de déduire les adresses selon un template d'adresse et une date par exemple).
+Il permet aussi d'accéder au contenu de podcasts rss mais effectue le download du fichier sur le disque de la Xbox, car la plupart des serveurs de podcast ne supporte pas le streaming...
+Et encore plus intéressant vous pouvez ajouter vous meme tres facilement de nouveaux streams et podcasts</description_fr>
+			<description_en>This script allows to watch plenty of video streams form all over the world but also podcast.
+More importantly you can add very easaly streams and podcasts yourself in the configuration file</description_en>
+		</entry>
+		<entry>
+			<fileName>MyCine-Unofficial.zip</fileName>
+			<title>MyCiné (Non Officiel)</title>
+			<version>Unofficial</version>
+			<date>22-10-2008</date>
+			<author></author>
+			<lang>fr</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/MyCine.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Ce script (basé sur MyCiné v8.6.8) n'est pas la version officielle de MyCiné qui est toujours maintenue, toutefois du aux derniers changements de XBMC, MyCiné ne fonctionnait plus et en attendant la release officielle de MyCiné, Seb a gentillement reparé et modifié MyCiné 8.6.8 et vous met a disposition cette version NON OFFICIELLE.
+
+Attention cette version ne supporte pas les mises a jour MyCiné aussi il vous faudra reinstaller MyCiné avec le version offcielle lorsqu'elle sortira.
+
+A propos de MyCiné:
+MyCiné vous donne accès aux informations de films, personnalités, bandes annonces, salles de cinéma , disponibles sur le site internet de Allocine.fr.
+Il s'agit d'un des script les plus beaux et abouti du moment.</description_fr>
+			<description_en>MyCine is a multimedia script which give you acces to the content of the french website Allocine.fr. You can see documentary, trailers, schedule ...
+Content is only in French.</description_en>
+		</entry>
+		<entry>
+			<fileName>YouTube3_15-02-09.zip</fileName>
+			<title>YouTube3</title>
+			<version>3</version>
+			<date>15-02-09</date>
+			<added>16-02-09</added>
+			<author>Boris Sitske</author>
+			<lang>en</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/YouTube3.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>YouTube 3 est une nouvelle version du script YouTube complètement mise a jour par Boris Sitske autant sur le fond que sur la forme.
+Cette version est beaucoup plus aboutie et belle que ses précédentes:
+- ajout de miniature des vidéos,
+- amélioration des fonctions de recherche et navigation ...</description_fr>
+			<description_en>YouTube 3 is a new version of YouTube script totally updated by Boris Sitske.
+This new version offers a nicer GUI with pictures and a faster search.</description_en>
+		</entry>
+		<entry>
+			<fileName>FreeboxTV_04-12-08.zip</fileName>
+			<title>FreeboxTV</title>
+			<version>04-12-08</version>
+			<date>04-12-08</date>
+			<author>vinz973</author>
+			<lang>fr</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/FreeboxTv.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>FreeboxTv script pour le multiposte de free:
+Le script FreeboxTV sert d'interface pour la télévision par multiposte du fournisseur d'accès a internet Free, avec une partie programme tv basé sur le script tvguide0.4 qui récupère le programmetv au format xmltv
+
+FONCTION
+-   lecture de la chaine free multiposte directement avec le DVDplayer de xbmc (pour les versions de xbmc supportant le rtsp ( les TECH de fin décembre et début janvier 2008)
+-   lecture des chaines free  multiposte par proxy (d’Alexsolex script F2XTV)
+-   programme tv des émissions en cours sur la liste des chaines
+-   grille de programme tv
+-   15 meilleures audiences des chaines de free
+-   Accès au disque dur du boitier freebox hd (si adresse ftp://freebox@hd1.freebox.fr/)
+-   Intégration de la lecture TNT par Telnet sur serveur linux</description_fr>
+			<description_en>FreeboxTv is a script for watching TV channel available on the FreeBox  (Free is a french ISP cie) </description_en>
+		</entry>
+		<entry>
+			<fileName>Alex Jones_v1.1.zip</fileName>
+			<title>Alex Jones</title>
+			<version>1.1</version>
+			<date></date>
+			<author>Joefred69</author>
+			<lang>en</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Alex_Jones.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Permet de visionner les videos du Podcast d'Alex Jones (anglais)</description_fr>
+			<description_en>Play the Alex Jones Podcast www.infowars.com to see what is really happening in the world</description_en>
+		</entry>
+		<entry>
+			<fileName>Apple_Movie_Trailers_29-01-09.zip</fileName>
+			<title>Apple Movie Trailers</title>
+			<version>pre-0.99.7.1</version>
+			<date>29-01-09</date>
+			<added>16-02-09</added>
+			<author>Apple Movie Trailers (AMT) Team</author>
+			<lang>en</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/AMT.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Un des scripts les plus celebres de XBMC. Il vous permet de visionner les Bandes Annonces de films disponibles sur http://www.apple.com/trailers/</description_fr>
+			<description_en>One of the most famous scripts on XBMC. Plays trailers from the website http://www.apple.com/trailers/</description_en>
+		</entry>
+		<entry>
+			<fileName>Calculator_Alpha2_19-11-08.zip</fileName>
+			<title>Calculator</title>
+			<version>Alpha2</version>
+			<date>19-11-08</date>
+			<author>Frost</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Calculator.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Une calculatrice très pratique pour XBMC</description_fr>
+			<description_en>A very convenient calculator for XBMC</description_en>
+		</entry>
+		<entry>
+			<fileName>CDANSLAIR_2.0.4_12-10-08.zip</fileName>
+			<title>C dans l'air</title>
+			<version>2.0.4</version>
+			<date>12-10-08</date>
+			<author>Wifigolio</author>
+			<lang>fr</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Permet de voir les videos de l'emission "C dans l'air" sur France 5</description_fr>
+			<description_en>Play videos of "C dans l'air", a show on French televison France 5</description_en>
+		</entry>
+		<entry>
+			<fileName>Ce-Soir-Ou-Jamais_v1.0_30-07-08.zip</fileName>
+			<title>Ce Soir Ou Jamais</title>
+			<version>1.0</version>
+			<date>30-07-08</date>
+			<author>John Boycott</author>
+			<lang>fr</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Flux recents et archives de l'emission "Ce soir ou jamais" de France 3, pour XBMC</description_fr>
+			<description_en>Plays videos of "Ce soir ou jamais" show on French televison France 3</description_en>
+		</entry>
+		<entry>
+			<fileName>CNETTV_04-09-08.zip</fileName>
+			<title>CNET TV</title>
+			<version>04-09-08</version>
+			<date>04-09-08</date>
+			<author></author>
+			<lang>en</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Script python pour visionner les vidéos de CNET TV (anglais)</description_fr>
+			<description_en>Python script to play the last X videos from CNET TV</description_en>
+		</entry>
+		<entry>
+			<fileName>Display Adjust_v1.0.zip</fileName>
+			<title>Display Adjust</title>
+			<version>1.0</version>
+			<date>29-03-06</date>
+			<author>Affini aka Aaron</author>
+			<lang>en</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Display_Adjust.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Vous permet de regler les parametres de votre ecran</description_fr>
+			<description_en>Displays screens to assist in adjusting your Monitor or Television</description_en>
+		</entry>
+		<entry>
+			<fileName>Football_v1.5.1.zip</fileName>
+			<title>Football</title>
+			<version>1.5.1</version>
+			<date></date>
+			<author>BigBellyBilly</author>
+			<lang>en</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Football!!! Ce script est une version reparée par nos soins pour Atlantis</description_fr>
+			<description_en>Soccer!!! This script is a fixed version we did for Atlantis compatibility</description_en>
+		</entry>
+		<entry>
+			<fileName>Football_v1.6.zip</fileName>
+			<title>Football</title>
+			<version>1.6</version>
+			<date>25-11-2008</date>
+			<author>BigBellyBilly</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Football!!! Ce script est une mise a jour officielle avec une interface remaniée
+
+A script to display a wealth of UK Football related information. Powered by BBC Sport.
+
+Written By BigBellyBilly
+bigbellybilly AT gmail DOT com - bugs, comments, ideas, help ...
+
+THANKS:
+To everyone who's ever helped in anyway, or if I've used code from your own scripts, MUCH APPRECIATED!
+
+CHANGELOG: see changelog.txt or view throu Settings Menu
+README: see ..\resources\language\language\readme.txt or view throu Settings Menu
+
+Additional support may be found on xboxmediacenter forum.</description_fr>
+			<description_en>Soccer!!! This script is an official update with an interface renewed
+A script to display a wealth of UK Football related information. Powered by BBC Sport.
+
+Written By BigBellyBilly
+bigbellybilly AT gmail DOT com - bugs, comments, ideas, help ...
+
+THANKS:
+To everyone who's ever helped in anyway, or if I've used code from your own scripts, MUCH APPRECIATED!
+
+CHANGELOG: see changelog.txt or view throu Settings Menu
+README: see ..\resources\language\language\readme.txt or view throu Settings Menu
+
+Additional support may be found on xboxmediacenter forum.</description_en>
+		</entry>
+		<entry>
+			<fileName>GTReviews_v1.1.zip</fileName>
+			<title>GTReviews</title>
+			<version>1.1</version>
+			<date></date>
+			<author></author>
+			<lang>en</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/GTReviews_script.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Ce script permet de voir les video de gametrailers.com. Cette version a été réparé par Dan Dar3.
+Attention il ne s'agit pas du plugin GameTrailersHD (pour Boxee) qui lui se connecte bien au même site web mais permet d'en voir le contenu HD.</description_fr>
+			<description_en>Play video from gametrailers.com. This release has been fixed by Dan Dar3.
+Note: This script is not the GameTrailersHD trailer (for Boxee) which provides HD content of  gametrailers.com</description_en>
+		</entry>
+		<entry>
+			<fileName>InstallerPassionXBMC_Christmas-08.zip</fileName>
+			<title>Installer Passion-XBMC</title>
+			<version>Beta-Christmas-08</version>
+			<date>24-12-2008</date>
+			<author>Team Passion-XBMC</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Installer_Passion-XBMC.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Ce script permet d'installer directement depuis XBMC lds thèmes, scripts, plugins et scrapers disponibles sur le serveur FTP de Passion-XBMC maintenu par la Team Passion-XBMC.
+Vous pouvez désormais en appuyant sur Info (ou touche 'i' du clavier) voir la description de chaque élément.
+Autre nouveauté, une section forum est disponible dans le script vous permettant de lire les dernies messages postés sur le Forum!!!
+
+Note: Ce script est toujours en développement et cette version a un bug sur Platforme MAC OSX faisant planter XBMC. Si vous utilisez XBMC sur MAC, merci de bien vouloir utiliser la version Beta4 le temps que nous réglions ce probleme. Merci.</description_fr>
+			<description_en>This script allows direct install of skins, scripts, plugins and scrapers available on Passion-XBMC FTP server maintained by our team.
+You can now display information about the item using Info button (or 'i' on the keyboard).
+Another new functionality: a forum section is available allowing to read last post from the forum, unfortunately the forum being mostly French (even thus the UI will be in English), messages will be in French.
+
+Note: This script is still in development and this version has a bug on MAC OSX platform which makes XBMC crash. If you are using XBMC on MAC please use Beta4 release until we fix this issue. Thank you.</description_en>
+		</entry>
+		<entry>
+			<fileName>Navi-X_v2.5.zip</fileName>
+			<title>Navi-X (All Platforms)</title>
+			<version>2.5</version>
+			<date>24-01-09</date>
+			<added>03-02-09</added>
+			<author>rodejo</author>
+			<lang>en</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Navi-X.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Navi-X est un navigateur de medias vous permettant de jouer des fichiers videos, audios, voir des images ou des fichiers textes.
+On peut comparer Navi-X a un navigateur Web excepté qu'il utilise des playlist au lieu de pages HTML. Comme pour lesp ages Web, une playlist peut-etre située n'importe ou sur le Web ou bien tout simplement localement sur votre Xbox.
+
+Avec Navi-X i lest facile pour tous de creer des playlist sans avoir a s'y connaitre en prommation Pyhton. Les fichiers PLX (playlists) sont de simpels fichiers textes pouvant etre édités avec tout bon editeur de texte tel que notepad 9for ci-dessous pour le format).
+Comme pour les pages HTML, les playlists peuvent aussi contenir des liens vers d'autres playlists.
+
+Vous pouvez avec Navi-X gerer et partager avec d'autres vos propres playlists. Par exemple un utilisateur peut créer une playlist et l'uploader sur un serveur Web. Ainsi tout changement fait dans cette playlist sera visible de tous immédiatement.
+
+La page web de Navi-X se trouve a http://www.navi-x.org</description_fr>
+			<description_en>XBMC script Navi-X is a media browser which allows you to browse and play video files, audio files, show images and shows text files.
+
+Navi-X can be compared with a web browser but it uses PLX playlists files instead of HTML files. Like web pages PLX-files can be located anywhere on the internet but they can also be located locally on your Xbox.
+
+Navi-X allows people to create their own playlists without having to know how to develop a Python script. PLX Playlist are simple text files and can be edited with any text editor like notepad (see below for the formatting).
+Playlist can also link to other playlist which is similar to HTML files.
+
+Navi-X allows people to share and manage their own playlists. For example a user can develop a playlist and upload it to a HTTP server. Many people already have a personal website. Just upload the playlist to your website and share the link with others. Changes made to your playlists will be visible to others immediately.
+
+The Navi-X homepage can be found at http://www.navi-x.org</description_en>
+		</entry>
+		<entry>
+			<fileName>OrangeWebTv_09-06-08.zip</fileName>
+			<title>OrangeWebTv</title>
+			<version>09-06-08</version>
+			<date>09-06-08</date>
+			<author>JJL</author>
+			<lang>fr</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/OrangeWebTv.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Ce script permet de regarder la tv par le web d'Orange sur votre Xbox.
+Il faut que vous soyez abonnés Orange et éligible à ce service (c'est à dire non éligible à la tv par adsl). Pour vérifier les conditions allez sur : webtv.guidetv.orange.fr</description_fr>
+			<description_en>This script allows to watch Orange Web Tv (only for subcribers)</description_en>
+		</entry>
+		<entry>
+			<fileName>MeteoFrance2.rar</fileName>
+			<title>MeteoFrance2</title>
+			<version>02-05-08</version>
+			<date>02-05-08</date>
+			<author>JJL</author>
+			<lang>fr</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/MeteoFrance2.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Ce script permet d'afficher les cartes météos présentes sur le site de France 2.
+
+Fonctionalités :
+permet de voir la météo jusqu'à 3 jours
+affiche par défaut la météo de la france entière
+possibilité de voir la météo d'une région particulière
+possibilité de choisir quelle région doit être affichée par défaut</description_fr>
+			<description_en>France 2 Weather channel</description_en>
+		</entry>
+		<entry>
+			<fileName>Internet Test_28-10-08.zip</fileName>
+			<title>Internet Test</title>
+			<version>28-10-08</version>
+			<date>28-10-08</date>
+			<author>Jean-Philippe Langlois</author>
+			<lang>fr</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Voici un script qui n'en est pas un. Je m'explique. Internet test n'apporte rien de plus à xbmc. A quoi sert il allez vous me dire?
+En fait, il effectue quelques tests qui permettront de voir si xbmc a tous les droits et si tout est bien configuré pour accéder à internet.
+En effet, il arrive que le script de méteo fonctionne mais pas les autres. Avec internet test vous pourrez savoir si xbmc à l'accès total au net et revoir votre configuration en fonction.
+Ca peut être utile pour voir si effectivement vos scripts ont accès au net.</description_fr>
+			<description_en>This script will check for you if you Internet conenction works.
+Even thus the Ui is in French, you will see only too linbes displayed and if each of them has the keyword 'reussi', you are connected!</description_en>
+		</entry>
+		<entry>
+			<fileName>Notepad_29-08-04.rar</fileName>
+			<title>Notepad</title>
+			<version>29-08-04</version>
+			<date>29-08-04</date>
+			<author>Alexpoet</author>
+			<lang>en</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Notepad.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Editeur de fichiers. Ne se charge pas en plein écran si on utilise la Haute définition mais reste fonctionnel.</description_fr>
+			<description_en>This script is designed to allow you to edit simple text files on your XBox, without the hassle of an FTP transfer.
+I have made no improvements to the in-game keyboard, nor have I built in any support for USB keyboards (for all I know, they might work automatically--I don't have one, so I can't test).
+The XBox is NOT a particularly pleasant environment for editing text, so I don't recommend this script for writing the Great American Novel.
+
+However, it will be an excellent resource for changing config file settings, or making small adjustments to Python scripts during development (tweaking the exact location of that ControlButton, or changing the timeDelay from 10 to 20, for instance).
+
+Note: this version is compatible on all XBMC platforms even this it doesn't load in full screen in HD</description_en>
+		</entry>
+		<entry>
+			<fileName>Microsoft_Channel_9_Videos_v1.5.zip</fileName>
+			<title>Microsoft Channel 9 Videos</title>
+			<version>1.5</version>
+			<date></date>
+			<author>Dan Dar3</author>
+			<lang>en</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/microsoft_channel9_videos.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Ce script fait par Dan Dar3 vous permet de voir les vidés du site http://channel9.msdn.com/Media/Videos/</description_fr>
+			<description_en>This script made by Dan Dar3 allows you to view the Microsoft Channel 9 Videos from http://channel9.msdn.com/Media/Videos/ on your XBOX (or PC/Mac).</description_en>
+		</entry>
+		<entry>
+			<fileName>Xelicio.us_v0.8.zip</fileName>
+			<title>Xelicious</title>
+			<version>0.8</version>
+			<date>04-08-08</date>
+			<author>gangsta75</author>
+			<lang>en</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Xelicio.us.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Reagardez les videos sur Xel.icio.us</description_fr>
+			<description_en>Navigate through video and audio feeds from Xel.icio.us</description_en>
+		</entry>
+		<entry>
+			<fileName>XBMC-France2_v1.0.zip</fileName>
+			<title>XBMC France2</title>
+			<version>1.0</version>
+			<date>21-10-08</date>
+			<author>Erwan Loisant</author>
+			<lang>fr</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/XBMC-France2.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Un script fait par Erwan Loisant qui vous permet de visionner le Journal Televisé de France 2</description_fr>
+			<description_en>A script done Erwan Loisant allowing to watch France 2 TV News</description_en>
+		</entry>
+		<entry>
+			<fileName>TrafficInfoIDF_28-10-08.zip</fileName>
+			<title>Traffic Info IDF</title>
+			<version>28-10-08</version>
+			<date>28-10-08</date>
+			<author>vinz973</author>
+			<lang>fr</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/TrafficInfoIDF.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Regarder l'info Traffic en temps réel en Ile de France</description_fr>
+			<description_en>Watch Info Traffic in real time in Paris Area</description_en>
+		</entry>
+		<entry>
+			<fileName>RFO Journal_20-08-08.zip</fileName>
+			<title>RFO Journal</title>
+			<version>20-08-08</version>
+			<date>20-08-08</date>
+			<author>vinz973</author>
+			<lang>fr</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/RFO Journal.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Les journaux télévisés de RFO</description_fr>
+			<description_en>RFO TV News (France DOM/TOM TV Channel)</description_en>
+		</entry>
+		<entry>
+			<fileName>XBMCScripts_v1.7.zip</fileName>
+			<title>XBMCScripts</title>
+			<version>1.7</version>
+			<date></date>
+			<author></author>
+			<lang>en</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/XBMCScripts.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Ce script désormais une référence dans le monde d'XBMC permet d'installer les script presents sur le serveur de www.xbmcscripts.com</description_fr>
+			<description_en>This famous script is XBMC world allows you to install scripts from www.xbmcscripts.com</description_en>
+		</entry>
+		<entry>
+			<fileName>Revision3_v0.1.9c.zip</fileName>
+			<title>Revision3</title>
+			<version>0.1.9c</version>
+			<date></date>
+			<author></author>
+			<lang>en</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Revision3.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Ce script perme tde regarder les vidéos sur http://revision3.com (Television Internet)
+Cette version n'est pas la version offcielle, nous avons la version 0.1.9 afin de la rendre compatible avec Atlantis</description_fr>
+			<description_en>This script allow to watch the videos from http://revision3.com (Internet Television)
+This version is not the official one, we fixed the version 0.1.9 in order to run on Atlantis.</description_en>
+		</entry>
+		<entry>
+			<fileName>Infinity_TV_Dom_Rep_Channel_Update.rar</fileName>
+			<title>Infinity TV</title>
+			<version>18-12-08</version>
+			<date>18-12-08</date>
+			<author></author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Updated by f8lcoder:
+PROD InfinityTV Script Last Updated 12/18/08 Originally Developed by Infinity then bastardised by me to include approx 1500 channels filtered by country.
+
+Note: The UI, and more especially the command have been design for XBOX with a pad (difficult to use it with a remote)  </description_fr>
+			<description_en>Updated by f8lcoder:
+PROD InfinityTV Script Last Updated 12/18/08 Originally Developed by Infinity then bastardised by me to include approx 1500 channels filtered by country.
+
+Note: The UI, and more especially the command have been design for XBOX with a pad (difficult to use it with a remote)</description_en>
+		</entry>
+		<entry>
+			<fileName>RunXM_Install_v0.17.zip</fileName>
+			<title>RunXM - New Install</title>
+			<version>0.17</version>
+			<date>11-01-09</date>
+			<author>calvin8714</author>
+			<lang>en</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>Extract the contents of either file to the XBMC/scripts folder of your XBMC installation, then run it to begin using this.
+In a new installation, you'll be prompted for a username and password, the upgrade installation will not overwrite your current login information.
+
+Current features of RunXM:
+* Ability to create and edit the XM Radio Online username and password through the RunXM interface.
+* Listen to all Sirius/XM Radio stations available through their online streaming application through XBMC.
+* "About" window shows the running version of RunXM, and the last edited dates of XM Radio stations database and the RunXM script.
+* "Now Playing" window shows artist, song, CD title, CD image, and artist biography (when available).
+
+Features planned for RunXM:
+* Check for an update through the interface.
+
+Note: this version is for new Install only (it will overwrite your settings if you try to install it on an old one)
+
+TIPS:
+- Set your "Unknown type Cache - Internet" cache to 0 or 256k.
+- When you first start playing a station, it will play for about 15
+seconds, then freeze for about 15.  Once it starts playing again
+it'll be fine for however long you keep playing it.  I haven't
+found any settings to stop this from happening.
+
+OPEN ISSUES:
+
+- There are a few open issues around unescaping some of the song
+info
+- The Song Info from XM is not always perfect.</description_en>
+		</entry>
+		<entry>
+			<fileName>RunXM_Upgrade_v0.17.zip</fileName>
+			<title>RunXM - Upgrade</title>
+			<version>0.17</version>
+			<date>11-01-09</date>
+			<author>calvin8714</author>
+			<lang>en</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>Extract the contents of either file to the XBMC/scripts folder of your XBMC installation, then run it to begin using this.
+In a new installation, you'll be prompted for a username and password, the upgrade installation will not overwrite your current login information.
+
+Current features of RunXM:
+* Ability to create and edit the XM Radio Online username and password through the RunXM interface.
+* Listen to all Sirius/XM Radio stations available through their online streaming application through XBMC.
+* "About" window shows the running version of RunXM, and the last edited dates of XM Radio stations database and the RunXM script.
+* "Now Playing" window shows artist, song, CD title, CD image, and artist biography (when available).
+
+Features planned for RunXM:
+* Check for an update through the interface.
+
+Note: this version is for new Install only (it will overwrite your settings if you try to install it on an old one)
+
+TIPS:
+- Set your "Unknown type Cache - Internet" cache to 0 or 256k.
+- When you first start playing a station, it will play for about 15
+seconds, then freeze for about 15.  Once it starts playing again
+it'll be fine for however long you keep playing it.  I haven't
+found any settings to stop this from happening.
+
+OPEN ISSUES:
+
+- There are a few open issues around unescaping some of the song
+info
+- The Song Info from XM is not always perfect.</description_en>
+		</entry>
+		<entry>
+			<fileName>LeLaLoader_v0.2.zip</fileName>
+			<title>LeLa Loader</title>
+			<version>0.2</version>
+			<date>14-10-08</date>
+			<author>djtoll</author>
+			<lang>en</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Ce script vous permet de telecharger et de mettre a jour la derniere version du theme Lela mise a disposition par son auteur djtoll
+Pour information djtoll est aussi le creatuer du theme 7TFT</description_fr>
+			<description_en>This script allows to downlaod and update the last version of Lela skins done by djtoll.
+FYI djtoll is also the creator of 7TFT skin.</description_en>
+		</entry>
+		<entry>
+			<fileName>MythBox_04-01-09.zip</fileName>
+			<title>MythBox</title>
+			<version>r646</version>
+			<date>04-01-09</date>
+			<author>analogue</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>What is MythBox?
+================
+MythBox is a MythTV frontend for XBMC.
+
+It runs as a XBMC script (not a plugin) and has the following major features:
+- watch livetv
+- watch recordings (w/ comm skip)
+- schedule recordings
+
+
+History
+================
+MythBox was forked from xbmc-mythtv (http://xbmc-mythtv.sourceforge.net)
+and heavily modified to bring MythTV protocol support up to date,
+add new features, and make MythTV a pleasure to use in XBMC (obviously, not there yet).
+Many thanks to all the developers whose time and effort went into the original
+xbmc-mythtv project!
+
+
+Requirements
+================
+- XBMC Atlantis 8.10 running on 32bit Linux, preferably Ubuntu.
+Might work on Windows or Mac OSX (not verified but definitely a goal of this project).
+Won't work on XBox (sorry, I don't have one).
+- ffmpeg installed (sudo apt-get install ffmpeg)
+Needed to get frame rate for comm skipping to work.
+- python bindings for mysql (sudo apt-get install python-mysqldb)
+- MythTV recordings directory accessible via local filesystem
+(mount via nfs or samba before launching xbmc)
+- MythTV backend 0.21 or 0.22 (trunk)
+
+
+Intallation
+================
+1. Download mythbox.tar.gz to a directory of your choosing
+1. cd ~/.xbmc/scripts
+2. tar xzvf /path/to/downloaded/file/mythbox.tar.gz
+3. Launch XBMC
+4. Click on Scripts -> MythBox
+5. Enter Settings, Click on Test until everything is OK and then Save Settings
+
+
+First Milestone -
+===============
+
+GOAL
+----------------
+- Get most of the core functionality working.
+- Watching livetv
+- Watching recording + commercial skipping
+- Scheduling recordings
+- Defer complete overhaul of the GUI to future releases.
+- Usable enough to replace mythtv frontend for most tasks
+- Solicit feedback for changes/new features/etc.
+
+DONE
+----------------
+- Recordings resume where you left off (mythtv bookmarks feature)
+- Replace logging subsystem. Mythbox specific logging goes to mythbox.log.
+- Commercial skipping (can be off a little if xbmc does not play video at framerate specified in mpeg file)
+- Support for commercial skipping via EDL skip files (broken in xbmc - TODO: Add issue # from trac)
+- MySQL 4.1+ client support
+- Switch over to the mysql python client that uses the native libmysql shared lib
+- 12 hour AM/PM time format for TV guide headers
+- Get LiveTV working
+- move generated images/thumbs to script_data/scriptname/images/thumbs
+- Remove mythtv_statusport, mythtv_startpage, mythtv_recplayer, mythtv_recordlive, mythtv_recordlength settings
+- Move settings.xml to userdata/script_data/script_name directory
+- Recording details screen thumbnail now respects image aspect ratio
+- Support for multiple recording directories (maps to MythTV recording groups)
+- Enable unit tests to be run w/o hardcoded config info (util.OnDemandConfig)
+- Remove use of singletons (singleton.py)
+- fix livetv/recorded tv player callback issue - induced GC so callbacks get unregistered
+- Added support for MythTV 0.22 (SVN trunk) - set mythtv_version_override in settings.xml
+- Fresh install works w/o an existing settings.xml
+- get a decect icon
+- TV Guide usable
+- LiveTV progress dialog
+
+TODO
+--------------
+- Fix scheduling recordings from TV guide
+- move tv channel icon thumbs to script_data/scriptname/images/channels - remove from svn
+- fix pyxcoder parsing failures on nuppelvids
+- Get settings via myth protocol instead of db
+- maybe..Samba support (so MythTV recordings dir doesn't have to be accessible via filesystem)
+- Get rid of settings for mythbackend hostname and port. These values can be queried from the settings tables
+as MasterServerIP and MasterServerPort
+- Would be cool to have an RSS feed of the latest MythTV news using RSS Feed control
+http://xbmc.org/wiki/?title=Controls#Available_controls
+- Would be cool to have playing video (mini version) on all screens if player is playing
+http://xbmc.org/wiki/?title=Controls#Available_controls
+- Configurable 'Confirm on Delete'
+
+
+Future plans
+=============
+- Complete re-write of UI to use WindowXML (skinners/gfx help needed)
+- Verify works on Windows
+- Verify works on MacOSX
+- Standalone python bindings for MythTV
+- TV show fanart scraper
+- MythTV RSS feeds
+
+
+Development Changes
+=====================
+- Unit tests rule (real time saver - especially for a dynamic language)
+- Dependency injection/IOC where possible
+- Mocking support (mockito rocks!)
+- Improve pydocs
+- Re-orged/renamed lot of stuff to follow AMT structure
+
+
+What if it doesn't work?
+==========================
+Grab the log file (~/mythbox.log)
+and open up a defect @ http://code.google.com/p/mythbox/issues/list.
+
+A description of your setup and steps to reproduce are
+essential.
+
+My ability to fix things depends in a large
+part on your ability to provide as much information as
+possible to isolate and reproduce the problem :-)
+
+Additional nuggets of goodness:
+- Tweak log levels in ~/.xbmc/scripts/MythBox/mythbox_log.ini
+- Tweak settings manually in ~/.xbmc/userdata/script_data/MythBox/settings.xml
+
+
+When is the next release coming out?
+====================================
+Subscribe to this RSS Feed and you'll be the first to know...
+
+http://code.google.com/feeds/p/mythbox/downloads/basic
+
+
+Contact Info
+==========================
+Email: analogue@yahoo.com - Please put MythBox in the subject line.
+
+
+Acknowledgements
+==================
+Thanks to the folks at www.iconshock.com for the TV icon.
+
+
+Enjoy!</description_en>
+		</entry>
+		<entry>
+			<fileName>T3CH Upgrader_v1.7.5.rar</fileName>
+			<title>T3CH Upgrader</title>
+			<version>1.7.5</version>
+			<date>08-12-2008</date>
+			<author>BigBellyBilly</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>Update your current T3CH Build to latest release.
+
+Process:
+Find and DL and unrar new build (keeping T3CH build name)
+Copies your UserData, preserving keymap.xml (if reqd).
+Create a dash boot shortcut cfg that points to new build path.
+Copies your scripts (preserving new build scripts).
+Reboots (if reqd).
+
+Included is an autoexec.py
+When installed to Q:\scripts it will run this script in 'SILENT' or 'NOTIFY' mode</description_en>
+		</entry>
+		<entry>
+			<fileName>DVDProfiler_v1.7.rar</fileName>
+			<title>DVDProfiler</title>
+			<version>1.7</version>
+			<date>21-12-2008</date>
+			<author>BigBellyBilly</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>Python XBMC script to view your DVDProfiler collection or somebody elses online collection.
+
+Written By BigBellyBilly
+bigbellybilly AT gmail DOT com - bugs, comments, ideas, help ...
+
+THANKS:
+To everyone who's ever helped in anyway, or if I've used code from your own scripts, MUCH APPRECIATED!
+
+CHANGELOG: see ..\resources\changelog.txt or view throu Settings Menu
+README: see ..\resources\language\language\readme.txt or view throu Settings Menu
+
+Additional support may be found on xboxmediacenter forum.
+Please don't alter or re-publish this script without authors persmission.</description_en>
+		</entry>
+		<entry>
+			<fileName>myTV_v1.18.1.zip</fileName>
+			<title>myTV</title>
+			<version>1.18.1</version>
+			<date>14-10-2008</date>
+			<author>BigBellyBilly</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>A tv guide using TV listing data from your own countries DataSource.
+Can setup recordings to some TV cards.
+
+Written By BigBellyBilly
+bigbellybilly AT gmail DOT com - bugs, comments, ideas, help ...
+
+THANKS:
+To everyone who's ever helped in anyway, or if I've used code from your own scripts, MUCH APPRECIATED!
+
+CHANGELOG: see ..\resources\changelog.txt or view throu Settings Menu
+README: see ..\resources\language\language\readme.txt or view throu Settings Menu
+
+Additional support may be found on xboxmediacenter forum.</description_en>
+		</entry>
+		<entry>
+			<fileName>Comics_v1.5.2.rar</fileName>
+			<title>Comics</title>
+			<version>1.5.2</version>
+			<date>01-12-2008</date>
+			<author>BigBellyBilly</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>Python XBMC script to view comics from RSS Feeds and/or HTML pages.
+
+Written By BigBellyBilly
+bigbellybilly AT gmail DOT com - bugs, comments, ideas, help ...
+
+THANKS:
+To everyone who's ever helped in anyway, or if I've used code from your own scripts, MUCH APPRECIATED!
+
+Please don't alter or re-publish this script without authors persmission.
+
+CHANGELOG: see changelog.txt or view throu Settings Menu
+README: see ..\resources\language\language\readme.txt or view throu Settings Menu
+
+Additional support may be found on xboxmediacenter forum.</description_en>
+		</entry>
+		<entry>
+			<fileName>BBC PodRadio_v2.2.1.rar</fileName>
+			<title>BBC PodRadio</title>
+			<version>2.2.1</version>
+			<date>28-10-2008</date>
+			<author>BigBellyBilly</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>Python XBMC script to playback BBC radio and podcasts (also with music plugin)
+
+Written By BigBellyBilly
+bigbellybilly AT gmail DOT com - bugs, comments, ideas, help ...
+
+THANKS:
+To everyone who's ever helped in anyway, or if I've used code from your own scripts, MUCH APPRECIATED!
+
+Please don't alter or re-publish this script without authors persmission.
+
+CHANGELOG: see changelog.txt or view throu Settings Menu
+README: see ..\resources\language\language\readme.txt or view throu Settings Menu
+
+Additional support may be found on xboxmediacenter forum.</description_en>
+		</entry>
+		<entry>
+			<fileName>My Program Plugins_v1.0.zip</fileName>
+			<title>My Program Plugins</title>
+			<version>1.0</version>
+			<date></date>
+			<author>Frost</author>
+			<lang></lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Ce script realise par Frost, vous permet d'acceder a la section plugins programmes.
+Tres utile avec les skins n'ayant plus la section programmes plugins accessible!!!</description_fr>
+			<description_en>A script done by Frost, it allows to access to program plugin section.
+Very useful with the skin without program plugin section!!!</description_en>
+		</entry>
+		<entry>
+			<fileName>XBMC Lyrics_v1.6.1.zip</fileName>
+			<title>XBMC Lyrics</title>
+			<version>1.6.1</version>
+			<date>06-01-09</date>
+			<author>XBMC Lyrics Team</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>The well konwn XBMC Lyrics script is a script which will grab lyrics from www.lyrc.com.ar</description_en>
+		</entry>
+		<entry>
+			<fileName>XBMC Earth_v0.5.zip</fileName>
+			<title>XBMC Earth</title>
+			<version>0.5</version>
+			<date>15-01-2009</date>
+			<author>MrLight</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/XBMC Earth.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>An amazing script created by MrLight
+XBMC Earth is now a Google Maps and a Microsoft Virtual Earth Client for XBMC.
+You are able to view the satelite, the hybrid and the street Map from both source GoogleMaps and also MS Virtual Earth.
+You can just browse through the map or you can search for a Location like a city or even for a service in a city. Like "Hamburg, Pizza"
+Since XBMC is a MediaCenter the script has some geotagged media features. You can search for Panramio, Flickr and Locr Pictures. Just browse the map to any location and then hit one of the Picture Services. The Result is shown on the Map as Thumbnails.
+To get some video inside of the script you can search for geotagged youtube videos. Just hit one of the resultvideos and the video is started. You can toggle between fullscreen and windowed.
+Sometimes the query results of youtube are really bad. So the video has no relevance to the selected place ;-((
+
+The Webcams button brings Live content inside the script. Hit the Webcams button to see some Webcams of your area.
+To get a weather forecast for the shown area just hit weather.
+
+How to use:
+
+Controller:
+White Button: Toggle hybrid view; Map-View; Area-View; Sat-View
+Left-Trigger: Zoom out
+Right-Trigger: Zoom in
+back: Exit script
+
+in Menu Map-Move:
+digiPad: Moves the Map
+back or A: back to Menu
+
+Search:
+-Focus in List will pulse the selected marker on the Map
+-Select a List item will zoom to marker
+
+Remote:
+Info Button: Toggle hybrid view; Map-View; Area-View; Sat-View
+2 Button: Zoom out
+1 Button: Zoom in
+back: Exit script
+
+in Menu Map-Move:
+Arrows: Moves the Map
+back: back to Menu
+
+Search:
+-Focus in List will pulse the selected marker on the Map
+-Select a List item will zoom to marker
+
+Keyboard:
+ins Button: Toggle hybrid view; Map-View; Area-View; Sat-View
+Pg-dwn Button: Zoom out
+Pg-up: Zoom in
+ESC: Exit script
+
+in Menu Map-Move:
+Arrows: Moves the Map
+ESC: back to Menu
+
+Search:
+-Focus in List will pulse the selected marker on the Map
+-Select a List item will zoom to marker</description_en>
+		</entry>
+		<entry>
+			<fileName>tvalacarta_v0.9.zip</fileName>
+			<title>tvalacarta</title>
+			<version>0.9</version>
+			<date>02-02-09</date>
+			<author>tvalacarta</author>
+			<added>03-02-09</added>
+			<lang>es</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Basé sur le script XOT-UZG, tvalacarta sur permet de voir les videos en espagnol de sites viverses tels que Andalucia TV ou TVE a la carta.  </description_fr>
+			<description_en>Based on XOT-UZG script, tvalacarta allows to watch spanish TV videos from webiste such as Andalucia TV or TVE a la carta.</description_en>
+		</entry>
+		<entry>
+			<fileName>Playlistdownloader_29-12-08.zip</fileName>
+			<title>Playlistdownloader</title>
+			<version>29-12-08</version>
+			<date>29-12-08</date>
+			<author>Derk Vedelaar</author>
+			<lang>en</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>You can create a playlist on your computer for youtube movies and play this playlist in xbmc to create your own video channel. The script is still bèta. This means that it works, nothing more. If you do something wrong or something i diddn't want you to do, it will not work or generate errors.
+
+Instructions:
+Create an account on: http://playlist.youtube.vedelaar.nl/ Create some playlists on the site. Copy the script in your scripts directory of xbmc and run it. Log in first with your username on vedelaar.nl and then download a playlist to view it. Have some patience while downloading the first video. This takes a minute or so.</description_en>
+		</entry>
+		<entry>
+			<fileName>XOT-Uzg_v3.2.0b3.zip</fileName>
+			<title>XOT-Uzg</title>
+			<version>3.2.0b3</version>
+			<date>23-01-09</date>
+			<added>03-02-09</added>
+			<author>Basje</author>
+			<lang>de</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/XOT-Uzg.png</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>An XBox Media Center script which allows playback of streams from www.uitzendinggemist.nl.
+This version has options for streaming multiple past episodes from different TV Shows.</description_en>
+		</entry>
+		<entry>
+			<fileName>OpenSubtitles_v3.zip</fileName>
+			<title>OpenSubtitles</title>
+			<version>3.0 - non official</version>
+			<date></date>
+			<author>Leo</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Ce script vous permet de rechercher et télécharger des sous-titre depuis www.opensubtitles.org
+
+Attention:
+cette version n'est pas officielle, elle a ete modifee afin de faire fonctionner le script OpenSubtitles</description_fr>
+			<description_en>This script allows to search and download sub from www.opensubtitles.org
+
+Caution:
+This release is not official, it has been modified in order to make OpenSubtitles works</description_en>
+		</entry>
+		<entry>
+			<fileName>OpenSubtitles_v1.0_fixed.zip</fileName>
+			<title>OpenSubtitles</title>
+			<version>1.0 - fixed - non official</version>
+			<date>19-01-09</date>
+			<added>03-02-09</added>
+			<author>Leo</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Ce script vous permet de rechercher et télécharger des sous-titre depuis www.opensubtitles.org
+
+Attention:
+cette version n'est pas officielle, elle a ete modifee afin de faire fonctionner le script OpenSubtitles
+* not working in XBMC 8.10 - change in default.py, line #26, from os.getcws() to os.getcwd();</description_fr>
+			<description_en>This script allows to search and download sub from www.opensubtitles.org
+
+Caution:
+This release is not official, it has been modified in order to make OpenSubtitles works
+* not working in XBMC 8.10 - change in default.py, line #26, from os.getcws() to os.getcwd();</description_en>
+		</entry>
+		<entry>
+			<fileName>Air2Season_13-12-08.zip</fileName>
+			<title>Air2Season</title>
+			<version></version>
+			<date>13-12-08</date>
+			<added>03-02-09</added>
+			<author>Chris Harland</author>
+			<lang>en</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>A program to rename TV shows cataloged by air date to a season/episode format
+
+This program uses theTVDB.com's XML API
+http://www.thetvdb.com
+
+REMEBER TO FILL IN YOUR API KEY
+
+Usage instructions for Air2Season.py
+
+1) Uncompress
+2) Fill in an API key you get from thetvdb.com
+3) Call the script from the directory you want to scan</description_en>
+		</entry>
+		<entry>
+			<fileName>TimedLibraryUpdater_28-10-08.rar</fileName>
+			<title>TimedLibraryUpdater</title>
+			<version>28-10-08</version>
+			<date>28-10-08</date>
+			<added>03-02-09</added>
+			<author>rwparris2</author>
+			<lang>en</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>Updates Video and/or Music Library at specific intervals (every 3 hours, for example) or at a specific time of the day (maybe 4:55 PM, right before you get off work)
+[The only part I've tested is setting a specific time to update, and only on Windows XP. Any feedback at the following link would be appreciated: http://xbmc.org/forum/showthread.php?t=39600]
+
+Instructions:
+default.tbn from j3concepts
+http://j3concepts.deviantart.com/art/Porn-Needs-You-70255476
+http://j3concepts.deviantart.com/art/Porn-Needs-You-70255476
+
+Modify default.py with any text editor.
+Change this stuff:
+
+
+#Number of HOURS between scans. Whole hours only, no decimals.
+#Use zero to only scan at a certain time (see below)
+hours_between_scans=0
+
+#Time of day you want a daily scan to take place
+#Set hours between scans to zero "hours_between_scans=0" above to enable this.
+#Uses 24-Hour clock, so 8:00 AM is time=0800 and 1:00 PM is time=1300
+time_to_start_scan=2129
+
+#Choose which library to update.  Options are
+#library_to_update="video"
+#library_to_update="music"
+#library_to_update="both"
+#don't forget the the quotes "" !
+library_to_update="video"</description_en>
+		</entry>
+		<entry>
+			<fileName>HangMan_xbmc-game_19-11-08.zip</fileName>
+			<title>HangMan</title>
+			<version>1.0.2</version>
+			<date>16-11-2008</date>
+			<added>19-11-08</added>
+			<author>Frost</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/HangMan.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Le fameux jeux du pendu sur XBMC</description_fr>
+			<description_en>The famous HangMan game on XBMC</description_en>
+		</entry>
+		<entry>
+			<fileName></fileName>
+			<title></title>
+			<version></version>
+			<date></date>
+			<added></added>
+			<author></author>
+			<lang></lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>Blog_Didier_Allouch_v1.0.zip</fileName>
+			<title>Le Blog de Didier Allouch</title>
+			<version>1.1</version>
+			<lang>fr</lang>
+			<date>15-02-09</date>
+			<added>16-02-09</added>
+			<author>Temhil</author>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Scripts/BlogDidierAllouch.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Ce script vous permet de vous connecter sur le Blog Canal+ de Didier Allouch et de visionner les videos du blog ainsi que d'en lire leur description.</description_fr>
+			<description_en>This script allow to connect on Canal+ (French private network) blog: "Le Blog de Didier Allouch" and watch videos of this blog and see description of it.</description_en>
+		</entry>
+		<entry>
+			<fileName>Downloader Passion XBMC for Windows.zip</fileName>
+			<title>Downloader Passion XBMC for Windows</title>
+			<version>1.0</version>
+			<lang>fr-en</lang>
+			<date>17-02-09</date>
+			<added>17-02-09</added>
+			<author>Frost</author>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Scripts/DL_PXW.jpeg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Ce script vous permet de télécharger et d'installer les releases d'XBMC pour Windows disponibles sur le site passion-xbmc.org</description_fr>
+			<description_en></description_en>
+		</entry>
+	</scripts>
+	<!-- FIN Section Scripts -->
+
+	<!-- Section Plugins -->
+	<plugins>
+		<!-- Sous-section plugins musique -->
+		<musicplugin>
+			<entry>
+				<fileName>Live_Music_Archive_r3.rar</fileName>
+				<title>Live Music Archive</title>
+				<version>r3</version>
+				<date>23-08-08</date>
+				<added>08-02-09</added>
+				<author>rwparris2</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Archive.org's collection of live music.
+The Internet Archive has teamed up with etree.org to preserve and archive as many live concerts as possible for current and future generations to enjoy.
+All music in this Collection is from trade-friendly artists and is strictly noncommercial, both for access here and for any further distribution.
+Artists' commercial releases are off-limits.
+This collection is maintained by the etree.org community. Streams are avaliable in flac, shn, and mp3.</description_en>
+			</entry>
+		</musicplugin>
+		<!-- FIN Sous-section plugins musique -->
+
+		<!-- Sous-section plugins Images -->
+		<pictureplugin>
+			<entry>
+				<fileName>Passion-XBMC_Gallery_Explorer_Beta1.zip</fileName>
+				<title>Passion-XBMC Gallery Explorer</title>
+				<version>Beta1</version>
+				<date>28-01-09</date>
+				<author>Seb</author>
+				<lang>fr</lang>
+				<iconURL></iconURL>
+				<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Passion-XBMC_Gallery_Explorer.jpg</previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Voici un petit plugin avec un nom ronflant qui a pour but de vous permettre de naviguer confortablement depuis votre canapé sur la galerie de Passion-XBMC.
+Vous pouvez donc naviguer, afficher en plein écran, faire passer un diaporama de toutes les images de Passion-XBMC.
+Vous pouvez aussi utiliser les dossiers de ce plugin comme source pour votre diaporama de fonds d'écrans.</description_fr>
+				<description_en>This plugin allows to browse Passion-XBMC picture gallery (with a lot of fanarts). You can display pictures in fullscreen, slideshow ...</description_en>
+			</entry>
+			<entry>
+				<fileName>Picasa_14-02-09.zip</fileName>
+				<title>Picasa</title>
+				<version>14-02-09</version>
+				<date>14-02-09</date>
+				<added>16-02-09</added>
+				<author>Nuka1195</author>
+				<lang>multi</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Picasa in XBMC
+
+authentication does not work on windows (for me) so in plugin settings, make sure you don't have access level set to need authentication.
+
+this probably won't work on xbox as it uses special:// paths.
+
+I highly suggest media stream skin with the one view (forget what it's called) where the full image displays. this will first show the low rez thumb, then the full rez image will fade in. a very nice view.</description_en>
+			</entry>
+		</pictureplugin>
+		<!-- FIN Sous-section plugins Images -->
+
+		<!-- Sous-section plugins Programmes -->
+		<programplugin>
+			<entry>
+				<fileName>GoogleCode_v1.2.zip</fileName>
+				<title>GoogleCode</title>
+				<version>1.2</version>
+				<date>26-01-09</date>
+				<author>sico99</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Permet de telecharger et d'installer les scripts et plugins les plus connus disponibles sur Google code</description_fr>
+				<description_en>Allows to download and install scripts and plugins from google code users pages directly</description_en>
+			</entry>
+			<entry>
+				<fileName>GoogleChecker_18-12-08.zip</fileName>
+				<title>GoogleChecker</title>
+				<version>18-12-08</version>
+				<date>18-12-08</date>
+				<author>sico99</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Verifie sur Google code if de nouveau scripts et plugins sont disponibles et vous indique combien</description_fr>
+				<description_en>Checks to see on Google code if there are new downloads (scripts and plugins) from users and tells you how many there are</description_en>
+			</entry>
+			<entry>
+				<fileName>XBMC Favorites Installer for XBOX v1.4.zip</fileName>
+				<title>XBMC Favorites Installer - XBOX</title>
+				<version>1.4</version>
+				<date>18-07-08</date>
+				<author>Bram77</author>
+				<lang>multi</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>I've altered the xbmc-addons plugin to use for my personal favorite plugin, scripts and skins. I can't really lable it because all I did was alter the urls in the script and fix a bug (which is also present in the newest xbmc-addons version!).
+I'm updating the plugins/scripts/skins every week and thought other people might like the same additions to XBMC as I do. I might add some features to the plugin like "Install all" and/or "Update all addons present on your XBOX" when I find the time.
+
+I thought I should at least share the option to other XBMC users, even though it was intended to be used for personal use. Not all plugins you'd like to see might be downloadable. You can suggest addons, but I can't guarantee I'll add them. I'll only add addons that are updated regularly and usefull to me and my fam.</description_en>
+			</entry>
+			<entry>
+				<fileName>XBMC Favorites Installer for Linux v.1.4a.zip</fileName>
+				<title>XBMC Favorites Installer - Linux</title>
+				<version>1.4a</version>
+				<date>07-01-09</date>
+				<author>Bram77</author>
+				<lang>multi</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>I've altered the xbmc-addons plugin to use for my personal favorite plugin, scripts and skins. I can't really lable it because all I did was alter the urls in the script and fix a bug (which is also present in the newest xbmc-addons version!).
+I'm updating the plugins/scripts/skins every week and thought other people might like the same additions to XBMC as I do. I might add some features to the plugin like "Install all" and/or "Update all addons present on your XBOX" when I find the time.
+
+I thought I should at least share the option to other XBMC users, even though it was intended to be used for personal use. Not all plugins you'd like to see might be downloadable. You can suggest addons, but I can't guarantee I'll add them. I'll only add addons that are updated regularly and usefull to me and my fam.</description_en>
+			</entry>
+			<entry>
+				<fileName>Passion-xbmc_SVN_Installer_03-02-09.zip</fileName>
+				<title>Passion-xbmc SVN Installer</title>
+				<version>03-02-09</version>
+				<date>03-02-09</date>
+				<added>08-02-09</added>
+				<author>nuka1195</author>
+				<lang>multi</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Ce plugin est une adpatation du plugin SVN Repo Installer de Nuka1195 realisée par Kottis afin d'y intgerer le SVN de Passion-XBMC
+
+ATTENTION: Les mises a jour sont faites a partir de la branche principale de developpement (TRUNK), Aussi, vous recupererez les derniers fichiers en date de projets en cours de développments. En conséquence il est possible que les projets récupétes soient buggé voir ne fonctionnent pas du tout.</description_fr>
+				<description_en>This plugin is an adaptation of Nuka1195's SVN Repo Installer plugin made by Kottis in order to support Passion-XBMC SVN
+
+WARNING: Update are done for TRUNK branch, that means you will get the last up to date file of projects still in developement. Consecuently it is possible versions you will download with this plugin will have bug or even won't work.</description_en>
+			</entry>
+		</programplugin>
+		<!-- FIN Sous-section plugins Programmes -->
+
+		<!-- Sous-section plugins Video -->
+		<videoplugin>
+			<entry>
+				<fileName>artePLUS7_Beta2.zip</fileName>
+				<title>artePLUS7</title>
+				<version>Beta2</version>
+				<date>07-12-08</date>
+				<author>Lolol / Seb / Temhil</author>
+				<lang>multi</lang>
+				<previewPictureURL>/.passionxbmc/Installeur-Passion/content/ArtePlus7.jpg</previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Ce plugin permet de visionner les vidéos disponibles  sur http://plus7.arte.tv (vidéos d'Arte disponible pour 7 jours).
+Ce plugin a été développé a l'origine par Lolol, puis réparé par Seb et Temhil
+Vous devez installer ce plugin dans Plugin\video\
+
+La langue par défaut des vidéos est le Français toutefois, si vous souhaitez visionnez ces vidéos en Allemand éditez le fichier de configuration arteplus7.cfg (crée automatiquement lors du 1ere démarrage) et remplacez la ligne:
+videos_language = fr
+par
+videos_language = de
+
+Pour ce ne residents pas dans la zone de diffusion du site Web (protection par IP), vous pouvez configurer un proxy qui sera utilisé par le plugin pour vous donner acces au vidéos d'Arte Plus 7. Pour ce faire, éditez le fichier de configuration arteplus7.cfg et indiquez l'adresse de votre proxy comme cela:
+[server]
+proxy_address = http://48.180.55.200:80</description_fr>
+				<description_en>This plugin allows to watch videos available on http://plus7.arte.tv (Arte videos availbale for 7 days)</description_en>
+			</entry>
+			<entry>
+				<fileName>Canal_Plus_19-11-08.zip</fileName>
+				<title>Canal Plus</title>
+				<version>19-11-08</version>
+				<date>19-11-08</date>
+				<added>08-02-09</added>
+				<author>Alexsolex</author>
+				<lang>fr</lang>
+				<iconURL></iconURL>
+				<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Canalplus.jpg</previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Ce plugin vous donne acces a toutes les video de la mosaique Canal+.
+Vous choisissez une catégorie, puis une sous catégorie et à vous les videos de Canal+ en visualisation ou en téléchargement haute ou basse qualité</description_fr>
+				<description_en>This plugin allows to watch videos form Canal+ french network (videos only in French)</description_en>
+			</entry>
+			<entry>
+				<fileName>All-Game_19-11-08.zip</fileName>
+				<title>All-Game</title>
+				<date>19-11-08</date>
+				<author>Frost</author>
+				<version>0.9.2.29</version>
+				<lang>multi</lang>
+				<iconURL></iconURL>
+				<previewPictureURL>/.passionxbmc/Installeur-Passion/content/AllGame.jpg</previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Ce "Plugin" vous permet de vous connecter à la base de données de allgame.com et de visionner tous le jeux vidéos sorties à ce jour toutes plateformes... Ainsi que d'en lire leurs descriptions et de voir des bande-annonces. Et de lancer/jouer au jeux s'il est présent sur votre "XBox" uniquement pour le moment.
+
+Note: La partie script "WindowXML" est gérée par le plugin, donc son fonctionnement est le même qu'un plugin.
+Installation obligatoire: "...\xbmc\plugins\video\"</description_fr>
+				<description_en></description_en>
+			</entry>
+			<entry>
+				<fileName>Alloclips_11-11-08.rar</fileName>
+				<title>Alloclips</title>
+				<version>11-11-08</version>
+				<date>11-11-08</date>
+				<author>Alexsolex</author>
+				<lang>fr</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Ce plugin permet de naviguer dans les videoclips de alloclips.com.
+Il est possible entre autre, d'effectuer une recherche pour trouver un clip ou de visualiser les clip via une playlist.
+Installation dans: "...\xbmc\plugins\video\"</description_fr>
+				<description_en></description_en>
+			</entry>
+			<entry>
+				<fileName>TiViMi_08-11-08.rar</fileName>
+				<title>Tivimi</title>
+				<version>08-11-08</version>
+				<date>08-11-08</date>
+				<author>Alexsolex</author>
+				<lang>fr</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Tivimi, la TV selon allocine!
+Un plugin video pour regarder les videos de Tivimi (Culture Pub, reportage Allocine et bien d'autres choses ...)
+Installation dans: "...\xbmc\plugins\video\"</description_fr>
+				<description_en></description_en>
+			</entry>
+			<entry>
+				<fileName>VideoMonkey_v1.25.zip</fileName>
+				<title>VideoMonkey</title>
+				<version>1.25</version>
+				<date>08-02-09</date>
+				<added>16-02-09</added>
+				<author>sfaxman</author>
+				<lang>multi</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>VideoMonkey est un nouveau plugin pour YouTube... Dailymotion... et presque n'importe quoi d'autre.
+En effet, nimporte qui avec des connaissances de base avec les Regex peut facilement ajouter de nouveau site (voir youtube.com.cfg)
+YouTube (com, de, fr, nl), Dailymotion (com, de, fr, nl), Metacafe, Arte et autres sont inlus.
+Le contenu pour Adulte a ete retire de VideoMonkey mais est disponible dans un nouveau plugin similaire VideoDevil.
+Une nouvelle option afin d'activer un server proxy est desormias disponible</description_fr>
+				<description_en>VideoMonkey is a new PlugIn for YouTube... Dailymotion... And Everything
+Everyone with basic RegEx knowledge can add new video site catchers easily (see file youtube.com.cfg).
+YouTube (com, de, fr, nl), Dailymotion (com, de, fr, nl), Metacafe and others are included.
+Adult content has been removed but is now available on a new similar plugin VideoDevil.
+A new proxy server option is now available.</description_en>
+			</entry>
+			<entry>
+				<fileName>VideoDevil_v1.4.zip</fileName>
+				<title>VideoDevil</title>
+				<version>1.4</version>
+				<date>08-02-09</date>
+				<added>16-02-09</added>
+				<author>sfaxman</author>
+				<lang>multi</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Ce plugin propose le contenu pour adulte précédemment disponible dans VideoMonkey.</description_fr>
+				<description_en>This plugin includes adlut content previously available in VideoMonkey.</description_en>
+			</entry>
+			<entry>
+				<fileName>VPR_v2_21-12-08.rar</fileName>
+				<title>Voinage Plugin Repository (VPR)</title>
+				<version>2</version>
+				<date>21-12-08</date>
+				<author>Voinage</author>
+				<lang>multi</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Voinage un des plus actifs creators de plugins dans la communauté XBMC, vient de creer un plugin mettant a disposition l'ensemble de son travail.
+Le gros avantage de ce plugin est que vous serez toujours a jour de son travail.
+
+Caracteristiques:
+It can if you know how - play any xbmc plugin and categorize.
+Plays all plugins from inside one Zip.
+VeohProxy autoupdate.
+Auto categorizes new plugins.
+Plugin update--> manual via Plugin settings or Auto on first run.
+File Downloads available for whatever plugins used it - I haven`t added it to the old ones- I will not.</description_fr>
+				<description_en>Voinage one of the most active plugins creator of XBMC communauty has created a plugin making available his whole work in one plugin.
+One of the big advantages of this plugin is that you will always be up to date with his plugins.
+
+Features:
+It can if you know how - play any xbmc plugin and categorize.
+Plays all plugins from inside one Zip.
+VeohProxy autoupdate.
+Auto categorizes new plugins.
+Plugin update--> manual via Plugin settings or Auto on first run.
+File Downloads available for whatever plugins used it - I haven`t added it to the old ones- I will not.</description_en>
+			</entry>
+			<entry>
+				<fileName>Movie2K.com_BETA2-Rev2.rar</fileName>
+				<title>Movie2K.com</title>
+				<version>BETA2-Rev2</version>
+				<date>25-01-09</date>
+				<author>f8lcoder</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Permet de voir les videos du site movie2k.com (films, series ...)
+
+It is a monster and has a whole lot of content.
+
+Currently the plugin supports Veoh via VeohProxy (included in the .rar place this your scripts folder if you don't already have it), StageVu, Google, and Youku there are other providers but I haven't managed them yet.</description_fr>
+				<description_en>In the quest for more content I stumbled upon movie2k.com and just couldn't pass up on creating a plugin to scrape it's contents.
+
+It is a monster and has a whole lot of content.
+
+Currently the plugin supports Veoh via VeohProxy (included in the .rar place this your scripts folder if you don't already have it), StageVu, Google, and Youku there are other providers but I haven't managed them yet.</description_en>
+			</entry>
+			<entry>
+				<fileName>66Stage-MegaVideo_v1.0_22-12-08.rar</fileName>
+				<title>66Stage - MegaVideo</title>
+				<version>1.0</version>
+				<date>22-12-08</date>
+				<author>f8lcoder</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>66Stage-MegaVideo plugin by f8lcoder:
+I just finished working on this and watched a couple movies. It is not going to be perfect it's my first plugin but so far it seems to work for the items I've watched. Be forewarned it is a 'dog' the list has over 1960 entries so it takes some time to build. When you make a selection 2 items appear chose the second/bottom one it has the resolved MV link in it. I'm not 100% sure but there may be a time limit on the MV items.</description_en>
+			</entry>
+			<entry>
+				<fileName>66Stage-DivX_14-12-08.rar</fileName>
+				<title>f8lcoder - DivX</title>
+				<version>14-12-08</version>
+				<date>14-12-08</date>
+				<author>f8lcoder</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>66Stage-DivX plugin modified by f8lcoder:
+I did not author this plugin it is from some one who created it for Boxee. I just removed some stuff and checked it to see if it works in XBMC and it does. So enjoy it I do.</description_en>
+			</entry>
+			<entry>
+				<fileName>66stage_r4_04-12-08_Boxee.zip</fileName>
+				<title>66stage (Boxee)</title>
+				<version>r4</version>
+				<date>04-12-08</date>
+				<author></author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>66Stage-DivX Plugin orinally done for Boxee but compatible with XBMC</description_en>
+			</entry>
+			<entry>
+				<fileName>pitchfork_13-10-08.zip</fileName>
+				<title>pitchfork</title>
+				<version>13-10-08</version>
+				<date>13-10-08</date>
+				<author>Greg Chrystall, moded by Brad Quesnell</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Ce plugin permet de voir les vidéos du site pitchfork.tv, a cool, music-scene-oriented site</description_fr>
+				<description_en>This plugin allows to watch videos du site pitchfork.tv (site 'cool, orienté music-scene')</description_en>
+			</entry>
+			<entry>
+				<fileName>XBMCEyetvParser_v1.36_02-01-09.zip</fileName>
+				<title>XBMC Eyetv Parser</title>
+				<version>1.36</version>
+				<date>02-01-09</date>
+				<author>prophead</author>
+				<lang>multi</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>XEP (XBMCEyetvParser) is a video plug-in for XBMC to view your Eyetv library from XBMC's video menu with the meta data, icons and thumbnails from Eyetv without eyetvsched files or the live tv buffer.
+1) Installation
+A) XBMC
+http://xbmc.org/wiki/?title=Plugins#XBMC_for_Mac_plugin_directories
+http://xbmc.org/wiki/?title=Plugins#Adding_plugins_sources_in_XBMC_GUI
+Set your Eyetv directory by pressing 'c' for context menu on the XBMCEyetvParser plugin, then choose Plugin Settings
+
+B) Boxee
+http://boxee-plugins.blogspot.com/2008/12/installing-plugins-for-boxee.html
+1) Copy the XBMCEyetvParser directory to /Applications/Boxee.app/Contents/Resources/Boxee/plugins/video/
+2)
+3) Run Boxee
+4) Choose Settings
+5) Choose add media source
+6) Choose add application source
+7) Choose XBMCEyetvScraper
+8) Select Video and Private checkboxes
+9) Hit ESC to back up to the settings menu
+10) Choose Application Settings
+11) Set your Eyetv Directory and TOG settings
+12) ESC back to the main menu, the plugin is now ready to use
+2) Use
+A) XBMC
+Select Eyetv from the videos menu
+Browse and select your video to play or hit 'c' to bring up the context menu and choose movie information to see full plot summary
+B) Boxee
+Select Eyetv from the video/Internet Sources menu
+Browse and select your video to play
+
+3) Advanced Use
+A) TOG
+XEP (XBMCEyetvParser) now has integrated TOG (Thumbnail Overlay Generator) but it's disabled by default.  To enable it hit 'c' to bring up the context menu on the plugin, then toggle TOG to on (Boxee users must  choose to enable TOG in the settings>Application Settings>Eyetv dialog.  Edit XBMCEyetvParser/default.py for your locations of the required Imagemagick and Ffmpeg, defaults are to the standard macports locations.  To install these packages, first install macports, then from the terminal,  sudo port install Imagemagick; sudo port install ffmpeg;
+The first time you use the XEP plug with TOG enabled it will take a while to generate the new (small size) thumbnails with overlays for your current Eyetv library.  Subsequent use will be very fast due to preexisting XBMC .tbn files.  Very small .tbn jpeg files will get created in your eyetv video packages, but it will not alter any original files, or impact regular Eyetv use in any way.  If you would like to remove these files the easiest way to do this is from the terminal, find /path/to/eyetv/folder -name "*.tbn" -exec rm {} \;
+
+4) The Future
+Better integration with XBMC library.  (in alpha) This has proved difficult due to incomplete guide information currently provided by eyetv.
+More Infolabels
+More sorting options
+Fanart (in alpha)
+nfo file support (in alpha)
+Live TV Buffer support
+
+5) Notes
+Sometimes XBMC caches thumbnails and icons so your changes, especially with TOG, might not be immediately apparent.  I don't really have a good solution for this other then recommend you remove those .tbn's directly from the thumbnail cache.  Perhaps the cache will periodically update, I'm not entirely certain, I'm open to ideas.
+
+Eyetv is a trademark of Elgato</description_en>
+			</entry>
+			<entry>
+				<fileName>XBMCEyetvScraper_v1.53_28-12-08.zip</fileName>
+				<title>XBMC Eyetv Scraper</title>
+				<version>1.53</version>
+				<date>28-12-08</date>
+				<author>prophead</author>
+				<lang>multi</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>XES (XBMCEyetvScraper) is a video plug-in for XBMC to view your Eyetv library from XBMC's video menu with the meta data, icons and thumbnails from Eyetv without eyetvsched files or the live tv buffer, and parse thetvdb for epg data, and attempt to build a subdirectory of symbolic links, nfo files, banners, and fanart to support XBMC's library mode.
+
+I recommend you install XES in parallel with XEP (XBMCEyetvParser); Because XES takes a long time to scrape thetvdb epg data I recommend you only use it only when you need to refresh your TV Shows directory with new files from Eyetv.  XEP for quick viewing of current Eyetv shows, XES to periodically create/update your TV Shows symbolic links directory.  You can then choose to view your TV Shows symbolic links directory in files or library mode after the files are scanned.
+
+The files you see after running XES are the same as the files you see from XEP, with the Eyetv EPG data, use the TV Shows directory to see thetvdb EPG data.
+
+1) Installation
+A) XBMC
+http://xbmc.org/wiki/?title=Plugins#XBMC_for_Mac_plugin_directories
+http://xbmc.org/wiki/?title=Plugins#Adding_plugins_sources_in_XBMC_GUI
+Set your Eyetv directory and TV Shows placeholder directory by pressing 'c' for context menu on the XBMCEyetvScraper plugin, then choose Plugin Settings
+Add your TV Shows directory of symbolic links as a new source after you run XES
+
+B) Boxee
+http://boxee-plugins.blogspot.com/2008/12/installing-plugins-for-boxee.html
+1) Copy the XBMCEyetvScraper directory to /Applications/Boxee.app/Contents/Resources/Boxee/plugins/video/
+2) Edit /Applications/Boxee.app/Contents/Resources/Boxee/plugins/video/XBMCEyetvScraper/default.py to choose features.
+3) Run Boxee
+4) Choose Settings
+5) Choose add media source
+6) Choose add application source
+7) Choose XBMCEyetvScraper
+8) Select Video and Private checkboxes
+9) Hit ESC to back up to the settings menu
+10) Choose Application Settings
+11) Set your Eyetv Directory and TV Shows links directory
+12) ESC back to the main menu, the plugin is now ready to use
+13)Add your TV Shows directory of symbolic links as a new non-private local media source from the Settings/Media Sources menu after you run XES.
+Add your TV Shows directory of symbolic links as a new source after you run XES
+
+2) Use
+A) XBMC
+Select XBMCEyetvScraper or the TV Show directory (after use) from the videos menu
+Browse and select your video to play or hit 'c' to bring up the context menu and choose information to see more EPG data
+B) Boxee
+Select XBMCEyetvScraper from the video/Internet Sources menu
+Browse and select your video to play or choose video/TV Shows
+
+3) Advanced Use
+A) TOG
+XES now has integrated TOG (Thumbnail Overlay Generator) but it's disabled by default.  To enable it hit 'c' to bring up the context menu on the plugin, then toggle TOG to on (Boxee users choose Application Settings from the Settings menu.  Edit XBMCEyetvScraper/default.py for your locations of the required Imagemagick and Ffmpeg, defaults are to the standard macports locations.  To install these packages, first install macports, then from the terminal,  sudo port install Imagemagick; sudo port install ffmpeg;
+The first time you use the XES plug with TOG enabled it will take a while to generate the new (small size) thumbnails with overlays for your current Eyetv library.  Subsequent use will be very fast due to preexisting XBMC .tbn files.  Very small .tbn jpeg files will get created in your eyetv video packages, but it will not alter any original files, or impact regular Eyetv use in any way.  If you would like to remove these files the easiest way to do this is from the terminal, find /path/to/eyetv/folder -name "*.tbn" -exec rm {} \;
+
+B) LDS
+XEP now has limited library support.  LDS will create a directory (specify in XBMCEyetvScraper/default.py) and then populate that directory with symbolic links in the format XBMC library expects for TV shows.  You can then add that directory as a new source and set content on it to add it to the library.  Feel free to change the symbolic link names to better suit your scraper.
+C) NFO
+XEP now has limited .nfo file support,  LDS is required to be on for .nfo files to work.  Setting this will use the scrape epg data from thetvdb. Very small .nfo files will get created in your links directory, but it will not alter any original files.  If you would like to remove these files the easiest way to do this is just to throw the TVShow folder of symbolic links in the trash and let XES create fresh one.
+4) The Future
+More GUI settings
+More Infolabels
+More sorting options
+Live TV Buffer support
+EDL lists from Eyetv Plist files (commercial skipping)
+
+5) Notes
+Sometimes XBMC caches thumbnails and icons so your changes, especially with TOG, might not be immediately apparent.  I don't really have a good solution for this other then recommend you remove those .tbn's directly from the thumbnail cache.  Perhaps the cache will periodically update, I'm not entirely certain, I'm open to ideas.
+
+Eyetv is a trademark of Elgato</description_en>
+			</entry>
+			<entry>
+				<fileName>AnimeCrazy-R2.zip</fileName>
+				<title>AnimeCrazy</title>
+				<version>R2</version>
+				<date>06-01-09</date>
+				<author>exiledx</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Permet de voir les videos du site www.animecrazy.net (Anime)
+Note: le script veohproxy est necessaire afin de lire les video veoh, telechargez dans la section script veohproxy, lancez le script veohproxy puis lancez ce plugin, voila!</description_fr>
+				<description_en>Allows to watch video from the website www.animecrazy.net (Anime)
+Note: veohproxy is necessary in order to read veoh videos, download in script section veohproxy, start veohproxy script and then start this plugin, done!</description_en>
+			</entry>
+			<entry>
+				<fileName>DramaCrazy-R3.zip</fileName>
+				<title>DramaCrazy</title>
+				<version>R3</version>
+				<date>06-01-09</date>
+				<author>exiledx</author>
+				<lang>multi</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Permet de voir les videos du site www.dramacrazy.net (Drama asiatiques)
+Note: le script veohproxy est necessaire afin de lire les video veoh, telechargez dans la section script veohproxy, lancez le script veohproxy puis lancez ce plugin, voila!</description_fr>
+				<description_en>Allows to watch video from the website www.dramacrazy.net (Asian Drama)
+Note: veohproxy is necessary in order to read veoh videos, download in script section veohproxy, start veohproxy script and then start this plugin, done!</description_en>
+			</entry>
+			<entry>
+				<fileName>John Locker-R3.zip</fileName>
+				<title>John Locker</title>
+				<version>R3</version>
+				<date>10-01-09</date>
+				<author>exiledx</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Videos du site www.johnlocker.com - documentaires religieux, scientifiques, politiques ...
+Note: le script veohproxy est necessaire afin de lire les video veoh, telechargez dans la section script veohproxy, lancez le script veohproxy puis lancez ce plugin, voila!</description_fr>
+				<description_en>Videos from website www.johnlocker.com - Free Streaming Political, Religious, Science, Offbeat, and Historical Documentaries Online
+Note: veohproxy is necessary in order to read veoh videos, download in script section veohproxy, start veohproxy script and then start this plugin, done!</description_en>
+			</entry>
+			<entry>
+				<fileName>Tiki Bar TV-R1.zip</fileName>
+				<title>Tiki Bar TV</title>
+				<version>R1</version>
+				<date>03-01-09</date>
+				<author>exiledx</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Videos from website www.tikibartv.com
+Tiki Bar TV:
+Tiki Bar TV is a short video series distributed in the pioneering field of video podcasting or "vodcast." Produced in an apartment Tiki bar on a low budget, the humorous and heavily ad-libbed show is a creative outlet for its creators Jeff Macpherson and Kevin Gamble. The show garnered additional attention after being mentioned at Apple's iPod Video launch.[1] Each episode features a problem that is rectified by the episode's namesake cocktail, which is scribbled on a prescription pad by Dr. Tiki (Macpherson) and "filled" by the bartender Johnny Johnny (Gamble) who explains the construction of the cocktail. Lala is the Tiki Bar's primary denizen who opens each episode with a dance. Most episodes also include a segment called "Tiki Mail," where mail from viewers or disgruntled neighbours is answered. Episodes usually end with outtakes, the cast dancing, and a slate giving the official website and email address. The show originates from Vancouver, British Columbia in Canada.
+
+Tiki Bar TV was shown in Apple stores worldwide as part of a 6 month promotion in 2006.</description_en>
+			</entry>
+			<entry>
+				<fileName>WongFu-R1.zip</fileName>
+				<title>WongFu</title>
+				<version>R1</version>
+				<date>03-01-09</date>
+				<author>exiledx</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Permet de voir les videos du site www.wongfuproductions.com</description_fr>
+				<description_en>Allows to watch videos from the website www.wongfuproductions.com</description_en>
+			</entry>
+			<entry>
+				<fileName>Snoork_04-01-09.zip</fileName>
+				<title>Snoork</title>
+				<version>04-01-09</version>
+				<date>04-01-09</date>
+				<author>sico99</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Permet de voir les films sur http://snoork.com/movie_page_1.php (anglais)</description_fr>
+				<description_en>Allows to watch movies on http://snoork.com/movie_page_1.php</description_en>
+			</entry>
+			<entry>
+				<fileName>MySoju-R2.zip</fileName>
+				<title>MySoju</title>
+				<version>R2</version>
+				<date>10-01-09</date>
+				<author>exiledx</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Permet de voir les videos du site www.mysoju.com (Drama asiatiques)
+
+Note: le script veohproxy est necessaire afin de lire les video veoh, telechargez dans la section script veohproxy, lancez le script veohproxy puis lancez ce plugin, voila!</description_fr>
+				<description_en>Allows to watch video from the website www.mysoju.com (Asian Drama)
+
+Note: veohproxy is necessary in order to read veoh videos, download in script section veohproxy, start veohproxy script and then start this plugin, done!</description_en>
+			</entry>
+			<entry>
+				<fileName>MonkeySee-R1.zip</fileName>
+				<title>MonkeySee</title>
+				<version>R1</version>
+				<date>10-01-09</date>
+				<author>exiledx</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Permet de voir les videos du site www.monkeysee.com
+des milliers de videos truc et astuces réalisée par des experts sur tous les sujets. Regardez comment les experts font!</description_fr>
+				<description_en>Allows to watch video from the website www.monkeysee.com
+Thousands of professional-quality how-to videos by accomplished experts on every conceivable topic. See how the experts do it!</description_en>
+			</entry>
+			<entry>
+				<fileName>NL_TV_not a plugin_28-01-09.zip</fileName>
+				<title>NL TV</title>
+				<version>28-01-09</version>
+				<date>28-01-09</date>
+				<author>tikkiew</author>
+				<lang>de</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Collection de Flux TV des Pays-Bas, il ne s'agit pas en fait d'un vrai plugin, meme si on doit copier le contenu sous "plugins/video/".
+Installation:
+Il vous faudra l'ajouter comme source dans la section video.
+Lire les fichiers texte SVP
+
+!!Attention!!: Effacer la version precedente avant d'installer celle-ci (via l'interface de l'installer)</description_fr>
+				<description_en>Collection of TV streams of the Netherlands. It actually isn't a plugin, even though it's downloaded to the "plugins/video/" directory.
+Install:
+Add to the Video section as a source.
+Read text files please.
+
+!!CAUTION!!: Please delete earlier version before updating (via the installer). </description_en>
+			</entry>
+			<entry>
+				<fileName>MTV_12-10-08.rar</fileName>
+				<title>MTV</title>
+				<version>12-10-08</version>
+				<date>12-10-08</date>
+				<author>MPauley73</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Plugin réalisé par MPauley73 permettant de voir les videos sur www.mtv.com/music/video/</description_fr>
+				<description_en>Plugin made my par MPauley73 allowing tp watch videos on www.mtv.com/music/video/</description_en>
+			</entry>
+			<entry>
+				<fileName>BW_Cinema_v0_1a.zip</fileName>
+				<title>BW Cinema</title>
+				<version>0.1a</version>
+				<date>08-01-09</date>
+				<author>adityaag</author>
+				<lang>multi</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>This is a plugin for BW Cinema (www.bwcinema.com - Indian movie site) created by adityaag.  This is
+a pay website and you do need to have a username and account to use the site.
+This account information must be configured using the plugin settings.
+
+Additionally, the plugin settings allow you to control whether you'd like to see
+a separate list of recently added movies when starting the plugin.  If using
+this feature, you can also set the number of recently added movies you want on
+that list (it will pull that number into the recently added list).
+
+Have questions?  Bring them up on the XBMC forums...</description_en>
+			</entry>
+			<entry>
+				<fileName>YleAreenaVideo_1.0.2.zip</fileName>
+				<title>YleAreenaVideo</title>
+				<version>1.0.2</version>
+				<date>16-12-08</date>
+				<author>Doze</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>YleAreena video plugin. Supports YleAreena video content and YleX tv stream. Browsing by pre-set YleAreena categories and Search with paging. Script was tested in Atlantis final on Xbox.
+!!!CAUTION!!!: Video / Music streams seems to not work in other platforms.</description_en>
+			</entry>
+			<entry>
+				<fileName>CBS_US-Only_10-01-09.rar</fileName>
+				<title>CBS - US Only</title>
+				<version>10-01-09</version>
+				<date>10-01-09</date>
+				<author>BlueCop</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Regardez CSI, CSI: NY, CSI: Miami, Numb3rs, ect. Il y a des series cultes comme MacGyver and ou Star Trek.
+
+!!!ATTENTION!!!: Vous devez etre au Etats Unis pour pouvoir regardez les videos, sinopn le plugin ne fonctionnera pas</description_fr>
+				<description_en>Watching CSI, CSI: NY, CSI: Miami, Numb3rs, ect. It has some classics like MacGyver and The Orginal Star Trek too.
+Most Popular and Latest Videos should work fine.
+
+!!!CAUTION!!!: This is US ONLY</description_en>
+			</entry>
+			<entry>
+				<fileName>Hulu_US-Only_10-02-09.zip</fileName>
+				<title>Hulu - US Only</title>
+				<version>10-02-09</version>
+				<date>10-02-09</date>
+				<added>16-02-09</added>
+				<author>rwparris2 / crichton</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Le merge des versions de Hulu de rwparris2 et crichton
+
+Hulu.com is a free online video service that offers hit TV shows including Family Guy, 30 Rock, NBA and the Daily Show with Jon Stewart, etc.
+Our extensive library also includes blockbuster movies like Lost in Translation as wells as classics like Fiddler on the Roof.
+Start watching now.
+May not work outside of the US.
+
+!!!ATTENTION!!!: Vous devez etre au Etats Unis pour pouvoir regardez les videos, sinopn le plugin ne fonctionnera pas</description_fr>
+				<description_en>Result of the merge of rwparris2 and crichton Hulu plugin versions
+
+Hulu.com is a free online video service that offers hit TV shows including Family Guy, 30 Rock, NBA and the Daily Show with Jon Stewart, etc.
+Our extensive library also includes blockbuster movies like Lost in Translation as wells as classics like Fiddler on the Roof.
+Start watching now.
+May not work outside of the US.
+
+!!!CAUTION!!!: This is US ONLY</description_en>
+			</entry>
+			<entry>
+				<fileName>NFL Network Highlights_28-01-09.rar</fileName>
+				<title>NFL Network Highlights</title>
+				<version>0.0.5</version>
+				<date>28-01-09</date>
+				<author>MPauley73</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Regardez les videos sur www.nfl.com</description_fr>
+				<description_en>Watch videos on www.nfl.com</description_en>
+			</entry>
+			<entry>
+				<fileName>FoodNetwork_28-01-09.zip</fileName>
+				<title>FoodNetwork</title>
+				<version>0.0.5</version>
+				<date>28-01-09</date>
+				<author>MPauley73</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Regardez les videos sur www.foodnetwork.com (Recettes et Cuisine)</description_fr>
+				<description_en>Watch videos on www.foodnetwork.com (Recipes and Cooking)</description_en>
+			</entry>
+			<entry>
+				<fileName>G4TV_09-02-09.zip</fileName>
+				<title>G4TV</title>
+				<version>09-02-09</version>
+				<date>09-02-09</date>
+				<added>16-02-09</added>
+				<author>stacked</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL>/.passionxbmc/Installeur-Passion/content/G4TV-plugin.jpg</previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>G4TV plugin for XBMC
+
+The plugin indexes these pages:
+- Attack of the Show
+- X-Play
+- G4 Podcasts</description_en>
+			</entry>
+			<entry>
+				<fileName>NBA.com_Videos_31-01-09.zip</fileName>
+				<title>NBA.com</title>
+				<version>r575</version>
+				<date>31-01-09</date>
+				<author>stacked</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL>/.passionxbmc/Installeur-Passion/content/NBA.jpg</previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Watch videos on NBA.com
+
+Available Plugin Settings:
+- Use DVD Player instead of regular player
+- Download and Play video
+- Ask for download before playing video</description_en>
+			</entry>
+			<entry>
+				<fileName>DailyMotionKids_Alpha_15-01-09.rar</fileName>
+				<title>DailyMotionKids</title>
+				<version>Alpha 15-01-09</version>
+				<date>15-01-09</date>
+				<author>Alexsolex</author>
+				<lang>fr</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Ce plugin realisé par Alexsolex permet de voir les videos pour enfants sur le site kids.dailymotion.com</description_fr>
+				<description_en>This plugin created by Alexsolex allow to watch videos for kids available on the website kids.dailymotion.com (french content)</description_en>
+			</entry>
+			<entry>
+				<fileName>adult swim_US-Only_v0.1.zip</fileName>
+				<title>[adult swim] - US Only</title>
+				<version>0.1</version>
+				<date>11-01-09</date>
+				<author>thecheese</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Ce plugin created pour Boxee par thecheese permet de voir les vidéos sur le site www.adultswim.com
+
+Informations complementaires (anglais):
+Attention: il vous faut etre aux USA vous pouvoir voir les videos
+
+It turned out to be a bit tricky (for me at least) in that episodes are broken up into segments rather than single streams. So to watch a full episode in boxee you'd have to play the first 5-10 minute segment, select the next segment and play it, then the next, etc. I opted to go a different route which basically makes a video playlist of the segments and plays them in succession but this causes a few issues:
+
+-Watched episodes don't show up in your profile stream.
+-When you select an episode you don't get a "Play, Read more" screen. It just starts playing.</description_fr>
+				<description_en>This plugin created for Boxee by thecheese allow to watch video on www.adultswim.com
+
+Additionnal information:
+Caution: you need to be in the US in order to watch the videos
+
+It turned out to be a bit tricky (for me at least) in that episodes are broken up into segments rather than single streams. So to watch a full episode in boxee you'd have to play the first 5-10 minute segment, select the next segment and play it, then the next, etc. I opted to go a different route which basically makes a video playlist of the segments and plays them in succession but this causes a few issues:
+
+-Watched episodes don't show up in your profile stream.
+-When you select an episode you don't get a "Play, Read more" screen. It just starts playing.</description_en>
+			</entry>
+			<entry>
+				<fileName>Ren And Stimpy_Beta6.rar</fileName>
+				<title>Ren And Stimpy</title>
+				<version>Beta6</version>
+				<date>07-01-09</date>
+				<author>coolblaze</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Permet de voir les videos l'emission 'The Ren and Stimpy Show' sur www.watchrenandstimpy.com</description_fr>
+				<description_en>Allows to watch The Ren and Stimpy Show on www.watchrenandstimpy.com</description_en>
+			</entry>
+			<entry>
+				<fileName>Revision3_19-01-09.zip</fileName>
+				<title>Revision3 Plugin</title>
+				<version>19-01-09</version>
+				<date>19-01-09</date>
+				<added>03-02-09</added>
+				<author>stacked</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Revision3_plugin.jpg</previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Permet de voir les video sur Revision3
+
+Caracteristiques:
+- Téléchargement ou streaming de tous les episodes de Revision3
+- Tout les formats et tailles de videos sont disponibles (quicktime, xvid, wmv)</description_fr>
+				<description_en>Allows to watch video on Revision3
+
+Features:
+- Download or stream all episodes for every Revision3 show
+- All video formats and sizes are available (quicktime, xvid, wmv)</description_en>
+			</entry>
+			<entry>
+				<fileName>Veoh_30-01-09.zip</fileName>
+				<title>Veoh</title>
+				<version>30-01-09</version>
+				<date>30-01-09</date>
+				<added>03-02-09</added>
+				<author>Voinage</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Plugin de recherche Veoh</description_fr>
+				<description_en>Veoh search plugin</description_en>
+			</entry>
+			<entry>
+				<fileName>CNN_Video_14-01-09.zip</fileName>
+				<title>CNN Video</title>
+				<version>1.0</version>
+				<date>14-01-09</date>
+				<added>03-02-09</added>
+				<author>nuka1195</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Permet de voir les videos de CNN</description_fr>
+				<description_en>Allows to watch CNN videos</description_en>
+			</entry>
+			<entry>
+				<fileName>Easynews_28-01-09.zip</fileName>
+				<title>Easynews</title>
+				<version>28-01-09</version>
+				<date>28-01-09</date>
+				<added>03-02-09</added>
+				<author>nate12o6</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Easynews.jpg</previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>This plugin does is it goes to vcdquality.com and checks for any new dvd rips.
+It will then take the rip that you choose and pass it to easynews where you can then choose to download or stream it
+
+Note:
+You have to have an easynews account to use it.</description_en>
+			</entry>
+			<entry>
+				<fileName>ESPN_Video_01-02-09.zip</fileName>
+				<title>ESPN Video</title>
+				<version>r582</version>
+				<date>01-02-09</date>
+				<added>03-02-09</added>
+				<author>stacked</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL>/.passionxbmc/Installeur-Passion/content/ESPN_Video.jpg</previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Plugin for ESPN (videos + podcasts)
+
+Available Plugin Settings:
+- Use DVD Player instead of regular player
+- Download and Play video
+- Ask for download before playing video</description_en>
+			</entry>
+			<entry>
+				<fileName>PBS_FRONTLINE_17-01-09.zip</fileName>
+				<title>PBS FRONTLINE</title>
+				<version>r541</version>
+				<date>17-01-09</date>
+				<added>03-02-09</added>
+				<author>stacked </author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL>/.passionxbmc/Installeur-Passion/content/PBS_FRONTLINE.jpg</previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>It indexes videos from FRONTLINE online videos:
+http://www.pbs.org/wgbh/pages/frontline/view/</description_en>
+			</entry>
+			<entry>
+				<fileName>UlmenTV_v1.33.zip</fileName>
+				<title>UlmenTV</title>
+				<version>1.33</version>
+				<date>31-01-2009</date>
+				<added>03-02-09</added>
+				<author>bootsy </author>
+				<lang>ge</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>UlmenTV (www.ulmen.tv) plugin to watch the episodes (German)</description_en>
+			</entry>
+			<entry>
+				<fileName>Mike_Wallace_20-01-09.zip</fileName>
+				<title>The Mike Wallace Interview</title>
+				<version>20-01-09</version>
+				<date>20-01-09</date>
+				<added>03-02-09</added>
+				<author>bolt</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Plugin for The Mike Wallace Interview episodes posted here:
+
+http://solstice.ischool.utexas.edu/t...lace_Interview
+
+The Mike Wallace Interview is a series of 30-minute television interviews conducted by host Mike Wallace in 1957-60. Guests include Eldon Edwards, Imperial Wizard of the Ku Klux Klan, Frank Lloyd Wright, Kirk Douglas, Salvador Dali, and more.</description_en>
+			</entry>
+			<entry>
+				<fileName>Fastpasstv_16-02-09.rar</fileName>
+				<title>Fastpasstv</title>
+				<version>16-02-09</version>
+				<date>16-02-09</date>
+				<added>16-02-09</added>
+				<author>Voinage</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Permet de voir les videos sur le site www.fastpasstv.com (Films, Series TV, Animations ...)</description_fr>
+				<description_en>Allows to watch video on www.fastpasstv.com (Movies, TV Shows, Cartoons ...)</description_en>
+			</entry>
+			<entry>
+				<fileName>CNETTV_plugin1.5.zip</fileName>
+				<title>CNETTV plugin</title>
+				<version>1.5</version>
+				<date>22-01-09</date>
+				<added>03-02-09</added>
+				<author>sico99</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+			<description_fr>Permet de visionner les vidéos de CNET TV (anglais)</description_fr>
+			<description_en>Allows to play the last videos from CNET TV
+It handles the today list, organises shows by date, gives all product reviews, how to's and shows directly from the web.</description_en>
+			</entry>
+			<entry>
+				<fileName>Icanhascheezburger_v1.1.zip</fileName>
+				<title>Icanhascheezburger</title>
+				<version>1.1</version>
+				<date>01-02-09</date>
+				<added>03-02-09</added>
+				<author>sico99</author>
+				<lang></lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>New version of Icanhascheezburger fixing some problems with the RSS + adding Failblog</description_en>
+			</entry>
+			<entry>
+				<fileName>ViivijaWagner_01-02-09.zip</fileName>
+				<title>ViivijaWagner</title>
+				<version>01-02-09</version>
+				<date>01-02-09</date>
+				<added>03-02-09</added>
+				<author>sico99</author>
+				<lang>fin</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Viivi ja Vagner plugin (Finnish Cartoon)</description_en>
+			</entry>
+			<entry>
+				<fileName>Instantz_Anime_16-02-09.rar</fileName>
+				<title>Instantz Anime</title>
+				<version>16-02-09</version>
+				<date>16-02-09</date>
+				<added>16-02-09</added>
+				<author>Voinage</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Instantz anime - veoh based anime.</description_en>
+			</entry>
+			<entry>
+				<fileName>Gresham_28-01-09.rar</fileName>
+				<title>Gresham College Lecture Plugin</title>
+				<version>28-01-09</version>
+				<date>28-01-09</date>
+				<added>03-02-09</added>
+				<author>weateallthepies</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Gresham College is a London college which has been providing free public lectures for hundreds of years. Lately they have been recording the lectures and publishing them at http://www.gresham.ac.uk/default.asp. They lecture on a whole range of subjects and it's a really great resource..particularly if you live in London and can visit.
+
+I've just scraped all the links, obviously mp4/mp3 are nicer than real audio/video but the content for each lecture varies.</description_en>
+			</entry>
+			<entry>
+				<fileName>The_Best_of_ITV_15-02-09.zip</fileName>
+				<title>The Best of ITV</title>
+				<version>15-02-09</version>
+				<date>15-02-09</date>
+				<added>16-02-09</added>
+				<author>Dink / Voinage</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Le meilleur des videos du site www.itv.com</description_fr>
+				<description_en>The best of the videos from www.itv.com</description_en>
+			</entry>
+			<entry>
+				<fileName>LastTube_31-01-09.zip</fileName>
+				<title>LastTube</title>
+				<version>31-01-09</version>
+				<date>31-01-09</date>
+				<added>03-02-09</added>
+				<author>rwparris2</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>It will grab your Last.FM username's top artists (if you have one), allow you to search for music by a Last.FM username's top artists, by similar artists, and by tag... basically just like last.fm, except instead of playing back music files it plays back youtube videos.</description_en>
+			</entry>
+			<entry>
+				<fileName>Onion_News_Network_29-01-09.zip</fileName>
+				<title>Onion News Network</title>
+				<version>29-01-09</version>
+				<date>29-01-09</date>
+				<added>03-02-09</added>
+				<author>rwparris2</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Plugin for the Onion News Network http://tv.theonion.com . Funny fake news.
+25 most recent clips are available in high quality mp4.
+Each section has a "view random" if you just want to play with whatever.</description_en>
+			</entry>
+			<entry>
+				<fileName>National Geographic_09-02-09.zip</fileName>
+				<title>National Geographic</title>
+				<version>09-02-09</version>
+				<date>09-02-09</date>
+				<added>16-02-09</added>
+				<author>stacked</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL>/.passionxbmc/Installeur-Passion/content/National_Geographic.jpg</previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>An excellent plugin for people who like to watch video on www.nationalgeographic.com/video</description_en>
+			</entry>
+			<entry>
+				<fileName>TED_Talks_v2Beta1.1.zip</fileName>
+				<title>TED Talks</title>
+				<version>v2Beta1.1</version>
+				<date>06-10-08</date>
+				<added>08-02-09</added>
+				<author>rwparris2</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Allows to watch video on ted.org
+
+Features:
+Browse All, Browse by Theme, Plugin Settings (highlight the plugin, open context menu) allows you to set your preference to 480p HD videos, regular SD videos, or Audio.
+If you set set it to something other than SD video while browsing by theme, it will still show you ALL videos available, and then it will try to play it in the format you requested. If it can't find an audio stream or HD stream, it will just play the regular SD video instead.</description_en>
+			</entry>
+			<entry>
+				<fileName>NetFlix_RSS_Reader_19-09-08.zip</fileName>
+				<title>NetFlix RSS Reader</title>
+				<version>19-09-08</version>
+				<date>19-09-08</date>
+				<added>08-02-09</added>
+				<author>rwparris2</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>No videos, just Title and Plot from RSS feed. Listed as a video plugin but can be installed into any plugin folder.
+
+Instructions:
+You have to manually insert your netflix id via the plugin settings (highlight plugin, context menu, settings) You're looking for this:
+http://rss.netflix.com/AtHomeRSS?[B]id=P0000000000000000000000000000000[/B]
+Put the bolded part in there.
+If you don't want to do it through the gui, you can open the plugin folder>resources>settings.xml and set your number to the default.</description_en>
+			</entry>
+			<entry>
+				<fileName>IPlayer_13b-02-09.zip</fileName>
+				<title>IPlayer</title>
+				<version>13b-02-09</version>
+				<date>13-02-09</date>
+				<added>16-02-09</added>
+				<author>Dink / johnsto</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>BBC iPlayer NOTE: Grande Bretagne seulement</description_fr>
+				<description_en>BBC iPlayer NOTE: UK Only</description_en>
+			</entry>
+			<entry>
+				<fileName>Wine_Library_TV_v3.0.zip</fileName>
+				<title>Wine Library TV</title>
+				<version>3.0</version>
+				<date>08-02-09</date>
+				<added>08-02-09</added>
+				<author>Jeff Fisher</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Allows to watch video on tv.winelibrary.com</description_en>
+			</entry>
+			<entry>
+				<fileName>Youtube_16-02-09.zip</fileName>
+				<title>Youtube</title>
+				<version>Unofficial</version>
+				<date>16-02-09</date>
+				<added>16-02-09</added>
+				<author>nuka1195</author>
+				<lang>multi</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Un plugin pour regarder les videos sur YouTube
+Note: Cette version n'est pas officielle et est basée sur la version du 09-02-09 afin de tourner sur XBOX et Mac</description_fr>
+				<description_en>A plugin to watch YouTube videos
+Note: This version is not official and is based on 09-02-09 version in order to run on XBOX et Mac</description_en>
+			</entry>
+			<entry>
+				<fileName>YouTube_Channels_v1.0.zip</fileName>
+				<title>Youtube Channels</title>
+				<version>1.0</version>
+				<date>09-02-09</date>
+				<added>16-02-09</added>
+				<author>afishe2000</author>
+				<lang>multi</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>YouTube plugin to play selected channels.
+
+To edit the channels you need to edit default.py.
+
+Add any YouTube Channel you want...
+
+addChannel('name', 'channel')
+
+http://www.youtube.com/user/FoodNetworkTV - channel = FoodNetworkTV
+
+addChannel('Food Network TV', 'FoodNetworkTV')
+
+------------------------------------------------------
+
+addChannel('Food Network TV', 'FoodNetworkTV')
+addChannel('Indian Food', 'vahchef')
+addChannel('Show Me The Curry', 'ShowMeTheCurry')
+addChannel('UKTV Food', 'UKTVFoodChannel')
+addChannel('Food Wishes','foodwishes')
+addChannel('Cooking 75','cooking75')
+addChannel('Maangchi','Maangchi')
+addChannel('Indian Food Recipes', 'IndianFoodRecipes')
+
+------------------------------------------------------
+
+Available Plugin Settings:
+None
+				</description_en>
+			</entry>
+			<entry>
+				<fileName>Bang_Bros_Network_v2.zip</fileName>
+				<title>Bang Bros Network</title>
+				<version>2</version>
+				<date>13-02-09</date>
+				<added>19-02-09</added>
+				<author>MDPauley</author>
+				<lang></lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>A plugin that will pull the preview clips for the first 50 girls on BangBrosNetwork.com</description_en>
+			</entry>
+			<entry>
+				<fileName></fileName>
+				<title></title>
+				<version></version>
+				<date></date>
+				<added></added>
+				<author></author>
+				<lang></lang>
+				<iconURL></iconURL>
+				<previewPictureURL>/.passionxbmc/Installeur-Passion/content/</previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en></description_en>
+			</entry>
+		</videoplugin>
+		<!-- FIN Sous-section plugins Video -->
+	</plugins>
+	<!-- FIN Section Plugins -->
+</installeurContent>
