@@ -3,7 +3,9 @@
 """
 Le Blog de Didier Allouch Video HTML parser with GUI by Temhil (temhil@gmail.com)
  
-15-02-09 Version Beta1 by Temhil 
+20-02-09 Version 1.1 by Temhil 
+    - Update Regex for getting video list even if not date is defined
+15-02-09 Version 1.0 by Temhil 
     - Creation from Blog Alain Carraze script
     - Improved Regex for Description
     - Added cleanup of HTML tag in description
@@ -14,7 +16,7 @@ réservés à Canal+
 """
 
 ############################################################################
-version     = '1.0'
+version     = '1.1-Dev01'
 author      = 'Temhil'
 ############################################################################
 
@@ -294,15 +296,21 @@ class blogVideoListWebPage(WebPage):
         Parameters:
             - [out] dataObj: Data object (blogCollectionData) where data 
               extracted from the Webpage  will be appended 
+
         """
-        reVideo = re.compile(r"""<h2\ class=\"date\"><span>(?P<videoDate>.+?)</span></h2>.*?<h3><span>(?P<videoTitle>.+?)</span></h3>.*?<div id="playercontent(?P<videoID>[0-9]+?)">.+?[0-9]+?\:[0-9]+?.+?<a href="http://%s\.blog\.canal-plus\.com/(?P<videoDescriptURL>archive.+?html)\">Lien permanent</a>"""%BASE_BLOGNAME_REGEX, re.DOTALL) 
+        self.debug = True
+        #reVideo = re.compile(r"""<h2\ class=\"date\"><span>(?P<videoDate>.+?)</span></h2>.*?<h3><span>(?P<videoTitle>.+?)</span></h3>.*?<div id="playercontent(?P<videoID>[0-9]+?)">.+?[0-9]+?\:[0-9]+?.+?<a href="http://%s\.blog\.canal-plus\.com/(?P<videoDescriptURL>archive.+?html)\">Lien permanent</a>"""%BASE_BLOGNAME_REGEX, re.DOTALL) 
+        reVideo = re.compile(r"""</div>   (<h2 class="date"><span>(?P<videoDate>.+?)</span></h2>)?.*?<a id=".+?"></a> <h3><span>(?P<videoTitle>.+?)</span></h3>.*?<div id="playercontent(?P<videoID>[0-9]+?)">.+?[0-9]+?\:[0-9]+?.+?<a href="http://%s\.blog\.canal-plus\.com/(?P<videoDescriptURL>archive.+?html)\">Lien permanent</a>"""%BASE_BLOGNAME_REGEX, re.DOTALL) 
 
         ##TODO Exception on nothing found !!!!!!!!!!!!!!!!!!!!!!!!
 
         for i in reVideo.finditer(self.Source):
             # Copy each item found in a list
             dataObj.videoIDList.append(i.group("videoID"))
-            dataObj.videoDateList.append(unicode(i.group("videoDate"),"utf-8").encode("cp1252"))
+            if i.group("videoDate"):
+                dataObj.videoDateList.append(unicode(i.group("videoDate"),"utf-8").encode("cp1252"))
+            else:
+                dataObj.videoDateList.append("")
             dataObj.videotitleList.append(unicode(i.group("videoTitle"),"utf-8").encode("cp1252"))
             dataObj.videoPageList.append(i.group("videoDescriptURL"))
             
@@ -921,7 +929,6 @@ class MainWindow(xbmcgui.Window):
         self.Menulist = xbmcgui.ControlList(10, 190, menuListWidth, menuListSize, space=0,font='font12', textColor='0xFF000000',itemTextXOffset=-5, buttonTexture = os.path.join(IMAGEDIR,"list-background.png"), buttonFocusTexture = os.path.join(IMAGEDIR,"list-focus.png"))
 
         # Videos Control List
-        #self.list = xbmcgui.ControlList(207, 140, 393, 380, space=8, itemHeight=80, font='font12', textColor='0xFF000000',itemTextXOffset=0, buttonFocusTexture  = os.path.join(IMAGEDIR,"list-background.png"),imageWidth=107, imageHeight=80)
         self.list = xbmcgui.ControlList(247, 140, 453, 380, space=8, itemHeight=80, font='font12', textColor='0xFF000000',itemTextXOffset=0, buttonFocusTexture  = os.path.join(IMAGEDIR,"list-background.png"),imageWidth=107, imageHeight=80)
 
         # Title of the current page
@@ -1038,10 +1045,12 @@ class MainWindow(xbmcgui.Window):
 
             #for name in self.CollectionSelector.selectCollecData[menuSelectIndex].videotitleList:
             #	 index = self.CollectionSelector.selectCollecData[menuSelectIndex].videotitleList.index(name)		
-            for date in self.CollectionSelector.selectCollecData[menuSelectIndex].videoDateList:
-                index = self.CollectionSelector.selectCollecData[menuSelectIndex].videoDateList.index(date) 
+            for videoID in self.CollectionSelector.selectCollecData[menuSelectIndex].videoIDList:
+                index = self.CollectionSelector.selectCollecData[menuSelectIndex].videoIDList.index(videoID) 
                
-                pic = CACHEDIR + self.CollectionSelector.selectCollecData[menuSelectIndex].videoIDList[index] + ".jpg"
+                #pic = CACHEDIR + self.CollectionSelector.selectCollecData[menuSelectIndex].videoIDList[index] + ".jpg"
+                pic   = CACHEDIR + videoID + ".jpg"
+                date  = self.CollectionSelector.selectCollecData[menuSelectIndex].videoDateList[index]
                 title = self.CollectionSelector.selectCollecData[menuSelectIndex].videotitleList[index]
                 if not os.path.exists(pic):
                     # images not here use default
@@ -1085,15 +1094,19 @@ class MainWindow(xbmcgui.Window):
         """
         # Now get the images:
         try:       
-            for date in self.CollectionSelector.selectCollecData[menuSelectIndex].videoDateList:
-                index = self.CollectionSelector.selectCollecData[menuSelectIndex].videoDateList.index(date) 
+            #for date in self.CollectionSelector.selectCollecData[menuSelectIndex].videoDateList:
+            #    index = self.CollectionSelector.selectCollecData[menuSelectIndex].videoDateList.index(date) 
+            for videoID in self.CollectionSelector.selectCollecData[menuSelectIndex].videoIDList:
+                index = self.CollectionSelector.selectCollecData[menuSelectIndex].videoIDList.index(videoID) 
                 # Load video XML file
-                myVideoXMLPage = blogVideoXML(BASE_URL_XML + self.CollectionSelector.selectCollecData[self.CollectionSelector.selectedMenu].videoIDList[index],txdata,txheaders,self.configManager.getDebug())
+                #myVideoXMLPage = blogVideoXML(BASE_URL_XML + self.CollectionSelector.selectCollecData[self.CollectionSelector.selectedMenu].videoIDList[index],txdata,txheaders,self.configManager.getDebug())
+                myVideoXMLPage = blogVideoXML(BASE_URL_XML + videoID, txdata,txheaders,self.configManager.getDebug())
         
                 # Get the URL of the video picture
                 videoimg = myVideoXMLPage.GetVideoImageURL()
     
-                videoimgdest = os.path.join(CACHEDIR,self.CollectionSelector.selectCollecData[self.CollectionSelector.selectedMenu].videoIDList[index] + ".jpg")
+                #videoimgdest = os.path.join(CACHEDIR,self.CollectionSelector.selectCollecData[self.CollectionSelector.selectedMenu].videoIDList[index] + ".jpg")
+                videoimgdest = os.path.join(CACHEDIR,videoID + ".jpg")
     
                 #print("Try to Download : " + videoimg)
                 #print("at : " + videoimgdest)
