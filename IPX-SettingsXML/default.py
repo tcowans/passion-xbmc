@@ -10,7 +10,7 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/Installer%20Passion-XBMC/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center"
-__date__         = "18-02-2009"
+__date__         = "21-02-2009"
 __version__      = "pre-1.0.0"
 __svn_revision__ = 0
 
@@ -25,6 +25,14 @@ import xbmcgui
 
 # INITIALISATION CHEMIN RACINE
 ROOTDIR = os.getcwd().replace( ";", "" )
+
+#frost: changer la langue par default pour l'anglais, car de cette maniere on ai pas obliger de rejouter le strings manquant dans les autres language
+#FONCTION POUR RECUPERER LES LABELS DE LA LANGUE. ( ex: __language__( 0 ) = id="0" du fichier strings.xml )
+__language__ = xbmc.Language( ROOTDIR ).getLocalizedString
+
+DIALOG_PROGRESS = xbmcgui.DialogProgress()
+
+DIALOG_PROGRESS.create( __language__( 0 ), "Importing Modules...", "" )
 
 # Shared resources
 BASE_RESOURCE_PATH = os.path.join( ROOTDIR, "resources" )
@@ -42,15 +50,10 @@ sys.path.append( os.path.join( BASE_RESOURCE_PATH, "libs", "GUI" ) )
 
 #modules custom
 from specialpath import *
+import settings
+SETTINGS = settings.Settings()
 import script_log as logger
 
-
-#frost: changer la langue par default pour l'anglais, car de cette maniere on ai pas obliger de rejouter le strings manquant dans les autres language
-#FONCTION POUR RECUPERER LES LABELS DE LA LANGUE. ( ex: __language__( 0 ) = id="0" du fichier strings.xml )
-#__language__ = xbmc.Language( ROOTDIR, "french" ).getLocalizedString
-__language__ = xbmc.Language( ROOTDIR ).getLocalizedString
-
-DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
 # Info version
 __version_l1__ = __language__( 700 )#"version"
@@ -78,32 +81,23 @@ def MAIN():
 
     try:
         # INITIALISATION CHEMINS DE FICHIER LOCAUX
-        import CONF
-        config = CONF.ReadConfig()
 
         DIALOG_PROGRESS.update( -1, __language__( 101 ), __language__( 110 ) )
-        if not config.getboolean( 'InstallPath', 'pathok' ):
+        if ( SETTINGS.getSetting( "path_ok", "false" ) == "false" ):
             # GENERATION DES INFORMATIONS LOCALES
+            import CONF
             CONF.SetConfiguration()
+            del CONF
 
         # VERIFICATION DE LA MISE A JOUR
         import CHECKMAJ
-        try:
-            from utilities import Settings
-            CHECKMAJ.UPDATE_STARTUP = Settings().get_settings().get( "update_startup", True )
-            del Settings
-        except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
         if CHECKMAJ.UPDATE_STARTUP:
             DIALOG_PROGRESS.update( -1, __language__( 102 ), __language__( 110 ) )
         CHECKMAJ.go()
         del CHECKMAJ
 
-        config = CONF.ReadConfig()
-        del CONF
-
         dialog_error = False
-        if not config.getboolean( 'Version', 'UPDATING' ):
+        if ( SETTINGS.getSetting( "updating", "true" ) == "false" ):
             try:
                 # LANCEMENT DU SCRIPT
                 import MainGui
@@ -114,11 +108,7 @@ def MAIN():
         else:
             # LANCEMENT DE LA MISE A JOUR
             try:
-                scriptmaj = config.get( 'Version', 'SCRIPTMAJ' )
-                xbmc.executescript( scriptmaj )
-
-                #import MainGui
-                #MainGui.show_main()
+                xbmc.executescript( SETTINGS.getSetting( "path-scriptMAJ" ) )
             except:
                 logger.LOG( logger.LOG_DEBUG, "default : Exception pendant le chargement et/ou La mise a jour" )
                 logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
@@ -132,7 +122,7 @@ def MAIN():
 
 if __name__ == "__main__":
     try:
-        DIALOG_PROGRESS.create( __language__( 0 ), "", "" )
+        #DIALOG_PROGRESS.create( __language__( 0 ), "", "" )
         if TEST_PERFORMANCE:
             import profile, pstats
             report_file = os.path.join( ROOTDIR, "MainPerform.profile.log" )

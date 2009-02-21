@@ -32,7 +32,6 @@ __all__ = [
 #Modules general
 import os
 import sys
-from ConfigParser import ConfigParser
 
 #modules XBMC
 import xbmc
@@ -44,9 +43,8 @@ try:
 except:
     import script_log as logger
 
-# FICHIERS DE CONFIGURATION
-default_conf = os.path.join( os.getcwd().replace( ";", "" ), "resources", "conf.cfg" )
-profile_conf = os.path.join( sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA, "conf.cfg" )
+
+SETTINGS = sys.modules[ "__main__" ].SETTINGS
 
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
 _ = sys.modules[ "__main__" ].__language__
@@ -100,16 +98,6 @@ INDEX_SRV_ITEM_FORMAT_FILE_RAR = 1
 INDEX_SRV_ITEM_FORMAT_INVALID  = 2
 
 
-def ReadConfig():
-    config = ConfigParser()
-    if not os.path.exists( profile_conf ):
-        config.read( default_conf )
-        config.write( open( profile_conf, "w" ) )
-
-    config.read( profile_conf )
-    return config
-
-
 def SetConfiguration():
     """ Definit les repertoires locaux de l'utilisateur """
     from utilities import SYSTEM_PLATFORM
@@ -122,58 +110,56 @@ def SetConfiguration():
 
     ROOTDIR = os.getcwd().replace( ";", "" )
 
-    config = ReadConfig()
     USRPath = False
 
     if not os.path.isdir( XBMC_ROOT ):
         XBMC_ROOT = Dialog().browse( 0, sys.modules[ "__main__" ].__language__( 100 ), "files" )
         logger.LOG( logger.LOG_DEBUG, "Other case, XBMC = %s", XBMC_ROOT )
-    config.set( "InstallPath", "path", XBMC_ROOT )
+    SETTINGS.setSetting( "path-xbmc_home", XBMC_ROOT )
 
     if SYSTEM_PLATFORM == "linux":
         #Set Linux normal ScraperDir
         ScraperDir = os.path.join( os.sep+"usr", "share", "xbmc", "system", "scrapers", "video" )
-        config.set( "InstallPath", "ScraperDir", ScraperDir )
+        SETTINGS.setSetting( "path-ScraperDir", ScraperDir )
         #Set Linux PMIIIDir
         PMIIIDir = os.path.join( os.sep+"usr", "share", "xbmc", "skin" )
-        config.set( "InstallPath", "PMIIIDir", PMIIIDir )
+        SETTINGS.setSetting( "path-PMIIIDir", PMIIIDir )
         USRPath = True
     else:
         #Set Win ScraperDir
         scraperDir = os.path.join( XBMC_ROOT, "system", "scrapers", "video" )
-        config.set( "InstallPath", "ScraperDir", scraperDir )
+        SETTINGS.setSetting( "path-ScraperDir", scraperDir )
 
     #Set ScraperType
-    config.set( "InstallPath", "USRPath", USRPath )
+    SETTINGS.setSetting( "path-USRPath", repr( USRPath ).lower() )
 
     #Set ThemesDir
-    config.set( "InstallPath", "ThemesDir", os.path.join( XBMC_ROOT, "skin" ) )
+    SETTINGS.setSetting( "path-ThemesDir", os.path.join( XBMC_ROOT, "skin" ) )
 
     #Set ScriptsDir
-    config.set( "InstallPath", "ScriptsDir", os.path.join( XBMC_ROOT, "scripts" ) )
+    SETTINGS.setSetting( "path-ScriptsDir", os.path.join( XBMC_ROOT, "scripts" ) )
 
     #Set PluginDir
     PluginDir = os.path.join( XBMC_ROOT, "plugins" )
-    config.set( "InstallPath", "PluginDir", PluginDir )
-    config.set( "InstallPath", "PluginMusDir", os.path.join( PluginDir, "music" ) )
-    config.set( "InstallPath", "PluginPictDir", os.path.join( PluginDir, "pictures" ) )
-    config.set( "InstallPath", "PluginProgDir", os.path.join( PluginDir, "programs" ) )
-    config.set( "InstallPath", "PluginVidDir", os.path.join( PluginDir, "video" ) )
+    SETTINGS.setSetting( "path-PluginDir", PluginDir )
+    SETTINGS.setSetting( "path-PluginMusDir", os.path.join( PluginDir, "music" ) )
+    SETTINGS.setSetting( "path-PluginPictDir", os.path.join( PluginDir, "pictures" ) )
+    SETTINGS.setSetting( "path-PluginProgDir", os.path.join( PluginDir, "programs" ) )
+    SETTINGS.setSetting( "path-PluginVidDir", os.path.join( PluginDir, "video" ) )
 
     #Set CacheDir
-    config.set( "InstallPath", "CacheDir", os.path.join( ROOTDIR, "cache" ) )
+    SETTINGS.setSetting( "path-CacheDir", os.path.join( ROOTDIR, "cache" ) )
 
     #Set UserDataDir
-    config.set( "InstallPath", "UserDataDir", os.path.join( XBMC_ROOT, "userdata" ) )
+    SETTINGS.setSetting( "path-UserDataDir", os.path.join( XBMC_ROOT, "userdata" ) )
 
     #Save configuration
-    config.set( "InstallPath", "pathok", True )
-    config.write( open( profile_conf, "w" ) )
+    ok = SETTINGS.setSetting( "path_ok", "true", save=True )
 
 
 class configCtrl:
     """
-    Controler of configuration
+    OBSOLETE: Controler of configuration
     """
     def __init__( self ):
         """
@@ -181,35 +167,30 @@ class configCtrl:
         """
         self.is_conf_valid = False
         try:
-            #TODO: deplacer ici l'utilisation du config parser
-            # Create config parser
-            self.config = ReadConfig()
+            self.rssfeed         = "http://passion-xbmc.org/.xml/?type=rss;limit=10"
 
-            self.CACHEDIR      = self.config.get( 'InstallPath', 'CacheDir' )
-            self.themesDir     = self.config.get( 'InstallPath', 'ThemesDir' )
-            self.scriptDir     = self.config.get( 'InstallPath', 'ScriptsDir' )
-            self.scraperDir    = self.config.get( 'InstallPath', 'ScraperDir' )
-            self.pluginDir     = self.config.get( 'InstallPath', 'PluginDir' )
-            self.pluginMusDir  = self.config.get( 'InstallPath', 'PluginMusDir' )
-            self.pluginPictDir = self.config.get( 'InstallPath', 'PluginPictDir' )
-            self.pluginProgDir = self.config.get( 'InstallPath', 'PluginProgDir' )
-            self.pluginVidDir  = self.config.get( 'InstallPath', 'PluginVidDir' )
-            self.userdatadir   = self.config.get( 'InstallPath', 'UserDataDir' )
+            self.itemDescripDir  = "/.passionxbmc/Installeur-Passion/content/"
+            self.itemDescripFile = "installeur_content.xml"
 
-            self.USRPath       = self.config.getboolean( 'InstallPath', 'USRPath' )
+            self.host          = SETTINGS.getSetting( "ftp-host", "stock.passionxbmc.org" )
+            self.user          = SETTINGS.getSetting( "ftp-user", "anonymous" )
+            self.password      = SETTINGS.getSetting( "ftp-password", "xxxx" )
+
+            self.CACHEDIR      = SETTINGS.getSetting( "path-CacheDir" )
+            self.themesDir     = SETTINGS.getSetting( "path-ThemesDir" )
+            self.scriptDir     = SETTINGS.getSetting( "path-ScriptsDir" )
+            self.scraperDir    = SETTINGS.getSetting( "path-ScraperDir" )
+            self.pluginDir     = SETTINGS.getSetting( "path-PluginDir" )
+            self.pluginMusDir  = SETTINGS.getSetting( "path-PluginMusDir" )
+            self.pluginPictDir = SETTINGS.getSetting( "path-PluginPictDir" )
+            self.pluginProgDir = SETTINGS.getSetting( "path-PluginProgDir" )
+            self.pluginVidDir  = SETTINGS.getSetting( "path-PluginVidDir" )
+            self.userdatadir   = SETTINGS.getSetting( "path-UserDataDir" )
+
+            self.USRPath       = SETTINGS.getSetting( "path-USRPath", "false" ) == "true"
+            self.PMIIIDir      = ""
             if self.USRPath:
-                self.PMIIIDir    = self.config.get( 'InstallPath', 'PMIIIDir' )
-            else: self.PMIIIDir  = ""
-
-            self.host            = self.config.get( 'ServeurID', 'host' )
-            self.user            = self.config.get( 'ServeurID', 'user' )
-            self.rssfeed         = self.config.get( 'ServeurID', 'rssfeed' )
-            self.password        = self.config.get( 'ServeurID', 'password' )
-            self.itemDescripDir  = self.config.get( 'ServeurID', 'contentdescriptorDir' )
-            self.itemDescripFile = self.config.get( 'ServeurID', 'contentdescriptor' )
-
-#            self.remotedirList   = [ "/.passionxbmc/Themes/", "/.passionxbmc/Scraper/", "/.passionxbmc/Scripts/", "/.passionxbmc/Plugins/",
-#                "/.passionxbmc/Plugins/Music/", "/.passionxbmc/Plugins/Pictures/", "/.passionxbmc/Plugins/Programs/", "/.passionxbmc/Plugins/Videos/" ]
+                self.PMIIIDir  = SETTINGS.getSetting( "path-PMIIIDir" )
 
             # Repertoire sur le serveur FTP
             # ATTENTION: Ne pas changer l'ordre de ce tableau, il correspond aux index (INDEX_SKIN ...)
@@ -242,7 +223,7 @@ class configCtrl:
             self.is_conf_valid = True
         except:
             self.is_conf_valid = False
-            logger.LOG( logger.LOG_DEBUG, "Exception while loading configuration file conf.cfg" )
+            logger.LOG( logger.LOG_DEBUG, "Exception while loading configuration" )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def getSrvHost( self ):

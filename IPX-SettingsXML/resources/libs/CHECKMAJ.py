@@ -18,11 +18,9 @@ except:
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
 _ = sys.modules[ "__main__" ].__language__
 
-# variable qui peut etre modifie a partir du __main__ e.g.:
-# import CHECKMAJ
-# CHECKMAJ.UPDATE_STARTUP = False
-# CHECKMAJ.go()
-UPDATE_STARTUP = True
+SETTINGS = sys.modules[ "__main__" ].SETTINGS
+UPDATE_STARTUP = ( SETTINGS.getSetting( "gen-update_startup", "true" ) == "true" )
+
 
 logger.LOG( logger.LOG_DEBUG, str( "*" * 85 ) )
 logger.LOG( logger.LOG_DEBUG, "Script de mise a jour auto".center( 85 ) )
@@ -35,20 +33,11 @@ class CheckMAJ:
         self.rootdir = os.getcwd().replace(';','')
 
         ##############################################################################
-        #                   Initialisation conf.cfg                                  #
-        ##############################################################################
-
-        self.fichier = os.path.join( sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA, "conf.cfg" )
-        #self.fichier = os.path.join(self.rootdir, "resources", "conf.cfg")
-
-        import CONF
-        self.localConfParser = CONF.ReadConfig()
-        ##############################################################################
         #                   Initialisation parametres locaux                         #
         ##############################################################################
-        self.cacheDir   = self.localConfParser.get('InstallPath','CacheDir')
-        self.scriptDir  = self.localConfParser.get('InstallPath','ScriptsDir')
-        self.curversion = self.localConfParser.get('Version','version')
+        self.cacheDir   = SETTINGS.getSetting( "path-CacheDir" )
+        self.scriptDir  = SETTINGS.getSetting( "path-ScriptsDir" )
+        self.curversion = SETTINGS.getSetting( "version", sys.modules[ "__main__" ].__version__ )
 
         ##############################################################################
         #                   Verification des repertoires et creation si besoin
@@ -58,10 +47,11 @@ class CheckMAJ:
         ##############################################################################
         #                   Initialisation parametres serveur                        #
         ##############################################################################
-        self.host               = self.localConfParser.get('ServeurID','host')
-        self.user               = self.localConfParser.get('ServeurID','user')
-        self.password           = self.localConfParser.get('ServeurID','password')
-        self.remoteversionDir   = self.localConfParser.get('ServeurID','updatescriptdir')
+
+        self.host             = SETTINGS.getSetting( "ftp-host", "stock.passionxbmc.org" )
+        self.user             = SETTINGS.getSetting( "ftp-user", "anonymous" )
+        self.password         = SETTINGS.getSetting( "ftp-password", "xxxx" )
+        self.remoteversionDir = "/.passionxbmc/Installeur-Passion/"
 
         self.filetodl = ""
         self.newversionfile = ""
@@ -137,11 +127,11 @@ class CheckMAJ:
             del remoteConfParser
         else:
             self.newversion = self.curversion
+        self.newversion = self.newversion.lower()
 
-        if self.newversion == self.curversion:
+        if self.newversion == self.curversion or self.newversion in self.curversion:
             #version a jour
-            self.localConfParser.set("Version", "UPDATING", False)
-            self.localConfParser.write(open(self.fichier,'w'))
+            SETTINGS.setSetting( "updating", "false" )
         else:
             # version non a jour - Demande a l'utlisateur
             # Message a l'utilisateur pour l'update
@@ -157,14 +147,12 @@ class CheckMAJ:
                 self.download()
                 scriptmaj = self.completedfile
 
-                self.localConfParser.set("Version", "UPDATING", True)
-                self.localConfParser.set("Version", "scriptMAJ", scriptmaj)
-                self.localConfParser.write(open(self.fichier,'w'))
+                SETTINGS.setSetting( "path-scriptMAJ", scriptmaj )
+                SETTINGS.setSetting( "updating", "true" )
                 self.configmaj()
             else:
                 #L'utilisateur a REFUSE la mise a jour
-                self.localConfParser.set("Version", "UPDATING", False)
-                self.localConfParser.write(open(self.fichier,'w'))
+                SETTINGS.setSetting( "updating", "false" )
 
     def configmaj(self):
         """
@@ -190,7 +178,6 @@ class CheckMAJ:
                 except:
                     logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
 
-#TODO: QUESTIOn : ne devrait t'on pas faire "self.localConfParser.write(open(self.fichier,'w'))" qu'une seule fois a la fin plutot que plusieurs fois dans le code?
 
 def go():
     CkMAJ = CheckMAJ()
