@@ -9,11 +9,6 @@ from traceback import print_exc
 
 import xbmc
 
-try:
-    from utilities import Settings
-except:
-    print_exc()
-
 
 SPECIAL_SCRIPT_DATA = sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA
 
@@ -52,20 +47,21 @@ except:
 
 def LOG( status, format, *args ):
     try:
+        OK = True
         if ( status == 1 ):
             # utiliser avec le setting script_debug.
             # si le setting est false tous les "LOG( LOG_DEBUG, ... )" ne seront pas ecrie
-            try: OK = Settings().get_settings().get( "script_debug", False )
+            try: OK = ( sys.modules[ "__main__" ].SETTINGS.getSetting( "gen-script_debug", "false" ) == "true" )
             except: OK = False
-            if not OK: return
-        try: dwAvailPhys = str( long( xbmc.getFreeMem() * 1024.0 * 1024.0 ) )
-        except: dwAvailPhys = "?"
-        status = ( "DEBUG", "INFO", "NOTICE", "WARNING", "ERROR", "FATAL ERROR", )[ status - 1 ]
-        _pre_line_ = "%s T:%s M:%s %s: " % ( time.strftime( "%X" ), str( thread.get_ident() ).rjust( 4 ), dwAvailPhys, status.rjust( 7 ), )
-        _write_line_ = "%s%s" % ( format % args, os.linesep, )
-        WRITABLE_LOG.write( _pre_line_ + _write_line_ )
-        if ( DEBUG_MODE == "DEBUGS" ):
-            xbmc.output( _write_line_.strip( "\r\n" ) )
+        if OK:
+            try: dwAvailPhys = str( long( xbmc.getFreeMem() * 1024.0 * 1024.0 ) )
+            except: dwAvailPhys = "?"
+            status = ( "DEBUG", "INFO", "NOTICE", "WARNING", "ERROR", "FATAL ERROR", )[ status - 1 ]
+            _pre_line_ = "%s T:%s M:%s %s: " % ( time.strftime( "%X" ), str( thread.get_ident() ).rjust( 4 ), dwAvailPhys, status.rjust( 7 ), )
+            _write_line_ = "%s%s" % ( format % args, os.linesep, )
+            WRITABLE_LOG.write( _pre_line_ + _write_line_ )
+            if ( DEBUG_MODE == "DEBUGS" ):
+                xbmc.output( _write_line_.strip( "\r\n" ) )
     except:
         print_exc()
 

@@ -23,26 +23,37 @@ class Settings:
         # create settings dictionary
         self._create_localized_dict()
 
-    def _create_localized_dict( self ):
+    def getDefaultsSettings( self, clear_all=False ):
+        # create settings dictionary with defaults settings
+        if clear_all:
+            try: os.remove( self.BASE_SETTINGS_PATH )
+            except: pass
+        self._create_localized_dict( True )
+
+    def _create_localized_dict( self, defaults=False ):
         """ initializes self.settings and calls _parse_settings_file """
         # settings dictionary
         self.settings = {}
         # add settings
         self._parse_settings_file( self.DEFAULT_SETTINGS )
-        # change settings 
-        self.setSetting( "rss_feed", ( "1", "0", )[ ( xbmc.getLanguage().lower() != "french" ) ] )
-        self.setSetting( "thumb_size", ( "512", "192" )[ ( os.environ.get( "OS", "xbox" ).lower() == "xbox" ) ] )
 
         # fill-in missing settings with default settings
         if os.path.isfile( self.BASE_SETTINGS_PATH ):
-            self._parse_settings_file( self.BASE_SETTINGS_PATH )
+            self._parse_settings_file( self.BASE_SETTINGS_PATH, defaults=defaults )
+            if defaults:
+                # change settings 
+                self.setSetting( "gen-rss_feed", ( "1", "0", )[ ( xbmc.getLanguage().lower() != "french" ) ] )
+                self.setSetting( "skin-thumb_size", ( "512", "192" )[ ( os.environ.get( "OS", "xbox" ).lower() == "xbox" ) ] )
         else:
+            # change settings 
+            self.setSetting( "gen-rss_feed", ( "1", "0", )[ ( xbmc.getLanguage().lower() != "french" ) ] )
+            self.setSetting( "skin-thumb_size", ( "512", "192" )[ ( os.environ.get( "OS", "xbox" ).lower() == "xbox" ) ] )
             # copy required file
             #xbmc.executehttpapi( "FileCopy(%s,%s)" % ( self.DEFAULT_SETTINGS, self.BASE_SETTINGS_PATH.encode( "utf-8" ), ) )
             # save default settings
             self.save_settings()
 
-    def _parse_settings_file( self, settings_path ):
+    def _parse_settings_file( self, settings_path, defaults=False ):
         """ adds settings to self.settings dictionary """
         try:
             # load and parse settings.xml file
@@ -59,11 +70,17 @@ class Settings:
                 setting_id = setting.getAttribute( "id" )
                 # if a valid id add it to self.settings dictionary
                 if ( setting_id not in self.settings and setting.hasAttribute( "value" ) ):
-                    self.settings[ setting_id ] = setting.getAttribute( "value" )
+                    self.settings[ setting_id.lower() ] = setting.getAttribute( "value" )
+                elif not defaults and setting.hasAttribute( "value" ):
+                    self.settings[ setting_id.lower() ] = setting.getAttribute( "value" )
         except:
             # print the error message to the log and debug window
             xbmc.output( "ERROR: Settings file %s can't be parsed!" % ( settings_path, ) )
-            #print_exc()
+            print_exc()
+            #if self.BASE_SETTINGS_PATH == settings_path:
+            #    try: os.remove( self.BASE_SETTINGS_PATH )
+            #    except: pass
+            #    self.save_settings()
         # clean-up document object
         try: doc.unlink()
         except: pass
@@ -75,26 +92,30 @@ class Settings:
             newdoc = impl.createDocument( None, "settings", None )
             top_element = newdoc.documentElement
 
-            for key, value in self.settings.items():
+            for key, value in sorted( self.settings.items(), key=lambda id: id[ 0 ] ):
                 tag = newdoc.createElement( "setting" )
-                tag.setAttribute( "id", key )
+                tag.setAttribute( "id", key.lower() )
                 tag.setAttribute( "value", value )
                 top_element.appendChild( tag )
 
+            try: os.remove( self.BASE_SETTINGS_PATH )
+            except: pass
             f = open( self.BASE_SETTINGS_PATH, "w" )
             newdoc.writexml( f, addindent="  ", newl="\n", encoding=self.encoding )
             f.close()
             return True
         except:
             # print the error message to the log and debug window
-            xbmc.output( "ERROR: Settings file %s can't be saveed!" % ( self.BASE_SETTINGS_PATH, ) )
-            #print_exc()
+            xbmc.output( "ERROR: Settings file %s can't be saved!" % ( self.BASE_SETTINGS_PATH, ) )
+            print_exc()
             return False
 
-    def setSetting( self, key, value="" ):
+    def setSetting( self, key, value="", save=False ):
         """ set new value setting or create new setting """
-        self.settings[ key ] = value
+        self.settings[ key.lower() ] = value
+        if save:
+            return self.save_settings()
 
-    def getSetting( self, key ):
+    def getSetting( self, key, default="Invalid Setting" ):
         """ returns the setting if it exists """
-        return self.settings.get( key, "Invalid Id %s" % ( key, ) )
+        return self.settings.get( key.lower(), default )

@@ -26,6 +26,8 @@ __script__ = sys.modules[ "__main__" ].__script__
 __svn_revision__ = sys.modules[ "__main__" ].__svn_revision__ or "0"
 __version__ = "%s.%s" % ( sys.modules[ "__main__" ].__version__, __svn_revision__ )
 
+SETTINGS = sys.modules[ "__main__" ].SETTINGS
+
 
 class ScriptSettings( xbmcgui.WindowXMLDialog ):
     TOPIC_LIMIT = [ "5", "10", "15", "20" ] #_( 504 ).split( "|" ) #values[ "00", "5", "10", "25", "50", "100" ]
@@ -137,33 +139,48 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
     def _set_controls_values( self ):
         xbmcgui.lock()
         try:
+            #le bouton valider les changements ont le desactive, il va etre reactiver seulement s'il y a un changement dans les settings
+            self.getControl( self.CONTROL_OK_BUTTON ).setEnabled( False )
+
+            """ GENERAL TAB """
             # boutons pour le flux rss
             self._set_control_rss_feeds()
-            # boutons pour la couleur du theme
-            self._set_control_colors()
-            #boutons pour la taille des vignettes
-            self._set_control_tbn_size()
-            # boutons pour la limitation des topics
-            self._set_control_limit_topics()
+
+            #selon l'etat de self.settings[ "pardir_not_hidden" ], l'image du radiobutton sera blanc ou non visible
+            self.getControl( self.CONTROL_PARENT_DIR_BUTTON ).setSelected( not self.settings.get( "pardir_not_hidden", 1 ) )
+
+            #selon l'etat de self.settings[ "hide_extention" ], l'image du radiobutton sera blanc ou non visible
+            self.getControl( self.CONTROL_EXTENTION_BUTTON ).setSelected( self.settings.get( "hide_extention", True ) )
+
             # pour bouton activer desactiver la modification du fichier sources.xml, si la version d'xbmc est compatible atlantis
             #atlantis = not bool( re.search( "\\b(pre-8.10|8.10)\\b", xbmc.getInfoLabel( "System.BuildVersion" ) ) )
             #bouton pour activer desactiver la modification du fichier sources.xml
             #selon l'etat de self.settings[ "xbmc_xml_update" ], l'image du radiobutton sera blanc ou non visible
             self.getControl( self.CONTROL_XML_UPDATE_BUTTON ).setSelected( self.settings[ "xbmc_xml_update" ] )#atlantis )
+
             #selon l'etat de self.settings[ "update_startup" ], l'image du radiobutton sera blanc ou non visible
             self.getControl( self.CONTROL_UPDATE_STARTUP_BUTTON ).setSelected( self.settings[ "update_startup" ] )
+
             #selon l'etat de self.settings[ "script_debug" ], l'image du radiobutton sera blanc ou non visible
             self.getControl( self.CONTROL_SCRIPT_DEBUG_BUTTON ).setSelected( self.settings[ "script_debug" ] )
-            #le bouton valider les changements ont le desactive, il va etre reactiver seulement s'il y a un changement dans les settings
-            self.getControl( self.CONTROL_OK_BUTTON ).setEnabled( False )
-            #selon l'etat de self.settings[ "hide_forum" ], l'image du radiobutton sera blanc ou non visible
-            self.getControl( self.CONTROL_HIDE_FORUM_BUTTON ).setSelected( self.settings.get( "hide_forum", False ) )
-            #selon l'etat de self.settings[ "pardir_not_hidden" ], l'image du radiobutton sera blanc ou non visible
-            self.getControl( self.CONTROL_PARENT_DIR_BUTTON ).setSelected( not self.settings.get( "pardir_not_hidden", 1 ) )
-            #selon l'etat de self.settings[ "hide_extention" ], l'image du radiobutton sera blanc ou non visible
-            self.getControl( self.CONTROL_EXTENTION_BUTTON ).setSelected( self.settings.get( "hide_extention", True ) )
+
+            """ SKIN TAB """
+            # boutons pour la couleur du theme
+            self._set_control_colors()
+
+            #boutons pour la taille des vignettes
+            self._set_control_tbn_size()
+
             #selon l'etat de self.settings[ "show_plash"], l'image du radiobutton sera blanc ou non visible
             self.getControl( self.CONTROL_SHOW_SPLASH_BUTTON ).setSelected( self.settings.get( "show_plash", False ) )
+
+            """ FORUM TAB """
+            # boutons pour la limitation des topics
+            self._set_control_limit_topics()
+
+            #selon l'etat de self.settings[ "hide_forum" ], l'image du radiobutton sera blanc ou non visible
+            self.getControl( self.CONTROL_HIDE_FORUM_BUTTON ).setSelected( self.settings.get( "hide_forum", False ) )
+
             # boutons pour le web
             self._set_control_web_visibility()
         except:
