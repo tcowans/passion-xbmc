@@ -10,7 +10,7 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/Installer%20Passion-XBMC/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center"
-__date__         = "21-02-2009"
+__date__         = "22-02-2009"
 __version__      = "pre-1.0.0"
 __svn_revision__ = 0
 
@@ -80,8 +80,6 @@ def MAIN():
     logger.LOG( logger.LOG_DEBUG, str( "*" * 85 ) )
 
     try:
-        # INITIALISATION CHEMINS DE FICHIER LOCAUX
-
         DIALOG_PROGRESS.update( -1, __language__( 101 ), __language__( 110 ) )
         if ( SETTINGS.getSetting( "path_ok", "false" ) == "false" ):
             # GENERATION DES INFORMATIONS LOCALES

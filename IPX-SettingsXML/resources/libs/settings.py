@@ -67,12 +67,17 @@ class Settings:
             # parse and resolve each <setting id="#" value="#" /> tag
             settings = root.getElementsByTagName( "setting" )
             for setting in settings:
-                setting_id = setting.getAttribute( "id" )
+                try:
+                    setting_id = setting.getAttribute( "id" ).lower().encode()
+                    setting_value = setting.getAttribute( "value" ).encode()
+                except:
+                    setting_id = repr( setting.getAttribute( "id" ).lower() ).strip( "u'" )
+                    setting_value = repr( setting.getAttribute( "value" ) ).strip( "u'" ).replace( "//", "/" ).replace( "\\\\", "\\" )
                 # if a valid id add it to self.settings dictionary
-                if ( setting_id not in self.settings and setting.hasAttribute( "value" ) ):
-                    self.settings[ setting_id.lower() ] = setting.getAttribute( "value" )
+                if ( setting_id not in self.settings and setting_value ):
+                    self.settings[ setting_id ] = setting_value
                 elif not defaults and setting.hasAttribute( "value" ):
-                    self.settings[ setting_id.lower() ] = setting.getAttribute( "value" )
+                    self.settings[ setting_id ] = setting_value
         except:
             # print the error message to the log and debug window
             xbmc.output( "ERROR: Settings file %s can't be parsed!" % ( settings_path, ) )
