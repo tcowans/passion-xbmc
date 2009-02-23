@@ -28,6 +28,8 @@ __version__ = "%s.%s" % ( sys.modules[ "__main__" ].__version__, __svn_revision_
 
 SETTINGS = sys.modules[ "__main__" ].SETTINGS
 
+DIALOG_PROGRESS = xbmcgui.DialogProgress()
+
 
 class ScriptSettings( xbmcgui.WindowXMLDialog ):
     TOPIC_LIMIT = [ "5", "10", "15", "20" ] #_( 504 ).split( "|" ) #values[ "00", "5", "10", "25", "50", "100" ]
@@ -62,6 +64,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
     CONTROL_HIDE_FORUM_BUTTON     = 350
     CONTROL_WEB_BUTTON            = 330
     CONTROL_WIN32_WAIT_BUTTON     = 340
+    CONTROL_UPDATE_NOW_BUTTON     = 500
 
     def __init__( self, *args, **kwargs ):
         xbmcgui.WindowXMLDialog.__init__( self, *args, **kwargs )
@@ -350,6 +353,14 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             elif controlID == self.CONTROL_WIN32_WAIT_BUTTON:
                 #bouton pour activer desactiver wait state win32 seulement
                 self._set_bool_setting( "win32_exec_wait" )
+
+            elif controlID == self.CONTROL_UPDATE_NOW_BUTTON:
+                #bouton svn for update now
+                if xbmcgui.Dialog().yesno( _( 0 ), _( 32000 ), "", "", _( 32020 ), _( 32021 ) ):
+                    self.mainwin.svn_update = "svn update"
+                    self._close_dialog()
+                    self.mainwin._close_script()
+
             else:
                 pass
         except:

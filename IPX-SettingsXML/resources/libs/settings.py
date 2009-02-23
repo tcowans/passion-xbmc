@@ -36,6 +36,7 @@ class Settings:
         self.settings = {}
         # add settings
         self._parse_settings_file( self.DEFAULT_SETTINGS )
+        default_version = self.getSetting( "version", sys.modules[ "__main__" ].__version__ )
 
         # fill-in missing settings with default settings
         if os.path.isfile( self.BASE_SETTINGS_PATH ):
@@ -52,6 +53,10 @@ class Settings:
             #xbmc.executehttpapi( "FileCopy(%s,%s)" % ( self.DEFAULT_SETTINGS, self.BASE_SETTINGS_PATH.encode( "utf-8" ), ) )
             # save default settings
             self.save_settings()
+
+        if default_version != self.getSetting( "version", sys.modules[ "__main__" ].__version__ ):
+            # set default version, it's real version
+            self.setSetting( "version", default_version, save=True )
 
     def _parse_settings_file( self, settings_path, defaults=False ):
         """ adds settings to self.settings dictionary """

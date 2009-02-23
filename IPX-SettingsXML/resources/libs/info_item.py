@@ -15,7 +15,7 @@ import xbmc
 #modules custom
 from utilities import *
 from CONF import configCtrl
-from pil_util import makeThumbnails
+#import pil_util
 
 #module logger
 try:
@@ -338,7 +338,9 @@ class InfoWarehouseEltTreeXMLFTP:
                     os.remove( localFilePath )
                 else:
                     thumb_size = int( self.thumb_size_on_load )
-                    thumbnail = makeThumbnails( localFilePath, thumbnail, w_h=( thumb_size, thumb_size ) )
+                    import pil_util
+                    thumbnail = pil_util.makeThumbnails( localFilePath, thumbnail, w_h=( thumb_size, thumb_size ) )
+                    del pil_util
                     if thumbnail == "": thumbnail = localFilePath
 
             if thumbnail and os.path.isfile( thumbnail ) and hasattr( listitem, "setThumbnailImage" ):

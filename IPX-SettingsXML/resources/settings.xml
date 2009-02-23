@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <settings>
-  <setting id="version" value="pre-1.0.0" /> <!-- Don't touch this -->
+  <setting id="version" value="pre-1.0.1" /> <!-- Don't touch this -->
 
   <!-- GENERAL -->
   <setting id="gen-rss_feed" value="0" /> <!-- for french "1" is default, settings.py -->
