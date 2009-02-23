@@ -206,6 +206,8 @@
 
   <string id="530">Disable Splash</string>
 
+  <string id="535">Update Now</string>
+
   <!--DESCRIPTION STRINGS -->
   <string id="600">Description</string>
   <string id="601">Type</string>
@@ -252,4 +254,23 @@
   <string id="1005"></string>
   <string id="1006"></string>
   <string id="1007"></string> 
+
+
+  <!-- SVN UPDATER -->
+  <!-- Update messages -->
+  <string id="32000">Would you like to update your revision?</string>
+
+  <string id="32002">Fetching file list...</string>
+  <string id="32003">Please wait...</string>
+
+  <string id="32005">Fetching:</string>
+  <string id="32006">Path:</string>
+  <string id="32007">File:</string>
+  <string id="32008">Your new revision was updated to:</string>
+
+  <string id="32020">Skip</string>
+  <string id="32021">Update</string>
+
+  <!-- Update error messages -->
+  <string id="32030">There was an error updating!</string>
 </strings>

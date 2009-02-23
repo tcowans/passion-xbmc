@@ -67,6 +67,7 @@ class MainWindow( xbmcgui.WindowXML ):
         """
         xbmcgui.WindowXML.__init__( self, *args, **kwargs )
         self.main_list_last_pos = []
+        self.svn_update = "never"
 
         # Display Loading Window while we are loading the information from the website
         if xbmc.getCondVisibility( "Window.IsActive(progressdialog)" ):
@@ -1194,6 +1195,7 @@ def show_main():
     current_skin, force_fallback = getUserSkin()
 
     w = MainWindow( file_xml, dir_path, current_skin, force_fallback )
-    #w = MainWindow()
     w.doModal()
+    svn_update = w.svn_update
     del w
+    return svn_update

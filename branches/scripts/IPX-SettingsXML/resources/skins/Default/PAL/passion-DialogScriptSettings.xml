@@ -193,7 +193,7 @@
 				<description>divider</description>
 				<posx>310</posx>
 				<posy>26</posy>
-				<width>106</width>
+				<width>2</width>
 				<height>4</height>
 				<texture flipy="true">IPX-tab.png</texture>
 			</control>
@@ -205,7 +205,7 @@
 				<height>30</height>
 				<align>center</align>
 				<aligny>center</aligny>
-				<label>More...</label>
+				<label>SVN</label>
 				<font>special12</font>
 				<textcolor>99ffffff</textcolor>
 				<shadowcolor>FF000000</shadowcolor>
@@ -221,16 +221,14 @@
 				<onright>60</onright>
 				<onup>9000</onup>
 				<ondown>9004</ondown>
-				<visible>false</visible>
 			</control>
 			<control type="image">
 				<description>divider</description>
 				<posx>414</posx>
 				<posy>26</posy>
-				<width>4</width>
-				<height>3</height>
+				<width>2</width>
+				<height>4</height>
 				<texture flipy="true">IPX-tab.png</texture>
-				<visible>false</visible>
 			</control>
 			<control type="togglebutton" id="60">
 				<description>help Button</description>
@@ -266,7 +264,6 @@
 				<texture flipy="true">IPX-tab.png</texture>
 			</control>
 			<control type="togglebutton" id="70">
-				<description>help Button</description>
 				<description>about Button</description>
 				<posx>521</posx>
 				<posy>0</posy>
@@ -454,25 +451,6 @@
 				<width>630</width>
 				<height>5</height>
 				<texture>IPX-separator.png</texture>
-			</control>
-			<control type="radiobutton" id="140">
-				<description>button general 2</description>
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>625</width>
-				<height>34</height>
-				<textoffsetx>7</textoffsetx>
-				<label>SCRIPT510</label>
-				<font>font13</font>
-				<textcolor>ffffffff</textcolor>
-				<colordiffuse>ffffffff</colordiffuse>
-				<disabledcolor>60d0d0d0</disabledcolor>
-				<shadowcolor>FF000000</shadowcolor>
-				<aligny>center</aligny>
-				<texturefocus border="5">IPX-button-focus.png</texturefocus>
-				<texturenofocus>-</texturenofocus>
-				<textureradiofocus>IPX-settings-check-box.png</textureradiofocus>
-				<textureradionofocus>IPX-settings-check-boxNF.png</textureradionofocus>
 			</control>
 			<control type="radiobutton" id="150">
 				<description>button general 3</description>
@@ -891,6 +869,61 @@
 				<textureradiofocus>IPX-settings-check-box.png</textureradiofocus>
 				<textureradionofocus>IPX-settings-check-boxNF.png</textureradionofocus>
 				<visible>System.Platform.Windows + Control.IsVisible(330)</visible>
+			</control>
+		</control>
+
+		<!-- SVN section -->
+		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+		<!-- ** Required ** Do not change id's or type's -->
+		<control type="grouplist" id="9004">
+			<description>svn section</description>
+			<visible>Skin.String(PassionSettings,4)</visible>
+			<posx>45</posx>
+			<posy>126</posy>
+			<width>625</width>
+			<height>350</height>
+			<itemgap>0</itemgap>
+			<pagecontrol>-</pagecontrol>
+			<orientation>vertical</orientation>
+			<onleft>9000</onleft>
+			<onright>9000</onright>
+			<onup>1000</onup>
+			<ondown>9000</ondown>
+			<control type="radiobutton" id="140">
+				<description>button SVN 1</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>625</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT510</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<aligny>center</aligny>
+				<texturefocus border="5">IPX-button-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<textureradiofocus>IPX-settings-check-box.png</textureradiofocus>
+				<textureradionofocus>IPX-settings-check-boxNF.png</textureradionofocus>
+			</control>
+			<control type="button" id="500">
+				<description>button SVN 2</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>625</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT535</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<aligny>center</aligny>
+				<texturefocus border="5">IPX-button-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
 			</control>
 		</control>
 
