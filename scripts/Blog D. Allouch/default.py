@@ -356,6 +356,7 @@ class blogEntryListWebPage( WebPage ):
                 # Copy each item found in a list
                 blogEntry = EntryObject()
                 title     = i.group( "entryTitle" )
+                newEntry  = True
                 if title: # !=None
                     blogEntry.title = unicode( title, "utf-8" ).encode( "cp1252" )
                 date = i.group( "entryDate" )
@@ -370,18 +371,23 @@ class blogEntryListWebPage( WebPage ):
                     description = j.group( "videoDescription" )
                     textOnly    = j.group( "textOnly" )
                     if description:
-                        blogEntry.description = strip_off( unicode( description, "utf-8" ).encode( "cp1252" ) )
+                        entryDescription = strip_off( unicode( description, "utf-8" ).encode( "cp1252" ) )
                     elif textOnly:
-                        blogEntry.description = strip_off( unicode( textOnly, "utf-8" ).encode( "cp1252" ) )
+                        entryDescription = strip_off( unicode( textOnly, "utf-8" ).encode( "cp1252" ) )
                     else:
-                        blogEntry.description = ""
-                    print 'blogEntry'
-                    print blogEntry
-                    self.entries.append( copy( blogEntry ) ) # we use copu in order to not losing the value on next loop
+                        entryDescription = ""
+                    
+                    if not blogEntry.videoID and self.entries and blogEntry.title == self.entries[-1].title: # we check if title is the same than last entry
+                        self.entries[-1].description = self.entries[-1].description + entryDescription
+                        newEntry  = False
+
+                    if newEntry:
+                        blogEntry.description = entryDescription
+                        self.entries.append( copy( blogEntry ) ) # we use copy in order to not losing the value on next loop
                 
         except Exception, e:
             print"Exception during GetEntryList"
-            printstr(e)
+            print str(e)
             print str(sys.exc_info()[0])
             traceback.print_exc()
         print 'self.entries'
