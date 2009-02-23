@@ -16,8 +16,9 @@ réservés à Canal+
 """
 
 ############################################################################
-version     = '1.1-Dev01'
-author      = 'Temhil'
+version = '1.1-Dev02'
+date    = '23-02-09'
+author  = 'Temhil'
 ############################################################################
 
 ############################################################################
@@ -30,6 +31,7 @@ import urllib, urllib2, cookielib, urlparse
 import ConfigParser
 import traceback
 from time import gmtime, strptime, strftime
+from copy import copy
 
 try:
     import xbmcgui, xbmc
@@ -130,9 +132,13 @@ xbfont_truncated    = 0x00000008
 # Blog configuration
 #############################################################################
 
-BASE_URL_WEBPAGE    = "http://didierallouch.blog.canal-plus.com/"
-BASE_URL_XML        = "http://www.canalplus.fr/flash/xml/module/embed-video-player/embed-video-player.php?video_id="
-BASE_BLOGNAME_REGEX = "didierallouch"
+#BASE_BLOGNAME    = "alaincarraze"
+#BASE_BLOGNAME    = "oscars"
+#BASE_BLOGNAME    = "cesar"
+#BASE_BLOGNAME    = "alamaisonblanche"
+BASE_BLOGNAME    = "didierallouch"
+BASE_URL_WEBPAGE = "http://%s.blog.canal-plus.com/"%BASE_BLOGNAME
+BASE_URL_XML     = "http://www.canalplus.fr/flash/xml/module/embed-video-player/embed-video-player.php?video_id="
 
 # Set Headers
 txdata = None
@@ -282,6 +288,132 @@ class blogVideoDescriptWebPage(WebPage):
         
         return commentIDList,commentDescriptionList,commentAuthorList,commentDateList
 
+class CategoryObject:
+    """
+    Structure de donnees definissant une categorie de liste
+    """
+    def __init__( self, name="", url=None ):
+        self.name       = name
+        self.url        = url
+        self.entryList  = []
+        self.dataLoaded = False
+        
+
+    def __repr__( self ):
+        return "CategoryObject: ( %s, %s, %s, %s )" % ( self.name, self.url, self.entryList, self.dataLoaded ) 
+    
+    def __len__( self ):
+        len( self.name ) + len( self.url ) + len ( self.entryList ) + len( self.dataLoaded )
+
+class EntryObject:
+    """
+    Structure de donnees definissant un element de la liste
+    """
+    def __init__( self ):
+        self.videoID     = None
+        self.title       = ""
+        self.date        = ""       
+        self.description = ""
+        self.fullDescURL = None
+        self.imagePath   = os.path.join( IMAGEDIR,"noImageAvailable.jpg" )
+        self.videoURL    = None
+        
+
+    def __repr__( self ):
+        return "EntryObject: ( %s, %s, %s, %s, %s, %s, %s )" % ( self.videoID, self.title, self.date, self.description, self.fullDescURL, self.imagePath, self.videoURL ) 
+    
+    def __len__( self ):
+        len( self.videoID ) + len( self.title ) + len( self.date ) + len ( self.description ) + len( self.fullDescURL ) + len( self.imagePath )+ len( self.videoURL )
+
+class blogEntryListWebPage( WebPage ):
+    """
+    
+    Inherit from WebPage super class
+    Load on AC blog webiste a video list webpage
+    which include list of entry (video and/or text) and provides source code
+    
+    """
+    def __init__( self, url, txData, txHearder, debug=False ):
+        WebPage.__init__( self, url, txData, txHearder, debug )
+        self.entries = []
+        
+    def GetEntryList( self ):
+        """
+        Extract data about video files from the AC blog collection webpage
+        Parameters:
+            - [out] dataObj: Data object (blogCollectionData) where data 
+              extracted from the Webpage  will be appended 
+
+        """
+        self.debug = True
+        reEntry = re.compile(r"""(<h2 class="date"><span>(?P<entryDate>.+?)</span></h2>)? *?<a id="(?P<entryID>[a-zA-Z][0-9]+?)"></a> <h3><span>(?P<entryTitle>.+?)</span></h3>.*?<div class=\"posttext-decorator2\">\ <p>(?P<entryContent>.+?)</p> </div> </div> </div>.*?<a href="http://%s\.blog\.canal-plus\.com/(?P<entryDescriptURL>archive.+?html)\">Lien permanent</a>"""%BASE_BLOGNAME, re.DOTALL) 
+        #reVideo = re.compile(r"""(?P<videoDescription>.*?)<div id="playercontent(?P<videoID>[0-9]+?)">.*?"playercontent[0-9]+?"\);</script>|(?P<textOnly>.*+)""", re.DOTALL) 
+        reVideo = re.compile(r"""(?P<videoDescription>.*?)<div id="playercontent(?P<videoID>[0-9]+?)">.*?"playercontent[0-9]+?"\);</script>|(?P<textOnly>.+)""", re.DOTALL) 
+
+        ##TODO Exception on nothing found !!!!!!!!!!!!!!!!!!!!!!!!
+        try:
+            for i in reEntry.finditer( self.Source ):
+                # Copy each item found in a list
+                blogEntry = EntryObject()
+                title     = i.group( "entryTitle" )
+                if title: # !=None
+                    blogEntry.title = unicode( title, "utf-8" ).encode( "cp1252" )
+                date = i.group( "entryDate" )
+                if date:
+                    blogEntry.date  = unicode( date, "utf-8" ).encode( "cp1252" )
+                blogEntry.fullDescURL = i.group( "entryDescriptURL" )
+                
+                # Now let's try to find a video inside this entry
+                entryContent  = i.group( "entryContent" )
+                for j in reVideo.finditer( entryContent ):
+                    blogEntry.videoID = j.group( "videoID" )
+                    description = j.group( "videoDescription" )
+                    textOnly    = j.group( "textOnly" )
+                    if description:
+                        blogEntry.description = strip_off( unicode( description, "utf-8" ).encode( "cp1252" ) )
+                    elif textOnly:
+                        blogEntry.description = strip_off( unicode( textOnly, "utf-8" ).encode( "cp1252" ) )
+                    else:
+                        blogEntry.description = ""
+                    print 'blogEntry'
+                    print blogEntry
+                    self.entries.append( copy( blogEntry ) ) # we use copu in order to not losing the value on next loop
+                
+        except Exception, e:
+            print"Exception during GetEntryList"
+            printstr(e)
+            print str(sys.exc_info()[0])
+            traceback.print_exc()
+        print 'self.entries'
+        print self.entries
+        print 'len(self.entries)'
+        print len(self.entries)
+        
+        return self.entries
+
+    def GetCategoryList(self):
+        """
+        Extract data about categories from the AC blog collection webpage
+        Parameters:
+            - [out] List :list of categories
+        """
+        reStripCat      = re.compile(r'<div\ id=\"box-categories\".*?<ul>(.*?)</ul>', re.DOTALL) 
+        reCategories    = re.compile(r'<li><a href="http://%s\.blog\.canal-plus\.com/(?P<catURL>.+?)\">(?P<catName>.+?)</a></li>'%BASE_BLOGNAME, re.DOTALL) 
+        categoryList = []
+       
+        stripHtmlCategoriesList = reStripCat.findall( self.Source )
+        stripHtmlCategories     = ""
+        if len(stripHtmlCategoriesList) > 0:
+            stripHtmlCategories = stripHtmlCategoriesList[0]
+
+        categoryList.append( CategoryObject( "Accueil", "" ) )
+        
+        for i in reCategories.finditer(stripHtmlCategories):
+            # Copy each item found in a list
+            categoryList.append( CategoryObject( unicode( i.group( "catName" ), "utf-8" ).encode( "cp1252" ), i.group( "catURL" ) ) )
+        return categoryList
+
+
 class blogVideoListWebPage(WebPage):
     """
     
@@ -299,8 +431,9 @@ class blogVideoListWebPage(WebPage):
 
         """
         self.debug = True
-        #reVideo = re.compile(r"""<h2\ class=\"date\"><span>(?P<videoDate>.+?)</span></h2>.*?<h3><span>(?P<videoTitle>.+?)</span></h3>.*?<div id="playercontent(?P<videoID>[0-9]+?)">.+?[0-9]+?\:[0-9]+?.+?<a href="http://%s\.blog\.canal-plus\.com/(?P<videoDescriptURL>archive.+?html)\">Lien permanent</a>"""%BASE_BLOGNAME_REGEX, re.DOTALL) 
-        reVideo = re.compile(r"""</div>   (<h2 class="date"><span>(?P<videoDate>.+?)</span></h2>)?.*?<a id=".+?"></a> <h3><span>(?P<videoTitle>.+?)</span></h3>.*?<div id="playercontent(?P<videoID>[0-9]+?)">.+?[0-9]+?\:[0-9]+?.+?<a href="http://%s\.blog\.canal-plus\.com/(?P<videoDescriptURL>archive.+?html)\">Lien permanent</a>"""%BASE_BLOGNAME_REGEX, re.DOTALL) 
+        #reVideo = re.compile(r"""<h2\ class=\"date\"><span>(?P<videoDate>.+?)</span></h2>.*?<h3><span>(?P<videoTitle>.+?)</span></h3>.*?<div id="playercontent(?P<videoID>[0-9]+?)">.+?[0-9]+?\:[0-9]+?.+?<a href="http://%s\.blog\.canal-plus\.com/(?P<videoDescriptURL>archive.+?html)\">Lien permanent</a>"""%BASE_BLOGNAME, re.DOTALL) 
+        reVideo = re.compile(r"""(<h2 class="date"><span>(?P<videoDate>.+?)</span></h2>)? *?<a id="[a-zA-Z][0-9]+?"></a> <h3><span>(?P<videoTitle>.+?)</span></h3>.*?<div id="playercontent(?P<videoID>[0-9]+?)">.+?[0-9]+?\:[0-9]+?.+?<a href="http://%s\.blog\.canal-plus\.com/(?P<videoDescriptURL>archive.+?html)\">Lien permanent</a>"""%BASE_BLOGNAME, re.DOTALL) 
+        #reVideo = re.compile(r"""(<h2 class="date"><span>(?P<videoDate>.+?)</span></h2>)?( *?<a id="[a-zA-Z][0-9]+?"></a> <h3><span>(?P<videoTitle>.+?)</span></h3>)?.*?<div id="playercontent(?P<videoID>[0-9]+?)">.+?[0-9]+?\:[0-9]+?(.+?<a href="http://%s\.blog\.canal-plus\.com/(?P<videoDescriptURL>archive.+?html)\">Lien permanent</a>)?"""%BASE_BLOGNAME, re.DOTALL) 
 
         ##TODO Exception on nothing found !!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -311,8 +444,14 @@ class blogVideoListWebPage(WebPage):
                 dataObj.videoDateList.append(unicode(i.group("videoDate"),"utf-8").encode("cp1252"))
             else:
                 dataObj.videoDateList.append("")
-            dataObj.videotitleList.append(unicode(i.group("videoTitle"),"utf-8").encode("cp1252"))
-            dataObj.videoPageList.append(i.group("videoDescriptURL"))
+            if i.group("videoTitle"):
+                dataObj.videotitleList.append(unicode(i.group("videoTitle"),"utf-8").encode("cp1252"))
+            else:
+                dataObj.videotitleList.append("")
+            if i.group("videoDescriptURL"): 
+                dataObj.videoPageList.append(i.group("videoDescriptURL"))
+            else:
+                dataObj.videoPageList.append("")
             
         if self.debug: 
             print "blogVideoListWebPage : VideoList :"
@@ -329,7 +468,7 @@ class blogVideoListWebPage(WebPage):
             - [out] List :list of categories
         """
         reStripCat      = re.compile(r'<div\ id=\"box-categories\".*?<ul>(.*?)</ul>', re.DOTALL) 
-        reCategories    = re.compile(r'<li><a href="http://%s\.blog\.canal-plus\.com/(?P<catURL>.+?)\">(?P<catName>.+?)</a></li>'%BASE_BLOGNAME_REGEX, re.DOTALL) 
+        reCategories    = re.compile(r'<li><a href="http://%s\.blog\.canal-plus\.com/(?P<catURL>.+?)\">(?P<catName>.+?)</a></li>'%BASE_BLOGNAME, re.DOTALL) 
        
         stripHtmlCategoriesList = reStripCat.findall(self.Source)
         stripHtmlCategories     = ""
@@ -440,18 +579,19 @@ class SelectCollectionWebpage:
     
     """
     def __init__(self, pagebaseUrl, nameSelecList, urlSelectList):
-        self.selectedMenu	      = 0
-        self.baseUrl		      = pagebaseUrl
-        self.selectionNameList	  = nameSelecList
-        self.selectionURLList	  = urlSelectList
-        self.selectCollecData	  = []
-        self.menulen		      = len(nameSelecList)
+        self.selectedMenu          = 0
+        self.baseUrl              = pagebaseUrl
+        self.selectionNameList      = nameSelecList
+        self.selectionURLList      = urlSelectList
+        self.selectCollecData      = []
+        self.menulen              = len(nameSelecList)
 
         #TODO: check len(nameSelecList) == len(urlSelectList)
 
         # Filling selectCollecData
         for i in range(self.menulen):
             self.selectCollecData.append(blogCollectionData())
+
 
 class configCtrl:
     """
@@ -913,89 +1053,92 @@ class MainWindow(xbmcgui.Window):
         self.user_logo.setVisible(True)
 
         # Extract categories from main webpage
-        mainWebPage=blogVideoListWebPage(BASE_URL_WEBPAGE ,txdata,txheaders)
-        self.blogNameSelectList,self.blogUrlSelectList = mainWebPage.GetCategoryList()
+        startupWebPage=blogEntryListWebPage(BASE_URL_WEBPAGE ,txdata,txheaders)
+        print "Calling GetCategoryList"
+        self.categoryList = startupWebPage.GetCategoryList()
         
-        # Create selectCollectionWebpage instance in order to display choice of video collection
-        self.CollectionSelector = SelectCollectionWebpage(BASE_URL_WEBPAGE, self.blogNameSelectList, self.blogUrlSelectList)
-
         # Menu Control List
+        self.currentMenuIdx = 0
         menuItemsize   = 30
-        menuItemNumber = len(self.blogNameSelectList)
+        menuItemNumber = len(self.categoryList)
         if menuItemNumber > 11:
             menuItemNumber = 11 # We don't want to go outise the screen if the number of categories is too big
         menuListSize   = menuItemsize * menuItemNumber
         menuListWidth = 230
-        self.Menulist = xbmcgui.ControlList(10, 190, menuListWidth, menuListSize, space=0,font='font12', textColor='0xFF000000',itemTextXOffset=-5, buttonTexture = os.path.join(IMAGEDIR,"list-background.png"), buttonFocusTexture = os.path.join(IMAGEDIR,"list-focus.png"))
+        self.Menulist = xbmcgui.ControlList( 10, 190, menuListWidth, menuListSize, space=0,font='font12', textColor='0xFF000000', itemTextXOffset=-5, buttonTexture=os.path.join( IMAGEDIR, "list-background.png" ), buttonFocusTexture=os.path.join( IMAGEDIR,"list-focus.png" ) )
 
         # Videos Control List
-        self.list = xbmcgui.ControlList(247, 140, 453, 380, space=8, itemHeight=80, font='font12', textColor='0xFF000000',itemTextXOffset=0, buttonFocusTexture  = os.path.join(IMAGEDIR,"list-background.png"),imageWidth=107, imageHeight=80)
+        self.list = xbmcgui.ControlList( 247, 140, 453, 380, space=8, itemHeight=80, font='font12', textColor='0xFF000000', itemTextXOffset=0, buttonFocusTexture=os.path.join( IMAGEDIR, "list-background.png" ), imageWidth=107, imageHeight=80 )
 
         # Title of the current page
         title =  "LE BLOG DE DIDIER ALLOUCH"
-        self.strMainTitle = xbmcgui.ControlLabel(230, 40, 270, 20, title, 'special13','0xFF000000',alignment=6)
+        self.strMainTitle = xbmcgui.ControlLabel( 230, 40, 270, 20, title, 'special13','0xFF000000',alignment= 6 )
 
         # Current Catégories Title
-        self.strButton = xbmcgui.ControlLabel(230, 80, 270, 20, self.CollectionSelector.selectionNameList[self.CollectionSelector.selectedMenu], 'special13','0xFF000000',alignment=6)
+        self.strButton = xbmcgui.ControlLabel( 230, 80, 270, 20, self.categoryList[ self.currentMenuIdx ].name, 'special13', '0xFF000000', alignment=6 )
 
         # List label:
-        self.strlist = xbmcgui.ControlLabel(320, 300, 260, 20, '', 'font12', '0xFFFF0000')
+        self.strlist = xbmcgui.ControlLabel( 320, 300, 260, 20, '', 'font12', '0xFFFF0000' )
 
         # Number of Video in the list:
-        self.strItemNb = xbmcgui.ControlLabel(600, 530, 150, 20, '0 Vidéo', 'font12', '0xFFFF0000')
+        self.strItemNb = xbmcgui.ControlLabel( 600, 530, 150, 20, '0 Vidéo', 'font12', '0xFFFF0000' )
 
         # Version and author:
-        self.strVersion = xbmcgui.ControlLabel(230, 58, 270, 20,"v" + version,'font10', '0xFFFF0000',alignment=6)
+        self.strVersion = xbmcgui.ControlLabel( 230, 58, 270, 20,"v" + version,'font10', '0xFFFF0000', alignment=6 )
 
 
-        self.addControl(self.list)
-        self.addControl(self.Menulist)
-        self.addControl(self.strButton)
-        self.addControl(self.strlist)
-        self.addControl(self.strMainTitle)
-        self.addControl(self.strItemNb)
-        self.addControl(self.strVersion)
+        self.addControl( self.list )
+        self.addControl( self.Menulist )
+        self.addControl( self.strButton )
+        self.addControl( self.strlist )
+        self.addControl( self.strMainTitle )
+        self.addControl( self.strItemNb )
+        self.addControl( self.strVersion )
           
         # Option button:
-        self.buttonOption = xbmcgui.ControlButton(10, 200 + menuListSize - menuItemsize + 5, menuListWidth, 30, "Options",font='font12', textColor='0xFF000000', focusTexture = os.path.join(IMAGEDIR,"list-focus.png"), noFocusTexture  = os.path.join(IMAGEDIR,"list-background.png"),textXOffset=15)
+        self.buttonOption = xbmcgui.ControlButton( 10, 200 + menuListSize - menuItemsize + 5, menuListWidth, 30, "Options", font='font12', textColor='0xFF000000', focusTexture=os.path.join( IMAGEDIR, "list-focus.png" ), noFocusTexture=os.path.join( IMAGEDIR, "list-background.png" ), textXOffset=15 )
         self.addControl(self.buttonOption)
 
         # About button:
-        self.buttonAbout = xbmcgui.ControlButton(10, 230 + menuListSize - menuItemsize + 5, menuListWidth, 30, "A propos",font='font12', textColor='0xFF000000', focusTexture = os.path.join(IMAGEDIR,"list-focus.png"), noFocusTexture  = os.path.join(IMAGEDIR,"list-background.png"),textXOffset=15)
-        self.addControl(self.buttonAbout)
+        self.buttonAbout = xbmcgui.ControlButton( 10, 230 + menuListSize - menuItemsize + 5, menuListWidth, 30, "A propos", font='font12', textColor='0xFF000000', focusTexture=os.path.join( IMAGEDIR, "list-focus.png" ), noFocusTexture=os.path.join( IMAGEDIR, "list-background.png" ), textXOffset=15 )
+        self.addControl( self.buttonAbout )
 
-        self.list.controlLeft(self.Menulist)
-        self.Menulist.controlRight(self.list)
-        self.Menulist.controlUp(self.buttonOption)
-        self.Menulist.controlDown(self.buttonOption)
-        self.buttonOption.controlRight(self.list)
-        self.buttonOption.controlUp(self.Menulist)
-        self.buttonOption.controlDown(self.buttonAbout)
-        self.buttonAbout.controlRight(self.list)
-        self.buttonAbout.controlUp(self.buttonOption)
-        self.buttonAbout.controlDown(self.Menulist)
+        self.list.controlLeft( self.Menulist )
+        self.Menulist.controlRight( self.list )
+        self.Menulist.controlUp( self.buttonOption )
+        self.Menulist.controlDown( self.buttonOption )
+        self.buttonOption.controlRight( self.list )
+        self.buttonOption.controlUp( self.Menulist )
+        self.buttonOption.controlDown( self.buttonAbout )
+        self.buttonAbout.controlRight( self.list )
+        self.buttonAbout.controlUp( self.buttonOption )
+        self.buttonAbout.controlDown( self.Menulist )
 
         # add items to the Menu list
         xbmcgui.lock()
-        for name in self.CollectionSelector.selectionNameList:		 
-            self.Menulist.addItem(xbmcgui.ListItem(label = name))
+#        for name in self.CollectionSelector.selectionNameList:         
+#            self.Menulist.addItem(xbmcgui.ListItem(label = name))
+        for category in self.categoryList:         
+            self.Menulist.addItem( xbmcgui.ListItem( label=category.name ) )
+
+        
         xbmcgui.unlock()
 
 
         # Set Focus on Menulist
-        self.setFocus(self.Menulist)
+        self.setFocus( self.Menulist )
 
         # Close the Loading Window 
         dialogUI.close()
        
         # Update the list of video 
         
-        self.updateControlList(self.CollectionSelector.selectedMenu)
+        self.updateControlList( self.currentMenuIdx )
         # Start to diplay the window before doModal call
         self.show()
         
         # No UI is displayed, continue to get and display the picture (would be too long to wait if we were waiting doModla call)
-        self.updateIcons(self.CollectionSelector.selectedMenu)
+        self.updateIcons( self.currentMenuIdx )
 
     def updateData(self, menuSelectIndex):
         """
@@ -1006,20 +1149,25 @@ class MainWindow(xbmcgui.Window):
         dialogLoading.create("Le blog de Didier Allouch", "Chargement des informations", "Veuillez patienter...")
 
         # Load Main webpage of Blog de Didier Allouch
-        myVideoListWebPage=blogVideoListWebPage((BASE_URL_WEBPAGE + self.CollectionSelector.selectionURLList[menuSelectIndex]),txdata,txheaders,self.configManager.getDebug())
+        myEntryListWebPage = blogEntryListWebPage( BASE_URL_WEBPAGE + self.categoryList[ menuSelectIndex ].url, txdata, txheaders, self.configManager.getDebug() )
            
         # Extract data from myCollectionWebPage and copy the content in corresponding Collection Data Instance
-        myVideoListWebPage.GetVideoList(self.CollectionSelector.selectCollecData[menuSelectIndex])
-        myVideoListWebPage.GetCategoryList()
+        self.categoryList[ menuSelectIndex ].entryList = myEntryListWebPage.GetEntryList()
         
-       
+        print 'len name'
+        print len( self.categoryList[ menuSelectIndex ].name )
+        print 'len entryList'
+        print len( self.categoryList[ menuSelectIndex ].entryList )
+#        myEntryListWebPage.GetCategoryList()
+        
         # Update dataLoaded flag
-        self.CollectionSelector.selectCollecData[menuSelectIndex].dataLoaded = True
+        self.categoryList[ menuSelectIndex ].dataLoaded = True
 
         # Close the Loading Window 
         dialogLoading.close()
 
-    def updateControlList(self, menuSelectIndex):
+
+    def updateControlList( self, menuSelectIndex ):
         """
         Update ControlList objet
         """
@@ -1028,14 +1176,16 @@ class MainWindow(xbmcgui.Window):
         try:
           
             # Check is data have already been loaded for this collection
-            if (self.CollectionSelector.selectCollecData[menuSelectIndex].dataLoaded == False):
+            if (self.categoryList[ menuSelectIndex ].dataLoaded == False):
                 # Never been updated before, go and get the data
-                self.updateData(menuSelectIndex)
-            
+                self.updateData( menuSelectIndex )
+                
+            #self.categoryList[ menuSelectIndex ].entryList
 
             # Get and Update number of video at the bottom of the page        
-            numberOfPictures = self.CollectionSelector.selectCollecData[menuSelectIndex].getNumberofItem()
-            self.strItemNb.setLabel(str(numberOfPictures) + " Vidéos" ) 
+            #TODO: filter on video only not only on entry
+            numberOfPictures = len( self.categoryList[ menuSelectIndex ].entryList )
+            self.strItemNb.setLabel( str(numberOfPictures ) + " Vidéos" ) 
                 
             # Lock the UI in order to add pictures
             xbmcgui.lock()    
@@ -1043,32 +1193,30 @@ class MainWindow(xbmcgui.Window):
             # Clear all ListItems in this control list 
             self.list.reset()
 
-            #for name in self.CollectionSelector.selectCollecData[menuSelectIndex].videotitleList:
-            #	 index = self.CollectionSelector.selectCollecData[menuSelectIndex].videotitleList.index(name)		
-            for videoID in self.CollectionSelector.selectCollecData[menuSelectIndex].videoIDList:
-                index = self.CollectionSelector.selectCollecData[menuSelectIndex].videoIDList.index(videoID) 
+            for entry in self.categoryList[ menuSelectIndex ].entryList:                
+                index = self.categoryList[ menuSelectIndex ].entryList.index( entry )
                
                 #pic = CACHEDIR + self.CollectionSelector.selectCollecData[menuSelectIndex].videoIDList[index] + ".jpg"
-                pic   = CACHEDIR + videoID + ".jpg"
-                date  = self.CollectionSelector.selectCollecData[menuSelectIndex].videoDateList[index]
-                title = self.CollectionSelector.selectCollecData[menuSelectIndex].videotitleList[index]
-                if not os.path.exists(pic):
+                title = entry.title
+                date  = entry.date
+                pic   = CACHEDIR + str( entry.videoID ) + ".jpg"
+                if not os.path.exists( pic ):
                     # images not here use default
-                    print("Image" + pic + "not found - use default image")
-                    pic=os.path.join(IMAGEDIR,"noImageAvailable.jpg")
+                    print"Image" + pic + "not found - use default image"
+                    pic = entry.imagePath
                     
                 # Add in the List pictures
-                self.list.addItem(xbmcgui.ListItem(label = date + "\n" + title, thumbnailImage = pic))
+                self.list.addItem( xbmcgui.ListItem( label=date + "\n" + title, thumbnailImage=pic ) )
                 
-            if not self.CollectionSelector.selectCollecData[menuSelectIndex].videoIDList:
+            if not self.categoryList[ menuSelectIndex ].entryList:
                 self.strlist.setLabel("Il n'y a pas d'émissions disponibles")
             else:
-                self.strlist.setLabel("")
+                self.strlist.setLabel( "" )
                 # Set focus on the list
-                self.setFocus(self.list)
+                self.setFocus( self.list )
 
             # Go back on 1st button (even if overwritten later)
-            self.setFocus(self.Menulist)
+            self.setFocus( self.Menulist )
         
             # Unlock the UI 
             xbmcgui.unlock()
@@ -1077,57 +1225,88 @@ class MainWindow(xbmcgui.Window):
         except Exception, e:
             print("Exception")
             print(e)
-            print (str(sys.exc_info()[0]))
+            print str( sys.exc_info()[0] )
             traceback.print_exc()
 
-            dialogimg.update(100)
+            dialogimg.update( 100 )
 
             # Unlock the UI 
             xbmcgui.unlock()
             dialogimg.close()
             dialogError = xbmcgui.Dialog()
-            dialogError.ok("Erreur", "Impossible de charger la liste des Video du à", "un probleme de connection ou à", "un changement sur le site distant")
+            dialogError.ok( "Erreur", "Impossible de charger la liste des Video du à", "un probleme de connection ou à", "un changement sur le site distant" )
 
-    def updateIcons(self, menuSelectIndex):
+
+
+    def updateIcons( self, menuSelectIndex ):
         """
         Retrieve images and update list
         """
         # Now get the images:
         try:       
-            #for date in self.CollectionSelector.selectCollecData[menuSelectIndex].videoDateList:
-            #    index = self.CollectionSelector.selectCollecData[menuSelectIndex].videoDateList.index(date) 
-            for videoID in self.CollectionSelector.selectCollecData[menuSelectIndex].videoIDList:
-                index = self.CollectionSelector.selectCollecData[menuSelectIndex].videoIDList.index(videoID) 
+            for entry in self.categoryList[ menuSelectIndex ].entryList:
+                
+                #index = self.CollectionSelector.selectCollecData[menuSelectIndex].videoIDList.index(videoID) 
+                index = self.categoryList[ menuSelectIndex ].entryList.index( entry )
                 # Load video XML file
-                #myVideoXMLPage = blogVideoXML(BASE_URL_XML + self.CollectionSelector.selectCollecData[self.CollectionSelector.selectedMenu].videoIDList[index],txdata,txheaders,self.configManager.getDebug())
-                myVideoXMLPage = blogVideoXML(BASE_URL_XML + videoID, txdata,txheaders,self.configManager.getDebug())
+                if entry.videoID:
+                    myVideoXMLPage = blogVideoXML( BASE_URL_XML + str( entry.videoID ), txdata, txheaders, self.configManager.getDebug() )
+            
+                    # Get the URL of the video picture
+                    videoimg = myVideoXMLPage.GetVideoImageURL()
+                    
+                    # Get the URL of the video for later on
+                    #TODO: cover case when video quality is change between here and video playing
+                    entry.videoURL = myVideoXMLPage.GetVideoURL( self.configManager.getVideoQuality() )
         
-                # Get the URL of the video picture
-                videoimg = myVideoXMLPage.GetVideoImageURL()
-    
-                #videoimgdest = os.path.join(CACHEDIR,self.CollectionSelector.selectCollecData[self.CollectionSelector.selectedMenu].videoIDList[index] + ".jpg")
-                videoimgdest = os.path.join(CACHEDIR,videoID + ".jpg")
-    
-                #print("Try to Download : " + videoimg)
-                #print("at : " + videoimgdest)
-                if not os.path.exists(videoimgdest):
-                    # Download the picture    
-                    try:
-                        downloadJPG(videoimg, videoimgdest)
-                        #print("Downloaded: " + videoimgdest)
-                        
-                    except:
-                        print("Exception on image download")
-                        videoimgdest=os.path.join(IMAGEDIR,"noImageAvailable.jpg")
+                    videoimgdest = os.path.join( CACHEDIR, str( entry.videoID ) + ".jpg" )
+        
+                    #print("Try to Download : " + videoimg)
+                    #print("at : " + videoimgdest)
+                    if not os.path.exists( videoimgdest ):
+                        # Download the picture    
+                        try:
+                            downloadJPG( videoimg, videoimgdest )
+                            #print("Downloaded: " + videoimgdest)
+                        except:
+                            print("Exception on image download")
+                            pass
+                else:
+                    videoimgdest = os.path.join(IMAGEDIR, "portrait.jpg")
                 # Display the picture
-                if os.path.exists(videoimgdest):
-                    self.list.getListItem(index).setThumbnailImage(videoimgdest)
+                if os.path.exists( videoimgdest ):
+                    entry.imagePath = videoimgdest
+                    self.list.getListItem( index ).setThumbnailImage( entry.imagePath )
+                    
         except Exception, e:
             print("Exception")
             print(e)
             print (str(sys.exc_info()[0]))
             traceback.print_exc()
 
+    def showInfo( self, index ):
+        try:       
+            videoimg          = self.categoryList[ self.currentMenuIdx ].entryList[ index ].imagePath 
+            myVideoTitle      = self.categoryList[ self.currentMenuIdx ].entryList[ index ].title
+            myVideoDate       = self.categoryList[ self.currentMenuIdx ].entryList[ index ].date
+            myVideoDesciption = self.categoryList[ self.currentMenuIdx ].entryList[ index ].description
+                        
+            # Create winInfoVideo
+            winInfoVideo = InfoWindow()
+            # Update image and info and display
+            winInfoVideo.updateInfo( myVideoDate, myVideoTitle, myVideoDesciption )
+            winInfoVideo.updateImage( videoimg )
+            winInfoVideo.doModal()   
+            del winInfoVideo
+            
+        except Exception, e:
+            print("Exception in showInfo")
+            print(e)
+            print (str( sys.exc_info()[0]) )
+            traceback.print_exc()
+            dialogError = xbmcgui.Dialog()
+            dialogError.ok("Erreur", "Impossible de charger les informations du à", "- un probleme de connection", "- un changement sur le site distant")
+    
 
     def onAction(self, action):
         if action == ACTION_PREVIOUS_MENU:
@@ -1142,74 +1321,22 @@ class MainWindow(xbmcgui.Window):
             
         if ( ( action == ACTION_SHOW_INFO ) or ( action == ACTION_CONTEXT_MENU ) ):
             # Show the information for a video
-            
             chosenIndex = self.list.getSelectedPosition()
      
             # Display Loading Window while we are loading the information from the website
-            dialogVideo = xbmcgui.DialogProgress()
-            dialogVideo.create("Blog de Didier Allouch", "Chargement des informations sur la vidéo", "Veuillez patienter...")
-            try:	   
-                # Load video XML file
-                myVideoXMLPage = blogVideoXML(BASE_URL_XML + self.CollectionSelector.selectCollecData[self.CollectionSelector.selectedMenu].videoIDList[chosenIndex],txdata,txheaders,self.configManager.getDebug())
-                dialogVideo.update(33)				    
+            self.showInfo(chosenIndex)
 
-                # Get the URL of the video picture and create path for local fiel
-                videoimg = myVideoXMLPage.GetVideoImageURL()
-                videoimgdest = os.path.join(CACHEDIR,self.CollectionSelector.selectCollecData[self.CollectionSelector.selectedMenu].videoIDList[chosenIndex] + ".jpg")
-                
-                if not os.path.exists(videoimgdest):
-                    # Download the picture    
-                    try:
-                        downloadJPG(videoimg, videoimgdest)
-                    except Exception, e:
-                        print("Exception on image download")
-                        print(e)
-                        print (str(sys.exc_info()[0]))
-                        traceback.print_exc()
-                        videoimgdest=os.path.join(IMAGEDIR,"noImageAvailable.jpg")
-                dialogVideo.update(66)                    
-
-                # Get video description page
-                myVideoDescriptPage=blogVideoDescriptWebPage(BASE_URL_WEBPAGE + self.CollectionSelector.selectCollecData[self.CollectionSelector.selectedMenu].videoPageList[chosenIndex],txdata,txheaders,self.configManager.getDebug())
-                myVideoDate,myVideoTitle,myVideoDesciption = myVideoDescriptPage.GetVideoDescription()
-                
-                #TODO: Add display of comments:
-                myVideoDescriptPage.GetVideoCommentsList()
-                
-                dialogVideo.update(100)
-                dialogVideo.close()
-                
-                # Create winInfoVideo
-                winInfoVideo = InfoWindow()
-                # Update image and info and display
-                winInfoVideo.updateInfo(myVideoDate,myVideoTitle,myVideoDesciption)
-                winInfoVideo.updateImage(videoimgdest)
-                winInfoVideo.doModal()   
-                del winInfoVideo
-
-            except Exception, e:
-                print("Exception")
-                print(e)
-                print (str(sys.exc_info()[0]))
-                traceback.print_exc()
-                dialogVideo.update(100)
-                dialogVideo.close()
-                dialogError = xbmcgui.Dialog()
-                dialogError.ok("Erreur", "Impossible de charger les informations du à", "- un probleme de connection", "- un changement sur le site distant")
-
-    
-    def onControl(self, control):
+    def onControl( self, control ):
         if control == self.Menulist:
-            menuSelectedIndex = self.Menulist.getSelectedPosition()
-            self.CollectionSelector.selectedMenu = menuSelectedIndex
-            self.strButton.setLabel(self.CollectionSelector.selectionNameList[menuSelectedIndex])
-            self.updateControlList(menuSelectedIndex)
-            self.setFocus(self.Menulist)
-            self.updateIcons(menuSelectedIndex)
+            self.currentMenuIdx = self.Menulist.getSelectedPosition()
+            self.strButton.setLabel( self.categoryList[self.currentMenuIdx].name )
+            self.updateControlList( self.currentMenuIdx )
+            self.setFocus( self.Menulist )
+            self.updateIcons( self.currentMenuIdx )
 
         elif control == self.buttonOption:
             winSettingsVideo = SettingsWindow()
-            winSettingsVideo.setWindow(self.configManager) # include doModal call
+            winSettingsVideo.setWindow( self.configManager ) # include doModal call
             del winSettingsVideo
             
         elif control == self.buttonAbout:
@@ -1220,33 +1347,41 @@ class MainWindow(xbmcgui.Window):
             chosenIndex = self.list.getSelectedPosition()
     
             # Display Loading Window while we are loading the information from the website
-            dialogVideo = xbmcgui.DialogProgress()
-            dialogVideo.create("Blog de Didier Allouch", "Chargement des informations sur la vidéo", "Veuillez patienter...")
+#            dialogVideo = xbmcgui.DialogProgress()
+#            dialogVideo.create("Blog de Didier Allouch", "Chargement des informations sur la vidéo", "Veuillez patienter...")
             try:
-                # Load video XML file
-                myVideoXMLPage = blogVideoXML(BASE_URL_XML + self.CollectionSelector.selectCollecData[self.CollectionSelector.selectedMenu].videoIDList[chosenIndex],txdata,txheaders,self.configManager.getDebug())
+#                # Load video XML file
+#                myVideoXMLPage = blogVideoXML( BASE_URL_XML + self.categoryList[self.currentMenuIdx].entryList[chosenIndex].videoID, txdata, txheaders, self.configManager.getDebug() )
+#
+#                # Update Progress bar (half of the job is done)
+#                dialogVideo.update( 50 )
+#      
+#                # Get the URL of the video to play
+#                video2playURL = myVideoXMLPage.GetVideoURL( self.configManager.getVideoQuality() )
+#                dialogVideo.update( 100 )
+#                dialogVideo.close()
 
-                # Update Progress bar (half of the job is done)
-                dialogVideo.update(50)
-      
-                # Get the URL of the video to play
-                video2playURL= myVideoXMLPage.GetVideoURL(self.configManager.getVideoQuality())
-
-                dialogVideo.update(100)
-                dialogVideo.close()
+                video2playURL = self.categoryList[ self.currentMenuIdx ].entryList[ chosenIndex ].videoURL
+                if video2playURL:
+                    # Play the selected video
+                    print("Play the selected video: %s"%video2playURL)
+                    xbmc.Player( self.configManager.getDefaultPlayer() ).play( video2playURL )
+                else:
+                    # Show the information for a video
+                    chosenIndex = self.list.getSelectedPosition()
+             
+                    # Display Loading Window while we are loading the information from the website
+                    self.showInfo(chosenIndex)
 
             except Exception, e:
                 print("Exception")
                 print(e)
-                dialogVideo.update(100)
+                dialogVideo.update( 100 )
                 dialogVideo.close()
                 dialogError = xbmcgui.Dialog()
                 dialogError.ok("Erreur", "Impossible de charger les informations du à", "un probleme de connection ou à", "un changement sur le site distant")
   
   
-            # Play the selected video
-            print("Play the selected video: %s"%video2playURL)
-            xbmc.Player(self.configManager.getDefaultPlayer()).play(video2playURL)
 
 
 
