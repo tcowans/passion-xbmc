@@ -3,8 +3,12 @@
 """
 Le Blog d'Alain Carrazé Video HTML parser with GUI by Temhil (temhil@gmail.com)
  
+28-02-09 Version 1.2 by Temhil
+    - Update algorithm in order to retrieve each entry in the blog, including 'text only' one
+    - Made the code more generic in order to use it for other Canalplus blogs
+    - Addes Series Express videos
 24-11-08 Version 1.1 by Temhil
-    - Fixed crash on video info since html code is not alwyas identical depending
+    - Fixed crash on video info since html code is not always identical depending
       on the entry
     - Created regex for getting comment on video (not used yet)
 18-10-08 Version 1.0 by Temhil
@@ -22,8 +26,8 @@ réservés à Canal+
 """
 
 ############################################################################
-version = '1.2-Dev02'
-date    = '26-02-09'
+version = ' pre-1.2'
+date    = '28-02-09'
 author  = 'Temhil'
 ############################################################################
 
@@ -138,13 +142,16 @@ xbfont_truncated    = 0x00000008
 # Blog configuration
 #############################################################################
 
-BASE_BLOGNAME    = "alaincarraze"
-#BASE_BLOGNAME    = "oscars"
-#BASE_BLOGNAME    = "cesar"
-#BASE_BLOGNAME    = "alamaisonblanche"
-#BASE_BLOGNAME    = "didierallouch"
-BASE_URL_WEBPAGE = "http://%s.blog.canal-plus.com/"%BASE_BLOGNAME
-BASE_URL_XML     = "http://www.canalplus.fr/flash/xml/module/embed-video-player/embed-video-player.php?video_id="
+#BASE_BLOGNAME       = "oscars"
+#BASE_BLOGNAME       = "cesar"
+#BASE_BLOGNAME       = "alamaisonblanche"
+#BASE_BLOGNAME       = "didierallouch"
+BASE_BLOGNAME       = "alaincarraze"
+BASE_URL_INFO       = "http://www.canalplus.fr"
+BASE_URL_XML        = BASE_URL_INFO + "/flash/xml/module/embed-video-player/embed-video-player.php?video_id="
+BASE_URL_VIDEO_INFO = BASE_URL_INFO + "/processus/page/midh/xt_desc_video.php?cid="
+URL_MAIN_WEBPAGE    = "http://%s.blog.canal-plus.com/"%BASE_BLOGNAME
+URL_EXT_WEBPAGE     = BASE_URL_INFO + "/c-series/pid3054-c-series-express.html"
 
 # Set Headers
 txdata = None
@@ -234,6 +241,8 @@ class WebPage:
         - Load the Web page at the specific URL
           and copy the source code in self.Source
         """
+        print 'WebPage - url'
+        print url
         self.debug = debug
         try:
             # CookieJar objects support the iterator protocol for iterating over contained Cookie objects.
@@ -262,11 +271,12 @@ class WebPage:
                 open(os.path.join(CACHEDIR, filename),"w").write(self.Source)
 
         except Exception, e:
-            print("Exception in WebPage init for URL: " + url)
+            print("Exception in WebPage init for URL: ")
+            print url
             print(e)
             
             # pass the Exception
-            raise e
+            #raise e
 
 class blogVideoDescriptWebPage(WebPage):
     """
@@ -275,7 +285,7 @@ class blogVideoDescriptWebPage(WebPage):
     Load on AC blog webiste a video description webpage
     
     """
-    def GetVideoDescription(self):
+    def getVideoDescription(self):
         """
         Extract video description from the AC blog collection webpage
         Parameters:
@@ -295,7 +305,7 @@ class blogVideoDescriptWebPage(WebPage):
         
         return videoDate,videoTitle,videoDesciption
 
-    def GetVideoCommentsList(self):
+    def getVideoCommentsList(self):
         """
         Extract video comments from the AC blog collection webpage
         Parameters:
@@ -324,7 +334,7 @@ class blogVideoDescriptWebPage(WebPage):
             commentDateList.append(unicode(i.group("commentDate"),"utf-8").encode("cp1252"))
         
         if self.debug: 
-            print "blogVideoDescriptWebPage - GetVideoCommentsList: "
+            print "blogVideoDescriptWebPage - getVideoCommentsList: "
             print commentIDList
             print commentDescriptionList
             print commentAuthorList
@@ -341,18 +351,19 @@ class blogEntryListWebPage( WebPage ):
     
     """
     def __init__( self, url, txData, txHearder, debug=False ):
+        print "blogEntryListWebPage"
         WebPage.__init__( self, url, txData, txHearder, debug )
         self.entries = []
         
-    def GetEntryList( self ):
+    def getEntryList( self ):
         """
         Extract data about video files from the AC blog collection webpage
         Parameters:
-            - [out] dataObj: Data object (blogCollectionData) where data 
+            - [out] dataObj: Data object (BlogCollectionData) where data 
               extracted from the Webpage  will be appended 
 
         """
-        self.debug = True
+        #self.debug = True
         reEntry = re.compile(r"""(<h2 class="date"><span>(?P<entryDate>.+?)</span></h2>)? *?<a id="(?P<entryID>[a-zA-Z][0-9]+?)"></a> <h3><span>(?P<entryTitle>.+?)</span></h3>.*?<div class=\"posttext-decorator2\">\ <p>(?P<entryContent>.+?)</p> </div> </div> </div>.*?<a href="http://%s\.blog\.canal-plus\.com/(?P<entryDescriptURL>archive.+?html)\">Lien permanent</a>"""%BASE_BLOGNAME, re.DOTALL) 
         #reVideo = re.compile(r"""(?P<videoDescription>.*?)<div id="playercontent(?P<videoID>[0-9]+?)">.*?"playercontent[0-9]+?"\);</script>|(?P<textOnly>.*+)""", re.DOTALL) 
         reVideo = re.compile(r"""(?P<videoDescription>.*?)<div id="playercontent(?P<videoID>[0-9]+?)">.*?"playercontent[0-9]+?"\);</script>|(?P<textOnly>.+)""", re.DOTALL) 
@@ -393,7 +404,7 @@ class blogEntryListWebPage( WebPage ):
                         self.entries.append( copy( blogEntry ) ) # we use copy in order to not losing the value on next loop
                 
         except Exception, e:
-            print"Exception during GetEntryList"
+            print"Exception during getEntryList"
             print str(e)
             print str(sys.exc_info()[0])
             traceback.print_exc()
@@ -404,7 +415,7 @@ class blogEntryListWebPage( WebPage ):
         
         return self.entries
 
-    def GetCategoryList(self):
+    def getCategoryList(self):
         """
         Extract data about categories from the AC blog collection webpage
         Parameters:
@@ -436,78 +447,57 @@ class blogExternalEntryListWebPage(WebPage):
     
     """
     def __init__( self, url, txData, txHearder, debug=False ):
+        print 'blogExternalEntryListWebPage - url'
+        print url
         WebPage.__init__( self, url, txData, txHearder, debug )
         self.entries   = []
         self.txData    = txData
         self.txHearder = txHearder
         self.debug     = debug
 
-    def GetEntryList( self ):
+    def _getFlashVideoListURL(self):
         """
-        Extract data about video files from the AC blog collection webpage
-        Parameters:
-            - [out] dataObj: Data object (blogCollectionData) where data 
-              extracted from the Webpage  will be appended 
-
+        Extract URL of the flash webpage with video ID
         """
-        self.debug = True
-        reEntry = re.compile(r"""(<h2 class="date"><span>(?P<entryDate>.+?)</span></h2>)? *?<a id="(?P<entryID>[a-zA-Z][0-9]+?)"></a> <h3><span>(?P<entryTitle>.+?)</span></h3>.*?<div class=\"posttext-decorator2\">\ <p>(?P<entryContent>.+?)</p> </div> </div> </div>.*?<a href="http://%s\.blog\.canal-plus\.com/(?P<entryDescriptURL>archive.+?html)\">Lien permanent</a>"""%BASE_BLOGNAME, re.DOTALL) 
-        #reVideo = re.compile(r"""(?P<videoDescription>.*?)<div id="playercontent(?P<videoID>[0-9]+?)">.*?"playercontent[0-9]+?"\);</script>|(?P<textOnly>.*+)""", re.DOTALL) 
-        reVideo = re.compile(r"""(?P<videoDescriptionWithID>.*?)<strong><a href="http://player.canalplus.fr/#/(?P<videoID>[0-9]+?)"|(?P<videoDescriptionWithLink>.+)<a href="(?P<videoPageURL>.*?)" target=""", re.DOTALL) 
-
-        ##TODO Exception on nothing found !!!!!!!!!!!!!!!!!!!!!!!!
+        reXML = re.compile(r"""function afficher_mea_trombi_(?P<zoneTemplateID>[0-9]+?)\(\).*?var sURL = "(?P<videoFlashPageURL>.*?)"\+page;""", re.DOTALL) 
+        xml_url = None
+        print "_getFlashVideoListURL"
         try:
-            for i in reEntry.finditer( self.Source ):
-                # Copy each item found in a list
-                blogEntry = EntryObject()
-                title     = i.group( "entryTitle" )
-                newEntry  = True
-                if title: # !=None
-                    blogEntry.title = unicode( title, "utf-8" ).encode( "cp1252" )
-                date = i.group( "entryDate" )
-                if date:
-                    blogEntry.date  = unicode( date, "utf-8" ).encode( "cp1252" )
-                blogEntry.fullDescURL = i.group( "entryDescriptURL" )
-                
-                # Now let's try to find a video inside this entry
-                entryContent  = i.group( "entryContent" )
-                for j in reVideo.finditer( entryContent ):
-                    videoID      = j.group( "videoID" )
-                    videoPageURL = j.group( "videoPageURL" )
-                    if videoID:
-                        blogEntry.videoID      = videoID
-                        videoDescriptionWithID = j.group( "videoDescriptionWithID" )
-                        if videoDescriptionWithID:
-                            blogEntry.description = strip_off( unicode( videoDescriptionWithID, "utf-8" ).encode( "cp1252" ) )
-                            
-                    elif videoPageURL:
-                        # Load external video page and get video ID from it
-                        print "**** videoPageURL"
-                        print videoPageURL
-                        externalFlashVideoPage = blogVideoExternalFlashWebPage( videoPageURL, self.txData, self.txHearder, self.debug ) 
-                        blogEntry.videoID = externalFlashVideoPage.GetCurrentVideoID()
-                        videoDescriptionWithLink = j.group( "videoDescriptionWithLink" )                        
-                        if videoDescriptionWithLink:
-                            blogEntry.description = strip_off( unicode( videoDescriptionWithLink, "utf-8" ).encode( "cp1252" ) )
-                           
-                    # Adding to the list
-                    self.entries.append( copy( blogEntry ) ) # we use copy in order to not losing the value on next loop
-                    #print '**** blogExternalEntryListWebPage - self.entries'
-                    #print self.entries
-                
+            for i in reXML.finditer( self.Source ):
+                xml_url = i.group( "videoFlashPageURL" )
         except Exception, e:
-            print"Exception during GetEntryList"
+            print"Exception during getXMLURL"
             print str(e)
             print str(sys.exc_info()[0])
             traceback.print_exc()
-        print 'self.entries'
-        print self.entries
-        print 'len(self.entries)'
-        print len(self.entries)
+        print 'xml_url'
+        print xml_url
+        return BASE_URL_INFO + xml_url
+
+
+    def getEntryList( self ):
+        """
+        Extract data about video files from the AC blog collection webpage
+        Parameters:
+            - [out] dataObj: Data object (BlogCollectionData) where data 
+              extracted from the Webpage  will be appended 
+
+        """
+        #self.debug = True
+        
+        # Get the URL of flash page with video list
+        videoListUrl = self._getFlashVideoListURL()
+        print "blogExternalEntryListWebPage - getEntryList - videoListUrl"
+        print videoListUrl
+        
+        if videoListUrl:
+            # List exists
+            videoListPage = blogExternalVideoListFlashWebPage( videoListUrl, self.txData, self.txHearder, self.debug, 0 ) 
+            self.entries = videoListPage.getVideoList()
         
         return self.entries
 
-class blogVideoExternalFlashWebPage(WebPage):
+class blogExternalVideoListFlashWebPage(WebPage):
     """
     
     Inherit from WebPage super class
@@ -515,96 +505,106 @@ class blogVideoExternalFlashWebPage(WebPage):
     (external to the blog i.e http://www.canalplus.fr/c-cinema-en-salles/c-emissions-cinema/pid3008-c-p-l-hebd-hollywood.html)
     
     """
-    def GetCurrentVideoID(self):
+    def __init__( self, url, txData, txHearder, debug=False, pageIndex=0 ):
+        print "blogExternalVideoListFlashWebPage"
+        WebPage.__init__( self, url + str(pageIndex), txData, txHearder, debug )
+        self.entries   = []
+        self.url       = url
+        self.txData    = txData
+        self.txHearder = txHearder
+        self.debug     = debug
+        self.pageIndex = pageIndex
+
+    def getCurrentVideoID(self):
         """
         Extract curremt video ID from the flash webpage
         """
         video_id = None
+        reVideo = re.compile(r"""http://www\.canalplus\.fr/flash/xml/configuration/configuration-embed-video-player\.php\?xmlParam=(?P<videoID>[0-9]+?)-[0-9]+?""", re.DOTALL) 
         try:
-            reVideo = re.compile(r"""http://www\.canalplus\.fr/flash/xml/configuration/configuration-embed-video-player\.php\?xmlParam=(?P<videoID>[0-9]+?)-[0-9]+?""", re.DOTALL) 
             video_id =  reVideo.findall( self.Source )[0]
             print 'video_id'
             print video_id
         except Exception, e:
-            print"Exception during GetCurrentVideoID"
+            print"Exception during getCurrentVideoID"
             print str(e)
             print str(sys.exc_info()[0])
             traceback.print_exc()
         return video_id
 
-
-class blogVideoListWebPage(WebPage):
-    """
-    
-    Inherit from WebPage super class
-    Load on AC blog webiste a video list webpage
-    which include list of video to watch) and provides source code
-    
-    """
-    def GetVideoList(self, dataObj):
+    def _isLastPage(self):
         """
-        Extract data about video files from the AC blog collection webpage
-        Parameters:
-            - [out] dataObj: Data object (blogCollectionData) where data 
-              extracted from the Webpage  will be appended 
-
+        Check if a next page is available or not
+        return True when a next page is available
         """
-        self.debug = True
-        #reVideo = re.compile(r"""<h2\ class=\"date\"><span>(?P<videoDate>.+?)</span></h2>.*?<h3><span>(?P<videoTitle>.+?)</span></h3>.*?<div id="playercontent(?P<videoID>[0-9]+?)">.+?[0-9]+?\:[0-9]+?.+?<a href="http://%s\.blog\.canal-plus\.com/(?P<videoDescriptURL>archive.+?html)\">Lien permanent</a>"""%BASE_BLOGNAME, re.DOTALL) 
-        reVideo = re.compile(r"""(<h2 class="date"><span>(?P<videoDate>.+?)</span></h2>)? *?<a id="[a-zA-Z][0-9]+?"></a> <h3><span>(?P<videoTitle>.+?)</span></h3>.*?<div id="playercontent(?P<videoID>[0-9]+?)">.+?[0-9]+?\:[0-9]+?.+?<a href="http://%s\.blog\.canal-plus\.com/(?P<videoDescriptURL>archive.+?html)\">Lien permanent</a>"""%BASE_BLOGNAME, re.DOTALL) 
-        #reVideo = re.compile(r"""(<h2 class="date"><span>(?P<videoDate>.+?)</span></h2>)?( *?<a id="[a-zA-Z][0-9]+?"></a> <h3><span>(?P<videoTitle>.+?)</span></h3>)?.*?<div id="playercontent(?P<videoID>[0-9]+?)">.+?[0-9]+?\:[0-9]+?(.+?<a href="http://%s\.blog\.canal-plus\.com/(?P<videoDescriptURL>archive.+?html)\">Lien permanent</a>)?"""%BASE_BLOGNAME, re.DOTALL) 
+        reState = re.compile(r"""src=.http://media\.canal-plus\.com/design/front_office_wwwplus//images/fleches/droite_(?P<state>[a-zA-Z]*?)_v2.gif.""", re.DOTALL)
+        result = True
+        try:
+#            for i in reState.finditer( self.Source ):
+#                nextPageState = i.group( "state" )
+            nextPageState =  reState.findall( self.Source )[0]
+            #nextPageState =  reState.findall( self.Source )
+            print "_isLastPage"
+            if nextPageState:
+                print nextPageState
+                if nextPageState == "active":
+                    result = False
+        except Exception, e:
+            print"Exception during isLastPage"
+            print str(e)
+            print str(sys.exc_info()[0])
+            traceback.print_exc()
+        return result
 
-        ##TODO Exception on nothing found !!!!!!!!!!!!!!!!!!!!!!!!
+    def getVideoList(self):
+        """
+        Return video list from the flash list (bottom of the main page)
+        """
+        reVideo = re.compile(r"""<img width="80" height="60"  src="(?P<videoThumbURL>.*?)"  onclick="DisplayVideo\((?P<videoID>[0-9]+?)\);"/>.*?" class="txt-noir9">(?P<videoTitle>.*?(?P<videoDate>[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]+?).*?)</div>""", re.DOTALL) 
+        try:
+            for i in reVideo.finditer( self.Source ):
+                # Copy each item found in a list
+                videoEntry         = EntryObject()
+                title              = i.group( "videoTitle" )
+                videoEntry.videoID = i.group( "videoID" )
+                if title: # !=None
+                    videoEntry.title = unicode( title, "utf-8" ).encode( "cp1252" )
+                date = i.group( "videoDate" )
+                if date:
+                    videoEntry.date  = unicode( date, "utf-8" ).encode( "cp1252" )
 
-        for i in reVideo.finditer(self.Source):
-            # Copy each item found in a list
-            dataObj.videoIDList.append(i.group("videoID"))
-            if i.group("videoDate"):
-                dataObj.videoDateList.append(unicode(i.group("videoDate"),"utf-8").encode("cp1252"))
-            else:
-                dataObj.videoDateList.append("")
-            if i.group("videoTitle"):
-                dataObj.videotitleList.append(unicode(i.group("videoTitle"),"utf-8").encode("cp1252"))
-            else:
-                dataObj.videotitleList.append("")
-            if i.group("videoDescriptURL"): 
-                dataObj.videoPageList.append(i.group("videoDescriptURL"))
-            else:
-                dataObj.videoPageList.append("")
+                # Get video description
+                try:
+                    videoDescriptText = WebPage( BASE_URL_VIDEO_INFO + videoEntry.videoID, self.txData, self.txHearder, self.debug ).Source
+                    #videoEntry.description = strip_off( unicode( videoDescriptText, "utf-8" ).encode( "cp1252" ) )
+                    videoEntry.description = strip_off( videoDescriptText )
+    
+                    self.entries.append( copy( videoEntry ) ) # we use copy in order to not losing the value on next loop
             
-        if self.debug: 
-            print "blogVideoListWebPage : VideoList :"
-            print dataObj.videoIDList
-            print dataObj.videoDateList
-            print dataObj.videotitleList
-            print dataObj.videoPageList
-            print 
+                except Exception, e:
+                    print"Exception during getVideoList, impossible to retrieve vide description"
+                    print str(e)
+                    print str(sys.exc_info()[0])
+                    traceback.print_exc()
+        except Exception, e:
+            print"Exception during getVideoList"
+            print str(e)
+            print str(sys.exc_info()[0])
+            traceback.print_exc()
+        
+        # Check if a next page is availble
+        if not self._isLastPage():
+            # Recursive call on next page
+            nextPage = blogExternalVideoListFlashWebPage( self.url, self.txData, self.txHearder, self.debug, self.pageIndex+1 )
+            nextPageVideoList = nextPage.getVideoList()
+            
+            #Concatenate list
+            self.entries.extend(nextPageVideoList)
+        
+        return self.entries
 
-    def GetCategoryList(self):
-        """
-        Extract data about categories from the AC blog collection webpage
-        Parameters:
-            - [out] List :list of categories
-        """
-        reStripCat      = re.compile(r'<div\ id=\"box-categories\".*?<ul>(.*?)</ul>', re.DOTALL) 
-        reCategories    = re.compile(r'<li><a href="http://%s\.blog\.canal-plus\.com/(?P<catURL>.+?)\">(?P<catName>.+?)</a></li>'%BASE_BLOGNAME, re.DOTALL) 
-       
-        stripHtmlCategoriesList = reStripCat.findall(self.Source)
-        stripHtmlCategories     = ""
-        if len(stripHtmlCategoriesList) > 0:
-            stripHtmlCategories = stripHtmlCategoriesList[0]
-        categoryListName = []
-        categoryListURL = []
-        categoryListName.append("Accueil")
-        categoryListURL.append("")
         
-        for i in reCategories.finditer(stripHtmlCategories):
-            # Copy each item found in a list
-            categoryListName.append(unicode(i.group("catName"),"utf-8").encode("cp1252"))
-            categoryListURL.append(i.group("catURL"))
-        return categoryListName,categoryListURL
-        
-class blogVideoXML(WebPage):
+class BlogVideoXML(WebPage):
     """
     
     Inherit from WebPage super class
@@ -618,6 +618,7 @@ class blogVideoXML(WebPage):
         - Load the Web page at the specific URL and copy the source code in self.Source
         """
         # Init super Class
+        print "BlogVideoXML"
         WebPage.__init__(self, url, txData, txHearder,savehtml)
 
         print("Loading XML file: " + url)
@@ -631,7 +632,7 @@ class blogVideoXML(WebPage):
         self.videoLQFileURL = soup.find('low').string.encode("utf-8")
         self.videoImageURL = soup.find("image").find('url').string.encode("utf-8")
     
-    def GetVideoURL(self,videoQuality):
+    def getVideoURL(self,videoQuality):
         """
         Return URL of video files extracted from the AC blog webpage
         """
@@ -642,14 +643,14 @@ class blogVideoXML(WebPage):
         else:
             return self.videoHQFileURL
 
-    def GetVideoImageURL(self):
+    def getVideoImageURL(self):
         """
         Return Video Image URL of video files extracted from the AC Blog webpage
         """
         return (self.videoImageURL)
 
 
-class blogCollectionData:
+class BlogCollectionData:
     """
     
     Data Warehouse for datas extracted from collection web page(s) 
@@ -658,7 +659,7 @@ class blogCollectionData:
     """
     def __init__(self):
         """
-        Init of blogCollectionData
+        Init of BlogCollectionData
         """
         self.dataLoaded	       = False # define if data has been extracted from a collection webpage
         self.numberOfPages     = 0     # number of webpage for a collection
@@ -668,11 +669,11 @@ class blogCollectionData:
         self.videoIDList       = []    # Video ID
         self.videoDateList     = []    # Video Date
 
-        print("blogCollectionData init DONE")
+        print("BlogCollectionData init DONE")
 
     def reset(self):
         """
-        Reset of blogCollectionData attributes
+        Reset of BlogCollectionData attributes
         """
         self.dataLoaded	       = False
         self.numberOfPages     = 0
@@ -681,7 +682,7 @@ class blogCollectionData:
         self.videoImageList    = []
         self.videoIDList       = []
         self.videoDateList     = [] 
-        print("blogCollectionData RESET DONE")
+        print("BlogCollectionData RESET DONE")
     
     def getNumberofItem(self):
         """
@@ -709,10 +710,10 @@ class SelectCollectionWebpage:
 
         # Filling selectCollecData
         for i in range(self.menulen):
-            self.selectCollecData.append(blogCollectionData())
+            self.selectCollecData.append(BlogCollectionData())
 
 
-class configCtrl:
+class ConfigCtrl:
     """
     
     Controler of configuration
@@ -1158,7 +1159,7 @@ class MainWindow(xbmcgui.Window):
         self.fileMgr = fileMgr(dirCheckList)
 
         # Check conf file
-        self.configManager = configCtrl()
+        self.configManager = ConfigCtrl()
         
         # Display Loading Window while we are loading the information from the website
         dialogUI = xbmcgui.DialogProgress()
@@ -1175,9 +1176,13 @@ class MainWindow(xbmcgui.Window):
         self.user_logo.setVisible(True)
 
         # Extract categories from main webpage
-        startupWebPage=blogEntryListWebPage(BASE_URL_WEBPAGE ,txdata,txheaders)
-        print "Calling GetCategoryList"
-        self.categoryList = startupWebPage.GetCategoryList()
+        startupWebPage=blogEntryListWebPage(URL_MAIN_WEBPAGE ,txdata,txheaders)
+        print "Calling getCategoryList"
+        self.categoryList = startupWebPage.getCategoryList()
+        
+        # Add external webpage to the list
+        #TODO: put full url not relative
+        self.categoryList.append( CategoryObject( "SERIES EXPRESS", "" ) ) 
         
         # Menu Control List
         self.currentMenuIdx = 0
@@ -1271,20 +1276,19 @@ class MainWindow(xbmcgui.Window):
         dialogLoading.create("Le blog d'Alain Carrazé", "Chargement des informations", "Veuillez patienter...")
 
         # Load Main webpage of Blog d'Alain Carrazé
-#        if menuSelectIndex == 1: # 2nd entry: "1. EMISSION L'HEBD'HOLLYWOOD"
-#            #TODO: clean that, this is a temporary fix but it won;t support website changes very well
-#            myEntryListWebPage = blogExternalEntryListWebPage( BASE_URL_WEBPAGE + self.categoryList[ menuSelectIndex ].url, txdata, txheaders, self.configManager.getDebug() )   
-#        else:
-#            myEntryListWebPage = blogEntryListWebPage( BASE_URL_WEBPAGE + self.categoryList[ menuSelectIndex ].url, txdata, txheaders, self.configManager.getDebug() )
-        myEntryListWebPage = blogEntryListWebPage( BASE_URL_WEBPAGE + self.categoryList[ menuSelectIndex ].url, txdata, txheaders, self.configManager.getDebug() )
+        if ( menuSelectIndex == len(self.categoryList) - 1 ): # Last item of the list (series express)
+            #TODO: clean that, this is a temporary fix but it won;t support website changes very well
+            myEntryListWebPage = blogExternalEntryListWebPage( URL_EXT_WEBPAGE, txdata, txheaders, self.configManager.getDebug() )   
+        else:
+            myEntryListWebPage = blogEntryListWebPage( URL_MAIN_WEBPAGE + self.categoryList[ menuSelectIndex ].url, txdata, txheaders, self.configManager.getDebug() )
+        #myEntryListWebPage = blogEntryListWebPage( URL_MAIN_WEBPAGE + self.categoryList[ menuSelectIndex ].url, txdata, txheaders, self.configManager.getDebug() )
         # Extract data from myCollectionWebPage and copy the content in corresponding Collection Data Instance
-        self.categoryList[ menuSelectIndex ].entryList = myEntryListWebPage.GetEntryList()
+        self.categoryList[ menuSelectIndex ].entryList = myEntryListWebPage.getEntryList()
         
         print 'len name'
         print len( self.categoryList[ menuSelectIndex ].name )
         print 'len entryList'
         print len( self.categoryList[ menuSelectIndex ].entryList )
-#        myEntryListWebPage.GetCategoryList()
         
         # Update dataLoaded flag
         self.categoryList[ menuSelectIndex ].dataLoaded = True
@@ -1376,14 +1380,14 @@ class MainWindow(xbmcgui.Window):
                 index = self.categoryList[ menuSelectIndex ].entryList.index( entry )
                 # Load video XML file
                 if entry.videoID:
-                    myVideoXMLPage = blogVideoXML( BASE_URL_XML + str( entry.videoID ), txdata, txheaders, self.configManager.getDebug() )
+                    myVideoXMLPage = BlogVideoXML( BASE_URL_XML + str( entry.videoID ), txdata, txheaders, self.configManager.getDebug() )
             
                     # Get the URL of the video picture
-                    videoimg = myVideoXMLPage.GetVideoImageURL()
+                    videoimg = myVideoXMLPage.getVideoImageURL()
                     
                     # Get the URL of the video for later on
                     #TODO: cover case when video quality is change between here and video playing
-                    entry.videoURL = myVideoXMLPage.GetVideoURL( self.configManager.getVideoQuality() )
+                    entry.videoURL = myVideoXMLPage.getVideoURL( self.configManager.getVideoQuality() )
         
                     videoimgdest = os.path.join( CACHEDIR, str( entry.videoID ) + ".jpg" )
         
@@ -1477,13 +1481,13 @@ class MainWindow(xbmcgui.Window):
 #            dialogVideo.create("Blog d'Alain Carrazé", "Chargement des informations sur la vidéo", "Veuillez patienter...")
             try:
 #                # Load video XML file
-#                myVideoXMLPage = blogVideoXML( BASE_URL_XML + self.categoryList[self.currentMenuIdx].entryList[chosenIndex].videoID, txdata, txheaders, self.configManager.getDebug() )
+#                myVideoXMLPage = BlogVideoXML( BASE_URL_XML + self.categoryList[self.currentMenuIdx].entryList[chosenIndex].videoID, txdata, txheaders, self.configManager.getDebug() )
 #
 #                # Update Progress bar (half of the job is done)
 #                dialogVideo.update( 50 )
 #      
 #                # Get the URL of the video to play
-#                video2playURL = myVideoXMLPage.GetVideoURL( self.configManager.getVideoQuality() )
+#                video2playURL = myVideoXMLPage.getVideoURL( self.configManager.getVideoQuality() )
 #                dialogVideo.update( 100 )
 #                dialogVideo.close()
 
