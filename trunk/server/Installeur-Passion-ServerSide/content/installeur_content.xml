@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<installeurContent version="0.1" author="temhil" date="04.12.2008">
+<installeurContent version="0.1" author="temhil" date="03.03.2009">
 
 	<!-- Template -->
 	<!-- Il y 4 sections, pour les themes, scrapers et script il vous faut creer une entree directement -->
@@ -28,22 +28,32 @@
 	<!-- Section Themes -->
 	<skins>
 		<entry>
-			<fileName>Vision2</fileName>
-			<title>Vision 2</title>
-			<version></version>
+			<fileName>7TFT</fileName>
+			<title>7TFT</title>
+			<version>r89</version>
+			<date></date>
+			<added>20-02-09</added>
+			<author>djtoll</author>
 			<lang>multi</lang>
-			<author></author>
 			<iconURL></iconURL>
-			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/Vision2.jpg</previewPictureURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/SevenTft.jpg</previewPictureURL>
 			<previewVideoURL></previewVideoURL>
-			<description_fr></description_fr>
-			<description_en></description_en>
+			<description_fr>7TFT est un Theme cree pour les petit ecran TFT (voiture, Xbox, écrans portables ...).
+Il fonctionne aussi avec les résolutions 1080i !
+
+Commentaire:
+Skin idéal pour un Car Media Center avec Xbmc comme celui que j'ai dans mes cartons.
+L'apparence est particulière mais extrêmement bien pensée. L'OSD est une réussite magnifique.</description_fr>
+			<description_en>7TFT is an special XBMC skin for mini TFT´s (Car, xbox additive LCD´s - or portable screens)
+It works with 1080i reselution also ! :) Special features of the skin are the big headlines/fonts and the 4 corners control. Each menu has its own color, (Music -> green, Vodeo -> Blue, Picture -> yellow, Programms -> Pink)</description_en>
 		</entry>
 		<entry>
 			<fileName>Aeon</fileName>
 			<title>Aeon</title>
-			<version></version>
-			<author></author>
+			<version>Alpha 14</version>
+			<author>Duncan Harris</author>
+			<date></date>
+			<added>20-02-09</added>
 			<lang>multi</lang>
 			<iconURL></iconURL>
 			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/Aeon.jpg</previewPictureURL>
@@ -62,6 +72,639 @@ Il est assez probable que j'écrive un article bien plus complet sur Aeon par la
 			<description_en>An ambitous project, designed for HD screens, Aeon is very different from everything we have seen and now is a refrence!</description_en>
 		</entry>
 		<entry>
+			<fileName>Amped</fileName>
+			<title>Amped</title>
+			<version>r1924</version>
+			<date></date>
+			<added>20-02-09</added>
+			<author>Jezz_X, Smokehead</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/Amped.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>Back-Row</fileName>
+			<title>Back-Row</title>
+			<date></date>
+			<added>20-02-09</added>
+			<author>Sharpe, djdafreund</author>
+			<version>r1924</version>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/Back-Row.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Anciennement Front-Row, Back-Row est un Thème qui propose un grand nombre d'options, des modes de vues complètement inédits. Il est original, sympathique, drôle, customisable, perturbant, surprenant et j'en passe.</description_fr>
+			<description_en>Previosyly Front-Row, Back-Row is a skin with plenty of options, mod totally new. A must!</description_en>
+		</entry>
+		<entry>
+			<fileName>Basics-101_Media_Center</fileName>
+			<title>Basics-101 Media Center</title>
+			<version>r1939</version>
+			<date></date>
+			<added>20-02-09</added>
+			<author>Jezz_X, Mikebeecham</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/basics-101.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>The Basics-101 skin is based on the graphics that Mikebeecham
+did for his Pandora skin mockups. 
+(it uses its icons, its background image and color scheme). 
+And they look great all credit to Mikebeecham for a great effort
+
+!!!Please note this is not the Pandora skin.!!! 
+
+It is a skin that I intend to use as my main media center skin
+on Linux port of XBMC and is really only designed originally for
+media playback only not games play.
+
+I took ideas from a few other skins that I have done or liked
+Its very xTV in style and also has a few touches of Vision thrown
+in for good measure (side bars and nav sounds)
+
+This skin is for 720p 1080i only though I did include a basic
+Pal16x9 font file but the icon images look real blocky edges 
+scaled down to that size
+.
+Its simple has no fancy view types (except Media Info) or
+Animations It has large readable font (xbox people may need to
+size it down a little it was meant for my 1360x768 rez of my
+TV that Linux full screen uses)
+
+If you got the premade skins instead of from the SVN Ignore this.
+As I said it was made for Linux so by default there are no links
+to "Programs" section you will need to run Build_for_Xbox.bat if 
+you want to use it on the xbox. Other wise run Build_for_Media.bat
+
+!!! This skin has no KAI Stuff in it at all if you use KAI in XBMC
+pick another skin This one wont work for you  !!!
+
+It designed to be super mouse friendly (its for Linux remember)
+And has 1 Setting in the Settings Page side bar that will add some
+extra mouse features like moving the mouse over the right edge
+will open the shutdown menu (right click needed to close) and also
+while media is playing a hotspot will be in the middle of the 
+bottom of the screen that will open Player Controls so you can 
+FF RW Stop Pause etc... with the mouse. (right click needed to close)
+
+I recommend that you up your icon cache to at least 384 anything 
+smaller and list view looks pretty average. But again like I said
+its for Linux xbox might lag a little with that size cache.</description_en>
+		</entry>
+		<entry>
+			<fileName>Basics-101_xbox</fileName>
+			<title>Basics-101 XBOX</title>
+			<version>r1939</version>
+			<date></date>
+			<added>20-02-09</added>
+			<author>Jezz_X, Mikebeecham</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/basics-101.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>The Basics-101 skin is based on the graphics that Mikebeecham
+did for his Pandora skin mockups. 
+(it uses its icons, its background image and color scheme). 
+And they look great all credit to Mikebeecham for a great effort
+
+!!!Please note this is not the Pandora skin.!!! 
+
+It is a skin that I intend to use as my main media center skin
+on Linux port of XBMC and is really only designed originally for
+media playback only not games play.
+
+I took ideas from a few other skins that I have done or liked
+Its very xTV in style and also has a few touches of Vision thrown
+in for good measure (side bars and nav sounds)
+
+This skin is for 720p 1080i only though I did include a basic
+Pal16x9 font file but the icon images look real blocky edges 
+scaled down to that size
+.
+Its simple has no fancy view types (except Media Info) or
+Animations It has large readable font (xbox people may need to
+size it down a little it was meant for my 1360x768 rez of my
+TV that Linux full screen uses)
+
+If you got the premade skins instead of from the SVN Ignore this.
+As I said it was made for Linux so by default there are no links
+to "Programs" section you will need to run Build_for_Xbox.bat if 
+you want to use it on the xbox. Other wise run Build_for_Media.bat
+
+!!! This skin has no KAI Stuff in it at all if you use KAI in XBMC
+pick another skin This one wont work for you  !!!
+
+It designed to be super mouse friendly (its for Linux remember)
+And has 1 Setting in the Settings Page side bar that will add some
+extra mouse features like moving the mouse over the right edge
+will open the shutdown menu (right click needed to close) and also
+while media is playing a hotspot will be in the middle of the 
+bottom of the screen that will open Player Controls so you can 
+FF RW Stop Pause etc... with the mouse. (right click needed to close)
+
+I recommend that you up your icon cache to at least 384 anything 
+smaller and list view looks pretty average. But again like I said
+its for Linux xbox might lag a little with that size cache.</description_en>
+		</entry>
+		<entry>
+			<fileName>Basics-Vision</fileName>
+			<title>Basic-Vision</title>
+			<version>r1939</version>
+			<date></date>
+			<added>20-02-09</added>
+			<author>Jezz_X, Mikebeecham, NineT9Mustang</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/Basics-Vision.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>The Basics-Vision skin is combination of 2 skins called Basics-101
+and Vision
+
+This skin is for 720p 1080i only though I did include a basic
+Pal16x9 font file but the icon images look real blocky edges 
+scaled down to that size
+.
+Its simple has no fancy view types (except Media Info) or
+Animations It has large readable font 
+
+!!! This skin has no KAI Stuff in it at all if you use KAI in XBMC
+pick another skin This one wont work for you  !!!
+
+I recommend that you up your icon cache to at least 384 anything 
+smaller and list view looks pretty average. But again like I said
+its for Linux xbox might lag a little with that size cache.</description_en>
+		</entry>
+		<entry>
+			<fileName>BLUEblack</fileName>
+			<title>BLUEblack</title>
+			<version>r1693</version>
+			<date></date>
+			<added>20-02-09</added>
+			<author>Wabid Woveren</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>I started this skin as a way of changing BlackBLue by Leonardo, and never dreamed of releasing it.  
+But sometime into version 1.0 i realized that i was putting alot of work into this skin, and sombody else may want to use it.  
+Thank you Leonardo for letting me mod your skin.  This will hopefully be merged with blackblue very soon, hopefully.</description_en>
+		</entry>
+		<entry>
+			<fileName>CEOMR Media Center</fileName>
+			<title>CEOMR Media Center</title>
+			<version>r1692</version>
+			<date></date>
+			<added>20-02-09</added>
+			<author>ceomr</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>CINEMA</fileName>
+			<title>Cinema</title>
+			<date></date>
+			<added>20-02-09</added>
+			<version></version>
+			<author>makame, MikeBeecham</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/Cinema.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Seulement pour 16:9[cr]Concept et skin intéréssant. A tester.[CR]Particularité: Existe en version MacOSX</description_fr>
+			<description_en>Only for 16:9[cr]Note: A version exists for MacOSX</description_en>
+		</entry>
+		<entry>
+			<fileName>Clearity</fileName>
+			<title>Clearity</title>
+			<version>r1939</version>
+			<date></date>
+			<added>20-02-09</added>
+			<author>Smokehead</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/clearity.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>Connected</fileName>
+			<title>Connected</title>
+			<version></version>
+			<date></date>
+			<added></added>
+			<author>Wir3d</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>Containment</fileName>
+			<title>Containment</title>
+			<version>r1694</version>
+			<date></date>
+			<added>20-02-09</added>
+			<author>CHI3f, mebzik</author>
+			<lang></lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/containment.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>Textures:
+     - 300
+     - Apple
+     - Apple Dark
+     - PM3</description_en>
+		</entry>
+		<entry>
+			<fileName>Empty</fileName>
+			<title>Empty</title>
+			<version></version>
+			<date></date>
+			<added></added>
+			<author>Wir3d</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>---------------------------
+Info
+---------------------------
+Skin Name: Empty 1.0
+Resolution: All
+Purpose: Basic skin template
+
+Each screen and dialog is labeled in red.
+
+---------------------------
+Left To Add
+---------------------------
+convert translate.xml to english strings
+musicosdvissettings.xml
+smartplaylistrule.xml
+slideshow.xml
+musicvisualisation.xml
+videofullscreen.xml
+smartplaylisteditor.xml
+mymusicplaylisteditor.xml
+
+---------------------------
+Notes/Comments
+---------------------------
+Not everything is tested and I am currently working on other projects.
+Just wanted to get this out incase someone finds it usefull.</description_en>
+		</entry>
+		<entry>
+			<fileName>Focus</fileName>
+			<title>Focus</title>
+			<date></date>
+			<added>20-02-09</added>
+			<version>Alpha 6</version>
+			<author>Jeroen</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/Focus.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Skin fort sympathique dont le développement devrait connaître des avancées très rapidement.
+A éssayer. Simple et assez beau.</description_fr>
+			<description_en>Focus an XBMC Media Center skin developed to be easy to use by providing a clean interface for xbmc mediacenter where form and function are balanced as efficiently as possible, and by putting your media first and at the center of your mediacenter experience</description_en>
+		</entry>
+		<entry>
+			<fileName>Fusion_3_VS_hd</fileName>
+			<title>Fusion 3 HD (Stable version)</title>
+			<version>Alpha 5</version>
+			<date></date>
+			<added>20-02-09</added>
+			<author>Agathorn</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>Fusion for XBMC
+
+"Its all about the media!"
+
+Fusion is a new skin for the Xbox Media Center.  The skin is designed to put the media in the spotlight, and makes the actual UI as minimal and unobtrusive as possible.  Controls that you need to use infrequently are hidden away and only come into view as needed.
+
+Fusion is designed, created, and coded by Agathorn, and is inspired and influenced by the Xephyr/Aeon, and Fluid skins.
+
+Initial ALPHA Release
+---------------------
+This is the initial release of the skin.  At this point, very little is done and there are no doubt some bugs to be worked out in what has been done.  This skin was made first and foremost for my own personal use.  99% of what I do with XBMC is TV and Movies, so that was the initial focus of the skin.
+
+Currently skinned:
+Home screen
+Video Library, for TV Shows and Movies
+NTSC, PAL, and 720p only
+
+Useage Guidelines
+-----------------
+To access the menu in the Video Library, simply navigate to the left.
+
+The video library is designed to be used with certain view types in certain places.  If you toggle through the various views, you will find ones designed for TITLES (TV Show Titles), SEASONS, and EPISODES.  Each is designed to be used at the appropriate level when viewing TV Shows.  There are also three Movie (one in 720p) views called MOVIES, MOVIES 2 and MOVIES 3.  Use whichever you prefer.  The first view is all about showing the graphics and contains little information.  Movies 2 includes much more detailed movie info at the loss of some graphics, and movies 3 is a combined view that really is the best of both worlds. 
+
+IMPORTANT USING MOVIES 3!  This view isn't obvious at first.  When using the view, you will see a long list of movies on the left and a larget movie poster of the selected movie on the right.  If you navigate to the RIGHT you can access the scrollbar to page throgh movies faster.  If you navigate RIGHT AGAIN, the movie poster will slide over covering the list of movies, and reveal detailed information about the movie you had selected.
+
+720p NOTE: Due to the larger resolution and available screenspace in 720p, there is currently only one movie view, as it is able to present all the information neccesary.
+
+Xephyr (AEON) Backpacks:
+Fusion was very much inspired by the Xephyr skin, now known as Aeon, and was designed to be able to use the backpacks from that skin on the home screen.  Currently this is hardcoded, but I will be adding some customization in a later build.  For now, if you wish to use them they must be located in the skin's MEDIA folder, and must be in folders named bg_movies, bg_tvshows, bg_pictures, bg_games, and bg_music.
+
+Anything not skinned SHOULD fall back to PM3, however there are some odd places where even though I haven't touched the file/image, the fallback is buggy.  
+
+Known Issues
+------------
+If you enter the Video Library, but have nothing in the library (Library NOT file mode), then you may be unable to access the menu.  This skin is really designed to be used in Library mode, but this will be fixed at some point.  In the meantime if this happens to you, pressing LEFT TWICE _should_ get you to the menu where you can change to file mode.  No promise though, and the file mode is not skinned properly yet.</description_en>
+		</entry>
+		<entry>
+			<fileName>Fusion_3_VS_sd</fileName>
+			<title>Fusion 3 SD (Stable version)</title>
+			<version>Alpha 5</version>
+			<date></date>
+			<added>20-02-09</added>
+			<author>Agathorn</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>Fusion for XBMC
+
+"Its all about the media!"
+
+Fusion is a new skin for the Xbox Media Center.  The skin is designed to put the media in the spotlight, and makes the actual UI as minimal and unobtrusive as possible.  Controls that you need to use infrequently are hidden away and only come into view as needed.
+
+Fusion is designed, created, and coded by Agathorn, and is inspired and influenced by the Xephyr/Aeon, and Fluid skins.
+
+Initial ALPHA Release
+---------------------
+This is the initial release of the skin.  At this point, very little is done and there are no doubt some bugs to be worked out in what has been done.  This skin was made first and foremost for my own personal use.  99% of what I do with XBMC is TV and Movies, so that was the initial focus of the skin.
+
+Currently skinned:
+Home screen
+Video Library, for TV Shows and Movies
+NTSC, PAL, and 720p only
+
+Useage Guidelines
+-----------------
+To access the menu in the Video Library, simply navigate to the left.
+
+The video library is designed to be used with certain view types in certain places.  If you toggle through the various views, you will find ones designed for TITLES (TV Show Titles), SEASONS, and EPISODES.  Each is designed to be used at the appropriate level when viewing TV Shows.  There are also three Movie (one in 720p) views called MOVIES, MOVIES 2 and MOVIES 3.  Use whichever you prefer.  The first view is all about showing the graphics and contains little information.  Movies 2 includes much more detailed movie info at the loss of some graphics, and movies 3 is a combined view that really is the best of both worlds. 
+
+IMPORTANT USING MOVIES 3!  This view isn't obvious at first.  When using the view, you will see a long list of movies on the left and a larget movie poster of the selected movie on the right.  If you navigate to the RIGHT you can access the scrollbar to page throgh movies faster.  If you navigate RIGHT AGAIN, the movie poster will slide over covering the list of movies, and reveal detailed information about the movie you had selected.
+
+720p NOTE: Due to the larger resolution and available screenspace in 720p, there is currently only one movie view, as it is able to present all the information neccesary.
+
+Xephyr (AEON) Backpacks:
+Fusion was very much inspired by the Xephyr skin, now known as Aeon, and was designed to be able to use the backpacks from that skin on the home screen.  Currently this is hardcoded, but I will be adding some customization in a later build.  For now, if you wish to use them they must be located in the skin's MEDIA folder, and must be in folders named bg_movies, bg_tvshows, bg_pictures, bg_games, and bg_music.
+
+Anything not skinned SHOULD fall back to PM3, however there are some odd places where even though I haven't touched the file/image, the fallback is buggy.  
+
+Known Issues
+------------
+If you enter the Video Library, but have nothing in the library (Library NOT file mode), then you may be unable to access the menu.  This skin is really designed to be used in Library mode, but this will be fixed at some point.  In the meantime if this happens to you, pressing LEFT TWICE _should_ get you to the menu where you can change to file mode.  No promise though, and the file mode is not skinned properly yet.</description_en>
+		</entry>
+		<entry>
+			<fileName>FusionHD</fileName>
+			<title>Fusion 3 HD (SVN)</title>
+			<version>r1692</version>
+			<date></date>
+			<added>20-02-09</added>
+			<author>Agathorn</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>Fusion for XBMC
+
+"Its all about the media!"
+
+Fusion is a new skin for the Xbox Media Center.  The skin is designed to put the media in the spotlight, and makes the actual UI as minimal and unobtrusive as possible.  Controls that you need to use infrequently are hidden away and only come into view as needed.
+
+Fusion is designed, created, and coded by Agathorn, and is inspired and influenced by the Xephyr/Aeon, and Fluid skins.
+
+Initial ALPHA Release
+---------------------
+This is the initial release of the skin.  At this point, very little is done and there are no doubt some bugs to be worked out in what has been done.  This skin was made first and foremost for my own personal use.  99% of what I do with XBMC is TV and Movies, so that was the initial focus of the skin.
+
+Currently skinned:
+Home screen
+Video Library, for TV Shows and Movies
+NTSC, PAL, and 720p only
+
+Useage Guidelines
+-----------------
+To access the menu in the Video Library, simply navigate to the left.
+
+The video library is designed to be used with certain view types in certain places.  If you toggle through the various views, you will find ones designed for TITLES (TV Show Titles), SEASONS, and EPISODES.  Each is designed to be used at the appropriate level when viewing TV Shows.  There are also three Movie (one in 720p) views called MOVIES, MOVIES 2 and MOVIES 3.  Use whichever you prefer.  The first view is all about showing the graphics and contains little information.  Movies 2 includes much more detailed movie info at the loss of some graphics, and movies 3 is a combined view that really is the best of both worlds. 
+
+IMPORTANT USING MOVIES 3!  This view isn't obvious at first.  When using the view, you will see a long list of movies on the left and a larget movie poster of the selected movie on the right.  If you navigate to the RIGHT you can access the scrollbar to page throgh movies faster.  If you navigate RIGHT AGAIN, the movie poster will slide over covering the list of movies, and reveal detailed information about the movie you had selected.
+
+720p NOTE: Due to the larger resolution and available screenspace in 720p, there is currently only one movie view, as it is able to present all the information neccesary.
+
+Xephyr (AEON) Backpacks:
+Fusion was very much inspired by the Xephyr skin, now known as Aeon, and was designed to be able to use the backpacks from that skin on the home screen.  Currently this is hardcoded, but I will be adding some customization in a later build.  For now, if you wish to use them they must be located in the skin's MEDIA folder, and must be in folders named bg_movies, bg_tvshows, bg_pictures, bg_games, and bg_music.
+
+Anything not skinned SHOULD fall back to PM3, however there are some odd places where even though I haven't touched the file/image, the fallback is buggy.  
+
+Known Issues
+------------
+If you enter the Video Library, but have nothing in the library (Library NOT file mode), then you may be unable to access the menu.  This skin is really designed to be used in Library mode, but this will be fixed at some point.  In the meantime if this happens to you, pressing LEFT TWICE _should_ get you to the menu where you can change to file mode.  No promise though, and the file mode is not skinned properly yet.</description_en>
+		</entry>
+		<entry>
+			<fileName>FusionSD</fileName>
+			<title>Fusion 3 SD (SVN)</title>
+			<version>r1692</version>
+			<date></date>
+			<added>20-02-09</added>
+			<author>Agathorn</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>Fusion for XBMC
+
+"Its all about the media!"
+
+Fusion is a new skin for the Xbox Media Center.  The skin is designed to put the media in the spotlight, and makes the actual UI as minimal and unobtrusive as possible.  Controls that you need to use infrequently are hidden away and only come into view as needed.
+
+Fusion is designed, created, and coded by Agathorn, and is inspired and influenced by the Xephyr/Aeon, and Fluid skins.
+
+Initial ALPHA Release
+---------------------
+This is the initial release of the skin.  At this point, very little is done and there are no doubt some bugs to be worked out in what has been done.  This skin was made first and foremost for my own personal use.  99% of what I do with XBMC is TV and Movies, so that was the initial focus of the skin.
+
+Currently skinned:
+Home screen
+Video Library, for TV Shows and Movies
+NTSC, PAL, and 720p only
+
+Useage Guidelines
+-----------------
+To access the menu in the Video Library, simply navigate to the left.
+
+The video library is designed to be used with certain view types in certain places.  If you toggle through the various views, you will find ones designed for TITLES (TV Show Titles), SEASONS, and EPISODES.  Each is designed to be used at the appropriate level when viewing TV Shows.  There are also three Movie (one in 720p) views called MOVIES, MOVIES 2 and MOVIES 3.  Use whichever you prefer.  The first view is all about showing the graphics and contains little information.  Movies 2 includes much more detailed movie info at the loss of some graphics, and movies 3 is a combined view that really is the best of both worlds. 
+
+IMPORTANT USING MOVIES 3!  This view isn't obvious at first.  When using the view, you will see a long list of movies on the left and a larget movie poster of the selected movie on the right.  If you navigate to the RIGHT you can access the scrollbar to page throgh movies faster.  If you navigate RIGHT AGAIN, the movie poster will slide over covering the list of movies, and reveal detailed information about the movie you had selected.
+
+720p NOTE: Due to the larger resolution and available screenspace in 720p, there is currently only one movie view, as it is able to present all the information neccesary.
+
+Xephyr (AEON) Backpacks:
+Fusion was very much inspired by the Xephyr skin, now known as Aeon, and was designed to be able to use the backpacks from that skin on the home screen.  Currently this is hardcoded, but I will be adding some customization in a later build.  For now, if you wish to use them they must be located in the skin's MEDIA folder, and must be in folders named bg_movies, bg_tvshows, bg_pictures, bg_games, and bg_music.
+
+Anything not skinned SHOULD fall back to PM3, however there are some odd places where even though I haven't touched the file/image, the fallback is buggy.  
+
+Known Issues
+------------
+If you enter the Video Library, but have nothing in the library (Library NOT file mode), then you may be unable to access the menu.  This skin is really designed to be used in Library mode, but this will be fixed at some point.  In the meantime if this happens to you, pressing LEFT TWICE _should_ get you to the menu where you can change to file mode.  No promise though, and the file mode is not skinned properly yet.</description_en>
+		</entry>
+		<entry>
+			<fileName>Horizonz - An Aeon Mod</fileName>
+			<title>Skin Horizonz (Aeon) - Volume III</title>
+			<version></version>
+			<date></date>
+			<added></added>
+			<author>XB2IRIS</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>Horizonz: An AEON Mod - VOLUME 3
+- This is a MOD i.e. I did not create this skin
+- This is an ODE to the great AEON Classic skin created by DJH_
+- This MOD was created for my own personal use and preference
+- This MOD is to be used at your own risk</description_en>
+		</entry>
+		<entry>
+			<fileName>Horizonz - An Aeon Mod - Fr</fileName>
+			<title>Skin Horizonz (Aeon) - Volume III - French</title>
+			<version></version>
+			<date></date>
+			<added></added>
+			<author>XB2IRIS</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>French version of Horizonz: An AEON Mod - VOLUME 3
+- This is a MOD i.e. I did not create this skin
+- This is an ODE to the great AEON Classic skin created by DJH_
+- This MOD was created for my own personal use and preference
+- This MOD is to be used at your own risk</description_en>
+		</entry>
+		<entry>
+			<fileName>Horizonz - An Aeon Mod vol4</fileName>
+			<title>Skin Horizonz (Aeon) - Volume IV</title>
+			<version></version>
+			<date>03-02-09</date>
+			<added>03-02-09</added>
+			<author>XB2IRIS</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/HorizonzVol4.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>The new release of Horizonz skin (French)
+
+Horizonz owes it's existence to the genius of Aeon and it's creator DJH_
+who single handedly birthed a new skinning concept which so many XBMC 
+users have come to love over the last few years.
+
+This skin begun its rise as an Aeon Mod and has always continued to 
+follow the principle of DJH_'s concept of elegance, efficiency and 
+function. With DJH_'s skinning hiatis and Aeon's developemental progress 
+considered unknown, Horizonz continued in its parent skin's wake by adding 
+a new look interface, new simplistic views and a new generic concept 
+called completeness. With Horizonz maturing by the day, the current feature 
+potential has become endless, and with continued user based influence 
+it has lept beyond it's label 'Mod' and greeted the XBMC community 
+with a progressive skin bound only by the horisons of our minds.
+
+Please readme for more information</description_en>
+		</entry>
+		<entry>
+			<fileName>Horizonz - An Aeon Mod vol4_FR</fileName>
+			<title>Skin Horizonz (Aeon) - Volume IV - French</title>
+			<version></version>
+			<date>03-02-09</date>
+			<added>03-02-09</added>
+			<author>XB2IRIS</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/HorizonzVol4.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>The new release of Horizonz skin (French)
+
+Horizonz owes it's existence to the genius of Aeon and it's creator DJH_
+who single handedly birthed a new skinning concept which so many XBMC 
+users have come to love over the last few years.
+
+This skin begun its rise as an Aeon Mod and has always continued to 
+follow the principle of DJH_'s concept of elegance, efficiency and 
+function. With DJH_'s skinning hiatis and Aeon's developemental progress 
+considered unknown, Horizonz continued in its parent skin's wake by adding 
+a new look interface, new simplistic views and a new generic concept 
+called completeness. With Horizonz maturing by the day, the current feature 
+potential has become endless, and with continued user based influence 
+it has lept beyond it's label 'Mod' and greeted the XBMC community 
+with a progressive skin bound only by the horisons of our minds.
+
+Please readme for more information</description_en>
+		</entry>
+		<entry>
+			<fileName>Insidious</fileName>
+			<title>Insidious</title>
+			<version>r1692</version>
+			<date></date>
+			<added>20-02-09</added>
+			<author>Wir3d</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>Lela</fileName>
+			<title>LeLa</title>
+			<version>r115</version>
+			<date></date>
+			<added>20-02-09</added>
+			<author>djtoll</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/Lela.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>LeLa est un theme cree pour les ecrans de petites tailles (avec des polices plus grosses) comme 7TFT (du meme createur djtoll)
+
+Vous pouvez utilisez le script LeLaLoader disponible dans notre section script afin de mettre a jour LeLa avec la derniere version disponible</description_fr>
+			<description_en>LeLa is a skin for small screen (with big Fonts) like 7TFT (from same author djtoll)
+
+You can use LeLaLoader script available in our script section in order to update LeLa to the last available version</description_en>
+		</entry>
+		<entry>
 			<fileName>Leo</fileName>
 			<title>Leo</title>
 			<version></version>
@@ -75,11 +718,55 @@ Il est assez probable que j'écrive un article bien plus complet sur Aeon par la
 			<description_en>The skin for OSXBMC</description_en>
 		</entry>
 		<entry>
+			<fileName>MARK-III</fileName>
+			<title>MARK-III</title>
+			<version>r1714</version>
+			<date></date>
+			<added>20-02-09</added>
+			<author>Jezz_X, MattAAron, Mikebeecham</author>
+			<lang></lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/MarkIII.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>Textures:
+     - Xbox-Backs</description_en>
+		</entry>
+		<entry>
+			<fileName>MC360</fileName>
+			<title>MC360</title>
+			<version>r1715</version>
+			<date></date>
+			<added>20-02-09</added>
+			<author>Team Blackbolt</author>
+			<lang></lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/mc360.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>MediaPortalX</fileName>
+			<title>MediaPortalX</title>
+			<version>r1693</version>
+			<date></date>
+			<added>20-02-09</added>
+			<author>pin87a , Samsonite, MrMario64</author>
+			<lang></lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>This skin is based on the MediaPortal skin "MCE" created by Samsonite and MrMario64.</description_en>
+		</entry>
+		<entry>
 			<fileName>MediaStream</fileName>
 			<title>MediaStream</title>
-			<version></version>
+			<version>r1986</version>
 			<date></date>
-			<author></author>
+			<added>20-02-09</added>
+			<author>Team Razorfish</author>
 			<lang>multi</lang>
 			<iconURL></iconURL>
 			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/Mediastream.jpg</previewPictureURL>
@@ -98,231 +785,29 @@ WHO CREATED IT?
 MediaStream was created by Team RazorFish.</description_en>
 		</entry>
 		<entry>
-			<fileName>Project Mayhem III</fileName>
-			<title>Project Mayhem III (PMIII)</title>
+			<fileName>MediaStream_F_Mod</fileName>
+			<title>MediaStream Fanart List Mod</title>
 			<version></version>
 			<date></date>
-			<author></author>
+			<added>20-02-09</added>
+			<author>Hitcher, Minimalko</author>
 			<lang>multi</lang>
 			<iconURL></iconURL>
-			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/PMIII.jpg</previewPictureURL>
-			<previewVideoURL>PMIII.jpg</previewVideoURL>
-			<description_fr>Skin vieillissant mais toujours préféré d'un grand nombre d'utilisateurs. (beaucoup ignorent même qu'il existe d'autres Thèmes)
-On peut espérer qu'un jour il subira une refonte complète.
-Ce skin sert souvent de base à ceux qui en développent de nouveaux. C'est en effet le moyen le plus simple de commencer un nouveau skin, en s'appuyant sur celui ci en guise de patron. Réaliser un Skin "From Scratch" demande une grande connaissance dans le domaine.
-
-L'ergonomie est bien pensée car la simplicité est de mise. De plus la consommation mémoire est optimisée.
-Ce skin est toujours à la pointe des dernières avancées de Xbmc.
-
-Note: PMIII n'est pas disponible en téléchargement ici, seuls des mods pour PMIII sont disponibles</description_fr>
-			<description_en>PMIII is not available here, only PMIII mods are available for download</description_en>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/MediaStream_F_Mod.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Version modifiée de MediaStream afin d’insérer la vue liste Fanart.</description_fr>
+			<description_en>Modification of MediaStream adding Fanart List View</description_en>
 		</entry>
 		<entry>
-			<fileName>7TFT</fileName>
-			<title>7TFT</title>
-			<version></version>
+			<fileName>Mint</fileName>
+			<title>Mint</title>
+			<version>r1692</version>
 			<date></date>
-			<author></author>
+			<added>20-02-09</added>
 			<lang>multi</lang>
+			<author>jzbruno</author>
 			<iconURL></iconURL>
-			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/SevenTft.jpg</previewPictureURL>
-			<previewVideoURL></previewVideoURL>
-			<description_fr>7TFT est un Theme cree pour les petit ecran TFT (voiture, Xbox, écrans portables ...).
-Il fonctionne aussi avec les résolutions 1080i !
-
-Commentaire:
-Skin idéal pour un Car Media Center avec Xbmc comme celui que j'ai dans mes cartons.
-L'apparence est particulière mais extrêmement bien pensée. L'OSD est une réussite magnifique.</description_fr>
-			<description_en>7TFT is an special XBMC skin for mini TFT´s (Car, xbox additive LCD´s - or portable screens)
-It works with 1080i reselution also ! :) Special features of the skin are the big headlines/fonts and the 4 corners control. Each menu has its own color, (Music -> green, Vodeo -> Blue, Picture -> yellow, Programms -> Pink)</description_en>
-		</entry>
-		<entry>
-			<fileName>CINEMA</fileName>
-			<title>Cinema</title>
-			<date></date>
-			<version></version>
-			<author></author>
-			<lang>multi</lang>
-			<iconURL></iconURL>
-			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/Cinema.jpg</previewPictureURL>
-			<previewVideoURL></previewVideoURL>
-			<description_fr>Seulement pour 16:9[cr]Concept et skin intéréssant. A tester.[CR]Particularité: Existe en version MacOSX</description_fr>
-			<description_en>Only for 16:9[cr]Note: A version exists for MacOSX</description_en>
-		</entry>
-		<entry>
-			<fileName>Focus</fileName>
-			<title>Focus</title>
-			<date></date>
-			<version></version>
-			<author></author>
-			<lang>multi</lang>
-			<iconURL></iconURL>
-			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/Focus.jpg</previewPictureURL>
-			<previewVideoURL></previewVideoURL>
-			<description_fr>Skin fort sympathique dont le développement devrait connaître des avancées très rapidement.
-A éssayer. Simple et assez beau.</description_fr>
-			<description_en>Focus an XBMC Media Center skin developed to be easy to use by providing a clean interface for xbmc mediacenter where form and function are balanced as efficiently as possible, and by putting your media first and at the center of your mediacenter experience</description_en>
-		</entry>
-		<entry>
-			<fileName>The Orbs</fileName>
-			<title>The Orbs</title>
-			<date></date>
-			<author></author>
-			<version></version>
-			<lang>multi</lang>
-			<iconURL></iconURL>
-			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/TheOrbs.jpg</previewPictureURL>
-			<previewVideoURL></previewVideoURL>
-			<description_fr>Un ancien Skin qui a quelque chance de ressusciter</description_fr>
-			<description_en>An old skins which could come back</description_en>
-		</entry>
-		<entry>
-			<fileName>Back-Row</fileName>
-			<title>Back-Row</title>
-			<date></date>
-			<author></author>
-			<version></version>
-			<lang>multi</lang>
-			<iconURL></iconURL>
-			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/Back-Row.jpg</previewPictureURL>
-			<previewVideoURL></previewVideoURL>
-			<description_fr>Anciennement Front-Row, Back-Row est un Thème qui propose un grand nombre d'options, des modes de vues complètement inédits. Il est original, sympathique, drôle, customisable, perturbant, surprenant et j'en passe.</description_fr>
-			<description_en>Previosyly Front-Row, Back-Row is a skin with plenty of options, mod totally new. A must!</description_en>
-		</entry>
-		<entry>
-			<fileName>Vinci</fileName>
-			<title>Vinci</title>
-			<date></date>
-			<author></author>
-			<version></version>
-			<lang>multi</lang>
-			<iconURL></iconURL>
-			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/Vinci.jpg</previewPictureURL>
-			<previewVideoURL></previewVideoURL>
-			<description_fr></description_fr>
-			<description_en></description_en>
-		</entry>
-		<entry>
-			<fileName>Lela</fileName>
-			<title>LeLa</title>
-			<version></version>
-			<date></date>
-			<author>djtoll</author>
-			<lang>multi</lang>
-			<iconURL></iconURL>
-			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/Lela.jpg</previewPictureURL>
-			<previewVideoURL></previewVideoURL>
-			<description_fr>LeLa est un theme cree pour les ecrans de petites tailles (avec des polices plus grosses) comme 7TFT (du meme createur djtoll)</description_fr>
-			<description_en>LeLa is a skin for small screen (with big Fonts) like 7TFT (from same author djtoll)</description_en>
-		</entry>
-		<entry>
-			<fileName>Horizonz - An Aeon Mod vol4</fileName>
-			<title>Skin Horizonz (Aeon) - Volume IV</title>
-			<version></version>
-			<date>03-02-09</date>
-			<added>03-02-09</added>
-			<author></author>
-			<lang>multi</lang>
-			<iconURL></iconURL>
-			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/HorizonzVol4.jpg</previewPictureURL>
-			<previewVideoURL></previewVideoURL>
-			<description_fr>La nouvelle version du skin Horizonz</description_fr>
-			<description_en>The new release of Horizonz skin</description_en>
-		</entry>
-		<entry>
-			 <fileName>xTV</fileName>
-			 <title>xTV</title>
-			 <version></version>
-			 <date></date>
-			 <added></added>
-			 <author></author>
-			 <lang>multi</lang>
-			 <iconURL></iconURL>
-			 <previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/xTV.jpg</previewPictureURL>
-			 <previewVideoURL></previewVideoURL>
-			 <description_fr>Un theme pour les amoureux de Mac</description_fr>
-			 <description_en>A skin for Mac lovers</description_en>
-		</entry>
-		<entry>
-			<fileName>Amped</fileName>
-			<title>Amped</title>
-			<version></version>
-			<date></date>
-			<added></added>
-			<author></author>
-			<lang></lang>
-			<iconURL></iconURL>
-			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/Amped.jpg</previewPictureURL>
-			<previewVideoURL></previewVideoURL>
-			<description_fr></description_fr>
-			<description_en></description_en>
-		</entry>
-		<entry>
-			<fileName>Basics-101_Media_Center</fileName>
-			<title>Basics-101 Media Center</title>
-			<version></version>
-			<date></date>
-			<added></added>
-			<author></author>
-			<lang></lang>
-			<iconURL></iconURL>
-			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/basics-101.jpg</previewPictureURL>
-			<previewVideoURL></previewVideoURL>
-			<description_fr></description_fr>
-			<description_en></description_en>
-		</entry>
-		<entry>
-			<fileName>Basics-101_xbox</fileName>
-			<title>Basics-101 XBOX</title>
-			<version></version>
-			<date></date>
-			<added></added>
-			<author></author>
-			<lang></lang>
-			<iconURL></iconURL>
-			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/basics-101.jpg</previewPictureURL>
-			<previewVideoURL></previewVideoURL>
-			<description_fr></description_fr>
-			<description_en></description_en>
-		</entry>
-		<entry>
-			<fileName>Clearity</fileName>
-			<title>Clearity</title>
-			<version></version>
-			<date></date>
-			<added></added>
-			<author></author>
-			<lang></lang>
-			<iconURL></iconURL>
-			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/clearity.jpg</previewPictureURL>
-			<previewVideoURL></previewVideoURL>
-			<description_fr></description_fr>
-			<description_en></description_en>
-		</entry>
-		<entry>
-			<fileName>Containment</fileName>
-			<title>Containment</title>
-			<version></version>
-			<date></date>
-			<added></added>
-			<author></author>
-			<lang></lang>
-			<iconURL></iconURL>
-			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/containment.jpg</previewPictureURL>
-			<previewVideoURL></previewVideoURL>
-			<description_fr></description_fr>
-			<description_en></description_en>
-		</entry>
-		<entry>
-			<fileName>MC360</fileName>
-			<title>MC360</title>
-			<version></version>
-			<date></date>
-			<added></added>
-			<author></author>
-			<lang></lang>
-			<iconURL></iconURL>
-			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/mc360.jpg</previewPictureURL>
+			<previewPictureURL></previewPictureURL>
 			<previewVideoURL></previewVideoURL>
 			<description_fr></description_fr>
 			<description_en></description_en>
@@ -330,10 +815,10 @@ A éssayer. Simple et assez beau.</description_fr>
 		<entry>
 			<fileName>PDM</fileName>
 			<title>PDM</title>
-			<version></version>
+			<version>r1692</version>
 			<date></date>
-			<added></added>
-			<author></author>
+			<added>20-02-09</added>
+			<author>SmokeHead</author>
 			<lang></lang>
 			<iconURL></iconURL>
 			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/pdm.jpg</previewPictureURL>
@@ -344,10 +829,10 @@ A éssayer. Simple et assez beau.</description_fr>
 		<entry>
 			<fileName>Project Mayhem I</fileName>
 			<title>Project Mayhem I</title>
-			<version></version>
+			<version>1692</version>
 			<date></date>
-			<added></added>
-			<author></author>
+			<added>20-02-09</added>
+			<author>ChokeManiac, Jezz_X</author>
 			<lang></lang>
 			<iconURL></iconURL>
 			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/PMI.jpg</previewPictureURL>
@@ -361,7 +846,7 @@ A éssayer. Simple et assez beau.</description_fr>
 			<version></version>
 			<date></date>
 			<added></added>
-			<author></author>
+			<author>ChokeManiac, SmokeHead</author>
 			<lang></lang>
 			<iconURL></iconURL>
 			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/PMII.jpg</previewPictureURL>
@@ -370,68 +855,213 @@ A éssayer. Simple et assez beau.</description_fr>
 			<description_en></description_en>
 		</entry>
 		<entry>
-			<fileName>Vision</fileName>
-			<title>Vision</title>
+			<fileName>Project Mayhem III</fileName>
+			<title>Project Mayhem III (PMIII) - Mods only</title>
 			<version></version>
 			<date></date>
-			<added></added>
+			<author>ChokeManiac</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/PMIII.jpg</previewPictureURL>
+			<previewVideoURL>PMIII.jpg</previewVideoURL>
+			<description_fr>Skin vieillissant mais toujours préféré d'un grand nombre d'utilisateurs. (beaucoup ignorent même qu'il existe d'autres Thèmes)
+On peut espérer qu'un jour il subira une refonte complète.
+Ce skin sert souvent de base à ceux qui en développent de nouveaux. C'est en effet le moyen le plus simple de commencer un nouveau skin, en s'appuyant sur celui ci en guise de patron. Réaliser un Skin "From Scratch" demande une grande connaissance dans le domaine.
+
+L'ergonomie est bien pensée car la simplicité est de mise. De plus la consommation mémoire est optimisée.
+Ce skin est toujours à la pointe des dernières avancées de Xbmc.
+
+Textures + modification faites par Frost:
+     - Beauté du Monde Jiraiya
+     - Blue Light
+     - KC
+     - Orange
+     - theme1
+     - OSX
+     - Blue
+     - Red
+     - FC Bayern
+     - XBMC
+     - PlayBoy PM III (Adultes seulement only!!!)
+Note: PMIII n'est pas disponible en téléchargement ici, seuls des mods pour PMIII sont disponibles</description_fr>
+			<description_en>PMIII is not available here, only PMIII mods are available for download
+
+Textures + changes made by Frost:
+     - Beauté du Monde Jiraiya
+     - Blue Light
+     - KC
+     - Orange
+     - theme1
+     - OSX
+     - Blue
+     - Red
+     - FC Bayern
+     - XBMC
+     - PlayBoy PM III (Adult only!!!)</description_en>
+		</entry>
+		<entry>
+			<fileName>Slate</fileName>
+			<title>Slate</title>
+			<version></version>
+			<date></date>
+			<added>02-01-09</added>
+			<author>Abe87</author>
+			<lang></lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/PMI.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>T9</fileName>
+			<title>T9</title>
+			<version>r1693</version>
+			<date></date>
+			<added>20-02-09</added>
 			<author></author>
 			<lang></lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/PMI.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>The Orbs</fileName>
+			<title>The Orbs</title>
+			<date>r1694</date>
+			<added>20-02-09</added>
+			<author>KoTiX, CHI3f</author>
+			<version></version>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/TheOrbs.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Un ancien Skin qui a quelque chance de ressusciter</description_fr>
+			<description_en>An old skins which could come back</description_en>
+		</entry>
+		<entry>
+			<fileName>Vinc_Mod</fileName>
+			<title>Vinci Mod</title>
+			<date></date>
+			<added>20-02-09</added>
+			<author></author>
+			<version></version>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/TheOrbs.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>Mod for Vinci</description_en>
+		</entry>
+		<entry>
+			<fileName>Vinci</fileName>
+			<title>Vinci</title>
+			<date></date>
+			<added>20-02-09</added>
+			<author>Mantis</author>
+			<version>Version 1.6</version>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/Vinci.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>Textures:
+     - Nonudity
+</description_en>
+		</entry>
+		<entry>
+			<fileName>Vision</fileName>
+			<title>Vision</title>
+			<date></date>
+			<added>20-02-09</added>
+			<author>Matt AAron, Jezz_X, Smokehead</author>
+			<version>r1939</version>
+			<lang>multi</lang>
 			<iconURL></iconURL>
 			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/vision.jpg</previewPictureURL>
 			<previewVideoURL></previewVideoURL>
 			<description_fr></description_fr>
-			<description_en></description_en>
+			<description_en>Textures:
+     - Blaze
+     - Green
+     - Lila
+     - Orange
+     - Pink</description_en>
 		</entry>
 		<entry>
-			<fileName>Xbox-Classic</fileName>
-			<title>Xbox-Classic</title>
-			<version></version>
+			<fileName>Vision2</fileName>
+			<title>Vision 2</title>
+			<version>r1692</version>
 			<date></date>
-			<added></added>
-			<author></author>
-			<lang></lang>
+			<added>20-02-09</added>
+			<lang>multi</lang>
+			<author>Jezz_X, MattAAron</author>
 			<iconURL></iconURL>
-			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/xbox-classic.jpg</previewPictureURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/Vision2.jpg</previewPictureURL>
 			<previewVideoURL></previewVideoURL>
 			<description_fr></description_fr>
 			<description_en></description_en>
 		</entry>
 		<entry>
-			<fileName>Basics-Vision</fileName>
-			<title>Basic-Vision</title>
-			<version></version>
+			<fileName>Vision2_Fanart</fileName>
+			<title>Vision2 Fanart</title>
+			<version>r1692</version>
 			<date></date>
-			<added></added>
+			<added>20-02-09</added>
+			<lang>multi</lang>
 			<author></author>
-			<lang></lang>
 			<iconURL></iconURL>
-			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/Basics-Vision.jpg</previewPictureURL>
+			<previewPictureURL></previewPictureURL>
 			<previewVideoURL></previewVideoURL>
 			<description_fr></description_fr>
 			<description_en></description_en>
 		</entry>
 		<entry>
-			<fileName>MARK-III</fileName>
-			<title>MARK-III</title>
-			<version></version>
+			<fileName>Visor</fileName>
+			<title>Visor</title>
+			<version>r1693</version>
 			<date></date>
-			<added></added>
-			<author></author>
-			<lang></lang>
+			<added>20-02-09</added>
+			<lang>multi</lang>
+			<author>bobrooney_78</author>
 			<iconURL></iconURL>
-			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/MarkIII.jpg</previewPictureURL>
+			<previewPictureURL></previewPictureURL>
 			<previewVideoURL></previewVideoURL>
 			<description_fr></description_fr>
-			<description_en></description_en>
+			<description_en>This is my little contribution to the amazing Xbox Media Center.
+
+The skin is a port of Visor, a skin for myth-tv (www.mythtv.org), and is based on the great default XBOX MediaCenter-Skin.
+
+Some graphics and ideas are taken from the excellent skins BlackBlue, Project Mayhem and HiFi.
+
+ 
+Credits therefore go to 
+
+- just1nux and Ben Levitt (original visor-skin -> www.mythtv.org)
+
+- Shadow_Mx (MediaCenter Skin) 
+- Wabid Woveren (MediaCenter skin) 
+- Chokemaniac (Project Mayhem)
+- Leonardo (BlackBlue)
+- Onkel Bouncy (HiFi)
+
+
+
+Thanks to the XBMC-Team for a great program.
+
+
+Greetings from Austria
+bobrooney_78</description_en>
 		</entry>
 		<entry>
 			<fileName>Water House</fileName>
 			<title>Water House</title>
-			<version></version>
+			<version>v160708</version>
 			<date></date>
-			<added></added>
-			<author></author>
+			<added>20-02-09</added>
+			<author>MikeBeecham</author>
 			<lang></lang>
 			<iconURL></iconURL>
 			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/WaterHouse.jpg</previewPictureURL>
@@ -442,16 +1072,72 @@ A éssayer. Simple et assez beau.</description_fr>
 		<entry>
 			<fileName>X</fileName>
 			<title>X</title>
-			<version></version>
+			<version>1.0</version>
 			<date></date>
-			<added></added>
-			<author></author>
+			<added>19-07-08</added>
+			<author>redman10111</author>
 			<lang></lang>
 			<iconURL></iconURL>
 			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/X.jpg</previewPictureURL>
 			<previewVideoURL></previewVideoURL>
 			<description_fr></description_fr>
 			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>xbmcTV</fileName>
+			<title>xbmcTV</title>
+			<version></version>
+			<date></date>
+			<added>20-02-09</added>
+			<author></author>
+			<lang></lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>Xbox-Classic</fileName>
+			<title>Xbox-Classic</title>
+			<version>r19392</version>
+			<date></date>
+			<added>20-02-09</added>
+			<author>Jezz_X, Blackbolt</author>
+			<lang></lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/xbox-classic.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>Xii</fileName>
+			<title>Xii</title>
+			<version>r1692</version>
+			<date></date>
+			<added>20-02-09</added>
+			<author>manturafs, gasclown</author>
+			<lang></lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>xTV</fileName>
+			<title>xTV</title>
+			<version>r1694</version>
+			<date></date>
+			<added>20-02-09</added>
+			<author>Terc, mbay, CHI3f, Franklin Shen</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Skins/xTV.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Un theme pour les amoureux de Mac</description_fr>
+			<description_en>A skin for Mac lovers</description_en>
 		</entry>
 		<entry>
 			<fileName></fileName>
