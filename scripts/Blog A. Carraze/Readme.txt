@@ -2,8 +2,18 @@
 Le blog d'Alain Carraze by Temhil (temhil@gmail.com)
 ----------------------------------------------------
  
-Le Blog d'Alain Carrazé Video HTML parser with GUI by Temhil (temhil@gmail.com)
+Le Video Blog d'Alain Carrazé Video by Temhil (temhil@gmail.com)
  
+04-03-09 Version 1.2 by Temhil
+    - Update algorithm in order to retrieve each entry in the blog, including 'text only' one
+    - Made the code more generic in order to use it for other Canalplus blogs
+    - Added Series Express videos category (end of the menu)
+    - Added video infos on video playing
+    - Fixed thread that wouldn't stop until finished (not very elegant but it works)
+    - Improved display info speed and update list image it not yet updated by the thread
+    - Changed default setting to cache images, this improve performance for displaying list
+    - Display video infos + thumb in player
+
 24-11-08 Version 1.1 by Temhil
     - Fixed crash on video info since html code is not alwyas identical depending
       on the entry
