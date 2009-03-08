@@ -16,6 +16,7 @@
 		<version></version>   Version
 		<author></author> Auteurs, contributeurs
 		<lang></lang> Langue: 'fr' ou 'en'  ou combinaison 'fr-en' ou 'multi' pour Multilangues
+		<platform></platform> Platform supportee
 		<iconURL></iconURL>   Pour plus tard, chemin vers les icones des scripts/plugin (stocke sur le serveur avec les snapshot)
 		<previewPictureURL></previewPictureURL>   Chemin de l'image (snapshot) sur le serveur /.passionxbmc/Installeur-Passion/content/nameimage.ext
 		<previewVideoURL></previewVideoURL>   Pour plus tard, URL video montrant le script, skin ... en action
@@ -1217,6 +1218,25 @@ FYI Alain Carraze is a french expert about TV show of which he is talking about 
 The interface as well all the videos on the blog are only in French.</description_en>
 		</entry>
 		<entry>
+			<fileName>Blog_Alain_Carraze_v1.2.zip</fileName>
+			<title>Le Blog d'Alain Carraze</title>
+			<version>1.2</version>
+			<lang>fr</lang>
+			<date>04-03-08</date>
+			<added>04-03-08</added>
+			<author>Temhil</author>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Scripts/BlogAlainCarraze.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Ce script vous permet de vous connecter sur le Blog d'Alain Carrazé (http://alaincarraze.blog.canal-plus.com) et de visionner les videos du blog ainsi que d'en lire leur description. Depuis la version 1.2, les articles ainsi qu'un nouvelles section videos de l'émission Series Express sont disponibles.
+
+Depuis ses débuts en 1979 en tant que collaborateur de 'Temps X', l'émission de science-fiction, Alain CARRAZE à partagé ses passions pour le cinéma fantastique, les comics et surtout les séries TV à travers des émissions comme 'Fantasy' ( dans le cadre des 'Enfants du Rock' ) et principalement la cultissime 'Destination Séries', sur Canal Jimmy de 1992 à 2000 (pres de 225 éditions) , avec aussi des émissions spéciales comme le 'Marathon Friends', 'La Fête à Jerry Seinfeld', les Emmy Awards ou la 'Nuit Star Trek'.
+A travers des magazines, aussi, comme 'Esode, le magazine de la culture séries', des hors-séries pour Mad Movies ou 'Episodik'. A travers des livres, enfin, avec des ouvrages comme 'Le Prisonnier, chef d'oeuvre télévisionnaire', ou sur 'Chapeau Melon et Bottes de Cuir ', 'Mission: Impossible', 'Les Grandes Séries' et, récemment, la mini-encyclopedie 'Les séries télé' dans la collection 'Toute les Clés '.
+Il travaille sur des bonus de DVD ('Amicalement Vôtre', 'Le Prisonnier', 'Twin Peaks'), chronique aussi les séries à la radio et dans un grand quinzomadaire de programmes télé... et maintenant en exclusivité sur Canalplus.fr !</description_fr>
+			<description_en>This script allow to connect on Canal+ (French private network) blog: "Le blog d'Alain Carraze" - http://alaincarraze.blog.canal-plus.com - and watch videos of this blog and see description of it.
+FYI Alain Carraze is a french expert about TV show of which he is talking about in his blog.
+The interface as well all the videos on the blog are only in French.</description_en>
+		</entry>
+		<entry>
 			<fileName>XBMC_Cache-Clear.rar</fileName>
 			<title>My Wipecache (XBMC Cache Clear)</title>
 			<version></version>
@@ -2244,7 +2264,7 @@ Create an account on: http://playlist.youtube.vedelaar.nl/ Create some playlists
 This version has options for streaming multiple past episodes from different TV Shows.</description_en>
 		</entry>
 		<entry>
-			<fileName>OpenSubtitles_v3.zip</fileName>
+			<fileName>OpenSubtitles_NO_v3.zip</fileName>
 			<title>OpenSubtitles</title>
 			<version>3.0 - non official</version>
 			<date></date>
@@ -2263,7 +2283,7 @@ Caution:
 This release is not official, it has been modified in order to make OpenSubtitles works</description_en>
 		</entry>
 		<entry>
-			<fileName>OpenSubtitles_v1.0_fixed.zip</fileName>
+			<fileName>OpenSubtitles_NO_v1.0_fixed.zip</fileName>
 			<title>OpenSubtitles</title>
 			<version>1.0 - fixed - non official</version>
 			<date>19-01-09</date>
@@ -2283,6 +2303,20 @@ cette version n'est pas officielle, elle a ete modifee afin de faire fonctionner
 Caution:
 This release is not official, it has been modified in order to make OpenSubtitles works
 * not working in XBMC 8.10 - change in default.py, line #26, from os.getcws() to os.getcwd();</description_en>
+		</entry>
+		<entry>
+			<fileName>OpenSubtitles_14-02-09.zip</fileName>
+			<title>OpenSubtitles (official)</title>
+			<version>14-02-09</version>
+			<date>14-02-09</date>
+			<added>07-03-09</added>
+			<author>Leo, nuka1195, gunnar.norin</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Ce script vous permet de rechercher et télécharger des sous-titre depuis www.opensubtitles.org</description_fr>
+			<description_en>This script allows to search and download sub from www.opensubtitles.org</description_en>
 		</entry>
 		<entry>
 			<fileName>Air2Season_13-12-08.zip</fileName>
@@ -2364,20 +2398,6 @@ library_to_update="video"</description_en>
 			<description_en>The famous HangMan game on XBMC</description_en>
 		</entry>
 		<entry>
-			<fileName></fileName>
-			<title></title>
-			<version></version>
-			<date></date>
-			<added></added>
-			<author></author>
-			<lang></lang>
-			<iconURL></iconURL>
-			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/</previewPictureURL>
-			<previewVideoURL></previewVideoURL>
-			<description_fr></description_fr>
-			<description_en></description_en>
-		</entry>
-		<entry>
 			<fileName>Blog_Didier_Allouch_v1.0.zip</fileName>
 			<title>Le Blog de Didier Allouch</title>
 			<version>1.1</version>
@@ -2401,6 +2421,158 @@ library_to_update="video"</description_en>
 			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Scripts/DL_PXW.jpeg</previewPictureURL>
 			<previewVideoURL></previewVideoURL>
 			<description_fr>Ce script vous permet de télécharger et d'installer les releases d'XBMC pour Windows disponibles sur le site passion-xbmc.org</description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>Lucky_7_v1.1.0.zip</fileName>
+			<title>Lucky 7</title>
+			<version>1.1.0</version>
+			<lang>multi</lang>
+			<date>24-02-2009</date>
+			<added>07-03-09</added>
+			<author>Frost</author>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Jouez à Lucky 7 avec XBMC (machine sous)!!!</description_fr>
+			<description_en>Play to Lucky 7 with XBMC!!!</description_en>
+		</entry>
+		<entry>
+			<fileName>Al_Jazeera_14-02-09.zip</fileName>
+			<title>Al Jazeera</title>
+			<version>14-02-09</version>
+			<lang>en</lang>
+			<date>14-02-09</date>
+			<added>07-03-09</added>
+			<author>stuart@linuxsecurity.co.nz</author>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>Al Jazeera HQ stream player (English)</description_en>
+		</entry>
+		<entry>
+			<fileName>NRKBrowser2_15-02-08.rar</fileName>
+			<title>NRKBrowser2</title>
+			<version>15-02-08</version>
+			<lang>no</lang>
+			<date>15-02-08</date>
+			<added>07-03-09</added>
+			<author>EnderW</author>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>NRKBrowser2 can play most content from the online net-tv at nrk.no (norwegian tv-channel)</description_en>
+		</entry>
+		<entry>
+			<fileName>Sirius_01-01-09.zip</fileName>
+			<title>Sirius</title>
+			<version>01-01-09</version>
+			<lang>en</lang>
+			<date>01-01-09</date>
+			<added>07-03-09</added>
+			<author>Mike Rosack</author>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>This is a python script to access sirius' online streams.
+Make sure to set your username and password in RunSirius.py!</description_en>
+		</entry>
+		<entry>
+			<fileName>Hockey_Streams_Beta_0.1.zip</fileName>
+			<title>Hockey Streams</title>
+			<version>Beta 0.1</version>
+			<lang>en</lang>
+			<date>16-02-09</date>
+			<added>07-03-09</added>
+			<author>f3ar007</author>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>This is a beta! Originally, I did not intend to release this, however; Upon completion, I changed that.
+It is a very simple script.  It logs into http://hockeystreams.com, allows the user to enter a team, finds the game (HQ and HD links),
+and updates IP exceptions.  Information is displayed on screen, and everything is controlled with buttons.
+There's no progress bars but everything appears on screen once finished processing, except team_name.
+It uses, mechanize, beautifulsoup, clientform, and clientcookie.
+
+It is free, and not related to http://hockeystreams.com at all, all it does is access the site for the user.
+
+Simply put, this makes HockeyStreams.com available directly from XBMC for Xbox!
+
+Installation:
+Since this is Beta v0.1 you need to follow these directions:
+- UnRAR to a folder named _new
+- Edit IPException.py and replace *changethis* where username and password are located.
+- Upload to _new Q:\scripts (which should be E:\Apps\XBMC\scripts\), final directory is Q:\scripts\_new (this will be changed in the next revision.
+- Run the Script
+- Login First!!!
+- Enter Team
+- IP Exception, if Saved IP and External IP are different, at first run Saved IP will be 0.0.0.0, just update!
+- Play HQ or HD!</description_en>
+		</entry>
+		<entry>
+			<fileName>Radio_Blug_Club_28-12-08.zip</fileName>
+			<title>Radio Blug Club</title>
+			<version>28-12-08</version>
+			<lang>fr</lang>
+			<date>28-12-08</date>
+			<added></added>
+			<author>Frost</author>
+			<lang>fr</lang>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/RadioBlogClub.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Ce script vous permettra d'écouter de la musique de votre choix, que les utilisateurs du site Radio Blog Club partagent avec le site depuis leurs blogs ou d'une playlist sur un serveur X.
+Les chansons sont pas toujours disponibles, car si un utilisateur ferme son serveur pour un temps X, le site Radio Blog Club récupère qu'en même les infos sans que la chansons sois écoutable! Et le script aussi.
+
+Donc, en gros faut faire une recherche d’un groupe ou le nom d’une chanson qu’on désire et même par genre car bien souvent il est écrit dans le titre. De la on choisi de la streamer ou de la télécharger.
+Certain reconnaitront le script étant l'auteur original et qui à été présenté en 2006 sur [gueux] avec quelque mise à jour. Mais la aucune mise à jour depuis juin 2007 avec l'aide de "nioc.bertheloneum" que je remercie encore.
+
+NB: Parfois le streaming ne passe pas et le téléchargement oui !!! Vise Versas, aller savoir...
+NB2: Ne vous attendez pas à de la grosse qualité de mp3 il sont réencodés en basse qualité par le site pour des raisons légals.....
+
+PS: Les recherches sont enregistrées dans un historique. Si l'historique commence à être trop longue, on peut la supprimer et même une par une.
+NB: Mon historique de recherche est incluse pour cette version
+</description_fr>
+			<description_en></description_en>
+		</entry>
+		<entry>
+			<fileName>TWC_Supplemental_v1.5.1.zip</fileName>
+			<title>TWC Supplemental</title>
+			<version>1.5.1</version>
+			<date>21-02-09</date>
+			<added>07-03-09</added>
+			<author>Nuka1195</author>
+			<lang></lang>
+			<iconURL>multi</iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Scripts/TWC_Supplemental.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>Here is a script that displays addition forecasts and maps from weather.com</description_en>
+		</entry>
+		<entry>
+			<fileName>FileViewer_v1.0.zip</fileName>
+			<title>File Viewer</title>
+			<version>1.0</version>
+			<date>24-02-09</date>
+			<added>07-03-09</added>
+			<author>BigBellyBilly</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>A simple script to view text and media files from a select dialog</description_en>
+		</entry>
+		<entry>
+			<fileName></fileName>
+			<title></title>
+			<version></version>
+			<date></date>
+			<added></added>
+			<author></author>
+			<lang></lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Scripts/</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
 			<description_en></description_en>
 		</entry>
 	</scripts>
@@ -2428,6 +2600,22 @@ All music in this Collection is from trade-friendly artists and is strictly nonc
 Artists' commercial releases are off-limits.
 This collection is maintained by the etree.org community. Streams are avaliable in flac, shn, and mp3.</description_en>
 			</entry>
+			<entry>
+				<fileName>Streamer_Radio_29-10-08.zip</fileName>
+				<title>Streamer Radio</title>
+				<version>1.1</version>
+				<date>29-10-08</date>
+				<added>07-03-09</added>
+				<author>nuka1195, blittan</author>
+				<lang>en</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Streamer Radio is a Internet Radio player for Xbmc Media Center. Using presets maintained regularly. 
+When there is no xbox nearby, please use Screamer Radio (a very nice player for PC). 
+Huge thanks for letting me use the presetlist from it. See www.screamer-radio.com</description_en>
+			</entry>
 		</musicplugin>
 		<!-- FIN Sous-section plugins musique -->
 
@@ -2449,11 +2637,11 @@ Vous pouvez aussi utiliser les dossiers de ce plugin comme source pour votre dia
 				<description_en>This plugin allows to browse Passion-XBMC picture gallery (with a lot of fanarts). You can display pictures in fullscreen, slideshow ...</description_en>
 			</entry>
 			<entry>
-				<fileName>Picasa_14-02-09.zip</fileName>
+				<fileName>Picasa_05-03-09.zip</fileName>
 				<title>Picasa</title>
-				<version>14-02-09</version>
-				<date>14-02-09</date>
-				<added>16-02-09</added>
+				<version>05-03-09</version>
+				<date>05-03-09</date>
+				<added>07-03-09</added>
 				<author>Nuka1195</author>
 				<lang>multi</lang>
 				<iconURL></iconURL>
@@ -2467,6 +2655,34 @@ authentication does not work on windows (for me) so in plugin settings, make sur
 this probably won't work on xbox as it uses special:// paths.
 
 I highly suggest media stream skin with the one view (forget what it's called) where the full image displays. this will first show the low rez thumb, then the full rez image will fade in. a very nice view.</description_en>
+			</entry>
+			<entry>
+				<fileName>flickr_05-03-09.zip</fileName>
+				<title>flickr</title>
+				<version>05-03-09</version>
+				<date>05-03-09</date>
+				<added>07-03-09</added>
+				<author>Nuka1195</author>
+				<lang>multi</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>flickr in XBMC</description_en>
+			</entry>
+			<entry>
+				<fileName>Flickr2 v0.1 alpha.zip</fileName>
+				<title>flickr 2</title>
+				<version>v0.1 alpha</version>
+				<date>25-02-09</date>
+				<added>07-03-09</added>
+				<author>Dan Dar 3</author>
+				<lang>multi</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>An alternative flickr plugin for XBMC</description_en>
 			</entry>
 		</pictureplugin>
 		<!-- FIN Sous-section plugins Images -->
@@ -2548,6 +2764,48 @@ ATTENTION: Les mises a jour sont faites a partir de la branche principale de dev
 				<description_en>This plugin is an adaptation of Nuka1195's SVN Repo Installer plugin made by Kottis in order to support Passion-XBMC SVN
 
 WARNING: Update are done for TRUNK branch, that means you will get the last up to date file of projects still in developement. Consecuently it is possible versions you will download with this plugin will have bug or even won't work.</description_en>
+			</entry>
+			<entry>
+				<fileName>SVN_Repo_Installer_07-03-09.zip</fileName>
+				<title>SVN Repo Installer</title>
+				<version>07-03-09</version>
+				<date>07-03-09</date>
+				<added>07-03-09</added>
+				<author>nuka1195</author>
+				<lang>multi</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Plugin permettant de recuperer les dernieres versions des scripts/plugins disponibles dans le SVN Google code de xbmc-addons et xbnc-scripting</description_fr>
+				<description_en>Plugin allowing to retrieve last versions of scripts/plugins available in Google code SVN of xbmc-addons and xbnc-scripting</description_en>
+			</entry>
+			<entry>
+				<fileName>Dandar3_SVN_Installer_v1.0.zip</fileName>
+				<title>SVN Repo Installer - Dan Dar 3 / xbmc-addons repository</title>
+				<version>1.0</version>
+				<date>28-02-09</date>
+				<added>07-03-09</added>
+				<author>Dan Dar3</author>
+				<lang>multi</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Plugin permettant de recuperer les dernieres versions des scripts/plugins disponibles dans le SVN Google code de Dan Dar3</description_fr>
+				<description_en>Plugin allowing to retrieve last versions of scripts/plugins available in Google code SVN of Dan Dar3</description_en>
+			</entry>
+			<entry>
+				<fileName>My_Scripts_v1.0.zip</fileName>
+				<title>My Scripts</title>
+				<version>1.0</version>
+				<date>02-03-09</date>
+				<added>07-03-09</added>
+				<author>Temhil</author>
+				<lang>multi</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Vous donnes acces a vos scripts depuis la section plugins programmes</description_fr>
+				<description_en>Give you acces to you scripts from program plugin section</description_en>
 			</entry>
 		</programplugin>
 		<!-- FIN Sous-section plugins Programmes -->
@@ -2639,11 +2897,11 @@ Installation dans: "...\xbmc\plugins\video\"</description_fr>
 				<description_en></description_en>
 			</entry>
 			<entry>
-				<fileName>VideoMonkey_v1.25.zip</fileName>
+				<fileName>VideoMonkey_v1.30.zip</fileName>
 				<title>VideoMonkey</title>
-				<version>1.25</version>
-				<date>08-02-09</date>
-				<added>16-02-09</added>
+				<version>1.30</version>
+				<date>02-03-09</date>
+				<added>07-03-09</added>
 				<author>sfaxman</author>
 				<lang>multi</lang>
 				<iconURL></iconURL>
@@ -2781,10 +3039,11 @@ I did not author this plugin it is from some one who created it for Boxee. I jus
 				<description_en>This plugin allows to watch videos du site pitchfork.tv (site 'cool, orienté music-scene')</description_en>
 			</entry>
 			<entry>
-				<fileName>XBMCEyetvParser_v1.36_02-01-09.zip</fileName>
+				<fileName>XBMCEyetvParser_15-01-09.zip</fileName>
 				<title>XBMC Eyetv Parser</title>
-				<version>1.36</version>
-				<date>02-01-09</date>
+				<version>15-01-09</version>
+				<date>15-01-09</date>
+				<added>03-03-09</added>
 				<author>prophead</author>
 				<lang>multi</lang>
 				<iconURL></iconURL>
@@ -2839,10 +3098,11 @@ Sometimes XBMC caches thumbnails and icons so your changes, especially with TOG,
 Eyetv is a trademark of Elgato</description_en>
 			</entry>
 			<entry>
-				<fileName>XBMCEyetvScraper_v1.53_28-12-08.zip</fileName>
+				<fileName>XBMCEyetvScraper_15-01-09.zip</fileName>
 				<title>XBMC Eyetv Scraper</title>
-				<version>1.53</version>
-				<date>28-12-08</date>
+				<version>15-01-09</version>
+				<date>15-01-09</date>
+				<added>03-03-09</added>
 				<author>prophead</author>
 				<lang>multi</lang>
 				<iconURL></iconURL>
@@ -2909,10 +3169,11 @@ Sometimes XBMC caches thumbnails and icons so your changes, especially with TOG,
 Eyetv is a trademark of Elgato</description_en>
 			</entry>
 			<entry>
-				<fileName>AnimeCrazy-R2.zip</fileName>
+				<fileName>AnimeCrazy-R3.zip</fileName>
 				<title>AnimeCrazy</title>
-				<version>R2</version>
-				<date>06-01-09</date>
+				<version>R3</version>
+				<date>15-02-09</date>
+				<added>06-03-09</added>
 				<author>exiledx</author>
 				<lang>en</lang>
 				<iconURL></iconURL>
@@ -2924,10 +3185,11 @@ Note: le script veohproxy est necessaire afin de lire les video veoh, telecharge
 Note: veohproxy is necessary in order to read veoh videos, download in script section veohproxy, start veohproxy script and then start this plugin, done!</description_en>
 			</entry>
 			<entry>
-				<fileName>DramaCrazy-R3.zip</fileName>
+				<fileName>DramaCrazy-R4.zip</fileName>
 				<title>DramaCrazy</title>
-				<version>R3</version>
-				<date>06-01-09</date>
+				<version>R4</version>
+				<date>15-02-09</date>
+				<added>06-03-09</added>
 				<author>exiledx</author>
 				<lang>multi</lang>
 				<iconURL></iconURL>
@@ -2997,10 +3259,11 @@ Tiki Bar TV was shown in Apple stores worldwide as part of a 6 month promotion i
 				<description_en>Allows to watch movies on http://snoork.com/movie_page_1.php</description_en>
 			</entry>
 			<entry>
-				<fileName>MySoju-R2.zip</fileName>
+				<fileName>MySoju-R3.zip</fileName>
 				<title>MySoju</title>
-				<version>R2</version>
-				<date>10-01-09</date>
+				<version>R3</version>
+				<date>15-02-09</date>
+				<added>06-03-09</added>
 				<author>exiledx</author>
 				<lang>en</lang>
 				<iconURL></iconURL>
@@ -3101,10 +3364,10 @@ Have questions?  Bring them up on the XBMC forums...</description_en>
 !!!CAUTION!!!: Video / Music streams seems to not work in other platforms.</description_en>
 			</entry>
 			<entry>
-				<fileName>CBS_US-Only_10-01-09.rar</fileName>
+				<fileName>CBS_US-Only_07-03-09.zip</fileName>
 				<title>CBS - US Only</title>
-				<version>10-01-09</version>
-				<date>10-01-09</date>
+				<version>07-03-09</version>
+				<date>07-03-09</date>
 				<author>BlueCop</author>
 				<lang>en</lang>
 				<iconURL></iconURL>
@@ -3119,32 +3382,32 @@ Most Popular and Latest Videos should work fine.
 !!!CAUTION!!!: This is US ONLY</description_en>
 			</entry>
 			<entry>
-				<fileName>Hulu_US-Only_10-02-09.zip</fileName>
+				<fileName>Hulu_US-Only_22-02-09.zip</fileName>
 				<title>Hulu - US Only</title>
-				<version>10-02-09</version>
-				<date>10-02-09</date>
-				<added>16-02-09</added>
-				<author>rwparris2 / crichton</author>
+				<version>22-02-09</version>
+				<date>22-02-09</date>
+				<added>07-03-09</added>
+				<author>rwparris2, retalogic</author>
 				<lang>en</lang>
 				<iconURL></iconURL>
 				<previewPictureURL></previewPictureURL>
 				<previewVideoURL></previewVideoURL>
-				<description_fr>Le merge des versions de Hulu de rwparris2 et crichton
-
+				<description_fr>
 Hulu.com is a free online video service that offers hit TV shows including Family Guy, 30 Rock, NBA and the Daily Show with Jon Stewart, etc.
 Our extensive library also includes blockbuster movies like Lost in Translation as wells as classics like Fiddler on the Roof.
 Start watching now.
 May not work outside of the US.
 
-!!!ATTENTION!!!: Vous devez etre au Etats Unis pour pouvoir regardez les videos, sinopn le plugin ne fonctionnera pas</description_fr>
-				<description_en>Result of the merge of rwparris2 and crichton Hulu plugin versions
-
-Hulu.com is a free online video service that offers hit TV shows including Family Guy, 30 Rock, NBA and the Daily Show with Jon Stewart, etc.
+!!!ATTENTION!!!: XBOX non supportée
+                 Vous devez etre au Etats Unis pour pouvoir regardez les videos, sinon le plugin ne fonctionnera pas
+				 Le plugin Hulu nécessite l'installation préalable de gnash</description_fr>
+				<description_en>Hulu.com is a free online video service that offers hit TV shows including Family Guy, 30 Rock, NBA and the Daily Show with Jon Stewart, etc.
 Our extensive library also includes blockbuster movies like Lost in Translation as wells as classics like Fiddler on the Roof.
 Start watching now.
 May not work outside of the US.
 
-!!!CAUTION!!!: This is US ONLY</description_en>
+!!!CAUTION!!!: This is US ONLY and XBOX is not supported
+               Hulu plugin requires gnash.</description_en>
 			</entry>
 			<entry>
 				<fileName>NFL Network Highlights_28-01-09.rar</fileName>
@@ -3173,11 +3436,11 @@ May not work outside of the US.
 				<description_en>Watch videos on www.foodnetwork.com (Recipes and Cooking)</description_en>
 			</entry>
 			<entry>
-				<fileName>G4TV_09-02-09.zip</fileName>
+				<fileName>G4TV_r601.zip</fileName>
 				<title>G4TV</title>
-				<version>09-02-09</version>
-				<date>09-02-09</date>
-				<added>16-02-09</added>
+				<version>r601</version>
+				<date>10-02-09</date>
+				<added>07-03-09</added>
 				<author>stacked</author>
 				<lang>en</lang>
 				<iconURL></iconURL>
@@ -3301,11 +3564,11 @@ Features:
 				<description_en>Veoh search plugin</description_en>
 			</entry>
 			<entry>
-				<fileName>CNN_Video_14-01-09.zip</fileName>
+				<fileName>CNN_Video_05-03-09.zip</fileName>
 				<title>CNN Video</title>
-				<version>1.0</version>
-				<date>14-01-09</date>
-				<added>03-02-09</added>
+				<version>1.2.1</version>
+				<date>05-03-09</date>
+				<added>06-03-09</added>
 				<author>nuka1195</author>
 				<lang>en</lang>
 				<iconURL></iconURL>
@@ -3333,11 +3596,11 @@ Note:
 You have to have an easynews account to use it.</description_en>
 			</entry>
 			<entry>
-				<fileName>ESPN_Video_01-02-09.zip</fileName>
+				<fileName>ESPN_Video_r639.zip</fileName>
 				<title>ESPN Video</title>
-				<version>r582</version>
-				<date>01-02-09</date>
-				<added>03-02-09</added>
+				<version>r639</version>
+				<date>20-02-09</date>
+				<added>07-03-09</added>
 				<author>stacked</author>
 				<lang>en</lang>
 				<iconURL></iconURL>
@@ -3367,11 +3630,11 @@ Available Plugin Settings:
 http://www.pbs.org/wgbh/pages/frontline/view/</description_en>
 			</entry>
 			<entry>
-				<fileName>UlmenTV_v1.33.zip</fileName>
+				<fileName>UlmenTV_v1.35.zip</fileName>
 				<title>UlmenTV</title>
-				<version>1.33</version>
-				<date>31-01-2009</date>
-				<added>03-02-09</added>
+				<version>1.35</version>
+				<date>26-02-2009</date>
+				<added>07-03-09</added>
 				<author>bootsy </author>
 				<lang>ge</lang>
 				<iconURL></iconURL>
@@ -3500,18 +3763,19 @@ I've just scraped all the links, obviously mp4/mp3 are nicer than real audio/vid
 				<description_en>The best of the videos from www.itv.com</description_en>
 			</entry>
 			<entry>
-				<fileName>LastTube_31-01-09.zip</fileName>
+				<fileName>LastTube_06-03-09.zip</fileName>
 				<title>LastTube</title>
-				<version>31-01-09</version>
-				<date>31-01-09</date>
-				<added>03-02-09</added>
+				<version>06-03-09</version>
+				<date>06-03-09</date>
+				<added>07-03-09</added>
 				<author>rwparris2</author>
 				<lang>en</lang>
 				<iconURL></iconURL>
 				<previewPictureURL></previewPictureURL>
 				<previewVideoURL></previewVideoURL>
 				<description_fr></description_fr>
-				<description_en>It will grab your Last.FM username's top artists (if you have one), allow you to search for music by a Last.FM username's top artists, by similar artists, and by tag... basically just like last.fm, except instead of playing back music files it plays back youtube videos.</description_en>
+				<description_en>Plugin for watching Youtube videes based on your Last.fm account
+It will grab your Last.FM username's top artists (if you have one), allow you to search for music by a Last.FM username's top artists, by similar artists, and by tag... basically just like last.fm, except instead of playing back music files it plays back youtube videos.</description_en>
 			</entry>
 			<entry>
 				<fileName>Onion_News_Network_29-01-09.zip</fileName>
@@ -3544,11 +3808,11 @@ Each section has a "view random" if you just want to play with whatever.</descri
 				<description_en>An excellent plugin for people who like to watch video on www.nationalgeographic.com/video</description_en>
 			</entry>
 			<entry>
-				<fileName>TED_Talks_v2Beta1.1.zip</fileName>
+				<fileName>TED_Talks_28-02-09.zip</fileName>
 				<title>TED Talks</title>
-				<version>v2Beta1.1</version>
-				<date>06-10-08</date>
-				<added>08-02-09</added>
+				<version>1.5</version>
+				<date>28-02-09</date>
+				<added>07-03-09</added>
 				<author>rwparris2</author>
 				<lang>en</lang>
 				<iconURL></iconURL>
@@ -3626,11 +3890,27 @@ Note: Cette version n'est pas officielle et est basée sur la version du 09-02-0
 Note: This version is not official and is based on 09-02-09 version in order to run on XBOX et Mac</description_en>
 			</entry>
 			<entry>
-				<fileName>YouTube_Channels_v1.0.zip</fileName>
+				<fileName>YouTube_07-03-09.zip</fileName>
+				<title>Youtube</title>
+				<version>1.4.1</version>
+				<date>07-03-09</date>
+				<added>07-03-09</added>
+				<author>nuka1195</author>
+				<lang>multi</lang>
+				<iconURL></iconURL>
+				<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Plugins/Videos/YouTube.jpg</previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Un plugin pour regarder les videos sur YouTube
+ATTENTION: Cette version ne tourne pas sur XBMC XBMC revision #18269 our plus récent</description_fr>
+				<description_en>A plugin to watch YouTube videos
+CAUTION: This version only run on XBMC revision #18269 or newer</description_en>
+			</entry>
+			<entry>
+				<fileName>YouTube_Channels_v2.0.zip</fileName>
 				<title>Youtube Channels</title>
-				<version>1.0</version>
-				<date>09-02-09</date>
-				<added>16-02-09</added>
+				<version>2.0</version>
+				<date>21-02-09</date>
+				<added>07-03-09</added>
 				<author>afishe2000</author>
 				<lang>multi</lang>
 				<iconURL></iconURL>
@@ -3681,6 +3961,169 @@ None
 				<description_en>A plugin that will pull the preview clips for the first 50 girls on BangBrosNetwork.com</description_en>
 			</entry>
 			<entry>
+				<fileName>Asian Horror Movies-R1.zip</fileName>
+				<title>DramaCrazy</title>
+				<version>R1</version>
+				<date>13-02-09</date>
+				<added>06-03-09</added>
+				<author>exiledx</author>
+				<lang>multi</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Permet de voir les videos du site www.asian-horror-movies.com
+Note: le script veohproxy est necessaire afin de lire les video veoh, telechargez dans la section script veohproxy, lancez le script veohproxy puis lancez ce plugin, voila!</description_fr>
+				<description_en>Allows to watch video from the website www.asian-horror-movies.com
+Note: veohproxy is necessary in order to read veoh videos, download in script section veohproxy, start veohproxy script and then start this plugin, done!</description_en>
+			</entry>
+			<entry>
+				<fileName>Apple Movie Trailers II_v1.5.zip</fileName>
+				<title>Apple Movie Trailers Lite</title>
+				<version>1.5</version>
+				<date></date>
+				<added></added>
+				<author>nuka1195</author>
+				<lang>en</lang>
+				<platform>all</platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Apple Movie Trailers II vous donne un acces rapide aux dernieres Bandes annonces (seulement les dernieres) disponibles sur le site www.apple.com/trailers/</description_fr>
+				<description_en>Apple Movie Trailers II giveS you acces to the latest trailers (only the latest) available  at www.apple.com/trailers/</description_en>
+			</entry>
+			<entry>
+				<fileName>Apple_Movie_Trailers_Lite_v1.6.2.zip</fileName>
+				<title>Apple Movie Trailers Lite</title>
+				<version>1.6.2</version>
+				<date>07-03-09</date>
+				<added>07-03-09</added>
+				<author>nuka1195</author>
+				<lang>en</lang>
+				<platform>all</platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Anciennement Apple Movie Trailers II, Apple Movie Trailers Lite vous donne un acces rapide aux dernieres Bandes annonces (seulement les dernieres) disponibles sur le site www.apple.com/trailers/
+ATTENTION: Cette version ne tourne que sur XBMC revision #18269 ou plus récent</description_fr>
+				<description_en>Previously Apple Movie Trailers II, Apple Movie Trailers LiteOne giveS you acces to the latest trailers (only the latest) available  at www.apple.com/trailers/
+CAUTION: This version only run on XBMC revision #18269 or newer</description_en>
+			</entry>
+			<entry>
+				<fileName>Blip.TV_05-03-09.zip</fileName>
+				<title>Blip.TV</title>
+				<version>1.0</version>
+				<date>05-03-09</date>
+				<added>06-03-09</added>
+				<author>nuka1195</author>
+				<lang>en</lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Plugin for viewing content from www.blip.tv</description_en>
+			</entry>
+			<entry>
+				<fileName>reeplay.it_25-02-09.zip</fileName>
+				<title>reeplay.it</title>
+				<version>1.0</version>
+				<date>25-02-09</date>
+				<added>07-03-09</added>
+				<author>BigBellyBilly</author>
+				<lang>multi</lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Based on the video sharing website http://reeplay.it :
+
+Your home for video on the web
+
+So… you find a great video on the web but you're too busy to watch it right away. Why can't you grab it and play it back when you find the time?
+
+With reeplay you save video from the web into your online library. Then you can play it on any computer, your phone, Wii and even your iPod!</description_en>
+			</entry>
+			<entry>
+				<fileName>oneclick_28-01-09.zip</fileName>
+				<title>oneclick</title>
+				<version>28-01-09</version>
+				<date>28-01-09</date>
+				<added>07-03-09</added>
+				<author>Voinage</author>
+				<lang>en</lang>
+				<platform></platform>
+				<iconURL>all</iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Watch movies on oneclickmoviez.com</description_en>
+			</entry>
+			<entry>
+				<fileName>Microsoft Channel 9 Videos v2.0.zip</fileName>
+				<title>Microsoft Channel 9 Videos plugin</title>
+				<version>2.0</version>
+				<date>09-02-09</date>
+				<added>07-0-09</added>
+				<author>Dan Dar3</author>
+				<lang>en</lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Ce plugin (précédemment un script) vous permet de voir les vidés du site http://channel9.msdn.com/Media/Videos/</description_fr>
+				<description_en>This plugin (previously a script) allows you to view the Microsoft Channel 9 Videos from http://channel9.msdn.com/Media/Videos/</description_en>
+			</entry>
+			<entry>
+				<fileName>Xbmc Passion - Nfo creator_07-01-09.zip</fileName>
+				<title>Xbmc Passion - Nfo creator</title>
+				<version>07-01-09</version>
+				<date>07-01-09</date>
+				<added>08-01-09</added>
+				<author>Frost</author>
+				<lang>fr</lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Plugins/Videos/XbmcPassionNfoCreator.jpg</previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Plugin vous permettent de générer des NFO, grâce au Générateur en ligne de Passion-Xbmc et mmaura on en parle ici : http://passion-xbmc.org/scraper-alocine/nfo-creator-scraper-allocine-en-ligne-infos-et-support/ merci à eux et à alexsolex pour la librairie allociné.</description_fr>
+				<description_en></description_en>
+			</entry>
+			<entry>
+				<fileName>Enigma2_17-01-09.zip</fileName>
+				<title>Enigma2</title>
+				<version>17-01-09</version>
+				<date>17-01-09</date>
+				<added>07-03-09</added>
+				<author>Locutus73</author>
+				<lang>en</lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>This is a plugin that allows to browse bouquets, channels and stream videos from one or more Dreamboxes with the new Enigma 2 Webinterface (7025, 800).
+Tested with a 7025 with Gemini 3.9. 
+This plugin replaces the old script which does not work anymore.
+
+!!INSTALL!!: You have to edit default.py in order to change the IP address.</description_en>
+			</entry>
+			<entry>
+				<fileName>Top40_22-02-09.zip</fileName>
+				<title>Top40</title>
+				<version>22-02-09</version>
+				<date>22-02-09</date>
+				<added>07-03-09</added>
+				<author>Derk Vedelaar</author>
+				<lang>multi</lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>This plugin lets you download (and view) the Dutch, English and American Top40.</description_en>
+			</entry>
+			<entry>
 				<fileName></fileName>
 				<title></title>
 				<version></version>
@@ -3688,6 +4131,7 @@ None
 				<added></added>
 				<author></author>
 				<lang></lang>
+				<platform></platform>
 				<iconURL></iconURL>
 				<previewPictureURL>/.passionxbmc/Installeur-Passion/content/</previewPictureURL>
 				<previewVideoURL></previewVideoURL>
