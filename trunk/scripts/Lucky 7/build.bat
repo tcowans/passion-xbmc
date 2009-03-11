@@ -48,7 +48,7 @@ ECHO .bak>>"BUILD\exclude.txt"
 ECHO ----------------------------------------------------------------------
 ECHO.
 ECHO Copying required files to \Build\%ScriptName%\ folder . . .
-XCOPY media "BUILD\%ScriptName%\media" /E /Q /I /Y /EXCLUDE:BUILD\exclude.txt
+XCOPY resources "BUILD\%ScriptName%\resources" /E /Q /I /Y /EXCLUDE:BUILD\exclude.txt
 COPY default.tbn "BUILD\%ScriptName%\"
 
 :: Create new default.py with __svn_revision__ embedded
