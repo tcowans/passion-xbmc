@@ -1,0 +1,374 @@
+<window id="3001">
+    <!-- ** Required ** Do not change any <control type="xxxx" id="XX"> -->
+    <!-- ** Required ** Do not change any skin settings or skin infos -->
+    <!-- ** Infos ** if you not control in your skin, set and added <visible>false</visible>, results no bugs created in scripts. If remove control the bugs or freeze are created. -->
+    <defaultcontrol>20</defaultcontrol>
+    <allowoverlay>no</allowoverlay>
+    <controls>
+        <!-- backgrounds -->
+        <control type="image">
+            <description>background image</description>
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>720</width>
+            <height>88</height>
+            <texture>background-settings.png</texture>
+        </control>
+        <control type="image">
+            <description>background image</description>
+            <posx>0</posx>
+            <posy>88</posy>
+            <width>720</width>
+            <height>488</height>
+            <texture>background-bottom.png</texture>
+        </control>
+        <include>contentpanel</include>
+
+        <!--label -->
+        <control type="label">
+            <description>xbox media center label</description>
+            <posx>200</posx>
+            <posy>43</posy>
+            <align>right</align>
+            <label>xbox media center</label>
+            <font>special12</font>
+        </control>
+        <control type="label">
+            <description>description label</description>
+            <posx>207</posx>
+            <posy>43</posy>
+            <align>left</align>
+            <label>10507</label>
+            <font>special13</font>
+        </control>
+
+        <!-- button -->
+        <control type="group" id="9001">
+            <posx>20</posx>
+            <posy>-20</posy>
+            <include>buttonpanelslide</include>
+            <control type="button" id="11">
+                <description>General button</description>
+                <posx>0</posx>
+                <posy>120</posy>
+                <label>128</label>
+                <onleft>9002</onleft>
+                <onright>9002</onright>
+                <onup>14</onup>
+                <ondown>13</ondown>
+            </control>
+            <control type="button" id="13">
+                <description>network button</description>
+                <posx>0</posx>
+                <posy>157</posy>
+                <label>705</label>
+                <onleft>9002</onleft>
+                <onright>9002</onright>
+                <onup>11</onup>
+                <ondown>14</ondown>
+                <onclick>ActivateWindow(NetworkSettings)</onclick>
+            </control>
+            <control type="button" id="14">
+                <description>reset rbcd settings button</description>
+                <posx>0</posx>
+                <posy>194</posy>
+                <label>386</label>
+                <onleft>9002</onleft>
+                <onright>9002</onright>
+                <onup>13</onup>
+                <ondown>11</ondown>
+                <onclick>Skin.Reset(rbcdrecorder)</onclick>
+                <!-- <onclick>Skin.Reset(rbcdrecorderfolder)</onclick> -->
+                <onclick>Skin.Reset(rbcdxbmclyrics)</onclick>
+                <onclick>Skin.Reset(rbcdtageditor)</onclick>
+            </control>
+        </control>
+        <!-- Global Options -->
+        <control type="group" id="9002">
+            <posx>190</posx>
+            <posy>100</posy>
+            <include>contentpanelslide</include>
+            <control type="radiobutton" id="20">
+                <description>record button</description>
+                <posx>0</posx>
+                <posy>0</posy>
+                <width>485</width>
+                <label>-</label>
+                <selected>Skin.HasSetting(rbcdrecorder)</selected>
+                <onclick>Skin.ToggleSetting(rbcdrecorder)</onclick>
+                <onleft>9001</onleft>
+                <onright>9001</onright>
+                <onup>26</onup>
+                <ondown>21</ondown>
+                <textoffsetx>7</textoffsetx>
+                <texturefocus>list-focus.png</texturefocus>
+                <texturenofocus>-</texturenofocus>
+            </control>
+            <control type="button" id="200">
+                <description>record button label</description>
+                <posx>0</posx>
+                <posy>0</posy>
+                <width>485</width>
+                <label>Activer l'enregistrement</label> <!-- this label is localized in folder \Radio.Blog.Club\language\..\strings.xml id="60" -->
+                <textoffsetx>7</textoffsetx>
+                <texturefocus>-</texturefocus>
+                <texturenofocus>-</texturenofocus>
+            </control>
+            <control type="button" id="21">
+                <description>record folder button</description>
+                <posx>0</posx>
+                <posy>35</posy>
+                <width>485</width>
+                <label>20005</label>
+                <onleft>9001</onleft>
+                <onright>9001</onright>
+                <onup>20</onup>
+                <ondown>22</ondown>
+                <textoffsetx>7</textoffsetx>
+                <texturefocus>list-focus.png</texturefocus>
+                <texturenofocus>-</texturenofocus>
+            </control>
+            <control type="button" id="210">
+                <description>link label</description>
+                <posx>0</posx>
+                <posy>35</posy>
+                <width>490</width>
+                <height>35</height>
+                <label>20078</label>
+                <textwidth>230</textwidth>
+                <include>textcolorgrey</include>
+                <align>right</align>
+                <texturefocus>-</texturefocus>
+                <texturenofocus>-</texturenofocus>
+            </control>
+            <control type="image"id="0">
+                <posx>0</posx>
+                <posy>70</posy>
+                <width>485</width>
+                <height>5</height>
+                <texture>separator.png</texture>
+                <colordiffuse>98000000</colordiffuse>
+            </control>
+            <control type="button" id="22">
+                <description>XBMC Lyrics button</description>
+                <posx>0</posx>
+                <posy>70</posy>
+                <width>485</width>
+                <label>XBMC Lyrics</label>
+                <onclick>Skin.SetFile(rbcdxbmclyrics,.py)</onclick>
+                <onleft>9001</onleft>
+                <onright>9001</onright>
+                <onup>21</onup>
+                <ondown>23</ondown>
+                <textoffsetx>7</textoffsetx>
+                <texturefocus>list-focus.png</texturefocus>
+                <texturenofocus>-</texturenofocus>
+            </control>
+            <control type="button" id="220">
+                <description>link label</description>
+                <posx>0</posx>
+                <posy>70</posy>
+                <width>490</width>
+                <height>35</height>
+                <label>$INFO[Skin.String(rbcdxbmclyrics)]</label>
+                <textwidth>350</textwidth>
+                <align>right</align>
+                <texturefocus>-</texturefocus>
+                <texturenofocus>-</texturenofocus>
+            </control>
+            <control type="button" id="221">
+                <description>no link label</description>
+                <posx>0</posx>
+                <posy>70</posy>
+                <width>490</width>
+                <height>35</height>
+                <label>20078</label>
+                <align>right</align>
+                <include>textcolorgrey</include>
+                <align>right</align>
+                <texturefocus>-</texturefocus>
+                <texturenofocus>-</texturenofocus>
+                <visible>!Skin.String(rbcdxbmclyrics)</visible>
+            </control>
+            <control type="button" id="23">
+                <description>Tag Editor button</description>
+                <posx>0</posx>
+                <posy>105</posy>
+                <width>485</width>
+                <label>Tag Editor</label>
+                <onclick>Skin.SetFile(rbcdtageditor,.py)</onclick>
+                <onleft>9001</onleft>
+                <onright>9001</onright>
+                <onup>22</onup>
+                <ondown>24</ondown>
+                <textoffsetx>7</textoffsetx>
+                <texturefocus>list-focus.png</texturefocus>
+                <texturenofocus>-</texturenofocus>
+            </control>
+            <control type="button" id="230">
+                <description>link label</description>
+                <posx>0</posx>
+                <posy>105</posy>
+                <width>490</width>
+                <height>35</height>
+                <textwidth>350</textwidth>
+                <label>$INFO[Skin.String(rbcdtageditor)]</label>
+                <align>right</align>
+                <texturefocus>-</texturefocus>
+                <texturenofocus>-</texturenofocus>
+                <visible>Skin.String(rbcdtageditor)</visible>
+            </control>
+            <control type="button" id="231">
+                <description>no link label</description>
+                <posx>0</posx>
+                <posy>105</posy>
+                <width>490</width>
+                <height>35</height>
+                <label>20078</label>
+                <align>right</align>
+                <include>textcolorgrey</include>
+                <texturefocus>-</texturefocus>
+                <texturenofocus>-</texturenofocus>
+                <visible>!Skin.String(rbcdtageditor)</visible>
+            </control>
+            <control type="image"id="0">
+                <posx>0</posx>
+                <posy>140</posy>
+                <width>485</width>
+                <height>5</height>
+                <texture>separator.png</texture>
+                <colordiffuse>98000000</colordiffuse>
+            </control>
+            <control type="radiobutton" id="24">
+                <description>enabled visu button</description>
+                <posx>0</posx>
+                <posy>140</posy>
+                <width>485</width>
+                <label>-</label>
+                <selected>!Skin.HasSetting(rbcdnomediavisu)</selected>
+                <onclick>Skin.ToggleSetting(rbcdnomediavisu)</onclick>
+                <onleft>9001</onleft>
+                <onright>9001</onright>
+                <onup>23</onup>
+                <ondown>9003</ondown>
+                <textoffsetx>7</textoffsetx>
+                <texturefocus>list-focus.png</texturefocus>
+                <texturenofocus>-</texturenofocus>
+                <!-- <enable>false</enable> not allow because freeze the xbox -->
+            </control>
+            <control type="button" id="240">
+                <description>enabled visu button label</description>
+                <posx>0</posx>
+                <posy>140</posy>
+                <width>485</width>
+                <label>Désactiver la visualisation en arrière plan</label> <!-- this label is localized in folder \Radio.Blog.Club\language\..\strings.xml id="61" -->
+                <textoffsetx>7</textoffsetx>
+                <texturefocus>-</texturefocus>
+                <texturenofocus>-</texturenofocus>
+                <!-- <enable>false</enable> not allow because freeze the xbox -->
+            </control>
+            <control type="button" id="249">
+                <description>Fake List Limit button</description>
+                <posx>0</posx>
+                <posy>175</posy>
+                <width>485</width>
+                <height>35</height>
+                <texturefocus>-</texturefocus>
+                <texturenofocus>list-focus.png</texturenofocus>
+                <visible>ControlGroup(9003).HasFocus()</visible>
+            </control>
+            <control type="button" id="25">
+                <description>List Limit button</description>
+                <posx>0</posx>
+                <posy>175</posy>
+                <width>485</width>
+                <label>Limiter les listes à</label> <!-- this label is localized in folder \Radio.Blog.Club\language\..\strings.xml id="62" -->
+                <onleft>9001</onleft>
+                <onright>251</onright>
+                <onup>24</onup>
+                <ondown>26</ondown>
+                <textoffsetx>7</textoffsetx>
+                <texturefocus>-</texturefocus>
+                <texturenofocus>-</texturenofocus>
+            </control>
+            <control type="button" id="250">
+                <description>List Limit label</description>
+                <posx>0</posx>
+                <posy>175</posy>
+                <width>450</width>
+                <height>35</height>
+                <label>21428</label>
+                <align>right</align>
+                <texturefocus>-</texturefocus>
+                <texturenofocus>-</texturenofocus>
+            </control>
+            <control type="image"id="0">
+                <posx>0</posx>
+                <posy>210</posy>
+                <width>485</width>
+                <height>5</height>
+                <texture>separator.png</texture>
+                <colordiffuse>98000000</colordiffuse>
+            </control>
+            <control type="button" id="26">
+                <description>key button</description>
+                <posx>0</posx>
+                <posy>210</posy>
+                <width>485</width>
+                <label>Key :</label>
+                <onleft>9001</onleft>
+                <onright>9001</onright>
+                <onup>9003</onup>
+                <ondown>20</ondown>
+                <textoffsetx>7</textoffsetx>
+                <texturefocus>list-focus.png</texturefocus>
+                <texturenofocus>-</texturenofocus>
+            </control>
+            <control type="button" id="260">
+                <description>key label</description>
+                <posx>0</posx>
+                <posy>210</posy>
+                <width>490</width>
+                <height>35</height>
+                <textwidth>350</textwidth>
+                <label>-</label>
+                <align>right</align>
+                <texturefocus>-</texturefocus>
+                <texturenofocus>-</texturenofocus>
+            </control>
+        </control>
+        <!-- List Limit Decrease/Increase -->
+        <control type="group" id="9003">
+            <posx>190</posx>
+            <posy>100</posy>
+            <include>contentpanelslide</include>
+            <control type="button" id="251">
+                <description>Decrease List Limit button</description>
+                <posx>440</posx>
+                <posy>185</posy>
+                <width>18</width>
+                <height>16</height>
+                <texturenofocus>scroll-down.png</texturenofocus>
+                <texturefocus>scroll-down-focus.png</texturefocus>
+                <onleft>252</onleft>
+                <onright>252</onright>
+                <ondown>26</ondown>
+                <onup>24</onup>
+            </control>
+            <control type="button" id="252">
+                <description>Increase List Limit button</description>
+                <posx>458</posx>
+                <posy>185</posy>
+                <width>18</width>
+                <height>16</height>
+                <texturenofocus>scroll-up.png</texturenofocus>
+                <texturefocus>scroll-up-focus.png</texturefocus>
+                <onleft>251</onleft>
+                <onright>251</onright>
+                <ondown>26</ondown>
+                <onup>24</onup>
+            </control>
+        </control>
+        <include>windowswitchtransition</include>
+    </controls>
+</window>
