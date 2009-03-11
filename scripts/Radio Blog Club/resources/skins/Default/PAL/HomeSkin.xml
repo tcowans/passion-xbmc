@@ -1,0 +1,523 @@
+<window id="3000">
+    <!-- ** Required ** Do not change any <control type="xxxx" id="XX"> -->
+    <!-- ** Required ** Do not change any skin settings or skin infos -->
+    <!-- ** Infos ** if you not control in your skin, set and add <visible>false</visible>, results no bugs created in scripts. If remove control the bugs or freeze are created. -->
+    <defaultcontrol>51</defaultcontrol>
+    <allowoverlay>no</allowoverlay>
+    <controls>
+        <!-- backgrounds -->
+        <control type="image">
+            <description>background image</description>
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>720</width>
+            <height>88</height>
+            <texture>background-music.png</texture>
+        </control>
+        <control type="image">
+            <description>bottom background image</description>
+            <posx>0</posx>
+            <posy>88</posy>
+            <width>720</width>
+            <height>488</height>
+            <texture>background-bottom.png</texture>
+        </control>
+
+        <!--label -->
+        <control type="label" id="20">
+            <description>xbox media center label</description>
+            <posx>200</posx>
+            <posy>43</posy>
+            <align>right</align>
+            <label>xbox media center</label>
+            <font>special12</font>
+        </control>
+        <control type="label" id="21">
+            <description>description label</description>
+            <posx>207</posx>
+            <posy>43</posy>
+            <align>left</align>
+            <label>Radio.Blog.Club</label>
+            <font>special13</font>
+        </control>
+
+        <!-- media infos (music & visualisation) -->
+        <control type="group">
+            <visible>![Player.HasAudio + Skin.HasSetting(rbcdnomediavisu)]</visible>
+            <include>contentpanelslide</include>
+            <control type="image" id="0">
+                <description>contentpanel slice</description>
+                <posx>140</posx>
+                <posy>88</posy>
+                <width>64</width>
+                <height>510</height>
+                <texture>contentpanel_left.png</texture>
+            </control>
+            <control type="image" id="0">
+                <description>contentpanel slice</description>
+                <posx>204</posx>
+                <posy>88</posy>
+                <width>516</width>
+                <height>510</height>
+                <texture>contentpanel.png</texture>
+            </control>
+        </control>
+        <control type="group">
+            <visible>Player.HasAudio + Skin.HasSetting(rbcdnomediavisu)</visible>
+            <control type="visualisation">
+                <posx>190</posx>
+                <posy>100</posy>
+                <width>485</width>
+                <height>425</height>
+            </control>
+            <control type="image" id="0">
+                <description>contentpanel slice</description>
+                <posx>140</posx>
+                <posy>88</posy>
+                <width>64</width>
+                <height>510</height>
+                <texture>contentpanel_left.png</texture>
+                <colordiffuse>80FFFFFF</colordiffuse>
+                <include>contentpanelslide</include>
+            </control>
+            <control type="image" id="0">
+                <description>contentpanel slice</description>
+                <posx>204</posx>
+                <posy>88</posy>
+                <width>516</width>
+                <height>510</height>
+                <texture>contentpanel.png</texture>
+                <colordiffuse>80FFFFFF</colordiffuse>
+                <include>contentpanelslide</include>
+            </control>
+        </control>
+
+        <!-- main buttons -->
+        <control type="group" id="9000">
+            <posx>20</posx>
+            <posy>-20</posy>
+            <include>buttonpanelslide</include>
+            <control type="button" id="14">
+                <description>My Blog button</description>
+                <posx>0</posx>
+                <posy>120</posy>
+                <label>My Blog</label> <!-- this label is localized in folder \Radio.Blog.Club\language\..\strings.xml id="1" -->
+                <onleft>51</onleft>
+                <onright>51</onright>
+                <onup>18</onup>
+                <ondown>9</ondown>
+            </control>
+            <control type="button" id="9">
+                <description>Playlist button</description>
+                <posx>0</posx>
+                <posy>157</posy>
+                <label>559</label>
+                <onleft>51</onleft>
+                <onright>51</onright>
+                <onup>14</onup>
+                <ondown>5</ondown>
+            </control>
+            <control type="button" id="5">
+                <description>Search button</description>
+                <posx>0</posx>
+                <posy>194</posy>
+                <label>137</label>
+                <onleft>51</onleft>
+                <onright>51</onright>
+                <onup>9</onup>
+                <ondown>6</ondown>
+            </control>
+            <control type="button" id="6">
+                <description>Music Recents button</description>
+                <posx>0</posx>
+                <posy>231</posy>
+                <label>History</label> <!-- this label is localized in folder \Radio.Blog.Club\language\..\strings.xml id="2" -->
+                <onleft>51</onleft>
+                <onright>51</onright>
+                <onup>5</onup>
+                <ondown>16</ondown>
+            </control>
+            <control type="radiobutton" id="16">
+                <description>Record Button</description>
+                <posx>0</posx>
+                <posy>268</posy>
+                <label>264</label>
+                <selected>Skin.HasSetting(rbcdrecorder)</selected>
+                <onclick>Skin.ToggleSetting(rbcdrecorder)</onclick>
+                <onleft>51</onleft>
+                <onright>51</onright>
+                <onup>6</onup>
+                <ondown>15</ondown>
+                <visible>false</visible>
+            </control>
+            <control type="button" id="15">
+                <description>Settings button</description>
+                <posx>0</posx>
+                <posy>268</posy>
+                <label>5</label>
+                <onleft>51</onleft>
+                <onright>51</onright>
+                <onup>16</onup>
+                <ondown>17</ondown>
+            </control>
+            <control type="button" id="17">
+                <description>Lyrics button</description>
+                <posx>0</posx>
+                <posy>305</posy>
+                <label>XBMC Lyrics</label>
+                <onleft>51</onleft>
+                <onright>51</onright>
+                <onup>15</onup>
+                <ondown>18</ondown>
+                <onclick>$INFO[Skin.String(rbcdxbmclyrics)]</onclick>
+                <!-- <enable>Player.HasAudio + Skin.String(rbcdxbmclyrics)</enable> -->
+                <visible>Player.HasAudio + Skin.String(rbcdxbmclyrics)</visible>
+            </control>
+            <control type="button" id="18">
+                <description>Tag Editor button</description>
+                <posx>0</posx>
+                <posy>342</posy>
+                <label>Tag Editor</label>
+                <onleft>51</onleft>
+                <onright>51</onright>
+                <onup>17</onup>
+                <ondown>14</ondown>
+                <onclick>$INFO[Skin.String(rbcdtageditor)]</onclick>
+                <!-- <enable>Player.HasAudio + Skin.String(rbcdtageditor)</enable> -->
+                <visible>Player.HasAudio + Skin.String(rbcdtageditor)</visible>
+            </control>
+        </control>
+
+        <!-- main control lists -->
+        <!-- <include>OldListViewCommons</include>-->
+        <include>AllViewCommonThumbSmall</include>
+        <include>AllViewCommonThumbLarge</include>
+        <include>MusicViewCommons_BigList</include>
+        <!-- <include>MusicCoverThumbView</include>-->
+        <!-- <include>MusicCoverWrapView</include>-->
+        <control type="label" id="12">
+            <description>number of files text label</description>
+            <posx>545</posx>
+            <posy>540</posy>
+            <align>right</align>
+            <label>-</label>
+            <font>font10</font>
+            <include>contentpanelslide</include>
+        </control>
+        <control type="list" id="51">
+            <posx>190</posx>
+            <posy>100</posy>
+            <width>485</width>
+            <height>425</height>
+            <onleft>9000</onleft>
+            <onright>60</onright>
+            <onup>51</onup>
+            <ondown>51</ondown>
+            <scrolltime>200</scrolltime>
+            <viewtype label="$LOCALIZE[535] 2">list</viewtype>
+            <pagecontrol>60</pagecontrol>
+            <include>contentpanelslide</include>
+            <itemlayout height="27">
+                <control type="image">
+                    <posx>5</posx>
+                    <posy>3</posy>
+                    <width>20</width>
+                    <height>20</height>
+                    <texture>defaultAudio.png</texture>
+                    <info>ListItem.Icon</info>
+                </control>
+                <control type="label">
+                    <posx>30</posx>
+                    <posy>2</posy>
+                    <width>440</width>
+                    <height>22</height>
+                    <font>font13</font>
+                    <aligny>center</aligny>
+                    <selectedcolor>green</selectedcolor>
+                    <align>left</align>
+                    <info>ListItem.Label</info>
+                </control>
+                <control type="label">
+                    <posx>475</posx>
+                    <posy>2</posy>
+                    <width>300</width>
+                    <height>22</height>
+                    <font>font13</font>
+                    <aligny>center</aligny>
+                    <selectedcolor>green</selectedcolor>
+                    <textcolor>60ffffff</textcolor>
+                    <align>right</align>
+                    <info>ListItem.Label2</info>
+                </control>
+            </itemlayout>
+            <focusedlayout height="75">
+                <control type="image">
+                    <width>485</width>
+                    <height>75</height>
+                    <posx>0</posx>
+                    <posy>2</posy>
+                    <visible>Control.HasFocus(51)</visible>
+                    <texture border="0,0,0,5">blue-rectangle.png</texture>
+                </control>
+                <control type="image">
+                    <width>485</width>
+                    <height>75</height>
+                    <posx>0</posx>
+                    <posy>2</posy>
+                    <visible>!Control.HasFocus(51)</visible>
+                    <texture border="0,0,0,5">blue-rectanglenf.png</texture>
+                </control>
+                <control type="image">
+                    <posx>4</posx>
+                    <posy>5</posy>
+                    <width>66</width>
+                    <height>65</height>
+                    <texture>defaultAudioBig.png</texture>
+                    <info>ListItem.Icon</info>
+                </control>
+                <control type="image">
+                    <posx>40</posx>
+                    <posy>40</posy>
+                    <width>28</width>
+                    <height>28</height>
+                    <info>ListItem.Overlay</info>
+                </control>
+                <control type="label">
+                    <posx>75</posx>
+                    <posy>7</posy>
+                    <width>400</width>
+                    <height>16</height>
+                    <font>special13</font>
+                    <aligny>center</aligny>
+                    <selectedcolor>green</selectedcolor>
+                    <scroll>true</scroll>
+                    <info>ListItem.Label</info>
+                </control>
+                <control type="label">
+                    <posx>75</posx>
+                    <posy>32</posy>
+                    <width>400</width>
+                    <height>16</height>
+                    <font>font12</font>
+                    <aligny>center</aligny>
+                    <selectedcolor>green</selectedcolor>
+                    <scroll>true</scroll>
+                    <label>$INFO[ListItem.Year ,$LOCALIZE[201]]</label>
+                </control>
+                <control type="label">
+                    <posx>75</posx>
+                    <posy>58</posy>
+                    <width>350</width>
+                    <height>16</height>
+                    <font>font13</font>
+                    <aligny>center</aligny>
+                    <selectedcolor>green</selectedcolor>
+                    <label>$INFO[ListItem.Genre]</label>
+                </control>
+                <control type="label">
+                    <posx>475</posx>
+                    <posy>58</posy>
+                    <width>350</width>
+                    <height>16</height>
+                    <font>font13</font>
+                    <align>right</align>
+                    <aligny>center</aligny>
+                    <selectedcolor>green</selectedcolor>
+                    <info>ListItem.Label2</info>
+                </control>
+            </focusedlayout>
+        </control>
+        <control type="scrollbar" id="60">
+            <posx>680</posx>
+            <posy>100</posy>
+            <width>17</width>
+            <height>425</height>
+            <texturesliderbackground border="4">scrollbar_background.png</texturesliderbackground>
+            <texturesliderbar border="3">scrollbar_bar.png</texturesliderbar>
+            <texturesliderbarfocus border="3">scrollbar_bar_focus.png</texturesliderbarfocus>
+            <textureslidernib>scrollbar_nib.png</textureslidernib>
+            <textureslidernibfocus>scrollbar_nib_focus.png</textureslidernibfocus>
+            <onleft>51</onleft>
+            <onright>9000</onright>
+            <showonepage>false</showonepage>
+            <orientation>vertical</orientation>
+            <include>contentpanelslide</include>
+            <visible>!Skin.HasSetting(UseScrollbars) + !Control.IsVisible(56)</visible>
+            <visible>![Window.IsActive(myvideolibrary) + Control.IsVisible(51)]</visible>
+        </control>
+        <control type="spincontrol" id="60">
+            <description>Next page button</description>
+            <posx>640</posx>
+            <posy>545</posy>
+            <subtype>page</subtype>
+            <font>font12</font>
+            <onleft>51</onleft>
+            <onright>9000</onright>
+            <ondown>60</ondown>
+            <onup>51</onup>
+            <showonepage>false</showonepage>
+            <include>contentpanelslide</include>
+            <visible>Skin.HasSetting(UseScrollbars) + !Control.IsVisible(56)</visible>
+            <visible>![Window.IsActive(myvideolibrary) + Control.IsVisible(51)]</visible>
+        </control>
+
+        <!-- Dialog context menu -->
+        <control type="group">
+            <!-- <visible>Skin.HasSetting(rbcdcontextmenu)</visible> -->
+            <visible>Skin.String(rbcdcontextmenu,1)</visible>
+            <posx>305</posx>
+            <posy>116</posy>
+            <animation effect="fade" time="200" condition="Skin.String(rbcdcontextmenu,1)">VisibleChange</animation>
+            <control type="image" id="997">
+                <description>background top image</description>
+                <posx>0</posx>
+                <posy>-25</posy>
+                <width>245</width>
+                <height>26</height>
+                <texture>dialog-context-top.png</texture>
+            </control>
+            <control type="image" id="999">
+                <description>background image</description>
+                <posx>0</posx>
+                <posy>0</posy>
+                <width>245</width>
+                <height>250</height>
+                <texture>dialog-context-middle.png</texture>
+            </control>
+            <control type="image" id="998">
+                <description>background bottom image</description>
+                <posx>0</posx>
+                <posy>250</posy>
+                <width>245</width>
+                <height>25</height>
+                <texture>dialog-context-bottom.png</texture>
+            </control>
+            <control type="button" id="2">
+                <description>View As Icons button</description>
+                <posx>22</posx>
+                <posy>-2</posy>
+                <width>210</width>
+                <height>32</height>
+                <label>100</label>
+                <texturenofocus>keyboard-btn-space.png</texturenofocus>
+                <texturefocus>keyboard-btn-space-focus2.png</texturefocus>
+                <font>special13</font>
+                <textcolor>FFFFFFFF</textcolor>
+                <disabledcolor>60ffffff</disabledcolor>
+                <align>center</align>
+                <aligny>center</aligny>
+                <onup>1004</onup>
+                <ondown>1005</ondown>
+            </control>
+            <control type="button" id="1005">
+                <description>context menu button 6</description>
+                <posx>22</posx>
+                <posy>35</posy>
+                <width>210</width>
+                <height>32</height>
+                <texturenofocus>keyboard-btn-space.png</texturenofocus>
+                <texturefocus>keyboard-btn-space-focus2.png</texturefocus>
+                <font>special13</font>
+                <textcolor>FFFFFFFF</textcolor>
+                <disabledcolor>60ffffff</disabledcolor>
+                <align>center</align>
+                <aligny>center</aligny>
+                <label>208</label>
+                <onup>2</onup>
+                <ondown>1000</ondown>
+            </control>
+            <control type="button" id="1000">
+                <description>context menu button 1</description>
+                <posx>22</posx>
+                <posy>72</posy>
+                <width>210</width>
+                <height>32</height>
+                <texturenofocus>keyboard-btn-space.png</texturenofocus>
+                <texturefocus>keyboard-btn-space-focus2.png</texturefocus>
+                <font>special13</font>
+                <textcolor>FFFFFFFF</textcolor>
+                <disabledcolor>60ffffff</disabledcolor>
+                <align>center</align>
+                <aligny>center</aligny>
+                <label>13351</label>
+                <onup>1005</onup>
+                <ondown>1001</ondown>
+            </control>
+            <control type="button" id="1001">
+                <description>context menu button 2</description>
+                <posx>22</posx>
+                <posy>109</posy>
+                <width>210</width>
+                <height>32</height>
+                <texturenofocus>keyboard-btn-space.png</texturenofocus>
+                <texturefocus>keyboard-btn-space-focus2.png</texturefocus>
+                <font>special13</font>
+                <textcolor>FFFFFFFF</textcolor>
+                <disabledcolor>60ffffff</disabledcolor>
+                <align>center</align>
+                <aligny>center</aligny>
+                <label>118</label>
+                <onup>1000</onup>
+                <ondown>1002</ondown>
+            </control>
+            <control type="button" id="1002">
+                <description>context menu button 3</description>
+                <posx>22</posx>
+                <posy>146</posy>
+                <width>210</width>
+                <height>32</height>
+                <texturenofocus>keyboard-btn-space.png</texturenofocus>
+                <texturefocus>keyboard-btn-space-focus2.png</texturefocus>
+                <font>special13</font>
+                <textcolor>FFFFFFFF</textcolor>
+                <disabledcolor>60ffffff</disabledcolor>
+                <align>center</align>
+                <aligny>center</aligny>
+                <label>116</label>
+                <onup>1001</onup>
+                <ondown>1003</ondown>
+            </control>
+            <control type="button" id="1003">
+                <description>context menu button 4</description>
+                <posx>22</posx>
+                <posy>183</posy>
+                <width>210</width>
+                <height>32</height>
+                <texturenofocus>keyboard-btn-space.png</texturenofocus>
+                <texturefocus>keyboard-btn-space-focus2.png</texturefocus>
+                <font>special13</font>
+                <textcolor>FFFFFFFF</textcolor>
+                <disabledcolor>60ffffff</disabledcolor>
+                <align>center</align>
+                <aligny>center</aligny>
+                <label>117</label>
+                <onup>1002</onup>
+                <ondown>1004</ondown>
+            </control>
+            <control type="togglebutton" id="1004">
+                <description>context menu button 5</description>
+                <posx>22</posx>
+                <posy>220</posy>
+                <width>210</width>
+                <height>32</height>
+                <align>center</align>
+                <aligny>center</aligny>
+                <font>special13</font>
+                <label>264</label>
+                <!--<altlabel>265</altlabel>-->
+                <!--<colordiffuse>98FFFFFF</colordiffuse>-->
+                <textcolor>FFFFFFFF</textcolor>
+                <disabledcolor>60ffffff</disabledcolor>
+                <texturenofocus border="4">keyboard-btn-mid.png</texturenofocus>
+                <texturefocus border="4">keyboard-btn-mid-focus.png</texturefocus>
+                <usealttexture>Skin.HasSetting(rbcdrecorder)</usealttexture>
+                <alttexturenofocus border="4">keyboard-btn-mid-sel.png</alttexturenofocus>
+                <alttexturefocus border="4">keyboard-btn-mid-sel-focus.png</alttexturefocus>
+                <onclick>Skin.ToggleSetting(rbcdrecorder)</onclick>
+                <onup>1003</onup>
+                <ondown>2</ondown>
+            </control>
+        </control>
+        <include>windowswitchtransition</include>
+    </controls>
+</window>
