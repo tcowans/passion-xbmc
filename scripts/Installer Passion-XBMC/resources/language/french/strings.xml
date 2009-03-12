@@ -205,6 +205,10 @@
   <string id="521">Entrer le nom du navigateur Web</string>
 
   <string id="530">Désactiver le Splash</string>
+  <string id="531">Thème</string>
+  <string id="532">Paramètre thème modifié</string>
+  <string id="533">IPX nécessite un redémarrage pour changer le thème.</string>
+  <string id="534">Voulez-vous redémarrer maintenant?</string>
 
   <!--DESCRIPTION STRINGS -->
   <string id="600">Description</string>

@@ -205,6 +205,10 @@
   <string id="521">Enter Web Browser Name</string>
 
   <string id="530">Disable Splash</string>
+  <string id="531">Skin</string>
+  <string id="532">Skin settings changed</string>
+  <string id="533">IPX requires to restart to change your</string>
+  <string id="534">skin setup.  Would you like to restart now?</string>
 
   <!--DESCRIPTION STRINGS -->
   <string id="600">Description</string>

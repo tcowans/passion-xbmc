@@ -154,7 +154,7 @@
 				<onleft>10</onleft>
 				<onright>30</onright>
 				<onup>9000</onup>
-				<ondown>9002</ondown>
+				<ondown>9021</ondown>
 			</control>
 			<control type="image">
 				<description>divider</description>
@@ -525,10 +525,73 @@
 		<!-- theme colours List Decrease/Increase -->
 		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
 		<!-- ** Required ** Do not change id's or type's -->
-		<control type="group" id="9002">
+		<control type="group" id="9021">
 			<description>theme button 1</description>
 			<posx>45</posx>
 			<posy>126</posy>
+			<visible>Skin.String(PassionSettings,2)</visible>
+			<control type="image">
+				<description>skin background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>625</width>
+				<height>34</height>
+				<texture border="5">IPX-button-focus.png</texture>
+				<visible>ControlGroup(9021).HasFocus()</visible>
+			</control>
+			<control type="button" id="290">
+				<description>Decrease skin button</description>
+				<posx>580</posx>
+				<posy>9</posy>
+				<width>18</width>
+				<height>16</height>
+				<texturenofocus>IPX-scroll-down.png</texturenofocus>
+				<texturefocus>IPX-scroll-down-focus.png</texturefocus>
+				<onleft>9000</onleft>
+				<onright>291</onright>
+				<ondown>9002</ondown>
+				<onup>1000</onup>
+			</control>
+			<control type="button" id="291">
+				<description>Increase skin button</description>
+				<posx>598</posx>
+				<posy>9</posy>
+				<width>18</width>
+				<height>16</height>
+				<texturenofocus>IPX-scroll-up.png</texturenofocus>
+				<texturefocus>IPX-scroll-up-focus.png</texturefocus>
+				<onleft>290</onleft>
+				<onright>9000</onright>
+				<ondown>9002</ondown>
+				<onup>1000</onup>
+			</control>
+			<control type="button" id="292">
+				<description>skin label</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>580</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT531</label>
+				<label2>Default</label2>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<aligny>center</aligny>
+				<texturefocus>-</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<onleft>291</onleft>
+				<onright>290</onright>
+				<ondown>9002</ondown>
+				<onup>1000</onup>
+			</control>
+		</control>
+		<control type="group" id="9002">
+			<description>theme button 1</description>
+			<posx>45</posx>
+			<posy>160</posy><!-- 126 + 34 -->
 			<visible>Skin.String(PassionSettings,2)</visible>
 			<control type="image" id="1">
 				<description>colour background image</description>
@@ -550,7 +613,7 @@
 				<onleft>9000</onleft>
 				<onright>210</onright>
 				<ondown>9022</ondown>
-				<onup>1000</onup>
+				<onup>9021</onup>
 			</control>
 			<control type="button" id="210">
 				<description>Increase colour button</description>
@@ -563,7 +626,7 @@
 				<onleft>200</onleft>
 				<onright>9000</onright>
 				<ondown>9022</ondown>
-				<onup>1000</onup>
+				<onup>9021</onup>
 			</control>
 			<control type="button" id="220">
 				<description>colour label</description>
@@ -585,7 +648,7 @@
 				<onleft>210</onleft>
 				<onright>200</onright>
 				<ondown>9022</ondown>
-				<onup>1000</onup>
+				<onup>9021</onup>
 			</control>
 			<control type="image" id="249">
 				<description>separator image</description>
@@ -600,7 +663,7 @@
 		<control type="group" id="9022">
 			<description>theme button 2</description>
 			<posx>45</posx>
-			<posy>165</posy>
+			<posy>199</posy><!-- 165 + 39 -->
 			<visible>Skin.String(PassionSettings,2)</visible>
 			<control type="image" id="1">
 				<description>colour background image</description>
@@ -663,7 +726,7 @@
 		<control type="grouplist" id="9020">
 			<visible>Skin.String(PassionSettings,2)</visible>
 			<posx>45</posx>
-			<posy>199</posy>
+			<posy>233</posy><!-- 199 + 34 -->
 			<width>625</width>
 			<height>266</height>
 			<itemgap>0</itemgap>
