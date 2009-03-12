@@ -442,8 +442,8 @@ class LUCKY7( xbmcgui.WindowXML ):
                 #xbmc.executebuiltin( "XBMC.Action(Screenshot)" )
                 OK, date_time = self.screenshot()
                 if OK: self.dump_winner_jackpot( slots_infos.betting, cash_win, _jackpot, date_time )
-            OK, date_time = self.screenshot()
-            if OK: self.dump_winner_jackpot( slots_infos.betting, cash_win, _jackpot, date_time )
+            #OK, date_time = self.screenshot()
+            #if OK: self.dump_winner_jackpot( slots_infos.betting, cash_win, _jackpot, date_time )
         except:
             print_exc()
 
