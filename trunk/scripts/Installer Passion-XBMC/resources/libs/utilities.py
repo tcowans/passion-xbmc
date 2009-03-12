@@ -20,6 +20,7 @@ __all__ = [
     "getUserSkin",
     "getSkinColors",
     "get_default_hex_color",
+    "getSkinsListing",
     "add_pretty_color",
     "bold_text",
     "italic_text",
@@ -132,7 +133,13 @@ def is_playable_media( filename, media="picture" ):
 
 def getUserSkin():
     """ FONCTION POUR RECUPERER LE THEME UTILISE PAR L'UTILISATEUR """
+    # get user preference skin settings
+    try: skin_setting = Settings().get_settings().get( "current_skin", "Default" )
+    except: skin_setting = "Default"
     current_skin = xbmc.getSkinDir()
+    if skin_setting != "Default" and os.path.exists( os.path.join( CWD, "resources", "skins", skin_setting ) ):
+        current_skin = skin_setting
+    #if not current_skin: current_skin = xbmc.getSkinDir()
     force_fallback = os.path.exists( os.path.join( CWD, "resources", "skins", current_skin ) )
     if not force_fallback: current_skin = "Default"
     return current_skin, force_fallback
@@ -158,6 +165,12 @@ def get_default_hex_color():
         logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
         default_hex_color = "FFFFFFFF"
     return default_hex_color
+
+
+def getSkinsListing():
+    skins_dir = os.path.join( CWD, "resources", "skins" )
+    skins = [ skin for skin in os.listdir( skins_dir ) if ".svn" not in skin and os.path.isdir( os.path.join( skins_dir, skin ) ) ]
+    return skins
 
 
 #NOTE: CE CODE PEUT ETRE REMPLACER PAR UN CODE MIEUX FAIT
@@ -236,6 +249,7 @@ class Settings:
             "main_view_mode": 50,
             # SKINS
             "show_plash": False,
+            "current_skin": "Default",
             "skin_colours_path": "default",
             "skin_colours": "",
             "thumb_size": ( "512", "192" )[ ( SYSTEM_PLATFORM == "xbox" ) ],

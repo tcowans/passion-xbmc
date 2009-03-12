@@ -51,6 +51,9 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
     CONTROL_DECREASE_TSIZE_BUTTON = 260
     CONTROL_INCREASE_TSIZE_BUTTON = 270
     CONTROL_THUMB_SIZE_LABEL      = 280
+    CONTROL_DECREASE_SKIN_BUTTON  = 290
+    CONTROL_INCREASE_SKIN_BUTTON  = 291
+    CONTROL_SKIN_LABEL            = 292
     CONTROL_DECREASE_RSS_BUTTON   = 100
     CONTROL_INCREASE_RSS_BUTTON   = 110
     CONTROL_RSS_FEEDS_LABEL       = 120
@@ -66,6 +69,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
         # __init__ normal de python
         # On recupere le "self" de le fenetre principal pour benificier de ces variables.
         self.mainwin = kwargs[ "mainwin" ]
+        self.reload_script = False
 
         # recupere la valeur sur le demarrage, utiliser pour rafraifir en temps reel, si l'etat est pas le meme
         self.passion_show_fanart = xbmc.getCondVisibility( "!Skin.HasSetting(PassionShowFanart)" )
@@ -83,6 +87,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             # recupere la valeur sur le demarrage, utiliser pour rafraifir en temps reel, si l'etat est pas le meme
             self.coulour_on_load = self.settings[ "skin_colours_path" ]
             self.rss_on_load = self.settings[ "rss_feed" ]
+            self.skin_on_load = self.settings.get( "current_skin", "Default" )
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
             self._close_dialog()
@@ -137,6 +142,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
     def _set_controls_values( self ):
         xbmcgui.lock()
         try:
+            self._set_control_skins()
             # boutons pour le flux rss
             self._set_control_rss_feeds()
             # boutons pour la couleur du theme
@@ -170,6 +176,23 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         xbmcgui.unlock()
 
+    def _set_control_skins( self ):
+        try:
+            self.current_skin  = self.settings.get( "current_skin", "Default" )
+            self.skins_list         = sorted( getSkinsListing(), key=lambda l: l.lower() )
+            self.skins_listing = deque( self.skins_list )
+            if not self.current_skin in self.skins_list:
+                self.current_skin = "Default"
+
+            if not self.skins_listing[ 0 ] == self.current_skin:
+                self.skins_listing.rotate( -( int( self.skins_list.index( self.current_skin ) ) ) )
+
+            try: skin_label = "(%i/%i) %s" % ( self.skins_list.index( self.current_skin )+1, len( self.skins_list ), self.skins_listing[ 0 ], )
+            except: skin_label = self.skins_listing[ 0 ]
+            self.getControl( self.CONTROL_SKIN_LABEL ).setLabel( "Skin", label2=skin_label )
+        except:
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+
     def _set_control_web_visibility( self ):
         compatible = ( SYSTEM_PLATFORM in ( "windows", "linux", "osx" ) )
         web_title = self.settings.get( "web_title", "" ) or  _( 506 )
@@ -202,7 +225,6 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
             #default_thumb_size = self.settings.get( "thumb_size" ) or ( "512", "192" )[ ( SYSTEM_PLATFORM == "xbox" ) ]
             #self.getControl( self.CONTROL_THUMB_SIZE_LABEL ).setLabel( _( 517 ), label2=str( default_thumb_size ) )
-
 
     def _set_control_colors( self ):
         enable_control = False
@@ -262,9 +284,33 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
         #Note: Mais il faut la declarer :)
         pass
 
+    def toggle_skin_control( self, controlID ):
+        try:
+            try:
+                if controlID == self.CONTROL_DECREASE_SKIN_BUTTON: self.skins_listing.rotate( 1 )
+                elif controlID == self.CONTROL_INCREASE_SKIN_BUTTON: self.skins_listing.rotate( -1 )
+            except: pass
+            toggle_preset = False
+            new_skin = self.skins_listing[ 0 ]
+            try:
+                try: skin_label = "(%i/%i) %s" % ( self.skins_list.index( new_skin )+1, len( self.skins_list ), new_skin, )
+                except: skin_label = new_skin
+                self.getControl( self.CONTROL_SKIN_LABEL ).setLabel( "Skin", label2=skin_label )
+                toggle_preset = True
+            except: pass
+            if toggle_preset:
+                self.current_skin = new_skin
+                self.settings[ "current_skin" ] = self.current_skin
+                self.getControl( self.CONTROL_OK_BUTTON ).setEnabled( True )
+        except:
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+
     def onClick( self, controlID ):
         try:
-            if controlID in ( self.CONTROL_DECREASE_TOPIC_BUTTON, self.CONTROL_INCREASE_TOPIC_BUTTON ):
+            if controlID in ( self.CONTROL_DECREASE_SKIN_BUTTON, self.CONTROL_INCREASE_SKIN_BUTTON ):
+                self.toggle_skin_control( controlID )
+
+            elif controlID in ( self.CONTROL_DECREASE_TOPIC_BUTTON, self.CONTROL_INCREASE_TOPIC_BUTTON ):
                 self.toggle_topic_control( controlID )
 
             elif controlID in ( self.CONTROL_DECREASE_COLOR_BUTTON, self.CONTROL_INCREASE_COLOR_BUTTON ):
@@ -447,6 +493,11 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             self.mainwin._start_rss_timer()
         if self.coulour_on_load != self.settings[ "skin_colours_path" ]:
             self.mainwin._set_skin_colours()
+        if self.skin_on_load != self.settings.get( "current_skin", "Default" ):
+            #required script reload
+            if xbmcgui.Dialog().yesno( _( 532 ), _( 533 ), _( 534 ) ):
+                self.reload_script = True
+
         self._close_dialog( OK )
 
     def _get_defaults( self ):
@@ -468,8 +519,12 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
                 xbmc.executebuiltin( "Skin.ToggleSetting(use_passion_custom_background)" )
             if ( self.custom_background != unicode( xbmc.getInfoLabel( 'Skin.String(passion_custom_background)' ), 'utf-8') ):
                 xbmc.executebuiltin( "Skin.SetString(passion_custom_background,%s)" % ( self.custom_background, ) )
+
         xbmc.sleep( 100 )
         self.close()
+        if self.reload_script:
+            self.mainwin._close_script()
+            sys.modules[ "__main__" ].MAIN()
 
 
 def show_settings( mainwin ):
