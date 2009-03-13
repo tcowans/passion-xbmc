@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<strings>  <!--Finnish 16.2.2008-->
+<strings>  <!--Finnish 13.3.2008-->
   <!--GENERAL STRINGS -->
   <string id="0">Installer Passion-XBMC</string>
   <string id="1">Keskustelut</string>
@@ -30,7 +30,7 @@
   <string id="27">/</string>
 
   <!--MISC STRINGS -->
-  <string id="100">Valitse XBMC:n asennushakemisto</string>
+  <string id="100">Valitse XBMC:n asennuskansio</string>
   <string id="101">Järjestelmän kokoonpano</string>
   <string id="102">Tarkistetaan päivityksiä</string>
   <string id="103">Luodaan käyttöliittymää</string>
@@ -111,7 +111,7 @@
   <string id="178">Sijainnista:&#32;</string>
   <string id="179">Kohteeseen:&#32;</string>
   <string id="180">Hyväksy tiedoston lataus</string>
-  <string id="181">Oletko varma, että haluat ladata valitut tiedostot?</string>
+  <string id="181">Oletko varma, että haluat ladata valitun tiedostot?</string>
 
   <string id="184">Päivitä</string>
   <string id="185">Laske koko</string>
@@ -204,11 +204,11 @@
   <string id="520">Valitse nettiselain</string>
   <string id="521">Anna nettiselaimen nimi</string>
 
-  <string id="530">Poista Splash</string>
-  <string id="531">Skin</string>
-  <string id="532">Skin settings changed</string>
-  <string id="533">IPX requires to restart to change your</string>
-  <string id="534">skin setup.  Would you like to restart now?</string>
+  <string id="530">Älä näytä käynnistystunnusta</string>
+  <string id="531">Skini</string>
+  <string id="532">Skinin asetuksia on muutettu</string>
+  <string id="533">Koska olet muuttanut IPX-skinin asetuksia täytyy</string>
+  <string id="534">ohjelma käynnistää uudelleen. Haluatko käynnistää nyt?</string>
 
   <!--DESCRIPTION STRINGS -->
   <string id="600">Selite</string>
@@ -250,7 +250,7 @@
   <!--CONTEXT MENU STRINGS -->
   <string id="1000">Asenna</string>
   <string id="1001">Tietoja</string>
-  <string id="1002">Vaihda media</string>
+  <string id="1002">Vaihda media-valikkoa</string>
   <string id="1003"></string>
   <string id="1004"></string>
   <string id="1005"></string>
