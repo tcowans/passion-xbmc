@@ -52,7 +52,7 @@
   <string id="119">Vaihda käytössä oleva skini[CR]toiseen ennen lataamista</string>
   <string id="120">Et voi asentaa skiniä ilman[CR]järjestelmänvalvojan oikeuksia</string>
   <string id="121">Et voi asentaa tietojen hakupaikkaa ilman[CR]järjestelmänvalvojan oikeuksia</string>
-  <string id="122">Lataa: %s</string>
+  <string id="122">Ladataan: %s</string>
   <string id="123">Ladattu yhteensä: %d%%</string>
   <string id="124">Lataus keskeytetty</string>
   <string id="125">Lataus keskeytyi suorituksen aikana</string>
@@ -65,15 +65,15 @@
   <string id="132">Tiedosto:</string>
   <string id="133">Tiedostoa ei voida poistaa</string>
   <string id="134">Lataus valmis</string>
-  <string id="135">Ladattiin kansioon:</string>
+  <string id="135">Tiedosto ladattiin kansioon:</string>
   <string id="136">Asenna: %s</string>
   <string id="137">Asennus käynnissä ...</string>
   <string id="138">Asennetaan %s</string>
   <string id="139">%s:n purun aikana tapahtui virhe</string>
   <string id="140">Odottamaton poikkeus tapahtui %s:n purun aikana</string>
-  <string id="141">Asennus valmis</string>
+  <string id="141">Asennus on nyt valmis</string>
   <string id="142">%s:n asennus</string>
-  <string id="143">on valmis</string>
+  <string id="143">on suoritettu onnistuneesti</string>
   <string id="144">Virhe - Asennus ei onnistunut</string>
   <string id="145">Katso lisätietoja lokitiedostosta</string>
   <string id="146">Asennus peruutettu</string>
@@ -110,8 +110,8 @@
   <string id="177">Siirretään...</string>
   <string id="178">Sijainnista:&#32;</string>
   <string id="179">Kohteeseen:&#32;</string>
-  <string id="180">Hyväksy tiedoston lataus</string>
-  <string id="181">Oletko varma, että haluat ladata valitun tiedostot?</string>
+  <string id="180">Valitun tiedoston lataus</string>
+  <string id="181">Haluatko ladata valitun tiedoston?</string>
 
   <string id="184">Päivitä</string>
   <string id="185">Laske koko</string>
