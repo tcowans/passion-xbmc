@@ -1723,7 +1723,7 @@ Note: this version is compatible on all XBMC platforms even this it doesn't load
 			<iconURL></iconURL>
 			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Revision3.jpg</previewPictureURL>
 			<previewVideoURL></previewVideoURL>
-			<description_fr>Ce script perme tde regarder les vidéos sur http://revision3.com (Television Internet)
+			<description_fr>Ce script permet de regarder les vidéos sur http://revision3.com (Television Internet)
 Cette version n'est pas la version offcielle, nous avons la version 0.1.9 afin de la rendre compatible avec Atlantis</description_fr>
 			<description_en>This script allow to watch the videos from http://revision3.com (Internet Television)
 This version is not the official one, we fixed the version 0.1.9 in order to run on Atlantis.</description_en>
@@ -1748,10 +1748,11 @@ PROD InfinityTV Script Last Updated 12/18/08 Originally Developed by Infinity th
 Note: The UI, and more especially the command have been design for XBOX with a pad (difficult to use it with a remote)</description_en>
 		</entry>
 		<entry>
-			<fileName>RunXM_Install_v0.17.zip</fileName>
+			<fileName>RunXM_Install_v0.17a.zip</fileName>
 			<title>RunXM - New Install</title>
-			<version>0.17</version>
-			<date>11-01-09</date>
+			<version>0.17a</version>
+			<date>12-03-09</date>
+			<added>13-03-09</added>
 			<author>calvin8714</author>
 			<lang>en</lang>
 			<iconURL></iconURL>
@@ -1786,10 +1787,11 @@ info
 - The Song Info from XM is not always perfect.</description_en>
 		</entry>
 		<entry>
-			<fileName>RunXM_Upgrade_v0.17.zip</fileName>
+			<fileName>RunXM_Upgrade_v0.17a.zip</fileName>
 			<title>RunXM - Upgrade</title>
-			<version>0.17</version>
-			<date>11-01-09</date>
+			<version>0.17a</version>
+			<date>12-03-09</date>
+			<added>13-03-09</added>
 			<author>calvin8714</author>
 			<lang>en</lang>
 			<iconURL></iconURL>
@@ -2424,12 +2426,12 @@ library_to_update="video"</description_en>
 			<description_en></description_en>
 		</entry>
 		<entry>
-			<fileName>Lucky_7_v1.1.0.zip</fileName>
+			<fileName>Lucky_7_12-03-09.zip</fileName>
 			<title>Lucky 7</title>
-			<version>1.1.0</version>
+			<version>pre-2.0.0</version>
 			<lang>multi</lang>
-			<date>24-02-2009</date>
-			<added>07-03-09</added>
+			<date>12-03-09</date>
+			<added>13-03-09</added>
 			<author>Frost</author>
 			<previewPictureURL></previewPictureURL>
 			<previewVideoURL></previewVideoURL>
@@ -2562,6 +2564,39 @@ NB: Mon historique de recherche est incluse pour cette version
 			<description_en>A simple script to view text and media files from a select dialog</description_en>
 		</entry>
 		<entry>
+			<fileName>myth2xbmc_r26.zip</fileName>
+			<title>Myth2XBMC</title>
+			<version>r26</version>
+			<date>11-03-09</date>
+			<added>13-03-09</added>
+			<author>teresa</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>Myth2XBMC is an updated/reworked version of the xbmcmythtv2 script since MythBox doesn't work on the XBOX.
+
+Note: It has been tested on the XBOX only so far.</description_en>
+		</entry>
+		<entry>
+			<fileName>Aptitude_09-03-09.zip</fileName>
+			<title>Aptitude</title>
+			<version>09-03-09</version>
+			<date>09-03-09</date>
+			<added>13-03-09</added>
+			<author>Tobias Arrskog</author>
+			<lang>en</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>This script will upgrade your system on an aptitude based distro.
+
+also python-apt needs to be installed.
+sudo apt-get install python-apt</description_en>
+		</entry>
+		<entry>
 			<fileName></fileName>
 			<title></title>
 			<version></version>
@@ -2615,6 +2650,39 @@ This collection is maintained by the etree.org community. Streams are avaliable 
 				<description_en>Streamer Radio is a Internet Radio player for Xbmc Media Center. Using presets maintained regularly. 
 When there is no xbox nearby, please use Screamer Radio (a very nice player for PC). 
 Huge thanks for letting me use the presetlist from it. See www.screamer-radio.com</description_en>
+			</entry>
+			<entry>
+				<fileName>Wixi_music_12-01-09.zip</fileName>
+				<title>Wixi Music</title>
+				<version>12-01-09</version>
+				<date>12-01-09</date>
+				<added>13-03-09</added>
+				<author>runa</author>
+				<lang>multi</lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>[B]WHAT'S WIXI?[/B]
+
+    [B]Upload and backup your media with no limits:[/B]
+    Upload your media collections: photos, videos and favorite songs and also large document, spreadsheets, pdfs or zip files to your online desktop.
+
+    [B]Play files from anywhere[/B]
+    Access your media files and playlists no matter where you are, just with an Internet connection, no need to carry any USB key or heavy hard-drive.
+
+    [B]Share it with your friends[/B]
+    Your media files are meant to be shared: with your friends, family, colleagues or to the world! Send your media files and playlists to your friends ... even if they are not on Wixi!
+
+    [B]Mobile access to your media[/B]
+    Wixi also works in the palm of your hand, with your mobile phone letting you search, play and download any public media file.
+
+
+[B]Install and run Wixi[/B]
+First of all you will need a Wixi account (www.wixi.com).
+Wixi is available for pictures, music and video. You will need to go in each corresponding section of the Installer Passion-XBMC and install each plugin separately.
+Once installed, go in the section you wwant (pictures, music or video) and select Wixi plugin and display context menu. Then select Plugin Settings and type your user and password. Hit OK and then click on Wixi. Your folder structure will load and you will be able to enjoy your medias!</description_en>
 			</entry>
 		</musicplugin>
 		<!-- FIN Sous-section plugins musique -->
@@ -2683,6 +2751,39 @@ I highly suggest media stream skin with the one view (forget what it's called) w
 				<previewVideoURL></previewVideoURL>
 				<description_fr></description_fr>
 				<description_en>An alternative flickr plugin for XBMC</description_en>
+			</entry>
+			<entry>
+				<fileName>Wixi_pictures_12-01-09.zip</fileName>
+				<title>Wixi Pictures</title>
+				<version>12-01-09</version>
+				<date>12-01-09</date>
+				<added>13-03-09</added>
+				<author>runa</author>
+				<lang>multi</lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>[B]WHAT'S WIXI?[/B]
+
+    [B]Upload and backup your media with no limits:[/B]
+    Upload your media collections: photos, videos and favorite songs and also large document, spreadsheets, pdfs or zip files to your online desktop.
+
+    [B]Play files from anywhere[/B]
+    Access your media files and playlists no matter where you are, just with an Internet connection, no need to carry any USB key or heavy hard-drive.
+
+    [B]Share it with your friends[/B]
+    Your media files are meant to be shared: with your friends, family, colleagues or to the world! Send your media files and playlists to your friends ... even if they are not on Wixi!
+
+    [B]Mobile access to your media[/B]
+    Wixi also works in the palm of your hand, with your mobile phone letting you search, play and download any public media file.
+
+
+[B]Install and run Wixi[/B]
+First of all you will need a Wixi account (www.wixi.com).
+Wixi is available for pictures, music and video. You will need to go in each corresponding section of the Installer Passion-XBMC and install each plugin separately.
+Once installed, go in the section you wwant (pictures, music or video) and select Wixi plugin and display context menu. Then select Plugin Settings and type your user and password. Hit OK and then click on Wixi. Your folder structure will load and you will be able to enjoy your medias!</description_en>
 			</entry>
 		</pictureplugin>
 		<!-- FIN Sous-section plugins Images -->
@@ -2807,6 +2908,21 @@ WARNING: Update are done for TRUNK branch, that means you will get the last up t
 				<description_fr>Vous donnes acces a vos scripts depuis la section plugins programmes</description_fr>
 				<description_en>Give you acces to you scripts from program plugin section</description_en>
 			</entry>
+			<entry>
+				<fileName>XBMC_Zone_Installer_v1.0.zip</fileName>
+				<title>XBMC Zone Installer</title>
+				<version>1.0</version>
+				<date>08-03-09</date>
+				<added>09-03-09</added>
+				<author>Dan Dar3</author>
+				<lang>multi</lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Plugins/Programs/XBMCZoneInstaller.jpg</previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Ce plugin vous permet de télécharger et d'installer facilement les scripts et plugin disponibles sur xbmczone.com directement depuis XBMC</description_fr>
+				<description_en>This plugin allows you to easily download and install the plugins and scripts from xbmczone.com directly from your XBMC.</description_en>
+			</entry>
 		</programplugin>
 		<!-- FIN Sous-section plugins Programmes -->
 
@@ -2897,11 +3013,11 @@ Installation dans: "...\xbmc\plugins\video\"</description_fr>
 				<description_en></description_en>
 			</entry>
 			<entry>
-				<fileName>VideoMonkey_v1.30.zip</fileName>
+				<fileName>VideoMonkey_v1.32.zip</fileName>
 				<title>VideoMonkey</title>
-				<version>1.30</version>
-				<date>02-03-09</date>
-				<added>07-03-09</added>
+				<version>1.32</version>
+				<date>12-03-09</date>
+				<added>13-03-09</added>
 				<author>sfaxman</author>
 				<lang>multi</lang>
 				<iconURL></iconURL>
@@ -3486,10 +3602,11 @@ Available Plugin Settings:
 				<description_en>This plugin created by Alexsolex allow to watch videos for kids available on the website kids.dailymotion.com (french content)</description_en>
 			</entry>
 			<entry>
-				<fileName>adult swim_US-Only_v0.1.zip</fileName>
+				<fileName>Adult_Swim_US-Only_v0.2.zip</fileName>
 				<title>[adult swim] - US Only</title>
-				<version>0.1</version>
-				<date>11-01-09</date>
+				<version>0.2</version>
+				<date>12-03-09</date>
+				<added>13-03-09</added>
 				<author>thecheese</author>
 				<lang>en</lang>
 				<iconURL></iconURL>
@@ -4024,11 +4141,11 @@ CAUTION: This version only run on XBMC revision #18269 or newer</description_en>
 				<description_en>Plugin for viewing content from www.blip.tv</description_en>
 			</entry>
 			<entry>
-				<fileName>reeplay.it_25-02-09.zip</fileName>
+				<fileName>reeplay.it_v1.0.1.zip</fileName>
 				<title>reeplay.it</title>
-				<version>1.0</version>
-				<date>25-02-09</date>
-				<added>07-03-09</added>
+				<version>1.0.1</version>
+				<date>09-03-09</date>
+				<added>13-03-09</added>
 				<author>BigBellyBilly</author>
 				<lang>multi</lang>
 				<platform></platform>
@@ -4122,6 +4239,99 @@ This plugin replaces the old script which does not work anymore.
 				<previewVideoURL></previewVideoURL>
 				<description_fr></description_fr>
 				<description_en>This plugin lets you download (and view) the Dutch, English and American Top40.</description_en>
+			</entry>
+			<entry>
+				<fileName>Fancast_03-03-09.zip</fileName>
+				<title>Fancast</title>
+				<version>1.1</version>
+				<date>03-03-09</date>
+				<added>09-03-09</added>
+				<author>rectalogic, isobsr</author>
+				<lang>en</lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Plugin for streaming video from Fancast (US Only)</description_en>
+			</entry>
+			<entry>
+				<fileName>Wixi_video_12-01-09.zip</fileName>
+				<title>Wixi Video</title>
+				<version>12-01-09</version>
+				<date>12-01-09</date>
+				<added>13-03-09</added>
+				<author>runa</author>
+				<lang>multi</lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>[B]WHAT'S WIXI?[/B]
+
+    [B]Upload and backup your media with no limits:[/B]
+    Upload your media collections: photos, videos and favorite songs and also large document, spreadsheets, pdfs or zip files to your online desktop.
+
+    [B]Play files from anywhere[/B]
+    Access your media files and playlists no matter where you are, just with an Internet connection, no need to carry any USB key or heavy hard-drive.
+
+    [B]Share it with your friends[/B]
+    Your media files are meant to be shared: with your friends, family, colleagues or to the world! Send your media files and playlists to your friends ... even if they are not on Wixi!
+
+    [B]Mobile access to your media[/B]
+    Wixi also works in the palm of your hand, with your mobile phone letting you search, play and download any public media file.
+
+
+[B]Install and run Wixi[/B]
+First of all you will need a Wixi account (www.wixi.com).
+Wixi is available for pictures, music and video. You will need to go in each corresponding section of the Installer Passion-XBMC and install each plugin separately.
+Once installed, go in the section you wwant (pictures, music or video) and select Wixi plugin and display context menu. Then select Plugin Settings and type your user and password. Hit OK and then click on Wixi. Your folder structure will load and you will be able to enjoy your medias!</description_en>
+			</entry>
+			<entry>
+				<fileName>openfilm_v1.0.zip</fileName>
+				<title>openfilm</title>
+				<version>1.0</version>
+				<date>13-03-09</date>
+				<added>13-03-09</added>
+				<author>afishe2000</author>
+				<lang>en</lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Watch videos on www.openfilm.com</description_en>
+			</entry>
+			<entry>
+				<fileName>NBC_v0.1.zip</fileName>
+				<title>NBC</title>
+				<version>0.1</version>
+				<date>11-03-09</date>
+				<added>13-03-09</added>
+				<author>BlueCop</author>
+				<lang>en</lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Watch videos on www.nbc.com, even outside US!!!</description_en>
+			</entry>
+			<entry>
+				<fileName>animefreak.tv_13-03-09.zip</fileName>
+				<title>animefreak.tv</title>
+				<version>13-03-09</version>
+				<date>13-03-09</date>
+				<added>13-03-09</added>
+				<author>BlueCop</author>
+				<lang>en</lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Watch Anime on www.animefreak.tv (a lot of content available)</description_en>
 			</entry>
 			<entry>
 				<fileName></fileName>
