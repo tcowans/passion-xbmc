@@ -2427,16 +2427,16 @@ library_to_update="video"</description_en>
 		</entry>
 		<entry>
 			<fileName>Lucky_7_12-03-09.zip</fileName>
-			<title>Lucky 7</title>
-			<version>pre-2.0.0</version>
+			<title>Lucky $even</title>
+			<version>pre-2.0.0 (Destiny)</version>
 			<lang>multi</lang>
 			<date>12-03-09</date>
 			<added>13-03-09</added>
 			<author>Frost</author>
-			<previewPictureURL></previewPictureURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Scripts/PreviewLucky7v2.jpg</previewPictureURL>
 			<previewVideoURL></previewVideoURL>
-			<description_fr>Jouez à Lucky 7 avec XBMC (machine sous)!!!</description_fr>
-			<description_en>Play to Lucky 7 with XBMC!!!</description_en>
+			<description_fr>Jouez à [B]Lucky $even[/B] (machine à sous) avec XBMC!!![CR][B]NB:[/B] Le Script nécessite d'une release récente d'XBMC révision minimum 18000.</description_fr>
+			<description_en>Play to [B]Lucky $even[/B] (Slots machine) with XBMC!!![CR][B]NB:[/B] The script requires a recent release of XBMC revision 18000 minimum.</description_en>
 		</entry>
 		<entry>
 			<fileName>Al_Jazeera_14-02-09.zip</fileName>
