@@ -95,25 +95,25 @@
   <string id="32206">Select</string>
   <string id="32207">Enter</string>
   <string id="32208">Button A</string>
-  <string id="32209">Select / Enter[CR]Play / Execute</string>
+  <string id="32209">SELECT</string>
   <!-- LINE 3 -->
   <string id="32210">Bet Up</string>
   <string id="32211">Page Up[CR]Show Gui</string>
   <string id="32212">Tab / Page Up</string>
   <string id="32213">Button X</string>
-  <string id="32214">Display / CH-PG(+)</string>
+  <string id="32214">SKIP +</string>
   <!-- LINE 4 -->
   <string id="32215">Bet Down</string>
   <string id="32216">Page Down[CR]Parent Dir</string>
   <string id="32217">Back Space / Page Down</string>
   <string id="32218">Button B</string>
-  <string id="32219">CH-PG(-)</string>
+  <string id="32219">SKIP -</string>
   <!-- LINE 5 -->
   <string id="32220">Bet Max Cash</string>
   <string id="32221">N/A</string>
   <string id="32222">Letter M</string>
   <string id="32223">Button Black</string>
-  <string id="32224">N/A</string>
+  <string id="32224">PAUSE</string>
   <!-- LINE 6 -->
   <string id="32225">Bet 2x Gain</string>
   <string id="32226">N/A</string>
@@ -125,41 +125,41 @@
   <string id="32231">Queue Item</string>
   <string id="32232">Letter Q[CR]Space Bar</string>
   <string id="32233">Button Y</string>
-  <string id="32234">Star</string>
+  <string id="32234">DISPLAY</string>
   <!-- LINE 9 -->
   <string id="32235">Stop All Slots</string>
   <string id="32236">Previous Menu</string>
   <string id="32237">Escape[CR]Numeric 0</string>
   <string id="32238">Button Back</string>
-  <string id="32239">Back[CR]Number 0</string>
+  <string id="32239">UP</string>
   <!-- LINE 10 -->
   <string id="32240">Stop Any Slot[CR]One by One[CR]One | Two | Three</string>
   <string id="32241">N/A</string>
   <string id="32242">Numeric[CR]1 | 2 | 3</string>
   <string id="32243">N/A</string>
-  <string id="32244">Number[CR]1 | 2 | 3</string>
+  <string id="32244">LEFT|DOWN|RIGHT</string>
   <!-- LINE 11 -->
   <string id="32245">Show Dialog Infos</string>
   <string id="32246">Show Info</string>
   <string id="32247">Letter I[CR]Context Menu / Options</string>
   <string id="32248">Button White</string>
-  <string id="32249">Info[CR]More / Title</string>
+  <string id="32249">TITLE</string>
   <!-- LINE 12 -->
   <string id="32250">Close Dialog</string>
   <string id="32251">Previous Menu[CR]Parent Dir[CR]Context Menu</string>
   <string id="32252">Escape[CR]Back Space[CR]Context Menu / Options</string>
   <string id="32253">Button Back[CR]Button B[CR]Button White</string>
-  <string id="32254">Back[CR]More / Title</string>
+  <string id="32254">TITLE</string>
   <!-- LINE 13 -->
   <string id="32255">Close Game</string>
   <string id="32256">Previous Menu</string>
   <string id="32257">Escape</string>
   <string id="32258">Button Back</string>
-  <string id="32259">Back</string>
+  <string id="32259">MENU</string>
   <!-- LINE 8 -->
   <string id="32260">Auto Spin</string>
   <string id="32261">N/A</string>
   <string id="32262">Letter A</string>
   <string id="32263">N/A</string>
-  <string id="32264">N/A</string>
+  <string id="32264">BACK</string>
 </strings>

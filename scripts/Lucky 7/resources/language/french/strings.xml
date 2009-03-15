@@ -87,25 +87,25 @@
   <string id="32206">Sélect</string>
   <string id="32207">Entrée</string>
   <string id="32208">Bouton A</string>
-  <string id="32209">Sélect / Entrée[CR]Jouer / Exécuter</string>
+  <string id="32209">SELECT</string>
   <!-- LINE 3 -->
   <string id="32210">Miser Plus</string>
   <string id="32211">Page Précédente[CR]Plein écran</string>
   <string id="32212">Tab / Page Précédente</string>
   <string id="32213">Bouton X</string>
-  <string id="32214">Afficher / CH-PG(+)</string>
+  <string id="32214">SKIP +</string>
   <!-- LINE 4 -->
   <string id="32215">Miser Moins</string>
   <string id="32216">Page Suivante[CR]Dossier Parent</string>
   <string id="32217">Effacer / Page Suivante</string>
   <string id="32218">Bouton B</string>
-  <string id="32219">CH-PG(-)</string>
+  <string id="32219">SKIP -</string>
   <!-- LINE 5 -->
   <string id="32220">Miser tout l'argent</string>
   <string id="32221">N/A</string>
   <string id="32222">Lettre M</string>
   <string id="32223">Bouton Noir</string>
-  <string id="32224">N/A</string>
+  <string id="32224">PAUSE</string>
   <!-- LINE 6 -->
   <string id="32225">Miser 2x Gain</string>
   <string id="32226">N/A</string>
@@ -117,41 +117,41 @@
   <string id="32231">File d'attente</string>
   <string id="32232">Lettre Q[CR]Barre d'espace</string>
   <string id="32233">Bouton Y</string>
-  <string id="32234">Étoile</string>
+  <string id="32234">DISPLAY</string>
   <!-- LINE 9 -->
   <string id="32235">Arrêter toutes[CR]les slots</string>
   <string id="32236">Menu Précédent</string>
   <string id="32237">Échappe[CR]Numérique 0</string>
   <string id="32238">Bouton Retour</string>
-  <string id="32239">Retour[CR]Chiffre 0</string>
+  <string id="32239">UP</string>
   <!-- LINE 10 -->
   <string id="32240">Arrêter les slots[CR]Une par Une[CR]Un | Deux | Trois</string>
   <string id="32241">N/A</string>
   <string id="32242">Numérique[CR]1 | 2 | 3</string>
   <string id="32243">N/A</string>
-  <string id="32244">Chiffre[CR]1 | 2 | 3</string>
+  <string id="32244">LEFT|DOWN|RIGHT</string>
   <!-- LINE 11 -->
   <string id="32245">Voir les infos</string>
   <string id="32246">Info</string>
   <string id="32247">Lettre I[CR]Menu contextuel / Options</string>
   <string id="32248">Bouton Blanc</string>
-  <string id="32249">Info[CR]Plus / Titre</string>
+  <string id="32249">TITLE</string>
   <!-- LINE 12 -->
   <string id="32250">Fermer le dialogue</string>
   <string id="32251">Menu Précédent[CR]Dossier Parent[CR]Menu contextuel</string>
   <string id="32252">Échappe[CR]Effacer[CR]Menu contextuel / Options</string>
   <string id="32253">Bouton Retour[CR]Bouton B[CR]Bouton Blanc</string>
-  <string id="32254">Retour[CR]Plus / Titre</string>
+  <string id="32254">TITLE</string>
   <!-- LINE 13 -->
   <string id="32255">Fermer le jeux</string>
   <string id="32256">Menu Précédent</string>
   <string id="32257">Échappe</string>
   <string id="32258">Bouton Retour</string>
-  <string id="32259">Retour</string>
+  <string id="32259">MENU</string>
   <!-- LINE 8 -->
   <string id="32260">Auto Spin</string>
   <string id="32261">N/A</string>
   <string id="32262">Lettre A</string>
   <string id="32263">N/A</string>
-  <string id="32264">N/A</string>
+  <string id="32264">BACK</string>
 </strings>
