@@ -2,9 +2,9 @@
 #http://xbmc.svn.sourceforge.net/viewvc/xbmc/trunk/XBMC/guilib/Key.h
 #http://xbmc.org/wiki/?title=HOW-TO_write_Python_Scripts#Control_Type:_Remote
 
-#7 selectbutton can't use
-#11 infobutton can't use
-#13 stopbutton could use
+#7 selectbutton impossible use
+#11 infobutton impossible use
+#13 stopbutton possible use
 SHOW_DIALOG_INFOS  = { 117: "REMOTE_TITLE_BUTTON", 261: "BUTTON_WHITE", 61513: "KEYBOARD_LETTER_I" }
 
 CLOSE_GAME         = { 10: "REMOTE_MENU_BUTTON", 275: "BUTTON_BACK" }
@@ -19,13 +19,13 @@ ACTION_STOP_SLOT_2 = { 4: "REMOTE_DOWN_BUTTON", 61538: "KEYBOARD_NUM_2" }
 ACTION_STOP_SLOT_3 = { 2: "REMOTE_RIGHT_BUTTON", 61539: "KEYBOARD_NUM_3" }
 
 ACTION_AUTO_SPIN   = { 9: "REMOTE_BACK_BUTTON", 61505: "KEYBOARD_LETTER_A" }
-ACTION_START_SPIN  = { 18: "DISPLAY_BUTTON", 259: "BUTTON_Y", 61472: "KEYBOARD_SPACEBAR" }#, 61548: "KEYBOARD_NUM_ENTER" }
+ACTION_START_SPIN  = { 18: "DISPLAY_BUTTON", 258: "BUTTON_X", 61472: "KEYBOARD_SPACEBAR" }#, 61548: "KEYBOARD_NUM_ENTER" }
 
-ACTION_BET_2X_GAIN = { 61544: "KEYBOARD_NUM_*" }
+ACTION_BET_2X_GAIN = { 274: "BUTTON_START", 61544: "KEYBOARD_NUM_*" }
 
 ACTION_BET_MAX     = { 12: "REMOTE_PAUSE_BUTTON", 260: "BUTTON_BLACK", 61517: "KEYBOARD_LETTER_M" }
 
-ACTION_BET_UP      = { 14: "REMOTE_SKIP+_BUTTON", 258: "BUTTON_X", 61473: "KEYBOARD_PAGE_UP" }
+ACTION_BET_UP      = { 14: "REMOTE_SKIP+_BUTTON", 259: "BUTTON_Y", 61473: "KEYBOARD_PAGE_UP" }
 ACTION_BET_DOWN    = { 15: "REMOTE_SKIP-_BUTTON", 257: "BUTTON_B", 61474: "KEYBOARD_PAGE_DOWN" }
 
 
@@ -75,7 +75,6 @@ class Keymap( dict ):
 
 if __name__ == "__main__":
     KEYMAP = Keymap()
-    print KEYMAP[ 'close_gam' ][ 9 ]
     print KEYMAP[ 'close_game' ][ 12 ]
     print KEYMAP[ 'close_dialog' ][ 9 ]
     print KEYMAP

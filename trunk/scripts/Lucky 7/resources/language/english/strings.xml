@@ -100,7 +100,7 @@
   <string id="32210">Bet Up</string>
   <string id="32211">Page Up[CR]Show Gui</string>
   <string id="32212">Tab / Page Up</string>
-  <string id="32213">Button X</string>
+  <string id="32213">Button Y</string>
   <string id="32214">SKIP +</string>
   <!-- LINE 4 -->
   <string id="32215">Bet Down</string>
@@ -118,13 +118,13 @@
   <string id="32225">Bet 2x Gain</string>
   <string id="32226">N/A</string>
   <string id="32227">Numeric *</string>
-  <string id="32228">N/A</string>
+  <string id="32228">Button Start</string>
   <string id="32229">N/A</string>
   <!-- LINE 7 -->
   <string id="32230">Start Spin</string>
   <string id="32231">Queue Item</string>
   <string id="32232">Letter Q[CR]Space Bar</string>
-  <string id="32233">Button Y</string>
+  <string id="32233">Button X</string>
   <string id="32234">DISPLAY</string>
   <!-- LINE 9 -->
   <string id="32235">Stop All Slots</string>
