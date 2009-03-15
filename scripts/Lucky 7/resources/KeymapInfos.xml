@@ -27,7 +27,7 @@
     <row>STRING32210</row>
     <row>STRING32211</row>
     <row img1="keys_help/keyboard/tab.png" img2="keys_help/keyboard/page-up.png" img3="" usealt="false">STRING32212</row>
-    <row img1="keys_help/xbox/X.png" img2="" img3="" usealt="false">STRING32213</row>
+    <row img1="keys_help/xbox/Y.png" img2="" img3="" usealt="false">STRING32213</row>
     <row img1="" img2="" img3="" usealt="false">STRING32214</row>
   </line>
   <line id="4">
@@ -48,14 +48,14 @@
     <row>STRING32225</row>
     <row>STRING32226</row>
     <row img1="keys_help/keyboard/num-star.png" img2="" img3="" usealt="false">STRING32227</row>
-    <row img1="" img2="" img3="" usealt="false">STRING32228</row>
+    <row img1="keys_help/xbox/start.png" img2="" img3="" usealt="false">STRING32228</row>
     <row img1="" img2="" img3="" usealt="false">STRING32229</row>
   </line>
   <line id="7">
     <row>STRING32230</row>
     <row>STRING32231</row>
     <row img1="keys_help/keyboard/spacebar.png" img2="keys_help/keyboard/Q.png" img3="" usealt="false">STRING32232</row>
-    <row img1="keys_help/xbox/Y.png" img2="" img3="" usealt="false">STRING32233</row>
+    <row img1="keys_help/xbox/X.png" img2="" img3="" usealt="false">STRING32233</row>
     <row img1="" img2="" img3="" usealt="false">STRING32234</row>
   </line>
   <line id="8">
