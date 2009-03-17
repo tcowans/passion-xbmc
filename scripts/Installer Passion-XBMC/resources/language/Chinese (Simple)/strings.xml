@@ -120,7 +120,7 @@
   <!--FORUM DIRECT INFOS STRINGS -->
   <string id="199">新闻内容</string>
   <string id="200">常规</string>
-  <string id="201">发布与新闻--以下板块请找代码ID修改</string>
+  <string id="201">发布与新闻</string>
   <string id="202">XBMC媒体中心</string>
   <string id="203">其他类别</string>
   <string id="204">XBMC 控制 - 远程控制</string>
@@ -205,10 +205,10 @@
   <string id="521">输入Web浏览器名称</string>
 
   <string id="530">禁用[启动LOGO屏幕]</string>
-  <string id="531">Skin</string>
-  <string id="532">Skin settings changed</string>
-  <string id="533">IPX requires to restart to change your</string>
-  <string id="534">skin setup.  Would you like to restart now?</string>
+  <string id="531">皮肤主题</string>
+  <string id="532">皮肤主题已更改</string>
+  <string id="533">插件需要重新载入，更改的皮肤主题才能生效。</string>
+  <string id="534">您想现在重新载入吗?</string>
 
   <!--DESCRIPTION STRINGS -->
   <string id="600">描述</string>
