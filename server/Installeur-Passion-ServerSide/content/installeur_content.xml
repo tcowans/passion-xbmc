@@ -2519,7 +2519,7 @@ Since this is Beta v0.1 you need to follow these directions:
 			<added></added>
 			<author>Frost</author>
 			<lang>fr</lang>
-			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/RadioBlogClub.jpg</previewPictureURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Scripts/RadioBlogClub.jpg</previewPictureURL>
 			<previewVideoURL></previewVideoURL>
 			<description_fr>Ce script vous permettra d'écouter de la musique de votre choix, que les utilisateurs du site Radio Blog Club partagent avec le site depuis leurs blogs ou d'une playlist sur un serveur X.
 Les chansons sont pas toujours disponibles, car si un utilisateur ferme son serveur pour un temps X, le site Radio Blog Club récupère qu'en même les infos sans que la chansons sois écoutable! Et le script aussi.
@@ -2597,18 +2597,18 @@ also python-apt needs to be installed.
 sudo apt-get install python-apt</description_en>
 		</entry>
 		<entry>
-			<fileName></fileName>
-			<title></title>
-			<version></version>
-			<date></date>
-			<added></added>
-			<author></author>
-			<lang></lang>
+			<fileName>Tic Tac Toe.zip</fileName>
+			<title>Tic Tac Toe</title>
+			<version>1.0.0</version>
+			<date>20-03-09</date>
+			<added>21-03-09</added>
+			<author>Frost</author>
+			<lang>multi</lang>
 			<iconURL></iconURL>
-			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Scripts/</previewPictureURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Scripts/tictactoe.jpg</previewPictureURL>
 			<previewVideoURL></previewVideoURL>
-			<description_fr></description_fr>
-			<description_en></description_en>
+			<description_fr>Jeu du [B]Tic Tac Toe[/B] ou dit aussi [B]Morpion[/B]. Jouer contre [B]XBMC[/B] ou avec deuxième [B]joueur[/B].</description_fr>
+			<description_en>Game [B]Tic Tac Toe[/B]. Playing against [B]XBMC[/B] or second [B]Player[/B].</description_en>
 		</entry>
 	</scripts>
 	<!-- FIN Section Scripts -->
