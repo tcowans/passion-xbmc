@@ -92,17 +92,6 @@ content&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string&nbsp;-&nbsp;content&nbsp;type
 &nbsp;<br>
 example:<br>
 &nbsp;&nbsp;-&nbsp;xbmcplugin.<a href="#-setContent">setContent</a>(int(sys.argv[1]),&nbsp;'movies')</tt></dd></dl>
- <dl><dt><a name="-setFileUrl"><strong>setFileUrl</strong></a>(...)</dt><dd><tt><a href="#-setFileUrl">setFileUrl</a>(handle,&nbsp;succeeded,&nbsp;listitem)&nbsp;--&nbsp;Callback&nbsp;function&nbsp;to&nbsp;tell&nbsp;XBMC&nbsp;that&nbsp;the&nbsp;file&nbsp;plugin&nbsp;has&nbsp;been&nbsp;resolved&nbsp;to&nbsp;a&nbsp;url<br>
-&nbsp;<br>
-handle&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;integer&nbsp;-&nbsp;handle&nbsp;the&nbsp;plugin&nbsp;was&nbsp;started&nbsp;with.<br>
-succeeded&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;bool&nbsp;-&nbsp;True=script&nbsp;completed&nbsp;successfully/False=Script&nbsp;did&nbsp;not.<br>
-listitem&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;ListItem&nbsp;-&nbsp;item&nbsp;the&nbsp;file&nbsp;plugin&nbsp;resolved&nbsp;to&nbsp;for&nbsp;playback.<br>
-&nbsp;<br>
-*Note,&nbsp;You&nbsp;can&nbsp;use&nbsp;the&nbsp;above&nbsp;as&nbsp;keywords&nbsp;for&nbsp;arguments&nbsp;and&nbsp;skip&nbsp;certain&nbsp;optional&nbsp;arguments.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Once&nbsp;you&nbsp;use&nbsp;a&nbsp;keyword,&nbsp;all&nbsp;following&nbsp;arguments&nbsp;require&nbsp;the&nbsp;keyword.<br>
-&nbsp;<br>
-example:<br>
-&nbsp;&nbsp;-&nbsp;xbmcplugin.<a href="#-setFileUrl">setFileUrl</a>(int(sys.argv[1]),&nbsp;True,&nbsp;listitem)</tt></dd></dl>
  <dl><dt><a name="-setPluginCategory"><strong>setPluginCategory</strong></a>(...)</dt><dd><tt><a href="#-setPluginCategory">setPluginCategory</a>(handle,&nbsp;category)&nbsp;--&nbsp;Sets&nbsp;the&nbsp;plugins&nbsp;name&nbsp;for&nbsp;skins&nbsp;to&nbsp;display.<br>
 &nbsp;<br>
 handle&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;integer&nbsp;-&nbsp;handle&nbsp;the&nbsp;plugin&nbsp;was&nbsp;started&nbsp;with.<br>
@@ -135,6 +124,17 @@ value&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string&nbsp;or&nbsp;unicod
 &nbsp;<br>
 example:<br>
 &nbsp;&nbsp;-&nbsp;xbmcplugin.<a href="#-setProperty">setProperty</a>(int(sys.argv[1]),&nbsp;'Emulator',&nbsp;'M.A.M.E.')</tt></dd></dl>
+ <dl><dt><a name="-setResolvedUrl"><strong>setResolvedUrl</strong></a>(...)</dt><dd><tt><a href="#-setResolvedUrl">setResolvedUrl</a>(handle,&nbsp;succeeded,&nbsp;listitem)&nbsp;--&nbsp;Callback&nbsp;function&nbsp;to&nbsp;tell&nbsp;XBMC&nbsp;that&nbsp;the&nbsp;file&nbsp;plugin&nbsp;has&nbsp;been&nbsp;resolved&nbsp;to&nbsp;a&nbsp;url<br>
+&nbsp;<br>
+handle&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;integer&nbsp;-&nbsp;handle&nbsp;the&nbsp;plugin&nbsp;was&nbsp;started&nbsp;with.<br>
+succeeded&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;bool&nbsp;-&nbsp;True=script&nbsp;completed&nbsp;successfully/False=Script&nbsp;did&nbsp;not.<br>
+listitem&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;ListItem&nbsp;-&nbsp;item&nbsp;the&nbsp;file&nbsp;plugin&nbsp;resolved&nbsp;to&nbsp;for&nbsp;playback.<br>
+&nbsp;<br>
+*Note,&nbsp;You&nbsp;can&nbsp;use&nbsp;the&nbsp;above&nbsp;as&nbsp;keywords&nbsp;for&nbsp;arguments&nbsp;and&nbsp;skip&nbsp;certain&nbsp;optional&nbsp;arguments.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Once&nbsp;you&nbsp;use&nbsp;a&nbsp;keyword,&nbsp;all&nbsp;following&nbsp;arguments&nbsp;require&nbsp;the&nbsp;keyword.<br>
+&nbsp;<br>
+example:<br>
+&nbsp;&nbsp;-&nbsp;xbmcplugin.<a href="#-setResolvedUrl">setResolvedUrl</a>(int(sys.argv[1]),&nbsp;True,&nbsp;listitem)</tt></dd></dl>
  <dl><dt><a name="-setSetting"><strong>setSetting</strong></a>(...)</dt><dd><tt><a href="#-setSetting">setSetting</a>(id,&nbsp;value)&nbsp;--&nbsp;Sets&nbsp;a&nbsp;plugin&nbsp;setting&nbsp;for&nbsp;the&nbsp;current&nbsp;running&nbsp;plugin.<br>
 &nbsp;<br>
 id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string&nbsp;-&nbsp;id&nbsp;of&nbsp;the&nbsp;setting&nbsp;that&nbsp;the&nbsp;module&nbsp;needs&nbsp;to&nbsp;access.<br>

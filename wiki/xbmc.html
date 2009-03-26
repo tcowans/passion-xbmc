@@ -225,17 +225,21 @@ Use&nbsp;<a href="#PlayList">PlayList</a>[int&nbsp;position]&nbsp;or&nbsp;<a hre
 
 <dl><dt><a name="PlayList-__len__"><strong>__len__</strong></a>(...)</dt><dd><tt>x.<a href="#PlayList-__len__">__len__</a>()&nbsp;&lt;==&gt;&nbsp;len(x)</tt></dd></dl>
 
-<dl><dt><a name="PlayList-add"><strong>add</strong></a>(...)</dt><dd><tt><a href="#PlayList-add">add</a>(url[,&nbsp;title,&nbsp;duration])&nbsp;--&nbsp;Add's&nbsp;a&nbsp;new&nbsp;file&nbsp;to&nbsp;the&nbsp;playlist.(Depreciated)<br>
-<a href="#PlayList-add">add</a>(url[,&nbsp;listitem])&nbsp;--&nbsp;Add's&nbsp;a&nbsp;new&nbsp;file&nbsp;to&nbsp;the&nbsp;playlist.(Preferred&nbsp;method)<br>
+<dl><dt><a name="PlayList-add"><strong>add</strong></a>(...)</dt><dd><tt><a href="#PlayList-add">add</a>(url[,&nbsp;listitem,&nbsp;index])&nbsp;--&nbsp;Adds&nbsp;a&nbsp;new&nbsp;file&nbsp;to&nbsp;the&nbsp;playlist.<br>
 &nbsp;<br>
-url&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string&nbsp;-&nbsp;filename&nbsp;or&nbsp;url&nbsp;to&nbsp;add.<br>
+url&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;string&nbsp;or&nbsp;unicode&nbsp;-&nbsp;filename&nbsp;or&nbsp;url&nbsp;to&nbsp;add.<br>
 listitem&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;[opt]&nbsp;listitem&nbsp;-&nbsp;used&nbsp;with&nbsp;setInfo()&nbsp;to&nbsp;set&nbsp;different&nbsp;infolabels.<br>
+index&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;[opt]&nbsp;integer&nbsp;-&nbsp;position&nbsp;to&nbsp;add&nbsp;playlist&nbsp;item.&nbsp;(default=end)<br>
+&nbsp;<br>
+*Note,&nbsp;You&nbsp;can&nbsp;use&nbsp;the&nbsp;above&nbsp;as&nbsp;keywords&nbsp;for&nbsp;arguments&nbsp;and&nbsp;skip&nbsp;certain&nbsp;optional&nbsp;arguments.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Once&nbsp;you&nbsp;use&nbsp;a&nbsp;keyword,&nbsp;all&nbsp;following&nbsp;arguments&nbsp;require&nbsp;the&nbsp;keyword.<br>
 &nbsp;<br>
 example:<br>
-&nbsp;&nbsp;-&nbsp;playlist&nbsp;=&nbsp;xbmc.<a href="#PlayList">PlayList</a>(&nbsp;1&nbsp;)<br>
+&nbsp;&nbsp;-&nbsp;playlist&nbsp;=&nbsp;xbmc.<a href="#PlayList">PlayList</a>(xbmc.PLAYLIST_VIDEO)<br>
+&nbsp;&nbsp;-&nbsp;video&nbsp;=&nbsp;'F:\\movies\\Ironman.mov'<br>
 &nbsp;&nbsp;-&nbsp;listitem&nbsp;=&nbsp;xbmcgui.ListItem('Ironman',&nbsp;thumbnailImage='F:\\movies\\Ironman.tbn')<br>
 &nbsp;&nbsp;-&nbsp;listitem.setInfo('video',&nbsp;{'Title':&nbsp;'Ironman',&nbsp;'Genre':&nbsp;'Science&nbsp;Fiction'})<br>
-&nbsp;&nbsp;-&nbsp;playlist.<a href="#PlayList-add">add</a>(url,&nbsp;listitem)</tt></dd></dl>
+&nbsp;&nbsp;-&nbsp;playlist.<a href="#PlayList-add">add</a>(url=video,&nbsp;listitem=listitem,&nbsp;index=7)</tt></dd></dl>
 
 <dl><dt><a name="PlayList-clear"><strong>clear</strong></a>(...)</dt><dd><tt><a href="#PlayList-clear">clear</a>()&nbsp;--&nbsp;clear&nbsp;all&nbsp;items&nbsp;in&nbsp;the&nbsp;playlist.</tt></dd></dl>
 
