@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+    <!-- GENERAL -->
+    <!--<setting type="lsep" label="Enregistrer les photos"/>-->
+    <setting id="SAVE" type="bool" label="Sauver"/>
+    <setting id="PATH" type="folder" source="files" default="" label="Chemin"/>
+</settings>
