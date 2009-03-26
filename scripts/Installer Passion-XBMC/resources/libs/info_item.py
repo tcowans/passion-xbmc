@@ -136,6 +136,8 @@ class InfoWarehouseEltTreeXMLFTP:
         self._downloadFile( self.srvItemDescripDir + self.srvItemDescripFile, isTBN=False )
 
         self.parse_xml_sections()
+        
+        self.stopUpdateImageThread = False # Flag indiquant si on doit stopper ou non le thread getImagesQueue_thread
 
     def update_Images( self ):
         """
@@ -144,13 +146,25 @@ class InfoWarehouseEltTreeXMLFTP:
         #print "update_Images"
         #print self.image_queue
         if ( len(self.image_queue) > 0 ):
-            try: self.getImagesQueue_thread.cancel()
-            except: pass
+#            try: self.getImagesQueue_thread.cancel()
+#            except: pass
             self.getImagesQueue_thread = Thread( target=self._thread_getImagesQueue )
             self.getImagesQueue_thread.start()
 
+    def cancel_update_Images(self):
+        self.stopUpdateImageThread = True
+        logger.LOG( logger.LOG_DEBUG,"cancel_update_Images: Stopping theard ...")
+
+        # On attend la fin du thread
+        self.getImagesQueue_thread.join(10)
+        logger.LOG( logger.LOG_DEBUG,"cancel_update_Images: Thread STOPPED")
+        
+         # on vide la liste vide la Queue
+        del self.image_queue[ : ]
+        
     def _thread_getImagesQueue( self ):
-        while ( len( self.image_queue ) > 0 ):
+        self.stopUpdateImageThread = False
+        while ( len( self.image_queue ) > 0 and self.stopUpdateImageThread == False ):
             imageElt = self.image_queue.pop( 0 )
             cached_thumbs = set_cache_thumb_name( imageElt.url )
             if not os.path.exists( cached_thumbs[ 0 ] ) or not os.path.exists( cached_thumbs[ 1 ] ):
@@ -168,40 +182,44 @@ class InfoWarehouseEltTreeXMLFTP:
                         imageElt.updateImage_cb( previewPicture, imageElt.listitem )
                     except TypeError:
                         logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                        
+        if ( self.stopUpdateImageThread == True):
+            logger.LOG( logger.LOG_DEBUG,"_thread_getImagesQueue CANCELLED")
 
-    def _getImage( self, pictureURL, updateImage_cb=None, listitem=None ):
-        """
-        Lance le telechargement une image dans un thread
-        TODO: abandonner cette fonction dans le futur
-        """
-        cached_thumbs = set_cache_thumb_name( pictureURL )
-        if not os.path.exists( cached_thumbs[ 0 ] ) or not os.path.exists( cached_thumbs[ 1 ] ):
-            try: self.getImage_thread.cancel()
-            except: pass
-            self.getImage_thread = Thread( target=self._thread_getImage, args=( pictureURL, updateImage_cb, listitem ) )
-            self.getImage_thread.start()
 
-    def _thread_getImage( self, pictureURL, updateImage_cb=None, listitem=None ):
-        """
-        Recupere l'image dans un thread separe
-        TODO: abandonner cette fonction dans le futur
-        """
-        # Telechargement de l'image
-        self._downloadFile( pictureURL, listitem=listitem )
-
-        cached_thumbs = set_cache_thumb_name( pictureURL )
-
-        if os.path.exists( cached_thumbs[ 1 ] ):
-            previewPicture = cached_thumbs[ 1 ]
-        else:
-            previewPicture = set_cache_thumb_name( "IPX-NotAvailable2.png" )[ 1 ]
-
-        # Notifie la callback de mettre a jour l'image
-        if updateImage_cb:
-            try:
-                updateImage_cb( previewPicture, listitem )
-            except TypeError:
-                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+#    def _getImage( self, pictureURL, updateImage_cb=None, listitem=None ):
+#        """
+#        Lance le telechargement une image dans un thread
+#        TODO: abandonner cette fonction dans le futur
+#        """
+#        cached_thumbs = set_cache_thumb_name( pictureURL )
+#        if not os.path.exists( cached_thumbs[ 0 ] ) or not os.path.exists( cached_thumbs[ 1 ] ):
+#            try: self.getImage_thread.cancel()
+#            except: pass
+#            self.getImage_thread = Thread( target=self._thread_getImage, args=( pictureURL, updateImage_cb, listitem ) )
+#            self.getImage_thread.start()
+#
+#    def _thread_getImage( self, pictureURL, updateImage_cb=None, listitem=None ):
+#        """
+#        Recupere l'image dans un thread separe
+#        TODO: abandonner cette fonction dans le futur
+#        """
+#        # Telechargement de l'image
+#        self._downloadFile( pictureURL, listitem=listitem )
+#
+#        cached_thumbs = set_cache_thumb_name( pictureURL )
+#
+#        if os.path.exists( cached_thumbs[ 1 ] ):
+#            previewPicture = cached_thumbs[ 1 ]
+#        else:
+#            previewPicture = set_cache_thumb_name( "IPX-NotAvailable2.png" )[ 1 ]
+#
+#        # Notifie la callback de mettre a jour l'image
+#        if updateImage_cb:
+#            try:
+#                updateImage_cb( previewPicture, listitem )
+#            except TypeError:
+#                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def check_thumb_size( self ):
         if self.thumb_size_on_load != self.mainwin.settings[ "thumb_size" ]:
