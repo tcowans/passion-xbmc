@@ -682,7 +682,9 @@ class MainWindow( xbmcgui.WindowXML ):
         #NB: le meme scenario va ce produire si vous fermer ou redemarrer xbmc avec le script en marche
         #on annule les thread
         self._stop_rss_timer()
-        try: self.infoswarehouse.getImage_thread.cancel()
+#        try: self.infoswarehouse.getImage_thread.cancel()
+#        except: pass
+        try: self.infoswarehouse.cancel_update_Images()
         except: pass
         for id in range( self.CONTROL_MAIN_LIST_START, self.CONTROL_MAIN_LIST_END + 1 ):
             try:
@@ -809,10 +811,18 @@ class MainWindow( xbmcgui.WindowXML ):
             self.curDirList = self.pluginDisplayList
         #elif ( self.type == "Plugins Musique" ) or ( self.type == "Plugins Images" ) or ( self.type == "Plugins Programmes" ) or ( self.type == "Plugins Videos" ):
         elif "Plugins " in self.type:
+            # Arret du theard de chargement des images
+            try: self.infoswarehouse.cancel_update_Images()
+            except: pass
+
             self.curDirList = self.passionFTPCtrl.getDirList( self.remotedirList[ self.pluginDisplayList[ self.index ] ] )
         else:
             #liste virtuelle des sections
             #del self.curDirList[ : ] # on vide la liste
+
+            # Arret du theard de chargement des images
+            try: self.infoswarehouse.cancel_update_Images()
+            except: pass
 
             #liste physique d'une section sur le ftp
             self.curDirList = self.passionFTPCtrl.getDirList( self.remotedirList[ self.index ] )
@@ -1043,6 +1053,7 @@ class MainWindow( xbmcgui.WindowXML ):
         Recuperation de toutes les images dans la FIFO et mise a jour dans la liste via appel sur la callback _updateListThumb_cb
         """
         try:
+            # Recuperation des images dans un thread separe via la fonction update_Images()
             self.infoswarehouse.update_Images()
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
