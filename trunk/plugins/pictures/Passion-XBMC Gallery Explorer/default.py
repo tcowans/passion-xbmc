@@ -22,6 +22,14 @@ urllib.urlcleanup()
 
 _ = xbmc.getLocalizedString
 
+
+def _unicode( s, encoding="utf-8" ):
+    """ customized unicode, don't raise UnicodeDecodeError exception, return no unicode str instead """
+    try: s = unicode( s, encoding )
+    except: pass
+    return s
+
+
 def fetchgallery(idcat):
     """
     Fonction de recherche dans la galerie, alimenter avec l'id de la catégorie recherchée, 0 étant la racine
@@ -134,7 +142,7 @@ def show_icones(cat=0):
             url = dico['image'][indice]
            
             #On affiche la liste des icones de la galerie
-            item=xbmcgui.ListItem(PictureName,iconImage=IconeImage,thumbnailImage=IconeImage)
+            item=xbmcgui.ListItem(_unicode(PictureName),iconImage=IconeImage,thumbnailImage=IconeImage)
             
             #On ajoute les boutons au menu contextuel
             #Enregistrer..
@@ -150,10 +158,11 @@ def show_icones(cat=0):
             CatName = dico['title'][indice]
             
             if IconeImage != 'None':
-                item=xbmcgui.ListItem(CatName,iconImage=IconeImage,thumbnailImage=IconeImage)
+                item=xbmcgui.ListItem(_unicode(CatName),iconImage=IconeImage,thumbnailImage=IconeImage)
             else:
-                item=xbmcgui.ListItem(CatName,'','')
-            item.addContextMenuItems([('', '',)],)
+                item=xbmcgui.ListItem(_unicode(CatName))#,'','')
+            # frost, pourquoi ajouté un bouton vide au context?
+            #item.addContextMenuItems([('', '',)],)
             
             #listitem.addContextMenuItems('Save...',)
             url=sys.argv[0]+"?cat="+id
