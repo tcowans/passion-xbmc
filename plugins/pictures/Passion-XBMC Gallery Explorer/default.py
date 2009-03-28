@@ -149,6 +149,9 @@ def show_icones(cat=0):
             c_items = [ ( _(30003), 'XBMC.RunPlugin(%s?download_path=%s)' % ( sys.argv[ 0 ], preparesaving(dico['image'][indice],PictureName)) ) ]
             #Enregistrer sous...
             c_items += [ ( _(30004), 'XBMC.RunPlugin(%s?download_as=%s)' % ( sys.argv[ 0 ], preparesaving(dico['image'][indice],PictureName)) ) ]
+            #Définir commme fond d'écran
+            #c_items += [ ( _(30011), 'XBMC.RunPlugin(%s?skinsettings=%s)' % ( sys.argv[ 0 ], dico['image'][indice]) ) ]
+            c_items += [ ( _(30011), 'Skin.SetImage(Home_Custom_Back_Video_Folder)') ]#% ( dico['image'][indice]) ) ]
             item.addContextMenuItems( c_items)
             
             #item.addContextMenuItems([('', '',)],)
@@ -190,6 +193,13 @@ elif "download_as=" in sys.argv[2]:
         download_as(sys.argv[2].split('download_as=')[1],xbmcplugin.getSetting( "PATH" ))
     else:
         download_as(sys.argv[2].split('download_as=')[1],xbmcplugin.getSetting(''))
+#elif "skinsettings=" in sys.argv[2]:
+    #print "**************************************"
+    #try:
+        #print xbmc.getInfoLabel('Skin.String(Home_Custom_Back_Video_Folder) ')
+    #except Exception, e:
+        #print e
+        
 else:
     #pas de paramètres : début du plugin
     show_icones()
