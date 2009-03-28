@@ -2,6 +2,6 @@
 <settings>
     <!-- GENERAL -->
     <!--<setting type="lsep" label="Enregistrer les photos"/>-->
-    <setting id="SAVE" type="bool" label="Sauver"/>
-    <setting id="PATH" type="folder" source="files" default="" label="Chemin"/>
+    <setting id="SAVE" type="bool" default="false"  label="30001"/>
+    <setting id="PATH" type="folder" source="pictures" default="" label="30002"/>
 </settings>

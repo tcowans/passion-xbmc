@@ -1,7 +1,7 @@
-# -*- coding: cp1252 -*-
+# -*- coding: utf-8 -*-
 """
-Passion-XBMC Gallery Explorer Beta 1
-Auteur : Seb
+Passion-XBMC Gallery Explorer Beta 2
+Auteurs : Seb & Frost
 """
 
 import urllib,sys,os
@@ -12,12 +12,15 @@ import string
 #On définit le type du plugin
 xbmcplugin.setPluginCategory( handle=int( sys.argv[ 1 ] ), category="Pictures" )
 
-# état des variables initiales
-BaseUrl = "http://passion-xbmc.org/galleryexplorer.php?cat="
+#Etat des variables initiales
+SiteUrl = "http://passion-xbmc.org/"
+BaseUrl = SiteUrl + "galleryexplorer.php?cat="
 RootDir = os.getcwd().replace(';','')
 
 
 urllib.urlcleanup()
+
+_ = xbmc.getLocalizedString
 
 def fetchgallery(idcat):
     """
@@ -66,15 +69,60 @@ def fetchgallery(idcat):
         
     return dico 
 
+def download_as(url,folder=""):
+    """
+    propose un choix de noms de fichiers et / ou une saisie au clavier
+    """
+    dlpath=url.split('|')[0]
+    picname=(url.split('|')[1])  
+    choice=[picname,"folder.jpg","default.tbn","%s-fanart.jpg"%picname.split('.')[0],_(30010)]
+    newpicname = xbmcgui.Dialog().select(_(30009),choice)
+    print newpicname
+    if newpicname == 4:
+        print "********"
+        keyboard = xbmc.Keyboard(picname,_(30009))
+        keyboard.doModal()
+        if (keyboard.isConfirmed()):
+            newpicname=keyboard.getText()
+            url=url=preparesaving(dlpath,newpicname)
+        del keyboard 
+    else:
+        url=preparesaving(dlpath,choice[newpicname]) 
+    download_picture(url,folder) 
+
+def download_picture(url,folder=""):
+    """
+    télécharge une image, si pas de paramètre, affichage d'une fenêtre de browse
+    """
+    print "folder = %s"%folder
+    if folder == "":
+        folder = xbmcgui.Dialog().browse(0,_(30002),'pictures','',True,)
+    if os.path.exists(folder):
+        dl_path = url.split('|')[0]
+        file = os.path.join(folder,url.split('|')[1])
+        urllib.urlretrieve( dl_path, file)
+        # downloader sans erreur , on le dit par popup
+        xbmcgui.Dialog().ok( _(30005), file )
+    else:
+        xbmcgui.Dialog().ok( _(30006), _(30007) )
+
+
 def preparesaving(path,title):
+    """
+    concatène l'url à passer en paramètre
+    on vérifie que l'extension est bien présente dans le titre sinon on ajoute celle du fichier.
+    """
     try:
         ext = title.split('.')[1]
         return path + '|' + title
     except:
-        ext = path.split('.')[1]
+        ext = path[len(SiteUrl):].split('.')[1]
         return path + '|' + title + ext
    
-def show_icones(cat):
+def show_icones(cat=0):
+    """
+    Affichage
+    """
     ok=True
     dico = fetchgallery(cat)
     indice = 0
@@ -83,24 +131,17 @@ def show_icones(cat):
         if dico['type'][indice] == 'PIC':
 
             PictureName = dico['title'][indice]       
-            if  xbmcplugin.getSetting( "SAVE" ) == "true":
-                url = '%s?download_path=%s' % ( sys.argv[ 0 ], preparesaving(dico['image'][indice],PictureName))
-            
-
-            else:
-                url = dico['image'][indice]
+            url = dico['image'][indice]
            
             #On affiche la liste des icones de la galerie
             item=xbmcgui.ListItem(PictureName,iconImage=IconeImage,thumbnailImage=IconeImage)
-        
-            # ajout d'un bouton dans le contextmenu pour downloader l'image
-            label_du_bouton = "Save..."
-            action_du_bouton = 'XBMC.RunPlugin(%s?download_path=%s)' % ( sys.argv[ 0 ], preparesaving(dico['image'][indice],PictureName))
-            #A list of tuples consisting of label and action pairs.
-            c_items = [ ( label_du_bouton, action_du_bouton ) ]
-            # replaceItems=True, seulement mon bouton va etre visible dans le contextmenu 
-            # si on veut tous les boutons plus le notre on mets rien listitem.addContextMenuItems( c_items ), car False est par default
-            item.addContextMenuItems( c_items )
+            
+            #On ajoute les boutons au menu contextuel
+            #Enregistrer..
+            c_items = [ ( _(30003), 'XBMC.RunPlugin(%s?download_path=%s)' % ( sys.argv[ 0 ], preparesaving(dico['image'][indice],PictureName)) ) ]
+            #Enregistrer sous...
+            c_items += [ ( _(30004), 'XBMC.RunPlugin(%s?download_as=%s)' % ( sys.argv[ 0 ], preparesaving(dico['image'][indice],PictureName)) ) ]
+            item.addContextMenuItems( c_items)
             
             #item.addContextMenuItems([('', '',)],)
             ok = ok and xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=url,listitem=item,isFolder=False,totalItems=len(dico['id'])) 
@@ -123,41 +164,26 @@ def show_icones(cat):
     return ok
 
 
-#Pave repris des investigations de alexsolex en matiere de plugin
-stringparams = sys.argv[2]
-print 'STRING PARAMS = %s'%stringparams
-try:
-    if stringparams[0]=="?":
-        stringparams=stringparams[1:]
-except:
-    pass
-parametres={}
-for param in stringparams.split("&"):
-    try:
-        cle,valeur=param.split("=")
-    except:
-        cle=param
-        valeur=""
-    parametres[cle]=valeur
+print "PARAM = %s"%sys.argv[2]
 
-if "cat" in parametres.keys():
-
-    show_icones(parametres["cat"].replace('cat=',''))
+if "cat=" in sys.argv[2]:
+    show_icones(sys.argv[2].split('cat=')[1])
     ##paramètre 'cat' : on liste l'image correspondante
     
-elif  "download_path" in parametres.keys():
-    folder = xbmcplugin.getSetting( "PATH" )
-    if os.path.exists( folder ):
-        path = parametres["download_path"].replace('download_path=','')
-        dl_path = path.split('||')[0]
-        file = os.path.join(folder,path.split('|')[1])
-        print dl_path
-        print file
-        urllib.urlretrieve( dl_path, file)
-    
+elif  "download_path=" in sys.argv[2]:
+    if xbmcplugin.getSetting( "SAVE" ) == "true":
+        download_picture(sys.argv[2].split('download_path=')[1],xbmcplugin.getSetting( "PATH" ))
+    else:
+        download_picture(sys.argv[2].split('download_path=')[1],xbmcplugin.getSetting(''))
+
+elif "download_as=" in sys.argv[2]:
+    if xbmcplugin.getSetting( "SAVE" ) == "true":
+        download_as(sys.argv[2].split('download_as=')[1],xbmcplugin.getSetting( "PATH" ))
+    else:
+        download_as(sys.argv[2].split('download_as=')[1],xbmcplugin.getSetting(''))
 else:
     #pas de paramètres : début du plugin
-    show_icones(0)
+    show_icones()
     
 xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
