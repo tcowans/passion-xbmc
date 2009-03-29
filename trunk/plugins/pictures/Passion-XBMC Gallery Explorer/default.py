@@ -87,7 +87,6 @@ def download_as(url,folder=""):
     newpicname = xbmcgui.Dialog().select(_(30009),choice)
     print newpicname
     if newpicname == 4:
-        print "********"
         keyboard = xbmc.Keyboard(picname,_(30009))
         keyboard.doModal()
         if (keyboard.isConfirmed()):
@@ -149,9 +148,11 @@ def show_icones(cat=0):
             c_items = [ ( _(30003), 'XBMC.RunPlugin(%s?download_path=%s)' % ( sys.argv[ 0 ], preparesaving(dico['image'][indice],PictureName)) ) ]
             #Enregistrer sous...
             c_items += [ ( _(30004), 'XBMC.RunPlugin(%s?download_as=%s)' % ( sys.argv[ 0 ], preparesaving(dico['image'][indice],PictureName)) ) ]
+
             #Définir commme fond d'écran
-            #c_items += [ ( _(30011), 'XBMC.RunPlugin(%s?skinsettings=%s)' % ( sys.argv[ 0 ], dico['image'][indice]) ) ]
-            c_items += [ ( _(30011), 'Skin.SetImage(Home_Custom_Back_Video_Folder)') ]#% ( dico['image'][indice]) ) ]
+            c_items += [ ( _(30011), 'XBMC.RunPlugin(%s?skinsettings=%s)' % ( sys.argv[ 0 ], dico['image'][indice]) ) ]
+
+
             item.addContextMenuItems( c_items)
             
             #item.addContextMenuItems([('', '',)],)
@@ -164,8 +165,13 @@ def show_icones(cat=0):
                 item=xbmcgui.ListItem(_unicode(CatName),iconImage=IconeImage,thumbnailImage=IconeImage)
             else:
                 item=xbmcgui.ListItem(_unicode(CatName))#,'','')
-            # frost, pourquoi ajouté un bouton vide au context?
-            #item.addContextMenuItems([('', '',)],)
+            
+            #Définir commme fond d'écran
+            c_items = [ ( _(30011), 'XBMC.RunPlugin(%s?skinsettings=%s)' % ( sys.argv[ 0 ],id) ) ]
+            #c_items += [ ( _(30011), 'Skin.SetPath(Home_Custom_Back_Video_Folder)') ]#% ( dico['image'][indice]) ) ]
+
+            
+            item.addContextMenuItems( c_items)
             
             #listitem.addContextMenuItems('Save...',)
             url=sys.argv[0]+"?cat="+id
@@ -175,6 +181,46 @@ def show_icones(cat=0):
     
     return ok
 
+def show_pics(cat):
+    ok=True
+    dico = fetchgallery(cat)
+    for index in range(len(dico['id'])):
+        if dico['type'][index] == 'PIC':
+            download_picture(preparesaving(dico['image'][index],dico['title'][index]),"special://temp/")
+    #return "special://temp/"    
+            #PictureName = dico['title'][indice]       
+            #url = dico['image'][indice]
+            #if xbmcplugin.getSetting( "CUSTOMSKINPATH" ) == "":
+                #xbmcplugin.serSetting( "CUSTOMSKINPATH") = xbmcgui.Dialog().browse(0,_(30002),'pictures','',True,)
+            
+
+def set_home_background_imgage(url):
+    # fonction pour PM3.HD seulement
+    if xbmc.getSkinDir().lower() != "pm3.hd":
+        # on a pas d'affaire ici return 
+        return
+ 
+    list = [ "Video", "Music", "Pictures", "Programs", "Weather", "Scripts", "Settings" ]
+    #ici on mets un dialog select pour choisir la section video, picture, etc
+    selected = xbmcgui.Dialog().select( "Arrières-plans de l'accueil", list )
+ 
+    # s'il y a une reponse avec le dialog select on continu la fonction
+    if selected != -1:
+        # si l'options activer le background est pas activer, on l'active
+        if xbmc.getCondVisibility( "!Skin.HasSetting(Home_Enable_Custom_Back_%s)" % list[selected] ):
+            xbmc.executebuiltin( "Skin.ToggleSetting(Home_Enable_Custom_Back_%s)" % list[selected] )
+        # chemin de l'image local ou online. mais online faut la downloader avant
+        #image_link = url
+        #builtin = "Skin.SetString(Home_Custom_Back_%s_Folder,%s)"% ( selected, image_link, )
+        #folder_link = show_pics(url)
+        #show_pics(url)
+        print url
+        #builtin = "Skin.SetString(Home_Custom_Back_%s_Folder,%s)"% ( selected, "plugin://pictures/Passion-XBMC Gallery Explorer/?cat="+url, )
+        #builtin = "Skin.SetString(Home_Custom_Back_%s_Folder,%s)"% ( selected, "special://temp/", )
+        builtin = "Skin.SetString(Home_Custom_Back_%s_Folder,%s)"% ( selected,xbmcgui.Dialog().browse(0,_(30002),'pictures','',True,))
+        
+        #builtin = "Skin.SetPath(Home_Custom_Back_%s_Folder,%s)"% ( selected, folder_link)
+        xbmc.executebuiltin(builtin) 
 
 print "PARAM = %s"%sys.argv[2]
 
@@ -193,12 +239,13 @@ elif "download_as=" in sys.argv[2]:
         download_as(sys.argv[2].split('download_as=')[1],xbmcplugin.getSetting( "PATH" ))
     else:
         download_as(sys.argv[2].split('download_as=')[1],xbmcplugin.getSetting(''))
-#elif "skinsettings=" in sys.argv[2]:
-    #print "**************************************"
-    #try:
-        #print xbmc.getInfoLabel('Skin.String(Home_Custom_Back_Video_Folder) ')
-    #except Exception, e:
-        #print e
+
+elif "skinsettings=" in sys.argv[2]:       
+    print "**********"
+    #xbmc.executebuiltin('Skin.ToggleSetting(Home_Custom_Back_Video_Folder)')
+    #print xbmc.getInfoLabel('Skin.HasSetting(Home_Custom_Back_Video_Folder) ')
+    #print xbmc.getInfoLabel('Skin.String(Home_Custom_Back_Video_Folder) ')
+    set_home_background_imgage(sys.argv[2].split('skinsettings=')[1])
         
 else:
     #pas de paramètres : début du plugin
@@ -206,3 +253,6 @@ else:
     
 xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
+ 
+ 
+        
