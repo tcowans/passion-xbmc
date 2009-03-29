@@ -26,7 +26,8 @@ Place in Q:\plugins\video\artePLUS7
     - Corrected progress bar update issue
 07-12-08 Version Beta2 by Temhil
     - Improved algorithm with proxy use, no proxy is use only for a video (not all of them)
-    - few UI improvment
+28-13-09 Version Beta3 by Temhil
+    - Added option for use of a webproxy website viproxy.info
 """
 import xml.dom.minidom, urllib, os, string, traceback, time, re
 import xbmc, xbmcgui, xbmcplugin
@@ -47,10 +48,11 @@ class confManager:
         """
         Load configuration file, check it, and correct it if necessary
         """
-        self.is_conf_valid   = True
-        self.confFilePath    = confFilePath
-        self.proxy_address   = ""
-        self.videos_language = "fr"
+        self.is_conf_valid      = True
+        self.confFilePath       = confFilePath
+        self.proxy_address      = ""
+        self.force_webproxy_use = False
+        self.videos_language    = "fr"
         try:
             # Create config parser
             self.config = ConfigParser.ConfigParser()
@@ -74,6 +76,12 @@ class confManager:
                 self.is_conf_valid = False
             else:
                 self.proxy_address = self.config.get("server", "proxy_address")
+                
+            if (self.config.has_option("server", "force_webproxy_use") == False):
+                self.config.set("server", "force_webproxy_use", self.force_webproxy_use)
+                self.is_conf_valid = False
+            else:
+                self.force_webproxy_use = self.config.getboolean("server", "force_webproxy_use")
                 
             if (self.config.has_option("user_pref", "videos_language") == False):
                 self.config.set("user_pref", "videos_language", self.videos_language)
@@ -119,6 +127,9 @@ class confManager:
         
     def getProxy(self):
         return self.proxy_address
+    
+    def webproxyUse(self):
+        return self.force_webproxy_use
     
     def setVideosLang(self,videos_language):
         self.videos_language   = videos_language
@@ -198,16 +209,26 @@ class SearchParser:
 
     def loadVideo(self, videoPage):
         print "getVideoURL - videoPage = %s"%videoPage
+        base_webproxy_url="http://viproxy.info/browse.php?u="
         opener              = None
         videoUrl            = ""
         videoContainerUrl   = "" 
         proxy_address       = self.cfgMgr.getProxy()
+        force_webproxy_use  = self.cfgMgr.webproxyUse()
                 
-        if proxy_address == "":
-            print "getVideoURL - NO proxy defined"
-            # create opener
-            opener = urllib2.build_opener()
-        else:
+        if force_webproxy_use:
+            print "getVideoURL - Use of Webproxy viproxy.info"
+            
+            # Get the Web page with the video url container link
+            req=urllib2.Request(base_webproxy_url + urllib.quote(videoPage) + "&b=4&f=norefer")
+            req.add_header('Referer', 'http://viproxy.info/')
+            req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.7) Gecko/2009021910 MRA 5.3 (build 02560) Firefox/3.0.7 FirePHP/0.2.4')
+            req.add_header('Accept','text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8')
+            req.add_header('Accept-Language','fr,fr-fr;q=0.8,en-us;q=0.5,en;q=0.3')
+            req.add_header('Accept-Charset','ISO-8859-1,utf-8;q=0.7,*;q=0.7')
+            req.add_header('Keep-Alive','300')
+            req.add_header('Connection','keep-alive')
+        elif proxy_address != "":
             print "getVideoURL - proxy DEFINED"
             print proxy_address
             
@@ -216,12 +237,20 @@ class SearchParser:
             
             # create opener
             opener = urllib2.build_opener(proxy_handler)
-
+            
+            # Get the Web page with the video url container link
+            req=urllib2.Request(videoPage)
+                    
+        else:
+            print "getVideoURL - NO proxy defined"
+            # create opener
+            opener = urllib2.build_opener()
+            
+            # Get the Web page with the video url container link
+            req=urllib2.Request(videoPage)
         # install the opener
         urllib2.install_opener(opener)
         
-        # Get the Web page with the video url container link
-        req=urllib2.Request(videoPage)
         videoDoc=urllib2.urlopen(req).read()
         
         # Write in a file
@@ -245,8 +274,13 @@ class SearchParser:
             if matchVideoURL:
                 videoUrl = matchVideoURL.group(1)
                 
+        print 'videoUrl'
+        print videoUrl
 
-        player_type = {0:xbmc.PLAYER_CORE_AUTO, 1:xbmc.PLAYER_CORE_MPLAYER, 2:xbmc.PLAYER_CORE_DVDPLAYER}[int(xbmcplugin.getSetting("player_type"))]
+        player_tyep_idx = 0
+#        if xbmcplugin.getSetting("player_type") != None:
+#            player_tyep_idx = int(xbmcplugin.getSetting("player_type"))
+        player_type = {0:xbmc.PLAYER_CORE_AUTO, 1:xbmc.PLAYER_CORE_MPLAYER, 2:xbmc.PLAYER_CORE_DVDPLAYER}[player_tyep_idx]
         xbmc.Player(player_type).play(videoUrl)
         xbmc.sleep(200)
         
