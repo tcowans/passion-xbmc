@@ -1440,7 +1440,7 @@ FONCTION
 			<title>Display Adjust</title>
 			<version>1.0</version>
 			<date>29-03-06</date>
-			<author>Affini aka Aaron</author>
+			<author>Livin aka Affini aka Aaron</author>
 			<lang>en</lang>
 			<iconURL></iconURL>
 			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Display_Adjust.jpg</previewPictureURL>
@@ -1536,11 +1536,11 @@ Another new functionality: a forum section is available allowing to read last po
 Note: This script is still in development and this version has a bug on MAC OSX platform which makes XBMC crash. If you are using XBMC on MAC please use Beta4 release until we fix this issue. Thank you.</description_en>
 		</entry>
 		<entry>
-			<fileName>Navi-X_v2.5.zip</fileName>
+			<fileName>Navi-X_v2.6.zip</fileName>
 			<title>Navi-X (All Platforms)</title>
-			<version>2.5</version>
-			<date>24-01-09</date>
-			<added>03-02-09</added>
+			<version>2.6</version>
+			<date>21-03-09</date>
+			<added>24-03-09</added>
 			<author>rodejo</author>
 			<lang>en</lang>
 			<iconURL></iconURL>
@@ -2002,17 +2002,18 @@ Thanks to the folks at www.iconshock.com for the TV icon.
 Enjoy!</description_en>
 		</entry>
 		<entry>
-			<fileName>T3CH Upgrader_v1.7.5.rar</fileName>
+			<fileName>T3CH Upgrader_v1.8.rar</fileName>
 			<title>T3CH Upgrader</title>
-			<version>1.7.5</version>
-			<date>08-12-2008</date>
+			<version>1.8</version>
+			<date>23-03-09</date>
+			<added>30-03-09</added>
 			<author>BigBellyBilly</author>
 			<lang>multi</lang>
 			<iconURL></iconURL>
 			<previewPictureURL></previewPictureURL>
 			<previewVideoURL></previewVideoURL>
 			<description_fr></description_fr>
-			<description_en>Update your current T3CH Build to latest release.
+			<description_en>Update your current T3CH Build to latest release (XBOX only)
 
 Process:
 Find and DL and unrar new build (keeping T3CH build name)
@@ -2054,6 +2055,32 @@ Please don't alter or re-publish this script without authors persmission.</descr
 			<title>myTV</title>
 			<version>1.18.1</version>
 			<date>14-10-2008</date>
+			<author>BigBellyBilly</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>A tv guide using TV listing data from your own countries DataSource.
+Can setup recordings to some TV cards.
+
+Written By BigBellyBilly
+bigbellybilly AT gmail DOT com - bugs, comments, ideas, help ...
+
+THANKS:
+To everyone who's ever helped in anyway, or if I've used code from your own scripts, MUCH APPRECIATED!
+
+CHANGELOG: see ..\resources\changelog.txt or view throu Settings Menu
+README: see ..\resources\language\language\readme.txt or view throu Settings Menu
+
+Additional support may be found on xboxmediacenter forum.</description_en>
+		</entry>
+		<entry>
+			<fileName>myTV_v1.19_Beta.zip</fileName>
+			<title>myTV</title>
+			<version>1.9 Beta</version>
+			<date>25-03-09</date>
+			<added>30-03-09</added>
 			<author>BigBellyBilly</author>
 			<lang>multi</lang>
 			<iconURL></iconURL>
@@ -2610,6 +2637,47 @@ sudo apt-get install python-apt</description_en>
 			<description_fr>Jeu du [B]Tic Tac Toe[/B] ou dit aussi [B]Morpion[/B]. Jouer contre [B]XBMC[/B] ou avec deuxième [B]joueur[/B].</description_fr>
 			<description_en>Game [B]Tic Tac Toe[/B]. Playing against [B]XBMC[/B] or second [B]Player[/B].</description_en>
 		</entry>
+		<entry>
+			<fileName>MultiRSS_v1.5.zip</fileName>
+			<title>MultiRSS</title>
+			<version>1.5</version>
+			<date>25-03-06</date>
+			<added>24-03-09</added>
+			<author>Livin</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>RSS feed reader:
+- Single Screen Display 
+- User defined feeds 
+- Allows viewing each feed separately
+
+Installation and Usage:                                                                             
+- Copy MultiRSS folder to your XBMC\Scripts folder.                                           
+- Edit Copy FEEDLIST.XML to use the feeds you want                                            
+</description_en>
+		</entry>
+		<entry>
+			<fileName>Addons_Update_Checker_v1.0.rar</fileName>
+			<title>Addons Update Checker</title>
+			<version>1.0</version>
+			<date>29-03-09</date>
+			<added>30-03-09</added>
+			<author>BigBellyBilly</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>Script to check if any of your installed Scripts/Plugins have an updated version in SVN.
+
+Selecting an update launches the 'SVN Repo Installer' plugin.
+
+It relies on the default.py having the standard python __version__ document tag, which most do, but those that don't are indicated as such.
+</description_en>
+		</entry>
 	</scripts>
 	<!-- FIN Section Scripts -->
 
@@ -2683,6 +2751,20 @@ Huge thanks for letting me use the presetlist from it. See www.screamer-radio.co
 First of all you will need a Wixi account (www.wixi.com).
 Wixi is available for pictures, music and video. You will need to go in each corresponding section of the Installer Passion-XBMC and install each plugin separately.
 Once installed, go in the section you wwant (pictures, music or video) and select Wixi plugin and display context menu. Then select Plugin Settings and type your user and password. Hit OK and then click on Wixi. Your folder structure will load and you will be able to enjoy your medias!</description_en>
+			</entry>
+			<entry>
+				<fileName>Seeqpod_05-05-08.zip</fileName>
+				<title>Seeqpod</title>
+				<version>05-05-08</version>
+				<date>05-05-08</date>
+				<added></added>
+				<author></author>
+				<lang>multi</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Seeqpod (www.seeqpod.com) est un site qui permet de chercher de la musique sur internet (ou des videos) et de les jouer</description_fr>
+				<description_en>Seeqpod is a website which allows you to search music (or videos) on the Internet and then play it</description_en>
 			</entry>
 		</musicplugin>
 		<!-- FIN Sous-section plugins musique -->
@@ -2867,9 +2949,25 @@ ATTENTION: Les mises a jour sont faites a partir de la branche principale de dev
 WARNING: Update are done for TRUNK branch, that means you will get the last up to date file of projects still in developement. Consecuently it is possible versions you will download with this plugin will have bug or even won't work.</description_en>
 			</entry>
 			<entry>
+				<fileName>SVN_Repo_Installer_1.3.1.zip</fileName>
+				<title>SVN Repo Installer</title>
+				<version>1.3.1</version>
+				<date>20-02-09</date>
+				<added>30-03-09</added>
+				<author>nuka1195</author>
+				<lang>multi</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Plugin permettant de recuperer les dernieres versions des scripts/plugins disponibles dans le SVN Google code de xbmc-addons et xbmc-scripting
+Supporte l'ancien format des chemins (avant special:// )</description_fr>
+				<description_en>Plugin allowing to retrieve last versions of scripts/plugins available in Google code SVN of xbmc-addons and xbmc-scripting
+Support old path format (previous special:// paths)</description_en>
+			</entry>
+			<entry>
 				<fileName>SVN_Repo_Installer_07-03-09.zip</fileName>
 				<title>SVN Repo Installer</title>
-				<version>07-03-09</version>
+				<version>1.4</version>
 				<date>07-03-09</date>
 				<added>07-03-09</added>
 				<author>nuka1195</author>
@@ -2877,8 +2975,10 @@ WARNING: Update are done for TRUNK branch, that means you will get the last up t
 				<iconURL></iconURL>
 				<previewPictureURL></previewPictureURL>
 				<previewVideoURL></previewVideoURL>
-				<description_fr>Plugin permettant de recuperer les dernieres versions des scripts/plugins disponibles dans le SVN Google code de xbmc-addons et xbnc-scripting</description_fr>
-				<description_en>Plugin allowing to retrieve last versions of scripts/plugins available in Google code SVN of xbmc-addons and xbnc-scripting</description_en>
+				<description_fr>Plugin permettant de recuperer les dernieres versions des scripts/plugins disponibles dans le SVN Google code de xbmc-addons et xbnc-scripting
+Cette version utilise le nouveau format des chemins	"special://"</description_fr>
+				<description_en>Plugin allowing to retrieve last versions of scripts/plugins available in Google code SVN of xbmc-addons and xbnc-scripting
+Uses new special:// paths</description_en>
 			</entry>
 			<entry>
 				<fileName>Dandar3_SVN_Installer_v1.0.zip</fileName>
@@ -2909,11 +3009,11 @@ WARNING: Update are done for TRUNK branch, that means you will get the last up t
 				<description_en>Give you acces to you scripts from program plugin section</description_en>
 			</entry>
 			<entry>
-				<fileName>XBMC_Zone_Installer_v1.0.zip</fileName>
+				<fileName>XBMC_Zone_Installer_v1.2.zip</fileName>
 				<title>XBMC Zone Installer</title>
-				<version>1.0</version>
-				<date>08-03-09</date>
-				<added>09-03-09</added>
+				<version>1.2</version>
+				<date>25-03-09</date>
+				<added>30-03-09</added>
 				<author>Dan Dar3</author>
 				<lang>multi</lang>
 				<platform></platform>
@@ -2922,6 +3022,51 @@ WARNING: Update are done for TRUNK branch, that means you will get the last up t
 				<previewVideoURL></previewVideoURL>
 				<description_fr>Ce plugin vous permet de télécharger et d'installer facilement les scripts et plugin disponibles sur xbmczone.com directement depuis XBMC</description_fr>
 				<description_en>This plugin allows you to easily download and install the plugins and scripts from xbmczone.com directly from your XBMC.</description_en>
+			</entry>
+			<entry>
+				<fileName>XBMCWorld_SVN_Installer_31-01-09.rar</fileName>
+				<title>XBMCWorld SVN Installer</title>
+				<version>1.1</version>
+				<date>31-01-09</date>
+				<added>30-03-09</added>
+				<author>nuka1195, toughguy</author>
+				<lang>multi</lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Plugin permettant de recuperer les dernieres versions des scripts/plugins disponibles dans le SVN Google code de xbmcworld</description_fr>
+				<description_en>Plugin allowing to retrieve last versions of scripts/plugins available in Google code SVN of xbmcworld</description_en>
+			</entry>
+			<entry>
+				<fileName>GoogleReader_v1.0.rar</fileName>
+				<title>GoogleReader</title>
+				<version>1.0</version>
+				<date>24-03-09</date>
+				<added>30-03-09</added>
+				<author>BigBellyBilly</author>
+				<lang>multi</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Plugin to provide a way of browsing and reading all your subscriptions and items from your GoogleReader account.
+
+Install to your Program Plugins area.
+(You may need to change your skin settings to show the 'Programs' label on XBMC Home Page)
+
+On first run it'll ask you to complete setup ie. Google Username and Password.
+You can change 'items perpage' and if to fetch images etc.
+
+v1.0 Allows you to browse by:
+
+    * Subscriptions
+    * Subscriptions By Label (ie all feeds in the group 'Sports')
+    * Items
+    * Items By Label
+    * Starred
+    * Shared
+    * Notes</description_en>
 			</entry>
 		</programplugin>
 		<!-- FIN Sous-section plugins Programmes -->
@@ -3571,10 +3716,11 @@ The plugin indexes these pages:
 - G4 Podcasts</description_en>
 			</entry>
 			<entry>
-				<fileName>NBA.com_Videos_31-01-09.zip</fileName>
+				<fileName>NBA.com_Videos_r812.zip</fileName>
 				<title>NBA.com</title>
-				<version>r575</version>
-				<date>31-01-09</date>
+				<version>r812</version>
+				<date>16-03-09</date>
+				<added>30-03-09</added>
 				<author>stacked</author>
 				<lang>en</lang>
 				<iconURL></iconURL>
@@ -3647,7 +3793,7 @@ It turned out to be a bit tricky (for me at least) in that episodes are broken u
 			<entry>
 				<fileName>Revision3_19-01-09.zip</fileName>
 				<title>Revision3 Plugin</title>
-				<version>19-01-09</version>
+				<version>r544</version>
 				<date>19-01-09</date>
 				<added>03-02-09</added>
 				<author>stacked</author>
@@ -3713,11 +3859,11 @@ Note:
 You have to have an easynews account to use it.</description_en>
 			</entry>
 			<entry>
-				<fileName>ESPN_Video_r639.zip</fileName>
+				<fileName>ESPN_Video_r874.zip</fileName>
 				<title>ESPN Video</title>
-				<version>r639</version>
-				<date>20-02-09</date>
-				<added>07-03-09</added>
+				<version>r874</version>
+				<date>29-03-09</date>
+				<added>30-03-09</added>
 				<author>stacked</author>
 				<lang>en</lang>
 				<iconURL></iconURL>
@@ -3732,19 +3878,18 @@ Available Plugin Settings:
 - Ask for download before playing video</description_en>
 			</entry>
 			<entry>
-				<fileName>PBS_FRONTLINE_17-01-09.zip</fileName>
-				<title>PBS FRONTLINE</title>
-				<version>r541</version>
-				<date>17-01-09</date>
-				<added>03-02-09</added>
+				<fileName>PBS_b4.zip</fileName>
+				<title>PBS</title>
+				<version>Beta4</version>
+				<date>23-03-09</date>
+				<added>30-03-09</added>
 				<author>stacked </author>
 				<lang>en</lang>
 				<iconURL></iconURL>
 				<previewPictureURL>/.passionxbmc/Installeur-Passion/content/PBS_FRONTLINE.jpg</previewPictureURL>
 				<previewVideoURL></previewVideoURL>
 				<description_fr></description_fr>
-				<description_en>It indexes videos from FRONTLINE online videos:
-http://www.pbs.org/wgbh/pages/frontline/view/</description_en>
+				<description_en>PBS: FRONTLINE, NOVA, and NATURE Video Plugin for XBMC</description_en>
 			</entry>
 			<entry>
 				<fileName>UlmenTV_v1.35.zip</fileName>
@@ -3866,11 +4011,11 @@ It handles the today list, organises shows by date, gives all product reviews, h
 I've just scraped all the links, obviously mp4/mp3 are nicer than real audio/video but the content for each lecture varies.</description_en>
 			</entry>
 			<entry>
-				<fileName>The_Best_of_ITV_15-02-09.zip</fileName>
+				<fileName>The_Best_of_ITV_2009-03-17.zip</fileName>
 				<title>The Best of ITV</title>
-				<version>15-02-09</version>
-				<date>15-02-09</date>
-				<added>16-02-09</added>
+				<version>17-03-09</version>
+				<date>17-03-09</date>
+				<added>24-03-09</added>
 				<author>Dink / Voinage</author>
 				<lang>en</lang>
 				<iconURL></iconURL>
@@ -3963,11 +4108,11 @@ Put the bolded part in there.
 If you don't want to do it through the gui, you can open the plugin folder>resources>settings.xml and set your number to the default.</description_en>
 			</entry>
 			<entry>
-				<fileName>IPlayer_13b-02-09.zip</fileName>
+				<fileName>IPlayer_2009-03-06b.zip</fileName>
 				<title>IPlayer</title>
-				<version>13b-02-09</version>
-				<date>13-02-09</date>
-				<added>16-02-09</added>
+				<version>2009-03-06b</version>
+				<date>06-03-09</date>
+				<added>24-03-09</added>
 				<author>Dink / johnsto</author>
 				<lang>en</lang>
 				<iconURL></iconURL>
@@ -4007,11 +4152,11 @@ Note: Cette version n'est pas officielle et est basée sur la version du 09-02-0
 Note: This version is not official and is based on 09-02-09 version in order to run on XBOX et Mac</description_en>
 			</entry>
 			<entry>
-				<fileName>YouTube_07-03-09.zip</fileName>
+				<fileName>YouTube_1.4.3.zip</fileName>
 				<title>Youtube</title>
-				<version>1.4.1</version>
-				<date>07-03-09</date>
-				<added>07-03-09</added>
+				<version>1.4.3</version>
+				<date>14-03-09</date>
+				<added>30-03-09</added>
 				<author>nuka1195</author>
 				<lang>multi</lang>
 				<iconURL></iconURL>
@@ -4141,11 +4286,11 @@ CAUTION: This version only run on XBMC revision #18269 or newer</description_en>
 				<description_en>Plugin for viewing content from www.blip.tv</description_en>
 			</entry>
 			<entry>
-				<fileName>reeplay.it_v1.0.1.zip</fileName>
+				<fileName>reeplay.it_v1.1.rar</fileName>
 				<title>reeplay.it</title>
-				<version>1.0.1</version>
-				<date>09-03-09</date>
-				<added>13-03-09</added>
+				<version>1.1</version>
+				<date>23-03-09</date>
+				<added>30-03-09</added>
 				<author>BigBellyBilly</author>
 				<lang>multi</lang>
 				<platform></platform>
@@ -4319,6 +4464,21 @@ Once installed, go in the section you wwant (pictures, music or video) and selec
 				<description_en>Watch videos on www.nbc.com, even outside US!!!</description_en>
 			</entry>
 			<entry>
+				<fileName>NBC_Universal_r822.zip</fileName>
+				<title>NBC Universal</title>
+				<version>r822</version>
+				<date>20-03-09</date>
+				<added>30-03-09</added>
+				<author>BlueCop</author>
+				<lang>en</lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Watch videos on www.nbc.com, even outside US!!!</description_en>
+			</entry>
+			<entry>
 				<fileName>animefreak.tv_13-03-09.zip</fileName>
 				<title>animefreak.tv</title>
 				<version>13-03-09</version>
@@ -4332,6 +4492,66 @@ Once installed, go in the section you wwant (pictures, music or video) and selec
 				<previewVideoURL></previewVideoURL>
 				<description_fr></description_fr>
 				<description_en>Watch Anime on www.animefreak.tv (a lot of content available)</description_en>
+			</entry>
+			<entry>
+				<fileName>GameSpot_Videos_v1.0.zip</fileName>
+				<title>GameSpot Videos</title>
+				<version>1.0</version>
+				<date>22-03-09</date>
+				<added>24-03-09</added>
+				<author>Dan Dar3</author>
+				<lang>en</lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Plugin to stream videos from GameSpot.com</description_en>
+			</entry>
+			<entry>
+				<fileName>Dik_14-03-09.zip</fileName>
+				<title>Dik</title>
+				<version>14-03-09</version>
+				<date>14-03-09</date>
+				<added>24-03-09</added>
+				<author>vedelaar</author>
+				<lang>nl</lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Watch Dik.nl channels using this plugin. Dik.nl and plugin both only available in Dutch language.</description_en>
+			</entry>
+			<entry>
+				<fileName>Eurogamer_TV_v1.0.zip</fileName>
+				<title>Eurogamer TV</title>
+				<version>1.0</version>
+				<date>28-03-09</date>
+				<added>30-03-09</added>
+				<author>Dan Dar3</author>
+				<lang>en</lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Stream videos from Eurogamer TV website</description_en>
+			</entry>
+			<entry>
+				<fileName>MTVN_r858.zip</fileName>
+				<title>MTV Networks</title>
+				<version>r858</version>
+				<date>25-03-09</date>
+				<added>30-03-09</added>
+				<author>BlueCopter </author>
+				<lang>multi</lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Video plugin for music videos from MTV Networks</description_en>
 			</entry>
 			<entry>
 				<fileName></fileName>
