@@ -1,4 +1,3 @@
-#labels Featured,Phase-Implementation
 = XBMC Python Documentation =
 
 == [http://passion-xbmc.org/index.php?page=84 Documentation Python moved on passion-xbmc.org] ==
