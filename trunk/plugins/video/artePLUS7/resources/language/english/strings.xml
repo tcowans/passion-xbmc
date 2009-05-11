@@ -1,4 +1,4 @@
-﻿﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+﻿﻿﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <strings>
     <!-- Les strings de 30000 à 30999 sont réservées aux paramètres plug-in -->
     <!--GENERAL STRINGS -->
@@ -22,7 +22,7 @@
     <string id="30012">MPlayer</string>
     <string id="30013">DVD Player</string>
 
-    <string id="30015">Download and Play video</string>
+    <string id="30015">Download at startup video's description (longer)</string>
     <string id="30016">Download path</string>
     <string id="30017">Ask for download before playing video</string>
 
@@ -31,15 +31,15 @@
     <string id="30101">Enregistrer sous...</string>
 
     <!--DIALOG STRINGS -->
-    <string id="30200">Download completed</string>
-    <string id="30201">Error!</string>
-    <string id="30202">You must first specify a folder</string>
+    <string id="30200">First plugin startup</string>
+    <string id="30201">Please select default video language</string>
+    <string id="30202">Error</string>
     <string id="30203">in plugin settings!</string>
-    <string id="30204">Impossible to retrieve video URL</string>
+    <string id="30204">Arte+7 video list</string>
     <string id="30205">Please try to use a proxy ('Auto' is advised)</string>
     <string id="30206">Proxy settings incorrect</string>
     <string id="30207">Please check IP address and port number</string>
-    <string id="30208">Downloading ...</string>
+    <string id="30208">Loading ...</string>
     <string id="30209">What do you want to do?</string>
     <string id="30210">Stream</string>
     <string id="30211">Exit</string>
