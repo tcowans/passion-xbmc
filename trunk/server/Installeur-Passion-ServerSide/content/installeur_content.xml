@@ -1300,10 +1300,10 @@ More importantly you can add very easaly streams and podcasts yourself in the co
 			<title>MyCiné (Non Officiel)</title>
 			<version>Unofficial</version>
 			<date>22-10-2008</date>
-			<author></author>
+			<author>Trucide</author>
 			<lang>fr</lang>
 			<iconURL></iconURL>
-			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/MyCine.jpg</previewPictureURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Scripts/MyCine.jpg</previewPictureURL>
 			<previewVideoURL></previewVideoURL>
 			<description_fr>Ce script (basé sur MyCiné v8.6.8) n'est pas la version officielle de MyCiné qui est toujours maintenue, toutefois du aux derniers changements de XBMC, MyCiné ne fonctionnait plus et en attendant la release officielle de MyCiné, Seb a gentillement reparé et modifié MyCiné 8.6.8 et vous met a disposition cette version NON OFFICIELLE.
 
@@ -1311,6 +1311,22 @@ Attention cette version ne supporte pas les mises a jour MyCiné aussi il vous f
 
 A propos de MyCiné:
 MyCiné vous donne accès aux informations de films, personnalités, bandes annonces, salles de cinéma , disponibles sur le site internet de Allocine.fr.
+Il s'agit d'un des script les plus beaux et abouti du moment.</description_fr>
+			<description_en>MyCine is a multimedia script which give you acces to the content of the french website Allocine.fr. You can see documentary, trailers, schedule ...
+Content is only in French.</description_en>
+		</entry>
+		<entry>
+			<fileName>MyCine_v8.6.10.zip</fileName>
+			<title>MyCiné</title>
+			<version>8.6.10</version>
+			<date>25-04-09</date>
+			<added>26-04-09</added>
+			<author>Trucide</author>
+			<lang>fr</lang>
+			<iconURL></iconURL>
+			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Scripts/MyCine.jpg</previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>MyCiné vous donne accès aux informations de films, personnalités, bandes annonces, salles de cinéma , disponibles sur le site internet de Allocine.fr.
 Il s'agit d'un des script les plus beaux et abouti du moment.</description_fr>
 			<description_en>MyCine is a multimedia script which give you acces to the content of the french website Allocine.fr. You can see documentary, trailers, schedule ...
 Content is only in French.</description_en>
@@ -2159,7 +2175,7 @@ Additional support may be found on xboxmediacenter forum.</description_en>
 			<version>1.0</version>
 			<date></date>
 			<author>Frost</author>
-			<lang></lang>
+			<lang>multi</lang>
 			<iconURL></iconURL>
 			<previewPictureURL></previewPictureURL>
 			<previewVideoURL></previewVideoURL>
@@ -2167,6 +2183,20 @@ Additional support may be found on xboxmediacenter forum.</description_en>
 Tres utile avec les skins n'ayant plus la section programmes plugins accessible!!!</description_fr>
 			<description_en>A script done by Frost, it allows to access to program plugin section.
 Very useful with the skin without program plugin section!!!</description_en>
+		</entry>
+		<entry>
+			<fileName>My Video Plugins_v1.0.zip</fileName>
+			<title>My Program Plugins</title>
+			<version>1.0</version>
+			<date>16-04-09</date>
+			<added>18-04-09</added>
+			<author>Sparda</author>
+			<lang>multi</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Ce script realise par Sparda a partir du My Program Plugins de Frost, vous permet d'acceder a la section plugins video.</description_fr>
+			<description_en>A script done Sparda from My Program Plugins by Frost, it allows to access to video plugin section.</description_en>
 		</entry>
 		<entry>
 			<fileName>XBMC Lyrics_v1.6.1.zip</fileName>
@@ -2654,9 +2684,9 @@ sudo apt-get install python-apt</description_en>
 - User defined feeds 
 - Allows viewing each feed separately
 
-Installation and Usage:                                                                             
-- Copy MultiRSS folder to your XBMC\Scripts folder.                                           
-- Edit Copy FEEDLIST.XML to use the feeds you want                                            
+Installation and Usage:
+- Copy MultiRSS folder to your XBMC\Scripts folder.
+- Edit Copy FEEDLIST.XML to use the feeds you want
 </description_en>
 		</entry>
 		<entry>
@@ -2675,8 +2705,23 @@ Installation and Usage:
 
 Selecting an update launches the 'SVN Repo Installer' plugin.
 
-It relies on the default.py having the standard python __version__ document tag, which most do, but those that don't are indicated as such.
-</description_en>
+It relies on the default.py having the standard python __version__ document tag, which most do, but those that don't are indicated as such.</description_en>
+		</entry>
+		<entry>
+			<fileName>XBmule Beta 1.zip</fileName>
+			<title>XBmule</title>
+			<version>Beta 1</version>
+			<date>09-05-09</date>
+			<added>10-05-09</added>
+			<author>cyr85</author>
+			<lang>fr</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr>Voici la première version bêta de XBMule : l'interface d'Emule pour XBMC
+
+Cette version a été testée avec la version d'XBMC 8.10 pour windows</description_fr>
+			<description_en>An Emule interface for XBMC</description_en>
 		</entry>
 	</scripts>
 	<!-- FIN Section Scripts -->
@@ -2765,6 +2810,22 @@ Once installed, go in the section you wwant (pictures, music or video) and selec
 				<previewVideoURL></previewVideoURL>
 				<description_fr>Seeqpod (www.seeqpod.com) est un site qui permet de chercher de la musique sur internet (ou des videos) et de les jouer</description_fr>
 				<description_en>Seeqpod is a website which allows you to search music (or videos) on the Internet and then play it</description_en>
+			</entry>
+			<entry>
+				<fileName>Jamendo_RadioPlugin_r471.zip</fileName>
+				<title>Jamendo Radio Plugin</title>
+				<version>r471</version>
+				<date>12-04-09</date>
+				<added>18-04-09</added>
+				<author>Sev</author>
+				<lang>multi</lang>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Ecoutez la musique sur Jamendo.com
+Sur Jamendo les artistes permettent à tous de télécharger et d'écouter leur musique. C'est gratuit, legal et illimité</description_fr>
+				<description_en>Listen music on Jamendo.com 
+On Jamendo artists allow anyone to download and share their music. It's free, legal and unlimited.</description_en>
 			</entry>
 		</musicplugin>
 		<!-- FIN Sous-section plugins musique -->
@@ -3068,16 +3129,35 @@ v1.0 Allows you to browse by:
     * Shared
     * Notes</description_en>
 			</entry>
+			<entry>
+				<fileName>WebBrowser_18-02-09.zip</fileName>
+				<title>WebBrowser</title>
+				<version>18-02-09</version>
+				<date>18-02-09</date>
+				<added>18-04-09</added>
+				<author>CinPoU</author>
+				<lang>fr</lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Le plugin WebBrowser permet d'entrer une liste de favoris internet et de les ouvrir depuis xbmc dans un navigateur.
+
+Pour ajouter un nouveau favoris, il suffit d'un clique droit dans le plugin puis "Ajouter un site"</description_fr>
+				<description_en>WebBrowser plugin allow to set a list a Internet bookmarks and open in from XBMC in a web browser.
+In order to add a new bookmark, do a right clic and 'Ajouter un site'</description_en>
+			</entry>
 		</programplugin>
 		<!-- FIN Sous-section plugins Programmes -->
 
 		<!-- Sous-section plugins Video -->
 		<videoplugin>
 			<entry>
-				<fileName>artePLUS7_Beta2.zip</fileName>
+				<fileName>artePLUS7_v1.0.zip</fileName>
 				<title>artePLUS7</title>
-				<version>Beta2</version>
-				<date>07-12-08</date>
+				<version>1.0</version>
+				<date>10-05-09</date>
+				<added>10-05-09</added>
 				<author>Lolol / Seb / Temhil</author>
 				<lang>multi</lang>
 				<previewPictureURL>/.passionxbmc/Installeur-Passion/content/ArtePlus7.jpg</previewPictureURL>
@@ -3086,14 +3166,7 @@ v1.0 Allows you to browse by:
 Ce plugin a été développé a l'origine par Lolol, puis réparé par Seb et Temhil
 Vous devez installer ce plugin dans Plugin\video\
 
-La langue par défaut des vidéos est le Français toutefois, si vous souhaitez visionnez ces vidéos en Allemand éditez le fichier de configuration arteplus7.cfg (crée automatiquement lors du 1ere démarrage) et remplacez la ligne:
-videos_language = fr
-par
-videos_language = de
-
-Pour ce ne residents pas dans la zone de diffusion du site Web (protection par IP), vous pouvez configurer un proxy qui sera utilisé par le plugin pour vous donner acces au vidéos d'Arte Plus 7. Pour ce faire, éditez le fichier de configuration arteplus7.cfg et indiquez l'adresse de votre proxy comme cela:
-[server]
-proxy_address = http://48.180.55.200:80</description_fr>
+Pour ceux ne résidants pas dans la zone de diffusion du site Web (protection par IP), vous pouvez configurer un proxy qui sera utilisé par le plugin pour vous donner acces au vidéos d'Arte Plus 7 ou bien utilise le proxy web (option auto).</description_fr>
 				<description_en>This plugin allows to watch videos available on http://plus7.arte.tv (Arte videos availbale for 7 days)</description_en>
 			</entry>
 			<entry>
