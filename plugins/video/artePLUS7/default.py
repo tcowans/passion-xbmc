@@ -26,142 +26,76 @@ Place in Q:\plugins\video\artePLUS7
     - Corrected progress bar update issue
 07-12-08 Version Beta2 by Temhil
     - Improved algorithm with proxy use, no proxy is use only for a video (not all of them)
-05-06-09 Version pre1.0 by Temhil
+05-10-09 Version 1.0 by Temhil
     - Added automatic proxy support (using webproxy www.surferanonymement.com) 
-    - Added plugin settings menu 
+    - Added plugin settings menu
+    - Added video description window
+    - Added video info while playing
 """
+
+__script__ = "Unknown"
+__plugin__ = "artePLUS7"
+__author__ = "Temhil"
+__url__ = "http://passion-xbmc.org/index.php"
+__svn_url__ = "http://code.google.com/p/passion-xbmc/source/browse/#svn/trunk/plugins/video/artePLUS7"
+__credits__ = "Team XBMC Passion"
+__platform__ = "xbmc media center"
+__date__ = "10-05-2009"
+__version__ = "1.0"
+__svn_revision__ = 0
+
 import xml.dom.minidom, urllib, os, string, traceback, time, re
 import xbmc, xbmcgui, xbmcplugin
 import traceback
 import urllib2
 #import ConfigParser
 import sys
+from resources.libs.specialpath import *
+
+
 
 # Set directories
-RootDir  = os.getcwd().replace( ";", "" ) # Create a path with valid format
-cacheDir = os.path.join(RootDir, "cache")
+ROOTDIR  = os.getcwd().replace( ";", "" ) # Create a path with valid format
+CACHEDIR = os.path.join(ROOTDIR, "cache")
+  
+#BASE_THUMBS_PATH = os.path.join( SPECIAL_PROFILE_DIR, "Thumbnails", 'Video' )
+BASE_THUMBS_PATH = os.path.join( SPECIAL_MASTERPROFILE_DIR, "Thumbnails", 'Video' )
+__language__ = xbmc.Language( ROOTDIR, "french" ).getLocalizedString
 
-#class confManager:
-#    """
-#    Configuration Manager
-#    """
-#    def __init__(self,confFilePath):
-#        """
-#        Load configuration file, check it, and correct it if necessary
-#        """
-#        self.is_conf_valid      = True
-#        self.confFilePath       = confFilePath
-#        self.proxy_address      = ""
-#        self.force_webproxy_use = False
-#        self.videos_language    = "fr"
-#        try:
-#            # Create config parser
-#            self.config = ConfigParser.ConfigParser()
-#            
-#            # Read config from .cfg file
-#            # - Open config file
-#            self.config.read(confFilePath)
-#
-#
-#            # Check sections exist
-#            if (self.config.has_section("server") == False):
-#                self.config.add_section("server")
-#                self.is_conf_valid = False
-#            if (self.config.has_section("user_pref") == False):
-#                self.config.add_section("user_pref")
-#                self.is_conf_valid = False
-#
-#            # - Read config from file and correct it if necessary
-#            if (self.config.has_option("server", "proxy_address") == False):
-#                self.config.set("server", "proxy_address", self.proxy_address)
-#                self.is_conf_valid = False
-#            else:
-#                self.proxy_address = self.config.get("server", "proxy_address")
-#                
-#            if (self.config.has_option("server", "force_webproxy_use") == False):
-#                self.config.set("server", "force_webproxy_use", self.force_webproxy_use)
-#                self.is_conf_valid = False
-#            else:
-#                self.force_webproxy_use = self.config.getboolean("server", "force_webproxy_use")
-#                
-#            if (self.config.has_option("user_pref", "videos_language") == False):
-#                self.config.set("user_pref", "videos_language", self.videos_language)
-#                self.is_conf_valid = False
-#            else:
-#                self.videos_language = self.config.get("user_pref", "videos_language")
-#        
-#            if (self.is_conf_valid == False):
-#                # Update file
-#                print "cfg file format wasn't valid: correcting ..."
-#                cfgfile=open(self.confFilePath, 'w+')
-#                try:
-#                    self.config.write(cfgfile)
-#                    self.is_conf_valid = True
-#                except Exception, e:
-#                    print("Exception during cfg file update")
-#                    print(str(e))
-#                    print (str(sys.exc_info()[0]))
-#                    traceback.print_exc()
-#                cfgfile.close()
-#        
-#        except IOError:
-#            print "Error while loading conf file arteplus7.cfg"
-#            print (str(sys.exc_info()[0]))
-#            traceback.print_exc(file=sys.stdout)
-#
-#    def setProxy(self,proxy_address):
-#        self.proxy_address   = proxy_address
-#        
-#        # Set proxy_address parameter
-#        self.config.set("server", "proxy_address", proxy_address)
-#    
-#        # Update file
-#        cfgfile=open(self.confFilePath, 'w+')
-#        try:
-#            self.config.write(cfgfile)
-#        except Exception, e:
-#            print("Exception during setProxy")
-#            print(str(e))
-#            print (str(sys.exc_info()[0]))
-#            traceback.print_exc()
-#        cfgfile.close()
-#        
-#    def getProxy(self):
-#        return self.proxy_address
-#    
-#    def webproxyUse(self):
-#        return self.force_webproxy_use
-#    
-#    def setVideosLang(self,videos_language):
-#        self.videos_language   = videos_language
-#        
-#        # Set videos_language parameter
-#        self.config.set("user_pref", "videos_language", videos_language)
-#    
-#        # Update file
-#        cfgfile=open(self.confFilePath, 'w+')
-#        try:
-#            self.config.write(cfgfile)
-#        except Exception, e:
-#            print("Exception during setVideosLang")
-#            print(str(e))
-#            print (str(sys.exc_info()[0]))
-#            traceback.print_exc()
-#        cfgfile.close()
-#        
-#    def getVideosLang(self):
-#        return self.videos_language
-    
+
+#def set_cache_thumb_name( path ):
+#    try:
+#        fpath = path
+#        # make the proper cache filename and path so duplicate caching is unnecessary
+#        filename = xbmc.getCacheThumbName( fpath )
+#        thumbnail = os.path.join( BASE_THUMBS_PATH, filename[ 0 ], filename )
+#        preview_pic = os.path.join( BASE_THUMBS_PATH, "originals", filename[ 0 ], filename )
+#        # if the cached thumbnail does not exist check for dir does not exist create dir
+#        if not os.path.isdir( os.path.dirname( preview_pic ) ):
+#            os.makedirs( os.path.dirname( preview_pic ) )
+#        if not os.path.isdir( os.path.dirname( thumbnail ) ):
+#            os.makedirs( os.path.dirname( thumbnail ) )
+#        return thumbnail, preview_pic
+#    except:
+#        #import traceback; traceback.print_exc()
+#        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+#        return "", ""
+
+def strip_off( text, by="", xbmc_labels_formatting=False ):
+    """ FONCTION POUR RECUPERER UN TEXTE D'UN TAG """
+    if xbmc_labels_formatting:
+        text = text.replace( "[", "<" ).replace( "]", ">" )
+    return re.sub( "(?s)<[^>]*>", by, text )
 
 class SearchParser:
     """
-    Parse XML  from arte - code from seeqpod. seeqpod Borrowed this from GameTrailersRSSReader RSS Parser
+    Parse XML from arte - code from seeqpod. seeqpod Borrowed this from GameTrailersRSSReader RSS Parser
     """
     def __init__(self):
         # Document Object Model of the XML document
         self.dom = None
-        #self.cfgMgr = confManager(os.path.join(RootDir,"arteplus7.cfg"))
-        self.verifrep(cacheDir)
+        #self.cfgMgr = confManager(os.path.join(ROOTDIR,"arteplus7.cfg"))
+        self.verifrep(CACHEDIR)
         print "xbmcplugin.getSetting('language')"
         print xbmcplugin.getSetting('language')
         if int(xbmcplugin.getSetting('language')) == 1:
@@ -203,8 +137,10 @@ class SearchParser:
         # Document Object Model of the XML document
         self.dom = None
     
-    # feeds the xml document from given url to the parser
     def feed(self, url):
+        """
+        feeds the xml document from given url to the parser
+        """
         self.dom = None
         #print url
         f = urllib.urlopen(url)
@@ -212,14 +148,11 @@ class SearchParser:
         f.close()
         self.dom = xml.dom.minidom.parseString(xmlDocument)
 
-    def loadVideo(self, videoPage):
+    def loadVideo( self, videoPage, title, thumbnailImageURL ):
         """
         Load video info and start playing
         """
         print "loadVideo - videoPage = %s"%videoPage
-        #base_webproxy_url="http://viproxy.info/browse.php?u="
-        #referer = "http://viproxy.info/"
-        #nameInForm = "u"
         base_webproxy_url="http://www.surferanonymement.com/includes/process.php?action=update"
         referer = "http://www.surferanonymement.com/"
         nameInForm = 'u'
@@ -228,9 +161,11 @@ class SearchParser:
         videoUrl            = ""
         videoContainerUrl   = "" 
         
-        print "xbmcplugin.getSetting('proxy')"
-        print xbmcplugin.getSetting('proxy')
+        #print "xbmcplugin.getSetting('proxy')"
+        #print xbmcplugin.getSetting('proxy')
                 
+        dialogLoading = xbmcgui.DialogProgress()
+        dialogLoading.create( __language__( 30208 ) ) 
         if ( int( xbmcplugin.getSetting('proxy') ) == 1 ): # Auto
             print "getVideoURL - Auto: Use of Webproxy viproxy.info"
             
@@ -283,11 +218,17 @@ class SearchParser:
             # install the opener
             urllib2.install_opener(opener)
             
-            videoDoc=urllib2.urlopen(req).read()
+            response = urllib2.urlopen(req)
+            videoDoc = response.read()
+            response.close()
             
             # Write in a file
-            open(xbmc.makeLegalFilename(os.path.join(cacheDir, os.path.basename(videoPage))),"w").write(videoDoc)
-    
+            #TODO: save only in debug mode and check why it crash on XBOX
+#            htmlsave = os.path.join( CACHEDIR, urllib.quote_plus( os.path.basename( videoPage ) ) )
+#            print 'htmlsave'
+#            print htmlsave
+#            open( xbmc.makeLegalFilename( htmlsave ),"w" ).write( videoDoc )
+
             # Extract the URL of the video URL container file (wmv)
             match = re.search(r'availableFormats\[\d]\[\"format\"\] = \"WMV\";\n *?availableFormats\[\d\]\["quality\"] = \"HQ\";\n *?availableFormats\[\d]\[\"url\"] = "(.*?)\?obj', videoDoc)
             videoContainerUrl = ""
@@ -299,7 +240,11 @@ class SearchParser:
                 #TODO: use urllib2 everywhere, using a mix or urlib and urllib2 is not very elegant
                 
                 # Write in a file
-                open(xbmc.makeLegalFilename(os.path.join(cacheDir, os.path.basename(videoContainerUrl))),"w").write(videoUrlFile)
+                #TODO: save only in debug mode and check why it crash on XBOX
+#                wmvsave = os.path.join( CACHEDIR, urllib.quote_plus( os.path.basename( videoContainerUrl ) ) )
+#                print 'wmvsave'
+#                print wmvsave
+#                open( xbmc.makeLegalFilename( wmvsave ),"w" ).write( videoUrlFile )
                 
                 # Extract the URL of the video (usually mms)
                 matchVideoURL = re.search(r'<REF HREF=\"(.*?)\" />', videoUrlFile)
@@ -309,102 +254,56 @@ class SearchParser:
             print ( str( sys.exc_info()[0] ) )
             traceback.print_exc()
                 
-        print 'videoUrl'
+        print 'URL of the video:'
         print videoUrl
 
-#        if xbmcplugin.getSetting("dvdplayer") == 1 :
-#            player_type = xbmc.PLAYER_CORE_MPLAYER
-#        elif xbmcplugin.getSetting("dvdplayer") == 2:
-#            player_type = xbmc.PLAYER_CORE_DVDPLAYER
-#        else:
-#            player_type = xbmc.PLAYER_CORE_AUTO
-        # Code inspired from coded done by stacked (thank you)
-        #TODO: Check if mms download can be supported by XBMC, otherwise remove download code
+        #TODO: Check if mms download can be supported by XBMC
         if ( videoUrl != ""):
-            flv_file = None
-            stream = 'false'
-            filename = '_' + os.path.basename(videoUrl)
-            if (xbmcplugin.getSetting('download') == 'true'):
-                    flv_file = xbmc.translatePath(os.path.join(xbmcplugin.getSetting('download_Path'), filename))
-                    self.downloadVideo(videoUrl,flv_file)
-            elif (xbmcplugin.getSetting('download') == 'false' and xbmcplugin.getSetting('download_ask') == 'true'):
-                dia = xbmcgui.Dialog()
-                ret = dia.select(xbmc.getLocalizedString( 30209 ), [xbmc.getLocalizedString( 30015 ), xbmc.getLocalizedString( 30210 ), xbmc.getLocalizedString( 30211 )])
-                if (ret == 0):
-                    flv_file = xbmc.translatePath(os.path.join(xbmcplugin.getSetting('download_Path'), filename))
-                    self.downloadVideo(videoUrl,flv_file)
-                elif (ret == 1):
-                    stream = 'true'
-                else:
-                    pass
-            elif (xbmcplugin.getSetting('download') == 'false' and xbmcplugin.getSetting('download_ask') == 'false'):
-                stream = 'true'
-                
             # Get player type
             player_type_idx = int(xbmcplugin.getSetting("dvdplayer"))
             player_type = {0:xbmc.PLAYER_CORE_AUTO, 1:xbmc.PLAYER_CORE_MPLAYER, 2:xbmc.PLAYER_CORE_DVDPLAYER}[player_type_idx]
 
-            if (flv_file != None and os.path.isfile(flv_file)):
-                xbmc.Player(player_type).play(str(flv_file))
-            elif (stream == 'true'):
-                xbmc.Player(player_type).play(str(videoUrl))
+            #  Get cached thumbnail instead of redownload it
+            thumbnailImage = xbmc.getCacheThumbName( sys.argv[ 0 ] + sys.argv[ 2 ] )
+            #print thumbnailImage
+            thumbnailpath = os.path.join( BASE_THUMBS_PATH, thumbnailImage[ 0 ], thumbnailImage )
+            print "thumbnail path:"
+            print thumbnailpath
+            videoListItem = xbmcgui.ListItem( label=title, thumbnailImage=thumbnailpath) 
+           
+            dialogLoading.close()
+            xbmc.Player( player_type ).play( str(videoUrl), videoListItem )
             xbmc.sleep(200)
             
         else:
+            dialogLoading.close()
             dialogError = xbmcgui.Dialog()
             ok = dialogError.ok(xbmc.getLocalizedString( 30201 ), xbmc.getLocalizedString( 30204 )+'\n\n'+xbmc.getLocalizedString( 30205 ))
-            
-    def downloadVideo( self, url, dest ):
-            filename = os.path.basename(dest)
-            dp = xbmcgui.DialogProgress()
-            dp.create(xbmc.getLocalizedString( 30208 ),'',filename)
-            
-            # Temp replace mms by http
-            print url.replace('mms','http')
-            
-            try:
-                urllib.urlretrieve(url.replace('mms','http'),dest,lambda nb, bs, fs, url=url: self._pbhook(nb,bs,fs,url,dp))
-            except:
-                print("Exception while source downloadVideo")
-                print(e)
-                print (str(sys.exc_info()[0]))
-                traceback.print_exc()
-                pass
-            
-    def _pbhook(self, numblocks, blocksize, filesize, url=None, dp=None ):
-            try:
-                    percent = min((numblocks*blocksize*100)/filesize, 100)
-                    dp.update(percent)
-            except:
-                    percent = 100
-                    dp.update(percent)
-            if dp.iscanceled():
-                    dp.close()
-       
-    def downloadFile(self, source, destination):
-        """
-        Source MyCine (thanks!)
-        Download IF NECESSARY a URL 'source' (string) to a URL 'target' (string)
-        Source is downloaded only if target doesn't already exist
-        """
-        if os.path.exists(destination):
-            pass
-        else:
-            try:
-                #print("downloadJPG destination doesn't exist, try to retrieve")
-                loc = urllib.URLopener()
-                loc.retrieve(source, destination)
-            except Exception, e:
-                print("Exception while source retrieving")
-                print(e)
-                print (str(sys.exc_info()[0]))
-                traceback.print_exc()
-                pass
+                   
+#    def downloadFile(self, source, destination):
+#        """
+#        Source MyCine (thanks!)
+#        Download IF NECESSARY a URL 'source' (string) to a URL 'target' (string)
+#        Source is downloaded only if target doesn't already exist
+#        """
+#        if os.path.exists(destination):
+#            pass
+#        else:
+#            try:
+#                #print("downloadJPG destination doesn't exist, try to retrieve")
+#                loc = urllib.URLopener()
+#                loc.retrieve(source, destination)
+#            except Exception, e:
+#                print("Exception while source retrieving")
+#                print(e)
+#                print (str(sys.exc_info()[0]))
+#                traceback.print_exc()
+#                pass
 
 
     # parses the RSS document, for now it assumes that RSS document is valid
     def parse(self):
-        self.delFiles(cacheDir)
+        self.delFiles(CACHEDIR)
         self.feed(self.video_feed_url)
         self.__parseItems()
     
@@ -433,35 +332,44 @@ class SearchParser:
                 self.previewVideoUrl[i] = item.getElementsByTagName("previewVideoURL")[0].childNodes[0].data
                 
                 index = self.index[i]
-                localimg = xbmc.makeLegalFilename(os.path.join(cacheDir,self.index[i]+".jpg"))
-                #localimg.replace('\\\\','\\')
-                print "i = %d"%i
-                print "self.thumbs[i] (URL) = %s"%self.thumbs[i]
-                print "self.urls[i] = %s"%self.urls[i]
-                print "localimg = %s"%localimg
-                self.downloadFile(self.thumbs[i],localimg)
+                #print "i = %d"%i
+                #print "self.thumbs[i] (URL) = %s"%self.thumbs[i]
+                #print "self.urls[i] = %s"%self.urls[i]
 
-#                liz=xbmcgui.ListItem(index.zfill(2)+' - '+self.titles[i],'',localimg)
-                liz=xbmcgui.ListItem(index.zfill(2)+' - '+self.titles[i], iconImage = localimg, thumbnailImage = localimg)
-                print "Adding item %d"%i
-                #ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=videoUrl,listitem=liz,isFolder=False,totalItems=len(items))
-                u=sys.argv[0]+"?url="+urllib.quote_plus(self.urls[i])+"&loadvideo"
-                ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=True,totalItems=len(items))
-            except:
+                item=xbmcgui.ListItem(index.zfill(2)+' - '+self.titles[i], iconImage = self.thumbs[i], thumbnailImage = self.thumbs[i])
+                #item.setInfo( type="Video", infoLabels={ "Title": self.titles[i] } )
+                
+                if (xbmcplugin.getSetting('download_descript') == 'true'):
+                    title, headline, plot, country, year, duration = self._parseInfo(self.urls[i])
+                    item.setInfo( type="Video",
+                                  infoLabels={ "Title": self.titles[i],
+                                               "Plotoutline": headline,
+                                               "Year": year,
+                                               "Plot": plot})
+                else:
+                    item.setInfo( type="Video", infoLabels={ "Title": self.titles[i] } )
+
+                u = sys.argv[0]+"?url=%s&loadvideo&title=%s&thumbnail=%s"%( urllib.quote_plus(self.urls[i]), self.titles[i], urllib.quote_plus(self.thumbs[i]) )
+                
+                ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=item,isFolder=False,totalItems=len(items))
+            except Exception, e:
                 error=1
                 print "Something was wrong during __parseItems!"
+                print e
                 print (str(sys.exc_info()[0]))
                 traceback.print_exc()
                 
         #TODO: Use language localization
-        xbmcplugin.setPluginCategory( handle=int( sys.argv[ 1 ] ), category="Liste des vidéos d'Arte+7" )
+        xbmcplugin.setPluginCategory( handle=int( sys.argv[ 1 ] ), category=__language__( 30204 ) )
  
-        path_img = os.path.join(RootDir,"arte_tv.png")
+        path_img = os.path.join(ROOTDIR,"arte_tv.png")
         fanart_color1 = "ffffff00"
         fanart_color2 = ""
         fanart_color3 = ""
         try:
             #xbmcplugin.setPluginFanart( handle=int( sys.argv[ 1 ] ), image=path_img, color1=fanart_color1, color2=fanart_color2, color3=fanart_color3 )
+            #TODO  :
+            xbmcplugin.setContent(int(sys.argv[1]), 'videos')
             xbmcplugin.setPluginFanart(int(sys.argv[1]), path_img)
             xbmc.sleep( 10 )
         except:
@@ -472,18 +380,87 @@ class SearchParser:
             
         return itemObjects
 
+    def _parseInfo(self, urlInfo):
+        # Extract video infos:
+        title = None
+        headline = None
+        plot = None
+        country = None
+        year = None
+        duration = None
+        try:     
+            # create opener
+            opener = urllib2.build_opener()
+            
+            # Get the Web page with the video url container link
+            req=urllib2.Request(urlInfo)
+            
+            # install the opener
+            urllib2.install_opener(opener)
+            
+            response = urllib2.urlopen(req)
+            videoDoc = response.read()
+            response.close()
 
+            reVideo = re.compile(r"""<h2>\s+(?P<videoShowTitle>.+?)\n</h2>.*?<p class="headline">\s+(?P<videoHeadline>.+?)<br />.*?<p class="text">\s+(?P<videoDescript>.+?)<br />.*?<p class="info">.*?\((?P<videoCountry>.+?), (?P<videoYear>[0-9].+?), (?P<videoDuration>.+?)\)""", re.DOTALL) 
+            for i in reVideo.finditer( videoDoc ):
+                # Copy each item found in a list
+                videoShowTitle     = i.group( "videoShowTitle" )
+                if videoShowTitle: # !=None
+                    title = strip_off( unicode( videoShowTitle, "utf-8" ).encode( "cp1252" ) )
+                    #print "title: %s"%title
+                videoHeadline     = i.group( "videoHeadline" )
+                if videoHeadline: # !=None
+                    headline = strip_off( unicode( videoHeadline, "utf-8" ).encode( "cp1252" ) )
+                    #print "headline: %s"%headline
+                videoDescript     = i.group( "videoDescript" )
+                if videoDescript: # !=None
+                    plot = strip_off( unicode( videoDescript, "utf-8" ).encode( "cp1252" ) )
+                    #print "plot: %s"%plot
+                videoCountry     = i.group( "videoCountry" )
+                if videoCountry: # !=None
+                    country = strip_off( unicode( videoCountry, "utf-8" ).encode( "cp1252" ) )
+                    #print "country: %s"%country
+                videoYear     = i.group( "videoYear" )
+                if videoYear: # !=None
+                    year = int( videoYear )
+                    #print "year: %d"%year
+                videoDuration     = i.group( "videoDuration" )
+                if videoDuration: # !=None
+                    duration = strip_off( unicode( videoDuration, "utf-8" ).encode( "cp1252" ) )
+                    #print "duration: %s"%duration
+        except Exception, e:
+            print"Exception during loadVideo: Extract video infos"
+            print str(e)
+            print str(sys.exc_info()[0])
+            traceback.print_exc()
+        return title, headline, plot, country, year, duration
+        
 
-#############
+############
 #
 # Main
 #
 ############
 
+# Check settings
+if ( xbmcplugin.getSetting('first_start') == 'true' ):
+    try:
+        dialog = xbmcgui.Dialog()
+        dialog.ok( __language__(30200), __language__(30201) )
+        xbmcplugin.openSettings(sys.argv[0])
+        xbmcplugin.setSetting('first_start','false')
+    except:
+        # builtin missing from build - inform user to use ContextMenu for settings
+        traceback.print_exc()
+        dialog = xbmcgui.Dialog()
+        dialog.ok( __language__(30202), __language__(30202), __language__(30203) )
 
-
-#Il faut parser les paramètres
+print "first_start:"
+print xbmcplugin.getSetting('first_start')
+# Parse parameter
 stringparams = sys.argv[2] #les paramètres sont sur le 3ieme argument passé au script
+
 try:
     if stringparams[0]=="?":#pour enlever le ? si il est en début des paramètres
         stringparams=stringparams[1:]
@@ -501,16 +478,18 @@ for param in stringparams.split("&"):#on découpe les paramètres sur le '&'
 
 
 s=SearchParser()
+#xbmcplugin.endOfDirectory( handle=int( sys.argv[ 1 ] ), succeeded=False)
 if "loadvideo" in parametres.keys():
+    
     # Play video
     urlVideoPage=urllib.unquote_plus(parametres["url"])
     print "urlVideoPage: "
     print urlVideoPage
-    s.loadVideo(urlVideoPage)
+    print parametres
+    s.loadVideo(urlVideoPage, parametres["title"], parametres["thumbnail"] )
 else:
     # Video list
-    #s.feed("http://plus7.arte.tv/fr/streaming-home/1698112,templateId=renderCarouselXml,CmPage=1697480,CmPart=com.arte-tv.streaming.xml")
     s.parse()
     
-    xbmcplugin.endOfDirectory(int(sys.argv[1]))
+xbmcplugin.endOfDirectory(int(sys.argv[1]))
 

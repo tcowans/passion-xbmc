@@ -1,4 +1,4 @@
-﻿﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+﻿﻿﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <strings>
     <!-- Les strings de 30000 à 30999 sont réservées aux paramètres plug-in -->
     <!--GENERAL STRINGS -->
@@ -22,7 +22,7 @@
     <string id="30012">MPlayer</string>
     <string id="30013">DVD Player</string>
 
-    <string id="30015">Télécharger et lire la vidéo</string>
+    <string id="30015">Télécharger au démarrage les descriptions des vidéos (plus long)</string>
     <string id="30016">Chemin des Téléchargements</string>
     <string id="30017">Demander le Téléchargement avant la lecture de la vidéo</string>
 
@@ -31,15 +31,15 @@
     <string id="30101">Enregistrer sous...</string>
 
     <!--DIALOG STRINGS -->
-    <string id="30200">Téléchargement terminé</string>
-    <string id="30201">Erreur!</string>
-    <string id="30202">Vous devez d'abord spécifier un dossier</string>
+    <string id="30200">Premier démarrage du plugin</string>
+    <string id="30201">Merci de sélectionner la langue par defaut des vidéos</string>
+    <string id="30202">Erreur!</string>
     <string id="30203">dans les paramètres du plugin!</string>
-    <string id="30204">Impossible de récuperer l'URL de la vidéo</string>
+    <string id="30204">Liste des vidéos d'Arte+7</string>
     <string id="30205">Veuillez essayer d'utiliser un proxy ('Auto' est recommandé)</string>
     <string id="30206">Parametres du proxy mal defini</string>
     <string id="30207">Veuillez verifiez l'adresse IP et le port</string>
-    <string id="30208">Téléchargement en cours ...</string>
+    <string id="30208">Chargement en cours ...</string>
     <string id="30209">Que voulez vous faire?</string>
     <string id="30210">Stream</string>
     <string id="30211">Exit</string>
