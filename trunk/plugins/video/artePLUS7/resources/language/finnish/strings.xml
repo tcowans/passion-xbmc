@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings> <!--  19.5.2009 Finnish   -->
+    <!--GENERAL STRINGS -->
+    <string id="30000">Arte +7</string>
+
+    <!--SETTINGS STRINGS -->
+    <string id="30001">Videoiden kieli:</string>
+    <string id="30002">Ranska</string>
+    <string id="30003">Saksa</string>
+
+    <string id="30004">Välipalvelin :</string>
+    <string id="30005">Ei ole</string>
+    <string id="30006">Automaattinen</string>
+    <string id="30007">IP-osoite</string>
+
+    <string id="30008">Välipalvelimen IP-osoite:</string>
+    <string id="30009">Välipalvelimen portti :</string>
+
+    <string id="30010">Videotoistin</string>
+    <string id="30011">Automaattinen</string>
+    <string id="30012">MPlayer</string>
+    <string id="30013">DVD Player</string>
+
+    <string id="30015">Lataa käynnistyessä videon selite (hitaampi)</string>
+    <string id="30016">Latauspolku</string>
+    <string id="30017">Kysy latauksesta ennen toistoa</string>
+
+    <!--CONTEXT MENU STRINGS -->
+    <string id="30100">Tallenna...</string>
+    <string id="30101">Tallenna alemmat...</string>
+
+    <!--DIALOG STRINGS -->
+    <string id="30200">Lisäkkeen ensimmäinen käynnistys</string>
+    <string id="30201">Valitse videoiden kieli</string>
+    <string id="30202">Virhe</string>
+    <string id="30203">lisäkkeen asetuksissa!</string>
+    <string id="30204">Arte+7 video-luettelo</string>
+    <string id="30205">Yritä käyttää välipalvelinta ('Automaattinen' on suositeltava)</string>
+    <string id="30206">Välipalvelimen asetukset on sopimattomat</string>
+    <string id="30207">Tarkista IP-osoite ja portin numero</string>
+    <string id="30208">Ladataan ...</string>
+    <string id="30209">Mitä haluat tehdä?</string>
+    <string id="30210">Katso</string>
+    <string id="30211">Poistu</string>
+
+</strings>
