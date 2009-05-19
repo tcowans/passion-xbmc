@@ -14,7 +14,7 @@
     <string id="30007">IP-osoite</string>
 
     <string id="30008">Välipalvelimen IP-osoite:</string>
-    <string id="30009">Välipalvelimen portti :</string>
+    <string id="30009">Välipalvelimen portti:</string>
 
     <string id="30010">Videotoistin</string>
     <string id="30011">Automaattinen</string>
@@ -30,10 +30,10 @@
     <string id="30101">Tallenna alemmat...</string>
 
     <!--DIALOG STRINGS -->
-    <string id="30200">Lisäkkeen ensimmäinen käynnistys</string>
+    <string id="30200">Lisäosan ensimmäinen käynnistys</string>
     <string id="30201">Valitse videoiden kieli</string>
     <string id="30202">Virhe</string>
-    <string id="30203">lisäkkeen asetuksissa!</string>
+    <string id="30203">lisäosan asetuksissa!</string>
     <string id="30204">Arte+7 video-luettelo</string>
     <string id="30205">Yritä käyttää välipalvelinta ('Automaattinen' on suositeltava)</string>
     <string id="30206">Välipalvelimen asetukset on sopimattomat</string>
