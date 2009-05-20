@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+    <!-- Les strings de 30000 à 30999 sont réservées aux paramètres plug-in -->
+    <!--GENERAL STRINGS -->
+    <string id="30000">Arte +7</string>
+
+    <!--SETTINGS STRINGS -->
+    <string id="30001">Video Sprache :</string>
+    <string id="30002">Französisch</string>
+    <string id="30003">Deutsch</string>
+
+    <string id="30004">Proxy :</string>
+    <string id="30005">Keiner</string>
+    <string id="30006">Auto</string>
+    <string id="30007">IP</string>
+
+    <string id="30008">Proxy IP Addresse :</string>
+    <string id="30009">Proxy Port :</string>
+
+    <string id="30010">Video Player</string>
+    <string id="30011">Auto</string>
+    <string id="30012">MPlayer</string>
+    <string id="30013">DVD Player</string>
+
+    <string id="30015">Video Beschreibung beim Starten downloaden (langsamer)</string>
+    <string id="30016">Download Pfad</string>
+    <string id="30017">Vor dem Abspielen nach Download fragen</string>
+
+    <!--CONTEXT MENU STRINGS -->
+    <string id="30100">Enregistrer...</string>
+    <string id="30101">Enregistrer sous...</string>
+
+    <!--DIALOG STRINGS -->
+    <string id="30200">Erster Plugin Start</string>
+    <string id="30201">Bitte Standard Video Sprache wählen</string>
+    <string id="30202">Fehler</string>
+    <string id="30203">in den Plugin Einstellungen!</string>
+    <string id="30204">Arte+7 Video Liste</string>
+    <string id="30205">Bitte versuchen einen Proxy zu verwenden ('Auto' empfohlen)</string>
+    <string id="30206">Proxy Einstellungen fehlerhaft</string>
+    <string id="30207">Bitte IP und Port überprüfen</string>
+    <string id="30208">Lade ...</string>
+    <string id="30209">Was möchten Sie tun?</string>
+    <string id="30210">Stream</string>
+    <string id="30211">Exit</string>
+
+
+</strings>
