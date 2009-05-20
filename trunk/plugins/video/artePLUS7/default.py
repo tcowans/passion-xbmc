@@ -25,23 +25,27 @@ Place in Q:\plugins\video\artePLUS7
 07-12-08 Version Beta1.1 by Seb
     - Corrected progress bar update issue
 07-12-08 Version Beta2 by Temhil
-    - Improved algorithm with proxy use, no proxy is use only for a video (not all of them)
-05-10-09 Version 1.0 by Temhil
+    - Improved algorithm with proxy use, now proxy is used only for a video (not for the list)
+05-10-09 Version pre-1.0 by Temhil
     - Added automatic proxy support (using webproxy www.surferanonymement.com) 
     - Added plugin settings menu
     - Added video description window
     - Added video info while playing
+05-19-09 Version pre-1.0b by Temhil
+    - Added German language (thanks to Lolo)
+    - Added finnish language (thanks to Kottis)
+    - Fixed few localization bug (few strings still in french) 
 """
 
 __script__ = "Unknown"
 __plugin__ = "artePLUS7"
-__author__ = "Temhil"
+__author__ = "Lolol, Temhil, Seb"
 __url__ = "http://passion-xbmc.org/index.php"
 __svn_url__ = "http://code.google.com/p/passion-xbmc/source/browse/#svn/trunk/plugins/video/artePLUS7"
 __credits__ = "Team XBMC Passion"
 __platform__ = "xbmc media center"
-__date__ = "10-05-2009"
-__version__ = "1.0"
+__date__ = "19-05-2009"
+__version__ = "pre-1.0b"
 __svn_revision__ = 0
 
 import xml.dom.minidom, urllib, os, string, traceback, time, re
@@ -204,7 +208,7 @@ class SearchParser:
                 req=urllib2.Request(videoPage)
             else:
                 dialogError = xbmcgui.Dialog()
-                ok = dialogError.ok(xbmc.getLocalizedString( 30201 ), xbmc.getLocalizedString( 30206 )+'\n\n'+xbmc.getLocalizedString( 30207 ))
+                ok = dialogError.ok(__language__( 30201 ), __language__( 30206 )+'\n\n' + __language__( 30207 ))
                     
                     
         else:
@@ -278,7 +282,7 @@ class SearchParser:
         else:
             dialogLoading.close()
             dialogError = xbmcgui.Dialog()
-            ok = dialogError.ok(xbmc.getLocalizedString( 30201 ), xbmc.getLocalizedString( 30204 )+'\n\n'+xbmc.getLocalizedString( 30205 ))
+            ok = dialogError.ok(__language__( 30201 ), __language__( 30204 )+'\n\n' + __language__( 30205 ))
                    
 #    def downloadFile(self, source, destination):
 #        """
