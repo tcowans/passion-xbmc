@@ -31,7 +31,7 @@
 		<control type="image" id="30">
 			<description>GameKult video Logo</description>
 			<posx>15</posx>
-			<posy>15</posy>
+			<posy>25</posy>
 			<width>220</width>
 			<aspectratio>keep</aspectratio>
 			<texture>gkv_logo.png</texture>
@@ -39,9 +39,9 @@
 		<control type="image" id="31">
 			<description>List background</description>
 			<posx>30</posx>
-			<posy>150</posy>
+			<posy>100</posy>
 			<width>660</width>
-			<height>375</height>
+			<height>425</height>
 			<texture>gkv_solid.png</texture>
 		</control>
 		<!-- END: Images -->
@@ -116,7 +116,7 @@
 		<control type="image">
 			<description>Emission tab NOT selected</description>
 			<posx>30</posx>
-			<posy>120</posy>
+			<posy>70</posy>
 			<width>100</width>
 			<height>30</height>
 			<onright>160</onright>
@@ -127,7 +127,7 @@
 		<control type="image">
 			<description>Emission tab selected</description>
 			<posx>30</posx>
-			<posy>120</posy>
+			<posy>70</posy>
 			<width>100</width>
 			<height>30</height>
 			<onright>160</onright>
@@ -138,7 +138,7 @@
 		<control type="image">
 			<description>Trailers tab NOT selected</description>
 			<posx>142</posx>
-			<posy>120</posy>
+			<posy>70</posy>
 			<width>100</width>
 			<height>30</height>
 			<texture>gkv_tab-noselect.png</texture>
@@ -148,7 +148,7 @@
 		<control type="image">
 			<description>Trailers tab selected</description>
 			<posx>142</posx>
-			<posy>120</posy>
+			<posy>70</posy>
 			<width>100</width>
 			<height>30</height>
 			<texture>gkv_tab-select.png</texture>
@@ -158,7 +158,7 @@
 		<control type="image">
 			<description>Gameplay tab NOT selected</description>
 			<posx>254</posx>
-			<posy>120</posy>
+			<posy>70</posy>
 			<width>100</width>
 			<height>30</height>
 			<texture>gkv_tab-noselect.png</texture>
@@ -168,7 +168,7 @@
 		<control type="image">
 			<description>Gameplay tab selected</description>
 			<posx>254</posx>
-			<posy>120</posy>
+			<posy>70</posy>
 			<width>100</width>
 			<height>30</height>
 			<texture>gkv_tab-select.png</texture>
@@ -178,7 +178,7 @@
 		<control type="image">
 			<description>Retro tab NOT selected</description>
 			<posx>366</posx>
-			<posy>120</posy>
+			<posy>70</posy>
 			<width>100</width>
 			<height>30</height>
 			<texture>gkv_tab-noselect.png</texture>
@@ -188,7 +188,7 @@
 		<control type="image">
 			<description>Retro tab selected</description>
 			<posx>366</posx>
-			<posy>120</posy>
+			<posy>70</posy>
 			<width>100</width>
 			<height>30</height>
 			<texture>gkv_tab-select.png</texture>
@@ -198,7 +198,7 @@
 		<control type="image">
 			<description>Settings tab NOT selected</description>
 			<posx>478</posx>
-			<posy>120</posy>
+			<posy>70</posy>
 			<width>100</width>
 			<height>30</height>
 			<texture>gkv_tab-noselect.png</texture>
@@ -208,7 +208,7 @@
 		<control type="image">
 			<description>Settings tab selected</description>
 			<posx>478</posx>
-			<posy>120</posy>
+			<posy>70</posy>
 			<width>100</width>
 			<height>30</height>
 			<texture>gkv_tab-select.png</texture>
@@ -218,7 +218,7 @@
 		<control type="image">
 			<description>About tab NOT selected</description>
 			<posx>590</posx>
-			<posy>120</posy>
+			<posy>70</posy>
 			<width>100</width>
 			<height>30</height>
 			<texture>gkv_tab-noselect.png</texture>
@@ -228,7 +228,7 @@
 		<control type="image">
 			<description>About tab selected</description>
 			<posx>590</posx>
-			<posy>120</posy>
+			<posy>70</posy>
 			<width>100</width>
 			<height>30</height>
 			<texture>gkv_tab-select.png</texture>
@@ -244,7 +244,7 @@
 				<control type="button" id="150">
 					<description>Emission button tab selected</description>
 					<posx>30</posx>
-					<posy>120</posy>
+					<posy>70</posy>
 					<width>100</width>
 					<height>30</height>
 					<onleft>200</onleft>
@@ -260,7 +260,7 @@
 				<control type="label" id="151">
 					<description>Emission Label with tab selected no focus</description>
 					<posx>30</posx>
-					<posy>120</posy>
+					<posy>70</posy>
 					<width>100</width>
 					<height>30</height>
 					<textoffsetx>7</textoffsetx>
@@ -274,7 +274,7 @@
 				<control type="label" id="152">
 					<description>Emission Label without tab selected no focus</description>
 					<posx>30</posx>
-					<posy>120</posy>
+					<posy>70</posy>
 					<width>100</width>
 					<height>30</height>
 					<textoffsetx>7</textoffsetx>
@@ -288,7 +288,7 @@
 				<control type="label" id="153">
 					<description>Emission Label Focus</description>
 					<posx>30</posx>
-					<posy>120</posy>
+					<posy>70</posy>
 					<width>100</width>
 					<height>30</height>
 					<textoffsetx>7</textoffsetx>
@@ -304,7 +304,7 @@
 				<control type="button" id="160">
 					<description>Trailers button tab selected</description>
 					<posx>142</posx>
-					<posy>120</posy>
+					<posy>70</posy>
 					<width>100</width>
 					<height>30</height>
 					<onleft>150</onleft>
@@ -320,7 +320,7 @@
 				<control type="label" id="161">
 					<description>Trailers Label with tab selected no focus</description>
 					<posx>142</posx>
-					<posy>120</posy>
+					<posy>70</posy>
 					<width>100</width>
 					<height>30</height>
 					<textoffsetx>7</textoffsetx>
@@ -334,7 +334,7 @@
 				<control type="label" id="162">
 					<description>Trailers Label without tab selected no focus</description>
 					<posx>142</posx>
-					<posy>120</posy>
+					<posy>70</posy>
 					<width>100</width>
 					<height>30</height>
 					<textoffsetx>7</textoffsetx>
@@ -348,7 +348,7 @@
 				<control type="label" id="163">
 					<description>Trailers Label Focus</description>
 					<posx>142</posx>
-					<posy>120</posy>
+					<posy>70</posy>
 					<width>100</width>
 					<height>30</height>
 					<textoffsetx>7</textoffsetx>
@@ -364,7 +364,7 @@
 				<control type="button" id="170">
 					<description>Gameplay button tab selected</description>
 					<posx>254</posx>
-					<posy>120</posy>
+					<posy>70</posy>
 					<width>100</width>
 					<height>30</height>
 					<onleft>160</onleft>
@@ -380,7 +380,7 @@
 				<control type="label" id="171">
 					<description>Gameplay Label with tab selected no focus</description>
 					<posx>254</posx>
-					<posy>120</posy>
+					<posy>70</posy>
 					<width>100</width>
 					<height>30</height>
 					<textoffsetx>7</textoffsetx>
@@ -394,7 +394,7 @@
 				<control type="label" id="172">
 					<description>Gameplay Label without tab selected no focus</description>
 					<posx>254</posx>
-					<posy>120</posy>
+					<posy>70</posy>
 					<width>100</width>
 					<height>30</height>
 					<textoffsetx>7</textoffsetx>
@@ -408,7 +408,7 @@
 				<control type="label" id="173">
 					<description>Gameplay Label Focus</description>
 					<posx>254</posx>
-					<posy>120</posy>
+					<posy>70</posy>
 					<width>100</width>
 					<height>30</height>
 					<textoffsetx>7</textoffsetx>
@@ -424,7 +424,7 @@
 				<control type="button" id="180">
 					<description>Retro button tab selected</description>
 					<posx>366</posx>
-					<posy>120</posy>
+					<posy>70</posy>
 					<width>100</width>
 					<height>30</height>
 					<onleft>170</onleft>
@@ -440,7 +440,7 @@
 				<control type="label" id="181">
 					<description>Retro Label with tab selected no focus</description>
 					<posx>366</posx>
-					<posy>120</posy>
+					<posy>70</posy>
 					<width>100</width>
 					<height>30</height>
 					<textoffsetx>7</textoffsetx>
@@ -454,7 +454,7 @@
 				<control type="label" id="182">
 					<description>Retro Label without tab selected no focus</description>
 					<posx>366</posx>
-					<posy>120</posy>
+					<posy>70</posy>
 					<width>100</width>
 					<height>30</height>
 					<textoffsetx>7</textoffsetx>
@@ -468,7 +468,7 @@
 				<control type="label" id="183">
 					<description>Retro Label Focus</description>
 					<posx>366</posx>
-					<posy>120</posy>
+					<posy>70</posy>
 					<width>100</width>
 					<height>30</height>
 					<textoffsetx>7</textoffsetx>
@@ -484,7 +484,7 @@
 				<control type="button" id="190">
 					<description>Settings button tab selected</description>
 					<posx>478</posx>
-					<posy>120</posy>
+					<posy>70</posy>
 					<width>100</width>
 					<height>30</height>
 					<onleft>180</onleft>
@@ -500,7 +500,7 @@
 				<control type="label" id="191">
 					<description>Settings Label with tab selected no focus</description>
 					<posx>478</posx>
-					<posy>120</posy>
+					<posy>70</posy>
 					<width>100</width>
 					<height>30</height>
 					<textoffsetx>7</textoffsetx>
@@ -514,7 +514,7 @@
 				<control type="label" id="192">
 					<description>Settings Label without tab selected no focus</description>
 					<posx>478</posx>
-					<posy>120</posy>
+					<posy>70</posy>
 					<width>100</width>
 					<height>30</height>
 					<textoffsetx>7</textoffsetx>
@@ -528,7 +528,7 @@
 				<control type="label" id="193">
 					<description>Settings Label Focus</description>
 					<posx>478</posx>
-					<posy>120</posy>
+					<posy>70</posy>
 					<width>100</width>
 					<height>30</height>
 					<textoffsetx>7</textoffsetx>
@@ -544,7 +544,7 @@
 				<control type="button" id="200">
 					<description>About button tab selected</description>
 					<posx>590</posx>
-					<posy>120</posy>
+					<posy>70</posy>
 					<width>100</width>
 					<height>30</height>
 					<onleft>190</onleft>
@@ -560,7 +560,7 @@
 				<control type="label" id="201">
 					<description>About Label with tab selected no focus</description>
 					<posx>590</posx>
-					<posy>120</posy>
+					<posy>70</posy>
 					<width>100</width>
 					<height>30</height>
 					<textoffsetx>7</textoffsetx>
@@ -574,7 +574,7 @@
 				<control type="label" id="202">
 					<description>About Label without tab selected no focus</description>
 					<posx>590</posx>
-					<posy>120</posy>
+					<posy>70</posy>
 					<width>100</width>
 					<height>30</height>
 					<textoffsetx>7</textoffsetx>
@@ -588,7 +588,7 @@
 				<control type="label" id="203">
 					<description>About Label Focus</description>
 					<posx>590</posx>
-					<posy>120</posy>
+					<posy>70</posy>
 					<width>100</width>
 					<height>30</height>
 					<textoffsetx>7</textoffsetx>
@@ -610,9 +610,9 @@
 			<!-- Videos EMISSION icons -->
 			<control type="panel" id="50">
 				<posx>55</posx>
-				<posy>155</posy>
+				<posy>105</posy>
 				<width>620</width>
-				<height>370</height>
+				<height>420</height>
 				<onleft>150</onleft>
 				<onright>60</onright>
 				<onup>9000</onup>
@@ -697,9 +697,9 @@
 			<!-- Videos EMISSION list -->
 			<control type="list" id="51">
 				<posx>55</posx>
-				<posy>155</posy>
+				<posy>105</posy>
 				<width>620</width>
-				<height>370</height>
+				<height>420</height>
 				<onleft>150</onleft>
 				<onright>60</onright>
 				<onup>9000</onup>
@@ -710,7 +710,7 @@
 				<visible>!IsEmpty(Container.Property(view-Emission)) + !IsEmpty(Container.Property(view-List))</visible> 
 				-->
 				<visible>[!IsEmpty(Container.Property(view-Emission)) |  !IsEmpty(Container.Property(view-Trailers)) | !IsEmpty(Container.Property(view-Retro)) | !IsEmpty(Container(50).Property(view-Gameplay))] + !IsEmpty(Container.Property(view-List))</visible> 
-				<itemlayout height="121" width="150">
+				<itemlayout height="141" width="150">
 					<control type="image">
 						<posx>5</posx>
 						<posy>25</posy>
@@ -723,7 +723,7 @@
 					<control type="label">
 						<posx>9</posx>
 						<posy>5</posy>
-						<width>140</width>
+						<width>340</width>
 						<height>90</height>
 						<font>font11</font>
 						<textcolor>FF000000</textcolor>
@@ -733,35 +733,34 @@
 						<info>ListItem.Label</info>
 					</control>
 				</itemlayout>
-				<focusedlayout height="121" width="150">
-					<control type="image">
+				<focusedlayout height="141" width="150">
+					<control type="image" id="255">
+						<!--
 						<width>575</width>
+						-->
+						<width>152</width>
 						<height>130</height>
-						<posx>15</posx>
+						<posx>-1</posx>
 						<posy>5</posy>
 						<texture>gkv_list-focus.png</texture>
+						<!--
 						<animation effect="zoom" reversible="false" center="auto" start="100" end="110" time="100">focus</animation>
 						<animation type="unfocus">
 							<effect reversible="false" type="fade" start="100" end="0" time="200" />
 							<effect reversible="false" type="zoom" center="auto" start="110" end="100" time="100" />
 						</animation>
-					</control>
-					<control type="image">
-						<posx>5</posx>
-						<posy>25</posy>
-						<width>140</width>
-						<height>90</height>
-						<aspectratio>keep</aspectratio>
-						<info>ListItem.Icon</info>
-						<texture>gkv_noImageAvailable_wide.jpg</texture>
-						
-						<animation reversible="false" effect="zoom" center="auto" start="100" end="120" time="100">focus</animation>
-						<animation reversible="false" effect="zoom" center="auto" start="120" end="100" time="100">unfocus</animation>
+						-->
+						<animation type="focus">
+							<effect reversible="false" type="fade" start="0" end="100" time="400" />
+							<effect reversible="false" type="slide" end="195,0" time="400" /> <!-- ((140*4.5-140)/2)-70 ??-->
+							<effect type="zoom" center="65,0" start="100" end="425,100" time="400" />
+						</animation>
+						<visible>Control.HasFocus(51)</visible>
 					</control>
 					<control type="label">
 						<posx>9</posx>
 						<posy>5</posy>
-						<width>240</width>
+						<width>340</width>
 						<height>90</height>
 						<font>font11</font>
 						<textcolor>FFCC0000</textcolor>
@@ -776,8 +775,9 @@
 							<effect type="slide" end="0,0" time="100" />
 						</animation>
 					</control>
+					<!--
 					<control type="label">
-						<posx>179</posx>
+						<posx>5</posx>
 						<posy>50</posy>
 						<width>240</width>
 						<height>50</height>
@@ -786,20 +786,40 @@
 						<align>left</align>
 						<aligny>top</aligny>
 						<label>Infos ...</label>
-						<!--
-						<info>ListItem.Label2</info>
-						 -->
+						<animation type="focus">
+							<effect reversible="true" type="fade" start="0" end="100" time="400" />
+							<effect reversible="true" type="slide" end="174,0" time="400" /> --><!-- ((140*4.5-140)/2)-70 ??--><!--
+						</animation>
 					</control>
+					-->
 					<control type="label">
+						<!--
 						<posx>179</posx>
-						<posy>80</posy>
-						<width>240</width>
+						 -->
+						<posx>5</posx>
+						<posy>40</posy>
+						<width>500</width>
 						<height>50</height>
 						<font>font11</font>
 						<textcolor>FF000000</textcolor>
 						<align>left</align>
 						<aligny>top</aligny>
-						<label>Encore des infos ...</label>
+						<info>ListItem.Label2</info>
+						<animation type="focus">
+							<effect reversible="true" type="fade" start="0" end="100" time="400" />
+							<effect reversible="true" type="slide" end="174,0" time="400" /> <!-- ((140*4.5-140)/2)-70 ??-->
+						</animation>
+					</control>
+					<control type="image">
+						<posx>5</posx>
+						<posy>25</posy>
+						<width>140</width>
+						<height>90</height>
+						<aspectratio>keep</aspectratio>
+						<info>ListItem.Icon</info>
+						<texture>gkv_noImageAvailable_wide.jpg</texture>
+						<animation reversible="false" effect="zoom" center="auto" start="100" end="120" time="100">focus</animation>
+						<animation reversible="false" effect="zoom" center="auto" start="120" end="100" time="100">unfocus</animation>
 					</control>
 				</focusedlayout>
 			</control>
@@ -809,9 +829,9 @@
 			<!-- Videos OTHERS icons -->
 			<control type="panel" id="52">
 				<posx>55</posx>
-				<posy>155</posy>
+				<posy>105</posy>
 				<width>620</width>
-				<height>370</height>
+				<height>420</height>
 				<onleft>150</onleft>
 				<onright>60</onright>
 				<onup>9000</onup>
@@ -883,9 +903,9 @@
 			<!-- Videos SUB SERIES icons -->
 			<control type="panel" id="53">
 				<posx>55</posx>
-				<posy>155</posy>
+				<posy>105</posy>
 				<width>620</width>
-				<height>370</height>
+				<height>420</height>
 				<onleft>150</onleft>
 				<onright>60</onright>
 				<onup>9000</onup>
@@ -1070,8 +1090,8 @@
 			<control type="group">
 				<visible>Control.isVisible(50) | Control.isVisible(51) | Control.isVisible(52) | Control.isVisible(53) | Control.isVisible(55)</visible>
 				<control type="button">
-					<posx>674</posx>
-					<posy>150</posy>
+					<posx>690</posx>
+					<posy>100</posy>
 					<width>16</width>
 					<height>16</height>
 					<texturenofocus>tac_scrollbar-up-arrow.png</texturenofocus>
@@ -1079,10 +1099,10 @@
 					<onclick>PageUp(60)</onclick>
 				</control>
 				<control type="scrollbar" id="60">
-					<posx>674</posx>
-					<posy>164</posy>
+					<posx>690</posx>
+					<posy>114</posy>
 					<width>16</width>
-					<height>348</height>
+					<height>398</height>
 					<texturesliderbackground border="4">tac_scrollbar-bg.png</texturesliderbackground>
 					<texturesliderbar border="3">tac_scrollbar-bar-nofocus.png</texturesliderbar>
 					<texturesliderbarfocus border="3">tac_scrollbar-bar-focus.png</texturesliderbarfocus>
@@ -1095,7 +1115,7 @@
 					<orientation>vertical</orientation>
 				</control>
 				<control type="button">
-					<posx>674</posx>
+					<posx>690</posx>
 					<posy>509</posy>
 					<width>16</width>
 					<height>16</height>
