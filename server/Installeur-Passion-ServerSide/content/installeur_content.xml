@@ -1552,11 +1552,11 @@ Another new functionality: a forum section is available allowing to read last po
 Note: This script is still in development and this version has a bug on MAC OSX platform which makes XBMC crash. If you are using XBMC on MAC please use Beta4 release until we fix this issue. Thank you.</description_en>
 		</entry>
 		<entry>
-			<fileName>Navi-X_v2.6.zip</fileName>
+			<fileName>Navi-X_v2.9.zip</fileName>
 			<title>Navi-X (All Platforms)</title>
-			<version>2.6</version>
-			<date>21-03-09</date>
-			<added>24-03-09</added>
+			<version>2.9</version>
+			<date>06-06-09</date>
+			<added>18-06-09</added>
 			<author>rodejo</author>
 			<lang>en</lang>
 			<iconURL></iconURL>
@@ -1764,11 +1764,11 @@ PROD InfinityTV Script Last Updated 12/18/08 Originally Developed by Infinity th
 Note: The UI, and more especially the command have been design for XBOX with a pad (difficult to use it with a remote)</description_en>
 		</entry>
 		<entry>
-			<fileName>RunXM_Install_v0.17a.zip</fileName>
+			<fileName>RunXM_Install_v0.18.zip</fileName>
 			<title>RunXM - New Install</title>
-			<version>0.17a</version>
-			<date>12-03-09</date>
-			<added>13-03-09</added>
+			<version>0.18</version>
+			<date>01-06-09</date>
+			<added>18-06-09</added>
 			<author>calvin8714</author>
 			<lang>en</lang>
 			<iconURL></iconURL>
@@ -1803,11 +1803,11 @@ info
 - The Song Info from XM is not always perfect.</description_en>
 		</entry>
 		<entry>
-			<fileName>RunXM_Upgrade_v0.17a.zip</fileName>
+			<fileName>RunXM_Upgrade_v0.18.zip</fileName>
 			<title>RunXM - Upgrade</title>
-			<version>0.17a</version>
-			<date>12-03-09</date>
-			<added>13-03-09</added>
+			<version>0.17b</version>
+			<date>01-06-09</date>
+			<added>18-06-09</added>
 			<author>calvin8714</author>
 			<lang>en</lang>
 			<iconURL></iconURL>
@@ -2536,36 +2536,24 @@ library_to_update="video"</description_en>
 Make sure to set your username and password in RunSirius.py!</description_en>
 		</entry>
 		<entry>
-			<fileName>Hockey_Streams_Beta_0.1.zip</fileName>
+			<fileName>HockeyStreams_r965.zip</fileName>
 			<title>Hockey Streams</title>
-			<version>Beta 0.1</version>
+			<version>r965</version>
 			<lang>en</lang>
-			<date>16-02-09</date>
-			<added>07-03-09</added>
+			<date>30-04-09</date>
+			<added>16-05-09</added>
 			<author>f3ar007</author>
 			<previewPictureURL></previewPictureURL>
 			<previewVideoURL></previewVideoURL>
 			<description_fr></description_fr>
-			<description_en>This is a beta! Originally, I did not intend to release this, however; Upon completion, I changed that.
-It is a very simple script.  It logs into http://hockeystreams.com, allows the user to enter a team, finds the game (HQ and HD links),
+			<description_en>This plugin logs into http://hockeystreams.com, allows the user to enter a team, finds the game (HQ and HD links),
 and updates IP exceptions.  Information is displayed on screen, and everything is controlled with buttons.
 There's no progress bars but everything appears on screen once finished processing, except team_name.
 It uses, mechanize, beautifulsoup, clientform, and clientcookie.
 
 It is free, and not related to http://hockeystreams.com at all, all it does is access the site for the user.
 
-Simply put, this makes HockeyStreams.com available directly from XBMC for Xbox!
-
-Installation:
-Since this is Beta v0.1 you need to follow these directions:
-- UnRAR to a folder named _new
-- Edit IPException.py and replace *changethis* where username and password are located.
-- Upload to _new Q:\scripts (which should be E:\Apps\XBMC\scripts\), final directory is Q:\scripts\_new (this will be changed in the next revision.
-- Run the Script
-- Login First!!!
-- Enter Team
-- IP Exception, if Saved IP and External IP are different, at first run Saved IP will be 0.0.0.0, just update!
-- Play HQ or HD!</description_en>
+Simply put, this makes HockeyStreams.com available directly from XBMC for Xbox!</description_en>
 		</entry>
 		<entry>
 			<fileName>Radio_Blug_Club_28-12-08.zip</fileName>
@@ -2593,17 +2581,17 @@ NB: Mon historique de recherche est incluse pour cette version
 			<description_en></description_en>
 		</entry>
 		<entry>
-			<fileName>TWC_Supplemental_v1.5.1.zip</fileName>
+			<fileName>TWC Supplemental_v1.5.5.zip</fileName>
 			<title>TWC Supplemental</title>
-			<version>1.5.1</version>
-			<date>21-02-09</date>
-			<added>07-03-09</added>
+			<version>1.5.5</version>
+			<date>13-04-09</date>
+			<added>16-05-09</added>
 			<author>Nuka1195</author>
-			<lang></lang>
-			<iconURL>multi</iconURL>
+			<lang>multi</lang>
+			<iconURL></iconURL>
 			<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Scripts/TWC_Supplemental.jpg</previewPictureURL>
 			<previewVideoURL></previewVideoURL>
-			<description_fr></description_fr>
+			<description_fr>Ce affichage affiche des information plus detaillées sur la météo à partir du site weather.com</description_fr>
 			<description_en>Here is a script that displays addition forecasts and maps from weather.com</description_en>
 		</entry>
 		<entry>
@@ -2637,11 +2625,11 @@ NB: Mon historique de recherche est incluse pour cette version
 Note: It has been tested on the XBOX only so far.</description_en>
 		</entry>
 		<entry>
-			<fileName>Aptitude_09-03-09.zip</fileName>
+			<fileName>Aptitude_r900.zip</fileName>
 			<title>Aptitude</title>
-			<version>09-03-09</version>
-			<date>09-03-09</date>
-			<added>13-03-09</added>
+			<version>r900</version>
+			<date>05-04-09</date>
+			<added>16-05-09</added>
 			<author>Tobias Arrskog</author>
 			<lang>en</lang>
 			<iconURL></iconURL>
@@ -2722,6 +2710,22 @@ It relies on the default.py having the standard python __version__ document tag,
 
 Cette version a été testée avec la version d'XBMC 8.10 pour windows</description_fr>
 			<description_en>An Emule interface for XBMC</description_en>
+		</entry>
+		<entry>
+			<fileName>XBMCCLC_r979.zip</fileName>
+			<title>XBMCCLC</title>
+			<version>r979</version>
+			<date>02-05-09</date>
+			<added>16-05-09</added>
+			<author>Alexpoet</author>
+			<lang>en</lang>
+			<iconURL></iconURL>
+			<previewPictureURL></previewPictureURL>
+			<previewVideoURL></previewVideoURL>
+			<description_fr></description_fr>
+			<description_en>XBMC Command-Line Client (XBMC-CLC) exposes the XBMC Python interpreter to a command-prompt, for quick execution and debugging of Python code within the XBMC Python environment.
+
+Please read the readme.txt file for further information</description_en>
 		</entry>
 	</scripts>
 	<!-- FIN Section Scripts -->
@@ -2827,6 +2831,21 @@ Sur Jamendo les artistes permettent à tous de télécharger et d'écouter leur 
 				<description_en>Listen music on Jamendo.com 
 On Jamendo artists allow anyone to download and share their music. It's free, legal and unlimited.</description_en>
 			</entry>
+			<entry>
+				<fileName>ListenLiveEU_r932.zip</fileName>
+				<title>ListenLiveEU</title>
+				<version>r932</version>
+				<date>16-04-09</date>
+				<added>16-05-09</added>
+				<author>bootsy</author>
+				<lang>multi</lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Listen European radio stations available on www.listenlive.eu, a web radio directory showcasing over 4000 radio stations from across Europe streaming live on the internet.</description_en>
+			</entry>
 		</musicplugin>
 		<!-- FIN Sous-section plugins musique -->
 
@@ -2848,11 +2867,11 @@ Vous pouvez aussi utiliser les dossiers de ce plugin comme source pour votre dia
 				<description_en>This plugin allows to browse Passion-XBMC picture gallery (with a lot of fanarts). You can display pictures in fullscreen, slideshow ...</description_en>
 			</entry>
 			<entry>
-				<fileName>Picasa_05-03-09.zip</fileName>
+				<fileName>Picasa_v1.3.4.zip</fileName>
 				<title>Picasa</title>
-				<version>05-03-09</version>
-				<date>05-03-09</date>
-				<added>07-03-09</added>
+				<version>1.3.4</version>
+				<date>02-04-09</date>
+				<added>16-05-09</added>
 				<author>Nuka1195</author>
 				<lang>multi</lang>
 				<iconURL></iconURL>
@@ -2868,11 +2887,11 @@ this probably won't work on xbox as it uses special:// paths.
 I highly suggest media stream skin with the one view (forget what it's called) where the full image displays. this will first show the low rez thumb, then the full rez image will fade in. a very nice view.</description_en>
 			</entry>
 			<entry>
-				<fileName>flickr_05-03-09.zip</fileName>
+				<fileName>flickr_V1.5.1.zip</fileName>
 				<title>flickr</title>
-				<version>05-03-09</version>
-				<date>05-03-09</date>
-				<added>07-03-09</added>
+				<version>1.5.1</version>
+				<date>02-04-09</date>
+				<added>16-05-09</added>
 				<author>Nuka1195</author>
 				<lang>multi</lang>
 				<iconURL></iconURL>
@@ -3010,11 +3029,11 @@ ATTENTION: Les mises a jour sont faites a partir de la branche principale de dev
 WARNING: Update are done for TRUNK branch, that means you will get the last up to date file of projects still in developement. Consecuently it is possible versions you will download with this plugin will have bug or even won't work.</description_en>
 			</entry>
 			<entry>
-				<fileName>SVN_Repo_Installer_1.3.1.zip</fileName>
+				<fileName>SVN_Repo_Installer_v1.7.zip</fileName>
 				<title>SVN Repo Installer</title>
-				<version>1.3.1</version>
-				<date>20-02-09</date>
-				<added>30-03-09</added>
+				<version>1.7</version>
+				<date>08-05-09</date>
+				<added>16-05-09</added>
 				<author>nuka1195</author>
 				<lang>multi</lang>
 				<iconURL></iconURL>
@@ -3070,11 +3089,11 @@ Uses new special:// paths</description_en>
 				<description_en>Give you acces to you scripts from program plugin section</description_en>
 			</entry>
 			<entry>
-				<fileName>XBMC_Zone_Installer_v1.2.zip</fileName>
+				<fileName>XBMC_Zone_Installer_v2.0.zip</fileName>
 				<title>XBMC Zone Installer</title>
-				<version>1.2</version>
-				<date>25-03-09</date>
-				<added>30-03-09</added>
+				<version>2.0</version>
+				<date>11-04-09</date>
+				<added>16-05-09</added>
 				<author>Dan Dar3</author>
 				<lang>multi</lang>
 				<platform></platform>
@@ -3100,11 +3119,11 @@ Uses new special:// paths</description_en>
 				<description_en>Plugin allowing to retrieve last versions of scripts/plugins available in Google code SVN of xbmcworld</description_en>
 			</entry>
 			<entry>
-				<fileName>GoogleReader_v1.0.rar</fileName>
+				<fileName>GoogleReader_v1.1.2.zip</fileName>
 				<title>GoogleReader</title>
-				<version>1.0</version>
-				<date>24-03-09</date>
-				<added>30-03-09</added>
+				<version>1.1.2</version>
+				<date>04-05-09</date>
+				<added>16-05-09</added>
 				<author>BigBellyBilly</author>
 				<lang>multi</lang>
 				<iconURL></iconURL>
@@ -3117,17 +3136,7 @@ Install to your Program Plugins area.
 (You may need to change your skin settings to show the 'Programs' label on XBMC Home Page)
 
 On first run it'll ask you to complete setup ie. Google Username and Password.
-You can change 'items perpage' and if to fetch images etc.
-
-v1.0 Allows you to browse by:
-
-    * Subscriptions
-    * Subscriptions By Label (ie all feeds in the group 'Sports')
-    * Items
-    * Items By Label
-    * Starred
-    * Shared
-    * Notes</description_en>
+You can change 'items perpage' and if to fetch images etc.</description_en>
 			</entry>
 			<entry>
 				<fileName>WebBrowser_18-02-09.zip</fileName>
@@ -3159,7 +3168,7 @@ In order to add a new bookmark, do a right clic and 'Ajouter un site'</descripti
 				<date>10-05-09</date>
 				<added>10-05-09</added>
 				<author>Lolol / Seb / Temhil</author>
-				<lang>multi</lang>
+				<lang>fr-ge</lang>
 				<previewPictureURL>/.passionxbmc/Installeur-Passion/content/ArtePlus7.jpg</previewPictureURL>
 				<previewVideoURL></previewVideoURL>
 				<description_fr>Ce plugin permet de visionner les vidéos disponibles  sur http://plus7.arte.tv (vidéos d'Arte disponible pour 7 jours).
@@ -3167,21 +3176,20 @@ Ce plugin a été développé a l'origine par Lolol, puis réparé par Seb et Te
 Vous devez installer ce plugin dans Plugin\video\
 
 Pour ceux ne résidants pas dans la zone de diffusion du site Web (protection par IP), vous pouvez configurer un proxy qui sera utilisé par le plugin pour vous donner acces au vidéos d'Arte Plus 7 ou bien utilise le proxy web (option auto).</description_fr>
-				<description_en>This plugin allows to watch videos available on http://plus7.arte.tv (Arte videos availbale for 7 days)</description_en>
+				<description_en>This plugin allows to watch videos available on http://plus7.arte.tv (Arte's videos available for 7 days)</description_en>
 			</entry>
 			<entry>
-				<fileName>Canal_Plus_19-11-08.zip</fileName>
+				<fileName>Canal_Plus_Pre-2.0.zip</fileName>
 				<title>Canal Plus</title>
-				<version>19-11-08</version>
-				<date>19-11-08</date>
-				<added>08-02-09</added>
-				<author>Alexsolex</author>
+				<version>Pre-2.0</version>
+				<date>13-05-08</date>
+				<added>14-05-08</added>
+				<author>Alexsolex. Temhil</author>
 				<lang>fr</lang>
 				<iconURL></iconURL>
 				<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Canalplus.jpg</previewPictureURL>
 				<previewVideoURL></previewVideoURL>
-				<description_fr>Ce plugin vous donne acces a toutes les video de la mosaique Canal+.
-Vous choisissez une catégorie, puis une sous catégorie et à vous les videos de Canal+ en visualisation ou en téléchargement haute ou basse qualité</description_fr>
+				<description_fr>Ce plugin vous donne acces a toutes les video de la mosaique Canal+. Vous choisissez une catégorie, puis une sous catégorie et à vous les videos de Canal+ en visualisation ou en téléchargement haute ou basse qualité.</description_fr>
 				<description_en>This plugin allows to watch videos form Canal+ french network (videos only in French)</description_en>
 			</entry>
 			<entry>
@@ -3626,10 +3634,11 @@ des milliers de videos truc et astuces réalisée par des experts sur tous les s
 Thousands of professional-quality how-to videos by accomplished experts on every conceivable topic. See how the experts do it!</description_en>
 			</entry>
 			<entry>
-				<fileName>NL_TV_not a plugin_28-01-09.zip</fileName>
-				<title>NL TV</title>
-				<version>28-01-09</version>
-				<date>28-01-09</date>
+				<fileName>NL_TV2_not a plugin_05-05-09.zip</fileName>
+				<title>NL TV2</title>
+				<version>05-05-09</version>
+				<date>05-05-09</date>
+				<added>16-05-09</added>
 				<author>tikkiew</author>
 				<lang>de</lang>
 				<iconURL></iconURL>
@@ -3789,11 +3798,11 @@ The plugin indexes these pages:
 - G4 Podcasts</description_en>
 			</entry>
 			<entry>
-				<fileName>NBA.com_Videos_r812.zip</fileName>
+				<fileName>NBA.com_Videos_r918.zip</fileName>
 				<title>NBA.com</title>
-				<version>r812</version>
-				<date>16-03-09</date>
-				<added>30-03-09</added>
+				<version>r918</version>
+				<date>15-04-09</date>
+				<added>16-05-09</added>
 				<author>stacked</author>
 				<lang>en</lang>
 				<iconURL></iconURL>
@@ -3900,11 +3909,11 @@ Features:
 				<description_en>Veoh search plugin</description_en>
 			</entry>
 			<entry>
-				<fileName>CNN_Video_05-03-09.zip</fileName>
+				<fileName>CNN_Video_v1.2.2.zip</fileName>
 				<title>CNN Video</title>
-				<version>1.2.1</version>
-				<date>05-03-09</date>
-				<added>06-03-09</added>
+				<version>1.2.2</version>
+				<date>29-03-09</date>
+				<added>16-05-09</added>
 				<author>nuka1195</author>
 				<lang>en</lang>
 				<iconURL></iconURL>
@@ -3965,11 +3974,11 @@ Available Plugin Settings:
 				<description_en>PBS: FRONTLINE, NOVA, and NATURE Video Plugin for XBMC</description_en>
 			</entry>
 			<entry>
-				<fileName>UlmenTV_v1.35.zip</fileName>
+				<fileName>UlmenTV_v1.36.zip</fileName>
 				<title>UlmenTV</title>
-				<version>1.35</version>
-				<date>26-02-2009</date>
-				<added>07-03-09</added>
+				<version>1.36</version>
+				<date>26-04-2009</date>
+				<added>16-05-09</added>
 				<author>bootsy </author>
 				<lang>ge</lang>
 				<iconURL></iconURL>
@@ -3997,11 +4006,11 @@ http://solstice.ischool.utexas.edu/t...lace_Interview
 The Mike Wallace Interview is a series of 30-minute television interviews conducted by host Mike Wallace in 1957-60. Guests include Eldon Edwards, Imperial Wizard of the Ku Klux Klan, Frank Lloyd Wright, Kirk Douglas, Salvador Dali, and more.</description_en>
 			</entry>
 			<entry>
-				<fileName>Fastpasstv_16-02-09.rar</fileName>
+				<fileName>Fastpasstv_15-04-09.zip</fileName>
 				<title>Fastpasstv</title>
-				<version>16-02-09</version>
-				<date>16-02-09</date>
-				<added>16-02-09</added>
+				<version>15-04-09</version>
+				<date>15-04-09</date>
+				<added>16-05-09</added>
 				<author>Voinage</author>
 				<lang>en</lang>
 				<iconURL></iconURL>
@@ -4054,11 +4063,11 @@ It handles the today list, organises shows by date, gives all product reviews, h
 				<description_en>Viivi ja Vagner plugin (Finnish Cartoon)</description_en>
 			</entry>
 			<entry>
-				<fileName>Instantz_Anime_16-02-09.rar</fileName>
+				<fileName>Instantz_Anime_03-03-09.rar</fileName>
 				<title>Instantz Anime</title>
-				<version>16-02-09</version>
-				<date>16-02-09</date>
-				<added>16-02-09</added>
+				<version>03-03-09</version>
+				<date>03-03-09</date>
+				<added>16-05-09</added>
 				<author>Voinage</author>
 				<lang>en</lang>
 				<iconURL></iconURL>
@@ -4113,11 +4122,11 @@ I've just scraped all the links, obviously mp4/mp3 are nicer than real audio/vid
 It will grab your Last.FM username's top artists (if you have one), allow you to search for music by a Last.FM username's top artists, by similar artists, and by tag... basically just like last.fm, except instead of playing back music files it plays back youtube videos.</description_en>
 			</entry>
 			<entry>
-				<fileName>Onion_News_Network_29-01-09.zip</fileName>
+				<fileName>Onion_News_Network_r882.zip</fileName>
 				<title>Onion News Network</title>
-				<version>29-01-09</version>
-				<date>29-01-09</date>
-				<added>03-02-09</added>
+				<version>r882</version>
+				<date>01-04-09</date>
+				<added>16-05-09</added>
 				<author>rwparris2</author>
 				<lang>en</lang>
 				<iconURL></iconURL>
@@ -4129,25 +4138,25 @@ It will grab your Last.FM username's top artists (if you have one), allow you to
 Each section has a "view random" if you just want to play with whatever.</description_en>
 			</entry>
 			<entry>
-				<fileName>National Geographic_09-02-09.zip</fileName>
+				<fileName>National_Geographic_v1.0.zip</fileName>
 				<title>National Geographic</title>
-				<version>09-02-09</version>
-				<date>09-02-09</date>
-				<added>16-02-09</added>
+				<version>1.0</version>
+				<date>14-05-09</date>
+				<added>16-05-09</added>
 				<author>stacked</author>
 				<lang>en</lang>
 				<iconURL></iconURL>
 				<previewPictureURL>/.passionxbmc/Installeur-Passion/content/National_Geographic.jpg</previewPictureURL>
 				<previewVideoURL></previewVideoURL>
 				<description_fr></description_fr>
-				<description_en>An excellent plugin for people who like to watch video on www.nationalgeographic.com/video</description_en>
+				<description_en>An excellent plugin for people who like to watch videos on www.nationalgeographic.com/video</description_en>
 			</entry>
 			<entry>
-				<fileName>TED_Talks_28-02-09.zip</fileName>
+				<fileName>TED_Talks_v1.6.zip</fileName>
 				<title>TED Talks</title>
-				<version>1.5</version>
-				<date>28-02-09</date>
-				<added>07-03-09</added>
+				<version>1.6</version>
+				<date>01-05-09</date>
+				<added>16-05-09</added>
 				<author>rwparris2</author>
 				<lang>en</lang>
 				<iconURL></iconURL>
@@ -4181,11 +4190,11 @@ Put the bolded part in there.
 If you don't want to do it through the gui, you can open the plugin folder>resources>settings.xml and set your number to the default.</description_en>
 			</entry>
 			<entry>
-				<fileName>IPlayer_2009-03-06b.zip</fileName>
+				<fileName>IPlayer_14-05-09.zip</fileName>
 				<title>IPlayer</title>
-				<version>2009-03-06b</version>
-				<date>06-03-09</date>
-				<added>24-03-09</added>
+				<version>r988</version>
+				<date>14-05-09</date>
+				<added>16-05-09</added>
 				<author>Dink / johnsto</author>
 				<lang>en</lang>
 				<iconURL></iconURL>
@@ -4209,15 +4218,15 @@ If you don't want to do it through the gui, you can open the plugin folder>resou
 				<description_en>Allows to watch video on tv.winelibrary.com</description_en>
 			</entry>
 			<entry>
-				<fileName>Youtube_16-02-09.zip</fileName>
+				<fileName>YouTube_1.6.4b.zip</fileName>
 				<title>Youtube</title>
 				<version>Unofficial</version>
-				<date>16-02-09</date>
-				<added>16-02-09</added>
+				<date>19-04-09</date>
+				<added>16-05-09</added>
 				<author>nuka1195</author>
 				<lang>multi</lang>
 				<iconURL></iconURL>
-				<previewPictureURL></previewPictureURL>
+				<previewPictureURL>/.passionxbmc/Installeur-Passion/content/Plugins/Videos/YouTube.jpg</previewPictureURL>
 				<previewVideoURL></previewVideoURL>
 				<description_fr>Un plugin pour regarder les videos sur YouTube
 Note: Cette version n'est pas officielle et est basée sur la version du 09-02-09 afin de tourner sur XBOX et Mac</description_fr>
@@ -4344,11 +4353,11 @@ ATTENTION: Cette version ne tourne que sur XBMC revision #18269 ou plus récent<
 CAUTION: This version only run on XBMC revision #18269 or newer</description_en>
 			</entry>
 			<entry>
-				<fileName>Blip.TV_05-03-09.zip</fileName>
+				<fileName>Blip.TV_v1.1.1.zip</fileName>
 				<title>Blip.TV</title>
-				<version>1.0</version>
-				<date>05-03-09</date>
-				<added>06-03-09</added>
+				<version>1.1.1</version>
+				<date>02-04-09</date>
+				<added>16-05-09</added>
 				<author>nuka1195</author>
 				<lang>en</lang>
 				<platform></platform>
@@ -4395,11 +4404,11 @@ With reeplay you save video from the web into your online library. Then you can 
 				<description_en>Watch movies on oneclickmoviez.com</description_en>
 			</entry>
 			<entry>
-				<fileName>Microsoft Channel 9 Videos v2.0.zip</fileName>
+				<fileName>Microsoft_Channel_9_Videos_v2.1.zip</fileName>
 				<title>Microsoft Channel 9 Videos plugin</title>
-				<version>2.0</version>
-				<date>09-02-09</date>
-				<added>07-0-09</added>
+				<version>2.4</version>
+				<date>10-04-09</date>
+				<added>16-05-09</added>
 				<author>Dan Dar3</author>
 				<lang>en</lang>
 				<platform></platform>
@@ -4456,13 +4465,28 @@ This plugin replaces the old script which does not work anymore.
 				<previewPictureURL></previewPictureURL>
 				<previewVideoURL></previewVideoURL>
 				<description_fr></description_fr>
+				<description_en>This plugin lets you download (and view) the Dutch, English and American Top40. This is an older version</description_en>
+			</entry>
+			<entry>
+				<fileName>Top40_15-03-09.zip</fileName>
+				<title>Top40</title>
+				<version>15-03-09</version>
+				<date>15-03-09</date>
+				<added>15-05-09</added>
+				<author>Derk Vedelaar</author>
+				<lang>multi</lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
 				<description_en>This plugin lets you download (and view) the Dutch, English and American Top40.</description_en>
 			</entry>
 			<entry>
 				<fileName>Fancast_03-03-09.zip</fileName>
 				<title>Fancast</title>
 				<version>1.1</version>
-				<date>03-03-09</date>
+				<date>02-03-09</date>
 				<added>09-03-09</added>
 				<author>rectalogic, isobsr</author>
 				<lang>en</lang>
@@ -4537,11 +4561,11 @@ Once installed, go in the section you wwant (pictures, music or video) and selec
 				<description_en>Watch videos on www.nbc.com, even outside US!!!</description_en>
 			</entry>
 			<entry>
-				<fileName>NBC_Universal_r822.zip</fileName>
+				<fileName>NBC_Universal_r919.zip</fileName>
 				<title>NBC Universal</title>
-				<version>r822</version>
-				<date>20-03-09</date>
-				<added>30-03-09</added>
+				<version>1.2</version>
+				<date>15-04-09</date>
+				<added>16-05-09</added>
 				<author>BlueCop</author>
 				<lang>en</lang>
 				<platform></platform>
@@ -4549,7 +4573,9 @@ Once installed, go in the section you wwant (pictures, music or video) and selec
 				<previewPictureURL></previewPictureURL>
 				<previewVideoURL></previewVideoURL>
 				<description_fr></description_fr>
-				<description_en>Watch videos on www.nbc.com, even outside US!!!</description_en>
+				<description_en>Watch videos on www.nbc.com, even outside US!!! 
+				
+This plugin is just amazing and offer a huge content of very recent TV Shows</description_en>
 			</entry>
 			<entry>
 				<fileName>animefreak.tv_13-03-09.zip</fileName>
@@ -4582,6 +4608,21 @@ Once installed, go in the section you wwant (pictures, music or video) and selec
 				<description_en>Plugin to stream videos from GameSpot.com</description_en>
 			</entry>
 			<entry>
+				<fileName>GameSpot_Videos_v1.1.zip</fileName>
+				<title>GameSpot</title>
+				<version>1.1</version>
+				<date>11-04-09</date>
+				<added>16-05-09</added>
+				<author>Dan Dare3</author>
+				<lang>multi</lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Plugin to stream videos from GameSpot.com</description_en>
+			</entry>
+			<entry>
 				<fileName>Dik_14-03-09.zip</fileName>
 				<title>Dik</title>
 				<version>14-03-09</version>
@@ -4597,11 +4638,11 @@ Once installed, go in the section you wwant (pictures, music or video) and selec
 				<description_en>Watch Dik.nl channels using this plugin. Dik.nl and plugin both only available in Dutch language.</description_en>
 			</entry>
 			<entry>
-				<fileName>Eurogamer_TV_v1.0.zip</fileName>
+				<fileName>Eurogamer_TV_v1.1.zip</fileName>
 				<title>Eurogamer TV</title>
-				<version>1.0</version>
-				<date>28-03-09</date>
-				<added>30-03-09</added>
+				<version>1.1</version>
+				<date>17-04-09</date>
+				<added>16-05-09</added>
 				<author>Dan Dar3</author>
 				<lang>en</lang>
 				<platform></platform>
@@ -4625,6 +4666,96 @@ Once installed, go in the section you wwant (pictures, music or video) and selec
 				<previewVideoURL></previewVideoURL>
 				<description_fr></description_fr>
 				<description_en>Video plugin for music videos from MTV Networks</description_en>
+			</entry>
+			<entry>
+				<fileName>WatchXOnline_r954.zip</fileName>
+				<title>WatchXOnline</title>
+				<version>r954</version>
+				<date>22-04-09</date>
+				<added>16-05-09</added>
+				<author>bluecopter</author>
+				<lang>en</lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Watch TV Show available on watchxonline.com</description_en>
+			</entry>
+			<entry>
+				<fileName>Family_Guy_r950.zip</fileName>
+				<title>Family Guy</title>
+				<version>r950</version>
+				<date>22-04-09</date>
+				<added>16-05-09</added>
+				<author>bluecopter</author>
+				<lang>en</lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Watch Family Guy TV Show available on watchfamilyguyonline.org</description_en>
+			</entry>
+			<entry>
+				<fileName>The_Simpsons_r949.zip</fileName>
+				<title>Family Guy</title>
+				<version>r949</version>
+				<date>22-04-09</date>
+				<added>16-05-09</added>
+				<author>bluecopter</author>
+				<lang>en</lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Watch The Simpsons TV Show available on wtso.net</description_en>
+			</entry>
+			<entry>
+				<fileName>OpenSubtitles_v1.0.zip</fileName>
+				<title>OpenSubtitles</title>
+				<version>1.0</version>
+				<date>27-04-09</date>
+				<added>16-05-09</added>
+				<author>Dan Dare3</author>
+				<lang>multi</lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr>Ce plugin vous permet de rechercher et télécharger des sous-titre depuis www.opensubtitles.org</description_fr>
+				<description_en>This plugin allows to search and download sub from www.opensubtitles.org</description_en>
+			</entry>
+			<entry>
+				<fileName>GameTrailers_v1.1.zip</fileName>
+				<title>GameTrailers</title>
+				<version>1.1</version>
+				<date>22-04-09</date>
+				<added>16-05-09</added>
+				<author>Dan Dare3</author>
+				<lang>multi</lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>XBMC video plugin to stream video content from GameTrailers.com website.</description_en>
+			</entry>
+			<entry>
+				<fileName>DR.DK_Bonanza_v 1.1.5.zip</fileName>
+				<title>DR.DK - Bonanza</title>
+				<version>1.1.5</version>
+				<date>12-04-09</date>
+				<added>16-05-09</added>
+				<author>Ojo</author>
+				<lang></lang>
+				<platform></platform>
+				<iconURL></iconURL>
+				<previewPictureURL></previewPictureURL>
+				<previewVideoURL></previewVideoURL>
+				<description_fr></description_fr>
+				<description_en>Video plugin to stream archived shows from dr.dk/bonanza. Now with search functionality</description_en>
 			</entry>
 			<entry>
 				<fileName></fileName>
