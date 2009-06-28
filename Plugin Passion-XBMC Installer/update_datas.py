@@ -13,23 +13,25 @@ RootDir  = os.getcwd().replace( ";", "" )
 DB = os.path.join(RootDir, 'Passion_XBMC_Installer.sqlite')
 result = os.path.join(RootDir, 'table.csv')
 
-"""
-STRUCTURE DE LA TABLE :
-(id, name, description, icon, category, type, downloads, file, created, parent, screenshot)
-"""
+   
 def update_datas():
     if not os.path.isfile(DB):
-        makeCategories()
+        make_install_paths()
+        make_Categories()
         makeServer_Items()
+        updateServerItems()
+        update_categories()
     else:
+        update_categories()
         updateServerItems()
     
 def download_csv(args):
     #On récupère le fichier table.csv
-    baseurl = 'http://passion-xbmc.org/clone/exportdownloads.php/'
+    baseurl = 'http://passion-xbmc.org/exportdownloads.php/'
     url = baseurl + args
     loc = urllib.URLopener()
-    loc.retrieve(url, result)     
+    loc.retrieve(url, result)   
+    return result  
 
 def nicequery(query,dico):
     words = query.split()
@@ -49,28 +51,23 @@ def nicequery(query,dico):
 
 def updateServerItems():
     """
-    Fonction de création de la table, à n'appeler que si la table n'existe pas déjà.
-    Pour se faire effectuer un test : if not os.path.isfile(DB):
     """
     conn = sqlite.connect(DB)
     #Initialisation de la base de donnée
     c = conn.cursor()
-    c.execute("""SELECT max(date) FROM Server_Items""")
-    args = '?action=getitems&param=%s'%c.fetchone()[0]
-    download_csv(args)
-    c.close()
-    
-
+    try:
+        c.execute('''SELECT max(date) FROM Server_Items''')
+        args = '?action=getitems&param=%s'%c.fetchone()[0]
+        c.execute('''DELETE * FROM Server_Items''')
+    except:
+        makeServer_Items()
+        args = '?action=getitems'
     
     c = conn.cursor()
-    c.execute('''SELECT id_file FROM Server_Items''')
-    c.close
-    #Lecture du fichier table.csv
-    reader = csv.reader(open(result),delimiter = '|')
-    print "READER = %s"%reader
-    c = conn.cursor()
+    reader = csv.reader(open(download_csv(args)),delimiter = '|')    
     
     for row in reader:
+        print row
         try:
             #on retranche l'occurs de fin de ligne
             cols = {}
@@ -96,15 +93,14 @@ def updateServerItems():
             cols['$author']=row[19]
             cols['$description_en']=row[20]
             cols['$script_language']=row[21]
+            cols['$id_new']=row[22]
 
+            _insertServerItems(c,cols)
+        except Exception, e:
+            print e
             
-            if row in c:
-                _updateServerItems(c,cols)
-            else:
-                _insertServerItems(c,cols)
-        except:pass
     #Sauvegarde des modifications
-    conn.commit()    
+    conn.commit()   
     # On ferme l'instance du curseur
     c.close()
         
@@ -131,7 +127,8 @@ def _insertServerItems(c,cols):
                                     version, 
                                     author, 
                                     description_en, 
-                                    script_language)
+                                    script_language,
+                                    id_new)
                                 VALUES
                                     (
                                     $id_file ,
@@ -153,114 +150,93 @@ def _insertServerItems(c,cols):
                                     $version , 
                                     $author , 
                                     $description , 
-                                    $script_language
+                                    $script_language ,
+                                    $id_new
                                     )
                            ''',cols))
     except Exception, e:
         print e     
-
-def _updateServerItems(c,cols):
-    try:
-        #Chaque ligne trouvée dans le table.csv est insérée dans la table
-        c.execute(nicequery('''UPDATE Server_Items 
-                                    SET date = $date ,
-                                    title = $title ,
-                                    description =$description ,
-                                    totaldownloads = $totaldownloads ,
-                                    filesize = $filesize , 
-                                    filename = $filename , 
-                                    fileurl = $fileurl , 
-                                    commenttotal = $commenttotal , 
-                                    id_cat = $id_cat , 
-                                    totalratings = $totalratings , 
-                                    rating = $rating , 
-                                    id_topic = $id_topic , 
-                                    keywords = $keywords , 
-                                    createdate = $createdate , 
-                                    previewpictureurl = $previewpictureurl , 
-                                    version = $version , 
-                                    author = $author , 
-                                    description_en = $description , 
-                                    script_language = $script_language)
-                            WHERE id_file = $id_file''',cols))
-    except Exception, e:
-        print e         
         
 def makeServer_Items():
     conn = sqlite.connect(DB)
     c = conn.cursor()
-    c.execute('''CREATE TABLE IF NOT EXISTS Server_Items
-                    (
-                    id_file int(11) primary key, 
-                    date unix_timestamp, 
-                    title varchar (100), 
-                    description text, 
-                    totaldownloads int(10), 
-                    filesize int(10), 
-                    filename varchar(100), 
-                    fileurl varchar(100), 
-                    commenttotal int(10), 
-                    id_cat int(10), 
-                    totalratings int(10), 
-                    rating int(10), 
-                    id_topic int(8), 
-                    keywords varchar(100), 
-                    createdate varchar(10), 
-                    previewpictureurl varchar(100), 
-                    version varchar(100), 
-                    author varchar(100), 
-                    description_en text, 
-                    script_language  varchar(100)
-                    )''')
-    conn.commit()
-    c.close()
+    try:
+        c.execute('''CREATE TABLE IF NOT EXISTS Server_Items
+                        (
+                        id_file int(11) primary key, 
+                        date unix_timestamp, 
+                        title varchar (100), 
+                        description text, 
+                        totaldownloads int(10), 
+                        filesize int(10), 
+                        filename varchar(100), 
+                        fileurl varchar(100), 
+                        commenttotal int(10), 
+                        id_cat int(10), 
+                        totalratings int(10), 
+                        rating int(10), 
+                        id_topic int(8), 
+                        keywords varchar(100), 
+                        createdate varchar(10), 
+                        previewpictureurl varchar(100), 
+                        version varchar(100), 
+                        author varchar(100), 
+                        description_en text, 
+                        script_language  varchar(100),
+                        id_new varchar(5)
+                        )''')
+        conn.commit()
+    except Exception, e:
+        print e    
 
-    args = '?action=getitems'
-    download_csv(args)
-    reader = csv.reader(open(result),delimiter = '|')
 
+def update_categories():
+    conn = sqlite.connect(DB)
+    #Initialisation de la base de donnée
     c = conn.cursor()
+    try:
+        c.execute('''DELETE * FROM Categories''')
+    except:
+        make_Categories()
+    args = '?action=getcat'
+    reader = csv.reader(open(download_csv(args)),delimiter = '|')
+    c = conn.cursor()
+
     for row in reader:
+        print row
         try:
             cols = {}
-            cols['$id_file']=row[0]
-            cols['$date']=row[1]
-            cols['$title']=row[2]
-            cols['$description']=row[3]
-            cols['$totaldownloads']=row[4]
-            cols['$filesize']=  row[5]
-            cols['$filename']=  row[6]
-            cols['$fileurl']=   row[7]
-            cols['$commenttotal']=  row[8]
-            cols['$id_cat']=row[9]
-            cols['$totalratings']=row[10]
-            cols['$rating']=row[11]
-            cols['$type']=row[12]
-            cols['$sendemail']=row[13]
-            cols['$id_topic']=row[14]
-            cols['$keywords']=row[15]
-            cols['$createdate']=row[16]
-            cols['$previewpictureurl']=row[17]
-            cols['$version']=row[18]
-            cols['$author']=row[19]
-            cols['$description_en']=row[20]
-            cols['$script_language']=row[21]
-
-            _insertServerItems(c,cols)
-        except:pass
-    conn.commit()
+            cols['$id_cat']=row[0]
+            cols['$title']=row[1]
+            cols['$description']=row[2]
+            cols['$image']=row[3]
+            cols['$id_parent']= row[4]
+            print "row[5] = %s"%row[5]
+            c.execute('''SELECT id_path FROM install_paths WHERE title LIKE ?''',(row[5],))
+            cols['$id_path'] = str(c.fetchone()[0])
+            print "cols['$id_path'] = %s"%cols['$id_path']  
+                
+            
+            _insertCategories(c,cols)
+        except Exception, e:
+            print 'erreur categorie'
+            print e
+        
+    #Sauvegarde des modifications
+    conn.commit()    
+    # On ferme l'instance du curseur
     c.close()
-
+    
 def _insertCategories(c,cols):
     try:
-        #Chaque ligne trouvée dans le table.csv est insérée dans la table
         c.execute(nicequery('''INSERT into Categories
                             (                    
                             id_cat, 
                             title, 
                             description, 
                             image, 
-                            id_parent 
+                            id_parent,
+                            id_path
                             )
                         VALUES 
                             (
@@ -268,21 +244,18 @@ def _insertCategories(c,cols):
                             $title ,
                             $description ,
                             $image ,
-                            $id_parent
+                            $id_parent ,
+                            $id_path
                             )''',cols))
     except Exception, e:
+        print 'erreur insert'
         print e
 
-
-
-def makeCategories():
+def make_Categories():
     """
-    Fonction de création de la table, à n'appeler que si la table n'existe pas déjà.
-    Pour se faire effectuer un test : if not os.path.isfile(DB):
-    """
+    """   
     conn = sqlite.connect(DB)
     c = conn.cursor()
-    
     #Creation de la table
     c.execute ( '''CREATE TABLE IF NOT EXISTS Categories
                     (
@@ -291,28 +264,44 @@ def makeCategories():
                     description text, 
                     image varchar(100), 
                     id_parent int(8), 
+                    id_path varchar(100)
+                    )''')
+    conn.commit()
+
+def make_install_paths():
+
+    conn = sqlite.connect(DB)
+    c = conn.cursor()
+
+    c.execute ( '''CREATE TABLE IF NOT EXISTS Install_Paths
+                    (
+                    id_path integer primary key autoincrement, 
+                    title varchar(100), 
                     path varchar(100)
                     )''')
     conn.commit()
-    c.close()
+    
+    from CONF import SetConfiguration
+    Path = SetConfiguration()
+    
+    for ind in range(len(Path['title'])):
+        path = {}
+        path['$title'] = Path['title'][ind]
+        path['$path'] = Path['path'][ind]
+        print path['$title']
+        print path['$path']
+        c.execute(nicequery('''INSERT INTO Install_Paths 
+                    (
+                    title,
+                    path
+                    )
+                    VALUES
+                    (
+                    $title ,
+                    $path
+                    ) ''',path))
+    conn.commit()
+    c.close
+  
 
-    args = '?action=getcat'
-    download_csv(args)
-    reader = csv.reader(open(result),delimiter = '|')
-    c = conn.cursor()
-
-    for row in reader:
-        try:
-            cols = {}
-            cols['$id_cat']=row[0]
-            cols['$title']=row[1]
-            cols['$description']=row[2]
-            cols['$image']=row[3]
-            cols['$id_parent']= row[4]
-            _insertCategories(c,cols)
-        except:pass
-        
-    #Sauvegarde des modifications
-    conn.commit()    
-    # On ferme l'instance du curseur
-    c.close()
+    

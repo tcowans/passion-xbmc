@@ -14,7 +14,7 @@ import browse_scripts_plugins as browse
 #xbmcplugin.setPluginCategory( handle=int( sys.argv[ 1 ] ), category="Programs" )
 
 #Etat des variables initiales
-SiteUrl = "http://passion-xbmc.org/clone/downloads/"
+SiteUrl = "http://passion-xbmc.org/downloads/"
 urllib.urlcleanup()
   
 def _unicode( s, encoding="utf-8" ):
@@ -27,12 +27,16 @@ def download_file(id):
     """
     """
     dico = browse.info_item(id)
+    print dico['id']
     filename=dico['name']
     url=SiteUrl+dico['file']
     try:
         path2download=dico['path2download']  
-    except:
-        path2download = xbmcgui.Dialog().browse(0,"Choisir Dossier",'programs','',True,)
+        if 'Browse' in path2download:
+            path2download = xbmcgui.Dialog().browse(0,"Choisir Dossier",'programs','',True,)
+    except Exception, e:
+        print e
+        
 
     urllib.urlretrieve( url, os.path.join(path2download,filename))
     # downloader sans erreur , on le dit par popup

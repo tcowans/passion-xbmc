@@ -108,15 +108,26 @@ def info_item(id):
     conn = sqlite.connect(DB)
     c = conn.cursor()  
     
-    c.execute('''SELECT id_file , title, description, previewpictureurl, totaldownloads, filename, createdate 
-                 FROM Server_Items
-                 WHERE id_file = ? 
-                 ''',(id,))
+    try:
+        c.execute('''SELECT A.id_file , 
+                            A.title, 
+                            A.description, 
+                            A.previewpictureurl, 
+                            A.totaldownloads, 
+                            A.filename, 
+                            A.createdate,
+                            C.path
+                     FROM Server_Items A, Categories B, Install_Paths C
+                     WHERE id_file = ? 
+                     AND A.id_cat = B.id_cat
+                     AND B.id_path = C.id_path
+                     ''',(id,))
+    except Exception, e:
+        print e
                  
     #ici une seule ligne est retournée par la requête
     #pour chaque colonne fetchée par la requête on alimente un index du dictionnaire
     dico = {}
-
     for row in c:
         print row
         dico['id'] = row[0]
@@ -126,6 +137,7 @@ def info_item(id):
         dico['downloads'] = row[4]
         dico['file'] = row[5]
         dico['created'] = row[6]
+        dico['path2download']=row[7]
     c.close()   
     return dico
 
