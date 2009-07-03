@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!-- Les strings de 30000 à 30999 sont réservées aux paramètres plugin -->
+  <!--GENERAL STRINGS -->
+  <string id="30000">XBMC XBoxDash Maker</string>
+
+  <string id="30100">Options...</string>
+  <string id="30101">Utiliser l'actuel XBMC: %s</string>
+  <string id="30102">Parcourir pour un autre programme...</string>
+  <string id="30103">Utiliser ce Chemin: %s</string>
+  <string id="30104">Utiliser ce Dashboard: %s</string>
+
+  <!-- Installation -->
+  <string id="30200">Dashboard Maker: Confirmer Installation</string>
+  <string id="30201">Shortcut xbe par la Team %s</string>
+  <string id="30202">Dashboard: %s</string>
+  <string id="30203">Lancement: %s</string>
+  <string id="30204">Statut</string>
+  <string id="30205">Dashboard Maker: Erreur de sauvegarde...</string>
+  <string id="30206">Il n'est pas possible de créer une sauvegarde du Dashboard...</string>
+  <string id="30207">Voulez-vous remplacer votre ancien Dashboard?</string>
+  <string id="30208">Écriture du cgf...</string>
+  <string id="30209">Dashboard Maker: Installation bien fait</string>
+  <string id="30210">Good luck...</string>
+  <string id="30211">Dashboard Maker: Installation pas fait</string>
+  <string id="30212">Lire le "Fichier Log" pour plus d'informations...</string>
+  <string id="30213">le "Fichier Log" est situé:</string>
+
+  <!-- Warning message -->
+  <string id="30300">! ATTENTION !</string>
+  <string id="30301">NE PAS ÉTEINDRE VOTRE XBOX</string>
+  <string id="30302">ET NE TOUCHEZ PAS À AUCUN CONTROLE...</string>
+  <string id="30303">ATTENDRE LA FIN DE L'INSTALLATION.</string>
+
+  <!-- settings -->
+  <string id="30510">Type du raccourci</string>
+  <string id="30511">Préférence</string>
+  <string id="30512">Utiliser le 'Shortcut.xbe' par la [I]Team XBMC[/I]</string>
+  <string id="30513">Utiliser 'Shortcut.xbe' par la [I]Team UIX[/I]</string>
+  <string id="30520">&#32;- UIX: Définir le chemin de XBMC</string>
+
+  <string id="30530">Infos XBMC ou d'une autre Apps</string>
+  <string id="30531">Chemin de XBMC ou d'une Apps</string>
+  <string id="30532">Traduire le chemin racine de XBMC [COLOR=a0e2ff43][Q:\default.xbe][/COLOR]</string>
+
+  <string id="30540">Infos Dashboard</string>
+  <string id="30541">Chemin du Dashboard</string>
+  <string id="30542">Copier la vignette avec mon Dashboard</string>
+  <string id="30543">&#32;- Chemin de la vignette</string>
+
+  <string id="30550">Outils</string>
+  <string id="30551">Vérifier la configs actuelle...</string>
+  <string id="30552">Caches Cleaner</string>
+
+  <string id="30560">Installer ma configs</string>
+  <string id="30570"></string>
+  <string id="30580"></string>
+  <string id="30590"></string>
+
+  <!-- Popup Test Configs -->
+  <string id="30600">Dashbaord déjà fait!</string>
+  <string id="30601">Votre Dash correspond avec votre configuration.</string>
+  <string id="30602">Dashboard: %s</string>
+  <string id="30603">Lance: %s</string>
+  <string id="30604">Configuration est OK</string>
+  <string id="30605">Shortcut xbe par la Team %s</string>
+  <string id="30606">Lancement: %s</string>
+  <string id="30607">Configuration n'est pas OK</string>
+  <string id="30608">Dashboard existe%s: %s</string>
+  <string id="30609">Apps existe%s: %s</string>
+  <string id="30610">, mais manquant dans les resources du plugin!</string>
+  <string id="30611">&#32;pas</string>
+
+  <!-- Caches Cleaner -->
+  <string id="30650">Nettoyage: %s</string>
+  <string id="30651">%i fichiers et %i dossiers nettoyés</string>
+  <string id="30652">Répertoire: %s</string>
+  <string id="30653">Fichier: %s</string>
+  <string id="30654">Nettoyer tous les caches</string>
+  <string id="30655">Nettoyer les caches XBMC</string>
+  <string id="30656">Nettoyer le cache XBMC [COLOR=a0e2ff43][%s][/COLOR]</string>
+  <string id="30657">Nettoyer le cache MS [COLOR=a0e2ff43][E:\CACHE\][/COLOR]</string>
+  <string id="30658">Nettoyer les caches de la XBox [COLOR=a0e2ff43][X:\, Y:\, Z:\][/COLOR]</string>
+  <string id="30659">Caches Cleaner...</string>
+
+  <!-- translate xbmc home path -->
+  <string id="30700">XBMC Home Path Translated</string>
+  <string id="30701">Chemin racine: [COLOR=a0e2ff43][Q:\default.xbe][/COLOR]</string>
+  <string id="30702">Chemin réel: %s</string>
+
+  <!-- XBMC Updater -->
+  <string id="30750">MAJ XBMC Maintenant</string>
+  <string id="30751">Appuyez sur "OUI" pour continuer de mettre à jour votre XBMC.</string>
+  <string id="30752">Mise à jour effectuée avec succès</string>
+  <string id="30753">Redémarrage d'XBMC...</string>
+  <string id="30760">Retourner sur XBMC</string>
+  <string id="30770">Redémarrer la XBox</string>
+  <string id="30780">Éteindre la XBox</string>
+  <string id="30790">Fichiers</string>
+  <string id="30795">Paramètres</string>
+
+  <!-- build svn messages -->
+  <string id="30800">Vérifiez s'il y a nouvelle build</string>
+  <string id="30810">XBMC pour XBox SVN rev%s</string>
+  <string id="30820">Nouvelle version trouvée, SVN rev%s</string>
+  <string id="30821">Votre révision actuelle est %s</string>
+  <string id="30822">Voulez-vous télécharger XBMC pour XBox SVN rev%s?</string>
+  <string id="30830">Parcourir pour enregistrer la nouvelle release</string>
+  <string id="30840">Taille: %.2f / %.2f Mo</string>
+  <string id="30841">Taille: %.2f / ? Mo</string>
+  <string id="30850">Télécharger avec succès</string>
+  <string id="30851">Nouvelle release est situé:</string>
+  <string id="30860">Nouvelle version non trouvée</string>
+  <string id="30861">Probablement que vous êtes à jour.</string>
+  <string id="30870">Erreur: Impossible de récupérer la release!</string>
+  <string id="30880">Désirez-vous lancer le programme XBMC SVN Updater?</string>
+  <string id="30890">Veuillez patienter...</string>
+
+  <!-- compatible messages -->
+  <string id="30900">version</string>
+  <string id="30901">La version %s nécessite qu'XBMC soit</string>
+  <string id="30902">à la révision %s ou supérieur pour fonctionner.</string>
+  <string id="30903">Veuillez mettre à jour votre XBMC.</string>
+  <string id="30904">Erreur</string>
+  <string id="30905">Ce plugin fonctionne sous [COLOR=ffe2ff43]XBox[/COLOR] seulement.</string>
+
+  <string id="30999">&#32;</string>
+</strings>
