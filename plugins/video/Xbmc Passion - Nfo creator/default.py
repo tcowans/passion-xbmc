@@ -7,8 +7,8 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/video/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center"
-__date__         = "09-01-2009"
-__version__      = "0.1.2"
+__date__         = "26-03-2009"
+__version__      = "debug-0.1.3"
 __svn_revision__ = 0
 
 

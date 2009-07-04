@@ -46,6 +46,7 @@ class Main:
         try:
             DIALOG_PROGRESS.update( -1, "Récupération du NFO...", self.args.nfoUrl )
             self.nfo = self.get_nfo_infos( self.args.nfoUrl )
+            #print self.nfo.get("cast")
             DIALOG_PROGRESS.update( -1, "Récupération du NFO...", self.args.nfoUrl )
             add_trailers = self.nfo[ "trailer" ]
             if self.nfo[ "fanart" ]:
@@ -156,7 +157,9 @@ class Main:
             fanart      = ( re.findall( '<thumb>(.*)</thumb>', fanart )                or [ "" ] )[ 0 ]
 
             cast        = ( re.findall( '<actor>([^"]+)</actor>', nfo_r, re.DOTALL )   or [ "" ] )[ 0 ]
+            #print '<actor>', cast
             cast        = zip( re.findall( '<name>(.*)</name>', cast ), re.findall( '<role>(.*)</role>', cast ) )
+            #print '<name>',cast
 
             duration    = ( re.findall( '<runtime>([^"]+)</runtime>', nfo_r ) or [ "" ] )[ 0 ]
             try:
