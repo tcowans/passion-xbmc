@@ -26,6 +26,7 @@ _ = xbmc.getLocalizedString
 install_thumbnail = xbmc.getInfoImage( "ListItem.Thumb" )
 Fanart_thumbnail = xbmc.getInfoImage( "Fanart.Image" )
 
+
 class Main:
     # add all video extensions wanted in lowercase
     VIDEO_EXT = xbmc.getSupportedMedia( "video" )
@@ -254,6 +255,8 @@ class Main:
         xbmcplugin.endOfDirectory( handle=int( sys.argv[ 1 ] ), succeeded=OK )
 
     def _install_nfo( self ):
+        print
+        print "plugin_main::_install_nfo"
         try:
             self.args.nfoUrl = urllib.unquote_plus( self.args.nfoUrl )
             destination = os.path.dirname( self.args.path ) or os.path.dirname( self._nfo_associated_with() )
@@ -265,6 +268,7 @@ class Main:
             self._end_of_directory( False )
             DIALOG_PROGRESS.create( heading,  _( 1040 ), os.path.basename( self.args.path ),  )
             nfo, ok = unzip( self.args.nfoUrl, destination, True )
+            print ok, nfo
             self._copy_thumbnails()
             DIALOG_PROGRESS.close()
             if not ok: xbmcgui.Dialog().ok( heading, line_error )
@@ -279,15 +283,35 @@ class Main:
             print_exc()
 
     def _copy_thumbnails( self ):
+        print
+        print "plugin_main::_copy_thumbnails"
         try:
-            if os.path.exists( install_thumbnail ):
+            print "ListItem.Thumb", install_thumbnail
+            if os.path.exists( install_thumbnail ) or os.path.isfile( install_thumbnail ):
                 thumbpath = os.path.splitext( self.args.path )[ 0 ] + ".tbn"
                 DIALOG_PROGRESS.update( -1, install_thumbnail, thumbpath )
-                xbmc.executehttpapi( "FileCopy(%s,%s)" % ( install_thumbnail, thumbpath.encode( "utf-8" ), ) )
-            if os.path.exists( Fanart_thumbnail ):
+                OK = xbmc.executehttpapi( "FileCopy(%s,%s)" % ( install_thumbnail, thumbpath.encode( "utf-8" ), ) )
+                if not "<li>ok" in OK.lower():
+                    OK = xbmc.executehttpapi( "FileCopy(%s,%s)" % ( install_thumbnail, thumbpath, ) )
+                print OK
+                print install_thumbnail
+                print thumbpath
+            else:
+                print "ListItem.Thumb: not exists!" 
+
+            print
+            print "Fanart.Image", Fanart_thumbnail
+            if os.path.exists( Fanart_thumbnail ) or os.path.isfile( Fanart_thumbnail ):
                 thumbpath = os.path.splitext( self.args.path )[ 0 ] + "-fanart.jpg"
                 DIALOG_PROGRESS.update( -1, Fanart_thumbnail, thumbpath )
-                xbmc.executehttpapi( "FileCopy(%s,%s)" % ( Fanart_thumbnail, thumbpath.encode( "utf-8" ), ) )
+                OK = xbmc.executehttpapi( "FileCopy(%s,%s)" % ( Fanart_thumbnail, thumbpath.encode( "utf-8" ), ) )
+                if not "<li>ok" in OK.lower():
+                    OK = xbmc.executehttpapi( "FileCopy(%s,%s)" % ( Fanart_thumbnail, thumbpath, ) )
+                print OK
+                print Fanart_thumbnail
+                print thumbpath
+            else:
+                print "Fanart.Image: not exists!" 
         except:
             print_exc()
 
