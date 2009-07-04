@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+    <!-- Les strings de 30000 à 30999 sont réservées aux paramètres plug-in -->
+    <!--GENERAL STRINGS -->
+    <string id="30000">Xbmc Passion - Gallery Explorer</string>
+
+    <!--SETTINGS STRINGS -->
+    <string id="30001">Utiliser un dossier par défaut :</string>
+    <string id="30002">Enregistrer dans le dossier :</string>
+
+    <!--CONTEXT MENU STRINGS -->
+    <string id="30003">Enregistrer...</string>
+    <string id="30004">Enregistrer sous...</string>
+
+    <!--DIALOG STRINGS -->
+    <string id="30005">Téléchargement terminé</string>
+    <string id="30006">Erreur!</string>
+    <string id="30007">Vous devez d'abord spécifier un dossier</string>
+    <string id="30008">dans les paramètres du plugin!</string>
+
+    <string id="30009">Nom du fichier : </string>
+    <string id="30010">Saisir...</string>
+    
+    <string id="30011">Définir backdrops...</string>
+    <string id="30012">Définir comme écran de veille...</string>
+
+</strings>
