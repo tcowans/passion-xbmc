@@ -53,31 +53,31 @@ update_xml = r'''<?xml version="1.0" encoding="utf-8"?>
 		<List Text="%(30750)s" Sort="off" Batch="True" Icon="D:\skin\PM3.SD\backgrounds\scripts.jpg">
 			<Item Action="AskUser" Arg1="XBMC Updater">%(30751)s\n\nArchive: %(BUILD_RAR)s\nUpdate: %(XBMC_HOME_PATH)s\</Item>
 			<!-- copy a dummy file in temp dir and clean dir for unrar new archive -->
-			<Item Action="Copy" Arg1="update.xml" Arg2="%(BUILD_PATH)s\BUILD\"></Item>
-			<Item Action="Delete" Arg1="%(BUILD_PATH)s\BUILD\"></Item>
+			<Item Action="Copy" Arg1="update.xml" Arg2="%(BUILD_PATH)s\BUILD\">Copying dummy file...</Item>
+			<Item Action="Delete" Arg1="%(BUILD_PATH)s\BUILD\">Deleting dummy build folder...</Item>
 			<!-- extract build and error on "rar" update auto stop -->
-			<Item Action="UnRar" Arg1="%(BUILD_RAR)s" Arg2="%(BUILD_PATH)s\"></Item>
+			<Item Action="UnRar" Arg1="%(BUILD_RAR)s" Arg2="%(BUILD_PATH)s\">Extracting new build...</Item>
 			<!-- copytree build in xbmc dir -->
-			<Item Action="Copy" Arg1="%(BUILD_PATH)s\BUILD\" Arg2="%(XBMC_HOME_PATH)s\"></Item>
+			<Item Action="Copy" Arg1="%(BUILD_PATH)s\BUILD\" Arg2="%(XBMC_HOME_PATH)s\">Copytree...</Item>
 			<!-- don't take any chance move build, a copytree not work 100 percent -->
-			<Item Action="Move" Arg1="%(BUILD_PATH)s\BUILD\default.xbe" Arg2="%(XBMC_HOME_PATH)s\"></Item>
-			<Item Action="Move" Arg1="%(BUILD_PATH)s\BUILD\credits\" Arg2="%(XBMC_HOME_PATH)s\"></Item>
-			<Item Action="Move" Arg1="%(BUILD_PATH)s\BUILD\language\" Arg2="%(XBMC_HOME_PATH)s\"></Item>
-			<Item Action="Move" Arg1="%(BUILD_PATH)s\BUILD\media\" Arg2="%(XBMC_HOME_PATH)s\"></Item>
-			<Item Action="Move" Arg1="%(BUILD_PATH)s\BUILD\screensavers\" Arg2="%(XBMC_HOME_PATH)s\"></Item>
-			<Item Action="Move" Arg1="%(BUILD_PATH)s\BUILD\skin\" Arg2="%(XBMC_HOME_PATH)s\"></Item>
-			<Item Action="Move" Arg1="%(BUILD_PATH)s\BUILD\sounds\" Arg2="%(XBMC_HOME_PATH)s\"></Item>
-			<Item Action="Move" Arg1="%(BUILD_PATH)s\BUILD\system\" Arg2="%(XBMC_HOME_PATH)s\"></Item>
-			<Item Action="Move" Arg1="%(BUILD_PATH)s\BUILD\UserData\" Arg2="%(XBMC_HOME_PATH)s\"></Item>
-			<Item Action="Move" Arg1="%(BUILD_PATH)s\BUILD\Visualisations\" Arg2="%(XBMC_HOME_PATH)s\"></Item>
+			<Item Action="Move" Arg1="%(BUILD_PATH)s\BUILD\default.xbe" Arg2="%(XBMC_HOME_PATH)s\">Updating default.xbe...</Item>
+			<Item Action="Move" Arg1="%(BUILD_PATH)s\BUILD\credits\" Arg2="%(XBMC_HOME_PATH)s\">Updating credits\...</Item>
+			<Item Action="Move" Arg1="%(BUILD_PATH)s\BUILD\language\" Arg2="%(XBMC_HOME_PATH)s\">Updating language\...</Item>
+			<Item Action="Move" Arg1="%(BUILD_PATH)s\BUILD\media\" Arg2="%(XBMC_HOME_PATH)s\">Updating media\...</Item>
+			<Item Action="Move" Arg1="%(BUILD_PATH)s\BUILD\screensavers\" Arg2="%(XBMC_HOME_PATH)s\">Updating screensavers\...</Item>
+			<Item Action="Move" Arg1="%(BUILD_PATH)s\BUILD\skin\" Arg2="%(XBMC_HOME_PATH)s\">Updating skin\...</Item>
+			<Item Action="Move" Arg1="%(BUILD_PATH)s\BUILD\sounds\" Arg2="%(XBMC_HOME_PATH)s\">Updating sounds\...</Item>
+			<Item Action="Move" Arg1="%(BUILD_PATH)s\BUILD\system\" Arg2="%(XBMC_HOME_PATH)s\">Updating system\...</Item>
+			<Item Action="Move" Arg1="%(BUILD_PATH)s\BUILD\UserData\" Arg2="%(XBMC_HOME_PATH)s\">Updating UserData\...</Item>
+			<Item Action="Move" Arg1="%(BUILD_PATH)s\BUILD\Visualisations\" Arg2="%(XBMC_HOME_PATH)s\">Updating Visualisations\...</Item>
 			<!-- delete temp dir -->
-			<Item Action="Delete" Arg1="%(BUILD_PATH)s\BUILD\"></Item>
+			<Item Action="Delete" Arg1="%(BUILD_PATH)s\BUILD\">Deleting temp build folder...</Item>
 			<!-- notify user for update well done -->
 			<Item Action="MessageBox" Arg1="XBMC rev.%(SVN_REV)s">%(30752)s</Item>
 			<!-- optional format xbox caches -->
-			<Item Action="Format" Arg1="X"></Item>
-			<Item Action="Format" Arg1="Y"></Item>
-			<Item Action="Format" Arg1="Z"></Item>
+			<Item Action="Format" Arg1="X">Cleaning X Cache...</Item>
+			<Item Action="Format" Arg1="Y">Cleaning Y Cache...</Item>
+			<Item Action="Format" Arg1="Z">Cleaning Z Cache...</Item>
 			<!-- now :) return on xbmc -->
 			<Item Action="%(XBMC_HOME_PATH)s\default.xbe">%(30753)s.</Item>
 		</List>
