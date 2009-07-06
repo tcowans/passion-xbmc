@@ -112,11 +112,11 @@ LANG_EXISTS = os.path.exists( os.path.join( LANG_PATH, LANG.lower(), "%s.xml" % 
 
 
 configs = {
-    "IP": xbmc.getInfoLabel( "Network.IPAddress " ),
-    "SUBNET": xbmc.getInfoLabel( "Network.SubnetAddress " ),
-    "GATEWAY": xbmc.getInfoLabel( "Network.GatewayAddress " ),
-    "DNS1": xbmc.getInfoLabel( "Network.DNS1Address " ),
-    "DNS2": xbmc.getInfoLabel( "Network.DNS2Address " ),
+    "IP": xbmc.getInfoLabel( "Network.IPAddress" ),
+    "SUBNET": xbmc.getInfoLabel( "Network.SubnetAddress" ),
+    "GATEWAY": xbmc.getInfoLabel( "Network.GatewayAddress" ),
+    "DNS1": xbmc.getInfoLabel( "Network.DNS1Address" ),
+    "DNS2": xbmc.getInfoLabel( "Network.DNS2Address" ),
 
     "XBMC_HOME_PATH": XBMC_HOME_PATH,
     #infos in sys.argv[ 2 ]
