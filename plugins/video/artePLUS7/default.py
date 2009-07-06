@@ -26,15 +26,19 @@ Place in Q:\plugins\video\artePLUS7
     - Corrected progress bar update issue
 07-12-08 Version Beta2 by Temhil
     - Improved algorithm with proxy use, now proxy is used only for a video (not for the list)
-05-10-09 Version pre-1.0 by Temhil
+05-10-09 Version 1.0 by Temhil
     - Added automatic proxy support (using webproxy www.surferanonymement.com) 
     - Added plugin settings menu
     - Added video description window
     - Added video info while playing
-05-19-09 Version pre-1.0b by Temhil
+05-19-09 Version 1.0b by Temhil
     - Added German language (thanks to Lolo)
     - Added finnish language (thanks to Kottis)
     - Fixed few localization bug (few strings still in french) 
+07-05-09 Version 1.1 by Temhil
+	- Fixed regex for automatic proxy due to changes on webiste
+	- Use www.surferanonymement.com now for getting the real video URL (country check is done)
+	- Moved webpage download management in a separate function
 """
 
 __script__ = "Unknown"
@@ -44,8 +48,8 @@ __url__ = "http://passion-xbmc.org/index.php"
 __svn_url__ = "http://code.google.com/p/passion-xbmc/source/browse/#svn/trunk/plugins/video/artePLUS7"
 __credits__ = "Team XBMC Passion"
 __platform__ = "xbmc media center"
-__date__ = "19-05-2009"
-__version__ = "pre-1.0b"
+__date__ = "05-07-2009"
+__version__ = "1.1"
 __svn_revision__ = 0
 
 import xml.dom.minidom, urllib, os, string, traceback, time, re
@@ -58,6 +62,10 @@ from resources.libs.specialpath import *
 
 
 
+INDEX_PROXY_NONE = 0
+INDEX_PROXY_AUTO = 1
+INDEX_PROXY_STD  = 2
+
 # Set directories
 ROOTDIR  = os.getcwd().replace( ";", "" ) # Create a path with valid format
 CACHEDIR = os.path.join(ROOTDIR, "cache")
@@ -67,23 +75,6 @@ BASE_THUMBS_PATH = os.path.join( SPECIAL_MASTERPROFILE_DIR, "Thumbnails", 'Video
 __language__ = xbmc.Language( ROOTDIR, "french" ).getLocalizedString
 
 
-#def set_cache_thumb_name( path ):
-#    try:
-#        fpath = path
-#        # make the proper cache filename and path so duplicate caching is unnecessary
-#        filename = xbmc.getCacheThumbName( fpath )
-#        thumbnail = os.path.join( BASE_THUMBS_PATH, filename[ 0 ], filename )
-#        preview_pic = os.path.join( BASE_THUMBS_PATH, "originals", filename[ 0 ], filename )
-#        # if the cached thumbnail does not exist check for dir does not exist create dir
-#        if not os.path.isdir( os.path.dirname( preview_pic ) ):
-#            os.makedirs( os.path.dirname( preview_pic ) )
-#        if not os.path.isdir( os.path.dirname( thumbnail ) ):
-#            os.makedirs( os.path.dirname( thumbnail ) )
-#        return thumbnail, preview_pic
-#    except:
-#        #import traceback; traceback.print_exc()
-#        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
-#        return "", ""
 
 def strip_off( text, by="", xbmc_labels_formatting=False ):
     """ FONCTION POUR RECUPERER UN TEXTE D'UN TAG """
@@ -97,6 +88,7 @@ class SearchParser:
     """
     def __init__(self):
         # Document Object Model of the XML document
+
         self.dom = None
         #self.cfgMgr = confManager(os.path.join(ROOTDIR,"arteplus7.cfg"))
         self.verifrep(CACHEDIR)
@@ -152,11 +144,11 @@ class SearchParser:
         f.close()
         self.dom = xml.dom.minidom.parseString(xmlDocument)
 
-    def loadVideo( self, videoPage, title, thumbnailImageURL ):
+
+    def getwebpage( self, url ):
         """
-        Load video info and start playing
+        Download webpage using specfic proxy settings
         """
-        print "loadVideo - videoPage = %s"%videoPage
         base_webproxy_url="http://www.surferanonymement.com/includes/process.php?action=update"
         referer = "http://www.surferanonymement.com/"
         nameInForm = 'u'
@@ -164,22 +156,18 @@ class SearchParser:
         opener              = None
         videoUrl            = ""
         videoContainerUrl   = "" 
+        webpage             = None
         
-        #print "xbmcplugin.getSetting('proxy')"
-        #print xbmcplugin.getSetting('proxy')
-                
-        dialogLoading = xbmcgui.DialogProgress()
-        dialogLoading.create( __language__( 30208 ) ) 
-        if ( int( xbmcplugin.getSetting('proxy') ) == 1 ): # Auto
+        if ( int( xbmcplugin.getSetting('proxy') ) == INDEX_PROXY_AUTO ): # Auto
             print "getVideoURL - Auto: Use of Webproxy viproxy.info"
             
             h=urllib2.HTTPHandler(debuglevel=0)
-            values = {'%s'%nameInForm : videoPage}
+            values = {'%s'%nameInForm : url}
             data = urllib.urlencode(values)
             print base_webproxy_url
             print data
             # Get the Web page with the video url container link
-            #req=urllib2.Request(base_webproxy_url + urllib.quote(videoPage) + "&b=4&f=norefer")
+            #req=urllib2.Request(base_webproxy_url + urllib.quote(url) + "&b=4&f=norefer")
             req=urllib2.Request(base_webproxy_url, data)
             req.add_header('Referer', '%s'%referer)
             req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.7) Gecko/2009021910 MRA 5.3 (build 02560) Firefox/3.0.7 FirePHP/0.2.4')
@@ -190,9 +178,8 @@ class SearchParser:
             req.add_header('Connection','keep-alive')
     
             opener = urllib2.build_opener(h)
-
-
-        elif (  int( xbmcplugin.getSetting('proxy') ) ==  2 ): 
+    
+        elif (  int( xbmcplugin.getSetting('proxy') ) ==  INDEX_PROXY_STD ): 
             if ( ( xbmcplugin.getSetting('proxy_ip') != "" ) and ( xbmcplugin.getSetting('proxy_port') != "" ) ):
                 print "getVideoURL - proxy DEFINED"
                 proxy_address = xbmcplugin.getSetting('proxy_ip') + ":" + xbmcplugin.getSetting('proxy_port')
@@ -207,6 +194,7 @@ class SearchParser:
                 # Get the Web page with the video url container link
                 req=urllib2.Request(videoPage)
             else:
+                print "getVideoURL - proxy settings INCORRECT"
                 dialogError = xbmcgui.Dialog()
                 ok = dialogError.ok(__language__( 30201 ), __language__( 30206 )+'\n\n' + __language__( 30207 ))
                     
@@ -222,10 +210,30 @@ class SearchParser:
             # install the opener
             urllib2.install_opener(opener)
             
+            # Get the webpage
             response = urllib2.urlopen(req)
-            videoDoc = response.read()
+            webpage = response.read()
             response.close()
-            
+
+        except:
+            print ( str( sys.exc_info()[0] ) )
+            traceback.print_exc()
+
+        return webpage
+
+
+    def loadVideo( self, videoPage, title, thumbnailImageURL ):
+        """
+        Load video info and start playing
+        """
+        print "loadVideo - videoPage = %s"%videoPage
+                
+        dialogLoading = xbmcgui.DialogProgress()
+        dialogLoading.create( __language__( 30208 ) ) 
+        
+        # Get the video description webpage
+        videoDoc = self.getwebpage( videoPage )
+        try:     
             # Write in a file
             #TODO: save only in debug mode and check why it crash on XBOX
 #            htmlsave = os.path.join( CACHEDIR, urllib.quote_plus( os.path.basename( videoPage ) ) )
@@ -234,14 +242,16 @@ class SearchParser:
 #            open( xbmc.makeLegalFilename( htmlsave ),"w" ).write( videoDoc )
 
             # Extract the URL of the video URL container file (wmv)
-            match = re.search(r'availableFormats\[\d]\[\"format\"\] = \"WMV\";\n *?availableFormats\[\d\]\["quality\"] = \"HQ\";\n *?availableFormats\[\d]\[\"url\"] = "(.*?)\?obj', videoDoc)
+            match = re.search(r'availableFormats\[\d]\[\"format\"\] = \"WMV\";\n *?availableFormats\[\d\]\["quality\"] = \"HQ\";\n *?availableFormats\[\d]\[\"url\"] = \"(.*?)\";', videoDoc)
             videoContainerUrl = ""
             if match:
                 videoContainerUrl = match.group(1)
+                print "video Container URL = "
+                print videoContainerUrl
                 
                 # Get the video url container file
-                videoUrlFile = urllib.urlopen(videoContainerUrl).read()
-                #TODO: use urllib2 everywhere, using a mix or urlib and urllib2 is not very elegant
+                #videoUrlFile = urllib.urlopen(videoContainerUrl).read()
+                videoUrlFile = self.getwebpage( videoContainerUrl )
                 
                 # Write in a file
                 #TODO: save only in debug mode and check why it crash on XBOX
@@ -251,7 +261,7 @@ class SearchParser:
 #                open( xbmc.makeLegalFilename( wmvsave ),"w" ).write( videoUrlFile )
                 
                 # Extract the URL of the video (usually mms)
-                matchVideoURL = re.search(r'<REF HREF=\"(.*?)\" />', videoUrlFile)
+                matchVideoURL = re.search(r'<REF HREF=\"(.*?)\"', videoUrlFile)
                 if matchVideoURL:
                     videoUrl = matchVideoURL.group(1)
         except:
