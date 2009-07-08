@@ -21,22 +21,22 @@
 		<Menu Smooth="False" Align="Left" Rotate="True" ShowIcon="False" Scroll="1" Fixed="False" FixAt="0">
 			<BackColor>0xFF000000</BackColor>
 			<Font>Special</Font>
-			<itempos left="70" top="160" width="200"></itempos>
-			<itempos left="70" top="193" width="200"></itempos>
-			<itempos left="70" top="227" width="200"></itempos>
-			<itempos left="70" top="261" width="200"></itempos>
-			<itempos left="70" top="294" width="200"></itempos>
-			<itempos left="71" top="341" width="200"></itempos>
+			<itempos left="65" top="138" width="200" Height="32"></itempos>
+			<itempos left="65" top="170" width="200" Height="32"></itempos>
+			<itempos left="65" top="202" width="200" Height="32"></itempos>
+			<itempos left="65" top="234" width="200" Height="32"></itempos>
+			<itempos left="65" top="268" width="200" Height="32"></itempos>
+			<itempos left="65" top="300" width="200" Height="32"></itempos>
 			<Preview EnableAudio="False" Left="100" Top="68" Width="540" Height="341"/>
 		</Menu>
 
 		<Image Left="100" Top="68" Width="540" Height="341" zIndex="2" Source="GameIcon" />
-		<Image Left="0" Top="0" zIndex="3">media/BG_Overlay.png</Image>
-		<Image Left="67" Top="347" Width="22" Height="22" zIndex="3">media/home-button.png</Image>
+		<Image Left="0" Top="0" zIndex="3">media/BG_Overlay2.png</Image>
+		<!--<Image Left="67" Top="347" Width="22" Height="22" zIndex="3">media/home-button.png</Image>-->
 
 		<InfoFont>Common10</InfoFont>
-		<Text Top="349" Left="90" Align="Left" Color="0xDDced8da" ScaleX="100" ScaleY="100"  Font="Common10" zIndex="4" Source="Settings"></Text>
-		<Text Top="61" Left="80" Align="Left" Color="0x88FFFFFF" ScaleX="100" ScaleY="100"  Font="Common10" zIndex="4" Source="SVN Updater"></Text>
+		<!--<Text Top="349" Left="90" Align="Left" Color="0xDDced8da" ScaleX="100" ScaleY="100"  Font="Common10" zIndex="4" Source="Settings"></Text>-->
+		<Text Top="60" Left="80" Align="Left" Color="0x88FFFFFF" ScaleX="100" ScaleY="100"  Font="Common10" zIndex="4" Source="SVN Updater"></Text>
 		<Text Top="35" Left="515" Align="Left" Color="0x88FFFFFF" ScaleX="100" ScaleY="100"  Font="Special" zIndex="4" Source="|  $Time$"></Text>
 		<Text Top="35" Left="507" Align="Right" Color="0xFFFFFFFF" ScaleX="100" ScaleY="100" Font="Special" zIndex="4" Source="$Date$"></Text>
 		<Text Top="410" Left="60" Align="Left" Color="0x60FFFFFF" ScaleX="100" ScaleY="100"  Font="Common10" zIndex="4" Source="FreeMem: $FreeMemory$"></Text>
