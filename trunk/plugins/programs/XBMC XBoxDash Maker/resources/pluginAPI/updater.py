@@ -68,7 +68,7 @@ update_xml = r'''<?xml version="1.0" encoding="utf-8"?>
 			<Item Action="Move" Arg1="%(BUILD_PATH)s\BUILD\skin\" Arg2="%(XBMC_HOME_PATH)s\">Updating skin\...</Item>
 			<Item Action="Move" Arg1="%(BUILD_PATH)s\BUILD\sounds\" Arg2="%(XBMC_HOME_PATH)s\">Updating sounds\...</Item>
 			<Item Action="Move" Arg1="%(BUILD_PATH)s\BUILD\system\" Arg2="%(XBMC_HOME_PATH)s\">Updating system\...</Item>
-			<Item Action="Move" Arg1="%(BUILD_PATH)s\BUILD\UserData\" Arg2="%(XBMC_HOME_PATH)s\">Updating UserData\...</Item>
+			<!-- <Item Action="Move" Arg1="%(BUILD_PATH)s\BUILD\UserData\" Arg2="%(XBMC_HOME_PATH)s\">Updating UserData\...</Item> -->
 			<Item Action="Move" Arg1="%(BUILD_PATH)s\BUILD\Visualisations\" Arg2="%(XBMC_HOME_PATH)s\">Updating Visualisations\...</Item>
 			<!-- delete temp dir -->
 			<Item Action="Delete" Arg1="%(BUILD_PATH)s\BUILD\">Deleting temp build folder...</Item>
@@ -84,8 +84,9 @@ update_xml = r'''<?xml version="1.0" encoding="utf-8"?>
 		<Item Action="%(XBMC_HOME_PATH)s\default.xbe" Icon="D:\skin\PM3.SD\backgrounds\xbmc.png">%(30760)s</Item>
 		<Item Action="Restart" Icon="D:\skin\PM3.SD\backgrounds\xbox.jpg">%(30770)s</Item>
 		<Item Action="Shutdown" Icon="D:\skin\PM3.SD\backgrounds\xbox.jpg">%(30780)s</Item>
+		<Item Action="TextEditor" Icon="D:\skin\PM3.SD\backgrounds\editor.jpg">%(30791)s</Item>
 		<Item Action="FileManager" Icon="D:\skin\PM3.SD\backgrounds\files.jpg">%(30790)s</Item>
-		<Item Action="Settings" Icon="D:\skin\PM3.SD\backgrounds\settings.jpg">+</Item>
+		<!-- <Item Action="Settings" Icon="D:\skin\PM3.SD\backgrounds\settings.jpg">+</Item> -->
 	</Menu>
 </UnleashX>
 '''
@@ -132,7 +133,8 @@ configs = {
     "30760": xbmc.getLocalizedString( 30760 ).encode( "iso-8859-1" ),
     "30770": xbmc.getLocalizedString( 30770 ).encode( "iso-8859-1" ),
     "30780": xbmc.getLocalizedString( 30780 ).encode( "iso-8859-1" ),
-    "30790": xbmc.getLocalizedString( 30790 ).encode( "iso-8859-1" )
+    "30790": xbmc.getLocalizedString( 30790 ).encode( "iso-8859-1" ),
+    "30791": xbmc.getLocalizedString( 30791 ).encode( "iso-8859-1" )
     }
 
 
@@ -154,6 +156,7 @@ def Main():
                 conf = update_xml % configs
                 file( os.path.join( UPDATER_PATH, "update.xml" ), "w" ).write( conf )
 
+                '''
                 try:
                     skin_xml = file( os.path.join( UPDATER_PATH, "skin", "PM3.SD", "system_label.xml" ), "r" ).read()
                     skin = skin_xml % { "SYSTEM_LABEL": xbmc.getLocalizedString( 30795 ).encode( "iso-8859-1" ) }
@@ -166,6 +169,7 @@ def Main():
                     if skin:
                         file( os.path.join( UPDATER_PATH, "skin", "PM3.SD", "Skin.xml" ), "w" ).write( skin )
                 except: pass
+                '''
 
                 try:
                     try: os.makedirs( os.path.join( "E:\\UDATA", "9e115330", "0064122817A8" ) )

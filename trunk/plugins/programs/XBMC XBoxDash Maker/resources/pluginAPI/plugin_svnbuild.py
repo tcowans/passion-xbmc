@@ -6,6 +6,7 @@ if you want update... update your xbmc manually
 #Modules general
 import os
 import re
+import sys
 import urllib
 from urllib import quote_plus
 from traceback import print_exc
@@ -21,6 +22,7 @@ DIALOG_PROGRESS = xbmcgui.DialogProgress()
 URL_BASE = "http://www.sshcs.com/xbmc/"
 URL_REVISION_INFO = "%sinc/EVA.asp?mode=Build" % URL_BASE
 URL_BUILD = "%sbinaries/Builds/" % URL_BASE
+URL_BUILDS = "%s?mode=BX" % URL_BASE 
 NAME_BUILD = "XBMC_XBOX_%s.rar"
 
 
@@ -50,6 +52,21 @@ def get_svn_infos():
         svn = get_html_source( URL_REVISION_INFO )
         infos = re.search( "^(\\d+) (\\d+)$", svn )
         return infos.group( 1 ), infos.group( 2 )
+    except:
+        print_exc()
+    return "", ""
+
+
+def select_build():
+    try:
+        regexp = 'Update for Build.*?(\\d+).*?'
+        regexp += '((?:[0]?[1-9]|[1][012])[-:\\/.](?:(?:[0-2]?\\d{1})|(?:[3][0,1]{1}))[-:\\/.](?:(?:[1]{1}\\d{1}\\d{1}\\d{1})|(?:[2]{1}\\d{3})))(?![\\d])'
+        svn = get_html_source( URL_BUILDS )
+        builds = re.compile( regexp ).findall( svn )
+        li = [ "SVN Revision %s, Released on %s" % rev for rev in builds ]
+        selected = xbmcgui.Dialog().select( "Archives: XBMC for XBox SVN", li )
+        if selected != -1: 
+            return builds[ selected ]
     except:
         print_exc()
     return "", ""
@@ -94,7 +111,11 @@ def dl_build( heading, url, destination ):
 
 
 def Main():
-    rev, date = get_svn_infos()
+    if "browsebuild" in sys.argv[ 2 ]:
+        rev, date = select_build()
+    else:
+        rev, date = get_svn_infos()
+    #rev, date = select_build()
     if rev and date:
         ok = 0
         try:
@@ -122,7 +143,6 @@ def Main():
                         # AskUser for update with external programs
                         url = "build_rar='%s'&svn_rev='%s'" % ( quote_plus( dest ), rev )
                         xbmc.executebuiltin( "XBMC.RunPlugin(plugin://Programs/XBMC XBoxDash Maker/?%s)" % url )
-                    
 
         elif ( not ok ):
             xbmcgui.Dialog().ok( xbmc.getLocalizedString( 30860 ), xbmc.getLocalizedString( 30861 ) )
