@@ -1260,8 +1260,9 @@ function AddCategory2()
 
     $disablerating  = isset($_REQUEST['disablerating']) ? 1 : 0;
     
+    //XBMC Passion Mod
     $cat_type = $_REQUEST['cat_type'];
-
+    //
     
 
     if ($layout == $modSettings['down_set_cat_layout'])
@@ -1469,6 +1470,14 @@ function AddCategory2()
 
 
 
+    //Xbmc Passion Mod
+    $action_typ = 'INSERT';
+    $table = $db_prefix.'down_cat';
+    $log_date = time();
+    db_query("INSERT INTO {$db_prefix}down_logs 
+            (action_typ, table_name, row_id, log_date)
+        VALUES ('$action_typ', '$table',$cat_id, $log_date)", __FILE__, __LINE__);
+    //
 
 
     $testGD = get_extension_funcs('gd');
@@ -1567,7 +1576,14 @@ function AddCategory2()
 
         SET filename = '$filename' WHERE ID_CAT = $cat_id LIMIT 1", __FILE__, __LINE__);
 
-
+        //Xbmc Passion Mod
+        $action_typ = 'UPDATE';
+        $table = $db_prefix.'down_cat'; 
+        $log_date = time();
+        db_query("INSERT INTO {$db_prefix}down_logs 
+                (action_typ, table_name, row_id, log_date)
+            VALUES ('$action_typ', '$table',$cat_id, $log_date)", __FILE__, __LINE__);
+        //
 
 
 
@@ -1808,8 +1824,9 @@ function EditCategory2()
 
     $disablerating  = isset($_REQUEST['disablerating']) ? 1 : 0;
     
+    //XBMC Passion Mod
     $cat_type = $_REQUEST['cat_type'];
-
+    //
 
     // The category field requires a title
 
@@ -1969,7 +1986,14 @@ function EditCategory2()
 
         WHERE ID_CAT = $catid LIMIT 1", __FILE__, __LINE__);
 
-
+    //Xbmc Passion Mod
+    $action_typ = 'UPDATE';
+    $table = $db_prefix.'down_cat'; 
+    $log_date = time();
+    db_query("INSERT INTO {$db_prefix}down_logs 
+            (action_typ, table_name, row_id, log_date)
+        VALUES ('$action_typ', '$table',$catid, $log_date)", __FILE__, __LINE__);
+    //
 
 
 
@@ -2067,7 +2091,14 @@ function EditCategory2()
 
         SET filename = '$filename' WHERE ID_CAT = $catid LIMIT 1", __FILE__, __LINE__);
 
-
+        //Xbmc Passion Mod
+        $action_typ = 'UPDATE';
+        $table = $db_prefix.'down_cat'; 
+        $log_date = time();
+        db_query("INSERT INTO {$db_prefix}down_logs 
+                (action_typ, table_name, row_id, log_date)
+            VALUES ('$action_typ', '$table',$catid, $log_date)", __FILE__, __LINE__);
+        //
 
 
 
@@ -2240,11 +2271,28 @@ function DeleteCategory2()
 
     db_query("UPDATE {$db_prefix}down_cat SET ID_PARENT = 0 WHERE ID_PARENT = $catid", __FILE__, __LINE__);
 
+    //Xbmc Passion Mod
+    $action_typ = 'UPDATE';
+    $table = $db_prefix.'down_cat'; 
+    $log_date = time();
+    db_query("INSERT INTO {$db_prefix}down_logs 
+            (action_typ, table_name, argument, log_date)
+        VALUES ('$action_typ', '$table','ID_PARENT = $catid', $log_date)", __FILE__, __LINE__);
+    //
 
 
     // Delete All Files
 
     db_query("DELETE FROM {$db_prefix}down_file WHERE ID_CAT = $catid", __FILE__, __LINE__);
+
+    //Xbmc Passion Mod
+    $action_typ = 'DELETE';
+    $table = $db_prefix.'down_file'; 
+    $log_date = time();
+    db_query("INSERT INTO {$db_prefix}down_logs 
+            (action_typ, table_name, argument, log_date)
+        VALUES ('$action_typ', '$table','ID_CAT = $catid', $log_date )", __FILE__, __LINE__);
+    //
 
 
 
@@ -2252,6 +2300,14 @@ function DeleteCategory2()
 
     db_query("DELETE FROM {$db_prefix}down_cat WHERE ID_CAT = $catid LIMIT 1", __FILE__, __LINE__);
 
+    //Xbmc Passion Mod
+    $action_typ = 'DELETE';
+    $table = $db_prefix.'down_cat'; 
+    $log_date = time();
+    db_query("INSERT INTO {$db_prefix}down_logs 
+            (action_typ, table_name, row_id, log_date)
+        VALUES ('$action_typ', '$table', '$catid', $log_date )", __FILE__, __LINE__);
+    //
 
 
     // Last Recount the totals
@@ -2894,10 +2950,12 @@ function AddDownload2()
 
     $file_size = 0;
     
+    //XBMC Passion Mod
     $createdate = htmlspecialchars($_REQUEST['createdate'],ENT_QUOTES);
     $version = htmlspecialchars($_REQUEST['version'],ENT_QUOTES);
     $author = htmlspecialchars($_REQUEST['author'],ENT_QUOTES);
     $description_en = htmlspecialchars($_REQUEST['description_en'],ENT_QUOTES);
+
 
     for ($i=0; isset($_REQUEST['script_language'][$i]); $i++){
         if ($i==0){
@@ -2907,6 +2965,7 @@ function AddDownload2()
             $script_language.= '-'.$_REQUEST['script_language'][$i];
         }
     }
+    //
 
     GetCatPermission($cat,'addfile');
 
@@ -3116,6 +3175,15 @@ if (isset($_FILES['picture']['name']) && $_FILES['picture']['name'] != '')
 
         $file_id = db_insert_id();
 
+        //Xbmc Passion Mod
+        $action_typ = 'INSERT';
+        $table = $db_prefix.'down_file'; 
+        $log_date = time();
+        
+        db_query("INSERT INTO {$db_prefix}down_logs 
+                (action_typ, table_name, row_id)
+            VALUES ('$action_typ', '$table',$file_id)", __FILE__, __LINE__);
+        //
 
 
         // If we are using multifolders get the next folder id
@@ -3162,11 +3230,19 @@ if (isset($_FILES['picture']['name']) && $_FILES['picture']['name'] != '')
 
                             VALUES ($cat, '$ssThumb', '$ssTables', '$ssfilename', '$fileurl', '$keywords', '$title', '$description',$ID_MEMBER,$t,$approved, $allowcomments,$sendemail,'$createdate','$version','$author','$description_en','$script_language')", __FILE__, __LINE__);
 
+
     
 
             $file_id = db_insert_id();
 
-
+            //Xbmc Passion Mod
+            $action_typ = 'INSERT';
+            $table = $db_prefix.'down_file'; 
+            $log_date = time();
+            db_query("INSERT INTO {$db_prefix}down_logs 
+                    (action_typ, table_name, row_id, log_date)
+                VALUES ('$action_typ', '$table',$file_id, $log_date)", __FILE__, __LINE__);
+            //
 
         }
 
@@ -3672,6 +3748,7 @@ function EditDownload2()
 
         $fileurl = htmlspecialchars($_REQUEST['fileurl'],ENT_QUOTES);
         
+        //XBMC Passion Mod
         $createdate = htmlspecialchars($_REQUEST['createdate'],ENT_QUOTES);
         $version = htmlspecialchars($_REQUEST['version'],ENT_QUOTES);
         $author = htmlspecialchars($_REQUEST['author'],ENT_QUOTES);
@@ -3687,6 +3764,7 @@ function EditDownload2()
         }
 
         // $screenshot = htmlspecialchars($_REQUEST['screenshot'], ENT_QUOTES);
+        //
         
         $reflection = isset($_REQUEST['reflection']) ? 1 : 0;
 
@@ -3915,6 +3993,14 @@ if (isset($_FILES['picture']['name']) && $_FILES['picture']['name'] != '')
                       
                       WHERE ID_FILE = $id LIMIT 1", __FILE__, __LINE__);            
 
+            //Xbmc Passion Mod
+            $action_typ = 'UPDATE';
+            $table = $db_prefix.'down_file';
+            $log_date = time(); 
+            db_query("INSERT INTO {$db_prefix}down_logs 
+                    (action_typ, table_name, row_id, log_date)
+                VALUES ('$action_typ', '$table', '$id', $log_date )", __FILE__, __LINE__);
+            //
 
         // Update the Topic if the topic is selected for this category...
         
@@ -4065,7 +4151,14 @@ if (isset($_FILES['picture']['name']) && $_FILES['picture']['name'] != '')
 
                             SET ID_MEMBER = $memid WHERE ID_FILE = $id LIMIT 1", __FILE__, __LINE__);
 
-
+                            //Xbmc Passion Mod
+                            $action_typ = 'UDPATE';
+                            $table = $db_prefix.'down_file'; 
+                            $log_date = time();
+                            db_query("INSERT INTO {$db_prefix}down_logs 
+                                    (action_typ, table_name, row_id, log_date)
+                                VALUES ('$action_typ', '$table', '$id', $log_date )", __FILE__, __LINE__);
+                            //
 
                         }
 
@@ -4103,6 +4196,15 @@ if (isset($_FILES['picture']['name']) && $_FILES['picture']['name'] != '')
 
 
                 WHERE ID_FILE = $id LIMIT 1", __FILE__, __LINE__);
+
+                //Xbmc Passion Mod
+                $action_typ = 'UDPATE';
+                $table = $db_prefix.'down_file'; 
+                $log_date = time();
+                db_query("INSERT INTO {$db_prefix}down_logs 
+                        (action_typ, table_name, row_id, log_date)
+                    VALUES ('$action_typ', '$table', '$id', $log_date )", __FILE__, __LINE__);
+                //
 
 
         // Update the Topic if the topic is selected for this category...
@@ -4237,6 +4339,16 @@ if (isset($_FILES['picture']['name']) && $_FILES['picture']['name'] != '')
                             db_query("UPDATE {$db_prefix}down_file
 
                             SET ID_MEMBER = $memid WHERE ID_FILE = $id LIMIT 1", __FILE__, __LINE__);
+
+                            //Xbmc Passion Mod
+                            $action_typ = 'UPDATE';
+                            $table = $db_prefix.'down_file';
+                            $log_date = time();
+                            db_query("INSERT INTO {$db_prefix}down_logs 
+                                    (action_typ, table_name, row_id, log_date)
+                                VALUES ('$action_typ', '$table',$id, $log_date)", __FILE__, __LINE__);
+                            //
+
 
                         }
 
@@ -4910,6 +5022,17 @@ function AddComment2()
 
         SET commenttotal = commenttotal + 1 WHERE ID_FILE = $id LIMIT 1", __FILE__, __LINE__);
 
+/*
+    //Xbmc Passion Mod
+    $action_typ = 'UPDATE';
+    $table = $db_prefix.'down_file';
+    $log_date = time();
+    db_query("INSERT INTO {$db_prefix}down_logs 
+            (action_typ, table_name, row_id, log_date)
+        VALUES ('$action_typ', '$table',$id, $log_date)", __FILE__, __LINE__);
+    //
+*/
+
 
 
     // Check to send email on new comment
@@ -5223,6 +5346,16 @@ function DeleteComment()
 
         SET commenttotal = commenttotal - 1 WHERE ID_FILE = $fileid LIMIT 1", __FILE__, __LINE__);
 
+/*
+    //Xbmc Passion Mod
+    $action_typ = 'UPDATE';
+    $table = $db_prefix.'down_file';
+    $log_date = time();
+    db_query("INSERT INTO {$db_prefix}down_logs 
+            (action_typ, table_name, row_id, log_date)
+        VALUES ('$action_typ', '$table',$fileid, $log_date)", __FILE__, __LINE__);
+    //
+*/
 
 
       // Update the SMF Shop Points
@@ -6656,6 +6789,16 @@ $getScreenshot = '';
 
                       WHERE ID_FILE = " . $id . " LIMIT 1", __FILE__, __LINE__);
 
+            //Xbmc Passion Mod
+            $action_typ = 'UPDATE';
+            $table = $db_prefix.'down_file';
+            $log_date = time();
+            db_query("INSERT INTO {$db_prefix}down_logs 
+                    (action_typ, table_name, row_id, log_date)
+                VALUES ('$action_typ', '$table',$id, $log_date)", __FILE__, __LINE__);
+            //
+
+
 
                 }
 
@@ -7415,6 +7558,14 @@ function RateDownload()
         SET totalratings = totalratings + 1, rating = rating + $rating, actual_rating = (rating / (totalratings * 5) * 100)
     WHERE ID_FILE = $id LIMIT 1", __FILE__, __LINE__);
 
+    //Xbmc Passion Mod
+    $action_typ = 'UPDATE';
+    $table = $db_prefix.'down_file';
+    $log_date = time();
+    db_query("INSERT INTO {$db_prefix}down_logs 
+            (action_typ, table_name, row_id, log_date)
+        VALUES ('$action_typ', '$table',$id, $log_date)", __FILE__, __LINE__);
+    //
 
 
     // Redirect to the download
@@ -7555,6 +7706,16 @@ function RateDownload2()
         SET totalratings = totalratings + 1, rating = rating + $rating, actual_rating = (rating / (totalratings * 5) * 100)
 
     WHERE ID_FILE = $id LIMIT 1", __FILE__, __LINE__);
+
+    //Xbmc Passion Mod
+    $action_typ = 'UPDATE';
+    $table = $db_prefix.'down_file';
+    $log_date = time();
+    db_query("INSERT INTO {$db_prefix}down_logs 
+            (action_typ, table_name, row_id, log_date)
+        VALUES ('$action_typ', '$table',$id, $log_date)", __FILE__, __LINE__);
+    //
+
 
         redirectexit("action=downloads;cat=" . $catid . ";sortby=". $sortby . ";orderby=". $orderby . ";start=" . $start . "#down" . $id);
 
@@ -9470,6 +9631,16 @@ if (empty($id))
     
     SET ssFilename = '', ssThumb = '', ssTables = '' WHERE ID_FILE = $id LIMIT 1", __FILE__, __LINE__);
         
+    //Xbmc Passion Mod
+    $action_typ = 'UPDATE';
+    $table = $db_prefix.'down_file';
+    $log_date = time();
+    db_query("INSERT INTO {$db_prefix}down_logs 
+            (action_typ, table_name, row_id, log_date)
+        VALUES ('$action_typ', '$table',$id, $log_date)", __FILE__, __LINE__);
+    //
+
+
     redirectexit('action=downloads;sa=edit;id=' . $id);
     
 }
@@ -10164,6 +10335,16 @@ function GetFileTotals($ID_CAT)
 
                 $dbresult = db_query("UPDATE {$db_prefix}down_cat SET total = $total2 WHERE ID_CAT =  " . $row3['ID_CAT'] . " LIMIT 1", __FILE__, __LINE__);
 
+                //Xbmc Passion Mod
+                $action_typ = 'UPDATE';
+                $table = $db_prefix.'down_cat';
+                $log_date = time();
+                $id2log = $row3['ID_CAT'];
+                db_query("INSERT INTO {$db_prefix}down_logs 
+                        (action_typ, table_name, row_id, log_date)
+                    VALUES ('$action_typ', '$table',$id2log, $log_date)", __FILE__, __LINE__);
+                //
+
             }
 
         }
@@ -10268,6 +10449,14 @@ function GetTotalByCATID($ID_CAT)
 
         $dbresult = db_query("UPDATE {$db_prefix}down_cat SET total = $total WHERE ID_CAT = $ID_CAT LIMIT 1", __FILE__, __LINE__);
 
+        //Xbmc Passion Mod
+        $action_typ = 'UPDATE';
+        $table = $db_prefix.'down_cat';
+        $log_date = time();
+        db_query("INSERT INTO {$db_prefix}down_logs 
+                (action_typ, table_name, row_id, log_date)
+            VALUES ('$action_typ', '$table',$ID_CAT, $log_date)", __FILE__, __LINE__);
+        //
 
 
         // Return the total files
@@ -10374,6 +10563,16 @@ function Downloads_DownloadFile()
 
         WHERE ID_FILE = $id LIMIT 1", __FILE__, __LINE__);
 
+/*
+        //Xbmc Passion Mod
+        $action_typ = 'UPDATE';
+        $table = $db_prefix.'down_file';
+        $log_date = time();
+        db_query("INSERT INTO {$db_prefix}down_logs 
+                (action_typ, table_name, row_id, log_date)
+            VALUES ('$action_typ', '$table',$id, $log_date)", __FILE__, __LINE__);
+        //
+*/
 
 
         // Redirect to the download
@@ -10401,6 +10600,17 @@ function Downloads_DownloadFile()
             SET totaldownloads = totaldownloads + 1, lastdownload  = '$lastdownload' 
 
         WHERE ID_FILE = $id LIMIT 1", __FILE__, __LINE__);
+
+/*
+        //Xbmc Passion Mod
+        $action_typ = 'UPDATE';
+        $table = $db_prefix.'down_file';
+        $log_date = time();
+        db_query("INSERT INTO {$db_prefix}down_logs 
+                (action_typ, table_name, row_id, log_date)
+            VALUES ('$action_typ', '$table',$id, $log_date)", __FILE__, __LINE__);
+        //
+*/
 
 
 
