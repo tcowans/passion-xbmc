@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<strings>
+  <!-- strings 30000 thru 30999 reserved for plugin settings -->
+  <!--GENERAL STRINGS -->
+  <string id="30000">Xbmc Passion - Nfo creator</string>
+  <string id="30001">[B]Manual Search[/B]</string>
+  <string id="30002">The files do not contain</string>
+  <string id="30003">accented characters or apostrophe.</string>
+  <string id="30004">(do not forget the extension. ".avi", ".mpg", ...)</string>
+  <string id="30005">Enter name (eg: 300.avi) and '[COLOR=ffe2ff43]&#43;[/ COLOR]' as a separator</string>
+  <string id="30006">Installation complete.</string>
+  <string id="30007">Error: Unable to retrieve or recover the archive</string>
+  <string id="30008">You must set the plugin!</string>
+  <string id="30009">Movie Information</string>
+  <string id="30010">(AlloCine) See more details</string>
+  <string id="30011">Submit my list</string>
+  <string id="30012">Install NFO</string>
+  <string id="30013">NFO Viewer</string>
+
+  <string id="30019">Videos</string>
+  <string id="30020">Movies path:</string>
+  <string id="30021">Liste(.txt) videos</string>
+  <string id="30022">Disable</string>
+  <string id="30023">Save</string>
+  <string id="30024">Save &amp; View Information</string>
+
+  <string id="30029">Web (XBox not supported)</string>
+  <string id="30030">Web Browser path:</string>
+
+  <string id="30040">Browse video for associate with [B]NFO[/B]</string>
+  <string id="30041">The destination folder is missing!</string>
+
+  <string id="30133">Scrapers</string>
+  <string id="30134">&#32;- Maximum of trailers to retrieving</string>
+  <string id="30139">Trailers scraper</string>
+  <string id="30140">Play mode</string>
+  <string id="30141">Stream</string>
+  <string id="30142">Download</string>
+  <string id="30143">Download &amp; Save</string>
+  <string id="30144">&#32;- Recordings Folder</string>
+</strings>
