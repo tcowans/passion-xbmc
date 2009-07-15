@@ -2,7 +2,7 @@
 <strings>
   <!-- strings 30000 thru 30999 reserved for plugin settings -->
   <!--GENERAL STRINGS -->
-  <string id="30000">Xbmc Passion - Nfo creator</string>
+  <string id="30000">Passion-XBMC NFO Creator</string>
   <string id="30001">[B]Manual Search[/B]</string>
   <string id="30002">The files do not contain</string>
   <string id="30003">accented characters or apostrophe.</string>
@@ -38,4 +38,14 @@
   <string id="30142">Download</string>
   <string id="30143">Download &amp; Save</string>
   <string id="30144">&#32;- Recordings Folder</string>
+
+  <string id="30200">Trailers</string>
+
+  <!-- compatible messages -->
+  <string id="30900">version</string>
+  <string id="30901">This version of %s requires an</string>
+  <string id="30902">XBMC revision of %s or greater to run.</string>
+  <string id="30903">Please update your XBMC.</string>
+  <string id="30904">Error</string>
+  <string id="30905">This plugin run under[CR][COLOR=ffe2ff43]%s[/COLOR] only.</string>
 </strings>

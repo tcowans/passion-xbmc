@@ -2,7 +2,7 @@
 <strings>
   <!-- Les strings de 30000 à 30999 sont réservées aux paramètres plug-in -->
   <!--GENERAL STRINGS -->
-  <string id="30000">Xbmc Passion - Nfo créator</string>
+  <string id="30000">Passion-XBMC NFO Creator</string>
   <string id="30001">[B]Recherche Manuel[/B]</string>
   <string id="30002">Les fichiers ne doivent pas contenir</string>
   <string id="30003">de caractères accentués ou d'apostrophe.</string>
@@ -32,10 +32,20 @@
 
   <string id="30133">Scrapers</string>
   <string id="30134">&#32;- Maximum de bandes-annonces à récupérer</string>
-  <string id="30139">Scraper de bandes-annonces</string>
-  <string id="30140">Mode de lecture</string>
+  <string id="30139">Scraper</string>
+  <string id="30140">Mode de lecture des bandes-annonces</string>
   <string id="30141">En ligne</string>
   <string id="30142">Télécharger</string>
   <string id="30143">Télécharger &amp; Sauvegarder</string>
   <string id="30144">&#32;- Dossier des enregistrements</string>
+
+  <string id="30200">Bandes-annonces</string>
+
+  <!-- compatible messages -->
+  <string id="30900">version</string>
+  <string id="30901">La version %s nécessite qu'XBMC soit</string>
+  <string id="30902">à la révision %s ou supérieur pour fonctionner.</string>
+  <string id="30903">Veuillez mettre à jour votre XBMC.</string>
+  <string id="30904">Erreur</string>
+  <string id="30905">Ce plugin fonctionne sous[CR][COLOR=ffe2ff43]%s[/COLOR] seulement.</string>
 </strings>

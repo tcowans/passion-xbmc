@@ -4,16 +4,51 @@
 # allocine.fr ne peut être tenu responsable de l'utilisation qui en serait faite.
 # allocine.fr ne permet pas que l'on consulte des informations de leur site en dehors de leur site sans leur accord préalable.
 # Le contenu textuel et multimedia (images / videos) appartient exclusivement à allocine.fr
-import urllib,re
-import sys
+
+DEBUG_AC = False
+
 import os
+import re
+import sys
 import time
+import urllib
+import urllib2
 
 try:
     import xbmcgui
     DIALOG_PROGRESS = xbmcgui.DialogProgress()
 except:
     DIALOG_PROGRESS = None
+
+
+def passion_fanart( movie_id="" ):
+    #return []
+    u"""partie non affiliée avec allocine.
+    ces fanarts sont mis à contribution par les membres de passion-xbmc.org"""
+
+    if movie_id.isdigit():
+        PASSION_FANART = "http://passion-xbmc.org/mgallery/?sa=search;search=id%3D"
+        SCH_KW = ";sch_kw"
+        DIRECT_LINK = "http://passion-xbmc.org/MGalleryItem.php?id=%s"
+        #movie_id = "28418"
+
+        url = PASSION_FANART + movie_id + SCH_KW
+        #html = urllib2.urlopen( url ).read()
+        html = urllib.urlopen( url ).read()
+
+        fanarts = re.compile( '<a href="http://passion-xbmc.org/mgallery/[?]sa=item[;]id=(\d+)"><img alt' ).findall( html )
+        li = [ DIRECT_LINK % fanart for fanart in fanarts ]
+        li.reverse()
+        return li
+
+        #try: name = urllib2.urlopen( li[ 0 ] ).info()[ "Content-Disposition" ].replace( "inline; filename=", "" )
+        #except: name = "temp.jpg"
+
+        #fp, h = urllib.urlretrieve( li[ 0 ], name )
+
+        #print fp
+        #print h
+
 
 __todo__=u"""
 -Harmoniser les retours infructueux de parse (None, variable vide, texte par défaut, exception ?...)
@@ -113,42 +148,43 @@ def unescape(text):
 
 #from traceback import print_exc
 def Log(msg,cat="I"):
-    u"""Used to write log messages"""
-    if not msg:
-        cat = "I"
-        msg = "------marker------"
-    logcats = {"W":"WARNING",
-               "I":"INFO",
-               "E":"ERROR",
-               "D":"DEVELOPER",
-               "O":"OTHER"}
-    if not cat in logcats.keys(): cat="O"
-    #try:
-    #    f=open(os.path.join(ROOTDIR,"allocine.log"),"a")
-    #    f.write("%s : %s"%(logcats[cat],msg)+"\n")
-    #    f.close()
-    #except:
-    try:
-        if os.path.exists( os.path.join(ROOTDIR,"allocine.log") ):
-            of = open(os.path.join(ROOTDIR,"allocine.log"),"r")
-            oldtext = of.read()
-            of.close()
-        else:
-            oldtext = ""
-        f=open(os.path.join(ROOTDIR,"allocine.log"),"w")
-        if oldtext:
-            f.write(oldtext+os.linesep)
-        f.write("%s : %s"%(logcats[cat],msg)+os.linesep)
-        f.close()
-    except:
-        #print_exc()
-        print "%s : %s"%(logcats[cat],msg)
-#log initialisation
-#print os.path.join(ROOTDIR,"allocine.log")
-#f=open(os.path.join(ROOTDIR,"allocine.log"),"w")
-#f.write(u"allocine library loading - creation of this log file\n")
-#f.close()
-#del f
+    u"""Used to write log messages, if DEBUG_AC is True"""
+    if DEBUG_AC:
+        if not msg:
+            cat = "I"
+            msg = "------marker------"
+        logcats = {"W":"WARNING",
+                   "I":"INFO",
+                   "E":"ERROR",
+                   "D":"DEVELOPER",
+                   "O":"OTHER"}
+        if not cat in logcats.keys(): cat="O"
+        #try:
+        #    f=open(os.path.join(ROOTDIR,"allocine.log"),"a")
+        #    f.write("%s : %s"%(logcats[cat],msg)+"\n")
+        #    f.close()
+        #except:
+        try:
+            if os.path.exists( os.path.join(ROOTDIR,"allocine.log") ):
+                of = open(os.path.join(ROOTDIR,"allocine.log"),"r")
+                oldtext = of.read()
+                of.close()
+            else:
+                oldtext = ""
+            f=open(os.path.join(ROOTDIR,"allocine.log"),"w")
+            if oldtext:
+                f.write(oldtext+os.linesep)
+            f.write("%s : %s"%(logcats[cat],msg)+os.linesep)
+            f.close()
+        except:
+            #print_exc()
+            print "%s : %s"%(logcats[cat],msg)
+    #log initialisation
+    #print os.path.join(ROOTDIR,"allocine.log")
+    #f=open(os.path.join(ROOTDIR,"allocine.log"),"w")
+    #f.write(u"allocine library loading - creation of this log file\n")
+    #f.close()
+    #del f
 Log(u"allocine library loading - creation of this log file"+os.linesep)
         
         #---------------------------#
@@ -162,7 +198,7 @@ def connect(url,params={},debuglevel=0):
     Set debuglevel to 1 to print http headers 
     """
     global LAST_VISITED_URL 
-    import urllib2
+    #import urllib2
     from urlparse import urlparse
     host=urlparse(url)[1]
 
@@ -356,7 +392,7 @@ def get_video_url(mediaID="18791182",quality=None):
             #raise AllocineError,"get_video_url did not match anything for the given mediaID. Make sure mediaID#%s on %s is valid."%(mediaID,ALLOCINE_DOMAIN)
             pass
     if not BA_path:
-        return None
+        return ""
         #raise AllocineError,"The media %s seems not contain videos from <%s> to worst quality(ies). Please try higher quality."%(mediaID,quality)
     else:
         return VIDEO_STREAM_URL % BA_path
@@ -508,6 +544,7 @@ class Movie:
         self.ID=IDmovie
         self.HTML = download_html(ALLOCINE_DOMAIN + MOVIE_URL%self.ID)
         self.TITLE = ""
+        self.ORIGINAL_TITLE = ""
         self.DATE = ""
         self.DIRECTOR = tuple()
         self.NATIONALITY = ""
@@ -532,7 +569,7 @@ class Movie:
     def director(self):
         u"""Return the director of the movie as a tuple ( ID , Name )"""
         #  a internationnaliser !
-        match = re.search(ur'<h4>Réalisé par <a class="link1" href="/personne/fichepersonne_gen_cpersonne=(\d+)\.html">(.*?)</a></h4>',self.HTML)
+        match = re.search(ur'<h3 class="SpProse">Réalisé par <a class="link1" href="/personne/fichepersonne_gen_cpersonne=(\d+)\.html">(.*?)</a></h3>',self.HTML)
         if match: self.DIRECTOR = (match.group(1),match.group(2))# id,nom
         else: self.DIRECTOR = (None,None)
         return self.DIRECTOR
@@ -556,32 +593,89 @@ class Movie:
 
     def title(self):
         u"""Return the title of the movie."""
-        match = re.search(r'<title>(.*?)</title>',self.HTML)
+        match = re.search(r'<title>(.*?)- AlloCin.*?</title>',self.HTML)
+        self.ORIGINAL_TITLE = ( re.compile( '<h3 class="SpProse">Titre original : <i>(.*?)</i></h3>' ).findall( self.HTML ) or [ "" ] )[ 0 ]
         if match: self.TITLE = match.group(1)
+        elif self.ORIGINAL_TITLE: self.TITLE = self.ORIGINAL_TITLE
         else: self.TITLE = ""
-        return self.TITLE
+        return self.TITLE.strip()
 
     def date(self):
         u"""Return the release date of the movie as string."""
-        match = re.search(r'<h4>[ \w]+? : <b>([\s\w\d].*?)</b>',self.HTML)
-        if match: self.DATE = match.group(1)
-        else: self.DATE = None        
+        match = re.search(r'<h3 class="SpProse">.*?(\d+)/(\d+)/(\d+).html"',self.HTML)
+        if match: self.DATE = "%s-%s-%s" % ( match.group(3), match.group(2), match.group(1), )
+        else: self.DATE = ""        
         return self.DATE
-    
+
+    def year(self):
+        regexp = '<h3 class="SpProse">.*?de production : (\d+)</h3>'
+        try: year = re.compile( regexp ).findall( self.HTML )[ 0 ]
+        except:
+            year = self.date()
+            if year: year = year.split( "-" )[ 0 ]
+        return year
+
+    def rate_and_vote(self):
+        regexp = '<h4>Note moyenne.*?class="etoile_(\d+)" border.*?pour (\d+) critiques</h4>'
+        return ( re.compile( regexp ).findall( self.HTML ) or [ ( "", "" ) ] )
+
+    def fiche_tech(self):
+        regexp = '<h2 class="SpBlocTitle" >Fiche Technique</h2>(.*?)</table>'
+        tech = ( re.compile( regexp, re.DOTALL ).findall( self.HTML ) or [ "" ] )[ 0 ]
+        fiche = []
+        for text in re.findall( '<h4><b>(.*?)</b>(.*?)</h4><br />', tech ):
+            fiche.append( "".join( list( text ) ) )
+        return " | ".join( fiche )
+
+    def tagline(self):
+        regexp = '<h2 class="SpBlocTitle" >Secrets de tournage</h2>(.*?)</table></td></tr></table>'
+        line = ( re.compile( regexp, re.DOTALL ).findall( self.HTML ) or [ "" ] )[ 0 ]
+        tag = []
+        for text in re.findall( '<h4><b>(.*?)</b></h4>.*?<h4>(.*?)</h4>', line ):
+            tag.append( ": ".join( list( text ) ) )
+        return " | ".join( tag )
+
+    def studio(self):
+        regexp = '<h3 class="SpProse">Distribu.*? par(.*?)</h3>'
+        studios = re.compile( regexp, re.DOTALL ).findall( self.HTML ) or [ "" ]
+        studios = re.findall( '<a href=".*?" class="link1">(.*?)</a>', studios[ 0 ] )
+        return " / ".join( studios )
+        
+    def get_genre(self):
+        regexp = '<a href="/film/alaffiche_genre_gen_genre=.*?" class="link1">(.*?)</a>'
+        return " / ".join( re.compile( regexp, re.DOTALL ).findall( self.HTML ) )
+
+    def get_runtime(self):
+        regexp = '<h3 class="SpProse">Durée : (.*?)&nbsp;</h3>'
+        return ( re.compile( regexp, re.DOTALL ).findall( self.HTML ) or [ "" ] )[ 0 ]
+
+    def get_outline(self):
+        regexp = '<div align="justify" style=".*?"><h4>(.*?)</h4></div><h4>'
+        return " | ".join( re.compile( regexp, re.DOTALL ).findall( self.HTML ) )
+
     def synopsis(self):
         u"""Return the synopsis of the movie"""
         Log(u"Movie.synopsis() : Need to verify the regexp as it works on 'regexbuddy' but not in the library... why ?","D")
-        #l'expression suivante fonctionne dans regexbuddy mais pas dans python... pkoi ??
-        match = re.search(ur'<td valign="top" style="padding:[\d ]+?"><div align="justify"><h4>(.*?)</h4>',self.HTML)
-        if match: self.SYNOPSIS=infos_text(match.group(1))
-        else: self.SYNOPSIS = ""
-        return self.SYNOPSIS.encode(ALLOCINE_ENCODING)
+        #Alex: l'expression suivante fonctionne dans regexbuddy mais pas dans python... pkoi ??
+        #Frost: cette expression marche avec "re.compile" et des fois non avec "re.search".
+        match = re.search(ur'Synopsis.*?<td valign="top" style="padding:[\d ]+?"><div align="justify"><h4>(.*?)</h4>',self.HTML)
+        if match:
+            self.SYNOPSIS=infos_text(match.group(1))
+            return self.SYNOPSIS.replace( "<br />", "\n" ).replace( "<br>", "" ).replace( "\r", "" ).encode(ALLOCINE_ENCODING)
+        else:
+            plot = re.compile( '<td valign="top" style="padding:[\d ]+?"><div align="justify"><h4>(.*?)</h4>', re.DOTALL ).findall( self.HTML )
+            if plot: self.SYNOPSIS = plot[ 0 ]
+            else: self.SYNOPSIS = ""
+        return self.SYNOPSIS.replace( "<br />", "\n" ).replace( "<br>", "" ).replace( "\r", "" )#.encode(ALLOCINE_ENCODING)
 
     def has_videos(self):
         u"""Return a boolean whether the movie has video or not"""
-        match = re.search(r'<a href="/video/player_gen_cmedia=\d+&cfilm=\d+\.html" class="link5">',self.HTML)
-        if match:self.HAS_VIDEOS=True
-        else: self.HAS_VIDEOS=False
+        try:
+            match = re.search(r'<a href="/video/player_gen_cmedia=\d+&cfilm=\d+\.html" class="link5">',self.HTML)
+            if match:self.HAS_VIDEOS=True
+            else: self.HAS_VIDEOS=False
+        except:
+            self.HAS_VIDEOS=False
         return self.HAS_VIDEOS
 
     def has_casting(self):
@@ -597,10 +691,11 @@ class Movie:
         return self.HAS_PHOTOS
 
     def pictureURL(self):
+        #print re.compile( '<img src="(.*?)" border=".*?" alt=".*?" class="affichette" />' ).findall( self.HTML )
         u"""Return the URL of the picture of the movie."""
-        match = re.search(r'<img src="(http://[a-z0-9/\._]+?\.jpg)" border="0" alt="" class="affichette" />',self.HTML)
+        match = re.search(r'<img src="((http://[a-z0-9/\._]+?)(\.gif|\.jpg))" border=.*? class="affichette" />',self.HTML)
         if match: self.PICurl=match.group(1)
-        else: self.PICurl=None
+        else: self.PICurl=""
         return self.PICurl
 
 ##    def parser(self):
@@ -676,35 +771,27 @@ class Movie:
         [ (Category, Job, PersonID, PersonName),(...) ...]
         """
         Log(u"Movie.get_casting : Need to make the get_casting function more fonctionnal... it does not work very well right now","D")
-        if not self.has_casting(): raise AllocineError,"No casting for the movie ID#%s"%self.ID
-        else: #si le casting est vide
+        castandrole = []
+        productor = ""
+        #if not self.has_casting(): raise AllocineError,"No casting for the movie ID#%s"%self.ID
+        if self.has_casting():#else: #si le casting est vide
             html=download_html(ALLOCINE_DOMAIN + CASTING_URL%self.ID)#,os.path.join(CACHEDIR,"casting%s.html"%self.ID))
-            Log( u"Movie.get_casting() : need to fix and make international the regexp","D")
-            match = re.search(ur"<h2.+?>Casting complet</h2>.*?<h3><b>Liens sponsorisés</b></h3>", html,re.DOTALL)#a faire fonctionner et à internationaliser
-            if match:
-                # match start: match.start()
-                deb= match.start()
-                fin= match.end()
-                # match end (exclusive): match.end()
-                # matched text: match.group()
-            else:
-                Log(u"Movie.get_casting : regexp doesn't match")
-            casting = []
-            exp = re.compile(ur'<h4.*?><b>(.*?)</b></h4><hr /></td></tr>(.*?)</tr>\s+</table>',re.DOTALL)
-            fonctions = exp.findall(html[deb:fin])
-            for fcttitre,fctdatas in fonctions:
-                #print fcttitre
-                exp = re.compile(ur'tr.*?>\s+<td.*?>(?:<h5>)?(.*?)(?:</h5>)?</td>\s+<td.*?><h5>\s*<a href="/personne/fichepersonne_gen_cpersonne=(\d+).html" class="link1">(.*?)</a>\s+</h5></td>\s+</tr>')
-                persos = exp.findall(fctdatas)
-                #print persos
-                memmetier = "-"
-                for metier,idp,nom in persos:
-                    if not metier:
-                        metier = memmetier
-                    else:
-                        memmetier = metier
-                    #print "\t%s (%s) [%s]"%(nom,metier,idp)
-                    casting.append((fcttitre,metier,idp,nom))
+            try:
+                for actor in re.compile( '>Casting complet</h2>(.*?)Production</h2>', re.DOTALL ).findall( html )[ 0 ].split( "</tr>" ):
+                    actor_roll = re.findall( '<h5>(.*?)</h5>.*?"link1">(.*?)</a></h5>', actor, re.DOTALL )
+                    if actor_roll:
+                        thumb = ( re.findall( "<img src='(.*?)'", actor) or [ "" ] )[ 0 ]
+                        ID = re.findall( "fichepersonne_gen_cpersonne=(\d+).html", actor )
+                        castandrole.append(  { "ID": ID[ 0 ],  "name": actor_roll[ 0 ][ 1 ], "role": actor_roll[ 0 ][ 0 ], "thumb": thumb } )
+            except:
+                pass
+            try:
+                prod = ( re.compile( "Producteur(.*?)Producteur", re.DOTALL ).findall( html ) or [ "" ] )[ 0 ]
+                productor = " / ".join( re.findall( 'class="link1">(.*?)</a>', prod ) )
+            except:
+                pass
+
+        return castandrole, productor
 
     def get_mediaIDs(self):
         u"""Return media IDs for videos as a list of tuples :
@@ -745,16 +832,99 @@ class Movie:
         else:
             raise AllocineError,"No available media Video for the movie ID#%s"%self.ID
 
-    def XML(self):
+    def XML(self, fpath="", clear_actor="false", clear_genre="false", clear_studio="false", clear_credits="false", clear_director="false" ):
         # non prioritaire !!
         u"""TO DO !!
         Will return a string in XML format with all infos of the Movie.
         Clients will use this XMLstream as they want (save file, parse it...)
         """
-        #A FAIRE ! ! 
+        #A FAIRE ! !
         # et il faudra définir un format de XML intéressant
-        Log(u"Movie.XML() : XML output is not supported yet","D")
-        
+        #Log(u"Movie.XML() : XML output is not supported yet","D")
+        #if fpath:
+        #f.write( "\t<>" +  + "</>\n" )
+
+        nfo_file = os.path.join( fpath, "%s.xml" % self.ID )
+        f = open( nfo_file, "w" )
+
+        f.write( "<movie>\n" )
+        f.write( "\t<!-- Video nfo File created on: %s -->\n" % ( time.strftime( "%d-%m-%Y | %H:%M:%S" ) ) )
+        f.write( "\t<id>" + self.ID + "</id>\n" )
+        f.write( "\t<title>" + self.title() + "</title>\n" )
+        f.write( "\t<originaltitle>" + self.ORIGINAL_TITLE + "</originaltitle>\n" )
+        f.write( "\t<date>" + self.date() + "</date>\n" )
+        f.write( "\t<year>" + self.year() + "</year>\n" )
+        f.write( "\t<runtime>" + self.get_runtime() + "</runtime>\n" )
+        f.write( "\t<plot>" + self.set_pretty_formatting( self.synopsis() ) + "</plot>\n" )
+        f.write( "\t<outline>" + self.set_pretty_formatting( self.get_outline() ) + "</outline>\n" )
+        f.write( "\t<tagline>" + self.set_pretty_formatting( self.tagline() ) + "</tagline>\n" )
+        rate, vote = self.rate_and_vote()[ 0 ]
+        f.write( "\t<rating>" + rate + "</rating>\n" )
+        f.write( "\t<votes>" + vote + "</votes>\n" )
+        f.write( "\t<mpaa>" + self.set_pretty_formatting( self.fiche_tech() ) + "</mpaa>\n" )
+        f.write( '\t<genre clear="%s">%s</genre>\n' % ( clear_genre, self.get_genre(), ) )
+        f.write( '\t<studio clear="%s">%s</studio>\n' % ( clear_studio, self.studio(), ) )
+        f.write( '\t<director clear="%s">%s</director>\n' % ( clear_director, self.director()[ 1 ], ) )
+        castandrole, productor = self.get_casting()
+        f.write( '\t<credits clear="%s">%s</credits>\n' % ( clear_credits, productor, ) )
+
+        #castings
+        for actor in castandrole:
+            f.write( '\t<actor clear="%s">\n' % clear_actor )
+            f.write( "\t\t<id>" + actor.get( "ID", "" ) + "</id>\n" )
+            f.write( "\t\t<name>" + actor.get( "name", "" ) + "</name>\n" )
+            f.write( "\t\t<role>" + actor.get( "role", "" ) + "</role>\n" )
+            f.write( "\t\t<thumb>" + actor.get( "thumb", "" ) + "</thumb>\n" )
+            f.write( "\t</actor>\n" )
+
+        #vignettes
+        f.write( "\t<thumbs>\n" )
+        f.write( "\t\t<thumb>" + self.pictureURL() + "</thumb>\n" )
+        f.write( "\t</thumbs>\n" )
+
+        #fanarts
+        fpx = passion_fanart( self.ID )
+        if fpx or self.has_photos():
+            f.write( "\t<fanart>\n" )
+            #fanart passion-xbmc
+            if fpx:
+                for fanart in fpx:
+                    f.write( "\t\t<thumb>" + fanart + "</thumb>\n" )
+            #fanart allocine
+            if self.has_photos():
+                for photo in self.get_photos():
+                    f.write( "\t\t<thumb>" + photo[ 0 ] + "</thumb>\n" )
+            f.write( "\t</fanart>\n" )
+
+        # add trailer if exists
+        if self.has_videos():
+            mediaIDs = self.get_mediaIDs()
+            trailer = get_video_url( mediaIDs[ 0 ][ 0 ] )
+            if trailer: f.write( "\t<trailer>" + trailer + "</trailer>\n" )
+
+        #end close nfo
+        f.write( "</movie>\n" )
+
+        # add mix of XML and URL
+        if "true" in ( clear_actor, clear_genre, clear_studio, clear_credits, clear_director ):
+            url = ALLOCINE_DOMAIN + MOVIE_URL % self.ID
+            f.write( "%s\n" % ( url, ) )
+        f.close()
+        return nfo_file
+
+        #not used for a moment
+        #print self.nationality()
+        #print self.infos()
+        #return ""
+
+    def set_pretty_formatting( self, text, by="" ):
+        text = text.replace( "<br />", "\n" )
+        text = text.replace( "<i>", "[I]" ).replace( "</i>", "[/I]" )
+        text = text.replace( "<b>", "[B]" ).replace( "</b>", "[/B]" )
+        #text = re.sub( "(?s)</[^>]*>", "[/B]", text )
+        #text = re.sub( "(?s)<[^>]*>", "[B]", text )
+        return text
+
     def __repr__(self):
         return "< Allocine movie object ID#%s >"%self.ID
 
@@ -1320,9 +1490,9 @@ class Favourite:
 #initialisation des domaines pour l'internationalisation
 #set_country("FR")
 
+
+
 if __name__ == "__main__":
     Log( u"This script is intended to be used as a library.")
-    #print Movie( "61139" ).BAurl( 5 )
-    #print len(download_html("http://a69.g.akamai.net/n/69/10688/v1/img5.allocine.fr/acmedia/rsz/434/x/x/x/medias/nmedia/18/67/67/24/18992446.jpg"))
-    pass
-             
+    film = Movie( "61139" )
+    print film.synopsis()#XML( "" )

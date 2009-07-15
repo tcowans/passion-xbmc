@@ -16,6 +16,7 @@ __all__ = [
     "DIALOG_PROGRESS",
     "BASE_CACHE_PATH",
     "_Info",
+    "translate_string",
     "reduced_path",
     "set_pretty_formatting",
     "get_html_source",
@@ -29,6 +30,7 @@ __all__ = [
 #Modules general
 import os
 import urllib
+from string import maketrans
 from traceback import print_exc
 
 #modules XBMC
@@ -46,11 +48,41 @@ class _Info:
         self.__dict__.update( kwargs )
 
 
+def translate_string( strtrans, del_char="" ):
+    # frm = Representation of " Non-ASCII character "
+    if "\xc3\xa9" in strtrans:
+        strtrans = strtrans.replace( "\xc3\xa9", "\xe9" )
+    frm = '\xe1\xc1\xe0\xc0\xe2\xc2\xe4\xc4\xe3\xc3\xe5\xc5\xe6\xc6\xe7\xc7\xd0\xe9\xc9\xe8\xc8\xea\xca\xeb\xcb\xed\xcd\xec\xcc\xee\xce\xef\xcf\xf1\xd1\xf3\xd3\xf2\xd2\xf4\xd4\xf6\xd6\xf5\xd5\xf8\xd8\xdf\xfa\xda\xf9\xd9\xfb\xdb\xfc\xdc\xfd\xdd'
+    #print " Non-ASCII character =", frm
+    to = "aAaAaAaAaAaAaAcCDeEeEeEeEiIiIiIiInNoOoOoOoOoOoOsuUuUuUuUyY"
+    # Construct a translation string
+    table = maketrans( frm, to )
+    is_unicode = 0
+    if isinstance( strtrans, unicode ):
+        is_unicode = 1
+        # remove unicode
+        strtrans = "".join( [ chr( ord( char ) ) for char in strtrans ] )
+    if not del_char:
+        # set win32 and xbox default invalid characters
+        del_char = """,*=|<>?;:"+""" #+ "\xc3\xa9"
+    # translation string
+    s = strtrans.translate( table, del_char )
+    # now remove others invalid characters
+    s = "".join( [ char for char in s if ord( char ) < 127 ] )
+    if is_unicode:
+        #replace unicode
+        s = unicode( s )#, "utf-8" )
+    return s
+
+
 def reduced_path( fpath ):
-    list_path = fpath.split( os.sep )
-    for pos in list_path[ 1:-2 ]:
-        list_path[ list_path.index( pos ) ] = ".."
-    return os.sep.join( list_path )
+    try:
+        list_path = fpath.split( os.sep )
+        for pos in list_path[ 1:-2 ]:
+            list_path[ list_path.index( pos ) ] = ".."
+        return os.sep.join( list_path )
+    except:
+        return fpat
 
 
 def set_pretty_formatting( text ):
