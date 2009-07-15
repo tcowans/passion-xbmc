@@ -82,7 +82,7 @@ def reduced_path( fpath ):
             list_path[ list_path.index( pos ) ] = ".."
         return os.sep.join( list_path )
     except:
-        return fpat
+        return fpath
 
 
 def set_pretty_formatting( text ):
