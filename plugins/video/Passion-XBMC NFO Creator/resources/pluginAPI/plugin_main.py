@@ -3,8 +3,8 @@
 import os
 import re
 import sys
-import urllib
 from traceback import print_exc
+from urllib import quote_plus, unquote_plus, unquote
 
 #modules XBMC
 import xbmc
@@ -15,12 +15,11 @@ import xbmcplugin
 from utilities import *
 
 
-etape2 = "http://passion-xbmc.org/nfo_creator/index.php?listeFilm=%s&etape=2"
-#etape3 = "http://passion-xbmc.org/nfo_creator/index.php?etape=3&%s=%s"
-
-#regexp = """<input type="radio" name="([^"]+)" value="([^"]+)".*/>([^"]+)<a target=_blank href='([^"]+)'>voir la fiche</a>"""
+PASSION_NFO = "http://passion-xbmc.org/nfo_creator/index.php?listeFilm=%s&etape=2"
 
 _ = xbmc.getLocalizedString
+
+DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
 
 class Main:
@@ -54,7 +53,10 @@ class Main:
                             fpath = os.path.join( root, name )
                             title, ext = os.path.splitext( name )
                             if name.lower() == "video_ts.ifo":
-                                name = os.path.basename( root ) + ext
+                                if re.search( "video", os.path.basename( root ).lower() ):
+                                    name = os.path.basename( os.path.dirname( root ) ) + ext
+                                else:
+                                    name = os.path.basename( root ) + ext
                             elif re.search( "vts_|video_", title.lower() ):
                                 continue
                             if not ext.lower() in self.VIDEO_EXT:
@@ -76,7 +78,7 @@ class Main:
                             infolabels = self._get_infos( fpath )
                             listitem.setInfo( type="Video", infoLabels=infolabels )
                             listitem.setProperty( "Fanart_Image", os.path.splitext( fpath )[ 0 ] + "-fanart.jpg" )
-                            url = '%s?path=%s&isFolder=%d' % ( sys.argv[ 0 ], repr( urllib.quote_plus( fpath ) ), 0, )
+                            url = '%s?path=%s&isFolder=%d' % ( sys.argv[ 0 ], repr( quote_plus( fpath ) ), 0, )
                             OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=True, totalItems=total_items )
                             if ( not OK ): raise
 
@@ -107,7 +109,7 @@ class Main:
             if ( path.endswith( "\\" ) or path.endswith( "/" ) ):
                 path = path[ : -1 ]
             # add our path
-            fpaths += [ urllib.unquote( path ) ]
+            fpaths += [ unquote( path ) ]
         return fpaths
 
     def _save_listing( self, listing ):
@@ -125,7 +127,7 @@ class Main:
         if ( self.settings[ "write_list" ] == 2 ):
             if self.settings[ "web_navigator" ] != "" and os.path.exists( self.settings[ "web_navigator" ] ):
                 cmd = "System.Exec"
-                url = etape2 % translate_string( urllib.quote_plus( os.linesep ).join( listing ) )#"%0D%0A"
+                url = PASSION_NFO % translate_string( quote_plus( os.linesep ).join( listing ) )#"%0D%0A"
                 command = '%s("%s" "%s")' % ( cmd, self.settings[ "web_navigator" ], url, )
                 # add the movie information item
                 c_items += [ ( _( 30011 ), command, ) ]
@@ -148,9 +150,8 @@ class Main:
         infos = { "Title": os.path.basename( fpath ), "watched": watched, "overlay": overlay }
         try:
             if watched:
-                infos = self.get_nfo_infos( os.path.splitext( fpath )[ 0 ] + ".nfo" )
+                infos = self.get_nfo_infos( os.path.splitext( fpath.replace( "\xe9", "\xc3\xa9" ) )[ 0 ] + ".nfo" )
             else:
-                #print isinstance( repr( fpath ), unicode ), fpath
                 strlist = xbmc.executehttpapi( "GetMovieDetails(%s)" % ( fpath, ) )
                 if "error" in strlist.lower():
                     strlist = xbmc.executehttpapi( "GetMovieDetails(%s)" % ( fpath.replace( "\xe9", "\xc3\xa9" ), ) )
@@ -167,6 +168,7 @@ class Main:
             #print infos.keys()
             #print "-"*85
         except:
+            print fpath
             print_exc()
         infos.update( { "watched": watched, "overlay": overlay } )
         return infos
@@ -204,11 +206,12 @@ class Main:
           - self.list.getSelectedItem().setInfo('video', { 'Genre': 'Comedy' })
         """
 
-        nfo_r = file( url, "r" ).read()#nfo_stream( url )
+        nfo_r = file( url, "r" ).read()
         try:
             trailer     = ( re.findall( '<trailer>(.*?)</trailer>', nfo_r )      or [ "" ] )[ 0 ]
-            title       = ( re.findall( '<title>(.*?)</title>', nfo_r )          or [ "" ] )[ 0 ]# + " [B](NFO File)[/B]"
+            title       = ( re.findall( '<title>(.*?)</title>', nfo_r )          or [ "" ] )[ 0 ]
             year        = ( re.findall( '<year>(.*?)</year>', nfo_r )            or [ "" ] )[ 0 ]
+            date        = ( re.findall( '<date>(.*?)</date>', nfo_r )            or [ "" ] )[ 0 ]
             director    = ( re.findall( '<director.*?>(.*?)</director>', nfo_r ) or [ "" ] )[ 0 ]
             tagline     = ( re.findall( '<tagline>(.*?)</tagline>', nfo_r )      or [ "" ] )[ 0 ]
             writer      = ( re.findall( '<credits.*?>(.*?)</credits>', nfo_r )   or [ "" ] )[ 0 ]

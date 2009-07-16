@@ -9,18 +9,19 @@
   <!-- SCRAPER SETTINGS -->
   <setting type="lsep" label="30133" />
   <setting id="trailers_scraper" type="fileenum" mask="/" values="resources\pluginAPI\scrapers\trailers\" label="30139" default="AlloCine" />
+  <setting enable="!eq(-1,AlloCine)" id="passion_fanart" type="bool" label="30134" default="false" />
   <!-- Not fully implanted. not enable for a moment -->
-  <setting enable="eq(-1,)" id="download_state" type="enum" lvalues="30141|30142|30143" label="30140" default="0" />
+  <setting enable="eq(-2,)" id="download_state" type="enum" lvalues="30141|30142|30143" label="30140" default="0" />
   <setting id="download_path" enable="!eq(-1,0)" type="folder" source="video" option="writeable" mask="/" label="30144" default="" />
   <setting type="sep" />
 
   <!-- VIDEO NFO FILES CONTAINING A MIX OF XML AND URL -->
-  <setting type="lsep" label="NFO file mixed" />
-  <setting id="clear_actor" type="bool" label="Enable clear actors" default="false" />
-  <setting id="clear_genre" type="bool" label="Enable clear genres" default="false" />
-  <setting id="clear_studio" type="bool" label="Enable clear studios" default="false" />
-  <setting id="clear_credits" type="bool" label="Enable clear credits" default="false" />
-  <setting id="clear_director" type="bool" label="Enable clear directors" default="false" />
+  <setting type="lsep" label="30100" />
+  <setting enable="eq(1,)" id="clear_actor" type="bool" label="30101" default="false" />
+  <setting enable="eq(-1,)" id="clear_genre" type="bool" label="30102" default="false" />
+  <setting enable="eq(-1,)" id="clear_studio" type="bool" label="30103" default="false" />
+  <setting enable="eq(-1,)" id="clear_credits" type="bool" label="30104" default="false" />
+  <setting enable="eq(-1,)" id="clear_director" type="bool" label="30105" default="false" />
   <setting type="sep" />
 
   <!-- WEB SETTINGS -->
