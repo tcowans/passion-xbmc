@@ -4,7 +4,6 @@ import os
 import re
 import sys
 import time
-import urllib
 from traceback import print_exc
 from urllib import quote_plus, unquote_plus
 
@@ -19,7 +18,13 @@ from utilities import *
 
 _ = xbmc.getLocalizedString
 
-PASSION_FANART = "http://passion-xbmc.org/mgallery/?sa=search;search=id%3D%s;sch_kw"
+DIALOG_PROGRESS = xbmcgui.DialogProgress()
+
+
+class _Info:
+    def __init__( self, *args, **kwargs ):
+        self.__dict__.update( kwargs )
+
 
 class Main:
     def __init__( self ):
@@ -38,24 +43,23 @@ class Main:
         self.settings[ "web_navigator" ] = xbmcplugin.getSetting( "web_navigator" )
         self.settings[ "trailers_scraper" ] = xbmcplugin.getSetting( "trailers_scraper" )
         self.settings[ "download_state" ] = int( xbmcplugin.getSetting( "download_state" ) )
-        #self.settings[ "download_path" ] = xbmc.translatePath( xbmcplugin.getSetting( "download_path" ) )
-        self.settings[ "download_path" ] = xbmcplugin.getSetting( "download_path" )
+        self.settings[ "passion_fanart" ] = ( xbmcplugin.getSetting( "passion_fanart" ) == "true" )
 
     def _add_directory_items( self ):
         OK = True
         try:
             exec "from scrapers.trailers.%s import scraper" % self.settings[ "trailers_scraper" ]
             movie_data = scraper.Movie( self.args.show_id )
-            self.nfo_file = movie_data.XML( os.path.join( os.getcwd().rstrip( ";" ), "cache" ) )
+            self.nfo_file = movie_data.XML( SPECIAL_PLUGIN_CACHE, passion_fanart=self.settings[ "passion_fanart" ]  )
             #del scraper
 
-            DIALOG_PROGRESS.update( -1, "Recuperation du NFO...", self.nfo_file )
+            DIALOG_PROGRESS.update( -1, _( 1040 ), self.nfo_file )
             self.nfo = self.get_nfo_infos( self.nfo_file )
 
-            DIALOG_PROGRESS.update( -1, "Recuperation du NFO...", self.nfo_file )
             if self.nfo[ "fanart" ]:
                 fanart = get_nfo_thumbnail( self.nfo[ "fanart" ] )
                 xbmcplugin.setPluginFanart( handle=int( sys.argv[ 1 ] ), image=fanart )
+            DIALOG_PROGRESS.update( -1, _( 1040 ), self.nfo[ "title" ] )
 
             tbn = get_thumbnail( self.nfo[ "thumbs" ] ) or self.nfo[ "thumbs" ]
             listitem = xbmcgui.ListItem( self.nfo[ "title" ], iconImage=tbn, thumbnailImage=tbn )
@@ -73,6 +77,7 @@ class Main:
                 # add items to listitem with replaceItems = True so only ours show
             listitem.addContextMenuItems( c_items, replaceItems=True )
 
+            listitem.setProperty( "Fanart_Image", get_nfo_thumbnail( self.nfo[ "fanart" ] ) )
             # delete unnecessary infos and set infoLabels
             del self.nfo[ "thumbs" ], self.nfo[ "fanart" ]
             listitem.setInfo( type="Video", infoLabels=self.nfo )
@@ -81,7 +86,7 @@ class Main:
             if ( not OK ): raise
 
             OK = self._add_trailers_item( movie_data )
-            xbmcplugin.setPluginCategory( handle=int( sys.argv[ 1 ] ), category="[B]NFO[/B]" )#_( 30013 ) )
+            xbmcplugin.setPluginCategory( handle=int( sys.argv[ 1 ] ), category="[B]NFO[/B]" )
         except:
             print_exc()
             OK = False
@@ -95,7 +100,7 @@ class Main:
                 trailers = movie_data.get_mediaIDs()
                 tbn = os.path.join( os.getcwd().rstrip( ";" ), "resources", "thumbnails", "movies_1.png" )
                 listitem = xbmcgui.ListItem( _( 30200 ), iconImage=tbn, thumbnailImage=tbn )
-                url = "%s?trailers=%s" % ( sys.argv[ 0 ], urllib.quote_plus( repr( trailers ) ), )
+                url = "%s?trailers=%s" % ( sys.argv[ 0 ], quote_plus( repr( trailers ) ), )
                 OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=True )
                 if ( not OK ): raise
         except:
@@ -135,11 +140,12 @@ class Main:
           - self.list.getSelectedItem().setInfo('video', { 'Genre': 'Comedy' })
         """
 
-        nfo_r = file( url, "r" ).read()#nfo_stream( url )
+        nfo_r = file( url, "r" ).read()
         try:
             trailer     = ( re.findall( '<trailer>(.*?)</trailer>', nfo_r )      or [ "" ] )[ 0 ]
             title       = ( re.findall( '<title>(.*?)</title>', nfo_r )          or [ "" ] )[ 0 ] + " [B](NFO File)[/B]"
             year        = ( re.findall( '<year>(.*?)</year>', nfo_r )            or [ "" ] )[ 0 ]
+            date        = ( re.findall( '<date>(.*?)</date>', nfo_r )            or [ "" ] )[ 0 ]
             director    = ( re.findall( '<director.*?>(.*?)</director>', nfo_r ) or [ "" ] )[ 0 ]
             tagline     = ( re.findall( '<tagline>(.*?)</tagline>', nfo_r )      or [ "" ] )[ 0 ]
             writer      = ( re.findall( '<credits.*?>(.*?)</credits>', nfo_r )   or [ "" ] )[ 0 ]

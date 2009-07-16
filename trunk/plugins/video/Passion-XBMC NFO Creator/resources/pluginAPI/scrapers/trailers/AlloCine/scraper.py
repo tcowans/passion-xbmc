@@ -1,9 +1,11 @@
-# ATTENTION ! ! !
-# ce script n'est nullement affilié au groupe allocine.fr
-# il est fourni à titre d'exemple et n'est pas garanti de fonctionner ultérieurement.
-# allocine.fr ne peut être tenu responsable de l'utilisation qui en serait faite.
-# allocine.fr ne permet pas que l'on consulte des informations de leur site en dehors de leur site sans leur accord préalable.
-# Le contenu textuel et multimedia (images / videos) appartient exclusivement à allocine.fr
+
+u""" ATTENTION ! ! !
+ce script n'est nullement affilié au groupe allocine.fr
+il est fourni à titre d'exemple et n'est pas garanti de fonctionner ultérieurement.
+allocine.fr ne peut être tenu responsable de l'utilisation qui en serait faite.
+allocine.fr ne permet pas que l'on consulte des informations de leur site en dehors de leur site sans leur accord préalable.
+Le contenu textuel et multimedia (images / videos) appartient exclusivement à allocine.fr
+"""
 
 DEBUG_AC = False
 
@@ -21,7 +23,7 @@ except:
     DIALOG_PROGRESS = None
 
 
-def passion_fanart( movie_id="" ):
+def passion_fanarts( movie_id="" ):
     #return []
     u"""partie non affiliée avec allocine.
     ces fanarts sont mis à contribution par les membres de passion-xbmc.org"""
@@ -832,7 +834,7 @@ class Movie:
         else:
             raise AllocineError,"No available media Video for the movie ID#%s"%self.ID
 
-    def XML(self, fpath="", clear_actor="false", clear_genre="false", clear_studio="false", clear_credits="false", clear_director="false" ):
+    def XML(self, fpath="", passion_fanart=False, clear_actor="false", clear_genre="false", clear_studio="false", clear_credits="false", clear_director="false" ):
         # non prioritaire !!
         u"""TO DO !!
         Will return a string in XML format with all infos of the Movie.
@@ -862,15 +864,20 @@ class Movie:
         f.write( "\t<rating>" + rate + "</rating>\n" )
         f.write( "\t<votes>" + vote + "</votes>\n" )
         f.write( "\t<mpaa>" + self.set_pretty_formatting( self.fiche_tech() ) + "</mpaa>\n" )
-        f.write( '\t<genre clear="%s">%s</genre>\n' % ( clear_genre, self.get_genre(), ) )
-        f.write( '\t<studio clear="%s">%s</studio>\n' % ( clear_studio, self.studio(), ) )
-        f.write( '\t<director clear="%s">%s</director>\n' % ( clear_director, self.director()[ 1 ], ) )
+        #f.write( '\t<genre clear="%s">%s</genre>\n' % ( clear_genre, self.get_genre(), ) )
+        #f.write( '\t<studio clear="%s">%s</studio>\n' % ( clear_studio, self.studio(), ) )
+        #f.write( '\t<director clear="%s">%s</director>\n' % ( clear_director, self.director()[ 1 ], ) )
+        f.write( '\t<genre>%s</genre>\n' % ( self.get_genre(), ) )
+        f.write( '\t<studio>%s</studio>\n' % ( self.studio(), ) )
+        f.write( '\t<director>%s</director>\n' % ( self.director()[ 1 ], ) )
         castandrole, productor = self.get_casting()
-        f.write( '\t<credits clear="%s">%s</credits>\n' % ( clear_credits, productor, ) )
+        #f.write( '\t<credits clear="%s">%s</credits>\n' % ( clear_credits, productor, ) )
+        f.write( '\t<credits>%s</credits>\n' % ( productor, ) )
 
         #castings
         for actor in castandrole:
-            f.write( '\t<actor clear="%s">\n' % clear_actor )
+            #f.write( '\t<actor clear="%s">\n' % clear_actor )
+            f.write( '\t<actor>\n' )
             f.write( "\t\t<id>" + actor.get( "ID", "" ) + "</id>\n" )
             f.write( "\t\t<name>" + actor.get( "name", "" ) + "</name>\n" )
             f.write( "\t\t<role>" + actor.get( "role", "" ) + "</role>\n" )
@@ -883,7 +890,10 @@ class Movie:
         f.write( "\t</thumbs>\n" )
 
         #fanarts
-        fpx = passion_fanart( self.ID )
+        if passion_fanart:
+            fpx = passion_fanarts( self.ID )
+        else:
+            fpx = []
         if fpx or self.has_photos():
             f.write( "\t<fanart>\n" )
             #fanart passion-xbmc

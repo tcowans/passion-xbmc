@@ -5,24 +5,22 @@ import re
 import sys
 import urllib
 from traceback import print_exc
-from urllib import quote_plus, unquote_plus
 
 #Modules XBMC
 import xbmc
 import xbmcgui
 import xbmcplugin
 
-CWD = os.getcwd().rstrip( ";" )
+from utilities import SPECIAL_PLUGIN_CACHE
 
-BASE_CACHE_PATH = os.path.join( CWD, "cache" )
-if not os.path.isdir( BASE_CACHE_PATH ): os.makedirs( BASE_CACHE_PATH )
 
 _ = xbmc.getLocalizedString
 
 DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
 
-def search2( name="star trek" ):
+def search2( name="" ):
+    # faut mettre cette fonction dans allocine
     result = []
     try:
         search_url = "http://www.allocine.fr/recherche/?motcle=%s&rub=1&page=1"
@@ -54,7 +52,7 @@ def search2( name="star trek" ):
     return name, result
 
 
-def bold_name_match( name="back", title="The Monster X Strikes Back: Attack the G8 Summit" ):
+def bold_name_match( name="", title="" ):
     try:
         name = name.lower()
         title = title.lower().replace( name, "[B]%s[/B]" % name ).title()
@@ -72,7 +70,9 @@ def get_thumbnail( path ):
         if "novignette" in fpath: return ""
         # make the proper cache filename and path so duplicate caching is unnecessary
         filename = xbmc.getCacheThumbName( fpath )
-        thumbnail = os.path.join( BASE_CACHE_PATH, filename )#[ 0 ], filename )
+        thumbnail = os.path.join( SPECIAL_PLUGIN_CACHE, filename[ 0 ], filename )
+        if not os.path.isdir( os.path.dirname( thumbnail ) ):
+            os.makedirs( os.path.dirname( thumbnail ) )
         # if the cached thumbnail does not exist check for a tbn file
         if ( not os.path.isfile( thumbnail ) ):
             #DIALOG_PROGRESS.update( -1, fpath, thumbnail )
@@ -146,13 +146,13 @@ class PluginSelect:
             for film in self.films:
                 tbn = get_thumbnail( film[ 2 ] ) or "DefaultVideo.png"
                 title = bold_name_match( self.name_search.strip( '"' ), film[ 1 ] )
-                DIALOG_PROGRESS.update( -1, "Recuperation...", title )
+                DIALOG_PROGRESS.update( -1, _( 1040 ), title )
                 listitem = xbmcgui.ListItem( title, "[COLOR=a0e2ff43]ID:[/COLOR] " + film[ 0 ], tbn, tbn )
                 c_items += [ ( _( 30009 ), "XBMC.Action(Info)", ) ]
                 listitem.addContextMenuItems( c_items, replaceItems=True )
                 plot = "[COLOR=a0e2ff43]ID:[/COLOR] %s[CR]%s" % ( film[ 0 ], film[ 3 ] )
                 listitem.setInfo( type="Video", infoLabels={ "title": title, "plot": plot } )
-                url = "%s?path=%s&show_id=%s" % ( sys.argv[ 0 ], repr( quote_plus( self.fpath ) ), repr( film[ 0 ] ), )
+                url = "%s?path=%s&show_id=%s" % ( sys.argv[ 0 ], repr( urllib.quote_plus( self.fpath ) ), repr( film[ 0 ] ), )
                 OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=True, totalItems=len( self.films ) )
             try: cat = _( 283 ) + ":[CR]" + self.name_search
             except: cat = _( 283 ) + ":[CR]" + self.name_search.decode( "iso-8859-1" )
@@ -184,17 +184,34 @@ class _Info:
 def Main():
     try:
         exec "args = _Info(%s)" % ( sys.argv[ 2 ][ 1 : ].replace( "&", ", " ), )
-        args.path = unquote_plus( args.path )
-        if not args.path:
-            keyboard = xbmc.Keyboard( "", "Entrer un titre pour la recherche" )
-            keyboard.doModal()
-            if keyboard.isConfirmed():
-                search = keyboard.getText()
-        else:
-            search = os.path.splitext( os.path.basename( args.path ) )[ 0 ]
-        name, films = search2( search )
+        args.path = urllib.unquote_plus( args.path )
+        temp_search = ""
+        name, films = "", ""
+        while True:
+            if temp_search or not args.path:
+                keyboard = xbmc.Keyboard( temp_search, _( 30002 ) )
+                keyboard.doModal()
+                if keyboard.isConfirmed():
+                    search = keyboard.getText()
+                else:
+                    name, films = "", ""
+                    break
+            else:
+                search = os.path.splitext( os.path.basename( args.path ) )[ 0 ]
+                if search.lower() == "video_ts":
+                    dir = os.path.dirname( args.path )
+                    if re.search( "video", os.path.basename( dir ).lower() ):
+                        search = os.path.basename( os.path.dirname( dir ) )
+                    else:
+                        search = os.path.basename( dir )
+            name, films = search2( search )
+            if bool( films ):
+                break
+            else:
+                temp_search = search
 
-        PluginSelect( name=name, films=films, fpath=args.path )
+        if name and films:
+            PluginSelect( name=name, films=films, fpath=args.path )
     except:
         print_exc()
 

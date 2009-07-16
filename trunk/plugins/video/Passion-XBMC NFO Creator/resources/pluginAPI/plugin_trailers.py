@@ -1,10 +1,7 @@
 
 #Modules general
-import os
-import re
 import sys
-import time
-import urllib
+from urllib import unquote_plus
 from traceback import print_exc
 
 #modules XBMC
@@ -18,6 +15,13 @@ from utilities import *
 
 _ = xbmc.getLocalizedString
 
+DIALOG_PROGRESS = xbmcgui.DialogProgress()
+
+
+class _Info:
+    def __init__( self, *args, **kwargs ):
+        self.__dict__.update( kwargs )
+
 
 class Main:
     def __init__( self ):
@@ -28,15 +32,14 @@ class Main:
 
     def _parse_argv( self ):
         # call _Info() with our formatted argv to create the self.args object
-        exec "self.args = _Info(%s)" % ( urllib.unquote_plus( sys.argv[ 2 ][ 1 : ].replace( "&", ", " ) ), )
+        exec "self.args = _Info(%s)" % ( unquote_plus( sys.argv[ 2 ][ 1 : ].replace( "&", ", " ) ), )
 
     def _get_settings( self ):
         self.settings = {}
-        #self.settings[ "web_navigator" ] = xbmcplugin.getSetting( "web_navigator" )
         self.settings[ "trailers_scraper" ] = xbmcplugin.getSetting( "trailers_scraper" )
-        #self.settings[ "download_state" ] = int( xbmcplugin.getSetting( "download_state" ) )
+        self.settings[ "download_state" ] = int( xbmcplugin.getSetting( "download_state" ) )
         #self.settings[ "download_path" ] = xbmc.translatePath( xbmcplugin.getSetting( "download_path" ) )
-        #self.settings[ "download_path" ] = xbmcplugin.getSetting( "download_path" )
+        self.settings[ "download_path" ] = xbmcplugin.getSetting( "download_path" )
 
     def _add_directory_items( self ):
         OK = True
@@ -46,13 +49,13 @@ class Main:
                 trailer = scraper.get_video_url( ID )
                 if trailer:
                     title = ( "%s (%s)" % ( title, _( 20410 ) ) ).replace( "\\'", "'" )
-                    DIALOG_PROGRESS.update( -1, "Récupération...", title )
+                    DIALOG_PROGRESS.update( -1, _( 1040 ), title )
                     listitem = xbmcgui.ListItem( title, thumbnailImage=tbn )
                     infolabels = { "title": title, "plot": _( 20410 ) }
                     listitem.setInfo( type="Video", infoLabels=infolabels )
                     OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=trailer, listitem=listitem, isFolder=False, totalItems=len( self.args.trailers ) )
                     if ( not OK ): raise
-            xbmcplugin.setPluginCategory( handle=int( sys.argv[ 1 ] ), category="[B]Bandes-annonces[/B]" )
+            xbmcplugin.setPluginCategory( handle=int( sys.argv[ 1 ] ), category="[B]%s[/B]" % _( 30200 ) )
         except:
             print_exc()
             OK = False

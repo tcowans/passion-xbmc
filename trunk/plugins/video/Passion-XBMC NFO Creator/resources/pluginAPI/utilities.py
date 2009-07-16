@@ -13,15 +13,12 @@ Module de partage des fonctions et des constantes
 #which were imported and used within the module).
 __all__ = [
     # public names
-    "DIALOG_PROGRESS",
     "BASE_CACHE_PATH",
-    "_Info",
+    "SPECIAL_PROFILE_DIR",
+    "SPECIAL_PLUGIN_DATA",
+    "SPECIAL_PLUGIN_CACHE",
     "translate_string",
     "reduced_path",
-    "set_pretty_formatting",
-    "get_html_source",
-    "nfo_stream",
-    "unzip",
     "get_thumbnail",
     "get_nfo_thumbnail",
     "get_browse_dialog",
@@ -29,6 +26,7 @@ __all__ = [
 
 #Modules general
 import os
+import sys
 import urllib
 from string import maketrans
 from traceback import print_exc
@@ -38,14 +36,18 @@ import xbmc
 import xbmcgui
 
 
-DIALOG_PROGRESS = xbmcgui.DialogProgress()
+SPECIAL_PROFILE_DIR = xbmc.translatePath( "special://profile/" )
 
-BASE_CACHE_PATH = os.path.join( xbmc.translatePath( "P:\\Thumbnails" ), "Video" )
+BASE_CACHE_PATH = os.path.join( SPECIAL_PROFILE_DIR, "Thumbnails", "Video" )
 
+try: scriptname = sys.modules[ "__main__" ].__plugin__
+except: scriptname = os.path.basename( os.getcwd() )
 
-class _Info:
-    def __init__( self, *args, **kwargs ):
-        self.__dict__.update( kwargs )
+SPECIAL_PLUGIN_DATA = os.path.join( SPECIAL_PROFILE_DIR, "plugin_data", "video", scriptname )
+if not os.path.isdir( SPECIAL_PLUGIN_DATA ): os.makedirs( SPECIAL_PLUGIN_DATA )
+
+SPECIAL_PLUGIN_CACHE = os.path.join( SPECIAL_PLUGIN_DATA, "cache" )
+if not os.path.isdir( SPECIAL_PLUGIN_CACHE ): os.makedirs( SPECIAL_PLUGIN_CACHE )
 
 
 def translate_string( strtrans, del_char="" ):
@@ -85,73 +87,6 @@ def reduced_path( fpath ):
         return fpath
 
 
-def set_pretty_formatting( text ):
-    text = text.replace( "<i>", "[I]" ).replace( "</i>", "[/I]" )
-    text = text.replace( "<b>", "[B]" ).replace( "</b>", "[/B]" )
-    return text
-
-
-def get_html_source( url ):
-    """ fetch the html source """
-    try:
-        if os.path.isfile( url ): sock = open( url, "r" )
-        else:
-            urllib.urlcleanup()
-            sock = urllib.urlopen( url )
-        htmlsource = sock.read()
-        sock.close()
-        return htmlsource
-    except:
-        print_exc()
-        return ""
-
-
-def nfo_stream( url ):
-    try:
-        nfo_source = get_html_source( url )
-        if not os.path.isfile( url ):
-            from zipfile import ZipFile
-            from StringIO import StringIO
-            stream = StringIO( nfo_source )
-            zip = ZipFile( stream, "r" )
-            nfo_source = zip.read( zip.namelist()[ 0 ] )
-            zip.close()
-        return nfo_source
-    except:
-        print_exc()
-        return ""
-
-
-def unzip( filename, destination=None, report=False ):
-    from zipfile import ZipFile
-    from StringIO import StringIO
-    filename = StringIO( get_html_source( filename ) )
-    try:
-        zip = ZipFile( filename, "r" )
-        namelist = zip.namelist()
-        total_items = len( namelist ) or 1
-        diff = 100.0 / total_items
-        percent = 0
-        # nom du fichier nfo
-        nfo_name = namelist[ 0 ]
-        for count, item in enumerate( namelist ):
-            percent += diff
-            if report:
-                #if DIALOG_PROGRESS.iscanceled():
-                #    break
-                DIALOG_PROGRESS.update( int( percent ), "Unzipping %i of %i items" % ( count + 1, total_items ), item, "Please wait..." )
-            if not item.endswith( "/" ):
-                root, name = os.path.split( item )
-                directory = os.path.normpath( os.path.join( destination, root ) )
-                if not os.path.isdir( directory ): os.makedirs( directory )
-                file( os.path.join( directory, name ), "wb" ).write( zip.read( item ) )
-        zip.close()
-        return os.path.join( destination, nfo_name ), True
-    except:
-        print_exc()
-        return "", False
-
-
 def get_thumbnail( path ):
     try:
         fpath = path
@@ -162,8 +97,10 @@ def get_thumbnail( path ):
         if ( not os.path.isfile( thumbnail ) ):
             # create filepath to a local tbn file
             thumbnail = os.path.splitext( path )[ 0 ] + ".tbn"
+            try: thumbnail = thumbnail.encode( "utf-8" )
+            except: pass
             # if there is no local tbn file leave blank
-            if ( not os.path.isfile( thumbnail.encode( "utf-8" ) ) ):
+            if ( not os.path.isfile( thumbnail ) ):
                 thumbnail = ""
         return thumbnail
     except:
@@ -179,7 +116,7 @@ def get_nfo_thumbnail( path ):
         thumbnail = os.path.join( BASE_CACHE_PATH, filename[ 0 ], filename )
         # if the cached thumbnail does not exist check for a tbn file
         if ( not os.path.isfile( thumbnail ) ):
-            DIALOG_PROGRESS.update( -1, fpath, thumbnail )
+            #DIALOG_PROGRESS.update( -1, fpath, thumbnail )
             urllib.urlretrieve( fpath, thumbnail )
         if ( not os.path.isfile( thumbnail ) ):
             thumbnail = ""

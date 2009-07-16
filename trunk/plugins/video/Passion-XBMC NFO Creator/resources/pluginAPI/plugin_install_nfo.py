@@ -1,12 +1,9 @@
 
 #Modules general
 import os
-import re
 import sys
-import time
-import urllib
 from traceback import print_exc
-from urllib import quote_plus, unquote_plus
+from urllib import unquote_plus
 
 #modules XBMC
 import xbmc
@@ -18,6 +15,13 @@ from utilities import *
 
 
 _ = xbmc.getLocalizedString
+
+DIALOG_PROGRESS = xbmcgui.DialogProgress()
+
+
+class _Info:
+    def __init__( self, *args, **kwargs ):
+        self.__dict__.update( kwargs )
 
 
 class Main:
@@ -38,16 +42,15 @@ class Main:
         print
         print "plugin_install_nfo::_install_nfo"
         try:
-            self._end_of_directory( False )
-            heading, line1, line_error = _( 30000 ), _( 30006 ), _( 30007 )
-
             destination = os.path.dirname( self.args.path ) or os.path.dirname( self._nfo_associated_with() )
             if not destination:
                 xbmcgui.Dialog().ok( _( 30000 ), _( 30041 ) )
                 return
 
+            heading, line1 = _( 30000 ), _( 1040 )
             from FileCopy import FileCopy
-            DIALOG_PROGRESS.create( heading,  _( 1040 ), os.path.basename( self.args.path ),  )
+            self._end_of_directory( False )
+            DIALOG_PROGRESS.create( heading, line1, os.path.basename( self.args.path ),  )
 
             results = FileCopy( nfo_source=self.args.nfo_file, movie_path=self.args.path,
                 thumbnail=xbmc.getInfoImage( "ListItem.Thumb" ), fanart=xbmc.getInfoImage( "Fanart.Image" ),
@@ -68,13 +71,9 @@ class Main:
                 "TBN: " + os.path.basename( tbn ),
                 "Fanart: " + os.path.basename( fanart )
                 )
-            #if ( "<li>ok" in OK.lower() ):
-            #    xbmcgui.Dialog().ok( heading, line1, "Dir: " + reduced_path( os.path.dirname( nfo_dest ) ), "File: " + os.path.basename( nfo_dest ) )
-            #    #xbmc.executebuiltin( "XBMC.updatelibrary(video)" )
-            #else: 
-            #    xbmcgui.Dialog().ok( heading, line_error )
         except:
             print_exc()
+        DIALOG_PROGRESS.close()
 
     def _nfo_associated_with( self ):
         vpath = get_browse_dialog( heading=_( 30040 ), mask=self.VIDEO_EXT )
