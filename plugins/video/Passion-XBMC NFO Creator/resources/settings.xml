@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings>
   <!-- GENERAL -->
-  <setting type="lsep" label="30019" />
+  <setting type="lsep" label="30018" />
   <setting id="path" type="folder" source="video" label="30020" default="" />
-  <setting enable="!eq(-1,)" id="write_list" type="enum" lvalues="30022|30023|30024" label="30021" default="2" />
+  <setting id="hide_extention" type="bool" label="497" default="false" />
+  <setting id="not_share" type="bool" label="30019" default="false" />
+  <setting enable="!eq(-2,)" id="write_list" type="enum" lvalues="30022|30023|30024" label="30021" default="2" />
   <setting type="sep" />
 
   <!-- SCRAPER SETTINGS -->
@@ -17,6 +19,9 @@
 
   <!-- VIDEO NFO FILES CONTAINING A MIX OF XML AND URL -->
   <setting type="lsep" label="30100" />
+  <setting id="copy_tbn" type="bool" label="30106" default="true" />
+  <setting id="copy_fanart" type="bool" label="30107" default="true" />
+  <setting type="sep" />
   <setting enable="eq(1,)" id="clear_actor" type="bool" label="30101" default="false" />
   <setting enable="eq(-1,)" id="clear_genre" type="bool" label="30102" default="false" />
   <setting enable="eq(-1,)" id="clear_studio" type="bool" label="30103" default="false" />

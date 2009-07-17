@@ -6,6 +6,8 @@ import sys
 from traceback import print_exc
 from urllib import quote_plus, unquote_plus, unquote
 
+from urlparse25 import urlparse
+
 #modules XBMC
 import xbmc
 import xbmcgui
@@ -27,64 +29,122 @@ class Main:
     VIDEO_EXT = xbmc.getSupportedMedia( "video" )
 
     def __init__( self ):
+        self.total_items = 1
+        self.titles_paths = []
+
         self._get_settings()
         self._add_directory_items()
 
     def _get_settings( self ):
         self.settings = {}
         self.settings[ "path" ] = self._get_path_list( xbmcplugin.getSetting( "path" ) )
-        self.settings[ "web_navigator" ] = xbmcplugin.getSetting( "web_navigator" )
         self.settings[ "write_list" ] = int( xbmcplugin.getSetting( "write_list" ) )
+        self.settings[ "web_navigator" ] = xbmcplugin.getSetting( "web_navigator" )
+        self.settings[ "hide_extention" ] = ( xbmcplugin.getSetting( "hide_extention" ) == "true" )
+        self.settings[ "not_share" ] = ( xbmcplugin.getSetting( "not_share" ) == "true" )
+
+    def _get_share_listing( self, dpath ):
+        if ( self.settings[ "not_share" ] ) and ( urlparse( dpath ).scheme in "ftp|smb|upnp|xbms|http" ):
+            return
+        entries = xbmc.executehttpapi( "GetDirectory(%s)" % ( dpath, ) ).split( "\n" )
+        #print dpath
+        for count, entry in enumerate( entries ):
+            if entry:
+                # fix path
+                path = entry.replace( "<li>", "" )
+                # remove slash at end
+                if ( path.endswith( "/" ) or path.endswith( "\\" ) ):
+                    path = path[ :-1 ]
+                else:
+                    title, ext = os.path.splitext( os.path.basename( path ) )
+                    if ( ext and not ext.lower() in self.VIDEO_EXT ):
+                        continue
+                # get the item info
+                title, isVideo, isFolder = self._get_file_info( path )
+                if title and isFolder:
+                    self._get_share_listing( path )
+                else:
+                    name, ext = os.path.splitext( os.path.basename( path ) )
+                    if name.lower() == "video_ts" and ext.lower() == ".ifo":
+                        if re.search( "video", os.path.basename( os.path.dirname( path ) ).lower() ):
+                            title = os.path.basename( os.path.dirname( os.path.dirname( path ) ) )
+                        else:
+                            title = os.path.basename( os.path.dirname( path ) )
+                    elif re.search( "vts_|video_", title.lower() ):
+                        continue
+                    DIALOG_PROGRESS.update( -1, _( 1040 ), title )
+                    self.total_items += 1
+                    isShare = ( urlparse( path ).scheme in "ftp|smb|upnp|xbms|http" )
+                    self.titles_paths.append( ( title, path, isShare ) ) 
+                    #print path
+                    #print title, isShare
+                    #print
+
+    def _get_file_info( self, file_path ):
+        try:
+            # parse item for title
+            title, ext = os.path.splitext( os.path.basename( file_path ) )
+            # is this a folder?
+            isFolder = ( ( not ext) or ( ext == ".rar" ) or os.path.isdir( file_path ) )
+            # if it's a folder keep extension in title
+            title += ( "", ext, )[ isFolder ]
+            # default isVideo to false
+            isVideo = False
+            # if this is a file, check to see if it's a valid video file
+            if ( not isFolder ):
+                # if it is a video file add it to our items list
+                isVideo = ( ext and ext.lower() in self.VIDEO_EXT )
+            return title, isVideo, isFolder
+        except:
+            # oops print error message
+            print repr( file_path )
+            print "ERROR: %s::%s (%d) - %s" % ( self.__class__.__name__, sys.exc_info()[ 2 ].tb_frame.f_code.co_name, sys.exc_info()[ 2 ].tb_lineno, sys.exc_info()[ 1 ], )
+            return "", False, False
 
     def _add_directory_items( self ):
         OK = True
         listing = []
         try:
             if not self.settings[ "path" ]:
-                xbmcgui.Dialog().ok( _( 30000 ), _( 30008 ) )
+                #xbmcgui.Dialog().ok( _( 30000 ), _( 30008 ) )
+                self._end_of_directory( False )
+                xbmcplugin.openSettings( sys.argv[ 0 ] )
                 return
-            total_items = 1
+
+            xbmc.sleep( 1000 )
             for paths in self.settings[ "path" ]:
-                if not os.path.exists( paths ):
-                    print "NFO Creator, videos path invalide:", repr( paths )
-                else:
-                    for root, dirs, files in os.walk( paths, topdown=False ):
-                        for name in files:
-                            fpath = os.path.join( root, name )
-                            title, ext = os.path.splitext( name )
-                            if name.lower() == "video_ts.ifo":
-                                if re.search( "video", os.path.basename( root ).lower() ):
-                                    name = os.path.basename( os.path.dirname( root ) ) + ext
-                                else:
-                                    name = os.path.basename( root ) + ext
-                            elif re.search( "vts_|video_", title.lower() ):
-                                continue
-                            if not ext.lower() in self.VIDEO_EXT:
-                                continue
-                            total_items += 1
-                            # add name in listing for liste.txt
-                            listing.append( name )
-                            DIALOG_PROGRESS.update( -1, _( 1040 ), name )
-                            icon = "DefaultVideo.png"
-                            thumbnail = get_thumbnail( fpath ) or os.path.splitext( fpath )[ 0 ] + ".tbn"
-                            listitem = xbmcgui.ListItem( name, iconImage=icon, thumbnailImage=thumbnail )
-                            # add the movie information item
-                            c_items = [ ( _( 13358 ), "XBMC.PlayMedia(%s)" % ( fpath ), ) ]
-                            c_items += [ ( _( 30009 ), "XBMC.Action(Info)", ) ]
-                            # add items to listitem with replaceItems = True so only ours show
-                            c_items += [ ( _( 654 ), "XBMC.ActivateWindow(scriptsdebuginfo)" ) ]
-                            listitem.addContextMenuItems( c_items, replaceItems=True )
-                            #get informations if exists
-                            infolabels = self._get_infos( fpath )
-                            listitem.setInfo( type="Video", infoLabels=infolabels )
-                            listitem.setProperty( "Fanart_Image", os.path.splitext( fpath )[ 0 ] + "-fanart.jpg" )
-                            url = '%s?path=%s&isFolder=%d' % ( sys.argv[ 0 ], repr( quote_plus( fpath ) ), 0, )
-                            OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=True, totalItems=total_items )
-                            if ( not OK ): raise
+                self._get_share_listing( paths )
+
+            for name, path, isShare in self.titles_paths:
+                fpath = path
+                # get extention 
+                ext = os.path.splitext( fpath )[ 1 ]
+                # add name in listing for liste.txt
+                listing.append( name + ext )
+                name = ( name + ext, name )[ self.settings[ "hide_extention" ] ]
+                DIALOG_PROGRESS.update( -1, _( 1040 ), name )
+                icon = "DefaultVideo.png"
+                thumbnail = get_thumbnail( fpath ) or os.path.splitext( fpath )[ 0 ] + ".tbn"
+                listitem = xbmcgui.ListItem( name, iconImage=icon, thumbnailImage=thumbnail )
+                # add the movie information item
+                c_items = [ ( _( 13358 ), "XBMC.PlayMedia(%s)" % ( fpath ), ) ]
+                c_items += [ ( _( 30009 ), "XBMC.Action(Info)", ) ]
+                # add items to listitem with replaceItems = True so only ours show
+                c_items += [ ( _( 654 ), "XBMC.ActivateWindow(scriptsdebuginfo)" ) ]
+                listitem.addContextMenuItems( c_items, replaceItems=True )
+                #get informations if exists
+                infolabels = self._get_infos( fpath )
+                if isShare:
+                    infolabels.update( { "watched": isShare, "overlay": xbmcgui.ICON_OVERLAY_TRAINED } )
+                listitem.setInfo( type="Video", infoLabels=infolabels )
+                listitem.setProperty( "Fanart_Image", os.path.splitext( fpath )[ 0 ] + "-fanart.jpg" )
+                url = '%s?path=%s&isFolder=%d' % ( sys.argv[ 0 ], repr( quote_plus( fpath ) ), 0, )
+                OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=True, totalItems=len( self.titles_paths ) )
+                if ( not OK ): raise
 
             # recherche manuel
             listing.sort( key=lambda f: f.lower() )
-            self._add_search( listing, total_items )
+            self._add_search( listing )
 
             xbmcplugin.setPluginCategory( handle=int( sys.argv[ 1 ] ), category=_( 20012 ) )
         except:
@@ -97,6 +157,8 @@ class Main:
         # we do not want the slash at end
         if ( paths.endswith( "\\" ) or paths.endswith( "/" ) ):
             paths = paths[ : -1 ]
+        # if not settings path return empty list
+        if not paths: return []
         # if this is not a multipath return it as a list
         if ( not paths.startswith( "multipath://" ) ): return [ paths ]
         # we need to parse out the separate paths in a multipath share
@@ -110,7 +172,7 @@ class Main:
                 path = path[ : -1 ]
             # add our path
             fpaths += [ unquote( path ) ]
-        return fpaths
+        return sorted( fpaths )
 
     def _save_listing( self, listing ):
         #sauvegarde la liste pour etre utiliser directement avec le generateur nfo en ligne de passion-xbmc
@@ -120,12 +182,13 @@ class Main:
                 #file( os.path.join( os.getcwd().rstrip( ";" ), "Liste.txt" ), "w" ).write( os.linesep.join( listing ) )
             except: print_exc()
 
-    def _add_search( self, listing, total_items ):
+    def _add_search( self, listing ):
         # recherche manuel
         c_items = []
         listitem = xbmcgui.ListItem( _( 30001 ), thumbnailImage=os.path.join( os.getcwd().rstrip( ";" ), "default.tbn" ) )
         if ( self.settings[ "write_list" ] == 2 ):
             if self.settings[ "web_navigator" ] != "" and os.path.exists( self.settings[ "web_navigator" ] ):
+                c_items += [ ( _( 30009 ), "XBMC.Action(Info)", ) ]
                 cmd = "System.Exec"
                 url = PASSION_NFO % translate_string( quote_plus( os.linesep ).join( listing ) )#"%0D%0A"
                 command = '%s("%s" "%s")' % ( cmd, self.settings[ "web_navigator" ], url, )
@@ -135,13 +198,15 @@ class Main:
                 c_items += [ ( _( 654 ), "XBMC.ActivateWindow(scriptsdebuginfo)" ) ]
                 listitem.addContextMenuItems( c_items, replaceItems=True )
             infos = { "Title": reduced_path( os.path.join( self.settings[ "path" ][ 0 ], "Liste.txt" ) ),
-                "plot": "[CR]".join( listing ), "genre": "http://passion-xbmc.org/nfo_creator/index.php" }
+                "plot": "[CR]".join( listing ), "genre": "http://passion-xbmc.org/nfo_creator/index.php",
+                "watched": 1, "overlay": xbmcgui.ICON_OVERLAY_TRAINED }
             listitem.setInfo( type="Video", infoLabels=infos )
         if not c_items:
+            c_items += [ ( _( 30009 ), "XBMC.Action(Info)", ) ]
             c_items += [ ( _( 654 ), "XBMC.ActivateWindow(scriptsdebuginfo)" ) ]
-            listitem.addContextMenuItems( [], replaceItems=True )
+            listitem.addContextMenuItems( c_items, replaceItems=True )
         url = '%s?path=%s&isFolder=%d' % ( sys.argv[ 0 ], repr( "" ), 0, )
-        OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=True, totalItems=total_items )
+        OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=True, totalItems=len( self.titles_paths ) )
         if ( not OK ): raise
 
     def _get_infos( self, fpath ):

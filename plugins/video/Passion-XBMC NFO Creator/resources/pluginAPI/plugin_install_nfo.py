@@ -47,11 +47,19 @@ class Main:
                 xbmcgui.Dialog().ok( _( 30000 ), _( 30041 ) )
                 return
 
+            #get labels before end_of_directory
+            ask1, ask2 = _( 30003 ), _( 30004 )
+            ask3 = "%s: %s" % ( _( 30005 ), unicode( os.path.basename( self.args.path ), "utf-8" ) )
+            ask4 = "%s: %s" % ( _( 30100 ), os.path.splitext( unicode( os.path.basename( self.args.path ), "utf-8" ) )[ 0 ] + ".nfo" )
+
             heading, line1 = _( 30000 ), _( 1040 )
-            from FileCopy import FileCopy
             self._end_of_directory( False )
+            
+            if not xbmcgui.Dialog().yesno( ask1, ask2, ask3, ask4 ): return
+
             DIALOG_PROGRESS.create( heading, line1, os.path.basename( self.args.path ),  )
 
+            from FileCopy import FileCopy
             results = FileCopy( nfo_source=self.args.nfo_file, movie_path=self.args.path,
                 thumbnail=xbmc.getInfoImage( "ListItem.Thumb" ), fanart=xbmc.getInfoImage( "Fanart.Image" ),
                 report_copy=DIALOG_PROGRESS )
