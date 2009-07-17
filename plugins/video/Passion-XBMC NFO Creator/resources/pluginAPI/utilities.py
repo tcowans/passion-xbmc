@@ -114,6 +114,8 @@ def get_nfo_thumbnail( path ):
         # make the proper cache filename and path so duplicate caching is unnecessary
         filename = xbmc.getCacheThumbName( fpath )
         thumbnail = os.path.join( BASE_CACHE_PATH, filename[ 0 ], filename )
+        if not os.path.isdir( os.path.dirname( thumbnail ) ):
+            os.makedirs( os.path.dirname( thumbnail ) )
         # if the cached thumbnail does not exist check for a tbn file
         if ( not os.path.isfile( thumbnail ) ):
             #DIALOG_PROGRESS.update( -1, fpath, thumbnail )
