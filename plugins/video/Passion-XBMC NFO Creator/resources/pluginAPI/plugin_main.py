@@ -44,7 +44,7 @@ class Main:
         self.settings[ "not_share" ] = ( xbmcplugin.getSetting( "not_share" ) == "true" )
 
     def _get_share_listing( self, dpath ):
-        if ( self.settings[ "not_share" ] ) and ( urlparse( dpath ).scheme in "ftp|smb|upnp|xbms|http" ):
+        if ( self.settings[ "not_share" ] ) and ( urlparse( dpath ).scheme in ( "ftp", "smb", "upnp", "xbms", "http" ) ):
             return
         entries = xbmc.executehttpapi( "GetDirectory(%s)" % ( dpath, ) ).split( "\n" )
         #print dpath
@@ -74,7 +74,7 @@ class Main:
                         continue
                     DIALOG_PROGRESS.update( -1, _( 1040 ), title )
                     self.total_items += 1
-                    isShare = ( urlparse( path ).scheme in "ftp|smb|upnp|xbms|http" )
+                    isShare = ( urlparse( path ).scheme in ( "ftp", "smb", "upnp", "xbms", "http" ) )
                     self.titles_paths.append( ( title, path, isShare ) ) 
                     #print path
                     #print title, isShare

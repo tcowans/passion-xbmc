@@ -56,9 +56,6 @@ class Main:
             DIALOG_PROGRESS.update( -1, _( 1040 ), self.nfo_file )
             self.nfo = self.get_nfo_infos( self.nfo_file )
 
-            if self.nfo[ "fanart" ]:
-                fanart = get_nfo_thumbnail( self.nfo[ "fanart" ] )
-                xbmcplugin.setPluginFanart( handle=int( sys.argv[ 1 ] ), image=fanart )
             DIALOG_PROGRESS.update( -1, _( 1040 ), self.nfo[ "title" ] )
 
             tbn = get_thumbnail( self.nfo[ "thumbs" ] ) or self.nfo[ "thumbs" ]
@@ -77,7 +74,10 @@ class Main:
                 # add items to listitem with replaceItems = True so only ours show
             listitem.addContextMenuItems( c_items, replaceItems=True )
 
-            listitem.setProperty( "Fanart_Image", get_nfo_thumbnail( self.nfo[ "fanart" ] ) )
+            if self.nfo[ "fanart" ]:
+                fanart = get_nfo_thumbnail( self.nfo[ "fanart" ] )
+                listitem.setProperty( "Fanart_Image", fanart )
+                xbmcplugin.setPluginFanart( handle=int( sys.argv[ 1 ] ), image=fanart )
             # delete unnecessary infos and set infoLabels
             del self.nfo[ "thumbs" ], self.nfo[ "fanart" ]
             listitem.setInfo( type="Video", infoLabels=self.nfo )
