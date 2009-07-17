@@ -5,9 +5,9 @@
   <string id="30000">Passion-XBMC NFO Creator</string>
   <string id="30001">[B]Manual Search[/B]</string>
   <string id="30002">Enter a title for the search</string>
-  <string id="30003"></string>
-  <string id="30004"></string>
-  <string id="30005"></string>
+  <string id="30003">Confirm installation of NFO</string>
+  <string id="30004">Are you sure you want to install the NFO with this movie?</string>
+  <string id="30005">Movie</string>
   <string id="30006">Installation complete.</string>
   <string id="30007">Error: Unable to retrieve or recover the archive</string>
   <string id="30008">You must set the plugin!</string>
@@ -21,7 +21,8 @@
   <string id="30041">The destination folder is missing!</string>
 
   <!-- settings dialog -->
-  <string id="30019">Videos</string>
+  <string id="30018">Videos</string>
+  <string id="30019">Exclude sharing network scan</string>
   <string id="30020">Movies path:</string>
   <string id="30021">Liste(.txt) videos</string>
   <string id="30022">Disable</string>
@@ -31,12 +32,14 @@
   <string id="30029">Web (XBox not supported)</string>
   <string id="30030">Web Browser path:</string>
 
-  <string id="30100">NFO file mixed</string>
+  <string id="30100">NFO file</string>
   <string id="30101">Enable clear actors</string>
   <string id="30102">Enable clear genres</string>
   <string id="30103">Enable clear studios</string>
   <string id="30104">Enable clear credits</string>
   <string id="30105">Enable clear directors</string>
+  <string id="30106">Copy thumb in movie folder</string>
+  <string id="30107">Copy fanart in movie folder</string>
 
   <string id="30133">Scrapers</string>
   <string id="30134">Retrieve also fanarts passion-xbmc.org (longer)</string>

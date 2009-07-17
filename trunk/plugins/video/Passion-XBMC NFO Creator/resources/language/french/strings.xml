@@ -5,9 +5,9 @@
   <string id="30000">Passion-XBMC NFO Creator</string>
   <string id="30001">[B]Recherche Manuel[/B]</string>
   <string id="30002">Entrer un titre pour la recherche</string>
-  <string id="30003"></string>
-  <string id="30004"></string>
-  <string id="30005"></string>
+  <string id="30003">Confirmer l'installation du NFO</string>
+  <string id="30004">Êtes-vous sûr de vouloir installer le NFO avec ce film?</string>
+  <string id="30005">Film</string>
   <string id="30006">Installation terminée.</string>
   <string id="30007">Erreur: Impossible d'extraire ou de récupérer l'archive</string>
   <string id="30008">Vous devez paramétrer le plugin!</string>
@@ -21,7 +21,8 @@
   <string id="30041">Le dossier de destination est manquant!</string>
 
   <!-- settings dialog -->
-  <string id="30019">Vidéos</string>
+  <string id="30018">Vidéos</string>
+  <string id="30019">Exclure les partages réseau du scanne</string>
   <string id="30020">Chemin des Films:</string>
   <string id="30021">Liste(.txt) des vidéos</string>
   <string id="30022">Désactiver</string>
@@ -33,6 +34,11 @@
 
   <string id="30133">Scrapers</string>
   <string id="30134">Récupérer aussi les fanarts de passion-xbmc.org (plus long)</string>
+
+  <string id="30100">Ficher NFO</string>
+
+  <string id="30106">Copier la vignette dans le dossier du film</string>
+  <string id="30107">Copier le fanart dans le dossier du film</string>
 
   <string id="30139">Scraper</string>
   <string id="30140">Mode de lecture des bandes-annonces</string>
