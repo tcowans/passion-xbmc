@@ -29,14 +29,14 @@ def passion_fanarts( movie_id="" ):
     ces fanarts sont mis à contribution par les membres de passion-xbmc.org"""
 
     if movie_id.isdigit():
-        PASSION_FANART = "http://passion-xbmc.org/mgallery/?sa=search;search=id%3D"
+        PASSION_FANART = "http://passion-xbmc.org/mgallery/?sa=search;search="#id%3D"
         SCH_KW = ";sch_kw"
         DIRECT_LINK = "http://passion-xbmc.org/MGalleryItem.php?id=%s"
-        #movie_id = "28418"
 
         url = PASSION_FANART + movie_id + SCH_KW
         #html = urllib2.urlopen( url ).read()
         html = urllib.urlopen( url ).read()
+        #print html
 
         fanarts = re.compile( '<a href="http://passion-xbmc.org/mgallery/[?]sa=item[;]id=(\d+)"><img alt' ).findall( html )
         li = [ DIRECT_LINK % fanart for fanart in fanarts ]
@@ -50,7 +50,7 @@ def passion_fanarts( movie_id="" ):
 
         #print fp
         #print h
-
+print passion_fanarts()
 
 __todo__=u"""
 -Harmoniser les retours infructueux de parse (None, variable vide, texte par défaut, exception ?...)
@@ -1502,7 +1502,7 @@ class Favourite:
 
 
 
-if __name__ == "__main__":
-    Log( u"This script is intended to be used as a library.")
-    film = Movie( "61139" )
-    print film.synopsis()#XML( "" )
+#if __name__ == "__main__":
+#    Log( u"This script is intended to be used as a library.")
+#    film = Movie( "61139" )
+#    print film.synopsis()#XML( "" )
