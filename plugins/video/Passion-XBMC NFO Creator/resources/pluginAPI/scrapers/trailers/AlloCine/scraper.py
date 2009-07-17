@@ -50,7 +50,6 @@ def passion_fanarts( movie_id="" ):
 
         #print fp
         #print h
-print passion_fanarts()
 
 __todo__=u"""
 -Harmoniser les retours infructueux de parse (None, variable vide, texte par défaut, exception ?...)
