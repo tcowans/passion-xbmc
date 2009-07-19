@@ -124,7 +124,10 @@ class Main:
                 name = ( name + ext, name )[ self.settings[ "hide_extention" ] ]
                 DIALOG_PROGRESS.update( -1, _( 1040 ), name )
                 icon = "DefaultVideo.png"
-                thumbnail = get_thumbnail( fpath ) or os.path.splitext( fpath )[ 0 ] + ".tbn"
+                thumbnail = get_thumbnail( fpath )
+                if not thumbnail:
+                    try:thumbnail = os.path.splitext( fpath )[ 0 ] + ".tbn"
+                    except: print_exc()
                 listitem = xbmcgui.ListItem( name, iconImage=icon, thumbnailImage=thumbnail )
                 # add the movie information item
                 c_items = [ ( _( 13358 ), "XBMC.PlayMedia(%s)" % ( fpath ), ) ]
@@ -137,7 +140,8 @@ class Main:
                 if isShare:
                     infolabels.update( { "watched": isShare, "overlay": xbmcgui.ICON_OVERLAY_TRAINED } )
                 listitem.setInfo( type="Video", infoLabels=infolabels )
-                listitem.setProperty( "Fanart_Image", os.path.splitext( fpath )[ 0 ] + "-fanart.jpg" )
+                try: listitem.setProperty( "Fanart_Image", os.path.splitext( fpath )[ 0 ] + "-fanart.jpg" )
+                except: print_exc()
                 url = '%s?path=%s&isFolder=%d' % ( sys.argv[ 0 ], repr( quote_plus( fpath ) ), 0, )
                 OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=True, totalItems=len( self.titles_paths ) )
                 if ( not OK ): raise
