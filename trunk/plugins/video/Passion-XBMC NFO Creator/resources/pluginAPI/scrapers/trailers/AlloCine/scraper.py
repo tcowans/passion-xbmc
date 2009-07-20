@@ -24,9 +24,11 @@ except:
 
 
 def passion_fanarts( movie_id="" ):
-    #return []
     u"""partie non affiliée avec allocine.
     ces fanarts sont mis à contribution par les membres de passion-xbmc.org"""
+
+    posters = []
+    fanarts = []
 
     if movie_id.isdigit():
         PASSION_FANART = "http://passion-xbmc.org/mgallery/?sa=search;search="#id%3D"
@@ -36,20 +38,25 @@ def passion_fanarts( movie_id="" ):
         url = PASSION_FANART + movie_id + SCH_KW
         #html = urllib2.urlopen( url ).read()
         html = urllib.urlopen( url ).read()
-        #print html
-
-        fanarts = re.compile( '<a href="http://passion-xbmc.org/mgallery/[?]sa=item[;]id=(\d+)"><img alt' ).findall( html )
-        li = [ DIRECT_LINK % fanart for fanart in fanarts ]
-        li.reverse()
-        return li
+        for windowbg in  re.compile( '<td class="windowbg" align="center">(.*?)</td>', re.DOTALL ).findall( html ):
+            album = re.findall( '<a href=".*?mgallery/[?]sa=album[;]id=.*?">(.*?)</a>', windowbg ) or [ None ]
+            imgage = re.findall( '".*?mgallery;sa=media[;]id=(\d+)[;]thumb"', windowbg ) or [ "" ]
+            if imgage[ 0 ].isdigit():
+                if album[ 0 ] == "Posters":
+                    posters.append( DIRECT_LINK % imgage[ 0 ] )
+                elif album[ 0 ] == "Fanart Nfo":
+                    fanarts.append( DIRECT_LINK % imgage[ 0 ] )
 
         #try: name = urllib2.urlopen( li[ 0 ] ).info()[ "Content-Disposition" ].replace( "inline; filename=", "" )
         #except: name = "temp.jpg"
-
         #fp, h = urllib.urlretrieve( li[ 0 ], name )
-
         #print fp
         #print h
+
+    posters.reverse()
+    #fanarts.reverse()
+    return posters, fanarts
+
 
 __todo__=u"""
 -Harmoniser les retours infructueux de parse (None, variable vide, texte par défaut, exception ?...)
@@ -570,9 +577,12 @@ class Movie:
     def director(self):
         u"""Return the director of the movie as a tuple ( ID , Name )"""
         #  a internationnaliser !
-        match = re.search(ur'<h3 class="SpProse">Réalisé par <a class="link1" href="/personne/fichepersonne_gen_cpersonne=(\d+)\.html">(.*?)</a></h3>',self.HTML)
-        if match: self.DIRECTOR = (match.group(1),match.group(2))# id,nom
-        else: self.DIRECTOR = (None,None)
+        #print self.HTML
+        match = re.search(ur'<h3 class="SpProse">Réalisé par(.*?)</h3>',self.HTML)
+        if match:
+            direc = re.findall( '<a class="link1" href="/personne/fichepersonne_gen_cpersonne=(\d+)\.html">(.*?)</a>', match.group(1) )
+            self.DIRECTOR = " / ".join( [ di[ 1 ] for di in direc ] )#(match.group(1),match.group(2))# id,nom
+        else: self.DIRECTOR = ""#(None,None)
         return self.DIRECTOR
 
     def nationality(self):
@@ -868,7 +878,7 @@ class Movie:
         #f.write( '\t<director clear="%s">%s</director>\n' % ( clear_director, self.director()[ 1 ], ) )
         f.write( '\t<genre>%s</genre>\n' % ( self.get_genre(), ) )
         f.write( '\t<studio>%s</studio>\n' % ( self.studio(), ) )
-        f.write( '\t<director>%s</director>\n' % ( self.director()[ 1 ], ) )
+        f.write( '\t<director>%s</director>\n' % ( self.director(), ) )
         castandrole, productor = self.get_casting()
         #f.write( '\t<credits clear="%s">%s</credits>\n' % ( clear_credits, productor, ) )
         f.write( '\t<credits>%s</credits>\n' % ( productor, ) )
@@ -883,23 +893,29 @@ class Movie:
             f.write( "\t\t<thumb>" + actor.get( "thumb", "" ) + "</thumb>\n" )
             f.write( "\t</actor>\n" )
 
-        #vignettes
-        f.write( "\t<thumbs>\n" )
-        f.write( "\t\t<thumb>" + self.pictureURL() + "</thumb>\n" )
-        f.write( "\t</thumbs>\n" )
+        #posters and fanarts
+        if not passion_fanart: posters, fanarts = [], []
+        else: posters, fanarts = passion_fanarts( self.ID )
 
-        #fanarts
-        if passion_fanart:
-            fpx = passion_fanarts( self.ID )
-        else:
-            fpx = []
-        if fpx or self.has_photos():
+        icon_allocine = self.pictureURL()
+        if posters or icon_allocine:
+            f.write( "\t<thumbs>\n" )
+            #vignettes passion-xbmc
+            if posters:
+                for poster in posters:
+                    f.write( "\t\t<thumb>" + poster + "</thumb>\n" )
+            #vignettes allocine
+            if icon_allocine:
+                f.write( "\t\t<thumb>" + icon_allocine + "</thumb>\n" )
+            f.write( "\t</thumbs>\n" )
+
+        if fanarts or self.has_photos():
             f.write( "\t<fanart>\n" )
-            #fanart passion-xbmc
-            if fpx:
-                for fanart in fpx:
+            #fanarts passion-xbmc
+            if fanarts:
+                for fanart in fanarts:
                     f.write( "\t\t<thumb>" + fanart + "</thumb>\n" )
-            #fanart allocine
+            #fanarts allocine
             if self.has_photos():
                 for photo in self.get_photos():
                     f.write( "\t\t<thumb>" + photo[ 0 ] + "</thumb>\n" )
@@ -1501,7 +1517,7 @@ class Favourite:
 
 
 
-#if __name__ == "__main__":
-#    Log( u"This script is intended to be used as a library.")
-#    film = Movie( "61139" )
-#    print film.synopsis()#XML( "" )
+if __name__ == "__main__":
+    Log( u"This script is intended to be used as a library.")
+    film = Movie( "110096" )
+    print film.XML( passion_fanart=True )

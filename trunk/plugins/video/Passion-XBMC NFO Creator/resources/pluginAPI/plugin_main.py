@@ -126,14 +126,14 @@ class Main:
                 icon = "DefaultVideo.png"
                 thumbnail = get_thumbnail( fpath )
                 if not thumbnail:
-                    try:thumbnail = os.path.splitext( fpath )[ 0 ] + ".tbn"
+                    try: thumbnail = os.path.splitext( fpath )[ 0 ] + ".tbn"
                     except: print_exc()
                 listitem = xbmcgui.ListItem( name, iconImage=icon, thumbnailImage=thumbnail )
                 # add the movie information item
                 c_items = [ ( _( 13358 ), "XBMC.PlayMedia(%s)" % ( fpath ), ) ]
                 c_items += [ ( _( 30009 ), "XBMC.Action(Info)", ) ]
-                # add items to listitem with replaceItems = True so only ours show
                 c_items += [ ( _( 654 ), "XBMC.ActivateWindow(scriptsdebuginfo)" ) ]
+                # add items to listitem with replaceItems = True so only ours show
                 listitem.addContextMenuItems( c_items, replaceItems=True )
                 #get informations if exists
                 infolabels = self._get_infos( fpath )
