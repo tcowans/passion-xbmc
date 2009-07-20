@@ -58,7 +58,7 @@ class Main:
 
             DIALOG_PROGRESS.update( -1, _( 1040 ), self.nfo[ "title" ] )
 
-            tbn = get_thumbnail( self.nfo[ "thumbs" ] ) or self.nfo[ "thumbs" ]
+            tbn = get_nfo_thumbnail( self.nfo[ "thumbs" ] ) or self.nfo[ "thumbs" ]
             listitem = xbmcgui.ListItem( self.nfo[ "title" ], iconImage=tbn, thumbnailImage=tbn )
  
             url = "%s?path=%s&nfo_file=%s" % ( sys.argv[ 0 ], repr( quote_plus(  self.args.path ) ), repr( self.nfo_file ), )
@@ -71,7 +71,8 @@ class Main:
                 command = '%s("%s" "%s")' % ( cmd, self.settings[ "web_navigator" ], uri, )
                 # add the movie information item
                 c_items += [ ( _( 30010 ), command, ) ]
-                # add items to listitem with replaceItems = True so only ours show
+            c_items += [ ( _( 654 ), "XBMC.ActivateWindow(scriptsdebuginfo)" ) ]
+            # add items to listitem with replaceItems = True so only ours show
             listitem.addContextMenuItems( c_items, replaceItems=True )
 
             if self.nfo[ "fanart" ]:
@@ -100,6 +101,9 @@ class Main:
                 trailers = movie_data.get_mediaIDs()
                 tbn = os.path.join( os.getcwd().rstrip( ";" ), "resources", "thumbnails", "movies_1.png" )
                 listitem = xbmcgui.ListItem( _( 30200 ), iconImage=tbn, thumbnailImage=tbn )
+                c_items = [ ( _( 654 ), "XBMC.ActivateWindow(scriptsdebuginfo)" ) ]
+                # add items to listitem with replaceItems = True so only ours show
+                listitem.addContextMenuItems( c_items )
                 url = "%s?trailers=%s" % ( sys.argv[ 0 ], quote_plus( repr( trailers ) ), )
                 OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=True )
                 if ( not OK ): raise

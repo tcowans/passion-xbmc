@@ -140,7 +140,6 @@ class PluginSelect:
 
     def onNFO( self ):
         OK = True
-        c_items = []
         try:
             #( ID, title, thumb, extra )
             for film in self.films:
@@ -148,7 +147,8 @@ class PluginSelect:
                 title = bold_name_match( self.name_search.strip( '"' ), film[ 1 ] )
                 DIALOG_PROGRESS.update( -1, _( 1040 ), title )
                 listitem = xbmcgui.ListItem( title, "[COLOR=a0e2ff43]ID:[/COLOR] " + film[ 0 ], tbn, tbn )
-                c_items += [ ( _( 30009 ), "XBMC.Action(Info)", ) ]
+                c_items = [ ( _( 30009 ), "XBMC.Action(Info)", ) ]
+                c_items += [ ( _( 654 ), "XBMC.ActivateWindow(scriptsdebuginfo)" ) ]
                 listitem.addContextMenuItems( c_items, replaceItems=True )
                 plot = "[COLOR=a0e2ff43]ID:[/COLOR] %s[CR]%s" % ( film[ 0 ], film[ 3 ] )
                 listitem.setInfo( type="Video", infoLabels={ "title": title, "plot": plot } )
