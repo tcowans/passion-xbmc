@@ -5,11 +5,11 @@ __author__       = "Frost"
 __url__          = "http://code.google.com/p/passion-xbmc/"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/video/"
 __credits__      = "Team XBMC, http://xbmc.org/"
-__platform__     = "xbmc media center, [WIN32, XBOX]"#LINUX, OS X
+__platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
 __date__         = "20-07-2009"
 __version__      = "1.0.0"
 __svn_revision__  = "$Revision$"
-__XBMC_Revision__ = "20848" #XBMC Babylon 9.04.1
+__XBMC_Revision__ = "20000" #XBMC Babylon
 
 
 #Modules general
