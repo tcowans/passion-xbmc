@@ -1,0 +1,1948 @@
+<window>
+	<defaultcontrol>9000</defaultcontrol>
+	<allowoverlays>no</allowoverlays>
+
+	<!-- Important if you don't want to use the WindowLists you still need to remember not to use the ids for other stuff. -->
+	<!-- * id 3 - Button - For the View button (to change between the lists) -->
+	<!-- * id 4/5 - Reserved (Don't actually do anything at the moment) -->
+	<!-- * id 12 - Label - For displaying the number of items in the WindowLists -->
+	<!-- * id 50-59 - Lists/Panels - The actual lists for displaying the information in the window lists -->
+
+	<!-- ** Required ** Do not change any <control type="xxxx" id="XX"> -->
+	<!-- ** Required ** Do not change any skin settings or skin infos -->
+	<!-- ** Infos ** if you not control in your skin, set and add <visible>false</visible>, results no bugs created in scripts. If remove control the bugs or freeze are created. -->
+
+	<!-- REMARQUE QUE LES "<texture>" COMMANCENT toutes par "passion-blablabla.bla", -->
+	<!-- ceci et pour pas avoir des conflits ou des images pas afficher, -->
+	<!-- que meme des images qui font pas partie du theme du script "Default". -->
+	<!-- Avec le theme d'XBMC qui est en fonction -->
+
+	<controls>
+		<!-- BACKGROUNDS -->
+		<control type="image">
+			<description>background image</description>
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>720</width>
+			<height>576</height>
+			<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-background-plain.png]</texture>
+		</control>
+		<control type="image">
+			<description>passion logo image</description>
+			<posx>20</posx>
+			<posy>11</posy>
+			<width>250</width>
+			<height>74</height>
+			<aspectratio>keep</aspectratio>
+			<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-logo.png]</texture>
+		</control>
+		<control type="multiimage">
+			<description>animation plasma</description>
+			<posx>580</posx>
+			<posy>11</posy>
+			<width>150</width>
+			<height>74</height>
+			<aspectratio>keep</aspectratio>
+			<imagepath>passion-plasma</imagepath>
+			<timeperimage>4000</timeperimage>
+			<fadetime>2000</fadetime>
+			<visible>!Skin.String(PassionSkinColourPath,style_PMIII.HD)</visible>
+		</control>
+
+		<!-- CONTENT PANEL -->
+		<control type="group">
+			<animation effect="slide" time="200" start="720,0" end="0,0" acceleration="-1">WindowOpen</animation>
+			<animation effect="slide" time="200" start="0,0" end="720,0" acceleration="1.1">WindowClose</animation>
+			<control type="image">
+				<description>contentpanel slice</description>
+				<posx>19</posx>
+				<posy>150</posy>
+				<width>681</width>
+				<height>416</height>
+				<texture>passion-list-border.png</texture>
+			</control>
+			<control type="image">
+				<description>contentpanel slice</description>
+				<posx>20</posx>
+				<posy>193</posy>
+				<width>679</width>
+				<height>372</height>
+				<texture>passion-list-white.png</texture>
+			</control>
+			<control type="image">
+				<description>contentpanel slice Custom background</description>
+				<posx>20</posx>
+				<posy>193</posy>
+				<width>679</width>
+				<height>372</height>
+				<!--<aspectratio scalediffuse="false">scale</aspectratio>-->
+				<texture diffuse="passion_diffuse.png" />
+				<info>Skin.String(passion_custom_background)</info>
+				<visible>Skin.HasSetting(use_passion_custom_background) + !Control.IsVisible(10)</visible>
+			</control>
+			<control type="image" id="10">
+				<description>contentpanel slice previewPicture background</description>
+				<posx>20</posx>
+				<posy>193</posy>
+				<width>679</width>
+				<height>372</height>
+				<!--<aspectratio scalediffuse="false">scale</aspectratio>-->
+				<texture diffuse="passion_diffuse.png" />
+				<info>Container.ListItem.Property(previewPicture)</info>
+				<visible>!IsEmpty(Container.ListItem.Property(previewPicture)) + Skin.HasSetting(PassionShowFanart)</visible>
+			</control>
+			<control type="image">
+				<description>contentpanel slice</description>
+				<posx>20</posx>
+				<posy>151</posy>
+				<width>679</width>
+				<height>41</height>
+				<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
+			</control>
+		</control>
+
+		<!-- FADELABEL AND COLOR FOR RSS FEED-->
+		<control type="group">
+			<description>rss feed</description>
+			<posx>20</posx>
+			<posy>86</posy>
+			<animation effect="slide" start="0,0" end="0,-24" time="0" condition="Skin.String(PassionSkinColourPath,style_PMIII.HD)">conditional</animation>
+			<animation effect="fade" start="0" end="100" delay="200" time="100">WindowOpen</animation>
+			<animation effect="fade" start="100" end="0" delay="0" time="100">WindowClose</animation>
+			<control type="fadelabel" id="100">
+				<description>rss feed</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>679</width>
+				<textoffsetx>679</textoffsetx>
+				<font>font13</font>
+				<scrollout>true</scrollout>
+				<scrollspeed>40</scrollspeed>
+				<pauseatend>2000</pauseatend>
+				<textcolor>ffffffff</textcolor><!-- headlinecolor -->
+			</control>
+			<!-- Note: this control is used for color rss feed, auto reset on load xml -->
+			<control type="button" id="101">
+				<description>titlecolor and textcolor</description>
+				<visible>false</visible>
+				<label>FFFF0000</label><!-- titlecolor -->
+				<label2>FFFF0000</label2><!-- textcolor -->
+				<texturenofocus>-</texturenofocus>
+				<texturefocus>-</texturefocus>
+			</control>
+
+			<control type="label">
+				<description>date | time label</description>
+				<posx>660</posx>
+				<posy>0</posy>
+				<label>$INFO[System.Date] [COLOR=60ffffff] |  $INFO[System.Time][/COLOR]</label>
+				<align>right</align>
+				<aligy>center</aligy>
+				<font>special12</font>
+				<animation effect="slide" start="0,0" end="0,-30" time="0" condition="Skin.String(PassionSkinColourPath,style_PMIII.HD)">conditional</animation>
+				<visible>Skin.String(PassionSkinColourPath,style_PMIII.HD) | !Control.IsVisible(100)</visible>
+			</control>
+		</control>
+
+		<control type="group">
+			<animation effect="slide" time="200" start="720,0" end="0,0" acceleration="-1">WindowOpen</animation>
+			<animation effect="slide" time="200" start="0,0" end="720,0" acceleration="1.1">WindowClose</animation>
+
+			<!-- LABELS -->
+			<control type="label">
+				<description>category label</description>
+				<posx>27</posx>
+				<posy>160</posy>
+				<width>679</width>
+				<height>30</height>
+				<align>left</align>
+				<label>$INFO[Container.Property(Category),$LOCALIZE[SCRIPT7]: ]</label>
+				<font>special13</font>
+			</control>
+			<control type="label">
+				<description>Page Count Label</description>
+				<posx>693</posx>
+				<posy>160</posy>
+				<width>679</width>
+				<height>30</height>
+				<font>font12</font>
+				<textcolor>ffffffff</textcolor>
+				<scroll>false</scroll>
+				<align>right</align>
+				<label>($INFO[Container.NumItems]) $LOCALIZE[SCRIPT25] - $LOCALIZE[SCRIPT24] ($INFO[Container.CurrentPage]/$INFO[Container.NumPages])</label>
+				<visible>!Control.IsVisible(59)</visible>
+			</control>
+			<control type="label">
+				<description>carousel - currentPage is current position item</description>
+				<posx>693</posx>
+				<posy>160</posy>
+				<width>679</width>
+				<height>30</height>
+				<font>font12</font>
+				<textcolor>ffffffff</textcolor>
+				<scroll>false</scroll>
+				<align>right</align>
+				<label>$LOCALIZE[SCRIPT26] $INFO[Container.CurrentPage] $LOCALIZE[SCRIPT27] $INFO[Container.NumPages]</label>
+				<visible>Control.IsVisible(59)</visible>
+			</control>
+
+			<!-- GROUPE OPTION MENU -->
+			<!-- NOTE: CES BOUTONS ONT LE LANGUAGE D'XBMC ET NON DU SCRIPT -->
+			<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+			<!-- ** Required ** Do not change id's or type's -->
+			<control type="group" id="9000">
+				<posx>20</posx>
+				<posy>117</posy>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>110</width>
+					<height>25</height>
+					<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
+					<visible>Control.IsVisible(2)</visible>
+				</control>
+				<control type="button" id="2">
+					<description>View As Icons button</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>110</width>
+					<height>25</height>
+					<align>center</align>
+					<label>101</label>
+					<texturenofocus>-</texturenofocus>
+					<texturefocus>passion-mbutton-focus.png</texturefocus>
+					<textcolor>ffffffff</textcolor>
+					<colordiffuse>ffffffff</colordiffuse>
+					<disabledcolor>60d0d0d0</disabledcolor>
+					<onleft>320</onleft>
+					<onright>300</onright>
+					<onup>50</onup>
+					<ondown>50</ondown>
+				</control>
+				<control type="image">
+					<posx>115</posx>
+					<posy>0</posy>
+					<width>110</width>
+					<height>25</height>
+					<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
+					<visible>Control.IsVisible(300)</visible>
+				</control>
+				<control type="button" id="300">
+					<description>Add-ons Manager button</description>
+					<posx>115</posx>
+					<posy>0</posy>
+					<width>110</width>
+					<height>25</height>
+					<align>center</align>
+					<label>SCRIPT5</label>
+					<texturenofocus>-</texturenofocus>
+					<texturefocus>passion-mbutton-focus.png</texturefocus>
+					<textcolor>ffffffff</textcolor>
+					<colordiffuse>ffffffff</colordiffuse>
+					<disabledcolor>60d0d0d0</disabledcolor>
+					<onleft>2</onleft>
+					<onright>305</onright>
+					<onup>50</onup>
+					<ondown>50</ondown>
+				</control>
+				<control type="image">
+					<posx>230</posx>
+					<posy>0</posy>
+					<width>110</width>
+					<height>25</height>
+					<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
+					<visible>Control.IsVisible(305)</visible>
+				</control>
+				<control type="button" id="305">
+					<description>forum button</description>
+					<posx>230</posx>
+					<posy>0</posy>
+					<width>110</width>
+					<height>25</height>
+					<align>center</align>
+					<label>SCRIPT1</label>
+					<texturenofocus>-</texturenofocus>
+					<texturefocus>passion-mbutton-focus.png</texturefocus>
+					<textcolor>ffffffff</textcolor>
+					<colordiffuse>ffffffff</colordiffuse>
+					<disabledcolor>60d0d0d0</disabledcolor>
+					<onleft>300</onleft>
+					<onright>310</onright>
+					<onup>50</onup>
+					<ondown>50</ondown>
+				</control>
+				<control type="image">
+					<posx>345</posx>
+					<posy>0</posy>
+					<width>110</width>
+					<height>25</height>
+					<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
+					<visible>Control.IsVisible(310)</visible>
+					<animation effect="slide" start="0,0" end="-105,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
+				</control>
+				<control type="button" id="310">
+					<description>option button</description>
+					<posx>345</posx>
+					<posy>0</posy>
+					<width>110</width>
+					<height>25</height>
+					<align>center</align>
+					<label>SCRIPT2</label>
+					<texturenofocus>-</texturenofocus>
+					<texturefocus>passion-mbutton-focus.png</texturefocus>
+					<textcolor>ffffffff</textcolor>
+					<colordiffuse>ffffffff</colordiffuse>
+					<disabledcolor>60d0d0d0</disabledcolor>
+					<onleft>305</onleft>
+					<onright>320</onright>
+					<onup>50</onup>
+					<ondown>50</ondown>
+					<animation effect="slide" start="0,0" end="-105,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
+				</control>
+				<control type="image">
+					<posx>460</posx>
+					<posy>0</posy>
+					<width>110</width>
+					<height>25</height>
+					<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
+					<visible>Control.IsVisible(320)</visible>
+					<animation effect="slide" start="0,0" end="-105,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
+				</control>
+				<control type="button" id="320">
+					<description>exit button</description>
+					<posx>460</posx>
+					<posy>0</posy>
+					<width>110</width>
+					<height>25</height>
+					<align>center</align>
+					<label>SCRIPT8</label>
+					<texturenofocus>-</texturenofocus>
+					<texturefocus>passion-mbutton-focus.png</texturefocus>
+					<textcolor>ffffffff</textcolor>
+					<colordiffuse>ffffffff</colordiffuse>
+					<disabledcolor>60d0d0d0</disabledcolor>
+					<onleft>310</onleft>
+					<onright>2</onright>
+					<onup>50</onup>
+					<ondown>50</ondown>
+					<animation effect="slide" start="0,0" end="-105,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
+				</control>
+			</control>
+
+			<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+			<!-- ** Required ** Do not change id's or type's -->
+
+			<!-- MEDIA INFOS LIST -->
+			<control type="group">
+				<description>media infos list</description>
+				<control type="list" id="50">
+					<posx>27</posx>
+					<posy>198</posy>
+					<width>480</width>
+					<height>145</height>
+					<viewtype label="SCRIPT351">list</viewtype>
+					<onleft>9000</onleft>
+					<onright>193</onright>
+					<onup>50</onup>
+					<ondown>50</ondown>
+					<orientation>vertical</orientation>
+					<pagecontrol>193</pagecontrol>
+					<scrolltime>200</scrolltime>
+					<itemlayout width="250" height="29">
+						<control type="image">
+							<width>480</width>
+							<height>26</height>
+							<posx>0</posx>
+							<posy>0</posy>
+							<texture>passion-list-nofocus.png</texture>
+							<visible>false</visible>
+						</control>
+						<control type="label">
+							<posx>5</posx>
+							<posy>2</posy>
+							<width>400</width>
+							<height>22</height>
+							<font>font13</font>
+							<aligny>center</aligny>
+							<selectedcolor>FFe2ff43</selectedcolor>
+							<textcolor>FF000000</textcolor>
+							<align>left</align>
+							<info>ListItem.Label</info>
+						</control>
+						<control type="label">
+							<posx>475</posx>
+							<posy>2</posy>
+							<width>320</width>
+							<height>22</height>
+							<font>font13</font>
+							<aligny>center</aligny>
+							<selectedcolor>FFe2ff43</selectedcolor>
+							<textcolor>60000000</textcolor>
+							<align>right</align>
+							<label>$INFO[ListItem.Property(added),$LOCALIZE[SCRIPT613]]</label>
+						</control>
+					</itemlayout>
+					<focusedlayout height="29" width="250">
+						<control type="image">
+							<width>480</width>
+							<height>26</height>
+							<posx>0</posx>
+							<posy>0</posy>
+							<texture>passion-list-focus.png</texture>
+							<visible>Control.HasFocus(50)</visible>
+						</control>
+						<control type="label">
+							<posx>5</posx>
+							<posy>2</posy>
+							<width>400</width>
+							<height>22</height>
+							<font>special13</font>
+							<aligny>center</aligny>
+							<selectedcolor>FFe2ff43</selectedcolor>
+							<textcolor>FF000000</textcolor>
+							<align>left</align>
+							<label>$INFO[ListItem.Label,[B],[/B]]</label>
+						</control>
+						<control type="label">
+							<posx>475</posx>
+							<posy>2</posy>
+							<width>320</width>
+							<height>22</height>
+							<font>font13</font>
+							<aligny>center</aligny>
+							<selectedcolor>FFe2ff43</selectedcolor>
+							<textcolor>60000000</textcolor>
+							<align>right</align>
+							<label>$INFO[ListItem.Property(added),[B]$LOCALIZE[SCRIPT613],[/B]]</label>
+						</control>
+					</focusedlayout>
+				</control>
+				<control type="group">
+					<visible>Control.IsVisible(50)</visible>
+					<posx>512</posx>
+					<posy>198</posy>
+					<control type="button">
+						<description>Page Up for list</description>
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>20</width>
+						<height>20</height>
+						<onclick>PageUp(193)</onclick>
+						<texturefocus border="4">passion-scrollbar_arrow_up_focus.png</texturefocus>
+						<texturenofocus border="4">passion-scrollbar_arrow_up.png</texturenofocus>
+						<visible>Control.IsVisible(193)</visible>
+						<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+					</control>
+					<control type="button">
+						<description>Page Down for list</description>
+						<posx>0</posx>
+						<posy>125</posy>
+						<width>20</width>
+						<height>20</height>
+						<onclick>PageDown(193)</onclick>
+						<texturefocus border="4">passion-scrollbar_arrow_down_focus.png</texturefocus>
+						<texturenofocus border="4">passion-scrollbar_arrow_down.png</texturenofocus>
+						<visible>Control.IsVisible(193)</visible>
+						<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+					</control>
+					<control type="scrollbar" id="193">
+						<description>Scroll Bar for list</description>
+						<posx>0</posx>
+						<posy>20</posy>
+						<width>20</width>
+						<height>105</height>
+						<texturesliderbackground border="4">passion-scrollbar_background.png</texturesliderbackground>
+						<texturesliderbar border="4">passion-scrollbar_bar.png</texturesliderbar>
+						<texturesliderbarfocus border="4">passion-scrollbar_bar_focus.png</texturesliderbarfocus>
+						<textureslidernib>-</textureslidernib>
+						<textureslidernibfocus>-</textureslidernibfocus>
+						<onleft>50</onleft>
+						<onright>194</onright>
+						<showonepage>false</showonepage>
+						<orientation>vertical</orientation>
+						<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+					</control>
+				</control>
+				<control type="group">
+					<visible>Control.IsVisible(50)</visible>
+					<control type="image">
+						<description>icon</description>
+						<posx>566</posx>
+						<posy>195</posy>
+						<width>150</width>
+						<height>150</height>
+						<aspectratio align="center" aligny="center">keep</aspectratio>
+						<info>Container(50).ListItem.Icon</info>
+						<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
+					</control>
+					<control type="image">
+						<posx>566</posx>
+						<posy>320</posy>
+						<width>150</width>
+						<height>50</height>
+						<info>Container(50).ListItem.Icon</info>
+						<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+						<aspectratio align="center" aligny="top">stretch</aspectratio>
+						<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
+					</control>
+					<control type="image">
+						<description>separator image for list and text</description>
+						<posx>20</posx>
+						<posy>345</posy>
+						<width>679</width>
+						<height>5</height>
+						<texture>passion-separator.png</texture>
+						<aspectratio align="center" />
+						<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+					</control>
+				</control>
+
+				<control type="group">
+					<visible>Control.IsVisible(50)</visible>
+					<control type="label">
+						<posx>27</posx>
+						<posy>352</posy>
+						<width>333</width>
+						<height>16</height>
+						<font>special13</font>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<textcolor>ff000000</textcolor>
+						<scroll>true</scroll>
+						<info>Container(50).ListItem.Property(title)</info>
+					</control>
+					<control type="label">
+						<posx>692</posx>
+						<posy>352</posy>
+						<width>333</width>
+						<height>16</height>
+						<font>font13</font>
+						<textcolor>FF000000</textcolor>
+						<scroll>true</scroll>
+						<align>right</align>
+						<info>Container(50).ListItem.Property(date)</info>
+					</control>
+					<control type="label">
+						<posx>27</posx>
+						<posy>541</posy>
+						<width>333</width>
+						<height>16</height>
+						<font>font13</font>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<textcolor>ff000000</textcolor>
+						<scroll>true</scroll>
+						<label>$INFO[ListItem.Property(language),$LOCALIZE[SCRIPT608]: ]</label>
+					</control>
+					<control type="label">
+						<posx>692</posx>
+						<posy>541</posy>
+						<width>333</width>
+						<height>16</height>
+						<font>font13</font>
+						<textcolor>FF000000</textcolor>
+						<scroll>true</scroll>
+						<align>right</align>
+						<label>$INFO[ListItem.Property(version),$LOCALIZE[SCRIPT602]: ]</label>
+					</control>
+					<control type="textbox">
+						<description>Text small</description>
+						<posx>27</posx>
+						<posy>375</posy>
+						<width>640</width>
+						<height>166</height>
+						<pagecontrol>194</pagecontrol>
+						<textcolor>FF000000</textcolor>
+						<font>font13</font>
+						<align>justify</align>
+						<label>$INFO[Container(50).ListItem.Property(description)]</label>
+						<autoscroll time="2000" delay="3000">Skin.HasSetting(AutoScroll)</autoscroll>
+						<visible>Control.IsVisible(194)</visible>
+					</control>
+					<control type="textbox">
+						<description>Text large</description>
+						<posx>27</posx>
+						<posy>375</posy>
+						<width>666</width>
+						<height>166</height>
+						<pagecontrol>194</pagecontrol>
+						<textcolor>FF000000</textcolor>
+						<font>font13</font>
+						<align>justify</align>
+						<label>$INFO[Container(50).ListItem.Property(description)]</label>
+						<autoscroll time="2000" delay="3000">Skin.HasSetting(AutoScroll)</autoscroll>
+						<visible>!Control.IsVisible(194)</visible>
+					</control>
+					<control type="label">
+						<description>Text large</description>
+						<posx>27</posx>
+						<posy>375</posy>
+						<width>666</width>
+						<height>166</height>
+						<textcolor>FF000000</textcolor>
+						<font>font13</font>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>SCRIPT614</label>
+						<visible>IsEmpty(Container(50).ListItem.Property(description))</visible>
+					</control>
+				</control>
+
+				<control type="group">
+					<visible>Control.IsVisible(50)</visible>
+					<posx>672</posx>
+					<posy>375</posy>
+					<control type="button">
+						<description>Page Up for text</description>
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>20</width>
+						<height>20</height>
+						<onclick>PageUp(194)</onclick>
+						<texturefocus border="4">passion-scrollbar_arrow_up_focus.png</texturefocus>
+						<texturenofocus border="4">passion-scrollbar_arrow_up.png</texturenofocus>
+						<visible>Control.IsVisible(194)</visible>
+						<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+					</control>
+					<control type="button">
+						<description>Page Down for text</description>
+						<posx>0</posx>
+						<posy>145</posy>
+						<width>20</width>
+						<height>20</height>
+						<onclick>PageDown(194)</onclick>
+						<texturefocus border="4">passion-scrollbar_arrow_down_focus.png</texturefocus>
+						<texturenofocus border="4">passion-scrollbar_arrow_down.png</texturenofocus>
+						<visible>Control.IsVisible(194)</visible>
+						<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+					</control>
+					<control type="scrollbar" id="194">
+						<description>Scroll Bar for text</description>
+						<posx>0</posx>
+						<posy>20</posy>
+						<width>20</width>
+						<height>125</height>
+						<texturesliderbackground border="4">passion-scrollbar_background.png</texturesliderbackground>
+						<texturesliderbar border="4">passion-scrollbar_bar.png</texturesliderbar>
+						<texturesliderbarfocus border="4">passion-scrollbar_bar_focus.png</texturesliderbarfocus>
+						<textureslidernib>-</textureslidernib>
+						<textureslidernibfocus>-</textureslidernibfocus>
+						<onleft>193</onleft>
+						<onright>50</onright>
+						<showonepage>false</showonepage>
+						<orientation>vertical</orientation>
+						<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+						<visible>!IsEmpty(Container(50).ListItem.Property(description))</visible>
+					</control>
+				</control>
+			</control>
+
+			<!-- BASE LIST -->
+			<control type="list" id="51">
+				<description>base list</description>
+				<posx>27</posx>
+				<posy>197</posy>
+				<width>666</width>
+				<height>368</height>
+				<viewtype label="535">list</viewtype>
+				<orientation>vertical</orientation>
+				<pagecontrol>2050</pagecontrol>
+				<scrolltime>200</scrolltime>
+				<onleft>9000</onleft>
+				<onright>2050</onright>
+				<onup>51</onup>
+				<ondown>51</ondown>
+				<itemlayout width="250" height="46">
+					<control type="image">
+						<width>640</width>
+						<height>42</height>
+						<posx>0</posx>
+						<posy>0</posy>
+						<texture>passion-list-nofocus.png</texture>
+						<colordiffuse>50ffffff</colordiffuse>
+						<visible>Control.IsVisible(2050)</visible>
+					</control>
+					<control type="image">
+						<width>666</width>
+						<height>42</height>
+						<posx>0</posx>
+						<posy>0</posy>
+						<texture>passion-list-nofocus.png</texture>
+						<colordiffuse>50ffffff</colordiffuse>
+						<visible>!Control.IsVisible(2050)</visible>
+					</control>
+					<control type="image">
+						<posx>3</posx>
+						<posy>3</posy>
+						<width>36</width>
+						<height>36</height>
+						<info>ListItem.ActualIcon</info>
+						<visible>IsEmpty(ListItem.Property(Downloaded))</visible>
+					</control>
+					<control type="image">
+						<posx>3</posx>
+						<posy>3</posy>
+						<width>36</width>
+						<height>36</height>
+						<info>ListItem.ActualIcon</info>
+						<visible>!IsEmpty(ListItem.Property(Downloaded))</visible>
+						<colordiffuse>60ffffff</colordiffuse>
+					</control>
+					<control type="label">
+						<posx>42</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>42</height>
+						<font>font13</font>
+						<aligny>center</aligny>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<textcolor>FF000000</textcolor>
+						<align>left</align>
+						<info>ListItem.Label</info>
+					</control>
+					<control type="label">
+						<posx>661</posx>
+						<posy>0</posy>
+						<width>320</width>
+						<height>42</height>
+						<font>font13</font>
+						<aligny>center</aligny>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<textcolor>60000000</textcolor>
+						<align>right</align>
+						<!--<info>ListItem.Label2</info>-->
+						<label>$INFO[ListItem.Property(date),$LOCALIZE[SCRIPT613]]</label>
+						<animation effect="slide" start="0,0" end="-26,0" time="0" condition="Control.IsVisible(2050)">conditional</animation>
+					</control>
+				</itemlayout>
+				<focusedlayout height="46" width="250">
+					<control type="image">
+						<width>640</width>
+						<height>42</height>
+						<posx>0</posx>
+						<posy>0</posy>
+						<texture>passion-list-nofocus.png</texture>
+						<colordiffuse>50ffffff</colordiffuse>
+						<visible>!Control.HasFocus(51) + Control.IsVisible(2050)</visible>
+					</control>
+					<control type="image">
+						<width>666</width>
+						<height>42</height>
+						<posx>0</posx>
+						<posy>0</posy>
+						<texture>passion-list-nofocus.png</texture>
+						<colordiffuse>50ffffff</colordiffuse>
+						<visible>!Control.HasFocus(51) + !Control.IsVisible(2050)</visible>
+					</control>
+					<control type="image">
+						<width>640</width>
+						<height>42</height>
+						<posx>0</posx>
+						<posy>0</posy>
+						<texture>passion-list-focus.png</texture>
+						<visible>Control.HasFocus(51) + Control.IsVisible(2050)</visible>
+					</control>
+					<control type="image">
+						<width>666</width>
+						<height>42</height>
+						<posx>0</posx>
+						<posy>0</posy>
+						<texture>passion-list-focus.png</texture>
+						<visible>Control.HasFocus(51) + !Control.IsVisible(2050)</visible>
+					</control>
+					<control type="image">
+						<posx>3</posx>
+						<posy>3</posy>
+						<width>36</width>
+						<height>36</height>
+						<info>ListItem.ActualIcon</info>
+						<visible>IsEmpty(ListItem.Property(Downloaded))</visible>
+					</control>
+					<control type="image">
+						<posx>3</posx>
+						<posy>3</posy>
+						<width>36</width>
+						<height>36</height>
+						<info>ListItem.ActualIcon</info>
+						<visible>!IsEmpty(ListItem.Property(Downloaded))</visible>
+						<colordiffuse>60ffffff</colordiffuse>
+					</control>
+					<control type="label">
+						<posx>42</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>42</height>
+						<font>special13</font>
+						<aligny>center</aligny>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<textcolor>FF000000</textcolor>
+						<align>left</align>
+						<!--<info>ListItem.Label</info>-->
+						<label>$INFO[ListItem.Label,[B],[/B]]</label>
+					</control>
+					<control type="label">
+						<posx>661</posx>
+						<posy>0</posy>
+						<width>320</width>
+						<height>42</height>
+						<font>font13</font>
+						<aligny>center</aligny>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<textcolor>60000000</textcolor>
+						<align>right</align>
+						<!--<info>ListItem.Label2</info>-->
+						<label>$INFO[ListItem.Property(date),[B]$LOCALIZE[SCRIPT613],[/B]]</label>
+						<animation effect="slide" start="0,0" end="-26,0" time="0" condition="Control.IsVisible(2050)">conditional</animation>
+					</control>
+				</focusedlayout>
+			</control>
+
+			<!-- PANEL LIST -->
+			<control type="panel" id="52">
+				<description>icons panel</description>
+				<posx>27</posx>
+				<posy>197</posy>
+				<width>666</width>
+				<height>368</height>
+				<onleft>9000</onleft>
+				<onright>2050</onright>
+				<onup>52</onup>
+				<ondown>52</ondown>
+				<scrolltime>200</scrolltime>
+				<viewtype label="SCRIPT352">icon</viewtype>
+				<pagecontrol>2050</pagecontrol>
+				<itemlayout height="181" width="130">
+					<control type="image">
+						<posx>10</posx>
+						<posy>10</posy>
+						<width>100</width>
+						<height>100</height>
+						<info>ListItem.Icon</info>
+					</control>
+					<control type="image">
+						<posx>80</posx>
+						<posy>75</posy>
+						<width>32</width>
+						<height>32</height>
+						<info>ListItem.Overlay</info>
+					</control>
+					<control type="label">
+						<posx>60</posx>
+						<posy>120</posy>
+						<width>110</width>
+						<height>22</height>
+						<font>font13</font>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<textcolor>FF000000</textcolor>
+						<align>center</align>
+						<info>ListItem.Label</info>
+					</control>
+				</itemlayout>
+				<focusedlayout height="181" width="130">
+					<control type="image">
+						<width>110</width>
+						<height>110</height>
+						<posx>5</posx>
+						<posy>5</posy>
+						<texture>passion-list-focus.png</texture>
+						<animation effect="zoom" reversible="false" center="auto" start="100" end="110" time="100">focus</animation>
+						<animation type="unfocus">
+							<effect reversible="false" type="fade" start="100" end="0" time="200" />
+							<effect reversible="false" type="zoom" center="auto" start="110" end="100" time="100" />
+						</animation>
+					</control>
+					<control type="image">
+						<posx>10</posx>
+						<posy>10</posy>
+						<width>100</width>
+						<height>100</height>
+						<info>ListItem.Icon</info>
+						<animation reversible="false" effect="zoom" center="auto" start="100" end="110" time="100">focus</animation>
+						<animation reversible="false" effect="zoom" center="auto" start="110" end="100" time="100">unfocus</animation>
+					</control>
+					<control type="image">
+						<posx>80</posx>
+						<posy>75</posy>
+						<width>32</width>
+						<height>32</height>
+						<info>ListItem.Overlay</info>
+						<animation reversible="false" effect="slide" start="0,0" end="5,5" time="100">focus</animation>
+						<animation reversible="false" effect="slide" end="0,0" start="5,5" time="100">unfocus</animation>
+					</control>
+					<control type="label">
+						<posx>60</posx>
+						<posy>120</posy>
+						<width>110</width>
+						<height>22</height>
+						<font>font13</font>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<textcolor>FF000000</textcolor>
+						<align>center</align>
+						<info>ListItem.Label</info>
+						<animation reversible="false" effect="slide" start="0,0" end="0,5" time="100">focus</animation>
+						<animation reversible="false" effect="slide" end="0,0" start="0,5" time="100">unfocus</animation>
+					</control>
+				</focusedlayout>
+			</control>
+
+			<!-- INFOS MEDIA 1 LIST -->
+			<control type="group">
+				<description>Media 1 fixedlist</description>
+				<posy>60</posy>
+				<control type="fixedlist" id="56">
+					<posx>27</posx>
+					<posy>90</posy>
+					<width>666</width>
+					<height>368</height>
+					<onleft>56</onleft>
+					<onright>56</onright>
+					<onup>9000</onup>
+					<ondown>9000</ondown>
+					<scrolltime>200</scrolltime>
+					<viewtype label="SCRIPT356">wraplist</viewtype>
+					<pagecontrol>-</pagecontrol>
+					<orientation>horizontal</orientation>
+					<focusposition>2</focusposition>
+					<itemlayout height="300" width="134">
+						<control type="image">
+							<posx>2</posx>
+							<posy>50</posy>
+							<width>100</width>
+							<height>200</height>
+							<info>ListItem.Icon</info>
+							<aspectratio aligny="bottom">keep</aspectratio>
+						</control>
+						<control type="image">
+							<posx>2</posx>
+							<posy>250</posy>
+							<width>100</width>
+							<height>200</height>
+							<info>ListItem.Icon</info>
+							<texture flipy="true" diffuse="passion-diffuse_mirror.png" /> 
+							<aspectratio aligny="top">keep</aspectratio>
+						</control>
+						<control type="image">
+							<posx>70</posx>
+							<posy>225</posy>
+							<width>32</width>
+							<height>32</height>
+							<info>ListItem.Overlay</info>
+						</control>
+					</itemlayout>
+					<focusedlayout height="300" width="150">
+						<control type="image">
+							<posx>2</posx>
+							<posy>50</posy>
+							<width>100</width>
+							<height>200</height>
+							<info>ListItem.Icon</info>
+							<aspectratio aligny="bottom">keep</aspectratio>
+							<animation effect="zoom" start="2,50,100,200" end="-15,-20,150,300" time="200">focus</animation>
+							<animation effect="zoom" end="2,50,100,200" start="-15,-20,150,300" time="150">unfocus</animation>
+						</control>
+						<control type="image">
+							<posx>2</posx>
+							<posy>250</posy>
+							<width>100</width>
+							<height>200</height>
+							<info>ListItem.Icon</info>
+							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<aspectratio aligny="top">keep</aspectratio>
+							<animation effect="zoom" start="2,250,100,200" end="-15,280,150,300" time="200">focus</animation>
+							<animation effect="zoom" end="2,250,100,200" start="-15,280,150,300" time="150">unfocus</animation>
+						</control>
+						<control type="image">
+							<posx>70</posx>
+							<posy>225</posy>
+							<width>32</width>
+							<height>32</height>
+							<info>ListItem.Overlay</info>
+							<animation effect="slide" start="0,0" end="30,20" time="200">focus</animation>
+							<animation effect="slide" end="0,0" start="30,20" time="150">unfocus</animation>
+						</control>
+					</focusedlayout>
+				</control>
+				<control type="label">
+					<posx>27</posx>
+					<posy>390</posy>
+					<width>666</width>
+					<height>16</height>
+					<font>special13</font>
+					<selectedcolor>FFe2ff43</selectedcolor>
+					<textcolor>98000000</textcolor>
+					<scroll>true</scroll>
+					<align>center</align>
+					<info>ListItem.Label</info>
+					<visible>Control.IsVisible(56)</visible>
+				</control>
+				<control type="label">
+					<posx>27</posx>
+					<posy>420</posy>
+					<width>333</width>
+					<height>16</height>
+					<font>font13</font>
+					<textcolor>FF000000</textcolor>
+					<scroll>true</scroll>
+					<label>$INFO[ListItem.Property(date),$LOCALIZE[SCRIPT603]: ]</label>
+					<visible>Control.IsVisible(56)</visible>
+				</control>
+				<control type="label">
+					<posx>27</posx>
+					<posy>445</posy>
+					<width>333</width>
+					<height>16</height>
+					<font>font13</font>
+					<textcolor>FF000000</textcolor>
+					<scroll>true</scroll>
+					<label>$INFO[ListItem.Property(version),$LOCALIZE[SCRIPT602]: ]</label>
+					<visible>Control.IsVisible(56))</visible>
+				</control>
+				<control type="label">
+					<posx>27</posx>
+					<posy>470</posy>
+					<width>333</width>
+					<height>16</height>
+					<font>font13</font>
+					<textcolor>FF000000</textcolor>
+					<scroll>true</scroll>
+					<label>$INFO[ListItem.Property(language),$LOCALIZE[SCRIPT608]: ]</label>
+					<visible>Control.IsVisible(56)</visible>
+				</control>
+				<control type="label">
+					<posx>690</posx>
+					<posy>420</posy>
+					<width>333</width>
+					<height>16</height>
+					<font>font13</font>
+					<textcolor>FF000000</textcolor>
+					<scroll>true</scroll>
+					<align>right</align>
+					<label>$INFO[ListItem.Property(date),$LOCALIZE[SCRIPT613]]</label>
+					<visible>Control.IsVisible(56)</visible>
+					<visible>false</visible>
+				</control>
+				<control type="label">
+					<posx>690</posx>
+					<posy>445</posy>
+					<width>333</width>
+					<height>16</height>
+					<font>font13</font>
+					<textcolor>FF000000</textcolor>
+					<scroll>true</scroll>
+					<align>right</align>
+					<label>$INFO[ListItem.Property(date),$LOCALIZE[SCRIPT613]]</label>
+					<visible>Control.IsVisible(56)</visible>
+					<visible>false</visible>
+				</control>
+				<control type="label">
+					<posx>690</posx>
+					<posy>470</posy>
+					<width>333</width>
+					<height>16</height>
+					<font>font13</font>
+					<textcolor>FF000000</textcolor>
+					<scroll>true</scroll>
+					<align>right</align>
+					<label>$INFO[ListItem.Property(date),$LOCALIZE[SCRIPT613]]</label>
+					<visible>Control.IsVisible(56)</visible>
+					<visible>false</visible>
+				</control>
+			</control>
+
+			<!-- CAROUSEL LIST -->
+			<control type="group">
+				<description>carousel</description>
+				<posy>-10</posy>
+				<animation condition="System.IdleTime(15)" type="Conditional" loop="true" reversible="false">
+					<effect type="rotatex" tween="sine" easing="inout" acceleration="-1" center="auto" start="0" end="3600" time="90000" />
+					<effect type="rotatey" tween="sine" easing="inout" acceleration="-1" center="auto" start="0" end="3600" time="90000" />
+					<effect type="rotatey" tween="sine" easing="inout" acceleration="-1" center="auto" start="0" end="-3600" time="90000" delay="89000" />
+					<effect type="rotatex" tween="sine" easing="inout" acceleration="-1" center="auto" start="0" end="-3600" time="90000" delay="89000" />
+				</animation>
+				<control type="wraplist" id="59">
+					<posx>27</posx>
+					<posy>207</posy>
+					<width>666</width>
+					<height>368</height>
+					<onleft>59</onleft>
+					<onright>59</onright>
+					<onup>9000</onup>
+					<ondown>9000</ondown>
+					<scrolltime>200</scrolltime>
+					<viewtype label="SCRIPT359">wraplist</viewtype>
+					<pagecontrol>-</pagecontrol>
+					<focusposition>0</focusposition>
+					<orientation>horizontal</orientation>
+					<itemlayout height="1" width="1" />
+					<focusedlayout height="368" width="666" />
+				</control>
+				<control type="label">
+					<posx>230</posx>
+					<posy>325</posy>
+					<width>258</width>
+					<height>16</height>
+					<font>special13</font>
+					<selectedcolor>FFe2ff43</selectedcolor>
+					<textcolor>FF000000</textcolor>
+					<shadowcolor>$INFO[Skin.String(PassionSkinHexColour)]</shadowcolor>
+					<scroll>true</scroll>
+					<align>center</align>
+					<info>ListItem.Label</info>
+					<visible>Control.IsVisible(59)</visible>
+					<animation effect="zoom" reversible="true" center="auto" start="110" end="150" time="200" condition="Control.HasFocus(59)">conditional</animation>
+				</control>
+
+				<!-- CLOCKWISE::DANS LE SENS DES AIGUILLES -->
+				<control type="group" id="3011">
+					<visible>Control.IsVisible(59)</visible>
+					<visible>Container(59).OnNext + !Control.IsVisible(3012)</visible>
+					<animation effect="slide" start="0,0" end="0,0" time="120" reversible="false">Hidden</animation>
+					<control type="group">
+						<description>midnight</description>
+						<posx>332</posx>
+						<posy>205</posy>
+						<visible>Container(59).OnNext</visible>
+						<animation effect="slide" start="-82,5" reversible="false" time="120">Hidden</animation>
+						<animation effect="zoom" center="auto" start="250,210,50,65" end="332,205,45,60" time="200" reversible="false" >Hidden</animation>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>45</width>
+							<height>60</height>
+							<info>Container(59).Listitem(5).Icon</info>
+							<aspectratio aligny="bottom">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>60</posy>
+							<width>45</width>
+							<height>60</height>
+							<info>Container(59).Listitem(5).Icon</info>
+							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<aspectratio aligny="top">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+					</control>
+
+					<control type="group">
+						<description>one o'clock</description>
+						<posx>420</posx>
+						<posy>210</posy>
+						<visible>Container(59).OnNext</visible>
+						<animation effect="slide" start="-88,-5" reversible="false" time="120">Hidden</animation>
+						<animation effect="zoom" center="auto" start="332,205,45,60" end="420,210,50,65" time="200" reversible="false" >Hidden</animation>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>50</width>
+							<height>65</height>
+							<info>Container(59).Listitem(4).Icon</info>
+							<aspectratio aligny="bottom">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>65</posy>
+							<width>50</width>
+							<height>65</height>
+							<info>Container(59).Listitem(4).Icon</info>
+							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<aspectratio aligny="top">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+					</control>
+
+					<control type="group">
+						<description>two o'clock</description>
+						<posx>500</posx>
+						<posy>230</posy>
+						<visible>Container(59).OnNext</visible>
+						<animation effect="slide" start="-80,-20" reversible="false" time="120">Hidden</animation>
+						<animation effect="zoom" center="auto" start="420,210,50,65" end="500,230,65,80" time="200" reversible="false" >Hidden</animation>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>65</width>
+							<height>80</height>
+							<info>Container(59).Listitem(3).Icon</info>
+							<aspectratio aligny="bottom">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>80</posy>
+							<width>65</width>
+							<height>80</height>
+							<info>Container(59).Listitem(3).Icon</info>
+							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<aspectratio aligny="top">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+					</control>
+
+					<control type="group">
+						<description>three o'clock</description>
+						<posx>565</posx>
+						<posy>265</posy>
+						<visible>Container(59).OnNext</visible>
+						<animation effect="slide" start="-65,-35" reversible="false" time="120">Hidden</animation>
+						<animation effect="zoom" center="auto" start="500,230,65,80" end="565,265,80,100" time="200" reversible="false" >Hidden</animation>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>80</width>
+							<height>100</height>
+							<info>Container(59).Listitem(2).Icon</info>
+							<aspectratio aligny="bottom">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>100</posy>
+							<width>80</width>
+							<height>100</height>
+							<info>Container(59).Listitem(2).Icon</info>
+							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<aspectratio aligny="top">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+					</control>
+
+					<control type="group">
+						<description>four and half</description>
+						<posx>505</posx>
+						<posy>345</posy>
+						<visible>Container(59).OnNext</visible>
+						<animation effect="slide" start="60,-80" reversible="false" time="120">Hidden</animation>
+						<animation effect="zoom" center="auto" start="565,265,80,100" end="505,345,95,125" time="200" reversible="false" >Hidden</animation>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>95</width>
+							<height>125</height>
+							<info>Container(59).Listitem(1).Icon</info>
+							<aspectratio aligny="bottom">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>125</posy>
+							<width>95</width>
+							<height>125</height>
+							<info>Container(59).Listitem(1).Icon</info>
+							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<aspectratio aligny="top">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+					</control>
+
+					<control type="group">
+						<description>six o'clock</description>
+						<posx>290</posx>
+						<posy>360</posy>
+						<visible>Container(59).OnNext</visible>
+						<animation effect="slide" start="215,-15" reversible="false" time="120">Hidden</animation>
+						<animation effect="zoom" center="auto" start="505,345,95,125" end="290,360,140,175" time="200" reversible="false" >Hidden</animation>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>140</width>
+							<height>175</height>
+							<info>Container(59).Listitem(0).Icon</info>
+							<aspectratio aligny="bottom">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>175</posy>
+							<width>140</width>
+							<height>175</height>
+							<info>Container(59).Listitem(0).Icon</info>
+							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<aspectratio aligny="top">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+					</control>
+
+					<control type="group">
+						<description>seven and half</description>
+						<posx>120</posx>
+						<posy>345</posy>
+						<visible>Container(59).OnNext</visible>
+						<animation effect="slide" start="70,15" reversible="false" time="120">Hidden</animation>
+						<animation effect="zoom" center="auto" start="290,360,140,175" end="120,345,95,125" time="200" reversible="false" >Hidden</animation>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>95</width>
+							<height>125</height>
+							<info>Container(59).Listitem(-1).Icon</info>
+							<aspectratio aligny="bottom">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>125</posy>
+							<width>95</width>
+							<height>125</height>
+							<info>Container(59).Listitem(-1).Icon</info>
+							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<aspectratio aligny="top">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+					</control>
+
+					<control type="group">
+						<description>nine o'clock</description>
+						<posx>70</posx>
+						<posy>265</posy>
+						<visible>Container(59).OnNext</visible>
+						<animation effect="slide" start="50,80" reversible="false" time="120">Hidden</animation>
+						<animation effect="zoom" center="auto" start="120,345,95,125" end="70,265,80,100" time="200" reversible="false" >Hidden</animation>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>80</width>
+							<height>100</height>
+							<info>Container(59).Listitem(-2).Icon</info>
+							<aspectratio aligny="bottom">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>100</posy>
+							<width>80</width>
+							<height>100</height>
+							<info>Container(59).Listitem(-2).Icon</info>
+							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<aspectratio aligny="top">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+					</control>
+
+					<control type="group">
+						<description>ten o'clock</description>
+						<posx>150</posx>
+						<posy>230</posy>
+						<visible>Container(59).OnNext</visible>
+						<animation effect="slide" start="-80,35" reversible="false" time="120">Hidden</animation>
+						<animation effect="zoom" center="auto" start="70,265,80,100" end="150,230,65,80" time="200" reversible="false" >Hidden</animation>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>65</width>
+							<height>80</height>
+							<info>Container(59).Listitem(-3).Icon</info>
+							<aspectratio aligny="bottom">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>80</posy>
+							<width>65</width>
+							<height>80</height>
+							<info>Container(59).Listitem(-3).Icon</info>
+							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<aspectratio aligny="top">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+					</control>
+
+					<control type="group">
+						<description>eleven o'clock</description>
+						<posx>250</posx>
+						<posy>210</posy>
+						<visible>Container(59).OnNext</visible>
+						<animation effect="slide" start="-100,20" reversible="false" time="120">Hidden</animation>
+						<animation effect="zoom" center="auto" start="150,230,65,80" end="250,210,50,65" time="200" reversible="false" >Hidden</animation>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>50</width>
+							<height>65</height>
+							<info>Container(59).Listitem(-4).Icon</info>
+							<aspectratio aligny="bottom">keep</aspectratio>
+							<colordiffuse>90ffffff</colordiffuse>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>65</posy>
+							<width>50</width>
+							<height>65</height>
+							<info>Container(59).Listitem(-4).Icon</info>
+							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<aspectratio aligny="top">keep</aspectratio>
+							<colordiffuse>90ffffff</colordiffuse>
+						</control>
+					</control>
+				</control>
+				<!-- END::CLOCKWISE::DANS LE SENS DES AIGUILLES -->
+
+				<!-- COUNTER CLOCKWISE::EN SENS INVERSE DES AIGUILLES D'UNE MONTRE -->
+				<control type="group" id="3012">
+					<visible>Control.IsVisible(59)</visible>
+					<visible>Container(59).OnPrevious  + !Control.IsVisible(3011)</visible>
+					<animation effect="slide" start="0,0" end="0,0" time="120" reversible="false">Hidden</animation>
+					<control type="group">
+						<description>midnight</description>
+						<posx>332</posx>
+						<posy>205</posy>
+						<visible>Container(59).OnPrevious</visible>
+						<animation effect="slide" start="88,5" reversible="false" time="120">Hidden</animation>
+						<animation effect="zoom" center="auto" start="420,210,50,65" end="332,205,45,60" time="200" reversible="false" >Hidden</animation>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>45</width>
+							<height>60</height>
+							<info>Container(59).Listitem(5).Icon</info>
+							<aspectratio aligny="bottom">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>60</posy>
+							<width>45</width>
+							<height>60</height>
+							<info>Container(59).Listitem(5).Icon</info>
+							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<aspectratio aligny="top">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+					</control>
+
+					<control type="group">
+						<description>one o'clock</description>
+						<posx>420</posx>
+						<posy>210</posy>
+						<visible>Container(59).OnPrevious</visible>
+						<animation effect="slide" start="80,20" reversible="false" time="120">Hidden</animation>
+						<animation effect="zoom" center="auto" start="500,230,65,80" end="420,210,50,65" time="200" reversible="false" >Hidden</animation>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>50</width>
+							<height>65</height>
+							<info>Container(59).Listitem(4).Icon</info>
+							<aspectratio aligny="bottom">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>65</posy>
+							<width>50</width>
+							<height>65</height>
+							<info>Container(59).Listitem(4).Icon</info>
+							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<aspectratio aligny="top">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+					</control>
+
+					<control type="group">
+						<description>two o'clock</description>
+						<posx>500</posx>
+						<posy>230</posy>
+						<visible>Container(59).OnPrevious</visible>
+						<animation effect="slide" start="65,35" reversible="false" time="120">Hidden</animation>
+						<animation effect="zoom" center="auto" start="565,265,80,100" end="500,230,65,80" time="200" reversible="false" >Hidden</animation>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>65</width>
+							<height>80</height>
+							<info>Container(59).Listitem(3).Icon</info>
+							<aspectratio aligny="bottom">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>80</posy>
+							<width>65</width>
+							<height>80</height>
+							<info>Container(59).Listitem(3).Icon</info>
+							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<aspectratio aligny="top">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+					</control>
+
+					<control type="group">
+						<description>three o'clock</description>
+						<posx>565</posx>
+						<posy>265</posy>
+						<visible>Container(59).OnPrevious</visible>
+						<animation effect="slide" start="-60,80" reversible="false" time="120">Hidden</animation>
+						<animation effect="zoom" center="auto" start="505,345,95,125" end="565,265,80,100" time="200" reversible="false" >Hidden</animation>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>80</width>
+							<height>100</height>
+							<info>Container(59).Listitem(2).Icon</info>
+							<aspectratio aligny="bottom">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>100</posy>
+							<width>80</width>
+							<height>100</height>
+							<info>Container(59).Listitem(2).Icon</info>
+							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<aspectratio aligny="top">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+					</control>
+
+					<control type="group">
+						<description>four and half</description>
+						<posx>505</posx>
+						<posy>345</posy>
+						<visible>Container(59).OnPrevious</visible>
+						<animation effect="slide" start="-215,15" reversible="false" time="120">Hidden</animation>
+						<animation effect="zoom" center="auto" start="290,360,140,175" end="505,345,95,125" time="200" reversible="false" >Hidden</animation>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>95</width>
+							<height>125</height>
+							<info>Container(59).Listitem(1).Icon</info>
+							<aspectratio aligny="bottom">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>125</posy>
+							<width>95</width>
+							<height>125</height>
+							<info>Container(59).Listitem(1).Icon</info>
+							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<aspectratio aligny="top">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+					</control>
+
+					<control type="group">
+						<description>six o'clock</description>
+						<posx>290</posx>
+						<posy>360</posy>
+						<visible>Container(59).OnPrevious</visible>
+						<animation effect="slide" start="-170,-15" reversible="false" time="120">Hidden</animation>
+						<animation effect="zoom" center="auto" start="120,345,95,125" end="290,360,140,175" time="200" reversible="false" >Hidden</animation>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>140</width>
+							<height>175</height>
+							<info>Container(59).Listitem(0).Icon</info>
+							<aspectratio aligny="bottom">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>175</posy>
+							<width>140</width>
+							<height>175</height>
+							<info>Container(59).Listitem(0).Icon</info>
+							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<aspectratio aligny="top">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+					</control>
+
+					<control type="group">
+						<description>seven and half</description>
+						<posx>120</posx>
+						<posy>345</posy>
+						<visible>Container(59).OnPrevious</visible>
+						<animation effect="slide" start="-50,-80" reversible="false" time="120">Hidden</animation>
+						<animation effect="zoom" center="auto" start="70,265,80,100" end="120,345,95,125" time="200" reversible="false" >Hidden</animation>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>95</width>
+							<height>125</height>
+							<info>Container(59).Listitem(-1).Icon</info>
+							<aspectratio aligny="bottom">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>125</posy>
+							<width>95</width>
+							<height>125</height>
+							<info>Container(59).Listitem(-1).Icon</info>
+							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<aspectratio aligny="top">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+					</control>
+
+					<control type="group">
+						<description>nine o'clock</description>
+						<posx>70</posx>
+						<posy>265</posy>
+						<visible>Container(59).OnPrevious</visible>
+						<animation effect="slide" start="80,-35" reversible="false" time="120">Hidden</animation>
+						<animation effect="zoom" center="auto" start="150,230,65,80" end="70,265,80,100" time="200" reversible="false" >Hidden</animation>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>80</width>
+							<height>100</height>
+							<info>Container(59).Listitem(-2).Icon</info>
+							<aspectratio aligny="bottom">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>100</posy>
+							<width>80</width>
+							<height>100</height>
+							<info>Container(59).Listitem(-2).Icon</info>
+							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<aspectratio aligny="top">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+					</control>
+
+					<control type="group">
+						<description>ten o'clock</description>
+						<posx>150</posx>
+						<posy>230</posy>
+						<visible>Container(59).OnPrevious</visible>
+						<animation effect="slide" start="100,-20" reversible="false" time="120">Hidden</animation>
+						<animation effect="zoom" center="auto" start="250,210,50,65" end="150,230,65,80" time="200" reversible="false" >Hidden</animation>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>65</width>
+							<height>80</height>
+							<info>Container(59).Listitem(-3).Icon</info>
+							<aspectratio aligny="bottom">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>80</posy>
+							<width>65</width>
+							<height>80</height>
+							<info>Container(59).Listitem(-3).Icon</info>
+							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<aspectratio aligny="top">keep</aspectratio>
+							<colordiffuse>a0ffffff</colordiffuse>
+						</control>
+					</control>
+
+					<control type="group">
+						<description>eleven o'clock</description>
+						<posx>250</posx>
+						<posy>210</posy>
+						<visible>Container(59).OnPrevious</visible>
+						<animation effect="slide" start="88,-5" reversible="false" time="120">Hidden</animation>
+						<animation effect="zoom" center="auto" start="332,205,45,60" end="250,210,50,65" time="200" reversible="false" >Hidden</animation>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>50</width>
+							<height>65</height>
+							<info>Container(59).Listitem(-4).Icon</info>
+							<aspectratio aligny="bottom">keep</aspectratio>
+							<colordiffuse>90ffffff</colordiffuse>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>65</posy>
+							<width>50</width>
+							<height>65</height>
+							<info>Container(59).Listitem(-4).Icon</info>
+							<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+							<aspectratio aligny="top">keep</aspectratio>
+							<colordiffuse>90ffffff</colordiffuse>
+						</control>
+					</control>
+				</control>
+				<!-- END::COUNTER CLOCKWISE::EN SENS INVERSE DES AIGUILLES D'UNE MONTRE -->
+
+				<!-- STATIC ICONS -->
+				<control type="group">
+					<visible>Control.IsVisible(59) + ![Control.IsVisible(3011) | Control.IsVisible(3012)]</visible>
+					<control type="image">
+						<description>midnight</description>
+						<posx>332</posx>
+						<posy>205</posy>
+						<width>45</width>
+						<height>60</height>
+						<info>Container(59).Listitem(5).Icon</info>
+						<aspectratio align="center" aligny="bottom">keep</aspectratio>
+						<colordiffuse>60ffffff</colordiffuse>
+					</control>
+					<control type="image">
+						<description>midnight mirror</description>
+						<posx>332</posx>
+						<posy>270</posy>
+						<width>45</width>
+						<height>60</height>
+						<info>Container(59).Listitem(5).Icon</info>
+						<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+						<aspectratio align="center" aligny="top">keep</aspectratio>
+						<colordiffuse>60ffffff</colordiffuse>
+					</control>
+
+					<control type="image">
+						<description>one o'clock</description>
+						<posx>420</posx>
+						<posy>210</posy>
+						<width>50</width>
+						<height>65</height>
+						<info>Container(59).Listitem(4).Icon</info>
+						<aspectratio align="center" aligny="bottom">keep</aspectratio>
+						<colordiffuse>90ffffff</colordiffuse>
+					</control>
+					<control type="image">
+						<description>one o'clock mirror</description>
+						<posx>420</posx>
+						<posy>275</posy>
+						<width>50</width>
+						<height>65</height>
+						<info>Container(59).Listitem(4).Icon</info>
+						<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+						<aspectratio align="center" aligny="top">keep</aspectratio>
+						<colordiffuse>90ffffff</colordiffuse>
+					</control>
+
+					<control type="image">
+						<description>two o'clock</description>
+						<posx>500</posx>
+						<posy>230</posy>
+						<width>65</width>
+						<height>80</height>
+						<info>Container(59).Listitem(3).Icon</info>
+						<aspectratio align="center" aligny="bottom">keep</aspectratio>
+						<colordiffuse>a0ffffff</colordiffuse>
+					</control> 
+					<control type="image">
+						<description>two o'clock mirror</description>
+						<posx>500</posx>
+						<posy>310</posy>
+						<width>65</width>
+						<height>80</height>
+						<info>Container(59).Listitem(3).Icon</info>
+						<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+						<aspectratio align="center" aligny="top">keep</aspectratio>
+						<colordiffuse>a0ffffff</colordiffuse>
+					</control>
+
+					<control type="image">
+						<description>three o'clock</description>
+						<posx>565</posx>
+						<posy>265</posy>
+						<width>80</width>
+						<height>100</height>
+						<info>Container(59).Listitem(2).Icon</info>
+						<aspectratio align="center" aligny="bottom">keep</aspectratio>
+						<colordiffuse>a0ffffff</colordiffuse>
+					</control>
+					<control type="image">
+						<description>three o'clock mirror</description>
+						<posx>565</posx>
+						<posy>365</posy>
+						<width>80</width>
+						<height>100</height>
+						<info>Container(59).Listitem(2).Icon</info>
+						<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+						<aspectratio align="center" aligny="top">keep</aspectratio>
+						<colordiffuse>a0ffffff</colordiffuse>
+					</control>
+
+					<control type="image">
+						<description>four and half</description>
+						<posx>500</posx>
+						<posy>345</posy>
+						<width>95</width>
+						<height>125</height>
+						<info>Container(59).Listitem(1).Icon</info>
+						<aspectratio align="center" aligny="bottom">keep</aspectratio>
+						<colordiffuse>ffffffff</colordiffuse>
+					</control>
+					<control type="image">
+						<description>four and half mirror</description>
+						<posx>500</posx>
+						<posy>470</posy>
+						<width>95</width>
+						<height>125</height>
+						<info>Container(59).Listitem(1).Icon</info>
+						<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+						<aspectratio align="center" aligny="top">keep</aspectratio>
+						<colordiffuse>ffffffff</colordiffuse>
+					</control>
+
+				<control type="group">
+					<control type="image">
+						<description>six o'clock mirror</description>
+						<posx>290</posx>
+						<posy>535</posy>
+						<width>140</width>
+						<height>175</height>
+						<info>Container(59).Listitem(0).Icon</info>
+						<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+						<aspectratio align="center" aligny="top">keep</aspectratio>
+						<animation reversible="true" effect="zoom" center="auto" start="100" end="110" time="100" condition="Control.HasFocus(59)">conditional</animation>
+					</control>
+					<control type="image">
+						<description>six o'clock</description>
+						<posx>290</posx>
+						<posy>360</posy>
+						<width>140</width>
+						<height>175</height>
+						<info>Container(59).Listitem(0).Icon</info>
+						<aspectratio align="center" aligny="bottom">keep</aspectratio>
+						<animation reversible="true" effect="zoom" center="auto" start="100" end="110" time="100" condition="Control.HasFocus(59)">conditional</animation>
+					</control>
+				</control>
+
+					<control type="image">
+						<description>seven and half</description>
+						<posx>120</posx>
+						<posy>345</posy>
+						<width>95</width>
+						<height>125</height>
+						<info>Container(59).Listitem(-1).Icon</info>
+						<aspectratio align="center" aligny="bottom">keep</aspectratio>
+						<colordiffuse>ffffffff</colordiffuse>
+					</control>
+					<control type="image">
+						<description>seven and half mirror</description>
+						<posx>120</posx>
+						<posy>470</posy>
+						<width>95</width>
+						<height>125</height>
+						<info>Container(59).Listitem(-1).Icon</info>
+						<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+						<aspectratio align="center" aligny="top">keep</aspectratio>
+						<colordiffuse>ffffffff</colordiffuse>
+					</control>
+
+					<control type="image">
+						<description>nine o'clock</description>
+						<posx>70</posx>
+						<posy>265</posy>
+						<width>80</width>
+						<height>100</height>
+						<info>Container(59).Listitem(-2).Icon</info>
+						<aspectratio align="center" aligny="bottom">keep</aspectratio>
+						<colordiffuse>a0ffffff</colordiffuse>
+					</control>
+					<control type="image">
+						<description>nine o'clock mirror</description>
+						<posx>70</posx>
+						<posy>365</posy>
+						<width>80</width>
+						<height>100</height>
+						<info>Container(59).Listitem(-2).Icon</info>
+						<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+						<aspectratio align="center" aligny="top">keep</aspectratio>
+						<colordiffuse>a0ffffff</colordiffuse>
+					</control>
+
+					<control type="image">
+						<description>ten o'clock</description>
+						<posx>150</posx>
+						<posy>230</posy>
+						<width>65</width>
+						<height>80</height>
+						<info>Container(59).Listitem(-3).Icon</info>
+						<aspectratio align="center" aligny="bottom">keep</aspectratio>
+						<colordiffuse>a0ffffff</colordiffuse>
+					</control>
+					<control type="image">
+						<description>ten o'clock mirror</description>
+						<posx>150</posx>
+						<posy>310</posy>
+						<width>65</width>
+						<height>80</height>
+						<info>Container(59).Listitem(-3).Icon</info>
+						<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+						<aspectratio align="center" aligny="top">keep</aspectratio>
+						<colordiffuse>a0ffffff</colordiffuse>
+					</control>
+
+					<control type="image">
+						<description>eleven o'clock</description>
+						<posx>250</posx>
+						<posy>210</posy>
+						<width>50</width>
+						<height>65</height>
+						<info>Container(59).Listitem(-4).Icon</info>
+						<aspectratio align="center" aligny="bottom">keep</aspectratio>
+						<colordiffuse>90ffffff</colordiffuse>
+					</control>
+					<control type="image">
+						<description>eleven o'clock mirror</description>
+						<posx>250</posx>
+						<posy>275</posy>
+						<width>50</width>
+						<height>65</height>
+						<info>Container(59).Listitem(-4).Icon</info>
+						<texture flipy="true" diffuse="passion-diffuse_mirror.png" />
+						<aspectratio align="center" aligny="top">keep</aspectratio>
+						<colordiffuse>90ffffff</colordiffuse>
+					</control>
+				</control>
+				<!-- END STATIC ICONS -->
+				<!-- CAROUSEL-LIST -->
+			</control>
+
+			<control type="group">
+				<visible>![Window.IsVisible(passion-ContextMenu.xml) | Window.IsVisible(passion-DialogScriptSettings.xml) | Window.IsVisible(passion-ItemDescript.xml)]</visible>
+				<visible>![Window.IsVisible(yesnodialog) | Window.IsVisible(progressdialog) | Window.IsVisible(okdialog) | Window.IsVisible(selectdialog)]</visible>
+				<posx>673</posx>
+				<posy>197</posy>
+				<animation effect="slide" start="50,0" end="0,0" time="300" reversible="true" condition="Control.IsVisible(2050)">conditional</animation>
+				<control type="button">
+					<description>Page Up for base list</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>20</width>
+					<height>20</height>
+					<onclick>PageUp(2050)</onclick>
+					<texturefocus border="4">passion-scrollbar_arrow_up_focus.png</texturefocus>
+					<texturenofocus border="4">passion-scrollbar_arrow_up.png</texturenofocus>
+					<visible>Control.IsVisible(2050)</visible>
+					<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+				</control>
+				<control type="button">
+					<description>Page Down for base list</description>
+					<posx>0</posx>
+					<posy>343</posy>
+					<width>20</width>
+					<height>20</height>
+					<onclick>PageDown(2050)</onclick>
+					<texturefocus border="4">passion-scrollbar_arrow_down_focus.png</texturefocus>
+					<texturenofocus border="4">passion-scrollbar_arrow_down.png</texturenofocus>
+					<visible>Control.IsVisible(2050)</visible>
+					<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+				</control>
+				<control type="scrollbar" id="2050">
+					<description>Scroll Bar for base list</description>
+					<posx>0</posx>
+					<posy>20</posy>
+					<width>20</width>
+					<height>323</height>
+					<texturesliderbackground border="4">passion-scrollbar_background.png</texturesliderbackground>
+					<texturesliderbar border="4">passion-scrollbar_bar.png</texturesliderbar>
+					<texturesliderbarfocus border="4">passion-scrollbar_bar_focus.png</texturesliderbarfocus>
+					<textureslidernib>-</textureslidernib>
+					<textureslidernibfocus>-</textureslidernibfocus>
+					<onleft>51</onleft>
+					<onright>51</onright>
+					<showonepage>false</showonepage>
+					<orientation>vertical</orientation>
+					<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+					<visible>!Control.IsVisible(50)</visible>
+				</control>
+			</control>
+		</control>
+
+	</controls>
+</window>
