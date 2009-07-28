@@ -39,6 +39,8 @@ Place in Q:\plugins\video\artePLUS7
 	- Fixed regex for automatic proxy due to changes on webiste
 	- Use www.surferanonymement.com now for getting the real video URL (country check is done)
 	- Moved webpage download management in a separate function
+07-27-09 Version 1.2 by Temhil
+	- Fixed bug on video loading (wrong param paassed to getwebpage)
 """
 
 __script__ = "Unknown"
@@ -192,7 +194,7 @@ class SearchParser:
                 opener = urllib2.build_opener(proxy_handler)
                 
                 # Get the Web page with the video url container link
-                req=urllib2.Request(videoPage)
+                req=urllib2.Request( url )
             else:
                 print "getVideoURL - proxy settings INCORRECT"
                 dialogError = xbmcgui.Dialog()
@@ -205,13 +207,13 @@ class SearchParser:
             opener = urllib2.build_opener()
             
             # Get the Web page with the video url container link
-            req=urllib2.Request(videoPage)
+            req=urllib2.Request( url )
         try:     
             # install the opener
             urllib2.install_opener(opener)
             
             # Get the webpage
-            response = urllib2.urlopen(req)
+            response = urllib2.urlopen( req )
             webpage = response.read()
             response.close()
 
