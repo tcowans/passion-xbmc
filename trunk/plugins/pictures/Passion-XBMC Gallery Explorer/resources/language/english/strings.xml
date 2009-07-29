@@ -21,6 +21,9 @@
     <string id="30009">File name : </string>
     <string id="30010">Keyboard...</string>
 
-    <string id="30011">Set skin background</string>
-
+    <string id="30011">Set backdrops...</string>
+    <string id="30012">Set as screensaver</string>
+    <string id="30013">Screensaver Setting succes!</string>
+    <string id="30014">Do you want to restart xbmc for validating</string>
+    <string id="30015">changes?</string>
 </strings>
