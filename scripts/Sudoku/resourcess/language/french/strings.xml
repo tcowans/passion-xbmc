@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!-- strings 32000 thru 32999 reserved for scripts -->
+  <!-- GENERAL STRINGS -->
+  <string id="32000">Sudoku</string>
+
+  <string id="32100">Générer Jeu [B]&#62;[/B]</string>
+  <string id="32101">WEB: Facile [B]&#62;[/B]</string>
+  <string id="32102">WEB: Moyen [B]&#62;[/B]</string>
+  <string id="32103">WEB: Difficile [B]&#62;[/B]</string>
+  <string id="32104">WEB: Diabolique [B]&#62;[/B]</string>
+  <string id="32110">[B]&#60;[/B] %s Nombres [B]&#62;[/B]</string>
+  <string id="32120">[B]&#60;[/B] %s en carré [B]&#62;[/B]</string>
+  <string id="32130">[B]&#60;[/B] %s de chaque [B]&#62;[/B]</string>
+  <string id="32140">Nettoyer</string>
+  <string id="32150">Révéler un [B]&#35;[/B]</string>
+  <string id="32160">Sauvegarder Jeu</string>
+  <string id="32170">Charger Jeu</string>
+  <string id="32180">Supprimer Jeu</string>
+  <string id="32190">Quitter</string>
+
+  <string id="32200">[I]Nombres:[/I] %s ( %s case de vide )</string>
+  <string id="32201">[I]Status:[/I] %s case de vide</string>
+  <string id="32202">Fait en %s</string>
+  <string id="32210">[I]Enregistré en tant que:[/I] %s</string>
+  <string id="32211">Non enregistrés!</string>
+  <string id="32220">[I]Minuteur:[/I] %s</string>
+</strings>
