@@ -1,0 +1,12 @@
+<screensaver>
+    <dimlevel>20</dimlevel>
+    <mode>SlideShow</mode>
+    <preview></preview>
+    <sep1></sep1>
+    <slideshowpath></slideshowpath>
+    <slideshowshuffle>false</slideshowshuffle>
+    <time>1</time>
+    <usedimonpause>true</usedimonpause>
+    <uselock>false</uselock>
+    <usemusicvisinstead>true</usemusicvisinstead>
+</screensaver>

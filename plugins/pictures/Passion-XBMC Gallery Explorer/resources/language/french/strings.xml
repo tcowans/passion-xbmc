@@ -10,7 +10,7 @@
 
     <!--CONTEXT MENU STRINGS -->
     <string id="30003">Enregistrer...</string>
-    <string id="30004">Enregistrer sous...</string>
+    <string id="30004">Enregistrer comme...</string>
 
     <!--DIALOG STRINGS -->
     <string id="30005">Téléchargement terminé</string>
@@ -21,6 +21,10 @@
     <string id="30009">Nom du fichier : </string>
     <string id="30010">Saisir...</string>
     
-    <string id="30011">Définir comme fond d'écran</string>
+    <string id="30011">Définir backdrops...</string>
+    <string id="30012">Définir comme écran de veille...</string>
+    <string id="30013">Paramétrage de l'écran de veille réussit!</string>
+    <string id="30014">Voulez vous redémarrer XBMC pour que les</string>
+    <string id="30015">changements prennent effet?</string>
 
 </strings>
