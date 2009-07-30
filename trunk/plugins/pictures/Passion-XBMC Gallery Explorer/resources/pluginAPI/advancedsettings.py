@@ -87,8 +87,8 @@ def main():
             tree = ET.ElementTree( newroot )
             tree.write( advset, ENCODING )
         else:
-            if copy_advanced_settings(source,advset):
-                main()     
+            copy_advanced_settings(source,advset)
+            main()     
         #xbmc.executebuiltin('XBMC.ReloadSkin()')
         #xbmcgui.Dialog().ok( _(30013), _(30014),slideshowpath)
         if xbmcgui.Dialog().yesno( _(30013), _(30014), _(30015)):
