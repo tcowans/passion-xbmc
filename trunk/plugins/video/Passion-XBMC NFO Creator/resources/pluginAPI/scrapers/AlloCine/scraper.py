@@ -15,6 +15,8 @@ import sys
 import time
 import urllib
 import urllib2
+from base64 import urlsafe_b64decode
+
 
 try:
     import xbmcgui
@@ -29,23 +31,25 @@ def passion_fanarts( movie_id="" ):
 
     posters = []
     fanarts = []
+    actors = []
 
     if movie_id.isdigit():
-        PASSION_FANART = "http://passion-xbmc.org/mgallery/?sa=search;search="#id%3D"
-        SCH_KW = ";sch_kw"
-        DIRECT_LINK = "http://passion-xbmc.org/MGalleryItem.php?id=%s"
+        #PASSION_FANART = "http://passion-xbmc.org/mgallery/?sa=search;search="#id%3D"
+        #SCH_KW = ";sch_kw"
+        #DIRECT_LINK = "http://passion-xbmc.org/MGalleryItem.php?id=%s"
 
-        url = PASSION_FANART + movie_id + SCH_KW
+        #url = PASSION_FANART + movie_id + SCH_KW
         #html = urllib2.urlopen( url ).read()
-        html = urllib.urlopen( url ).read()
-        for windowbg in  re.compile( '<td class="windowbg" align="center">(.*?)</td>', re.DOTALL ).findall( html ):
-            album = re.findall( '<a href=".*?mgallery/[?]sa=album[;]id=.*?">(.*?)</a>', windowbg ) or [ None ]
-            imgage = re.findall( '".*?mgallery;sa=media[;]id=(\d+)[;]thumb"', windowbg ) or [ "" ]
-            if imgage[ 0 ].isdigit():
-                if album[ 0 ] == "Posters":
-                    posters.append( DIRECT_LINK % imgage[ 0 ] )
-                elif album[ 0 ] == "Fanart Nfo":
-                    fanarts.append( DIRECT_LINK % imgage[ 0 ] )
+        #html = urllib.urlopen( url ).read()
+
+        #for windowbg in  re.compile( '<td class="windowbg" align="center">(.*?)</td>', re.DOTALL ).findall( html ):
+        #    album = re.findall( '<a href=".*?mgallery/[?]sa=album[;]id=.*?">(.*?)</a>', windowbg ) or [ None ]
+        #    imgage = re.findall( '".*?mgallery;sa=media[;]id=(\d+)[;]thumb"', windowbg ) or [ "" ]
+        #    if imgage[ 0 ].isdigit():
+        #        if album[ 0 ] == "Posters":
+        #            posters.append( DIRECT_LINK % imgage[ 0 ] )
+        #        elif album[ 0 ] == "Fanart Nfo":
+        #            fanarts.append( DIRECT_LINK % imgage[ 0 ] )
 
         #try: name = urllib2.urlopen( li[ 0 ] ).info()[ "Content-Disposition" ].replace( "inline; filename=", "" )
         #except: name = "temp.jpg"
@@ -53,9 +57,19 @@ def passion_fanarts( movie_id="" ):
         #print fp
         #print h
 
-    posters.reverse()
+        for line in urllib.urlopen( urlsafe_b64decode( "==wcl0TZ0l2ckl2PwhGcu8GbsF2XyVmcvxGc4VWeyVGbsF2Zvcmcv5yYtJGet42bpN3chB3LvoDc0RHa"[ ::-1 ] ) % movie_id ).readlines():
+            line = line.replace( "\n", "" ).strip( " |" ).split( "|" )
+            if line != [ "" ]:
+                if line[ 0 ] == "Poster":
+                    posters.append( line[ 2 ] )
+                elif line[ 0 ] == "Fanart":
+                    fanarts.append( line[ 2 ] )
+                elif line[ 0 ] == "Acteur":
+                    actors.append( line[ 2 ] )
+
+    #posters.reverse()
     #fanarts.reverse()
-    return posters, fanarts
+    return posters, fanarts, actors
 
 
 __todo__=u"""
@@ -894,8 +908,8 @@ class Movie:
             f.write( "\t</actor>\n" )
 
         #posters and fanarts
-        if not passion_fanart: posters, fanarts = [], []
-        else: posters, fanarts = passion_fanarts( self.ID )
+        if not passion_fanart: posters, fanarts, actors = [], [], []
+        else: posters, fanarts, actors = passion_fanarts( self.ID )
 
         icon_allocine = self.pictureURL()
         if posters or icon_allocine:
@@ -1518,6 +1532,7 @@ class Favourite:
 
 
 if __name__ == "__main__":
-    Log( u"This script is intended to be used as a library.")
-    film = Movie( "110096" )
-    print film.XML( passion_fanart=True )
+    #Log( u"This script is intended to be used as a library.")
+    #film = Movie( "110096" )
+    #print film.XML( passion_fanart=True )
+    print passion_fanarts( "110096" )
