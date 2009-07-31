@@ -190,21 +190,21 @@ class Main:
         # recherche manuel
         c_items = []
         listitem = xbmcgui.ListItem( _( 30001 ), thumbnailImage=os.path.join( os.getcwd().rstrip( ";" ), "default.tbn" ) )
-        if ( self.settings[ "write_list" ] == 2 ):
-            if self.settings[ "web_navigator" ] != "" and os.path.exists( self.settings[ "web_navigator" ] ):
-                c_items += [ ( _( 30009 ), "XBMC.Action(Info)", ) ]
-                cmd = "System.Exec"
-                url = PASSION_NFO % translate_string( quote_plus( os.linesep ).join( listing ) )#"%0D%0A"
-                command = '%s("%s" "%s")' % ( cmd, self.settings[ "web_navigator" ], url, )
-                # add the movie information item
-                c_items += [ ( _( 30011 ), command, ) ]
-                # add items to listitem with replaceItems = True so only ours show
-                c_items += [ ( _( 654 ), "XBMC.ActivateWindow(scriptsdebuginfo)" ) ]
-                listitem.addContextMenuItems( c_items, replaceItems=True )
-            infos = { "Title": reduced_path( os.path.join( self.settings[ "path" ][ 0 ], "Liste.txt" ) ),
-                "plot": "[CR]".join( listing ), "genre": "http://passion-xbmc.org/nfo_creator/index.php",
-                "watched": 1, "overlay": xbmcgui.ICON_OVERLAY_TRAINED }
-            listitem.setInfo( type="Video", infoLabels=infos )
+        #if ( self.settings[ "write_list" ] == 2 ):
+        #    if self.settings[ "web_navigator" ] != "" and os.path.exists( self.settings[ "web_navigator" ] ):
+        #        c_items += [ ( _( 30009 ), "XBMC.Action(Info)", ) ]
+        #        cmd = "System.Exec"
+        #        url = PASSION_NFO % translate_string( quote_plus( os.linesep ).join( listing ) )#"%0D%0A"
+        #        command = '%s("%s" "%s")' % ( cmd, self.settings[ "web_navigator" ], url, )
+        #        # add the movie information item
+        #        c_items += [ ( _( 30011 ), command, ) ]
+        #        # add items to listitem with replaceItems = True so only ours show
+        #        c_items += [ ( _( 654 ), "XBMC.ActivateWindow(scriptsdebuginfo)" ) ]
+        #        listitem.addContextMenuItems( c_items, replaceItems=True )
+        #    infos = { "Title": reduced_path( os.path.join( self.settings[ "path" ][ 0 ], "Liste.txt" ) ),
+        #        "plot": "[CR]".join( listing ), "genre": "http://passion-xbmc.org/nfo_creator/index.php",
+        #        "watched": 1, "overlay": xbmcgui.ICON_OVERLAY_TRAINED }
+        #    listitem.setInfo( type="Video", infoLabels=infos )
         if not c_items:
             c_items += [ ( _( 30009 ), "XBMC.Action(Info)", ) ]
             c_items += [ ( _( 654 ), "XBMC.ActivateWindow(scriptsdebuginfo)" ) ]
