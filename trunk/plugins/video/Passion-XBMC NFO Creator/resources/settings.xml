@@ -11,7 +11,7 @@
   <!-- SCRAPER SETTINGS -->
   <setting type="lsep" label="30133" />
   <setting id="scraper" type="fileenum" mask="/" values="resources\pluginAPI\scrapers\" label="30139" default="AlloCine" />
-  <setting enable="!eq(-1,AlloCine)" id="passion_fanart" type="bool" label="30134" default="true" />
+  <setting enable="eq(-1,0)" id="passion_fanart" type="bool" label="30134" default="true" />
   <!-- Not fully implanted. not enable for a moment -->
   <setting enable="eq(-2,)" id="download_state" type="enum" lvalues="30141|30142|30143" label="30140" default="0" />
   <setting id="download_path" enable="!eq(-1,0)" type="folder" source="video" option="writeable" mask="/" label="30144" default="" />
