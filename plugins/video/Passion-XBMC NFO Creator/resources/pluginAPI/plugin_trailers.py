@@ -36,7 +36,7 @@ class Main:
 
     def _get_settings( self ):
         self.settings = {}
-        self.settings[ "trailers_scraper" ] = xbmcplugin.getSetting( "trailers_scraper" )
+        self.settings[ "scraper" ] = xbmcplugin.getSetting( "scraper" )
         self.settings[ "download_state" ] = int( xbmcplugin.getSetting( "download_state" ) )
         #self.settings[ "download_path" ] = xbmc.translatePath( xbmcplugin.getSetting( "download_path" ) )
         self.settings[ "download_path" ] = xbmcplugin.getSetting( "download_path" )
@@ -44,7 +44,7 @@ class Main:
     def _add_directory_items( self ):
         OK = True
         try:
-            exec "from scrapers.trailers.%s import scraper" % self.settings[ "trailers_scraper" ]
+            exec "from scrapers.%s import scraper" % self.settings[ "scraper" ]
             for ID, tbn, title in self.args.trailers:
                 trailer = scraper.get_video_url( ID )
                 if trailer:

@@ -10,7 +10,7 @@
 
   <!-- SCRAPER SETTINGS -->
   <setting type="lsep" label="30133" />
-  <setting id="trailers_scraper" type="fileenum" mask="/" values="resources\pluginAPI\scrapers\trailers\" label="30139" default="AlloCine" />
+  <setting id="scraper" type="fileenum" mask="/" values="resources\pluginAPI\scrapers\" label="30139" default="AlloCine" />
   <setting enable="!eq(-1,AlloCine)" id="passion_fanart" type="bool" label="30134" default="true" />
   <!-- Not fully implanted. not enable for a moment -->
   <setting enable="eq(-2,)" id="download_state" type="enum" lvalues="30141|30142|30143" label="30140" default="0" />
