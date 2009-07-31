@@ -859,7 +859,7 @@ class Movie:
         f = open( nfo_file, "w" )
 
         f.write( "<movie>\n" )
-        f.write( "\t<!-- Video nfo File created on: %s -->\n" % ( time.strftime( "%d-%m-%Y | %H:%M:%S" ) ) )
+        f.write( "\t<!-- AlloCine: Video nfo File created on: %s -->\n" % ( time.strftime( "%d-%m-%Y | %H:%M:%S" ) ) )
         f.write( "\t<id>" + self.ID + "</id>\n" )
         f.write( "\t<title>" + self.title() + "</title>\n" )
         f.write( "\t<originaltitle>" + self.ORIGINAL_TITLE + "</originaltitle>\n" )
