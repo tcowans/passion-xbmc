@@ -41,14 +41,14 @@ class Main:
     def _get_settings( self ):
         self.settings = {}
         self.settings[ "web_navigator" ] = xbmcplugin.getSetting( "web_navigator" )
-        self.settings[ "trailers_scraper" ] = xbmcplugin.getSetting( "trailers_scraper" )
+        self.settings[ "scraper" ] = xbmcplugin.getSetting( "scraper" )
         self.settings[ "download_state" ] = int( xbmcplugin.getSetting( "download_state" ) )
         self.settings[ "passion_fanart" ] = ( xbmcplugin.getSetting( "passion_fanart" ) == "true" )
 
     def _add_directory_items( self ):
         OK = True
         try:
-            exec "from scrapers.trailers.%s import scraper" % self.settings[ "trailers_scraper" ]
+            exec "from scrapers.%s import scraper" % self.settings[ "scraper" ]
             movie_data = scraper.Movie( self.args.show_id )
             self.nfo_file = movie_data.XML( SPECIAL_PLUGIN_CACHE, passion_fanart=self.settings[ "passion_fanart" ]  )
             #del scraper
