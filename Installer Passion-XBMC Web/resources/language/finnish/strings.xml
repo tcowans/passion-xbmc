@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<strings>  <!--Finnish 13.3.2008-->
+<strings>  <!--Finnish 4.8.2009-->
   <!--GENERAL STRINGS -->
   <string id="0">Installer Passion-XBMC</string>
   <string id="1">Keskustelut</string>
@@ -7,19 +7,19 @@
   <string id="3">Ohje</string>
   <string id="4">Tietoja</string>
   <string id="5">Hallinta</string>
-  <string id="6">Lisäkkeiden hallinta</string>
+  <string id="6">Lisäosien hallinta</string>
   <string id="7">Asennus</string>
   <string id="8">Lopeta</string>
 
   <string id="10">Valinta</string>
-  <string id="11">Skinit</string>
+  <string id="11">Ulkoasut</string>
   <string id="12">Hakupaikat</string>
   <string id="13">Skriptit</string>
-  <string id="14">Lisäkkeet</string>
-  <string id="15">Musiikki-lisäkkeet</string>
-  <string id="16">Kuva-lisäkkeet</string>
-  <string id="17">Ohjelma-lisäkkeet</string>
-  <string id="18">Video-lisäkkeet</string>
+  <string id="14">Lisäosat</string>
+  <string id="15">Musiikki lisäosat</string>
+  <string id="16">Kuva lisäosat</string>
+  <string id="17">Ohjelma lisäosat</string>
+  <string id="18">Video lisäosat</string>
   <string id="19">Salasana vaaditaan</string>
   <string id="20">Anna järjestelmänvalvojan salasana</string>
   <string id="21">Järjestelmänvalvojan salasana</string>
@@ -48,9 +48,9 @@
   <string id="115">Poistu tallentamatta</string>
   <string id="116">Muutetaan sources.xml-tiedostoa, haluatko tehdä tämän?</string>
   <string id="117">Toiminto ei onnistu</string>
-  <string id="118">Et voi korvata käytössä olevaa skiniä</string>
-  <string id="119">Vaihda käytössä oleva skini[CR]toiseen ennen lataamista</string>
-  <string id="120">Et voi asentaa skiniä ilman[CR]järjestelmänvalvojan oikeuksia</string>
+  <string id="118">Et voi korvata käytössä olevaa ulkoasua</string>
+  <string id="119">Vaihda käytössä oleva ulkoasu[CR]toiseen ennen lataamista</string>
+  <string id="120">Et voi asentaa ulkoasua ilman[CR]järjestelmänvalvojan oikeuksia</string>
   <string id="121">Et voi asentaa tietojen hakupaikkaa ilman[CR]järjestelmänvalvojan oikeuksia</string>
   <string id="122">Ladataan: %s</string>
   <string id="123">Ladattu yhteensä: %d%%</string>
@@ -124,10 +124,10 @@
   <string id="202">XBMC</string>
   <string id="203">Määritä tietojen hakupaikka</string>
   <string id="204">XBMC ohjaus - Kauko-ohjain</string>
-  <string id="205">Skinit</string>
+  <string id="205">Ulkoasut</string>
   <string id="206">Tuontipalvelu</string>
-  <string id="207">Skinitiedostot</string>
-  <string id="208">Skini projektit ja keskeneräiset skinit</string>
+  <string id="207">Ulkoasutiedostot</string>
+  <string id="208">Ulkoasu projektit ja keskeneräiset ulkoasut</string>
   <string id="209">Käyttäjien nurkka</string>
   <string id="210">Kehittäjien nurkka</string>
   <string id="211">Xbmc Live</string>
@@ -185,7 +185,7 @@
   <string id="502">Aiheita sivua kohti</string>
   <string id="503">[B]&#126;&#126;[/B]</string><!--illimited symbol -->
   <string id="504">00|5|10|25|50|100</string><!--LIST LIMIT FOR TOPICS IN DIRECT INFOS: 00=illimited -->
-  <string id="505">Skinin väri</string>
+  <string id="505">Ulkoasun väri</string>
   <string id="506">Ei käytössä</string>
   <string id="507">Oma taustakuva käytössä</string>
   <string id="508">Polku:</string>
@@ -196,7 +196,7 @@
   <string id="513">Piilota keskustelupaikka painike päävalikosta</string>
   <string id="514">Piilota alihakemiston kohteet</string>
   <string id="515">Piilota median tiedostopäätteet</string>
-  <string id="516">Käytä kuva-lisäkkeitä kuten fanitaidetta</string>
+  <string id="516">Käytä kuva lisäosia kuten fanitaidetta</string>
   <string id="517">Pienoiskuvakkeen koko</string>
 
   <string id="518">Nettiselain</string>
@@ -205,9 +205,9 @@
   <string id="521">Anna nettiselaimen nimi</string>
 
   <string id="530">Älä näytä käynnistystunnusta</string>
-  <string id="531">Skini</string>
-  <string id="532">Skinin asetuksia on muutettu</string>
-  <string id="533">Koska olet muuttanut IPX-skinin asetuksia täytyy</string>
+  <string id="531">Ulkoasu</string>
+  <string id="532">Ulkoasun asetuksia on muutettu</string>
+  <string id="533">Koska olet muuttanut IPX-ulkoasun asetuksia täytyy</string>
   <string id="534">ohjelma käynnistää uudelleen. Haluatko käynnistää nyt?</string>
 
   <!--DESCRIPTION STRINGS -->
@@ -245,7 +245,7 @@
   <string id="707">Päiväys</string>   
   <string id="708">SVN</string>  
   <string id="709">Kielet</string>  
-  <string id="710">Asennusohjelman päivitykset XBMC:n teemoihin, skripteihin, lisäkkeisiin ja skripteihin sekä hakupaikkoihin tapahtuvat FTP-yhteydellä Passion-XBMC (passion-xbmc.org) Team Passion-XBMC:n ylläpitämältä sivustolta.</string>  
+  <string id="710">Asennusohjelman päivitykset XBMC:n teemoihin, skripteihin, lisäosiin ja skripteihin sekä hakupaikkoihin tapahtuvat FTP-yhteydellä Passion-XBMC (passion-xbmc.org) Team Passion-XBMC:n ylläpitämältä sivustolta.</string>  
     
   <!--CONTEXT MENU STRINGS -->
   <string id="1000">Asenna</string>
