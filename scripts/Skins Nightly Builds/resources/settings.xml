@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+  <setting enable="eq(0,)" id="ver" type="text" label="[B]Version:[/B]" default="1.0.0-alpha2" />
+  <setting type="sep" />
+  <!-- GENERAL -->
+  <setting id="mode" type="enum" lvalues="32910|32920" label="32900" default="0" />
+</settings>
