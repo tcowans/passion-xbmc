@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<strings> <!--  19.5.2009 Finnish   -->
+<strings> <!--  4.8.2009 Finnish   -->
+    <!-- strings 30000 thru 30999 reserved for plugins and plugin settings -->
     <!--GENERAL STRINGS  -->
     <string id="30000">Arte +7</string>
 
@@ -31,16 +32,17 @@
 
     <!--DIALOG STRINGS -->
     <string id="30200">Lisäosan ensimmäinen käynnistys</string>
-    <string id="30201">Valitse videoiden kieli</string>
+    <string id="30201">Valitse videoiden oletuskieli</string>
     <string id="30202">Virhe</string>
     <string id="30203">lisäosan asetuksissa!</string>
     <string id="30204">Arte+7 video-luettelo</string>
     <string id="30205">Yritä käyttää välipalvelinta ('Automaattinen' on suositeltava)</string>
-    <string id="30206">Välipalvelimen asetukset on sopimattomat</string>
+    <string id="30206">Välipalvelimen asetukset ovat sopimattomat</string>
     <string id="30207">Tarkista IP-osoite ja portin numero</string>
     <string id="30208">Ladataan ...</string>
     <string id="30209">Mitä haluat tehdä?</string>
     <string id="30210">Katso</string>
     <string id="30211">Poistu</string>
+
 
 </strings>
