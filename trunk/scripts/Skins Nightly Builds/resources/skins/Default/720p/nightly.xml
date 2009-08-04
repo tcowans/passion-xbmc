@@ -1,0 +1,134 @@
+<window>
+	<defaultcontrol>450</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+	<animation effect="fade" time="200">WindowOpen</animation>
+	<animation effect="fade" time="200">WindowClose</animation>
+	<controls>
+		<control type="multiimage">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1280</width>
+			<height>720</height>
+			<imagepath background="true">$INFO[Container(450).ListItem.Property(thumbs)]</imagepath>
+			<timeperimage>5000</timeperimage>
+			<randomize>true</randomize>
+			<fadetime>2000</fadetime>
+		</control>
+		<control type="group">
+			<animation effect="slide" start="830,0" end="0,0" time="500" tween="quadratic" easing="out">WindowOpen</animation>
+			<animation effect="slide" end="830,0" start="0,0" time="500" tween="quadratic" easing="in">WindowClose</animation>
+			<animation effect="slide" start="830,0" end="0,0" time="500" tween="quadratic" easing="out" condition="![Window.IsVisible(progressdialog) | Window.IsVisible(filebrowser) | Window.IsVisible(okdialog) | Window.IsVisible(yesnodialog)]">conditional</animation>
+			<animation effect="slide" end="830,0" start="0,0" time="500" tween="quadratic" easing="in" condition="[Window.IsVisible(progressdialog) | Window.IsVisible(filebrowser) | Window.IsVisible(okdialog) | Window.IsVisible(yesnodialog)]">conditional</animation>
+			<posx>750</posx>
+			<posy>105</posy>
+			<control type="image">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>700</width>
+				<height>510</height>
+				<texture border="40">nightly-DialogBack.png</texture>
+				<animation effect="fade" start="100" end="75" time="1000" condition="true">conditional</animation>
+			</control>
+			<control type="image">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>700</width>
+				<height>510</height>
+				<texture border="40">nightly-DialogFront.png</texture>
+			</control>
+			<control type="label" id="2">
+				<description>heading label</description>
+				<posx>40</posx>
+				<posy>40</posy>
+				<width>450</width>
+				<height>30</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font18</font>
+				<label>SCRIPT0</label>
+				<textcolor>DDced8da</textcolor>
+			</control>
+			<control type="image">
+				<posx>40</posx>
+				<posy>80</posy>
+				<width>483</width>
+				<height>2</height>
+				<texture>nightly-separator.png</texture>
+			</control>
+			<control type="list" id="450">
+				<posx>45</posx>
+				<posy>100</posy>
+				<width>450</width>
+				<height>320</height>
+				<onup>450</onup>
+				<onleft>450</onleft>
+				<onright>450</onright>
+				<ondown>450</ondown>
+				<pagecontrol>-</pagecontrol>
+				<scrolltime>200</scrolltime>
+				<itemlayout height="40">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>450</width>
+						<height>35</height>
+						<texture border="5">nightly-button-nofocus.png</texture>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>430</width>
+						<height>35</height>
+						<font>font12</font>
+						<align>left</align>
+						<aligny>center</aligny>
+						<selectedcolor>ffe2ff43</selectedcolor>
+						<label>$INFO[ListItem.Label]$INFO[ListItem.Property(build), | ]$INFO[ListItem.Property(hit), | ]$INFO[ListItem.Property(rate), | ]</label>
+					</control>
+				</itemlayout>
+				<focusedlayout height="40">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>450</width>
+						<height>35</height>
+						<visible>!Control.HasFocus(450)</visible>
+						<texture border="3">nightly-button-nofocus.png</texture>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>450</width>
+						<height>35</height>
+						<visible>Control.HasFocus(450)</visible>
+						<texture border="3">nightly-button-focus.png</texture>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>430</width>
+						<height>35</height>
+						<font>font12</font>
+						<align>left</align>
+						<aligny>center</aligny>
+						<selectedcolor>ffe2ff43</selectedcolor>
+						<label>$INFO[ListItem.Label]$INFO[ListItem.Property(build), | ]$INFO[ListItem.Property(hit), | ]$INFO[ListItem.Property(rate), | ]</label>
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="label">
+				<description>Page label</description>
+				<posx>40</posx>
+				<posy>430</posy>
+				<width>450</width>
+				<height>30</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font12b</font>
+				<label>($INFO[Container(450).NumItems]) $LOCALIZE[SCRIPT1] - $LOCALIZE[SCRIPT2] ($INFO[Container(450).CurrentPage]/$INFO[Container(450).NumPages])</label>
+			</control>
+		</control>
+	</controls>
+</window>

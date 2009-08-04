@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!-- Les strings de 32000 à 32999 sont réservées aux scripts -->
+  <!--GENERAL STRINGS -->
+  <string id="0">Skins Nightly Builds</string>
+  <string id="1">Thèmes</string>
+  <string id="2">Page</string>
+
+  <string id="32000">Skins Nightly Builds</string>
+
+  <string id="32100">Parcourir un dossier de sauvegarde</string>
+  <string id="32110">Installation terminée.</string>
+  <string id="32120">Entrer un nouveau nom</string>
+  <string id="32130">Confirmer téléchargement du fichier</string>
+  <string id="32140">Êtes-vous sûr de télécharger ce(s) fichier(s)?</string>
+  <string id="32150"></string>
+  <string id="32160"></string>
+
+  <string id="32200">FreeMem</string>
+  <string id="32210">Mémoire libre requis pour l'extraction.</string>
+  <string id="32220">Libre: %i Mo</string>
+  <string id="32230">Requis: %.2f Mo</string>
+  <string id="32240"></string>
+
+  <string id="32840">Taille: %.2f / %.2f Mo</string>
+  <string id="32841">Taille: %.2f / ? Mo</string>
+  <string id="32890">Veuillez patienter...</string>
+
+  <string id="32900">Mode d'installation du script</string>
+  <string id="32910">Portable</string>
+  <string id="32920">Classique</string>
+
+  <string id="32999">&#32;</string>
+</strings>
