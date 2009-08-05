@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings><!--  5.8.2009 Finnish   -->
+  <!-- strings 32000 thru 32999 reserved for scripts -->
+  <!--GENERAL STRINGS -->
+  <string id="0">Skins Nightly Builds</string>
+  <string id="1">Ulkoasut</string>
+  <string id="2">Sivu</string>
+
+  <string id="32000">Skins Nightly Builds</string>
+
+  <string id="32100">Valitse tallennuskansio</string>
+  <string id="32110">Asennus valmis.</string>
+  <string id="32120">Anna uusi nimi</string>
+  <string id="32130">Hyväksy tiedoston lataus</string>
+  <string id="32140">Haluatko ladata nämä tiedostot?</string>
+  <string id="32150"></string>
+  <string id="32160"></string>
+
+  <string id="32200">Vapaa muisti</string>
+  <string id="32210">Purkamiseen tarvittava muisti.</string>
+  <string id="32220">Vapaana: %i Mb</string>
+  <string id="32230">Vaaditaan: %.2f Mb</string>
+  <string id="32240"></string>
+
+  <string id="32840">Koko: %.2f / %.2f Mb</string>
+  <string id="32841">Koko: %.2f / ? Mb</string>
+  <string id="32890">Odota hetki...</string>
+
+  <string id="32900">Skriptin asennustapa</string>
+  <string id="32910">Siirrettävä</string>
+  <string id="32920">Normaali</string>
+
+  <string id="32999">&#32;</string>
+</strings>
