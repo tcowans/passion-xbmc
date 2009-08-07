@@ -14,6 +14,7 @@ from traceback import print_exc
 #modules XBMC
 import xbmc
 import xbmcgui
+import xbmcplugin
 
 
 DIALOG_PROGRESS = xbmcgui.DialogProgress()
@@ -22,8 +23,11 @@ DIALOG_PROGRESS = xbmcgui.DialogProgress()
 URL_BASE = "http://www.sshcs.com/xbmc/"
 URL_REVISION_INFO = "%sinc/EVA.asp?mode=Build" % URL_BASE
 URL_BUILD = "%sbinaries/Builds/" % URL_BASE
-URL_BUILDS = "%s?mode=BX" % URL_BASE 
-NAME_BUILD = "XBMC_XBOX_%s.rar"
+URL_BUILDS = "%s?mode=BX" % URL_BASE
+if ( xbmcplugin.getSetting( "xbox_patched" ) == "1" ):
+    NAME_BUILD = "XBMC_XBOXP_%s.rar"
+else:
+    NAME_BUILD = "XBMC_XBOX_%s.rar"
 
 
 class pDialogCanceled( Exception ):

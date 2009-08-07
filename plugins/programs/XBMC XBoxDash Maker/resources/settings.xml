@@ -23,4 +23,9 @@
   <setting type="lsep" label="30550" />
   <setting type="action" label="30551" default="RunPlugin(plugin://Programs/XBMC XBoxDash Maker/?action=testconfig)" />
   <setting type="action" label="30552" default="RunPlugin(plugin://Programs/XBMC XBoxDash Maker/?action=cachescleaner)" />
+  <setting type="sep" />
+
+  <!-- SVN Updater -->
+  <setting type="lsep" label="XBMC SVN Updater" />
+  <setting id="xbox_patched" type="enum" values="Normal Build|Patched Build" label="XBMC for XBox" default="0" />
 </settings>
