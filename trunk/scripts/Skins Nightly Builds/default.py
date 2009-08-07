@@ -6,8 +6,8 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "04-08-2009"
-__version__      = "1.0.0-alpha2"
+__date__         = "07-08-2009"
+__version__      = "1.0.0-beta1"
 __svn_revision__  = "$Revision$"
 __XBMC_Revision__ = "20000" #XBMC Babylon
 
@@ -142,7 +142,6 @@ class nightly( xbmcgui.WindowXML ):
         xbmcgui.WindowXML.__init__( self, *args, **kwargs )
         self.save_dir = ""
 
-    def onInit( self ):
         DIALOG_PROGRESS.create( __script__, GET_LOCALIZED_STRING( 32890 ) )
         DIALOG_PROGRESS.update( 100, GET_LOCALIZED_STRING( 32890 ) )
         try:
@@ -151,6 +150,22 @@ class nightly( xbmcgui.WindowXML ):
             #trie la liste selon la valeur de rate eval( "10 / 10") va donner 1
             try: self.skins.sort( key=lambda s: eval( s[ "rate" ] ), reverse=True )
             except: pass
+        except:
+            print_exc()
+            DIALOG_PROGRESS.close()
+            raise
+        DIALOG_PROGRESS.close()
+
+    def onInit( self ):
+        #DIALOG_PROGRESS.create( __script__, GET_LOCALIZED_STRING( 32890 ) )
+        #DIALOG_PROGRESS.update( 100, GET_LOCALIZED_STRING( 32890 ) )
+        try:
+            xbmcgui.lock()
+            #self.skins = get_nightly_skins()
+            #self.skins.append( aeon_passion )
+            #trie la liste selon la valeur de rate eval( "10 / 10") va donner 1
+            #try: self.skins.sort( key=lambda s: eval( s[ "rate" ] ), reverse=True )
+            #except: pass
             total_items = len( self.skins )
             try: diff = int( 100.0 / total_items )
             except: diff = 100
@@ -159,7 +174,7 @@ class nightly( xbmcgui.WindowXML ):
                 # { "name": name, "build": build, "hit": hit, "rate": rate, "thumbs": thumbs, "dl": dl }
                 #name = " | ".join( [ skin[ "name" ], skin[ "build" ], skin[ "hit" ], skin[ "rate" ]  ] )
                 percent += diff
-                DIALOG_PROGRESS.update( percent, "Skins: %i / %i" % ( count+1, total_items ), skin[ "name" ] )
+                #DIALOG_PROGRESS.update( percent, "Skins: %i / %i" % ( count+1, total_items ), skin[ "name" ] )
 
                 listitem = xbmcgui.ListItem( skin[ "name" ] )
 
@@ -173,7 +188,8 @@ class nightly( xbmcgui.WindowXML ):
                 self.getControl( 450 ).addItem( listitem )
         except:
             print_exc()
-        DIALOG_PROGRESS.close()
+        #DIALOG_PROGRESS.close()
+        xbmcgui.unlock()
 
     def get_thumbnails( self, skin, thumbs=[] ):
         local_dir = ""
