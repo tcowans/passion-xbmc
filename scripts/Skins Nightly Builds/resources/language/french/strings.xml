@@ -22,6 +22,7 @@
   <string id="32230">Requis: %.2f Mo</string>
   <string id="32240"></string>
 
+  <string id="32830">Taille: %.2f Mo</string>
   <string id="32840">Taille: %.2f / %.2f Mo</string>
   <string id="32841">Taille: %.2f / ? Mo</string>
   <string id="32890">Veuillez patienter...</string>
@@ -29,6 +30,7 @@
   <string id="32900">Mode d'installation du script</string>
   <string id="32910">Portable</string>
   <string id="32920">Classique</string>
+  <string id="32930">Récupérer la taille des fichiers</string>
 
   <string id="32999">&#32;</string>
 </strings>

@@ -18,10 +18,11 @@
 
   <string id="32200">FreeMem</string>
   <string id="32210">Free memory required for extraction.</string>
-  <string id="32220">Free: %i Mo</string>
+  <string id="32220">Free: %i Mb</string>
   <string id="32230">Required: %.2f Mb</string>
   <string id="32240"></string>
 
+  <string id="32830">Size: %.2f Mb</string>
   <string id="32840">Size: %.2f / %.2f Mb</string>
   <string id="32841">Size: %.2f / ? Mb</string>
   <string id="32890">Please wait...</string>
@@ -29,6 +30,7 @@
   <string id="32900">Mode for installing the script</string>
   <string id="32910">Portable</string>
   <string id="32920">Standard</string>
+  <string id="32930">Retrieve size of files</string>
 
   <string id="32999">&#32;</string>
 </strings>

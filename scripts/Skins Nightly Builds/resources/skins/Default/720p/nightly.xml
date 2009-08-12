@@ -102,7 +102,7 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<selectedcolor>ffe2ff43</selectedcolor>
-						<label>$INFO[ListItem.Label]$INFO[ListItem.Property(build), | ]$INFO[ListItem.Property(hit), | ]$INFO[ListItem.Property(rate), | ]</label>
+						<label>$INFO[ListItem.Label]$INFO[ListItem.Property(build), | ]$INFO[ListItem.Property(filesize), | ]$INFO[ListItem.Property(hit), | ]$INFO[ListItem.Property(rate), | ]</label>
 					</control>
 				</itemlayout>
 				<focusedlayout height="40">
@@ -131,7 +131,7 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<selectedcolor>ffe2ff43</selectedcolor>
-						<label>$INFO[ListItem.Label]$INFO[ListItem.Property(build), | ]$INFO[ListItem.Property(hit), | ]$INFO[ListItem.Property(rate), | ]</label>
+						<label>$INFO[ListItem.Label]$INFO[ListItem.Property(build), | ]$INFO[ListItem.Property(filesize), | ]$INFO[ListItem.Property(hit), | ]$INFO[ListItem.Property(rate), | ]</label>
 					</control>
 				</focusedlayout>
 			</control>

@@ -6,9 +6,9 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "07-08-2009"
+__date__         = "12-08-2009"
 __version__      = "1.0.0-beta1"
-__svn_revision__  = "$Revision$"
+__svn_revision__  = "$Revision$".replace( "Revision", "" ).strip( "$: " )
 __XBMC_Revision__ = "20000" #XBMC Babylon
 
 
@@ -21,20 +21,34 @@ from traceback import print_exc
 import xbmc
 import xbmcgui
 
+xbmc.log( "[SCRIPT] '%s: Version - %s-r%s' initialized!" % ( __script__, __version__, __svn_revision__ ), xbmc.LOGNOTICE )
+
+SHOW_FILESIZE = False
 
 CWD = os.getcwd().rstrip( ";" )
 CACHE_DIR = os.path.join( CWD, "cache" )
 try:
-    if xbmc.Settings( CWD ).getSetting( "mode" ) == "1":
+    settings = xbmc.Settings( CWD )
+    if settings.getSetting( "mode" ) == "1":
         CACHE_DIR = xbmc.translatePath( "special://profile/script_data/%s/cache/" % __script__ )
+    if settings.getSetting( "show_filesize" ) == "true":
+        SHOW_FILESIZE = True
+    settings.setSetting( "ver", "%s-r%s" % ( __version__, __svn_revision__ ) )
 except:
+    xbmc.log( "[SCRIPT: %s] trouble with 'xbmc.Settings'" % ( __script__ ), xbmc.LOGERROR )
     print_exc()
 if not os.path.isdir( CACHE_DIR ):
     os.makedirs( CACHE_DIR )
 
+xbmc.log( "[SCRIPT: %s] home is mapped to: %s" % ( __script__, CWD ), xbmc.LOGNOTICE )
+xbmc.log( "[SCRIPT: %s] cache is mapped to: %s" % ( __script__, CACHE_DIR ), xbmc.LOGNOTICE )
+
 skin_path = xbmc.translatePath( "special://skin/" )
 cur_skin = os.path.basename( os.path.dirname( skin_path ) )
 skins_path = os.path.dirname( os.path.dirname( skin_path )  )
+
+xbmc.log( "[SCRIPT: %s] xbmc current skin is: %s" % ( __script__, cur_skin ), xbmc.LOGNOTICE )
+xbmc.log( "[SCRIPT: %s] skin %s is mapped to: %s" % ( __script__, cur_skin, skins_path ), xbmc.LOGNOTICE )
 
 GET_LOCALIZED_STRING = xbmc.Language( CWD ).getLocalizedString
 
@@ -43,9 +57,19 @@ DIALOG_PROGRESS = xbmcgui.DialogProgress()
 base_url = "http://www.sshcs.com"
 skins_url = base_url + "/xbmc/inc/eva.asp?mode=Skins"
 
+
+def rev_aeon_passion():
+    try:
+        rss = urllib.urlopen( "http://github.com/feeds/Imaginos/commits/aeon-passion/master", "r" ).read()
+        date = re.compile( '<updated>(.*?)</updated>' ).findall( rss )
+        if date: return "Build r." + "-".join( date[ 0 ].split( "-" )[ :-1 ] )
+    except:
+        print_exc()
+    return "Build r.OnClick"
+
 aeon_passion = {
     "name": "aeon-passion",
-    "build": "Build r.OnClick",
+    "build": "",
     "hit": "",
     "rate": "10 / 10",
     "thumbs": os.path.join( CACHE_DIR, "Aeon" ),
@@ -81,6 +105,7 @@ def get_browse_dialog( default="", heading="", dlg_type=3, shares="files", mask=
 
 def dl_build( heading, url, destination ):
     DIALOG_PROGRESS.create( heading, GET_LOCALIZED_STRING( 32890 ) )
+    xbmc.log( "[SCRIPT: %s] Downloading started: %s" % ( __script__, heading ), xbmc.LOGNOTICE )
     filepath = ""
     try:
         def _report_hook( count, blocksize, totalsize ):
@@ -98,17 +123,20 @@ def dl_build( heading, url, destination ):
             DIALOG_PROGRESS.update( percent, _line3_, destination, GET_LOCALIZED_STRING( 32890 ) )
             if ( DIALOG_PROGRESS.iscanceled() ):
                 raise pDialogCanceled()
+        xbmc.log( "[SCRIPT: %s] Downloading: %s to %s" % ( __script__, url, destination ), xbmc.LOGDEBUG )
         fp, h = urllib.urlretrieve( url, destination, _report_hook )
         if h:
             #print h
+            xbmc.log( "[SCRIPT: %s] download infos: %s" % ( __script__, h ), xbmc.LOGDEBUG )
             try:
                 if "text" in h[ "Content-Type" ]:
                     os.unlink( destination )
+                    xbmc.log( "[SCRIPT: %s] Content-Type=%s: %s" % ( __script__, h[ "Content-Type" ], destination ), xbmc.LOGERROR )
             except:
                 print_exc()
         filepath = fp
     except pDialogCanceled, error:
-        print error.msg
+        xbmc.log( "[SCRIPT: %s] DIALOG::PROGRESS: %s" % ( __script__, error.msg ), xbmc.LOGWARNING )
         filepath = ""
     except:
         print_exc()
@@ -142,39 +170,31 @@ class nightly( xbmcgui.WindowXML ):
         xbmcgui.WindowXML.__init__( self, *args, **kwargs )
         self.save_dir = ""
 
+    def onInit( self ):
+        listitems = []
         DIALOG_PROGRESS.create( __script__, GET_LOCALIZED_STRING( 32890 ) )
         DIALOG_PROGRESS.update( 100, GET_LOCALIZED_STRING( 32890 ) )
         try:
+            xbmc.log( "[SCRIPT: %s] setting up list skins..." % ( __script__ ), xbmc.LOGNOTICE )
             self.skins = get_nightly_skins()
+            aeon_passion[ "build" ] = rev_aeon_passion()
             self.skins.append( aeon_passion )
             #trie la liste selon la valeur de rate eval( "10 / 10") va donner 1
             try: self.skins.sort( key=lambda s: eval( s[ "rate" ] ), reverse=True )
             except: pass
-        except:
-            print_exc()
-            DIALOG_PROGRESS.close()
-            raise
-        DIALOG_PROGRESS.close()
 
-    def onInit( self ):
-        #DIALOG_PROGRESS.create( __script__, GET_LOCALIZED_STRING( 32890 ) )
-        #DIALOG_PROGRESS.update( 100, GET_LOCALIZED_STRING( 32890 ) )
-        try:
-            xbmcgui.lock()
-            #self.skins = get_nightly_skins()
-            #self.skins.append( aeon_passion )
-            #trie la liste selon la valeur de rate eval( "10 / 10") va donner 1
-            #try: self.skins.sort( key=lambda s: eval( s[ "rate" ] ), reverse=True )
-            #except: pass
             total_items = len( self.skins )
             try: diff = int( 100.0 / total_items )
             except: diff = 100
             percent = 0
             for count, skin in enumerate( self.skins ):
-                # { "name": name, "build": build, "hit": hit, "rate": rate, "thumbs": thumbs, "dl": dl }
-                #name = " | ".join( [ skin[ "name" ], skin[ "build" ], skin[ "hit" ], skin[ "rate" ]  ] )
+                # skin dict = { "name": name, "build": build, "hit": hit, "rate": rate, "thumbs": thumbs, "dl": dl }
+
                 percent += diff
-                #DIALOG_PROGRESS.update( percent, "Skins: %i / %i" % ( count+1, total_items ), skin[ "name" ] )
+                line1 = "Skins: %i / %i" % ( count+1, total_items )
+                if not SHOW_FILESIZE:
+                    DIALOG_PROGRESS.update( percent, line1, skin[ "name" ] )
+                xbmc.log( "[SCRIPT: %s] Listing - %s, %s" % ( __script__, line1, skin[ "name" ] ), xbmc.LOGNOTICE )
 
                 listitem = xbmcgui.ListItem( skin[ "name" ] )
 
@@ -185,16 +205,29 @@ class nightly( xbmcgui.WindowXML ):
                 thumbs = self.get_thumbnails( skin[ "name" ], skin[ "thumbs" ] )
                 listitem.setProperty( "thumbs", thumbs )
 
-                self.getControl( 450 ).addItem( listitem )
+                try:
+                    if SHOW_FILESIZE:
+                        response = xbmc.executehttpapi( "FileSize(%s)" % skin[ "dl" ] ).replace( "<li>", "" )
+                        if response.isdigit():
+                            listitem.setProperty( "filesize", GET_LOCALIZED_STRING( 32830 ) % ( ( int( response ) / 1024.0 / 1024.0 ), ) )
+                            DIALOG_PROGRESS.update( percent, line1, skin[ "name" ], GET_LOCALIZED_STRING( 32830 ) % ( ( int( response ) / 1024.0 / 1024.0 ), ) )
+                        #else:
+                        #    print repr( response )
+                except:
+                    print_exc()
+
+                listitems.append( listitem )
         except:
             print_exc()
-        #DIALOG_PROGRESS.close()
-        xbmcgui.unlock()
+        DIALOG_PROGRESS.close()
+        if listitems:
+            self.getControl( 450 ).addItems( listitems )
 
     def get_thumbnails( self, skin, thumbs=[] ):
         local_dir = ""
         try:
             if thumbs == aeon_passion.get( "thumbs" ):
+                xbmc.log( "[SCRIPT: %s] skin - %s, multiimage [%s]" % ( __script__, skin, thumbs ), xbmc.LOGDEBUG )
                 return thumbs
             for thumb in thumbs:
                 dname = os.path.basename( os.path.dirname( thumb ) )
@@ -208,6 +241,7 @@ class nightly( xbmcgui.WindowXML ):
                     urllib.urlretrieve( thumb, fpath )
         except:
             print_exc()
+        xbmc.log( "[SCRIPT: %s] skin - %s, multiimage [%s]" % ( __script__, skin, local_dir ), xbmc.LOGDEBUG )
         return local_dir
 
     def onFocus( self, controlID ):
@@ -225,19 +259,24 @@ class nightly( xbmcgui.WindowXML ):
                     fpath = os.path.join( dpath, self.skins[ pos ][ "name" ] + ext )
                     if xbmcgui.Dialog().yesno( heading, GET_LOCALIZED_STRING( 32130 ), GET_LOCALIZED_STRING( 32140 ), fpath ):
                         filename = dl_build( heading, url, fpath )#fpath
-                        if filename and ( not self.skins[ pos ][ "name" ] in ( cur_skin, xbmc.getSkinDir() ) ):# or ( os.environ.get( "OS", "xbox" ) != "xbox" ):
-                            xbmcgui.Dialog().ok( GET_LOCALIZED_STRING( 32200 ), GET_LOCALIZED_STRING( 32210 ), GET_LOCALIZED_STRING( 32220 ) % xbmc.getFreeMem(), GET_LOCALIZED_STRING( 32230 ) % ( ( os.path.getsize( filename ) / 1024.0 / 1024.0 ) * 1.5 ) )
-                            if xbmc.getFreeMem() >= ( ( os.path.getsize( filename ) / 1024.0 / 1024.0 ) * 1.5 ):
+                        filesize = ( os.path.getsize( filename ) / 1024.0 / 1024.0 )
+                        if filename and ( not self.skins[ pos ][ "name" ] in ( cur_skin, xbmc.getSkinDir() ) ):
+                            xbmc.log( "[SCRIPT: %s] FreeMem - [Free: %i Mb] and [Required: %.2f Mb]" % ( __script__, xbmc.getFreeMem(), ( filesize * 1.5 )  ), xbmc.LOGNOTICE )
+                            xbmcgui.Dialog().ok( GET_LOCALIZED_STRING( 32200 ), GET_LOCALIZED_STRING( 32210 ), GET_LOCALIZED_STRING( 32220 ) % xbmc.getFreeMem(), GET_LOCALIZED_STRING( 32230 ) % ( filesize * 1.5 ) )
+                            if xbmc.getFreeMem() >= ( filesize  * 1.5 ) :
                                 DIALOG_PROGRESS.create( heading, "Extracting...", filename, skins_path )
+                                xbmc.log( "[SCRIPT: %s] starting - [XBMC.Extract(%s,%s)]" % ( __script__, filename, skins_path ), xbmc.LOGNOTICE )
                                 xbmc.executebuiltin( 'XBMC.Extract(%s,%s)' % ( filename, skins_path, ) )
                                 DIALOG_PROGRESS.close()
                                 skin_name = self.skins[ pos ][ "name" ]
-                                if skin_name == "aeon-passion":
+                                xbmcgui.Dialog().ok( __script__, GET_LOCALIZED_STRING( 32110 ), skins_path, skin_name )
+                                xbmc.log( "[SCRIPT: %s] finish - [XBMC.Extract]" % ( __script__ ), xbmc.LOGNOTICE )
+                                if skin_name == "aeon-passion" or "aeon-passion" in skin_name:
                                      new_name = self.set_aeon_passion()
                                      if new_name: skin_name = new_name
-                                xbmcgui.Dialog().ok( __script__, GET_LOCALIZED_STRING( 32110 ), skins_path, skin_name )
+                                xbmc.log( "[SCRIPT: %s] Skin installed - [%s, %s]" % ( __script__, skins_path, skin_name ), xbmc.LOGNOTICE )
                             else:
-                                xbmcgui.Dialog().ok( GET_LOCALIZED_STRING( 32200 ), GET_LOCALIZED_STRING( 32210 ), GET_LOCALIZED_STRING( 32220 ) % xbmc.getFreeMem(), GET_LOCALIZED_STRING( 32230 ) % ( ( os.path.getsize( filename ) / 1024.0 / 1024.0 ) * 1.5 ) )
+                                xbmcgui.Dialog().ok( GET_LOCALIZED_STRING( 32200 ), GET_LOCALIZED_STRING( 32210 ), GET_LOCALIZED_STRING( 32220 ) % xbmc.getFreeMem(), GET_LOCALIZED_STRING( 32230 ) % ( filesize * 1.5 )  )
                 self.save_dir = dpath
         except:
             print_exc()
@@ -265,13 +304,12 @@ class nightly( xbmcgui.WindowXML ):
                         new_name = keyboard.getText()
                         fpath = os.path.join( skins_path, new_name )
                         if ( new_name != os.path.basename( last_aeon_passion ) ) and not os.path.exists( fpath ):
-                            #print last_aeon_passion
-                            #print fpath
                             os.rename( last_aeon_passion, fpath )
+                            xbmc.log( "[SCRIPT: %s] set_aeon_passion::name: [%s for %s]" % ( __script__, last_aeon_passion, fpath ), xbmc.LOGNOTICE )
                             break
                         new_name = ""
                     else:
-                        print "set_aeon_passion:name:canceled!"
+                        xbmc.log( "[SCRIPT: %s] set_aeon_passion::name::canceled!" % ( __script__, last_aeon_passion, fpath ), xbmc.LOGNOTICE )
                         break
                 if not new_name:
                     new_name = base
