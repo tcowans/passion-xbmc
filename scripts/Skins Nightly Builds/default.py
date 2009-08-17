@@ -6,8 +6,8 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "12-08-2009"
-__version__      = "1.0.0-beta1"
+__date__         = "17-08-2009"
+__version__      = "1.0.0-beta2"
 __svn_revision__  = "$Revision$".replace( "Revision", "" ).strip( "$: " )
 __XBMC_Revision__ = "20000" #XBMC Babylon
 
@@ -43,9 +43,28 @@ if not os.path.isdir( CACHE_DIR ):
 xbmc.log( "[SCRIPT: %s] home is mapped to: %s" % ( __script__, CWD ), xbmc.LOGNOTICE )
 xbmc.log( "[SCRIPT: %s] cache is mapped to: %s" % ( __script__, CACHE_DIR ), xbmc.LOGNOTICE )
 
-skin_path = xbmc.translatePath( "special://skin/" )
-cur_skin = os.path.basename( os.path.dirname( skin_path ) )
-skins_path = os.path.dirname( os.path.dirname( skin_path )  )
+
+def get_installation_of_skins():
+    skin_path = xbmc.translatePath( "special://skin" ).strip( os.sep )
+    cur_skin  = os.path.basename( skin_path )
+    skins_path = os.path.dirname( skin_path )
+    if ( not cur_skin ) or ( not os.path.isdir( skin_path ) ) or ( not os.path.isdir( skins_path ) ):
+        print "error with [special://skin['%s']]" % xbmc.translatePath( "special://skin" ).strip( os.sep )
+        cur_skin  = xbmc.getSkinDir()
+        #xbmc default mode
+        skin_path = xbmc.translatePath( "special://profile/skin/%s" % cur_skin ).strip( os.sep )
+        if ( not os.path.isdir( skin_path ) ):
+            #xbmc portable mode
+            skin_path = xbmc.translatePath( "special://xbmc/skin/%s" % cur_skin ).strip( os.sep )
+        if ( not os.path.isdir( skin_path ) ):
+            #last change
+            skin_path = xbmc.translatePath( "special://home/skin/%s" % cur_skin ).strip( os.sep )
+        skins_path = os.path.dirname( skin_path )
+
+    return cur_skin, skin_path, skins_path
+
+cur_skin, skin_path, skins_path = get_installation_of_skins()
+
 
 xbmc.log( "[SCRIPT: %s] xbmc current skin is: %s" % ( __script__, cur_skin ), xbmc.LOGNOTICE )
 xbmc.log( "[SCRIPT: %s] skin %s is mapped to: %s" % ( __script__, cur_skin, skins_path ), xbmc.LOGNOTICE )
@@ -173,11 +192,10 @@ class nightly( xbmcgui.WindowXML ):
     def onInit( self ):
         listitems = []
         DIALOG_PROGRESS.create( __script__, GET_LOCALIZED_STRING( 32890 ) )
-        DIALOG_PROGRESS.update( 100, GET_LOCALIZED_STRING( 32890 ) )
+        DIALOG_PROGRESS.update( 0, GET_LOCALIZED_STRING( 32890 ) )
         try:
             xbmc.log( "[SCRIPT: %s] setting up list skins..." % ( __script__ ), xbmc.LOGNOTICE )
             self.skins = get_nightly_skins()
-            aeon_passion[ "build" ] = rev_aeon_passion()
             self.skins.append( aeon_passion )
             #trie la liste selon la valeur de rate eval( "10 / 10") va donner 1
             try: self.skins.sort( key=lambda s: eval( s[ "rate" ] ), reverse=True )
@@ -198,13 +216,6 @@ class nightly( xbmcgui.WindowXML ):
 
                 listitem = xbmcgui.ListItem( skin[ "name" ] )
 
-                listitem.setProperty( "build", skin[ "build" ] )
-                listitem.setProperty( "hit", skin[ "hit" ] )
-                listitem.setProperty( "rate", skin[ "rate" ] )
-
-                thumbs = self.get_thumbnails( skin[ "name" ], skin[ "thumbs" ] )
-                listitem.setProperty( "thumbs", thumbs )
-
                 try:
                     if SHOW_FILESIZE:
                         response = xbmc.executehttpapi( "FileSize(%s)" % skin[ "dl" ] ).replace( "<li>", "" )
@@ -215,6 +226,16 @@ class nightly( xbmcgui.WindowXML ):
                         #    print repr( response )
                 except:
                     print_exc()
+
+                if skin[ "name" ] == "aeon-passion":
+                    skin[ "build" ] = rev_aeon_passion()
+
+                listitem.setProperty( "build", skin[ "build" ] )
+                listitem.setProperty( "hit", skin[ "hit" ] )
+                listitem.setProperty( "rate", skin[ "rate" ] )
+
+                thumbs = self.get_thumbnails( skin[ "name" ], skin[ "thumbs" ] )
+                listitem.setProperty( "thumbs", thumbs )
 
                 listitems.append( listitem )
         except:
