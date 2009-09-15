@@ -1,14 +1,8 @@
 <skin>
   <defaultresolution>720p</defaultresolution>
   <defaultresolutionwide>720p</defaultresolutionwide>
-  <version>2.1</version>
-  <skinversion>0</skinversion>
-
-  <!-- amount to zoom skin to remove overscan compensation -->
-  <zoom>0</zoom>
-
+  <version>2.11</version>
   <credits>
-    <!-- description of skin creator only -->
     <skinname>Default</skinname>
     <name>Auteurs: Frost</name>
     <name>Graphic PMIII by ChokeManiac and Jezz X</name>
