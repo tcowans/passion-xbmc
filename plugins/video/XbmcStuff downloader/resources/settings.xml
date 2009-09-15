@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+   <setting id="resolution" type="enum" label="image resolution:" values="500|356" />
+   <setting id="path" type="folder" source="files" label="cleararts's path" default="special://skin" />
+</settings> 
