@@ -6,8 +6,8 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "17-08-2009"
-__version__      = "1.0.0-beta2"
+__date__         = "15-09-2009"
+__version__      = "1.0.0"
 __svn_revision__  = "$Revision$".replace( "Revision", "" ).strip( "$: " )
 __XBMC_Revision__ = "20000" #XBMC Babylon
 
@@ -77,13 +77,18 @@ base_url = "http://www.sshcs.com"
 skins_url = base_url + "/xbmc/inc/eva.asp?mode=Skins"
 
 
-def rev_aeon_passion():
-    try:
-        rss = urllib.urlopen( "http://github.com/feeds/Imaginos/commits/aeon-passion/master", "r" ).read()
-        date = re.compile( '<updated>(.*?)</updated>' ).findall( rss )
-        if date: return "Build r." + "-".join( date[ 0 ].split( "-" )[ :-1 ] )
-    except:
-        print_exc()
+def rev_github( skin="" ):
+    if bool( skin ):
+        try:
+            url = ""
+            if skin == "Alaska": url = "http://github.com/feeds/Hitcher/commits/Alaska/master"
+            elif skin == "aeon-passion": url = "http://github.com/feeds/Imaginos/commits/aeon-passion/master"
+            if bool( url ):
+                rss = urllib.urlopen( url, "r" ).read()
+                date = re.compile( '<updated>(.*?)</updated>' ).findall( rss )
+                if date: return "Build r." + "-".join( date[ 0 ].split( "-" )[ :-1 ] )
+        except:
+            print_exc()
     return "Build r.OnClick"
 
 aeon_passion = {
@@ -96,6 +101,17 @@ aeon_passion = {
     "type": ".zip"
     }
 
+alaska = {
+    "name": "Alaska",
+    "build": "",
+    "hit": "",
+    "rate": "10 / 10",
+    "thumbs": [ "http://files.getdropbox.com/u/435063/alaska/alaska_movies.jpg", "http://files.getdropbox.com/u/435063/alaska/alaska_moviesFA.jpg", "http://files.getdropbox.com/u/435063/alaska/alaska_episodesFA.jpg", "http://files.getdropbox.com/u/435063/alaska/alaska_movieinfoFA.jpg" ],
+    "dl": "http://github.com/Hitcher/Alaska/zipball/master",
+    "type": ".zip"
+    }
+
+SKINS_GITHUB = ( "aeon-passion", "Alaska" )
 
 
 class pDialogCanceled( Exception ):
@@ -176,7 +192,7 @@ def get_nightly_skins():
                 dl = base_url + dl
                 rate = str( re.findall( '<img src="(.*?)" border="0" />', skin ).count( "/xbmc/img/goldstar.png" ) ) + " / 10"
                 thumbs = [ base_url + uri for uri in re.findall( '<a href="(.*?)" class="floatbox" title=".*?" rev=".*?">', skin ) ]
-                results.append( { "name": name, "build": build, "hit": hit, "rate": rate, "thumbs": thumbs, "dl": dl } )
+                results.append( { "name": name.strip(), "build": build.strip(), "hit": hit.strip(), "rate": rate, "thumbs": thumbs, "dl": dl } )
             except:
                 print_exc()
     except:
@@ -197,6 +213,7 @@ class nightly( xbmcgui.WindowXML ):
             xbmc.log( "[SCRIPT: %s] setting up list skins..." % ( __script__ ), xbmc.LOGNOTICE )
             self.skins = get_nightly_skins()
             self.skins.append( aeon_passion )
+            self.skins.append( alaska )
             #trie la liste selon la valeur de rate eval( "10 / 10") va donner 1
             try: self.skins.sort( key=lambda s: eval( s[ "rate" ] ), reverse=True )
             except: pass
@@ -227,8 +244,8 @@ class nightly( xbmcgui.WindowXML ):
                 except:
                     print_exc()
 
-                if skin[ "name" ] == "aeon-passion":
-                    skin[ "build" ] = rev_aeon_passion()
+                if skin[ "name" ] in SKINS_GITHUB:
+                    skin[ "build" ] = rev_github( skin[ "name" ] )
 
                 listitem.setProperty( "build", skin[ "build" ] )
                 listitem.setProperty( "hit", skin[ "hit" ] )
@@ -238,6 +255,9 @@ class nightly( xbmcgui.WindowXML ):
                 listitem.setProperty( "thumbs", thumbs )
 
                 listitems.append( listitem )
+
+                if ( DIALOG_PROGRESS.iscanceled() ):
+                    break
         except:
             print_exc()
         DIALOG_PROGRESS.close()
@@ -290,11 +310,15 @@ class nightly( xbmcgui.WindowXML ):
                                 xbmc.executebuiltin( 'XBMC.Extract(%s,%s)' % ( filename, skins_path, ) )
                                 DIALOG_PROGRESS.close()
                                 skin_name = self.skins[ pos ][ "name" ]
-                                xbmcgui.Dialog().ok( __script__, GET_LOCALIZED_STRING( 32110 ), skins_path, skin_name )
+                                ok_name = skin_name
+                                #last_skin = sorted( glob.glob( os.path.join( skins_path, "*" ) ), key=lambda s: os.path.getmtime( s ), reverse=True )
+                                #last_skin = os.path.basename( ( last_skin or [ "" ] )[ 0 ] )
+                                #if last_skin and last_skin != skin_name: ok_name = last_skin
+                                xbmcgui.Dialog().ok( __script__, GET_LOCALIZED_STRING( 32110 ), skins_path, ok_name )
                                 xbmc.log( "[SCRIPT: %s] finish - [XBMC.Extract]" % ( __script__ ), xbmc.LOGNOTICE )
-                                if skin_name == "aeon-passion" or "aeon-passion" in skin_name:
-                                     new_name = self.set_aeon_passion()
-                                     if new_name: skin_name = new_name
+                                if "http://github.com/" in url:
+                                    new_name = self.set_github_skin( skin_name )
+                                    if new_name: skin_name = new_name
                                 xbmc.log( "[SCRIPT: %s] Skin installed - [%s, %s]" % ( __script__, skins_path, skin_name ), xbmc.LOGNOTICE )
                             else:
                                 xbmcgui.Dialog().ok( GET_LOCALIZED_STRING( 32200 ), GET_LOCALIZED_STRING( 32210 ), GET_LOCALIZED_STRING( 32220 ) % xbmc.getFreeMem(), GET_LOCALIZED_STRING( 32230 ) % ( filesize * 1.5 )  )
@@ -306,17 +330,17 @@ class nightly( xbmcgui.WindowXML ):
         if action in ( 9, 10 ):
             self.close()
 
-    def set_aeon_passion( self ):
+    def set_github_skin( self, skin_name ):
         new_name = ""
         try:
-            last_aeon_passion = sorted( glob.glob( os.path.join( skins_path, "Imaginos-aeon-passion-*" ) ),
-                key=lambda s: os.path.getmtime( s ), reverse=True )
-            last_aeon_passion = ( last_aeon_passion or [ "" ] )[ 0 ]
-            if last_aeon_passion and os.path.exists( last_aeon_passion ):
-                if not os.path.exists( os.path.join( skins_path, "aeon-passion" ) ):
-                    base = "aeon-passion"
+            last = sorted( glob.glob( os.path.join( skins_path, "*" ) ), key=lambda s: os.path.getmtime( s ), reverse=True )
+            last = ( last or [ "" ] )[ 0 ]
+            if last and os.path.exists( last ):
+                if not os.path.exists( os.path.join( skins_path, skin_name ) ):
+                    base = skin_name
                 else:
-                    base = os.path.basename( last_aeon_passion )
+                    base = os.path.basename( last )
+                    base = "-".join( base.split( "-" )[ 1:-1 ] ) or base
                 while True:
                     new_name = ""
                     keyboard = xbmc.Keyboard( base, GET_LOCALIZED_STRING( 32120 ) )
@@ -324,18 +348,19 @@ class nightly( xbmcgui.WindowXML ):
                     if keyboard.isConfirmed():
                         new_name = keyboard.getText()
                         fpath = os.path.join( skins_path, new_name )
-                        if ( new_name != os.path.basename( last_aeon_passion ) ) and not os.path.exists( fpath ):
-                            os.rename( last_aeon_passion, fpath )
-                            xbmc.log( "[SCRIPT: %s] set_aeon_passion::name: [%s for %s]" % ( __script__, last_aeon_passion, fpath ), xbmc.LOGNOTICE )
+                        if ( new_name != os.path.basename( last ) ) and not os.path.exists( fpath ):
+                            os.rename( last, fpath )
+                            xbmc.log( "[SCRIPT: %s] set_github_skin::name: [%s for %s]" % ( __script__, last, fpath ), xbmc.LOGNOTICE )
                             break
                         new_name = ""
                     else:
-                        xbmc.log( "[SCRIPT: %s] set_aeon_passion::name::canceled!" % ( __script__, last_aeon_passion, fpath ), xbmc.LOGNOTICE )
+                        xbmc.log( "[SCRIPT: %s] set_github_skin::name::canceled!" % ( __script__ ), xbmc.LOGNOTICE )
                         break
                 if not new_name:
                     new_name = base
         except:
             print_exc()
+            new_name = skin_name
         return new_name
 
 
