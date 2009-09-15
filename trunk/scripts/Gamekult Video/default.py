@@ -43,7 +43,7 @@ __url__ = "http://passion-xbmc.org/index.php"
 __svn_url__ = "http://code.google.com/p/passion-xbmc/source/browse/#svn/trunk/Scripts/Gamekult Video"
 __credits__ = "Temhil"
 __platform__ = "xbmc media center"
-__date__ = "29-05-09"
+__date__ = "15-09-09"
 __version__ = "1.0-Dev02"
 __svn_revision__ = 0
 
