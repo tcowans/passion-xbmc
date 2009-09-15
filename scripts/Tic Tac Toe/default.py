@@ -7,7 +7,7 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/Tic%20Tac%20Toe/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center"
-__date__         = "20-03-2009"
+__date__         = "15-09-2009"
 __version__      = "1.0.0"
 __svn_revision__ = 0
 
