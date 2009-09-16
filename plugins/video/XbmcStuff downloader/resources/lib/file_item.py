@@ -41,7 +41,7 @@ class Thumbnails:
         return self.get_cached_thumb( strPath, os.path.join( THUMBS_CACHE_PATH, "Video" ), True )
 
     def get_cached_episode_thumb( self, strPath, iEpisode=0 ):
-        return self.get_cached_thumb( strPath ), os.path.join( THUMBS_CACHE_PATH, "Video" ), True )
+        return self.get_cached_thumb( strPath, os.path.join( THUMBS_CACHE_PATH, "Video" ), True )
         #return self.get_cached_thumb( "%sepisode%i" % ( strPath, iEpisode ), os.path.join( THUMBS_CACHE_PATH, "Video" ), True )
 
     def get_cached_fanart_thumb( self, strPath, fanart="" ):
