@@ -1,6 +1,6 @@
 # -- coding: cp1252 -*-
 ########################################
-#xbmcstuff downloader v1.1
+#xbmcstuff downloader v1.2
 #by ppic
 ########################################
 ##changelog:
@@ -20,6 +20,7 @@
 ##08/09/09: change default clearart path to special://skin
 ##10/09/09: added tvshow.nfo support if imdb is find in db.
 ##10/09/09: correction for smb path with tvshow.nfo
+##19/09/09: v 1.2 added cache replace
             
 ########################################
 
