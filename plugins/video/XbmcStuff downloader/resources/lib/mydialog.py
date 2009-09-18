@@ -98,13 +98,14 @@ class MainGui( xbmcgui.WindowXMLDialog ):
                 self.close()
                 success = sys.modules[ "__main__" ].current_show.get_image( self.type, self.picture )
                 if success:
+                    #print "tbn:%s" % (xbmc.getCacheThumbName( "" ))
                     line1 = "Image downloaded successfully!"
                     line2 = "Dir: %s" % reduced_path( os.path.dirname( success ) )
                     line3 = "File: %s" % os.path.basename( success )
                     #clear thumbnail cache for tv_show
-                    if self.type == "TVthumbs":
-                        try: os.remove(get_thumbnail( sys.modules[ "__main__" ].current_show.path ))
-                        except: print_exc()
+##                    if self.type == "TVthumbs":
+##                        try: os.remove(get_thumbnail( sys.modules[ "__main__" ].current_show.path ))
+##                        except: print_exc()
                 else:
                     line1 = "Error while downloading image"
                     line2 = ""

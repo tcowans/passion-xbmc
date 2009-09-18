@@ -26,7 +26,7 @@
 
 
 #import des librairies
-import urllib,urllib2,re,xbmcplugin,xbmcgui,sys,os
+import urllib,urllib2,re,xbmcplugin,xbmcgui,sys,os,shutil
 
 from traceback import print_exc
 
@@ -40,6 +40,8 @@ sys.path.append( os.path.join( BASE_RESOURCE_PATH, "platform_libraries", env ) )
 #import platform's librairies
 from pysqlite2 import dbapi2 as sqlite3
 import elementtree.ElementTree as ET
+from file_item import Thumbnails
+thumbnails = Thumbnails()
 
 #chargement des settings
 try: clearart_path=xbmcplugin.getSetting("path")
@@ -131,6 +133,7 @@ class Tvshow:
             elif name == "TVthumbs":
                 filename = "folder.jpg"
                 folder = repr( self.path ).strip( "u'" )
+                thumb = thumbnails.get_cached_video_thumb( self.path )
                 
             elif name[:6] == "season":
                 if name[:10]=="season-all":
@@ -138,15 +141,21 @@ class Tvshow:
                 else:
                     filename = "%s.tbn" % (name[:8])
                 folder = repr( self.path ).strip( "u'" )
-
-                strFileName = self.get_db( "strFileName" )
-                print "strFileName: %s" % strFileName
-                if bool( strFileName ):
-                    fname = xbmc.getCacheThumbName( os.path.join( self.path, strFileName ) )
-                    thumbnail = os.path.join( xbmc.translatePath( "special://profile/Thumbnails/Video" ), fname[ 0 ], fname )
-                    print "season tbn cache exists", os.path.exists( thumbnail ), thumbnail
-                
+            try:
+                if name[6:8] == "-a": thumb =  thumbnails.get_cached_season_thumb( "%s* all seasons" % self.path )
+                elif int(name[6:8]) == 0: thumb = thumbnails.get_cached_season_thumb( "%sspecials" % self.path )
+                elif int(name[6:8]) < 10: thumb = thumbnails.get_cached_season_thumb( "%sseason %s" % (self.path , name[7:8]) )
+                else: thumb = thumbnails.get_cached_season_thumb( "%sseason %s" % (self.path , name[6:8]) )
+            except:
+                print_exc()
+            
             fp, h = urllib.urlretrieve(url,os.path.join(folder,filename))
+            
+            try:
+                if os.path.isfile(thumb): os.remove(thumb)
+                shutil.copyfile(os.path.join(folder,filename), thumb)
+            except:
+                print_exc()
             print fp # fp = filename
             print h # h = headers
             success = fp
@@ -162,8 +171,6 @@ class Tvshow:
         self.xmldata = urllib.urlopen("%s%s&thetvdb=%s" % (base_url, options, url_id)).read()
         open(temp_xml, 'wb').write(str(self.xmldata.strip()))
         print "!!!!!!!! xml download: %s  : %s%s&thetvdb=%s !!!!!!!!" % (url,base_url, options, self.tvid)
-        test= "season%s01" % self.path
-        print "tbn:%s" % (xbmc.getCacheThumbName( test ))
         
     #génération menus images    
     def menu_list(self,type):
@@ -251,7 +258,7 @@ def parser(data):
             print "error load_info xml"
             print_exc()
 
-    print data.xmldata    
+    #print data.xmldata    
     elems = load_infos(temp_xml)
     collect = {}
 
