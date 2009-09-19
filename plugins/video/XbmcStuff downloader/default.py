@@ -21,6 +21,7 @@
 ##10/09/09: added tvshow.nfo support if imdb is find in db.
 ##10/09/09: correction for smb path with tvshow.nfo
 ##19/09/09: v 1.2 added cache replace
+##19/09/09: added language fix for image cache
             
 ########################################
 
@@ -143,10 +144,10 @@ class Tvshow:
                     filename = "%s.tbn" % (name[:8])
                 folder = repr( self.path ).strip( "u'" )
             try:
-                if name[6:8] == "-a": thumb =  thumbnails.get_cached_season_thumb( "%s* all seasons" % self.path )
-                elif int(name[6:8]) == 0: thumb = thumbnails.get_cached_season_thumb( "%sspecials" % self.path )
-                elif int(name[6:8]) < 10: thumb = thumbnails.get_cached_season_thumb( "%sseason %s" % (self.path , name[7:8]) )
-                else: thumb = thumbnails.get_cached_season_thumb( "%sseason %s" % (self.path , name[6:8]) )
+                if name[6:8] == "-a": thumb =  thumbnails.get_cached_season_thumb( "%s%s" % (self.path , xbmc.getLocalizedString(20366)) )
+                elif int(name[6:8]) == 0: thumb = thumbnails.get_cached_season_thumb( "%s%s" % (self.path, xbmc.getLocalizedString(20381)) )
+                elif int(name[6:8]) < 10: thumb = thumbnails.get_cached_season_thumb( "%s%s%s" % (self.path , xbmc.getLocalizedString(20358).strip("%i"), name[7:8]) )
+                else: thumb = thumbnails.get_cached_season_thumb( "%s%s%s" % (self.path , xbmc.getLocalizedString(20358).strip("%i"), name[6:8]) )
             except:
                 print_exc()
             
@@ -154,6 +155,9 @@ class Tvshow:
             
             try:
                 if os.path.isfile(thumb): os.remove(thumb)
+            except:
+                print_exc()
+            try:
                 shutil.copyfile(os.path.join(folder,filename), thumb)
             except:
                 print_exc()
