@@ -637,8 +637,8 @@
 				<posy>46</posy>
 				<width>20</width>
 				<height>80</height>
-				<radioposx>122</radioposx>
-				<radioposy>77</radioposy>
+				<radioposx>21</radioposx>
+				<radioposy>0</radioposy>
 				<radiowidth>18</radiowidth>
 				<radioheight>18</radioheight>
 				<animation effect="slide" end="20,0" time="200" condition="!IsEmpty(Container.Property(autospin))">conditional</animation>
