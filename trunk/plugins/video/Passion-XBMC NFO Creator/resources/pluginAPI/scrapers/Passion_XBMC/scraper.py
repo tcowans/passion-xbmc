@@ -3,7 +3,7 @@ import os
 import re
 import time
 import urllib
-from base64 import urlsafe_b64decode
+#from base64 import urlsafe_b64decode
 
 
 ALLOCINE_DOMAIN = "http://www.allocine.fr"
@@ -29,10 +29,18 @@ def get_video_url( mediaID="18791182", quality=None ):
   
 class Movie:
     u"""Movie object instance."""
-    def __init__ ( self, IDmovie ):
+    def __init__ ( self, IDmovie, SVNversion=0 ):
 
+        self.SVNversion = SVNversion
         self.ID=IDmovie
-        self.HTML = download_html( urlsafe_b64decode( "=MXJ9QWa_AHaw5CelRmbp9iclBXYyN2cvcmcv5yYtJGet42bpN3chB3LvoDc0RHa"[ ::-1 ] ) % self.ID )
+        #speedv2
+        #uri = urlsafe_b64decode( "=MXJ9QWa_AHaw5CelRmbp9iclBXYyN2cvcmcv5yYtJGet42bpN3chB3LvoDc0RHa"[ ::-1 ] ) % self.ID
+        #uri = "http://passion-xbmc.org/scraper/index.php?id=%s" % self.ID
+        #speedv3
+        uri = "http://passion-xbmc.org/Scraper-Passion/index.php?id=%s" % self.ID
+        if self.SVNversion: uri += "&Version=1"
+
+        self.HTML = download_html( uri )
         self.TITLE = ""
         self.ORIGINAL_TITLE = ""
         self.DATE = ""
@@ -142,5 +150,5 @@ class Movie:
 
 
 if __name__ == "__main__":
-    film = Movie( "110096" )
-    print film.XML( passion_fanart=True )
+    film = Movie( "26840" )
+    print film.XML()
