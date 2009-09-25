@@ -556,13 +556,14 @@ class Movies:
             
 class Movie:
     u"""Movie object instance."""
-    def __init__(self,IDmovie):
+    def __init__(self,IDmovie,SVNversion=0):
         """Create a new Movie object with given ID.
         HTML movie page is fetched directly when instantiated.
         Movie infos are parsed with included functions"""
         Log( u"Getting movie ID#%s" )
         Log( ALLOCINE_DOMAIN + MOVIE_URL%IDmovie )
         
+        self.SVNversion = SVNversion
         self.ID=IDmovie
         self.HTML = download_html(ALLOCINE_DOMAIN + MOVIE_URL%self.ID)
         self.TITLE = ""
@@ -913,15 +914,19 @@ class Movie:
 
         icon_allocine = self.pictureURL()
         if posters or icon_allocine:
-            f.write( "\t<thumbs>\n" )
+            tab = "\t"
+            if not self.SVNversion:
+                tab = "\t\t"
+                f.write( "\t<thumbs>\n" )
             #vignettes passion-xbmc
             if posters:
                 for poster in posters:
-                    f.write( "\t\t<thumb>" + poster + "</thumb>\n" )
+                    f.write( tab + "<thumb>" + poster + "</thumb>\n" )
             #vignettes allocine
             if icon_allocine:
-                f.write( "\t\t<thumb>" + icon_allocine + "</thumb>\n" )
-            f.write( "\t</thumbs>\n" )
+                f.write( tab + "<thumb>" + icon_allocine + "</thumb>\n" )
+            if not self.SVNversion:
+                f.write( "\t</thumbs>\n" )
 
         if fanarts or self.has_photos():
             f.write( "\t<fanart>\n" )
@@ -1533,6 +1538,6 @@ class Favourite:
 
 if __name__ == "__main__":
     #Log( u"This script is intended to be used as a library.")
-    #film = Movie( "110096" )
-    #print film.XML( passion_fanart=True )
-    print passion_fanarts( "110096" )
+    film = Movie( "26840", True )
+    print film.XML( passion_fanart=True )
+    #print passion_fanarts( "26840" )

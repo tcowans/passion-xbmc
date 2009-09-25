@@ -21,6 +21,20 @@ _ = xbmc.getLocalizedString
 DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
 
+def is_svn_version():
+    #Changeset 21882
+    #changed: sanify the thumb handling in scrapers and nfo files.
+    #just add several <thumb> tags instead of the <thumbs> sillyness we used before.
+    #i have only updated tmdb, imdb and tvdb video scrapers + the music scrapers.
+    ok = False
+    try:
+        xbmc_rev = int( xbmc.getInfoLabel( "System.BuildVersion" ).split( " " )[ 1 ].replace( "r", "" ) )
+        ok = xbmc_rev >= 21882
+    except:
+        pass
+    return ok
+
+
 class _Info:
     def __init__( self, *args, **kwargs ):
         self.__dict__.update( kwargs )
@@ -49,7 +63,7 @@ class Main:
         OK = True
         try:
             exec "from scrapers.%s import scraper" % self.settings[ "scraper" ]
-            movie_data = scraper.Movie( self.args.show_id )
+            movie_data = scraper.Movie( self.args.show_id, is_svn_version() )
             self.nfo_file = movie_data.XML( SPECIAL_PLUGIN_CACHE, passion_fanart=self.settings[ "passion_fanart" ]  )
             #del scraper
 
@@ -60,7 +74,7 @@ class Main:
 
             tbn = get_nfo_thumbnail( self.nfo[ "thumbs" ] ) or self.nfo[ "thumbs" ]
             listitem = xbmcgui.ListItem( self.nfo[ "title" ], iconImage=tbn, thumbnailImage=tbn )
- 
+
             url = "%s?path=%s&nfo_file=%s" % ( sys.argv[ 0 ], repr( quote_plus(  self.args.path ) ), repr( self.nfo_file ), )
 
             c_items = [ ( _( 30012 ), "XBMC.RunPlugin(%s)" % ( url, ) ) ]
