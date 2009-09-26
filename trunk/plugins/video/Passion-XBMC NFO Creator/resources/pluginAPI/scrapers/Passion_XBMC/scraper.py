@@ -3,7 +3,6 @@ import os
 import re
 import time
 import urllib
-#from base64 import urlsafe_b64decode
 
 
 ALLOCINE_DOMAIN = "http://www.allocine.fr"
@@ -33,11 +32,7 @@ class Movie:
 
         self.SVNversion = SVNversion
         self.ID=IDmovie
-        #speedv2
-        #uri = urlsafe_b64decode( "=MXJ9QWa_AHaw5CelRmbp9iclBXYyN2cvcmcv5yYtJGet42bpN3chB3LvoDc0RHa"[ ::-1 ] ) % self.ID
-        #uri = "http://passion-xbmc.org/scraper/index.php?id=%s" % self.ID
-        #speedv3
-        uri = "http://passion-xbmc.org/Scraper-Passion/index.php?id=%s" % self.ID
+        uri = "http://passion-xbmc.org/scraper/index.php?id=%s" % self.ID
         if self.SVNversion: uri += "&Version=1"
 
         self.HTML = download_html( uri )
