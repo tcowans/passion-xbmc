@@ -50,6 +50,9 @@ try: clearart_path=xbmcplugin.getSetting("path")
 except:
     xbmcplugin.openSettings(sys.argv[0])
     clearart_path=xbmcplugin.getSetting("path")
+if clearart_path.startswith( "special://" ):
+    clearart_path = xbmc.translatePath( clearart_path )
+    
     
 try: resolution=( "500", "356" )[ int( xbmcplugin.getSetting("resolution") ) ]
 except:
@@ -108,7 +111,7 @@ class Tvshow:
     def get_nfo_id(self):
         nfo= os.path.join(self.path , "tvshow.nfo")
         print nfo
-        nfo_read = file(repr(nfo).strip("u'"), "r" ).read()
+        nfo_read = file(repr(nfo).strip("u'\""), "r" ).read()
         tvdb_id = re.findall( "<tvdbid>(\d{1,10})</tvdbid>", nfo_read )
         print "thetvdb id: %s" % tvdb_id[0]
         return tvdb_id[0]
@@ -134,7 +137,7 @@ class Tvshow:
                 
             elif name == "TVthumbs":
                 filename = "folder.jpg"
-                folder = repr( self.path ).strip( "u'" )
+                folder = repr( self.path ).strip( "u'\"" )
                 thumb = thumbnails.get_cached_video_thumb( self.path )
                 
             elif name[:6] == "season":
@@ -142,7 +145,7 @@ class Tvshow:
                     filename = "%s.tbn" % (name[:10])
                 else:
                     filename = "%s.tbn" % (name[:8])
-                folder = repr( self.path ).strip( "u'" )
+                folder = repr( self.path ).strip( "u'\"" )
             try:
                 if name[6:8] == "-a": thumb =  thumbnails.get_cached_season_thumb( "%s%s" % (self.path , xbmc.getLocalizedString(20366)) )
                 elif int(name[6:8]) == 0: thumb = thumbnails.get_cached_season_thumb( "%s%s" % (self.path, xbmc.getLocalizedString(20381)) )
@@ -150,7 +153,7 @@ class Tvshow:
                 else: thumb = thumbnails.get_cached_season_thumb( "%s%s%s" % (self.path , xbmc.getLocalizedString(20358).strip("%i"), name[6:8]) )
             except:
                 print_exc()
-            
+
             fp, h = urllib.urlretrieve(url,os.path.join(folder,filename))
             
             try:
@@ -248,7 +251,7 @@ class Tvshow:
         if req is not None:
             for raw in c.execute( req ):
                 c.close()
-                print repr( raw[0] ).strip( "u'" ) #print "%s" % raw[0]
+                print repr( raw[0] ).strip( "u'\"" ) #print "%s" % raw[0]
                 return raw[0]
         c.close()
 
