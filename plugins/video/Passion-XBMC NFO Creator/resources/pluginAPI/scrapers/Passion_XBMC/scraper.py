@@ -126,6 +126,7 @@ class Movie:
         if re.search( "<details>|<movie>", self.HTML ):
             f = open( nfo_file, "w" )
             f.write( "<!-- NFO Creator Online: Video nfo File created on: %s -->\n" % ( time.strftime( "%d-%m-%Y | %H:%M:%S" ) ) )
+            f.write( "<!-- %s -->\n" % self.__repr__() )
             f.write( self.set_pretty_formatting( self.HTML ) )
             f.close()
 
@@ -145,5 +146,5 @@ class Movie:
 
 
 if __name__ == "__main__":
-    film = Movie( "26840" )
+    film = Movie( "29718", 1 )
     print film.XML()
