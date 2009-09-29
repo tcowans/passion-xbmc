@@ -873,8 +873,9 @@ class Movie:
         nfo_file = os.path.join( fpath, "%s.xml" % self.ID )
         f = open( nfo_file, "w" )
 
+        f.write( "<!-- AlloCine: Video nfo File created on: %s -->\n" % ( time.strftime( "%d-%m-%Y | %H:%M:%S" ) ) )
+        f.write( "<!-- %s -->\n" % self.__repr__() )
         f.write( "<movie>\n" )
-        f.write( "\t<!-- AlloCine: Video nfo File created on: %s -->\n" % ( time.strftime( "%d-%m-%Y | %H:%M:%S" ) ) )
         f.write( "\t<id>" + self.ID + "</id>\n" )
         f.write( "\t<title>" + self.title() + "</title>\n" )
         f.write( "\t<originaltitle>" + self.ORIGINAL_TITLE + "</originaltitle>\n" )

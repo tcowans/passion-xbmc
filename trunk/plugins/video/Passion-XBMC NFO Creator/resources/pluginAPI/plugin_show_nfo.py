@@ -13,7 +13,9 @@ import xbmcgui
 import xbmcplugin
 
 #modules custom
+import nfo_utils
 from utilities import *
+
 
 
 _ = xbmc.getLocalizedString
@@ -65,15 +67,19 @@ class Main:
             exec "from scrapers.%s import scraper" % self.settings[ "scraper" ]
             movie_data = scraper.Movie( self.args.show_id, is_svn_version() )
             self.nfo_file = movie_data.XML( SPECIAL_PLUGIN_CACHE, passion_fanart=self.settings[ "passion_fanart" ]  )
-            #del scraper
+            print self.nfo_file
 
             DIALOG_PROGRESS.update( -1, _( 1040 ), self.nfo_file )
-            self.nfo = self.get_nfo_infos( self.nfo_file )
+            self.nfo = nfo_utils.InfosNFO()
+            #self.nfo.isTVShow = True
+            self.nfo.parse( self.nfo_file )
+            
 
-            DIALOG_PROGRESS.update( -1, _( 1040 ), self.nfo[ "title" ] )
+            DIALOG_PROGRESS.update( -1, _( 1040 ), self.nfo.get( "title" ) )
 
-            tbn = get_nfo_thumbnail( self.nfo[ "thumbs" ] ) or self.nfo[ "thumbs" ]
-            listitem = xbmcgui.ListItem( self.nfo[ "title" ], iconImage=tbn, thumbnailImage=tbn )
+            
+            tbn = ( self.nfo.get( "thumbs" ) or [ "" ] )[ 0 ]
+            listitem = xbmcgui.ListItem( self.nfo.get( "title" ), iconImage=tbn, thumbnailImage=tbn )
 
             url = "%s?path=%s&nfo_file=%s" % ( sys.argv[ 0 ], repr( quote_plus(  self.args.path ) ), repr( self.nfo_file ), )
 
@@ -89,13 +95,11 @@ class Main:
             # add items to listitem with replaceItems = True so only ours show
             listitem.addContextMenuItems( c_items, replaceItems=True )
 
-            if self.nfo[ "fanart" ]:
-                fanart = get_nfo_thumbnail( self.nfo[ "fanart" ] )
+            if len( self.nfo.get( "fanart" ) ) >= 1:
+                fanart = get_nfo_thumbnail( self.nfo.get( "thumbs" )[ 0 ] )
                 listitem.setProperty( "Fanart_Image", fanart )
                 xbmcplugin.setPluginFanart( handle=int( sys.argv[ 1 ] ), image=fanart )
-            # delete unnecessary infos and set infoLabels
-            del self.nfo[ "thumbs" ], self.nfo[ "fanart" ]
-            listitem.setInfo( type="Video", infoLabels=self.nfo )
+            listitem.setInfo( type="Video", infoLabels=self.nfo.infoLabels )
 
             OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=True )
             if ( not OK ): raise
@@ -139,84 +143,3 @@ class Main:
 
     def _end_of_directory( self, OK ):
         xbmcplugin.endOfDirectory( handle=int( sys.argv[ 1 ] ), succeeded=OK )
-
-    def get_nfo_infos( self, url ):
-        """use get_nfo_infos and return infos for listitem.setInfo
-        setInfo(type, infoLabels) -- Sets the listitem's infoLabels.
-
-        type           : string - type of media(video/music/pictures).
-        infoLabels     : dictionary - pairs of { label: value }.
-
-        *Note, To set pictures exif info, prepend 'exif:' to the label. Exif values must be passed
-               as strings, separate value pairs with a comma. (eg. {'exif:resolution': '720,480'}
-               See CPictureInfoTag::TranslateString in PictureInfoTag.cpp for valid strings.
-
-               You can use the above as keywords for arguments and skip certain optional arguments.
-               Once you use a keyword, all following arguments require the keyword.
-
-        example:
-          - self.list.getSelectedItem().setInfo('video', { 'Genre': 'Comedy' })
-        """
-
-        nfo_r = file( url, "r" ).read()
-        try:
-            trailer     = ( re.findall( '<trailer>(.*?)</trailer>', nfo_r )      or [ "" ] )[ 0 ]
-            title       = ( re.findall( '<title>(.*?)</title>', nfo_r )          or [ "" ] )[ 0 ] + " [B](NFO File)[/B]"
-            year        = ( re.findall( '<year>(.*?)</year>', nfo_r )            or [ "" ] )[ 0 ]
-            date        = ( re.findall( '<date>(.*?)</date>', nfo_r )            or [ "" ] )[ 0 ]
-            director    = ( re.findall( '<director.*?>(.*?)</director>', nfo_r ) or [ "" ] )[ 0 ]
-            tagline     = ( re.findall( '<tagline>(.*?)</tagline>', nfo_r )      or [ "" ] )[ 0 ]
-            writer      = ( re.findall( '<credits.*?>(.*?)</credits>', nfo_r )   or [ "" ] )[ 0 ]
-            studio      = ( re.findall( '<studio.*?>(.*?)</studio>', nfo_r )     or [ "" ] )[ 0 ]
-            rating      = ( re.findall( '<rating>(.*?)</rating>', nfo_r )        or [ "" ] )[ 0 ]
-            votes       = ( re.findall( '<votes>(.*?)</votes>', nfo_r )          or [ "" ] )[ 0 ]
-            mpaa        = ( re.findall( '<mpaa>(.*?)</mpaa>', nfo_r )            or [ "" ] )[ 0 ]
-            genre       = ( re.findall( '<genre.*?>(.*?)</genre>', nfo_r )       or [ "" ] )[ 0 ]
-            plotoutline = ( re.findall( '<outline>(.*?)</outline>', nfo_r )      or [ "" ] )[ 0 ].replace( "\r", "  " ).replace( "\n", "  " )
-            plot        = ( re.findall( '<plot>(.*?)</plot>', nfo_r, re.DOTALL ) or [ "" ] )[ 0 ]
-
-            thumbs      = ( re.findall( '<thumbs>(.*?)</thumbs>', nfo_r, re.DOTALL ) or [ "" ] )[ 0 ]
-            thumbs      = ( re.findall( '<thumb>(.*)</thumb>', thumbs )              or [ "" ] )[ 0 ]
-
-            fanart      = ( re.findall( '<fanart>(.*?)</fanart>', nfo_r, re.DOTALL ) or [ "" ] )[ 0 ]
-            fanart      = ( re.findall( '<thumb>(.*)</thumb>', fanart )              or [ "" ] )[ 0 ]
-
-            cast_and_role = []
-            for actor_role in re.findall( '<actor.*?>(.*?)</actor>', nfo_r, re.DOTALL ):
-                try:
-                    cast_and_role.append( zip( re.findall( '<name>(.*)</name>', actor_role ),
-                        re.findall( '<role>(.*)</role>', actor_role ) )[ 0 ] )
-                except: pass
-            cast = cast_and_role
-
-
-            duration    = ( re.findall( '<runtime>(.*?)</runtime>', nfo_r ) or [ "" ] )[ 0 ]
-            try:
-                hrs, min = re.findall( "(\d{1,4})", duration )
-                duration = time.strftime( "%X", time.gmtime( ( int( hrs ) * 60 * 60 ) + ( int( min ) * 60 ) ) )
-                del hrs, min
-            except: pass
-
-            # set required integer
-            if year.isdigit(): year = int( year )
-            if rating.isdigit(): rating = float( rating )
-            
-            # possible others keywords for video type
-            #episode = integer
-            #season = integer
-            #count = integer
-            #size = integer
-            #watched = integer 1 or 2
-            #playcount = integer
-            #overlay = integer, look xbmcguimodule.cpp
-            #cast or castandrole = ["bla"] or  [("game","over")]
-            #tvshowtitle = string
-            #premiered = string
-            #date = string, format "2009-01-12"
-            #trailer = string, playable media local or online
-        except:
-            print_exc()
-
-        # delete unnecessary infos and return locals is infoLabels (dict)
-        del self, url, nfo_r, cast_and_role
-        return locals()

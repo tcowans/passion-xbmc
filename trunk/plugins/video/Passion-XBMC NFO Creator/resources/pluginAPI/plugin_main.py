@@ -14,6 +14,7 @@ import xbmcgui
 import xbmcplugin
 
 #modules custom
+import nfo_utils
 from utilities import *
 
 
@@ -31,6 +32,7 @@ class Main:
     def __init__( self ):
         self.total_items = 1
         self.titles_paths = []
+        self.listing = []
 
         self._get_settings()
         self._add_directory_items()
@@ -44,8 +46,9 @@ class Main:
         self.settings[ "not_share" ] = ( xbmcplugin.getSetting( "not_share" ) == "true" )
 
     def _get_share_listing( self, dpath ):
+        OK = True
         if ( self.settings[ "not_share" ] ) and ( urlparse( dpath ).scheme in ( "ftp", "smb", "upnp", "xbms", "http" ) ):
-            return
+            return OK
         entries = xbmc.executehttpapi( "GetDirectory(%s)" % ( dpath, ) ).split( "\n" )
         #print dpath
         for count, entry in enumerate( entries ):
@@ -62,7 +65,7 @@ class Main:
                 # get the item info
                 title, isVideo, isFolder = self._get_file_info( path )
                 if title and isFolder:
-                    self._get_share_listing( path )
+                    OK = self._get_share_listing( path )
                 else:
                     name, ext = os.path.splitext( os.path.basename( path ) )
                     if name.lower() == "video_ts" and ext.lower() == ".ifo":
@@ -75,10 +78,14 @@ class Main:
                     DIALOG_PROGRESS.update( -1, _( 1040 ), title )
                     self.total_items += 1
                     isShare = ( urlparse( path ).scheme in ( "ftp", "smb", "upnp", "xbms", "http" ) )
-                    self.titles_paths.append( ( title, path, isShare ) ) 
+                    
+                    self.titles_paths.append( ( title, path, isShare ) )
+                    OK = self._add_directory_item( title, path, isShare )
                     #print path
                     #print title, isShare
                     #print
+            #if ( DIALOG_PROGRESS.iscanceled() ): break
+        return OK
 
     def _get_file_info( self, file_path ):
         try:
@@ -103,7 +110,7 @@ class Main:
 
     def _add_directory_items( self ):
         OK = True
-        listing = []
+        #listing = []
         try:
             if not self.settings[ "path" ]:
                 #xbmcgui.Dialog().ok( _( 30000 ), _( 30008 ) )
@@ -113,49 +120,60 @@ class Main:
 
             xbmc.sleep( 1000 )
             for paths in self.settings[ "path" ]:
-                self._get_share_listing( paths )
-
-            for name, path, isShare in self.titles_paths:
-                fpath = path
-                # get extention 
-                ext = os.path.splitext( fpath )[ 1 ]
-                # add name in listing for liste.txt
-                listing.append( name + ext )
-                name = ( name + ext, name )[ self.settings[ "hide_extention" ] ]
-                DIALOG_PROGRESS.update( -1, _( 1040 ), name )
-                icon = "DefaultVideo.png"
-                thumbnail = get_thumbnail( fpath )
-                if not thumbnail:
-                    try: thumbnail = os.path.splitext( fpath )[ 0 ] + ".tbn"
-                    except: print_exc()
-                listitem = xbmcgui.ListItem( name, iconImage=icon, thumbnailImage=thumbnail )
-                # add the movie information item
-                c_items = [ ( _( 13358 ), "XBMC.PlayMedia(%s)" % ( fpath ), ) ]
-                c_items += [ ( _( 30009 ), "XBMC.Action(Info)", ) ]
-                c_items += [ ( _( 654 ), "XBMC.ActivateWindow(scriptsdebuginfo)" ) ]
-                # add items to listitem with replaceItems = True so only ours show
-                listitem.addContextMenuItems( c_items, replaceItems=True )
-                #get informations if exists
-                infolabels = self._get_infos( fpath )
-                if isShare:
-                    infolabels.update( { "watched": isShare, "overlay": xbmcgui.ICON_OVERLAY_TRAINED } )
-                listitem.setInfo( type="Video", infoLabels=infolabels )
-                try: listitem.setProperty( "Fanart_Image", os.path.splitext( fpath )[ 0 ] + "-fanart.jpg" )
-                except: print_exc()
-                url = '%s?path=%s&isFolder=%d' % ( sys.argv[ 0 ], repr( quote_plus( fpath ) ), 0, )
-                OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=True, totalItems=len( self.titles_paths ) )
-                if ( not OK ): raise
+                OK = self._get_share_listing( paths )
 
             # recherche manuel
-            listing.sort( key=lambda f: f.lower() )
-            self._add_search( listing )
+            self.listing.sort( key=lambda f: f.lower() )
+            self._add_search()
 
             xbmcplugin.setPluginCategory( handle=int( sys.argv[ 1 ] ), category=_( 20012 ) )
         except:
             print_exc()
             OK = False
-        self._save_listing( listing )
+        self._save_listing()
         self._set_Content( OK )
+
+    def _add_directory_item( self, name, path, isShare ):
+        OK = True
+        try:
+            #for name, path, isShare in self.titles_paths:
+            fpath = path
+            # get extention 
+            filename, ext = os.path.splitext( fpath )
+            # add name in self.listing for liste.txt
+            self.listing.append( name + ext )
+            name = ( name + ext, name )[ self.settings[ "hide_extention" ] ]
+            DIALOG_PROGRESS.update( -1, _( 1040 ), name )
+            icon = "DefaultVideo.png"
+            thumbnail = get_thumbnail( fpath )
+            if not thumbnail:
+                try: thumbnail = ( filename + ".tbn" )#.replace( "\xc3\xa9", "\xe9" )
+                except: print_exc()
+            listitem = xbmcgui.ListItem( name, iconImage=icon, thumbnailImage=thumbnail )
+            # add the movie information item
+            c_items = [ ( _( 13358 ), "XBMC.PlayMedia(%s)" % ( fpath ), ) ]
+            c_items += [ ( _( 30009 ), "XBMC.Action(Info)", ) ]
+            c_items += [ ( _( 654 ), "XBMC.ActivateWindow(scriptsdebuginfo)" ) ]
+            # add items to listitem with replaceItems = True so only ours show
+            listitem.addContextMenuItems( c_items, replaceItems=True )
+            #get informations if exists
+            infolabels = self._get_infos( fpath )
+            if isShare:
+                infolabels.update( { "watched": isShare, "overlay": xbmcgui.ICON_OVERLAY_TRAINED } )
+            listitem.setInfo( type="Video", infoLabels=infolabels )
+            try:
+                fanart = filename + "-fanart.jpg"
+                listitem.setProperty( "Fanart_Image", fanart )
+            except:
+                print_exc()
+            url = '%s?path=%s&isFolder=%d' % ( sys.argv[ 0 ], repr( quote_plus( fpath ) ), 0, )
+            OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=True, totalItems=len( self.titles_paths ) )
+            if ( not OK ): raise
+
+        except:
+            print_exc()
+            OK = False
+        return OK
 
     def _get_path_list( self, paths ):
         # we do not want the slash at end
@@ -178,15 +196,15 @@ class Main:
             fpaths += [ unquote( path ) ]
         return sorted( fpaths )
 
-    def _save_listing( self, listing ):
+    def _save_listing( self ):
         #sauvegarde la liste pour etre utiliser directement avec le generateur nfo en ligne de passion-xbmc
-        if listing and ( self.settings[ "write_list" ] > 0 ):
+        if self.listing and ( self.settings[ "write_list" ] > 0 ):
             try:
-                file( os.path.join( self.settings[ "path" ][ 0 ], "Liste.txt" ), "w" ).write( os.linesep.join( listing ) )
-                #file( os.path.join( os.getcwd().rstrip( ";" ), "Liste.txt" ), "w" ).write( os.linesep.join( listing ) )
+                file( os.path.join( self.settings[ "path" ][ 0 ], "Liste.txt" ), "w" ).write( os.linesep.join( self.listing ) )
+                #file( os.path.join( os.getcwd().rstrip( ";" ), "Liste.txt" ), "w" ).write( os.linesep.join( self.listing ) )
             except: print_exc()
 
-    def _add_search( self, listing ):
+    def _add_search( self ):
         # recherche manuel
         c_items = []
         listitem = xbmcgui.ListItem( _( 30001 ), thumbnailImage=os.path.join( os.getcwd().rstrip( ";" ), "default.tbn" ) )
@@ -194,7 +212,7 @@ class Main:
         #    if self.settings[ "web_navigator" ] != "" and os.path.exists( self.settings[ "web_navigator" ] ):
         #        c_items += [ ( _( 30009 ), "XBMC.Action(Info)", ) ]
         #        cmd = "System.Exec"
-        #        url = PASSION_NFO % translate_string( quote_plus( os.linesep ).join( listing ) )#"%0D%0A"
+        #        url = PASSION_NFO % translate_string( quote_plus( os.linesep ).join( self.listing ) )#"%0D%0A"
         #        command = '%s("%s" "%s")' % ( cmd, self.settings[ "web_navigator" ], url, )
         #        # add the movie information item
         #        c_items += [ ( _( 30011 ), command, ) ]
@@ -202,7 +220,7 @@ class Main:
         #        c_items += [ ( _( 654 ), "XBMC.ActivateWindow(scriptsdebuginfo)" ) ]
         #        listitem.addContextMenuItems( c_items, replaceItems=True )
         #    infos = { "Title": reduced_path( os.path.join( self.settings[ "path" ][ 0 ], "Liste.txt" ) ),
-        #        "plot": "[CR]".join( listing ), "genre": "http://passion-xbmc.org/nfo_creator/index.php",
+        #        "plot": "[CR]".join( self.listing ), "genre": "http://passion-xbmc.org/nfo_creator/index.php",
         #        "watched": 1, "overlay": xbmcgui.ICON_OVERLAY_TRAINED }
         #    listitem.setInfo( type="Video", infoLabels=infos )
         if not c_items:
@@ -216,31 +234,33 @@ class Main:
     def _get_infos( self, fpath ):
         watched = os.path.exists( os.path.splitext( fpath )[ 0 ] + ".nfo" )
         overlay = ( xbmcgui.ICON_OVERLAY_NONE, xbmcgui.ICON_OVERLAY_RAR, )[ watched ]
-        infos = { "Title": os.path.basename( fpath ), "watched": watched, "overlay": overlay }
+
+        self.nfo = nfo_utils.InfosNFO()
+        self.nfo.set( "title", os.path.basename( fpath ) )
+        #self.nfo.isTVShow = True
         try:
             if watched:
-                infos = self.get_nfo_infos( os.path.splitext( fpath.replace( "\xe9", "\xc3\xa9" ) )[ 0 ] + ".nfo" )
+                self.nfo.parse( os.path.splitext( fpath.replace( "\xe9", "\xc3\xa9" ) )[ 0 ] + ".nfo" )
             else:
                 strlist = xbmc.executehttpapi( "GetMovieDetails(%s)" % ( fpath, ) )
                 if "error" in strlist.lower():
                     strlist = xbmc.executehttpapi( "GetMovieDetails(%s)" % ( fpath.replace( "\xe9", "\xc3\xa9" ), ) )
                 if not "error" in strlist.lower():
-                    infos.update( dict( [ tuple( unicode( line.strip( "\n" ), "utf-8" ).split( ":", 1 ) ) for line in strlist.split( "<li>" ) if line.strip( "\n" ) ] ) )
-                    if infos.get( "Year" ):
-                        infos[ "Year" ] = int( infos[ "Year" ] )
-                    if infos.get( "Rating" ):
-                        infos[ "Rating" ] = float( infos[ "Rating" ] )
-                    if infos.get( "Cast" ):
-                        infos[ "Cast" ] = infos[ "Cast" ].split( "\n" )
-                    #for key, value in infos.items():
-                    #    print key, value.encode( "iso-8859-1" )
-            #print infos.keys()
-            #print "-"*85
+                    self.nfo.__dict__.update( dict( [ tuple( unicode( line.strip( "\n" ), "utf-8" ).split( ":", 1 ) ) for line in strlist.split( "<li>" ) if line.strip( "\n" ) ] ) )
+                    if self.nfo.get( "Year" ):
+                        self.nfo.Year = int( self.nfo.get( "Year" ) or "0" )
+                        self.nfo.infoLabels.update( { "year": self.nfo.Year } )
+                    if self.nfo.get( "Rating" ):
+                        self.nfo.Rating = float( self.nfo.get( "Rating" ) or "0.0" )
+                        self.nfo.infoLabels.update( { "rating": self.nfo.Rating } )
+                    if self.nfo.get( "Cast" ):
+                        self.nfo.Cast = self.nfo.get( "Cast", "" ).split( "\n" )
+                        self.nfo.infoLabels.update( { "cast": self.nfo.Cast } )
         except:
             print fpath
             print_exc()
-        infos.update( { "watched": watched, "overlay": overlay } )
-        return infos
+        self.nfo.infoLabels.update( { "title": self.nfo.title, "watched": watched, "overlay": overlay } )
+        return self.nfo.infoLabels
 
     def _set_Content( self, OK ):
         if ( OK ):
@@ -256,84 +276,3 @@ class Main:
 
     def _end_of_directory( self, OK ):
         xbmcplugin.endOfDirectory( handle=int( sys.argv[ 1 ] ), succeeded=OK )
-
-    def get_nfo_infos( self, url ):
-        """use get_nfo_infos and return infos for listitem.setInfo
-        setInfo(type, infoLabels) -- Sets the listitem's infoLabels.
-
-        type           : string - type of media(video/music/pictures).
-        infoLabels     : dictionary - pairs of { label: value }.
-
-        *Note, To set pictures exif info, prepend 'exif:' to the label. Exif values must be passed
-               as strings, separate value pairs with a comma. (eg. {'exif:resolution': '720,480'}
-               See CPictureInfoTag::TranslateString in PictureInfoTag.cpp for valid strings.
-
-               You can use the above as keywords for arguments and skip certain optional arguments.
-               Once you use a keyword, all following arguments require the keyword.
-
-        example:
-          - self.list.getSelectedItem().setInfo('video', { 'Genre': 'Comedy' })
-        """
-
-        nfo_r = file( url, "r" ).read()
-        try:
-            trailer     = ( re.findall( '<trailer>(.*?)</trailer>', nfo_r )      or [ "" ] )[ 0 ]
-            title       = ( re.findall( '<title>(.*?)</title>', nfo_r )          or [ "" ] )[ 0 ]
-            year        = ( re.findall( '<year>(.*?)</year>', nfo_r )            or [ "" ] )[ 0 ]
-            date        = ( re.findall( '<date>(.*?)</date>', nfo_r )            or [ "" ] )[ 0 ]
-            director    = ( re.findall( '<director.*?>(.*?)</director>', nfo_r ) or [ "" ] )[ 0 ]
-            tagline     = ( re.findall( '<tagline>(.*?)</tagline>', nfo_r )      or [ "" ] )[ 0 ]
-            writer      = ( re.findall( '<credits.*?>(.*?)</credits>', nfo_r )   or [ "" ] )[ 0 ]
-            studio      = ( re.findall( '<studio.*?>(.*?)</studio>', nfo_r )     or [ "" ] )[ 0 ]
-            rating      = ( re.findall( '<rating>(.*?)</rating>', nfo_r )        or [ "" ] )[ 0 ]
-            votes       = ( re.findall( '<votes>(.*?)</votes>', nfo_r )          or [ "" ] )[ 0 ]
-            mpaa        = ( re.findall( '<mpaa>(.*?)</mpaa>', nfo_r )            or [ "" ] )[ 0 ]
-            genre       = ( re.findall( '<genre.*?>(.*?)</genre>', nfo_r )       or [ "" ] )[ 0 ]
-            plotoutline = ( re.findall( '<outline>(.*?)</outline>', nfo_r )      or [ "" ] )[ 0 ].replace( "\r", "  " ).replace( "\n", "  " )
-            plot        = ( re.findall( '<plot>(.*?)</plot>', nfo_r, re.DOTALL ) or [ "" ] )[ 0 ]
-
-            thumbs      = ( re.findall( '<thumbs>(.*?)</thumbs>', nfo_r, re.DOTALL ) or [ "" ] )[ 0 ]
-            thumbs      = ( re.findall( '<thumb>(.*)</thumb>', thumbs )              or [ "" ] )[ 0 ]
-
-            fanart      = ( re.findall( '<fanart>(.*?)</fanart>', nfo_r, re.DOTALL ) or [ "" ] )[ 0 ]
-            fanart      = ( re.findall( '<thumb>(.*)</thumb>', fanart )              or [ "" ] )[ 0 ]
-
-            cast_and_role = []
-            for actor_role in re.findall( '<actor.*?>(.*?)</actor>', nfo_r, re.DOTALL ):
-                try:
-                    cast_and_role.append( zip( re.findall( '<name>(.*)</name>', actor_role ),
-                        re.findall( '<role>(.*)</role>', actor_role ) )[ 0 ] )
-                except: pass
-            cast = cast_and_role
-
-
-            duration    = ( re.findall( '<runtime>(.*?)</runtime>', nfo_r ) or [ "" ] )[ 0 ]
-            try:
-                hrs, min = re.findall( "(\d{1,4})", duration )
-                duration = time.strftime( "%X", time.gmtime( ( int( hrs ) * 60 * 60 ) + ( int( min ) * 60 ) ) )
-                del hrs, min
-            except: pass
-
-            # set required integer
-            if year.isdigit(): year = int( year )
-            if rating.isdigit(): rating = float( rating )
-            
-            # possible others keywords for video type
-            #episode = integer
-            #season = integer
-            #count = integer
-            #size = integer
-            #watched = integer 1 or 2
-            #playcount = integer
-            #overlay = integer, look xbmcguimodule.cpp
-            #cast or castandrole = ["bla"] or  [("game","over")]
-            #tvshowtitle = string
-            #premiered = string
-            #date = string, format "2009-01-12"
-            #trailer = string, playable media local or online
-        except:
-            print_exc()
-
-        # delete unnecessary infos and return locals is infoLabels (dict)
-        del self, url, nfo_r, cast_and_role
-        return locals()
