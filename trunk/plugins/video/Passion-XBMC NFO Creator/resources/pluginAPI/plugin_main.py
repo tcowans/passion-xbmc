@@ -131,7 +131,7 @@ class Main:
             print_exc()
             OK = False
         self._save_listing()
-        self._set_Content( OK )
+        self._set_content( OK )
 
     def _add_directory_item( self, name, path, isShare ):
         OK = True
@@ -262,7 +262,7 @@ class Main:
         self.nfo.infoLabels.update( { "title": self.nfo.title, "watched": watched, "overlay": overlay } )
         return self.nfo.infoLabels
 
-    def _set_Content( self, OK ):
+    def _set_content( self, OK ):
         if ( OK ):
             content = ( "files", "movies", "tvshows", "episodes", )[ 1 ]
             xbmcplugin.setContent( handle=int( sys.argv[ 1 ] ), content=content )

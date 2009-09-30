@@ -16,6 +16,8 @@ import xbmcplugin
 import nfo_utils
 from utilities import *
 
+from file_item import Thumbnails
+thumbnails = Thumbnails()
 
 
 _ = xbmc.getLocalizedString
@@ -60,6 +62,7 @@ class Main:
         self.settings[ "scraper" ] = xbmcplugin.getSetting( "scraper" )
         self.settings[ "download_state" ] = int( xbmcplugin.getSetting( "download_state" ) )
         self.settings[ "passion_fanart" ] = ( xbmcplugin.getSetting( "passion_fanart" ) == "true" )
+        self.settings[ "actors_thumbs" ] = ( xbmcplugin.getSetting( "actors_thumbs" ) == "true" )
 
     def _add_directory_items( self ):
         OK = True
@@ -67,17 +70,28 @@ class Main:
             exec "from scrapers.%s import scraper" % self.settings[ "scraper" ]
             movie_data = scraper.Movie( self.args.show_id, is_svn_version() )
             self.nfo_file = movie_data.XML( SPECIAL_PLUGIN_CACHE, passion_fanart=self.settings[ "passion_fanart" ]  )
-            print self.nfo_file
+            #print self.nfo_file
 
             DIALOG_PROGRESS.update( -1, _( 1040 ), self.nfo_file )
             self.nfo = nfo_utils.InfosNFO()
             #self.nfo.isTVShow = True
             self.nfo.parse( self.nfo_file )
-            
+            if self.settings[ "actors_thumbs" ]:
+                for actor in self.nfo.actor:
+                    try:
+                        if actor.get( "thumb" ) and actor.get( "name" ):
+                            DIALOG_PROGRESS.update( -1, _( 20402 ), actor.get( "name" ) )
+                            cached_actor = thumbnails.get_cached_actor_thumb( actor.get( "name" ) )
+                            if not os.path.exists( cached_actor ):
+                                xbmc.executehttpapi( "FileDownloadFromInternet(%s;%s)" % ( actor.get( "thumb" ), cached_actor, ) )
+                                #print cached_actor
+                                #print actor.get( "thumb" )
+                                #print
+                    except:
+                        print_exc()
 
             DIALOG_PROGRESS.update( -1, _( 1040 ), self.nfo.get( "title" ) )
 
-            
             tbn = ( self.nfo.get( "thumbs" ) or [ "" ] )[ 0 ]
             listitem = xbmcgui.ListItem( self.nfo.get( "title" ), iconImage=tbn, thumbnailImage=tbn )
 
@@ -109,7 +123,7 @@ class Main:
         except:
             print_exc()
             OK = False
-        self._set_Content( OK )
+        self._set_content( OK )
 
     def _add_trailers_item( self, movie_data ):
         OK = True
@@ -130,7 +144,7 @@ class Main:
             OK = False
         return OK
 
-    def _set_Content( self, OK ):
+    def _set_content( self, OK ):
         if ( OK ):
             content = ( "files", "movies", "tvshows", "episodes", )[ 1 ]
             xbmcplugin.setContent( handle=int( sys.argv[ 1 ] ), content=content )
