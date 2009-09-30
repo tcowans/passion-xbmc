@@ -11,6 +11,8 @@ import xbmc
 import xbmcgui
 import xbmcplugin
 
+#modules custom
+import nfo_utils
 from utilities import SPECIAL_PLUGIN_CACHE
 
 
@@ -138,20 +140,35 @@ class PluginSelect:
         self.fpath = kwargs.get( "fpath" )
         self.onNFO()
 
+    def _get_infos( self, title, fpath ):
+        self.nfo = nfo_utils.InfosNFO()
+        self.nfo.set( "title", title )
+        if os.path.exists( fpath ):
+            self.nfo.parse( fpath )
+
     def onNFO( self ):
         OK = True
         try:
             #( ID, title, thumb, extra )
             for film in self.films:
-                tbn = get_thumbnail( film[ 2 ] ) or "DefaultVideo.png"
                 title = bold_name_match( self.name_search.strip( '"' ), film[ 1 ] )
                 DIALOG_PROGRESS.update( -1, _( 1040 ), title )
+                #get informations if exists
+                self._get_infos( title, os.path.join( SPECIAL_PLUGIN_CACHE, "%s.xml" % film[ 0 ] ) )
+
+                tbn = ( self.nfo.get( "thumbs" ) or [ "" ] )[ 0 ] or get_thumbnail( film[ 2 ] ) or "DefaultVideo.png"
                 listitem = xbmcgui.ListItem( title, "[COLOR=a0e2ff43]ID:[/COLOR] " + film[ 0 ], tbn, tbn )
+
                 c_items = [ ( _( 30009 ), "XBMC.Action(Info)", ) ]
                 c_items += [ ( _( 654 ), "XBMC.ActivateWindow(scriptsdebuginfo)" ) ]
                 listitem.addContextMenuItems( c_items, replaceItems=True )
-                plot = "[COLOR=a0e2ff43]ID:[/COLOR] %s[CR]%s" % ( film[ 0 ], film[ 3 ] )
-                listitem.setInfo( type="Video", infoLabels={ "title": title, "plot": plot } )
+
+                if not self.nfo.infoLabels.get( "plot" ):
+                    self.nfo.infoLabels[ "plot" ] = "[COLOR=a0e2ff43]ID:[/COLOR] %s[CR]%s" % ( film[ 0 ], film[ 3 ] )
+                if not self.nfo.infoLabels.get( "title" ):
+                    self.nfo.infoLabels[ "title" ] = title
+                listitem.setInfo( type="Video", infoLabels=self.nfo.infoLabels )
+
                 url = "%s?path=%s&show_id=%s" % ( sys.argv[ 0 ], repr( urllib.quote_plus( self.fpath ) ), repr( film[ 0 ] ), )
                 OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=True, totalItems=len( self.films ) )
             try: cat = _( 283 ) + ":[CR]" + self.name_search
@@ -159,9 +176,9 @@ class PluginSelect:
             xbmcplugin.setPluginCategory( handle=int( sys.argv[ 1 ] ), category=cat )
         except:
             print_exc()
-        self._set_Content( OK )
+        self._set_content( OK )
 
-    def _set_Content( self, OK ):
+    def _set_content( self, OK ):
         if ( OK ):
             content = ( "files", "movies", "tvshows", "episodes", )[ 1 ]
             xbmcplugin.setContent( handle=int( sys.argv[ 1 ] ), content=content )
