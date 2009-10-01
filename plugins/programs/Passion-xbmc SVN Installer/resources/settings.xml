@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings>
-    <setting id="repository" type="fileenum" mask="/" values="resources\repositories\" label="30500" default="passion-xbmc" />
+    <setting id="show_no_svn" type="bool" label="30510" default="false" />
+    <setting id="show_no_ver" type="bool" label="30520" default="false" />
+    <setting type="sep" />
+    <setting type="action" label="30530" option="close" default="RunPlugin(plugin://Programs/Passion-xbmc SVN Installer/?showreadme=True&amp;repo=None&amp;readme=None)" />
+    <setting type="action" label="30540" option="close" default="RunPlugin(plugin://Programs/Passion-xbmc SVN Installer/?showlog=True&amp;repo='xbmc-addons'&amp;category='Passion-xbmc SVN Installer'&amp;revision=True&amp;parse=True)" />
 </settings>
