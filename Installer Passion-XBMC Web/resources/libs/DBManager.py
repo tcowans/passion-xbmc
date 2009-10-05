@@ -418,10 +418,12 @@ class CsvDB(DBMgr):
                 cols = {}
                 cols['$id_cat']=row[0]
                 cols['$title']=unescape( row[1])
+                #cols['$title']= u"""%s"""%unescape( row[1]).encode("cp1252")
+                #cols['$title']= unicode( unescape( row[1]),"cp1252" )
                 print "title"
                 print row[1]
-                print unescape( strip_off( row[1] ) )
-                print unescape( row[1] )
+                #print unescape( strip_off( row[1] ) )
+                #print unescape( row[1] )
                 cols['$description']=unescape( row[2] )
                 cols['$image']=row[3]
                 cols['$id_parent']= row[4]

@@ -21,6 +21,7 @@ except:
 # Modules custom
 from utilities import *
 import CONF
+#import extractor
 
 class cancelRequest(Exception):
     def __init__(self, value):
@@ -44,10 +45,10 @@ class ItemInstaller:
         self.CACHEDIR = self.configManager.CACHEDIR
         
         
-    def downloadItem( self ):
+    def downloadItem( self, msgFunc=None,progressBar=None ):
         pass
 
-    def installItem( self ):
+    def installItem( self, msgFunc=None,progressBar=None ):
         pass
 
 class HTTPInstaller(ItemInstaller):
@@ -72,46 +73,25 @@ class HTTPInstaller(ItemInstaller):
         cols = {}
         cols['$id_item'] = str(self.itemId)
         try:            
-            print "downlaodItem - itemId" 
-            print self.itemId
+            logger.LOG( logger.LOG_DEBUG, "HTTPInstaller::downloadItem - itemId = %d"%self.itemId)
             
             # Get download link
-                    
-#            #get parent id of current parent
-#            conn = sqlite.connect(self.db)
-#            #Initialisation de la base de donnee
-#            c = conn.cursor()
-#            c.execute(self.nicequery('''SELECT filename, filesize,  
-#                                     FROM Server_Items
-#                                     WHERE id_file = $id_item''',cols))
-#            filename, filesize = c.fetchone()[0]
-            
-            # Get real filename via the header
+                               
             fileURL  = self.baseurl + str(self.itemId)
-            #fileName = self.getFileName( fileURL )
             
-            print "fileURL = "
-            print fileURL
-            #print "fileName ="
-            #print fileName
-            
-            # Get destination directory
-
-            # Download file
-            # pront download file to cache dir
+            # Download file (to cache dir) and get destination directory
             self.downloadArchivePath = self.downloadFile( fileURL, self.CACHEDIR, msgFunc=msgFunc, progressBar=progressBar )
         
-        # Get temp path
         except Exception, e:
-            print "Exception during downlaodItem"
-            print e
-            print sys.exc_info()
+            #print "Exception during downlaodItem"
+            #print e
+            #print sys.exc_info()
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-        print self.downloadArchivePath
+            self.downloadArchivePath = None
         return self.downloadArchivePath
 
 
-    def extractItem( self ):
+    def extractItem( self, msgFunc=None,progressBar=None ):
         """
         Extract item in temp location
         """
@@ -121,10 +101,10 @@ class HTTPInstaller(ItemInstaller):
         if self.downloadArchivePath.endswith( 'zip' ) or self.downloadArchivePath.endswith( 'rar' ):
             import extractor
             process_error = False
-            # on extrat tous dans le cache et si c'est OK on copy par la suite
+            # on extrait tous dans le cache et si c'est OK on copy par la suite
             file_path, OK = extractor.extract( self.downloadArchivePath, report=True )
-            print file_path
-            print OK
+            #print file_path
+            #print OK
 
             if self.type == "ScraperDir":
                 # cas des Scrapers
@@ -141,6 +121,7 @@ class HTTPInstaller(ItemInstaller):
                 dirName = ""
                 if ( OK == bool( file_path ) ) and os.path.exists( file_path ):
                     dirName = os.path.basename( file_path )#self.extracter.getDirName( archive )
+                    
 
                 if dirName == "":
                     installError = _( 139 ) % archive
@@ -150,10 +131,12 @@ class HTTPInstaller(ItemInstaller):
                     self.destinationPath = os.path.join( self.typeInstallPath, os.path.basename( file_path ) )
                     self.extractedDirPath = file_path
                     logger.LOG( logger.LOG_NOTICE, self.destinationPath )
+            #TODO: add skin case (requirements need to be defined first)
             del extractor
-            print self.type
-            print self.destinationPath
-            print self.extractedDirPath
+            
+            #print self.type
+            #print self.destinationPath
+            #print self.extractedDirPath
         return self.type, self.destinationPath, self.extractedDirPath
 
     def isAlreadyInstalled( self ):
@@ -166,7 +149,7 @@ class HTTPInstaller(ItemInstaller):
         else:
             return False
     
-    def installItem( self ):
+    def installItem( self, msgFunc=None,progressBar=None ):
         """
         Install item from extracted archive
         Needs to be called after extractItem
@@ -176,42 +159,42 @@ class HTTPInstaller(ItemInstaller):
         OK = False
         # get install path
         process_error = False
-        print self.extractedDirPath
-        print self.destinationPath
         
         if ( ( self.extractedDirPath != None ) and ( self.destinationPath != None ) ):
-            print "Check type"
-            print self.type
             if self.type == "ScraperDir":
                 # cas des Scrapers
                 # ----------------
-                if os.path.exists( self.extractedDirPath ):
-                    print "Starting scraper copy"
-                    try:
+                logger.LOG( logger.LOG_DEBUG, "ItemInstaller::installItem - Starting item copy" )
+                try:
+                    #if ( OK == bool( self.extractedDirPath ) ) and os.path.exists( self.extractedDirPath ):
+                    if os.path.exists( self.extractedDirPath ):
                         extractor.copy_inside_dir( self.extractedDirPath, self.destinationPath )
                         OK = True
-                    except:
-                        process_error = True
-                    print "Install Scraper completed"
-                else:
-                    print "self.extractedDirPath does not exist"
+                    else:
+                        logger.LOG( logger.LOG_DEBUG, "ItemInstaller::installItem - self.extractedDirPath does not exist")
+                except Exception, e:        
+                    logger.LOG( logger.LOG_DEBUG, "ItemInstaller::installItem - Exception during copy of the directory %s", self.extractedDirPath )
+                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                    process_error = True
+                print "Install Scraper completed"
             else:
                 # Cas des scripts et plugins
                 # --------------------------
                 # Recuperons le nom du repertorie a l'interieur de l'archive:
                 dirName = ""
-                if os.path.exists( self.extractedDirPath ):
-                    print "Starting item copy"
-                    try:
+                logger.LOG( logger.LOG_DEBUG, "ItemInstaller::installItem - Starting item copy" )
+                try:
+                    #if ( OK == bool( self.extractedDirPath ) ) and os.path.exists( self.extractedDirPath ):
+                    if os.path.exists( self.extractedDirPath ):
                         extractor.copy_dir( self.extractedDirPath, self.destinationPath )
                         OK = True
-                    except:
-                        process_error = True
-                    print "Install item completed"
-                else:
-                    print "self.extractedDirPath does not exist"
-
-        
+                    else:
+                        logger.LOG( logger.LOG_DEBUG, "ItemInstaller::installItem - self.extractedDirPath does not exist")
+                except Exception, e:        
+                    logger.LOG( logger.LOG_DEBUG, "ItemInstaller::installItem - Exception during copy of the directory %s", self.extractedDirPath )
+                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                    process_error = True
+                print "Install item completed"
 
         del extractor
         return OK

@@ -560,6 +560,7 @@ class MainWindow( xbmcgui.WindowXML ):
                     percent = 0
                     dp.create( _( 122 ) % downloadItem, _( 123 ) % percent )
 
+                    # Get the installer Object who now how to do the job (depending on the source)
                     itemInstaller = self.browser.getInstaller(self.index)
                     
                     print "Download via itemInstaller"
@@ -765,8 +766,9 @@ class MainWindow( xbmcgui.WindowXML ):
     
                     #TODO: case of install an item
                 else:
-                    print "Install download and install case"
+                    print "Download and install case"
                     #self.install_add_ons()
+                    # Get the installer Object who now how to do the job (depending on the source)
                     itemInstaller = self.browser.getInstaller(self.index)
                     
                     print "Download via itemInstaller"
@@ -775,13 +777,13 @@ class MainWindow( xbmcgui.WindowXML ):
                     
                     # Save in local directory
                     #TODO: support message callback in addition of pb callback
-                    itemInstaller.downloadItem(progressBar=dp)
-                    itemInstaller.extractItem()
+                    itemInstaller.downloadItem( progressBar=dp )
+                    itemInstaller.extractItem( progressBar=dp )
                     if not itemInstaller.isAlreadyInstalled():
                         print "Item is not yet installed - installing"
-                        import time
-                        time.sleep(10)
-                        itemInstaller.installItem()
+                        #import time
+                        #time.sleep(10)
+                        itemInstaller.installItem( progressBar=dp )
                     else:
                         print "Item is already installed - stopping install"
 
@@ -1136,10 +1138,25 @@ class MainWindow( xbmcgui.WindowXML ):
             listItem.setProperty( "fileName",        dataItem['file'] )
             listItem.setProperty( "date",            "test date" )
             listItem.setProperty( "title",           dataItem['name'] )
+            #listItem.setProperty( "title",           dataItem['name'].replace( r"\\", "\\" ).encode("cp1252") )
             listItem.setProperty( "author",          "test author" )
             listItem.setProperty( "version",         "1.0" )
             listItem.setProperty( "language",        "language" )
-            listItem.setProperty( "description",     dataItem['description'] )
+            #listItem.setProperty( "description",     dataItem['description'] )
+            #listItem.setProperty( "description",     unicode(dataItem['description'].encode("utf8").replace( r"\\", "\\" ), "cp1252" ) )
+            listItem.setProperty( "description",     repr(dataItem['description']).replace( r"\\", "\\" ) )
+            print repr(dataItem['description']) 
+            print repr(dataItem['description']).replace( r"\\", "\\" )
+            print unicode(repr(dataItem['description']).replace( r"\\", "\\" ).encode("cp1252"))
+            print unicode(repr(dataItem['description']).replace( r"\\", "\\" ).encode("cp1252")).decode("cp1252")
+            print unicode(dataItem['description'].encode("utf8").replace( r"\\", "\\" ), "cp1252" ) 
+            #listItem.setProperty( "description",     unicode("Vidéo test \ test \ test", "cp1252" ) )
+            print "set_item_infos"
+            print unicode(dataItem['description'])
+            print unicode(dataItem['description'].encode("utf8"))
+            print unicode(dataItem['description'].encode("cp1252"))
+            print unicode(dataItem['description'].encode("cp1252")).decode("cp1252")
+            print unicode(dataItem['description'].encode("utf8").replace( r"\\", "\\" ), "cp1252" )
             listItem.setProperty( "added",           "Date added" )
             listItem.setProperty( "fanartpicture",   dataItem['previewpicture'] )
             listItem.setProperty( "previewVideoURL", "" )
