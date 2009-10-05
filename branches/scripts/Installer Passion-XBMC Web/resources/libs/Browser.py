@@ -295,6 +295,7 @@ class HTTPBrowser(ItemBrowser):
         #Connection à la base de donnée
         conn = sqlite.connect(self.db)
         c = conn.cursor()
+        #conn.text_factory = unicode
         
         
         cols = {}
@@ -319,15 +320,26 @@ class HTTPBrowser(ItemBrowser):
         for row in c:   
             item = {}
             item['id']                = row[0]
-            item['name']              = unescape( strip_off( row[1].encode("cp1252") ) )
+            #item['name']              = ( strip_off( row[1].encode("cp1252") ) )
+            #print 'incat: name'
+            #print row[1].encode("cp1252")
+            #print row[1].encode("cp1252").replace( r"\\", "\\" )
+            #item['name']              = row[1].encode("cp1252").replace( r"\\", "\\" )
+            item['name']              = row[1]
             item['parent']            = row[2]
             item['file']              = row[3]
             item['type']              = row[4]
             item['previewpictureurl'] = row[5]
-            item['description']       = row[6].encode("cp1252") #unescape( strip_off( row[6].encode("utf8") ) )
+            #item['description']       = row[6].encode("cp1252") #unescape( strip_off( row[6].encode("utf8") ) )
+            if (row[6] != None):
+                item['description']       = unescape( strip_off( row[6].encode("utf8") ) ).replace( r"\\", "\\" )
+            else:
+                item['description'] = "No description" #TODO: support localization
+            #item['description'] = unescape( (row[6]).encode( "cp1252" ) )
             skipItem = False # Indicate if ths item will be added to the list or not
             
-           
+            print 'HTTPBrowser::incat - previewpictureurl:'
+            print item['previewpictureurl']
             if  item['previewpictureurl'] == 'None':
                 if (item['type'] == 'FIC'):
                     item['thumbnail']      = "IPX-NotAvailable2.png"
@@ -373,21 +385,27 @@ class HTTPBrowser(ItemBrowser):
                         skipItem = True
             else:
                 # On verifie si l'image serait deja la
+                downloadImage = False
                 thumbnail, checkPathPic = set_cache_thumb_name( item['previewpictureurl'] )
                 if thumbnail and os.path.isfile( thumbnail ):
                     item['thumbnail'] = thumbnail
                 else:
                     item['thumbnail'] = "IPX-NotAvailable2.png"
+                    downloadImage = True
                     
                 if os.path.exists(checkPathPic):
                     item['previewpicture'] = checkPathPic
                 else:
                     item['previewpicture'] = "IPX-NotAvailable2.png"
-#                    else:
-#                        # Telechargement et mise a jour de l'image (thread de separe)
-#                        previewPicture = checkPathPic #"downloading"
-#                        # Ajout a de l'image a la queue de telechargement
-#                        self.image_queue.append( ImageQueueElement(previewPictureURL, updateImage_cb, listitem ) )
+                    downloadImage = True
+                    
+                if downloadImage == True:
+
+                    # Telechargement et mise a jour de l'image (thread de separe)
+                    # Ajout a de l'image a la queue de telechargement
+                    #self.image_queue.append( ImageQueueElement( previewPictureURL, updateImage_cb, listitem ) )
+                    self.image_queue.append( ImageQueueElement( item['previewpictureurl'] ) )
+                    #TODO: dynamic update of image (right now image is not updatd in the GUI after download)
             
                 
             #TODO: else case for type == 'CAT'
@@ -404,6 +422,8 @@ class HTTPBrowser(ItemBrowser):
         c.close()
         print "incat current list"
         print self.curList
+        print "incat listOfItems"
+        print listOfItems
         return self.curList 
     
     def getPrevList( self ):
@@ -441,7 +461,7 @@ class HTTPBrowser(ItemBrowser):
                       WHERE id_cat = $id_cat''',cols2))
             self.curCategory = c.fetchone()[0]
             
-        except e:
+        except Exception, e:
             print "getPrevList: exception - returning list without change"
             print e
             curList = self.curList
@@ -482,8 +502,8 @@ class HTTPBrowser(ItemBrowser):
             
         for row in c:
             print row
-            title = row[0]
-            path = row[1]
+            title = row[0].encode( "cp1252" )
+            path = row[1].encode( "utf8" )
         c.close()   
         print "title = %s"%title
         print "path = %s"%path
@@ -527,8 +547,8 @@ class HTTPBrowser(ItemBrowser):
         for row in c:
             print row
             dico['id'] = row[0]
-            dico['name'] = (row[1].encode("cp1252"))
-            dico['description'] = (row[2].encode("cp1252"))
+            dico['name'] = (row[1].encode( "cp1252" ) )
+            dico['description'] = unescape( row[2].encode( "cp1252" ) )
             dico['screenshot'] = row[3]
             dico['downloads'] = row[4]
             dico['file'] = row[5]
@@ -595,6 +615,8 @@ class HTTPBrowser(ItemBrowser):
                 print filesize
             
                 type, installPath = self.getCategoryInfo( catId )
+                
+                # Create the right type of Installer Object
                 itemInstaller = ItemInstaller.HTTPInstaller( itemId, type, installPath, filesize )
             else:
                 print "getInstaller: error impossible to install a category, it has to be an item "
@@ -621,7 +643,11 @@ class HTTPBrowser(ItemBrowser):
         try:
         
             filetodlUrl = self.baseURLPreviewPicture + picname
+            print "filetodlUrl"            
+            print filetodlUrl
             thumbnail, localFilePath = set_cache_thumb_name( picname )
+            print thumbnail
+            print localFilePath
             loc = urllib.URLopener()
             loc.retrieve(filetodlUrl, localFilePath)   
 
