@@ -162,7 +162,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 self.browser = Browser.HTTPBrowser( db )
 
                 # Recuperation de la liste des elements
-#                DIALOG_PROGRESS.update( -1, _( 104 ), _( 110 ) )
+                DIALOG_PROGRESS.update( -1, _( 104 ), _( 110 ) )
                 print "Updating displayed list"
                 self.updateData_Next()
                 self.updateList()
@@ -180,20 +180,9 @@ class MainWindow( xbmcgui.WindowXML ):
             self.setProperty( "Category", _( 10 ) )
             xbmc.executebuiltin( "Container.SetViewMode(%i)" % self.settings.get( "main_view_mode", self.CONTROL_MAIN_LIST_START ) )
 
-#            # Capturons le contenu des sous-repertoires plugins
-#            for type in self.downloadTypeList:
-#                if type.find( "Plugins" ) != -1:
-#                    #self.pluginsInitList.append( os.listdir( self.localdirList[ self.downloadTypeList.index( type ) ] ) )
-#                    self.pluginsDirSpyList.append( directorySpy( self.localdirList[ self.downloadTypeList.index( type ) ] ) )
-#                else:
-#                    self.pluginsDirSpyList.append( None )
-
-#            # Creons ItemInfosManager afin de recuperer les descriptions des items
-#            self.itemInfosManager = ItemInfosManager( mainwin=self )
-#            self.infoswarehouse = self.itemInfosManager.get_info_warehouse()
 
             # Close the Loading Window
-#            DIALOG_PROGRESS.close()
+            DIALOG_PROGRESS.close()
         else:
             # pas le choix avec les nouvelles vue, mais on lui joue un tour avec une listitems deja ready :P
             if xbmc.getCondVisibility( "Window.IsActive(passion-main.xml)" ):
@@ -774,18 +763,18 @@ class MainWindow( xbmcgui.WindowXML ):
                     print "Download via itemInstaller"
                     dp = xbmcgui.DialogProgress()
                     dp.create("Téléchargement en cours ...")
-                    
+                    itemInstaller.installItem( progressBar=dp )
                     # Save in local directory
                     #TODO: support message callback in addition of pb callback
-                    itemInstaller.downloadItem( progressBar=dp )
-                    itemInstaller.extractItem( progressBar=dp )
-                    if not itemInstaller.isAlreadyInstalled():
-                        print "Item is not yet installed - installing"
-                        #import time
-                        #time.sleep(10)
-                        itemInstaller.installItem( progressBar=dp )
-                    else:
-                        print "Item is already installed - stopping install"
+                    # itemInstaller.downloadItem( progressBar=dp )
+                    # itemInstaller.extractItem( progressBar=dp )
+                    # if not itemInstaller.isAlreadyInstalled():
+                        # print "Item is not yet installed - installing"
+                        # import time
+                        # time.sleep(10)
+                        # itemInstaller.installItem( progressBar=dp )
+                    # else:
+                        # print "Item is already installed - stopping install"
 
                     del dp
 
@@ -1317,6 +1306,27 @@ class MainWindow( xbmcgui.WindowXML ):
             #TODO: cas a implementer
 
         return continueDownload
+		
+    def message_cb(self, msgType, title, message1, message2="", message3=""):
+        """
+        Callback function for sending a message to the UI
+        @param msgType: Type of the message
+        @param title: Title of the message
+        @param message1: Message part 1
+        @param message2: Message part 2
+        @param message3: Message part 3
+        """
+        #print("message_cb with %s STARTS"%msgType)
+        result = None
+
+        # Display the correct dialogBox according the type
+        if msgType == "OK" or msgType == "Error":
+            dialogInfo = xbmcgui.Dialog()
+            result = dialogInfo.ok(title, message1, message2,message3)
+        elif msgType == "YESNO":
+            dialogYesNo = xbmcgui.Dialog()
+            result = dialogYesNo.yesno(title, message1, message2, message3)
+        return result
 
 
 def show_main():
