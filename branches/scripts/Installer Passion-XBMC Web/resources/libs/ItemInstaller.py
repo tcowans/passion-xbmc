@@ -23,6 +23,9 @@ from utilities import *
 import CONF
 #import extractor
 
+#FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
+_ = sys.modules[ "__main__" ].__language__
+
 class cancelRequest(Exception):
     def __init__(self, value):
         self.value = value
@@ -72,6 +75,10 @@ class HTTPInstaller(ItemInstaller):
         # Get ItemId
         cols = {}
         cols['$id_item'] = str(self.itemId)
+        percent = 0
+        totalpercent = 0
+        if progressBar != None:
+            progressBar.update( percent, _( 122 ) % ( self.baseurl + str(self.itemId) ), _( 123 ) % totalpercent )
         try:            
             logger.LOG( logger.LOG_DEBUG, "HTTPInstaller::downloadItem - itemId = %d"%self.itemId)
             
@@ -88,6 +95,8 @@ class HTTPInstaller(ItemInstaller):
             #print sys.exc_info()
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
             self.downloadArchivePath = None
+        if progressBar != None:
+            progressBar.update( percent, _( 122 ) % ( self.baseurl + str(self.itemId) ), _( 134 ) )
         return self.downloadArchivePath
 
 
@@ -98,6 +107,9 @@ class HTTPInstaller(ItemInstaller):
         #TODO: update a progress bar during extraction
         print "extractItem - path" 
         print self.downloadArchivePath
+        percent = 33
+        if progressBar != None:
+            progressBar.update( percent, "Extraction:", ( self.baseurl + str(self.itemId) ) )
         if self.downloadArchivePath.endswith( 'zip' ) or self.downloadArchivePath.endswith( 'rar' ):
             import extractor
             process_error = False
@@ -137,6 +149,8 @@ class HTTPInstaller(ItemInstaller):
             #print self.type
             #print self.destinationPath
             #print self.extractedDirPath
+        if progressBar != None:
+            progressBar.update( percent, "Fin Extraction", ( self.baseurl + str(self.itemId) ) )
         return self.type, self.destinationPath, self.extractedDirPath
 
     def isAlreadyInstalled( self ):
@@ -149,7 +163,7 @@ class HTTPInstaller(ItemInstaller):
         else:
             return False
     
-    def installItem( self, msgFunc=None,progressBar=None ):
+    def copyItem( self, msgFunc=None,progressBar=None ):
         """
         Install item from extracted archive
         Needs to be called after extractItem
@@ -198,6 +212,33 @@ class HTTPInstaller(ItemInstaller):
 
         del extractor
         return OK
+
+    def installItem( self, msgFunc=None,progressBar=None ):
+        """
+        Install item (download + extract + copy)
+        Needs to be called after extractItem
+        """
+        print "Download and install case"
+        percent = 0
+#        if progressBar != None:
+#            progressBar.update( percent, _( 123 ) % self.curPercent, self.srcName )
+        #self.install_add_ons()
+        
+        print "Download via itemInstaller"
+#        dp = xbmcgui.DialogProgress()
+#        dp.create("Téléchargement en cours ...")
+        
+        # Save in local directory
+        #TODO: support message callback in addition of pb callback
+        self.downloadItem( msgFunc=msgFunc, progressBar=progressBar )
+        self.extractItem( msgFunc=msgFunc, progressBar=progressBar )
+        if not self.isAlreadyInstalled():
+            print "Item is not yet installed - installing"
+            #import time
+            #time.sleep(10)
+            self.copyItem( msgFunc=msgFunc, progressBar=progressBar )
+        else:
+            print "Item is already installed - stopping install"
 
 
 
