@@ -1306,7 +1306,7 @@ class MainWindow( xbmcgui.WindowXML ):
             #TODO: cas a implementer
 
         return continueDownload
-		
+        
     def message_cb(self, msgType, title, message1, message2="", message3=""):
         """
         Callback function for sending a message to the UI
