@@ -13,7 +13,7 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/Installer%20Passion-XBMC/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center"
-__date__         = "12-03-2009"
+__date__         = "09-10-2009"
 __version__      = "pre-1.0.0"
 __svn_revision__ = 0
 
@@ -151,8 +151,7 @@ def RUN_UNIT_TEST():
 
         config = CONF.ReadConfig()
         del CONF
-        
-        
+
         # LANCEMENT DU SCRIPT
         import DBManager
         print "Creating DBMgr"
@@ -186,7 +185,7 @@ def RUN_UNIT_TEST():
     except:
         logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
         dialog_error = True
-    
+
 
 if __name__ == "__main__":
     try:
@@ -200,7 +199,6 @@ if __name__ == "__main__":
             print "Running Unit tests"
             RUN_UNIT_TEST()      
             print "Tests done"      
-            
         else:
             MAIN()
     except:
