@@ -141,7 +141,7 @@ class InfosNFO:
 if ( __name__ == "__main__" ):
     import time
     t1 = time.time()
-    filename = "scrapers/Passion_XBMC/29718.xml"
+    filename = "scrapers/Cine_Passion/29718.xml"
     nfo = InfosNFO()
     print dir( nfo )
     print
