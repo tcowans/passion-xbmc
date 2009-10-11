@@ -45,7 +45,8 @@ class InfosNFO:
 
     def parse( self, filename ):
         try:
-            tree = ET.parse( filename )
+            try: tree = ET.parse( filename, "utf-8" )
+            except: tree = ET.parse( filename )
             root = tree.getroot()
             self.set( "actor", [] )
             self.set( "fanart", [] )
