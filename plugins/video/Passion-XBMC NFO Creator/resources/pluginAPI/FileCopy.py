@@ -12,6 +12,9 @@ import xbmcplugin
 #modules custom
 from utilities import get_thumbnail
 
+from file_item import Thumbnails
+thumbnails = Thumbnails()
+
 class FileCopy:
     def __init__( self, *args, **kwargs ):
         self.nfo_OK = ""
@@ -61,7 +64,7 @@ class FileCopy:
             try:
                 # set our thumbnail
                 install_thumbnail = self.thumbnail or xbmc.getInfoImage( "ListItem.Thumb" )
-                #print "ListItem.Thumb", install_thumbnail
+                print "ListItem.Thumb", install_thumbnail
                 if os.path.exists( install_thumbnail ) or os.path.isfile( install_thumbnail ):
                     if ( not "Error! File not found" in file( install_thumbnail, "r" ).read() ):
                         thumbpath = os.path.splitext( self.movie_path )[ 0 ] + ".tbn"
@@ -88,7 +91,7 @@ class FileCopy:
             try:
                 # set our fanart
                 Fanart_thumbnail = self.fanart or xbmc.getInfoImage( "Fanart.Image" )
-                #print "Fanart.Image", Fanart_thumbnail
+                print "Fanart.Image", Fanart_thumbnail
                 if os.path.exists( Fanart_thumbnail ) or os.path.isfile( Fanart_thumbnail ):
                     if ( not "Error! File not found" in file( Fanart_thumbnail, "r" ).read() ):
                         fanartpath = os.path.splitext( self.movie_path )[ 0 ] + "-fanart.jpg"
@@ -104,7 +107,7 @@ class FileCopy:
                         self.fanart_OK = "XBMC.Fanart.Image: Error! File not found" 
                         try: os.remove( Fanart_thumbnail )
                         except: pass
-                    print xbmc.executehttpapi( "FileCopy(%s,%s)" % ( Fanart_thumbnail, get_thumbnail( self.movie_path ), ) )
+                    print xbmc.executehttpapi( "FileCopy(%s,%s)" % ( Fanart_thumbnail, thumbnails.get_cached_fanart_thumb( self.movie_path ), ) )
                 else:
                     self.fanart_OK = "XBMC.Fanart.Image: not exists!"
             except:
