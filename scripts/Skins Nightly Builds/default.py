@@ -81,7 +81,7 @@ def rev_github( skin="" ):
     if bool( skin ):
         try:
             url = ""
-            if skin == "Alaska": url = "http://github.com/feeds/Hitcher/commits/Alaska/master"
+            if skin == "Alaska": url = "http://github.com/feeds/HitcherUK/commits/Alaska/master"
             elif skin == "aeon-passion": url = "http://github.com/feeds/Imaginos/commits/aeon-passion/master"
             if bool( url ):
                 rss = urllib.urlopen( url, "r" ).read()
@@ -107,7 +107,7 @@ alaska = {
     "hit": "",
     "rate": "10 / 10",
     "thumbs": [ "http://files.getdropbox.com/u/435063/alaska/alaska_movies.jpg", "http://files.getdropbox.com/u/435063/alaska/alaska_moviesFA.jpg", "http://files.getdropbox.com/u/435063/alaska/alaska_episodesFA.jpg", "http://files.getdropbox.com/u/435063/alaska/alaska_movieinfoFA.jpg" ],
-    "dl": "http://github.com/Hitcher/Alaska/zipball/master",
+    "dl": "http://github.com/HitcherUK/Alaska/zipball/master",
     "type": ".zip"
     }
 
