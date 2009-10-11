@@ -110,7 +110,7 @@ class Main:
             listitem.addContextMenuItems( c_items, replaceItems=True )
 
             if len( self.nfo.get( "fanart" ) ) >= 1:
-                fanart = get_nfo_thumbnail( self.nfo.get( "thumbs" )[ 0 ] )
+                fanart = get_nfo_thumbnail( self.nfo.get( "fanart" )[ 0 ] )
                 listitem.setProperty( "Fanart_Image", fanart )
                 xbmcplugin.setPluginFanart( handle=int( sys.argv[ 1 ] ), image=fanart )
             listitem.setInfo( type="Video", infoLabels=self.nfo.infoLabels )
