@@ -4,8 +4,11 @@ NABBOX UI script
 - NABBOX core made by Alexsolex
 - User interface made by Temhil
 
-14-10-08 Version 1.1 by Temhil and Seb
-    - Fixed crash on Linux: replaced .ini extention by .cfg (thanks Seb)
+16-10-08 Version 1.2 by Temhil
+    - Close cfg file even on exception
+    - Added version format compatible with SVN repo installer
+15-10-08 Version 1.1 by Temhil and Seb
+    - Fixed crash on Linux: replaced .ini extention by .cfg (thanks to Seb)
     - Correct exception handling in case of connection parameters not defined
     - Fixed bug: we didn't close ini file after updating it
 09-10-08 Version 1.0 by Temhil
@@ -33,9 +36,21 @@ NABBOX UI script
 """
 
 ############################################################################
-version     = 'Version 1.1'
+# script constants
 authorUI    = 'Temhil'
 authorCore  = 'Alexsolex'
+
+__script__       = "NABBOX"
+__plugin__       = "Unknown"
+#__author__       = authorUI + " and " + authorCore
+__author__       = "Temhil and Alexsolex"
+__url__          = "http://passion-xbmc.org/index.php"
+__svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/NABBOX/"
+__credits__      = "Team XBMC Passion"
+__platform__     = "xbmc media center"
+__date__         = "10-12-2009"
+__version__      = "1.2"
+__svn_revision__ = 0
 ############################################################################
 
 
@@ -89,8 +104,7 @@ CACHEDIR    = os.path.join(ROOTDIR, "cache")
 DOWNLOADDIR = os.path.join(ROOTDIR, "download")
 
 # List of directories to check at startup
-#TODO: use tuple
-checkList   = [CACHEDIR,DOWNLOADDIR]
+checkList   = (CACHEDIR,DOWNLOADDIR) #Tuple
 
 # Maximum connection retry
 MAX_CONN_RETRY = 1
@@ -202,8 +216,10 @@ class fileMgr:
     """
     #TODO: Create superclass, inherit and overwrite init
     def __init__(self,checkList):
-        self.verifrep(checkList[0]) #CACHEDIR
-        self.verifrep(checkList[1]) #DOWNLOADDIR
+#        self.verifrep(checkList[0]) #CACHEDIR
+#        self.verifrep(checkList[1]) #DOWNLOADDIR
+        for i in range(len(checkList)):
+            self.verifrep(checkList[i]) 
 
         # Set variables needed by NABBOX module
         NABBOX.HTMLFOLDER = checkList[0] #CACHEDIR
@@ -418,10 +434,16 @@ class browser:
                 
             if (self.is_conf_valid == False):
                 # Update file
-                print "INI file format wasn't valid: correcting ..."
+                print "cfg file format wasn't valid: correcting ..."
                 cfgfile=open(os.path.join(ROOTDIR,"nabbox.cfg"), 'w+')
-                self.config.write(cfgfile)
-                self.is_conf_valid = True
+                try:
+                    self.config.write(cfgfile)
+                    self.is_conf_valid = True
+                except Exception, e:
+                    print("Exception during cfg file update")
+                    print(str(e))
+                    print (str(sys.exc_info()[0]))
+                    traceback.print_exc()
                 cfgfile.close()
         except Exception, e:
             print("Exception while loading configuration file " + "nabbox.cfg")
@@ -436,24 +458,22 @@ class browser:
         set Nabbox account Login locally and in .cfg file
         @param login: account login
         """
-        print "******** setLogin STARTS"
         self.login               = login
         self.currentConnecStatus = False # Will force to reconnect and create a new session ID
         
-        try:
-            # Set login parameter
-            self.config.set("account", "login", login)
+        # Set login parameter
+        self.config.set("account", "login", login)
     
-            # Update file
-            cfgfile=open(os.path.join(ROOTDIR,"nabbox.cfg"), 'w+')
+        # Update file
+        cfgfile=open(os.path.join(ROOTDIR,"nabbox.cfg"), 'w+')
+        try:
             self.config.write(cfgfile)
-            cfgfile.close()
         except Exception, e:
             print("Exception during setLogin")
             print(str(e))
             print (str(sys.exc_info()[0]))
             traceback.print_exc()
-        print "******** setLogin ENDS"
+        cfgfile.close()
         
     def getLogin(self):
         """
@@ -466,24 +486,22 @@ class browser:
         set Nabbox account Password locally and in .cfg file
         @param password: account password
         """
-        print "******** setPassword STARTS"
         self.password            = password
         self.currentConnecStatus = False # Will force to reconnect and create a new session ID
 
-        try:
-            # Set password parameter
-            self.config.set("account", "password", password)
+        # Set password parameter
+        self.config.set("account", "password", password)
     
-            # Update file
-            cfgfile=open(os.path.join(ROOTDIR,"nabbox.cfg"), 'w+')
+        # Update file
+        cfgfile=open(os.path.join(ROOTDIR,"nabbox.cfg"), 'w+')
+        try:
             self.config.write(cfgfile)
-            cfgfile.close()
         except Exception, e:
             print("Exception during setPassword")
             print(str(e))
             print (str(sys.exc_info()[0]))
             traceback.print_exc()
-        print "******** setPassword ENDS"
+        cfgfile.close()
         
     def getPassword(self):
         """
@@ -502,7 +520,13 @@ class browser:
         
         # Update file
         cfgfile=open(os.path.join(ROOTDIR,"nabbox.cfg"), 'w+')
-        self.config.write(cfgfile)
+        try:
+            self.config.write(cfgfile)
+        except Exception, e:
+            print("Exception during setThanksMsg")
+            print(str(e))
+            print (str(sys.exc_info()[0]))
+            traceback.print_exc()
         cfgfile.close()
         
     def getThanksMsg(self):
@@ -522,7 +546,13 @@ class browser:
         
         # Update file
         cfgfile=open(os.path.join(ROOTDIR,"nabbox.cfg"), 'w+')
-        self.config.write(cfgfile)
+        try:
+            self.config.write(cfgfile)
+        except Exception, e:
+            print("Exception during setDefaultPlayer")
+            print(str(e))
+            print (str(sys.exc_info()[0]))
+            traceback.print_exc()
         cfgfile.close()
         
     def getDefaultPlayer(self):
@@ -543,7 +573,13 @@ class browser:
 
         # Update file
         cfgfile=open(os.path.join(ROOTDIR,"nabbox.cfg"), 'w+')
-        self.config.write(cfgfile)
+        try:
+            self.config.write(cfgfile)
+        except Exception, e:
+            print("Exception during setCleanCache")
+            print(str(e))
+            print (str(sys.exc_info()[0]))
+            traceback.print_exc()
         cfgfile.close()
         
     def getCleanCache(self):
@@ -564,7 +600,13 @@ class browser:
 
         # Update file
         cfgfile=open(os.path.join(ROOTDIR,"nabbox.cfg"), 'w+')
-        self.config.write(cfgfile)
+        try:
+            self.config.write(cfgfile)
+        except Exception, e:
+            print("Exception during setCachePages")
+            print(str(e))
+            print (str(sys.exc_info()[0]))
+            traceback.print_exc()
         cfgfile.close()
         
     def getCachePages(self):
@@ -587,7 +629,13 @@ class browser:
 
         # Update file
         cfgfile=open(os.path.join(ROOTDIR,"nabbox.cfg"), 'w+')
-        self.config.write(cfgfile)
+        try:
+            self.config.write(cfgfile)
+        except Exception, e:
+            print("Exception during setDisplayProgBar")
+            print(str(e))
+            print (str(sys.exc_info()[0]))
+            traceback.print_exc()
         cfgfile.close()
         
     def getDisplayProgBar(self):
@@ -617,7 +665,13 @@ class browser:
 
         # Update file
         cfgfile=open(os.path.join(ROOTDIR,"nabbox.cfg"), 'w+')
-        self.config.write(cfgfile)
+        try:
+            self.config.write(cfgfile)
+        except Exception, e:
+            print("Exception during setDebugMode")
+            print(str(e))
+            print (str(sys.exc_info()[0]))
+            traceback.print_exc()
         cfgfile.close()
         
     def getDebugMode(self):
@@ -1660,7 +1714,7 @@ class InfoWindow(xbmcgui.WindowDialog):
 
         self.strTitle = xbmcgui.ControlLabel(130, 110, 350, 30, "NABBOX",'special13')
         self.addControl(self.strTitle)
-        self.strVersion = xbmcgui.ControlLabel(130, 150, 350, 30, "Version: " + version)
+        self.strVersion = xbmcgui.ControlLabel(130, 150, 350, 30, "Version: " + __version__)
         self.addControl(self.strVersion)
         self.strAuthor = xbmcgui.ControlLabel(130, 190, 350, 30, "Auteurs: ")
         self.addControl(self.strAuthor)        
@@ -1988,8 +2042,8 @@ class MainWindow(xbmcgui.Window):
         self.addControl(self.strlist)
         
         # Version and author(s):
-        #self.strVersion = xbmcgui.ControlLabel(370, 30, 350, 30, "Version " + version + " par " + author, 'font12')
-        self.strVersion = xbmcgui.ControlLabel(24, 89, 350, 30, version, 'font10', '0xFF000000', alignment=xbfont_left)
+        #self.strVersion = xbmcgui.ControlLabel(370, 30, 350, 30, "Version " + __version__ + " par " + author, 'font12')
+        self.strVersion = xbmcgui.ControlLabel(24, 89, 350, 30, "Version " + __version__, 'font10', '0xFF000000', alignment=xbfont_left)
         self.addControl(self.strVersion)
         
         # Connection status:
@@ -2887,7 +2941,7 @@ class MainWindow(xbmcgui.Window):
 
 print("==================================================================================")
 print("")
-print("     NABBOX " + version + " by " + authorUI + " and " + authorCore+ " HTML parser STARTS")
+print("     NABBOX Version " + __version__ + " by " + authorUI + " and " + authorCore+ " HTML parser STARTS")
 print("")
 print("==================================================================================")
 
