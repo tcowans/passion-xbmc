@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<calendars>
+  <calendar>
+      <title>CinPoU CE</title>
+      <type>google</type>
+      <account>test@gmail.com</account>
+      <googleid>agherfsgjjhdsef</googleid>
+      <link>http://www.google.com/calendar/ical/cinpou%40gmail.com/private-85daf734bedf46b46fdcfe0e3438a425/basic.ics</link>
+      <activate>true</activate>
+      <write>true</write>
+      <color>ffffaabb</color>
+  </calendar>
+  <calendar>
+      <title>CinPoU Perso</title>
+      <type>local</type>
+      <account>test@gmail.com</account>
+      <googleid>agfsdfzegsdfghtrqhgef</googleid>
+      <link>http://adresse.du.calendrier.com</link>
+      <activate>false</activate>
+      <write>true</write>
+      <color>ff0099dd</color>
+  </calendar>
+  <calendar>
+      <title>CinPoU CE</title>
+      <type>web</type>
+      <account>test@gmail.com</account>
+      <googleid>agherfsgjjhdsef</googleid>
+      <link>http://adresse.du.calendrier.com</link>
+      <activate>true</activate>
+      <write>true</write>
+      <color>ffffaabb</color>
+  </calendar>
+  <calendar>
+      <title>CinPoU CE</title>
+      <type>web</type>
+      <account>test@gmail.com</account>
+      <googleid>agherfsgjjhdsef</googleid>
+      <link>http://adresse.du.calendrier.com</link>
+      <activate>true</activate>
+      <write>true</write>
+      <color>ffffaabb</color>
+  </calendar>
+  <calendar>
+      <title>CinPoU CE</title>
+      <type>web</type>
+      <account>test@gmail.com</account>
+      <googleid>agherfsgjjhdsef</googleid>
+      <link>http://adresse.du.calendrier.com</link>
+      <activate>true</activate>
+      <write>true</write>
+      <color>ffffaabb</color>
+  </calendar>
+  <calendar>
+      <title>CinPoU CE</title>
+      <type>web</type>
+      <account>test@gmail.com</account>
+      <googleid>agherfsgjjhdsef</googleid>
+      <link>http://adresse.du.calendrier.com</link>
+      <activate>true</activate>
+      <write>true</write>
+      <color>ffffaabb</color>
+  </calendar>
+  <calendar>
+      <title>CinPoU CE</title>
+      <type>web</type>
+      <account>test@gmail.com</account>
+      <googleid>agherfsgjjhdsef</googleid>
+      <link>http://adresse.du.calendrier.com</link>
+      <activate>true</activate>
+      <write>true</write>
+      <color>ffffaabb</color>
+  </calendar>
+  <calendar>
+      <title>CinPoU CE</title>
+      <type>web</type>
+      <account>test@gmail.com</account>
+      <googleid>agherfsgjjhdsef</googleid>
+      <link>http://adresse.du.calendrier.com</link>
+      <activate>true</activate>
+      <write>true</write>
+      <color>ffffaabb</color>
+  </calendar>
+  <calendar>
+      <title>CinPoU CE</title>
+      <type>web</type>
+      <account>test@gmail.com</account>
+      <googleid>agherfsgjjhdsef</googleid>
+      <link>http://adresse.du.calendrier.com</link>
+      <activate>true</activate>
+      <write>true</write>
+      <color>ffffaabb</color>
+  </calendar>
+  <calendar>
+      <title>CinPoU CE</title>
+      <type>web</type>
+      <account>test@gmail.com</account>
+      <googleid>agherfsgjjhdsef</googleid>
+      <link>http://adresse.du.calendrier.com</link>
+      <activate>true</activate>
+      <write>true</write>
+      <color>ffffaabb</color>
+  </calendar>
+  <calendar>
+      <title>CinPoU CE</title>
+      <type>web</type>
+      <account>test@gmail.com</account>
+      <googleid>agherfsgjjhdsef</googleid>
+      <link>http://adresse.du.calendrier.com</link>
+      <activate>true</activate>
+      <write>true</write>
+      <color>ffffaabb</color>
+  </calendar>
+</calendars>
