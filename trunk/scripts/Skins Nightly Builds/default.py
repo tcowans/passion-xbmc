@@ -1,3 +1,4 @@
+# -*- coding: cp1252 -*-
 
 # script constants
 __script__       = "Skins Nightly Builds"
@@ -76,20 +77,40 @@ DIALOG_PROGRESS = xbmcgui.DialogProgress()
 base_url = "http://www.sshcs.com"
 skins_url = base_url + "/xbmc/inc/eva.asp?mode=Skins"
 
+#ajout des depots git a modif pour integration dans les options
+git={}
+git["aeon"]="http://github.com/temmi2000/aeon/commits/"
+git["Alaska"]="http://github.com/HitcherUK/Alaska/commits/"
+git["aeon-passion"]="http://github.com/Imaginos/aeon-passion/commits/"
 
-def rev_github( skin="" ):
-    if bool( skin ):
+
+class Github_skin:
+    def __init__(self,giturl):
+        self.rate = "10 / 10"
+        self.hit = ""
+        self.thumbs= os.path.join( CACHE_DIR, "Aeon" )#à modifier pour traiter les images
+        self.rev_url= "http://github.com/feeds/%s/commits/%s/master" % (giturl.split("/")[3], giturl.split("/")[4])
+        self.dl_url= "http://github.com/%s/%s/zipball/master" % (giturl.split("/")[3], giturl.split("/")[4])
+        self.type=".zip"
+        
+    def rev_github( self ):
         try:
+<<<<<<< .mine
+            if bool( self.rev_url ):
+=======
             url = ""
             if skin == "Alaska": url = "http://github.com/feeds/HitcherUK/commits/Alaska/master"
             elif skin == "aeon-passion": url = "http://github.com/feeds/Imaginos/commits/aeon-passion/master"
             if bool( url ):
+>>>>>>> .r575
                 rss = urllib.urlopen( url, "r" ).read()
                 date = re.compile( '<updated>(.*?)</updated>' ).findall( rss )
                 if date: return "Build r." + "-".join( date[ 0 ].split( "-" )[ :-1 ] )
         except:
             print_exc()
-    return "Build r.OnClick"
+        return "Build r.OnClick"
+
+
 
 aeon_passion = {
     "name": "aeon-passion",
@@ -111,8 +132,9 @@ alaska = {
     "type": ".zip"
     }
 
-SKINS_GITHUB = ( "aeon-passion", "Alaska" )
+SKINS_GITHUB = git.keys()
 
+print "********************************************** %s **********************************************" % SKINS_GITHUB
 
 class pDialogCanceled( Exception ):
     def __init__( self, errmsg="Downloading was canceled by user!" ):
@@ -212,8 +234,9 @@ class nightly( xbmcgui.WindowXML ):
         try:
             xbmc.log( "[SCRIPT: %s] setting up list skins..." % ( __script__ ), xbmc.LOGNOTICE )
             self.skins = get_nightly_skins()
-            self.skins.append( aeon_passion )
-            self.skins.append( alaska )
+            #ajoute a la liste les nom de skin github
+            for i in git.keys():
+                self.skins.append("%s" % i)
             #trie la liste selon la valeur de rate eval( "10 / 10") va donner 1
             try: self.skins.sort( key=lambda s: eval( s[ "rate" ] ), reverse=True )
             except: pass
@@ -224,7 +247,18 @@ class nightly( xbmcgui.WindowXML ):
             percent = 0
             for count, skin in enumerate( self.skins ):
                 # skin dict = { "name": name, "build": build, "hit": hit, "rate": rate, "thumbs": thumbs, "dl": dl }
-
+                print "********************************************** %s **********************************************" % skin[ "name" ]
+                if skin[ "name" ] in SKINS_GITHUB:
+                    print "********************************************** GITHUB **********************************************"
+                    gitname = skin[ "name" ]
+                    giturl = git[gitname]
+                    current_git = Github_skin(giturl)
+                    skin[ "build" ] = current_git.rev_github()
+                    skin[ "hit" ] = current_git.hit
+                    skin[ "rate" ] = current_git.rate
+                    skin[ "thumbs" ] = current_git.thumbs
+                    skin[ "dl" ] = current_git.dl
+                    
                 percent += diff
                 line1 = "Skins: %i / %i" % ( count+1, total_items )
                 if not SHOW_FILESIZE:
@@ -243,9 +277,6 @@ class nightly( xbmcgui.WindowXML ):
                         #    print repr( response )
                 except:
                     print_exc()
-
-                if skin[ "name" ] in SKINS_GITHUB:
-                    skin[ "build" ] = rev_github( skin[ "name" ] )
 
                 listitem.setProperty( "build", skin[ "build" ] )
                 listitem.setProperty( "hit", skin[ "hit" ] )
