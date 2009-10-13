@@ -1,0 +1,18 @@
+<skin>
+  <defaultresolution>pal</defaultresolution>
+  <defaultresolutionwide>pal16x9</defaultresolutionwide>
+  <version>2.1</version>
+  <skinversion>391</skinversion>
+ 
+  <!-- amount to zoom skin to remove overscan compensation -->
+  <zoom>0</zoom>
+ 
+  <credits>
+    <!-- description of skin creator only -->
+    <skinname>Default</skinname>
+    <name>By Team Passion-XBMC</name>
+    <name>Auteurs: Frost and Temhil</name>
+    <name>Graphic Passion-XBMC by Jahnrik</name>
+    <name>Graphic PMIII by ChokeManiac and Jezz X</name>
+  </credits>
+</skin>
