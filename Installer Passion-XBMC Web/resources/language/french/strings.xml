@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <strings>
   <!--GENERAL STRINGS -->
   <string id="0">Installer Passion-XBMC</string>
@@ -110,8 +110,8 @@
   <string id="177">Déplacement...</string>
   <string id="178">De :&#32;</string>
   <string id="179">Vers :&#32;</string>
-  <string id="180">Confirmer téléchargement du fichier</string>
-  <string id="181">Êtes-vous sûr de télécharger ce(s) fichier(s)?</string>
+  <string id="180">Confirmer l'installation de l'élément</string>
+  <string id="181">Êtes-vous sûr de vouloir installer cet élément?</string>
 
   <string id="184">Rafraîchir</string>
   <string id="185">Calculer la Taille</string>
