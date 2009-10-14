@@ -10,7 +10,9 @@ from pysqlite2 import dbapi2 as sqlite
 
 #Other module
 import urllib
-import urllib2
+import urllib2, httplib
+
+httplib.HTTPConnection.debuglevel = 1
 
 # Module logger
 try:
@@ -59,17 +61,18 @@ class HTTPInstaller(ItemInstaller):
     Download an item on Passion XBMC http server and install it
     """
 
-    def __init__( self , itemId, type, installPath, filesize ):
+    def __init__( self , itemId, type, installPath, filesize, externalURL=None ):
         ItemInstaller.__init__( self, itemId, type, installPath, filesize )
         
         #get base url for download
         self.baseurl = CONF.getBaseURLDownloadFile()
         
         #TODO: support progress bar display
-        self.displayProgBar = True 
+        self.displayProgBar      = True 
         self.downloadArchivePath = None # Path of the archive to extract
         self.destinationPath     = None # Path of the destination directory
         self.extractedDirPath    = None # Path of the extracted item
+        self.externalURL         = externalURL # External URL for download (hosted on another server)
 
     def downloadItem( self, msgFunc=None,progressBar=None ):
         # Get ItemId
@@ -87,7 +90,8 @@ class HTTPInstaller(ItemInstaller):
             fileURL  = self.baseurl + str(self.itemId)
             
             # Download file (to cache dir) and get destination directory
-            self.downloadArchivePath = self.downloadFile( fileURL, self.CACHEDIR, msgFunc=msgFunc, progressBar=progressBar )
+            #status, self.downloadArchivePath = self._downloadFile( fileURL, self.CACHEDIR, msgFunc=msgFunc, progressBar=progressBar )
+            status, self.downloadArchivePath = self._downloadFile( fileURL, self.CACHEDIR, progressBar=progressBar )
         
         except Exception, e:
             #print "Exception during downlaodItem"
@@ -97,7 +101,8 @@ class HTTPInstaller(ItemInstaller):
             self.downloadArchivePath = None
         if progressBar != None:
             progressBar.update( percent, _( 122 ) % ( self.baseurl + str(self.itemId) ), _( 134 ) )
-        return self.downloadArchivePath
+        #return status, self.downloadArchivePath
+        return status
 
 
     def extractItem( self, msgFunc=None,progressBar=None ):
@@ -107,51 +112,62 @@ class HTTPInstaller(ItemInstaller):
         #TODO: update a progress bar during extraction
         print "extractItem - path" 
         print self.downloadArchivePath
+        status     = "OK" # Status of download :[OK | ERROR | CANCELED]      
         percent = 33
-        if progressBar != None:
-            progressBar.update( percent, "Extraction:", ( self.baseurl + str(self.itemId) ) )
-        if self.downloadArchivePath.endswith( 'zip' ) or self.downloadArchivePath.endswith( 'rar' ):
-            import extractor
-            process_error = False
-            # on extrait tous dans le cache et si c'est OK on copy par la suite
-            file_path, OK = extractor.extract( self.downloadArchivePath, report=True )
-            #print file_path
-            #print OK
-
-            if self.type == "ScraperDir":
-                # cas des Scrapers
-                # ----------------
-                #self.extracter.extract( archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
-                if ( OK == bool( file_path ) ) and os.path.exists( file_path ):
-                    # Extraction sucessfull
-                    self.destinationPath = self.typeInstallPath
-                    self.extractedDirPath = file_path
-            else:
-                # Cas des scripts et plugins
-                # --------------------------
-                # Recuperons le nom du repertorie a l'interieur de l'archive:
-                dirName = ""
-                if ( OK == bool( file_path ) ) and os.path.exists( file_path ):
-                    dirName = os.path.basename( file_path )#self.extracter.getDirName( archive )
-                    
-
-                if dirName == "":
-                    installError = _( 139 ) % archive
-                    logger.LOG( logger.LOG_ERROR, "Erreur durant l'extraction de %s - impossible d'extraire le nom du repertoire", archive )
+        # Check if the archive exists
+        if os.path.exists( self.downloadArchivePath ):
+            if progressBar != None:
+                progressBar.update( percent, "Extraction:", ( self.baseurl + str(self.itemId) ) )
+            if self.downloadArchivePath.endswith( 'zip' ) or self.downloadArchivePath.endswith( 'rar' ):
+                import extractor
+                process_error = False
+                # on extrait tous dans le cache et si c'est OK on copy par la suite
+                file_path, OK = extractor.extract( self.downloadArchivePath, report=True )
+                #print file_path
+                #print OK
+    
+                if self.type == "ScraperDir":
+                    # cas des Scrapers
+                    # ----------------
+                    #self.extracter.extract( archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
+                    if ( OK == bool( file_path ) ) and os.path.exists( file_path ):
+                        # Extraction sucessfull
+                        self.destinationPath = self.typeInstallPath
+                        self.extractedDirPath = file_path
+                    else:
+                        status = "ERROR"
                 else:
-                    # Extraction sucessfull
-                    self.destinationPath = os.path.join( self.typeInstallPath, os.path.basename( file_path ) )
-                    self.extractedDirPath = file_path
-                    logger.LOG( logger.LOG_NOTICE, self.destinationPath )
-            #TODO: add skin case (requirements need to be defined first)
-            del extractor
-            
-            #print self.type
-            #print self.destinationPath
-            #print self.extractedDirPath
-        if progressBar != None:
-            progressBar.update( percent, "Fin Extraction", ( self.baseurl + str(self.itemId) ) )
-        return self.type, self.destinationPath, self.extractedDirPath
+                    # Cas des scripts et plugins
+                    # --------------------------
+                    # Recuperons le nom du repertorie a l'interieur de l'archive:
+                    dirName = ""
+                    if ( OK == bool( file_path ) ) and os.path.exists( file_path ):
+                        dirName = os.path.basename( file_path )#self.extracter.getDirName( archive )
+                        
+    
+                    if dirName == "":
+                        installError = _( 139 ) % archive
+                        logger.LOG( logger.LOG_ERROR, "Erreur durant l'extraction de %s - impossible d'extraire le nom du repertoire", archive )
+                        status = "ERROR"
+                    else:
+                        # Extraction sucessfull
+                        self.destinationPath = os.path.join( self.typeInstallPath, os.path.basename( file_path ) )
+                        self.extractedDirPath = file_path
+                        logger.LOG( logger.LOG_NOTICE, self.destinationPath )
+                #TODO: add skin case (requirements need to be defined first)
+                del extractor
+                
+                #print self.type
+                #print self.destinationPath
+                #print self.extractedDirPath
+            percent = 100
+            if progressBar != None:
+                progressBar.update( percent, "Fin Extraction", ( self.baseurl + str(self.itemId) ) )
+        else:
+            print "extractItem - Archive does not exist - extraction impossible"
+            status = "ERROR"
+        #return status, self.type, self.destinationPath, self.extractedDirPath
+        return status
 
     def isAlreadyInstalled( self ):
         """
@@ -173,7 +189,9 @@ class HTTPInstaller(ItemInstaller):
         OK = False
         # get install path
         process_error = False
-        
+        percent = 0
+        if progressBar != None:
+            progressBar.update( percent, "Copy:", ( self.extractedDirPath ) )
         if ( ( self.extractedDirPath != None ) and ( self.destinationPath != None ) ):
             if self.type == "ScraperDir":
                 # cas des Scrapers
@@ -211,6 +229,9 @@ class HTTPInstaller(ItemInstaller):
                 print "Install item completed"
 
         del extractor
+        percent = 100
+        if progressBar != None:
+            progressBar.update( percent, "Copy:", ( self.extractedDirPath ) )
         return OK
 
     def installItem( self, msgFunc=None,progressBar=None ):
@@ -220,6 +241,8 @@ class HTTPInstaller(ItemInstaller):
         """
         print "Download and install case"
         percent = 0
+        status  = "OK" # Status of download :[OK | ERROR | ALREADYINSTALLED |CANCELED]       
+        
 #        if progressBar != None:
 #            progressBar.update( percent, _( 123 ) % self.curPercent, self.srcName )
         #self.install_add_ons()
@@ -229,17 +252,32 @@ class HTTPInstaller(ItemInstaller):
 #        dp.create("Téléchargement en cours ...")
         
         # Save in local directory
+        #(self, msgType="YESNO", _( 180 ), _( 181 ), message2="", message3=""):
+        #if not xbmcgui.Dialog().yesno( _( 180 ), _( 181 ), source ): return
+        
         #TODO: support message callback in addition of pb callback
-        self.downloadItem( msgFunc=msgFunc, progressBar=progressBar )
-        self.extractItem( msgFunc=msgFunc, progressBar=progressBar )
-        if not self.isAlreadyInstalled():
-            print "Item is not yet installed - installing"
-            #import time
-            #time.sleep(10)
-            self.copyItem( msgFunc=msgFunc, progressBar=progressBar )
+        #statusDownload = self.downloadItem( msgFunc=msgFunc, progressBar=progressBar )
+        statusDownload = self.downloadItem( progressBar=progressBar )
+        if statusDownload == "OK":
+            if self.extractItem( msgFunc=msgFunc, progressBar=progressBar ) == "OK":
+                if not self.isAlreadyInstalled():
+                    print "installItem - Item is not yet installed - installing"
+                    #import time
+                    #time.sleep(10)
+                    if self.copyItem( msgFunc=msgFunc, progressBar=progressBar ) == False:
+                        status = "ERROR"
+                        print "installItem - Error during copy"
+                else:
+                    print "installItem - Item is already installed - stopping install"
+                    status = "ALREADYINSTALLED"
+        elif statusDownload == "CANCELED":
+            status = "CANCELED"
+            print "installItem - Install cancelled by the user"
         else:
-            print "Item is already installed - stopping install"
+            status = "ERROR"
+            print "installItem - Error during download"
 
+        return status
 
 
 
@@ -279,56 +317,78 @@ class HTTPInstaller(ItemInstaller):
 #            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 #        return file_name
     
-    def downloadFile(self, url, destinationDir,msgFunc=None,progressBar=None):
+
+
+#    def _downloadFile(self, url, destinationDir,msgFunc=None,progressBar=None):
+    def _downloadFile(self, url, destinationDir, progressBar=None):
         """
         Download a file at a specific URL and send event to registerd UI if requested
         """
-        print("downloadFile with url = " + url)
-        print("downloadFile with destination directory = " + destinationDir)
+        print("_downloadFile with url = " + url)
+        print("_downloadFile with destination directory = " + destinationDir)
         #print "msgFunc:"
         #print msgFunc
         #print "progressBar:"
         #print progressBar
         
-        msgType    = ""
-        msgTite    = ""
-        msg1       = ""
-        msg2       = ""
-        msg3       = ""
+#        msgType    = ""
+#        msgTite    = ""
+#        msg1       = ""
+#        msg2       = ""
+#        msg3       = ""
         destination = None
         #destination = os.path.join( destinationDir, filename )
-        noErrorOK  = True # When noErrorOK == True -> no error/Exception occured
-               
+        #noErrorOK  = True # When noErrorOK == True -> no error/Exception occured
+        status     = "OK" # Status of download :[OK | ERROR | CANCELED]       
+        
         try:
             # -- Downloading
-            print("downloadFile - Trying to retrieve the file")
+            print("_downloadFile - Trying to retrieve the file")
             block_size          = 4096
             percent_downloaded  = 0
             num_blocks          = 0
+            file_size           = None
             
             if self.displayProgBar == True:
                 req = urllib2.Request(url)
                 req.add_header('User-Agent','Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.3) Gecko/20070309 Firefox/2.0.0.3')
                 connection  = urllib2.urlopen(req)           # Open connection
-                headers     = connection.info()              # Get Headers
                 file_size   = self.filesize 
-                file_name   = headers['Content-Disposition'].split('"')[1]
-                print "downloadFile - file size : %d Octet(s)"%file_size
-                print "downloadFile - file name : %s "%file_name
+                print "_downloadFile - file size : %d Octet(s)"%file_size
+                print 'self.externalURL'
+                print self.externalURL
+                if self.externalURL != 'None':
+                    #TODO: cover lengh max of file name (otherwise crash xbmc at writing)
+                    file_name = os.path.basename( self.externalURL )
+                    #file_name = "test.rar"
+#                    connection.close()
+#                    req = urllib2.Request(self.externalURL)
+#                    req.add_header('User-Agent','Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.3) Gecko/20070309 Firefox/2.0.0.3')
+#                    connection  = urllib2.urlopen(req)           # Open connection
+                else:
+                    headers     = connection.info()              # Get Headers
+                    print "headers:"
+                    print headers
+                    file_name   = headers['Content-Disposition'].split('"')[1]
+                print "_downloadFile - file name : %s "%file_name
                 destination = os.path.join( destinationDir, file_name )
+                print 'destination'
+                print destination
                 file = open(destination,'w+b')        # Get ready for writing file
+                print "File opened"
                 # Ask for display of progress bar
                 try:
                     if (progressBar != None):
                         progressBar.update(percent_downloaded)
                 except Exception, e:        
-                    print("downloadFile - Exception calling UI callback for download")
+                    print("_downloadFile - Exception calling UI callback for download")
                     print(str(e))
                     print progressBar
                     
                 ###########
                 # Download
                 ###########
+                print "Starting download"
                 while 1:
                     if (progressBar != None):
                         if progressBar.iscanceled():
@@ -342,102 +402,98 @@ class HTTPInstaller(ItemInstaller):
                         # Increment for next block
                         num_blocks = num_blocks + 1
                     except Exception, e:        
-                        print("downloadFile - Exception during reading of the remote file and writing it locally")
+                        print("_downloadFile - Exception during reading of the remote file and writing it locally")
                         print(str(e))
                         print ("error during reading of the remote file and writing it locally: " + str(sys.exc_info()[0]))
                         traceback.print_exc()
-                        noErrorOK  = False
+                        #noErrorOK  = False
+                        status = "ERROR"
                         # End of writing: Closing the connection and the file
-                        connection.close()
-                        file.close()
-                        raise e
+                        #connection.close()
+                        #file.close()
+                        #raise e
                     try:
                         # Compute percent of download in progress
                         New_percent_downloaded = min((num_blocks*block_size*100)/file_size, 100)
-                        #print "downloadFile - Percent = %d"%New_percent_downloaded
+                        #print "_downloadFile - Percent = %d"%New_percent_downloaded
                     except Exception, e:        
-                        print("downloadFile - Exception computing percentage downloaded")
+                        print("_downloadFile - Exception computing percentage downloaded")
                         print(str(e))
-                        noErrorOK  = False
+                        #noErrorOK  = False
+                        status = "ERROR"
                         # End of writing: Closing the connection and the file
-                        connection.close()
-                        file.close()
-                        raise e
+                        #connection.close()
+                        #file.close()
+                        #raise e
                     # We send an update only when percent number increases
                     if (New_percent_downloaded > percent_downloaded):
                         percent_downloaded = New_percent_downloaded
-                        #print ("downloadFile - Downloaded %d %%"%percent_downloaded)
+                        #print ("_downloadFile - Downloaded %d %%"%percent_downloaded)
                         # Call UI callback in order to update download progress info
                         if (self.displayProgBar == True):
                             progressBar.update(percent_downloaded)
 
-                    # Prepare message to the UI
-                    msgType = "OK"
-                    msgTite = "Nabbox Téléchargement"
-                    msg1    = file_name
-                    msg2    = "%d%% terminé. Le fichier disponible dans:"%(percent_downloaded)
-                    msg3    = "%s"%destinationDir
-
+    
                 # Closing the file
                 file.close()
                 # End of writing: Closing the connection and the file
                 connection.close()
-#                else:
-#                    print "downloadFile - *** using urlretrieve method ***"
-#                    try:
-#                        #urllib.urlretrieve(url,destination)
-#                        urllib.urlretrieve(url,destination,lambda nb, bs, fs, url=url: self._pbhook(nb,bs,fs,url,progressBar))
-#                    except cancelRequest:
-#                    #except IOError, (errno, strerror):
-#                        traceback.print_exc(file = sys.stdout)
-#                        print "Downloaded STOPPED by the user"
-#                    except Exception, e:
-#                        traceback.print_exc(file = sys.stdout)
-#                        print "=============================================="        
-#                        print("downloadFile - Exception during urlretrieve")
-#                        print(e)
-#                        noErrorOK == False
-#                        urllib.urlcleanup()
-#                        raise e
-#                    urllib.urlcleanup()
-#                    # Prepare message to the UI
-#                    msgType = "OK"
-#                    msgTite = "Nabbox Téléchargement"
-#                    msg1    = file_name
-#                    msg2    = "Téléchargement terminé. Le fichier disponible dans:"
-#                    msg3    = "%s"%destinationDir
-#                    percent_downloaded = 0
         except Exception, e:
+            status = "ERROR"
             print("Exception while source retrieving")
             print(str(e))
             print ("error while source retrieving: " + str(sys.exc_info()[0]))
             traceback.print_exc()
-            print("downloadFile ENDED with ERROR")
+            print("_downloadFile ENDED with ERROR")
 
-            # Prepare message to the UI
-            msgType = "Error"
-            msgTite = "Nabbox Téléchargement - Erreur"
-            msg1    = file_name
-            msg2    = "%d%% Téléchargement terminé. Une erreur s'est produite durant le téléchargement du fichier"%(percent_downloaded)
-            msg3    = "Erreur: %s"%e
+#            # Prepare message to the UI
+#            msgType = "Error"
+#            msgTite = _ ( 144 )
+#            msg1    = file_name
+#            msg2    = ""
+#            msg3    = ""
 
-            print("downloadFile ENDED")
+        print("_downloadFile ENDED")
 
-                                
-            # Close/Reset progress bar
-            if (progressBar != None):
-                progressBar.close()
-            
-            # Send the message to the UI
-            try:
-                if (msgFunc != None):
-                    msgFunc(msgType, msgTite, msg1,msg2, msg3)
-            except Exception, e:        
-                print("downloadFile - Exception calling UI callback for message")
-                print(str(e))
-                print msgFunc
+#        if status == "OK":
+#            # Prepare message to the UI
+#            msgType = "OK"
+#            msgTite = _( 137 )
+#            msg1    = file_name
+#            msg2    = _( 134 )
+#            msg3    = ""
+#        elif status == "CANCELED":
+#            # Prepare message to the UI
+#            msgType = "OK"
+#            msgTite = _ ( 124 )
+#            msg1    = file_name
+#            msg2    = _ ( 125 )
+#            msg3    = ""
+#        else:
+#            print "_downloadFile - An error has occured"
+#            destination = None
+#
+#            # Prepare message to the UI
+#            msgType = "Error"
+#            msgTite = _ ( 144 )
+#            msg1    = file_name
+#            msg2    = ""
+#            msg3    = ""
+                            
+#        # Close/Reset progress bar
+#        if (progressBar != None):
+#            progressBar.close()
+        
+#        # Send the message to the UI
+#        try:
+#            if (msgFunc != None):
+#                msgFunc(msgType, msgTite, msg1,msg2, msg3)
+#        except Exception, e:        
+#            print("_downloadFile - Exception calling UI callback for message")
+#            print(str(e))
+#            print msgFunc
                 
-        return destination
+        return status, destination
         
     def _pbhook(self,numblocks, blocksize, filesize, url=None,dp=None):
         """

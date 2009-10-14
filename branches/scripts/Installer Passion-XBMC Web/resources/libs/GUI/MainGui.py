@@ -16,7 +16,7 @@ import xbmcgui
 from utilities import *
 from info_item import ItemInfosManager
 from INSTALLEUR import ftpDownloadCtrl, directorySpy, userDataXML
-import Browser
+from Browser.PassionHttpBrowser import PassionHttpBrowser
 import ItemInstaller  
 
 #module logger
@@ -158,8 +158,9 @@ class MainWindow( xbmcgui.WindowXML ):
                 print "update_datas"
                 
                 # Starting browser of the DB
-                #myBrowser = Browser.HTTPBrowser( database=db )
-                self.browser = Browser.HTTPBrowser( db )
+                #myBrowser = Browser.PassionHttpBrowser( database=db )
+                # Use level of abstraction ItemBrowser (super class)
+                self.browser = PassionHttpBrowser( db )
 
                 # Recuperation de la liste des elements
                 DIALOG_PROGRESS.update( -1, _( 104 ), _( 110 ) )
@@ -758,12 +759,38 @@ class MainWindow( xbmcgui.WindowXML ):
                     print "Download and install case"
                     #self.install_add_ons()
                     # Get the installer Object who now how to do the job (depending on the source)
+                    itemName = self.curDirList[self.index]['name']
+                    if not xbmcgui.Dialog().yesno( _( 180 ), _( 181 ), itemName ): return
+                    
                     itemInstaller = self.browser.getInstaller(self.index)
                     
                     print "Download via itemInstaller"
                     dp = xbmcgui.DialogProgress()
-                    dp.create("Téléchargement en cours ...")
-                    itemInstaller.installItem( progressBar=dp )
+                    dp.create(_( 137 ))
+                    status = itemInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )
+
+                    dp.close()
+                    del dp
+
+                    #Check if install went well
+                    if status == "OK":
+                        title = _( 141 )
+                        msg1  = _( 142 )%itemName
+                        msg2  = _( 143 )
+                    elif status == "CANCELED":
+                        title = _( 146 )
+                        msg1  = _( 147 )%itemName
+                        msg2  = ""
+                    elif status == "ALREADYINSTALLED":
+                        title = _( 144 )
+                        msg1  = _( 149 )%itemName
+                        msg2  = ""
+                    else:
+                        title = _( 144 )
+                        msg1  = _( 136 )%itemName
+                        msg2  = ""
+                    xbmcgui.Dialog().ok( title, msg1, msg2 )
+
                     # Save in local directory
                     #TODO: support message callback in addition of pb callback
                     # itemInstaller.downloadItem( progressBar=dp )
@@ -776,7 +803,6 @@ class MainWindow( xbmcgui.WindowXML ):
                     # else:
                         # print "Item is already installed - stopping install"
 
-                    del dp
 
             elif controlID == self.CONTROL_OPTIONS_BUTTON:
                 self._show_settings()
@@ -1064,7 +1090,9 @@ class MainWindow( xbmcgui.WindowXML ):
     
                 self.setProperty( "Category", self.browser.getCurrentCategory() )
                 #displayedItem = item
-                displayListItem = xbmcgui.ListItem( item['name'], "", iconImage=item['previewpicture'], thumbnailImage=item['thumbnail'] )
+#                displayListItem = xbmcgui.ListItem( item['name'], "", iconImage=item['previewpicture'], thumbnailImage=item['thumbnail'] )
+                displayListItem = xbmcgui.ListItem( item['name'].replace( r"\\", "\\" ).encode("cp1252"), "", iconImage=item['previewpicture'], thumbnailImage=item['thumbnail'] )
+ 
                 self.set_item_infos( displayListItem, item )
                 
                 print "Item to display"
@@ -1125,30 +1153,39 @@ class MainWindow( xbmcgui.WindowXML ):
             #infos = self.infoswarehouse.getInfo( itemName=os.path.basename( ipath ), itemType=self.type, listitem=listitem )
             listItem.setProperty( "itemId",          "" )
             listItem.setProperty( "fileName",        dataItem['file'] )
-            listItem.setProperty( "date",            "test date" )
+            listItem.setProperty( "date",            dataItem['date'] )
             listItem.setProperty( "title",           dataItem['name'] )
             #listItem.setProperty( "title",           dataItem['name'].replace( r"\\", "\\" ).encode("cp1252") )
-            listItem.setProperty( "author",          "test author" )
-            listItem.setProperty( "version",         "1.0" )
-            listItem.setProperty( "language",        "language" )
-            #listItem.setProperty( "description",     dataItem['description'] )
+            listItem.setProperty( "author",          dataItem['author'] )
+            listItem.setProperty( "version",         dataItem['version'] )
+            listItem.setProperty( "language",        dataItem['language'] )
+            listItem.setProperty( "description",     dataItem['description'] )
             #listItem.setProperty( "description",     unicode(dataItem['description'].encode("utf8").replace( r"\\", "\\" ), "cp1252" ) )
-            listItem.setProperty( "description",     repr(dataItem['description']).replace( r"\\", "\\" ) )
-            print repr(dataItem['description']) 
-            print repr(dataItem['description']).replace( r"\\", "\\" )
-            print unicode(repr(dataItem['description']).replace( r"\\", "\\" ).encode("cp1252"))
-            print unicode(repr(dataItem['description']).replace( r"\\", "\\" ).encode("cp1252")).decode("cp1252")
-            print unicode(dataItem['description'].encode("utf8").replace( r"\\", "\\" ), "cp1252" ) 
+            #listItem.setProperty( "description",     repr(dataItem['description']).replace( r"\\", "\\" ) )
+#            listItem.setProperty( "description",     dataItem['description'].replace( r"\\", "\\" ).encode("cp1252") )
+#            print repr(dataItem['description']) 
+#            print repr(dataItem['description']).replace( r"\\", "\\" )
+#            print unicode(repr(dataItem['description']).replace( r"\\", "\\" ).encode("cp1252"))
+#            print unicode(repr(dataItem['description']).replace( r"\\", "\\" ).encode("cp1252")).decode("cp1252")
+#            print unicode(dataItem['description'].encode("utf8").replace( r"\\", "\\" ), "cp1252" ) 
+#            print "str:"
+#            print dataItem['description'].decode("cp1252")
+#            print str(dataItem['description'])
+#            print unicode(str(dataItem['description']).encode("cp1252"))
+#            print unicode(str(dataItem['description']).encode("utf8")).decode("cp1252")
+            
             #listItem.setProperty( "description",     unicode("Vidéo test \ test \ test", "cp1252" ) )
-            print "set_item_infos"
-            print unicode(dataItem['description'])
-            print unicode(dataItem['description'].encode("utf8"))
-            print unicode(dataItem['description'].encode("cp1252"))
-            print unicode(dataItem['description'].encode("cp1252")).decode("cp1252")
-            print unicode(dataItem['description'].encode("utf8").replace( r"\\", "\\" ), "cp1252" )
-            listItem.setProperty( "added",           "Date added" )
+#            print "set_item_infos"
+#            print unicode(dataItem['description'])
+#            print unicode(dataItem['description'].encode("utf8"))
+#            print unicode(dataItem['description'].encode("cp1252"))
+#            print unicode(dataItem['description'].encode("cp1252")).decode("cp1252")
+#            print unicode(dataItem['description'].encode("utf8").replace( r"\\", "\\" ), "cp1252" )
+            listItem.setProperty( "added",           dataItem['added'] )
             listItem.setProperty( "fanartpicture",   dataItem['previewpicture'] )
             listItem.setProperty( "previewVideoURL", "" )
+
+        
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
