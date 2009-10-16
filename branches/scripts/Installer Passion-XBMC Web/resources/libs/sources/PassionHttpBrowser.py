@@ -24,8 +24,11 @@ import urllib
 
 # Modules custom
 from utilities import *
-import ItemInstaller  
-from Browser import Browser, ImageQueueElement
+try:
+    import PassionHttpItemInstaller  
+    from Browser import Browser, ImageQueueElement
+except:
+    print sys.exc_info()
 
     
 class PassionHttpBrowser(Browser):
@@ -153,6 +156,8 @@ class PassionHttpBrowser(Browser):
             print 'incat: name'
             print row[1].encode("cp1252")
             print row[1].encode("cp1252").replace( r"\\", "\\" )
+            print 'incat: id'
+            print row[0]
 #            item['name']              = row[1].encode("cp1252").replace( r"\\", "\\" )
             item['name']              = row[1]
             item['parent']            = row[2]
@@ -170,7 +175,7 @@ class PassionHttpBrowser(Browser):
             item['author']            = row[9]
             item['date']              = row[10]
             item['added']             = row[11]
-            skipItem = False # Indicate if ths item will be added to the list or not
+            skipItem = False # Indicate if this item will be added to the list or not
             
             print 'HTTPBrowser::incat - previewpictureurl:'
             print item['previewpictureurl']
@@ -449,7 +454,7 @@ class PassionHttpBrowser(Browser):
                 type, installPath = self.getCategoryInfo( catId )
                 
                 # Create the right type of Installer Object
-                itemInstaller = ItemInstaller.HTTPInstaller( itemId, type, installPath, filesize, externalURL )
+                itemInstaller = PassionHttpItemInstaller.PassionHTTPInstaller( itemId, type, installPath, filesize, externalURL )
             else:
                 print "getInstaller: error impossible to install a category, it has to be an item "
 
