@@ -1,2 +1,4 @@
-toto=45
-ti=15
+toto=254
+titi=15
+
+echo exit
