@@ -276,8 +276,9 @@ class MainWindow( xbmcgui.WindowXML ):
         try:
             #TODO: modify DialogItemDescription in order to use DB instead of XML
             # Affiche la description de l'item selectionner
-            if ( not self.type.lower() in ( "racine", "plugins", ) ) and ( self.CONTROL_MAIN_LIST_START <= self.getFocusId() <= self.CONTROL_MAIN_LIST_END ):
-                currentListIndex = self.getCurrentListPosition()
+            currentListIndex = self.getCurrentListPosition()
+            #if ( ( not self.browser.isCat( currentListIndex ) ) and ( self.CONTROL_MAIN_LIST_START <= self.getFocusId() <= self.CONTROL_MAIN_LIST_END ) ):
+            if ( self.CONTROL_MAIN_LIST_START <= self.getFocusId() <= self.CONTROL_MAIN_LIST_END ):
                 if currentListIndex >= 0:
                     import DialogItemDescription
                     reload( DialogItemDescription )
@@ -412,6 +413,7 @@ class MainWindow( xbmcgui.WindowXML ):
                     self.setCurrentListPosition( self.main_list_last_pos.pop() )
 
             elif action == ACTION_SHOW_INFO:
+                 print "_show_descript - ItemDescription"
                  self._show_descript()
 
             elif action == ACTION_CONTEXT_MENU:
@@ -1047,8 +1049,8 @@ class MainWindow( xbmcgui.WindowXML ):
     
                 self.setProperty( "Category", self.browser.getCurrentCategory() )
                 #displayedItem = item
-#                displayListItem = xbmcgui.ListItem( item['name'], "", iconImage=item['previewpicture'], thumbnailImage=item['thumbnail'] )
-                displayListItem = xbmcgui.ListItem( item['name'].replace( r"\\", "\\" ).encode("cp1252"), "", iconImage=item['previewpicture'], thumbnailImage=item['thumbnail'] )
+                displayListItem = xbmcgui.ListItem( item['name'], "", iconImage=item['previewpicture'], thumbnailImage=item['thumbnail'] )
+                #displayListItem = xbmcgui.ListItem( item['name'].replace( r"\\", "\\" ).encode("cp1252"), "", iconImage=item['previewpicture'], thumbnailImage=item['thumbnail'] )
  
                 self.set_item_infos( displayListItem, item )
                 
@@ -1109,7 +1111,7 @@ class MainWindow( xbmcgui.WindowXML ):
         try:
             #infos = self.infoswarehouse.getInfo( itemName=os.path.basename( ipath ), itemType=self.type, listitem=listitem )
             listItem.setProperty( "itemId",          "" )
-            listItem.setProperty( "fileName",        dataItem['file'] )
+            listItem.setProperty( "fileName",        "" ) # Deprecated
             listItem.setProperty( "date",            dataItem['date'] )
             listItem.setProperty( "title",           dataItem['name'] )
             #listItem.setProperty( "title",           dataItem['name'].replace( r"\\", "\\" ).encode("cp1252") )
@@ -1139,9 +1141,10 @@ class MainWindow( xbmcgui.WindowXML ):
 #            print unicode(dataItem['description'].encode("cp1252")).decode("cp1252")
 #            print unicode(dataItem['description'].encode("utf8").replace( r"\\", "\\" ), "cp1252" )
             listItem.setProperty( "added",           dataItem['added'] )
-            listItem.setProperty( "fanartpicture",   dataItem['previewpicture'] )
+            listItem.setProperty( "fanartpicture",   dataItem['previewpictureurl'] )
             listItem.setProperty( "previewVideoURL", "" )
-
+            print "set_item_infos"
+            print dataItem
         
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
