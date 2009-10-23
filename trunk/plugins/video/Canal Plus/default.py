@@ -14,7 +14,21 @@ Installer dans in Q:\plugins\video\Canal Plus
     - Ajout description video via menu info
     - Les images sont desormais automatiquement telechargees par le plugin lui meme
     - Adaptation de la fonction de recherche au modifications du site
+23-10-09 Version Pre2.0b by Temhil
+	- Replaced separator in the URL "&" by "#" (broken due to change made in XBMC)
+	- Added plugin variable for SVN repo installer infos
 """
+
+__script__ = "Unknown"
+__plugin__ = "Canal Plus"
+__author__ = "Alexsolex"
+__url__ = "http://passion-xbmc.org/index.php"
+__svn_url__ = "http://code.google.com/p/passion-xbmc/source/browse/#svn/trunk/plugins/video/Canal%20Plus"
+__credits__ = "Team XBMC Passion"
+__platform__ = "xbmc media center"
+__date__ = "10-23-2009"
+__version__ = "Pre2.0b"
+__svn_revision__ = 0
 
 import sys
 if sys.modules.has_key("cplusplus"):
@@ -125,7 +139,7 @@ def show_subthemes(theme_id,referer):
     i=0
     for subtheme_id,subtheme_titre in subthemes:
         i=i+1
-        url = sys.argv[0]+"?listevideos=%s|%s&referer=%s"%(theme_id,subtheme_id,referer+">"+subtheme_titre)
+        url = sys.argv[0]+"?listevideos=%s#%s&referer=%s"%(theme_id,subtheme_id,referer+">"+subtheme_titre)
         item=xbmcgui.ListItem(subtheme_titre)
         ok = ok and xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),
                                                 url=url,
@@ -367,7 +381,7 @@ elif "listesubthemes" in parametres.keys():
     show_subthemes(parametres["listesubthemes"],parametres["referer"])
 elif "listevideos" in parametres.keys():
     #on liste les videos
-    theme_id,subtheme_id = parametres["listevideos"].split("|")
+    theme_id,subtheme_id = parametres["listevideos"].split("#")
     show_videos(theme_id,subtheme_id,parametres["referer"])
 elif "showvideoinfos" in parametres.keys():
     #montre les infos de la video
