@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings>
+<setting type="lsep" label="Image Resolution" />
    <setting id="resolution" type="enum" label="image resolution:" values="500|356" />
-   <setting id="path" type="folder" source="files" label="cleararts's path" default="special://skin" />
+   <setting type="lsep" label="Cleararts" />
+   <setting id="clearart folder" type="enum" label="clearart folder" values="Skin folder|TvShow folder (e.g Transparency skin)" default="none"/>
+   <setting visible="eq(-1,0)" id="path" type="folder" source="files" label="cleararts's folder path" default="special://skin" />
 </settings> 
