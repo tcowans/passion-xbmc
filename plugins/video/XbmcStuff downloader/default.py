@@ -1,6 +1,6 @@
 # -- coding: cp1252 -*-
 ########################################
-#xbmcstuff downloader v1.2
+#xbmcstuff downloader v1.3
 #by ppic
 ########################################
 ##changelog:
@@ -23,6 +23,7 @@
 ##19/09/09: v 1.2 added cache replace
 ##19/09/09: added language fix for image cache
 ##25/10/09: code cleaning
+##25/10/09: add cleararts download in tvshow folder option. 
             
 ########################################
 
@@ -34,7 +35,7 @@ __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/video/X
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
 __date__         = "25-10-2009"
-__version__      = "1.2"
+__version__      = "1.3"
 __svn_revision__  = "$Revision$"
 __XBMC_Revision__ = "20000" #XBMC Babylon
 
@@ -57,12 +58,7 @@ from file_item import Thumbnails
 thumbnails = Thumbnails()
 
 #chargement des settings
-try: clearart_path=xbmcplugin.getSetting("path")
-except:
-    xbmcplugin.openSettings(sys.argv[0])
-    clearart_path=xbmcplugin.getSetting("path")
-if clearart_path.startswith( "special://" ):
-    clearart_path = xbmc.translatePath( clearart_path )
+
     
     
 try: resolution=( "500", "356" )[ int( xbmcplugin.getSetting("resolution") ) ]
@@ -70,7 +66,20 @@ except:
     xbmcplugin.openSettings(sys.argv[0])
     resolution=( "500", "356" )[ int( xbmcplugin.getSetting("resolution") ) ]
 
+try:
+    clearart_in_tv_folder=(False,True)[ int( xbmcplugin.getSetting("clearart folder") ) ]
+except: print_exc()
+print "clearart_in_tv_folder= %s" % clearart_in_tv_folder
 
+if not clearart_in_tv_folder:
+    print "skin folder"
+    try: clearart_path=xbmcplugin.getSetting("path")
+    except:
+        xbmcplugin.openSettings(sys.argv[0])
+        clearart_path=xbmcplugin.getSetting("path")
+    if clearart_path == "special://skin": xbmcplugin.openSettings(sys.argv[0])
+    if clearart_path.startswith( "special://" ): clearart_path = xbmc.translatePath( clearart_path )
+    print "clearart_path: %s" % clearart_path
 
 #variables
 tvshow_list= {}
@@ -140,11 +149,13 @@ class Tvshow:
             print "-%s-" % (url)
             
             if name =="Clearart":
-                folder = clearart_path
+                if clearart_in_tv_folder: folder = repr( self.path ).strip( "u'\"" )
+                else: folder = clearart_path
                 print "folder: %s" % (folder)
                 try:
-                    filename = "%s.png" % translate_string( self.name )
-                    print translate_string( self.name )
+                    if clearart_in_tv_folder: filename = "clearart.png"
+                    else: filename = "%s.png" % translate_string( self.name )
+                    print "name: %s" % filename #translate_string( self.name )
                 except:
                     print_exc()
                 
@@ -159,13 +170,13 @@ class Tvshow:
                 else:
                     filename = "%s.tbn" % (name[:8])
                 folder = repr( self.path ).strip( "u'\"" )
-            try:
-                if name[6:8] == "-a": thumb =  thumbnails.get_cached_season_thumb( "%s%s" % (self.path , xbmc.getLocalizedString(20366)) )
-                elif int(name[6:8]) == 0: thumb = thumbnails.get_cached_season_thumb( "%s%s" % (self.path, xbmc.getLocalizedString(20381)) )
-                elif int(name[6:8]) < 10: thumb = thumbnails.get_cached_season_thumb( "%s%s%s" % (self.path , xbmc.getLocalizedString(20358).strip("%i"), name[7:8]) )
-                else: thumb = thumbnails.get_cached_season_thumb( "%s%s%s" % (self.path , xbmc.getLocalizedString(20358).strip("%i"), name[6:8]) )
-            except:
-                print_exc()
+                try:
+                    if name[6:8] == "-a": thumb =  thumbnails.get_cached_season_thumb( "%s%s" % (self.path , xbmc.getLocalizedString(20366)) )
+                    elif int(name[6:8]) == 0: thumb = thumbnails.get_cached_season_thumb( "%s%s" % (self.path, xbmc.getLocalizedString(20381)) )
+                    elif int(name[6:8]) < 10: thumb = thumbnails.get_cached_season_thumb( "%s%s%s" % (self.path , xbmc.getLocalizedString(20358).strip("%i"), name[7:8]) )
+                    else: thumb = thumbnails.get_cached_season_thumb( "%s%s%s" % (self.path , xbmc.getLocalizedString(20358).strip("%i"), name[6:8]) )
+                except:
+                    print_exc()
 
             fp, h = urllib.urlretrieve(url,os.path.join(folder,filename))
             
