@@ -22,10 +22,21 @@
 ##10/09/09: correction for smb path with tvshow.nfo
 ##19/09/09: v 1.2 added cache replace
 ##19/09/09: added language fix for image cache
+##25/10/09: code cleaning
             
 ########################################
 
-
+# plugin constants
+__plugin__       = "XbmcStuff Downloader"
+__author__       = "Ppic"
+__url__          = "http://code.google.com/p/passion-xbmc/"
+__svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/video/XbmcStuff downloader/"
+__credits__      = "Team XBMC, http://xbmc.org/"
+__platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
+__date__         = "25-10-2009"
+__version__      = "1.2"
+__svn_revision__  = "$Revision$"
+__XBMC_Revision__ = "20000" #XBMC Babylon
 
 #import des librairies
 import urllib,urllib2,re,xbmcplugin,xbmcgui,sys,os,shutil
@@ -58,6 +69,8 @@ try: resolution=( "500", "356" )[ int( xbmcplugin.getSetting("resolution") ) ]
 except:
     xbmcplugin.openSettings(sys.argv[0])
     resolution=( "500", "356" )[ int( xbmcplugin.getSetting("resolution") ) ]
+
+
 
 #variables
 tvshow_list= {}
@@ -172,6 +185,29 @@ class Tvshow:
             print_exc()
         return success
 
+    def dl_collection(self,type,id,name):
+        dp = xbmcgui.DialogProgress()
+        
+        dp.create("Downloading files...")
+        total_item= float(len(self.collection[name]))
+        for i, (imgname , imgurl) in enumerate(self.collection[name]):
+            current_item= float(i+1)
+            ratio= int(current_item/total_item*100)
+            dp.update(ratio , "Downloading %s" % imgname , "From %s" % imgurl)
+            if dp.iscanceled() :
+                message = "Download canceled"
+                break                    
+            try:
+                if self.get_image( imgname, imgurl ): message = "Collection downloaded successfully"
+                else: message = "Error while downloading collection"
+            except:
+                message = "Error while downloading"
+                print_exc()
+        dp.close()
+        end_of_directory( False )
+        xbmcgui.Dialog().ok( name, message )
+
+
     #téléchargement du xml
     def get_xml(self):
         if not self.tvid.isdigit(): url_id = self.get_nfo_id()
@@ -189,7 +225,7 @@ class Tvshow:
                     num = ""
                 else:
                     num = i                  
-                addDir(selec[i],"TVthumbs|%s" %(self.tvid),3,selec[i].replace(" ", "%20"))
+                addDir(selec[i],"TVthumbs&&%s" %(self.tvid),3,selec[i].replace(" ", "%20"))
 
                     
         elif type == "Clearart":
@@ -201,7 +237,7 @@ class Tvshow:
                 else:
                     num = i
                 try:
-                    addDir(selec[i],"Clearart|%s" %(self.tvid),3,selec[i].replace(" ", "%20"))
+                    addDir(selec[i],"Clearart&&%s" %(self.tvid),3,selec[i].replace(" ", "%20"))
 
                 except:
                     pass
@@ -219,7 +255,7 @@ class Tvshow:
                     else:
                         plus="-%s" % (i)
                     try:
-                        addDir("%s%s" % (num,plus),"%s|%s" %(selec[i],self.tvid),3,selec[i].replace(" ", "%20"))
+                        addDir("%s%s" % (num,plus),"%s&&%s" %(selec[i],self.tvid),3,selec[i].replace(" ", "%20"))
                     except:
                         pass
 
@@ -227,11 +263,11 @@ class Tvshow:
         elif type[:10] == "Collection":            
             for imgname , imgurl in self.collection[type[12:]]:
                 try:
-                    addDir("%s" % (imgname),"%s|%s" %(imgurl,self.tvid),3,imgurl.replace(" ", "%20"))
+                    addDir("%s" % (imgname),"%s&&%s" %(imgurl,self.tvid),3,imgurl.replace(" ", "%20"))
                 except:
                     print_exc()
             #ajout d'un élément pour télécharger une collection
-            addDir("Download the collection" ,"%s|%s" %(type[12:],self.tvid),4,"")
+            addDir("Download the collection" ,"%s&&%s" %(type[12:],self.tvid),4,"")
        
     #methode pour récup les info en base, passage en parametre de l'action
     def get_db(self,action):
@@ -254,6 +290,8 @@ class Tvshow:
                 print repr( raw[0] ).strip( "u'\"" ) #print "%s" % raw[0]
                 return raw[0]
         c.close()
+
+
 
 def parser(data):
     def load_infos(filename):
@@ -433,11 +471,11 @@ elif mode==3:
     #tri car les saisons arrive avec des parametres différents
     if name[:6] == "season":
         type = name
-        id = url.rsplit("|")[1]
-        url= url.rsplit("|")[0]
+        id = url.rsplit("&&")[1]
+        url= url.rsplit("&&")[0]
     else:
-        type=url.rsplit("|")[0]
-        id=url.rsplit("|")[1]
+        type=url.rsplit("&&")[0]
+        id=url.rsplit("&&")[1]
         url=name
         
     print "--type: %s"%(type)
@@ -454,8 +492,8 @@ elif mode==3:
 #mode de téléchargement de collection
 elif mode==4:
     type=name[13:]
-    id=url.rsplit("|")[1]
-    name=url.rsplit("|")[0]
+    id=url.rsplit("&&")[1]
+    name=url.rsplit("&&")[0]
     print "--type: %s"%(type)
     print "--id: %s"%(id)
     print "--collection name: %s"%(name)
@@ -464,26 +502,7 @@ elif mode==4:
     if xbmcgui.Dialog().yesno( "collection download" , "Do you want to download this collection?" ):
         current_show = Tvshow(id)
         parser(current_show)
-        
-        dp = xbmcgui.DialogProgress()
-        
-        dp.create("Downloading files...")
-        total_item= float(len(current_show.collection[name]))
-        for i, (imgname , imgurl) in enumerate(current_show.collection[name]):
-            current_item= float(i+1)
-            ratio= int(current_item/total_item*100)
-            dp.update(ratio , "Downloading %s" % imgname , "From %s" % imgurl)
-            if dp.iscanceled() :
-                message = "Download canceled"
-                break                    
-            try:
-                if current_show.get_image( imgname, imgurl ): message = "Collection downloaded successfully"
-                else: message = "Error while downloading collection"
-            except:
-                message = "Error while downloading"
-                print_exc()
-        dp.close()
-        end_of_directory( False )
-        xbmcgui.Dialog().ok( name, message )
+        current_show.dl_collection(type,id,name)
+
     else:
         end_of_directory( False )
