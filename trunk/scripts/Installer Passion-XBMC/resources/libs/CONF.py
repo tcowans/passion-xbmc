@@ -138,6 +138,10 @@ def SetConfiguration():
         PMIIIDir = os.path.join( os.sep+"usr", "share", "xbmc", "skin" )
         config.set( "InstallPath", "PMIIIDir", PMIIIDir )
         USRPath = True
+    elif SYSTEM_PLATFORM == "osx":
+        #Set OSX ScraperDir
+        scraperDir = os.path.join( sys.modules[ "__main__" ].SPECIAL_XBMC_DIR, "system", "scrapers", "video" )
+        config.set( "InstallPath", "ScraperDir", scraperDir )        
     else:
         #Set Win ScraperDir
         scraperDir = os.path.join( XBMC_ROOT, "system", "scrapers", "video" )
