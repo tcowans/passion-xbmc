@@ -27,6 +27,7 @@ __all__ = [
     "set_xbmc_carriage_return",
     "unescape",
     "strip_off",
+    "strip_off_CSV",
     "Settings",
     "get_infos_path",
     "replaceStrs",
@@ -241,12 +242,18 @@ def set_xbmc_carriage_return( text ):
 def strip_off( text, by="", xbmc_labels_formatting=False ):
     """ FONCTION POUR RECUPERER UN TEXTE D'UN TAG """
     if xbmc_labels_formatting:
+        #text = re.sub( "\[url[^>]*?\]|\[/url\]", by, text )
         text = text.replace( "[", "<" ).replace( "]", ">" )
     return re.sub( "(?s)<[^>]*>", by, text )
 
+def strip_off_CSV( text, by="" ):
+    """ FONCTION POUR RECUPERER UN TEXTE D'UN TAG A PARTIR DU CSV"""
+    #return re.sub( "\[url[^>]*?\]|\[/url\]", by, text )
+    return re.sub( "(?s)\[[^\]]*\]", by, text )
+
 def unescape(s):
     """
-    remplace les séquences d'échappement par leurs caractères équivalent
+    remplace les sequences d'échappement par leurs caracteres equivalent
     """
     p = htmllib.HTMLParser(None)
     p.save_bgn()

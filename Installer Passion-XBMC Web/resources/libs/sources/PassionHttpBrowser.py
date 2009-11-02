@@ -133,6 +133,7 @@ class PassionHttpBrowser(Browser):
         cols['$id_parent'] = str(itemId)
         
         #requete
+        conn.text_factory = sqlite.OptimizedUnicode
         c.execute(self.nicequery('''SELECT id_cat, title, id_parent,'None','CAT' AS type, image, description, 'None', 'None', 'None', 'None', 'None'
                                  FROM Categories
                                  WHERE id_parent = $id_parent
@@ -152,21 +153,15 @@ class PassionHttpBrowser(Browser):
         for row in c:   
             item = {}
             item['id']                = row[0]
-            #item['name']              = ( strip_off( row[1].encode("cp1252") ) )
-            print 'incat: name'
-            print row[1].encode("cp1252")
-            print row[1].encode("cp1252").replace( r"\\", "\\" )
-            print 'incat: id'
-            print row[0]
-#            item['name']              = row[1].encode("cp1252").replace( r"\\", "\\" )
-            item['name']              = row[1]
+            item['name']              = row[1].decode('string_escape')
             item['parent']            = row[2]
-            item['fileexternurl']     = row[3]
-            item['type']              = row[4]
-            item['previewpictureurl'] = row[5]
+            item['fileexternurl']     = row[3].decode('string_escape')
+            item['type']              = row[4].decode('string_escape')
+            item['previewpictureurl'] = row[5].decode('string_escape')
             #item['description']       = row[6].encode("cp1252") #unescape( strip_off( row[6].encode("utf8") ) )
             if (row[6] != None):
-                item['description']       = unescape( strip_off( row[6].encode("utf8") ) ).replace( r"\\", "\\" )
+                #item['description']       = row[6].encode("cp1252")
+                item['description']       = row[6].decode('string_escape')
             else:
                 item['description'] = "No description" #TODO: support localization
             #item['description'] = unescape( (row[6]).encode( "cp1252" ) )
