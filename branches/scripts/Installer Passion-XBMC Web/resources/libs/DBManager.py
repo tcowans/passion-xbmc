@@ -7,6 +7,7 @@ import os
 import sys
 import urllib
 import ftplib
+import traceback
 
 #module logger
 try:
@@ -31,6 +32,7 @@ from pysqlite2 import dbapi2 as sqlite
 import csv
 import elementtree.ElementTree as ET
 
+    
 class DBMgr:
     """
     Abstract class allowing to populate, query the DB
@@ -240,41 +242,64 @@ class CsvDB(DBMgr):
             args = '?action=getitems'
         
         c = conn.cursor()
-        reader = csv.reader(open(self.download_csv(args)),delimiter = '|')    
+        try:
+            print "reading CSV"
+            #reader = CsvUnicodeReader(open(self.download_csv(args)), delimiter = '|', encoding="cp1252")    
+            reader = csv.reader(open(self.download_csv(args)),delimiter = '|')    
         
-        for row in reader:
-            print row
-            try:
-                #on retranche l'occurs de fin de ligne
-                cols = {}
-                cols['$id_file']=row[0]
-                cols['$date']=row[1]
-                cols['$title']=row[2]
-                cols['$description']=row[3]
-                cols['$totaldownloads']=row[4]
-                cols['$filesize']=  row[5]
-                cols['$filename']=  row[6]
-                cols['$fileurl']=   row[7]
-                cols['$commenttotal']=  row[8]
-                cols['$id_cat']=row[9]
-                cols['$totalratings']=  row[10]
-                cols['$rating']=row[11]
-                cols['$type']=row[12]
-                cols['$sendemail']=row[13]
-                cols['$id_topic']=row[14]
-                cols['$keywords']=row[15]
-                cols['$createdate']=row[16]
-                cols['$previewpictureurl']=row[17]
-                cols['$version']=row[18]
-                cols['$author']=row[19]
-                cols['$descript_en']=row[20]
-                cols['$script_language']=row[21]
-                cols['$id_new']=row[22]
-                cols['$source_type']="http_passion"
+            for row in reader:
+                print row
+                try:
+                    #on retranche l'occurs de fin de ligne
+                    cols = {}
+                    cols['$id_file']=row[0]
+                    cols['$date']=row[1]
+                    #cols['$title']=row[2]
+                    #cols['$title']=unicode(row[2],"cp1252")
+                    #cols['$title']=unicode(unescape( strip_off(row[2])),"cp1252")
+                    #cols['$title']=adapt_str(unescape( row[2].decode("cp1252")))
+                    cols['$title']=unescape( row[2] )
     
-                self._insertServerItems(c,cols)
-            except Exception, e:
-                print e
+                    print "Title"
+                    print "from CSV"
+                    print repr(row[2])
+                    print "for DB"
+                    print repr(cols['$title'])
+                    #cols['$description']=row[3]
+                    cols['$description']=unescape( strip_off_CSV( row[3] ) )
+                    print repr(cols['$description'])
+                    #cols['$description']=unicode(row[3],"cp1252")
+                    #print "description"
+                    #print cols['$description']
+                    #print cols['$description'].encode("cp1252")
+                    cols['$totaldownloads']=row[4]
+                    cols['$filesize']=  row[5]
+                    cols['$filename']=  row[6]
+                    cols['$fileurl']=   row[7]
+                    cols['$commenttotal']=  row[8]
+                    cols['$id_cat']=row[9]
+                    cols['$totalratings']=  row[10]
+                    cols['$rating']=row[11]
+                    cols['$type']=row[12]
+                    cols['$sendemail']=row[13]
+                    cols['$id_topic']=row[14]
+                    cols['$keywords']=row[15]
+                    cols['$createdate']=row[16]
+                    cols['$previewpictureurl']=row[17]
+                    cols['$version']=row[18]
+                    cols['$author']=row[19]
+                    cols['$descript_en']=row[20]
+                    cols['$script_language']=row[21]
+                    cols['$id_new']=row[22]
+                    cols['$source_type']="http_passion"
+        
+                    self._insertServerItems(c,cols)
+                except Exception, e:
+                    print e
+                    traceback.print_exc()
+        except Exception, e:
+            print e
+            traceback.print_exc()
                 
         #Sauvegarde des modifications
         conn.commit()   
@@ -283,7 +308,8 @@ class CsvDB(DBMgr):
 
     def _insertServerItems( self, c,cols ):
         try:
-            #Chaque ligne trouvée dans le table.csv est insérée dans la table
+            #Chaque ligne trouvee dans le table.csv est inseree dans la table
+            #c.text_factory = lambda x: unicode(x, "utf-8", "ignore")
             c.execute(self.nicequery('''INSERT INTO Server_Items 
                                         (id_file,
                                         date,
@@ -336,10 +362,11 @@ class CsvDB(DBMgr):
         except Exception, e:
             print "Exception in _insertServerItems"
             print e     
+            traceback.print_exc()
 
 #    def _insertServerItems( self, c,cols ):
 #        try:
-#            #Chaque ligne trouvée dans le table.csv est insérée dans la table
+#            #Chaque ligne trouvee dans le table.csv est inseree dans la table
 #            c.execute(self.nicequery('''INSERT INTO Server_Items
 #                                        (id_file,
 #                                        date,
@@ -407,37 +434,34 @@ class CsvDB(DBMgr):
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
             self.make_Categories()
         args = '?action=getcat'
-        reader = csv.reader(open(self.download_csv(args)),delimiter = '|')
-        c = conn.cursor()
-    
-        print "CSV content"
-        print reader
-        for row in reader:
-            print row
-            try:
-                cols = {}
-                cols['$id_cat']=row[0]
-                cols['$title']=unescape( row[1])
-                #cols['$title']= u"""%s"""%unescape( row[1]).encode("cp1252")
-                #cols['$title']= unicode( unescape( row[1]),"cp1252" )
-                print "title"
-                print row[1]
-                #print unescape( strip_off( row[1] ) )
-                #print unescape( row[1] )
-                cols['$description']=unescape( row[2] )
-                cols['$image']=row[3]
-                cols['$id_parent']= row[4]
-                print "row[5] = %s"%row[5]
-                c.execute('''SELECT id_path FROM install_paths WHERE title LIKE ?''',(row[5],))
-                cols['$id_path'] = str(c.fetchone()[0])
-                print "cols['$id_path'] = " 
-                print cols['$id_path']  
+        try:
+            #reader = CsvUnicodeReader(open(self.download_csv(args)), delimiter = '|', encoding="cp1252")    
+            reader = csv.reader(open(self.download_csv(args)),delimiter = '|')    
+            c = conn.cursor()
+        
+            print "CSV content"
+            print reader
+            for row in reader:
+                print row
+                try:
+                    cols = {}
+                    cols['$id_cat']=row[0]
+                    cols['$title']=unescape( row[1] )
+                    cols['$description']=unescape( strip_off_CSV( row[2] ) )
+                    cols['$image']=row[3]
+                    cols['$id_parent']= row[4]
+                    c.execute('''SELECT id_path FROM install_paths WHERE title LIKE ?''',(row[5],))
+                    cols['$id_path'] = str(c.fetchone()[0])
+                        
                     
-                
-                self._insertCategories(c,cols)
-            except Exception, e:
-                print 'erreur categorie'
-                print e
+                    self._insertCategories(c,cols)
+                except Exception, e:
+                    print 'erreur categorie'
+                    print e
+                    traceback.print_exc()
+        except Exception, e:
+            print e
+            traceback.print_exc()
             
         #Sauvegarde des modifications
         conn.commit()    
@@ -449,6 +473,7 @@ class CsvDB(DBMgr):
         print c
         print cols
         try:
+            #c.text_factory = lambda x: unicode(x, "utf-8", "ignore")
             c.execute(self.nicequery('''INSERT into Categories
                                 (                    
                                 id_cat, 
@@ -470,6 +495,7 @@ class CsvDB(DBMgr):
         except Exception, e:
             print 'erreur insert'
             print e
+            traceback.print_exc()
 
 
     
@@ -593,7 +619,7 @@ class XmlDB(DBMgr):
 
     def _insertServerItems( self, c,cols ):
         try:
-            #Chaque ligne trouvée dans le table.csv est insérée dans la table
+            #Chaque ligne trouvee dans le table.csv est inseree dans la table
             c.execute(self.nicequery('''INSERT INTO Server_Items 
                                         (id_file,
                                         date,
@@ -654,7 +680,7 @@ class XmlDB(DBMgr):
         try:
             c.execute('''DELETE * FROM Categories''')
         except:
-            print "update_categories: dlete failed"
+            print "update_categories: delete failed"
             self.make_Categories()
               
         #TODO: Use localization for name

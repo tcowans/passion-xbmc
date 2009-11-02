@@ -1,4 +1,4 @@
-
+#
 #Modules general
 import os
 import re
@@ -1048,9 +1048,7 @@ class MainWindow( xbmcgui.WindowXML ):
     
     
                 self.setProperty( "Category", self.browser.getCurrentCategory() )
-                #displayedItem = item
                 displayListItem = xbmcgui.ListItem( item['name'], "", iconImage=item['previewpicture'], thumbnailImage=item['thumbnail'] )
-                #displayListItem = xbmcgui.ListItem( item['name'].replace( r"\\", "\\" ).encode("cp1252"), "", iconImage=item['previewpicture'], thumbnailImage=item['thumbnail'] )
  
                 self.set_item_infos( displayListItem, item )
                 
@@ -1113,33 +1111,11 @@ class MainWindow( xbmcgui.WindowXML ):
             listItem.setProperty( "itemId",          "" )
             listItem.setProperty( "fileName",        "" ) # Deprecated
             listItem.setProperty( "date",            dataItem['date'] )
-            listItem.setProperty( "title",           dataItem['name'] )
-            #listItem.setProperty( "title",           dataItem['name'].replace( r"\\", "\\" ).encode("cp1252") )
-            listItem.setProperty( "author",          dataItem['author'] )
-            listItem.setProperty( "version",         dataItem['version'] )
-            listItem.setProperty( "language",        dataItem['language'] )
-            listItem.setProperty( "description",     dataItem['description'] )
-            #listItem.setProperty( "description",     unicode(dataItem['description'].encode("utf8").replace( r"\\", "\\" ), "cp1252" ) )
-            #listItem.setProperty( "description",     repr(dataItem['description']).replace( r"\\", "\\" ) )
-#            listItem.setProperty( "description",     dataItem['description'].replace( r"\\", "\\" ).encode("cp1252") )
-#            print repr(dataItem['description']) 
-#            print repr(dataItem['description']).replace( r"\\", "\\" )
-#            print unicode(repr(dataItem['description']).replace( r"\\", "\\" ).encode("cp1252"))
-#            print unicode(repr(dataItem['description']).replace( r"\\", "\\" ).encode("cp1252")).decode("cp1252")
-#            print unicode(dataItem['description'].encode("utf8").replace( r"\\", "\\" ), "cp1252" ) 
-#            print "str:"
-#            print dataItem['description'].decode("cp1252")
-#            print str(dataItem['description'])
-#            print unicode(str(dataItem['description']).encode("cp1252"))
-#            print unicode(str(dataItem['description']).encode("utf8")).decode("cp1252")
-            
-            #listItem.setProperty( "description",     unicode("Vidéo test \ test \ test", "cp1252" ) )
-#            print "set_item_infos"
-#            print unicode(dataItem['description'])
-#            print unicode(dataItem['description'].encode("utf8"))
-#            print unicode(dataItem['description'].encode("cp1252"))
-#            print unicode(dataItem['description'].encode("cp1252")).decode("cp1252")
-#            print unicode(dataItem['description'].encode("utf8").replace( r"\\", "\\" ), "cp1252" )
+            listItem.setProperty( "title",           dataItem['name'].decode('string_escape') )
+            listItem.setProperty( "author",          dataItem['author'].decode('string_escape') )
+            listItem.setProperty( "version",         dataItem['version'].decode('string_escape') )
+            listItem.setProperty( "language",        dataItem['language'].decode('string_escape') )
+            listItem.setProperty( "description",     dataItem['description'].decode('string_escape') )
             listItem.setProperty( "added",           dataItem['added'] )
             listItem.setProperty( "fanartpicture",   dataItem['previewpictureurl'] )
             listItem.setProperty( "previewVideoURL", "" )
