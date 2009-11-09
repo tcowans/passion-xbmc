@@ -16,7 +16,9 @@ except:
     import script_log as logger
 
 # Modules custom
+import Item
 from utilities import *
+#from CONSTANTS import *
 
 ROOTDIR = sys.modules[ "__main__" ].ROOTDIR
 SPECIAL_SCRIPT_DATA = sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA
@@ -32,6 +34,7 @@ from pysqlite2 import dbapi2 as sqlite
 import csv
 import elementtree.ElementTree as ET
 
+categories = {'None': 'None', 'Other': Item.TYPE_SCRAPER, 'ThemesDir': Item.TYPE_SKIN, 'ScraperDir': Item.TYPE_SCRAPER, 'ThemesDir': Item.TYPE_SKIN, 'ScriptsDir': Item.TYPE_SCRIPT, 'PluginDir': Item.TYPE_PLUGIN, 'PluginMusDir': Item.TYPE_PLUGIN_MUSIC, 'PluginPictDir': Item.TYPE_PLUGIN_PICTURES, 'PluginProgDir': Item.TYPE_PLUGIN_PROGRAMS,  'PluginVidDir': Item.TYPE_PLUGIN_VIDEO }
     
 class DBMgr:
     """
@@ -57,7 +60,7 @@ class DBMgr:
         Get external data and populate the DB with it
         """
         if not os.path.isfile(self.db):
-            self.make_install_paths()
+            #self.make_install_paths()
             self.make_Categories()
             self.update_categories()
             self.makeServer_Items()
@@ -149,6 +152,15 @@ class DBMgr:
         conn = sqlite.connect(self.db)
         c = conn.cursor()
         #Creation de la table
+#        c.execute ( '''CREATE TABLE IF NOT EXISTS Categories
+#                        (
+#                        id_cat int(8) primary key, 
+#                        title varchar(100), 
+#                        description text, 
+#                        image varchar(100), 
+#                        id_parent int(8), 
+#                        id_path varchar(100)
+#                        )''')
         c.execute ( '''CREATE TABLE IF NOT EXISTS Categories
                         (
                         id_cat int(8) primary key, 
@@ -156,47 +168,60 @@ class DBMgr:
                         description text, 
                         image varchar(100), 
                         id_parent int(8), 
-                        id_path varchar(100)
+                        xbmc_type varchar(100)
                         )''')
         conn.commit()
         
-    def make_install_paths( self ):
-    
-        conn = sqlite.connect(self.db)
-        c = conn.cursor()
-    
-        c.execute ( '''CREATE TABLE IF NOT EXISTS Install_Paths
-                        (
-                        id_path integer primary key autoincrement, 
-                        title varchar(100), 
-                        path varchar(100)
-                        )''')
-        conn.commit()
-        
-        import CONF
-        Path = CONF.GetInstallPaths()
-        del CONF
-        
-        print Path
-        
-        for ind in range(len(Path['title'])):
-            path = {}
-            path['$title'] = Path['title'][ind]
-            path['$path'] = Path['path'][ind]
-            print path['$title']
-            print path['$path']
-            c.execute(self.nicequery('''INSERT INTO Install_Paths 
-                        (
-                        title,
-                        path
-                        )
-                        VALUES
-                        (
-                        $title ,
-                        $path
-                        ) ''',path))
-        conn.commit()
-        c.close      
+#    def make_install_paths( self ):
+#    
+#        conn = sqlite.connect(self.db)
+#        c = conn.cursor()
+#    
+##        c.execute ( '''CREATE TABLE IF NOT EXISTS Install_Paths
+##                        (
+##                        id_path integer primary key autoincrement, 
+##                        title varchar(100), 
+##                        path varchar(100)
+##                        )''')
+#        c.execute ( '''CREATE TABLE IF NOT EXISTS Install_Paths
+#                        (
+#                        id_path integer primary key autoincrement, 
+#                        title varchar(100), 
+#                        )''')
+#        conn.commit()
+#        
+#        import CONF
+#        Path = CONF.GetInstallPaths()
+#        del CONF
+#        
+#        print Path
+#        
+#        for ind in range(len(Path['title'])):
+#            path = {}
+#            path['$title'] = Path['title'][ind]
+#            #path['$path'] = Path['path'][ind]
+#            print path['$title']
+##            print path['$path']
+##            c.execute(self.nicequery('''INSERT INTO Install_Paths 
+##                        (
+##                        title,
+##                        path
+##                        )
+##                        VALUES
+##                        (
+##                        $title ,
+##                        $path
+##                        ) ''',path))
+#            c.execute(self.nicequery('''INSERT INTO Install_Paths 
+#                        (
+#                        title,
+#                        )
+#                        VALUES
+#                        (
+#                        $title ,
+#                        ) ''',path))
+#        conn.commit()
+#        c.close      
         
         
         
@@ -450,9 +475,11 @@ class CsvDB(DBMgr):
                     cols['$description']=unescape( strip_off_CSV( row[2] ) )
                     cols['$image']=row[3]
                     cols['$id_parent']= row[4]
-                    c.execute('''SELECT id_path FROM install_paths WHERE title LIKE ?''',(row[5],))
-                    cols['$id_path'] = str(c.fetchone()[0])
-                        
+#                    c.execute('''SELECT id_path FROM install_paths WHERE title LIKE ?''',(row[5],))
+#                    cols['$id_path'] = str(c.fetchone()[0])
+                    cols['$xbmc_type'] = categories[ row[5] ]
+                    print "categories[ row[5] ]"
+                    print categories[ row[5] ]
                     
                     self._insertCategories(c,cols)
                 except Exception, e:
@@ -474,6 +501,24 @@ class CsvDB(DBMgr):
         print cols
         try:
             #c.text_factory = lambda x: unicode(x, "utf-8", "ignore")
+#            c.execute(self.nicequery('''INSERT into Categories
+#                                (                    
+#                                id_cat, 
+#                                title, 
+#                                description, 
+#                                image, 
+#                                id_parent,
+#                                id_path
+#                                )
+#                            VALUES 
+#                                (
+#                                $id_cat ,
+#                                $title ,
+#                                $description ,
+#                                $image ,
+#                                $id_parent ,
+#                                $id_path
+#                                )''',cols))
             c.execute(self.nicequery('''INSERT into Categories
                                 (                    
                                 id_cat, 
@@ -481,7 +526,7 @@ class CsvDB(DBMgr):
                                 description, 
                                 image, 
                                 id_parent,
-                                id_path
+                                xbmc_type
                                 )
                             VALUES 
                                 (
@@ -490,7 +535,7 @@ class CsvDB(DBMgr):
                                 $description ,
                                 $image ,
                                 $id_parent ,
-                                $id_path
+                                $xbmc_type
                                 )''',cols))
         except Exception, e:
             print 'erreur insert'

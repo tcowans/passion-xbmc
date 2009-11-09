@@ -49,6 +49,12 @@ class Browser:
         
         self.stopUpdateImageThread = False # Flag indiquant si on doit stopper ou non le thread getImagesQueue_thread
         
+    def close( self ):
+        """
+        Close browser: i.e close connection, free memory ...
+        """
+        pass
+    
     def getNextList( self, index=0 ):
         """
         Returns the list of item (dictionary) on the server depending on the location we are on the server
@@ -151,9 +157,43 @@ class Browser:
          # on vide la liste vide la Queue
         del self.image_queue[ : ]
         
+    def getImage( self, index, updateImage_cb=None, obj2update=None  ):
+        """
+        Register an external graphic object needing to update the picture (listitem, image ...)
+        """
+        pass
+        item = self.curList[ index ]
+#        thumbfilename = item['thumbnail']     
+#        imagefilename = item['previewpicture']
+        
+        # Checking if the pciture is already here or not
+        downloadImage = False
+        thumbnail, checkPathPic = set_cache_thumb_name( item['previewpictureurl'] )
+        if thumbnail and os.path.isfile( thumbnail ):
+            thumbfilename = thumbnail
+        else:
+            item['thumbnail'] = "IPX-NotAvailable2.png"
+            downloadImage = True
+            
+        if os.path.exists(checkPathPic):
+            imagefilename = checkPathPic
+        else:
+            imagefilename = "IPX-NotAvailable2.png"
+            downloadImage = True
+            
+        if downloadImage == True:
+
+            # Telechargement et mise a jour de l'image (thread de separe)
+            # Ajout a de l'image a la queue de telechargement
+            #self.image_queue.append( ImageQueueElement( previewPictureURL, updateImage_cb, listitem ) )
+            self.image_queue.append( ImageQueueElement( item['previewpictureurl'], updateImage_cb, obj2update  ) )
+            #TODO: dynamic update of image (right now image is not updatd in the GUI after download)
+            
+        return thumbfilename, imagefilename
+       
     def imageUpdateRegister( self, listItemId, updateImage_cb=None, obj2update=None ):
         """
-        Register am external graphic object needing to update the picture (listitem, image ...)
+        Register an external graphic object needing to update the picture (listitem, image ...)
         """
         previewPictureURL   = self.curList[listItemId]['previewpictureurl']
         previewPictureLocal = self.curList[listItemId]['previewpicture']

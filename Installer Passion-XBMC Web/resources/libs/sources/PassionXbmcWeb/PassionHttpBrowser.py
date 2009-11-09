@@ -23,12 +23,11 @@ from pil_util import makeThumbnails
 import urllib
 
 # Modules custom
+import PassionHttpItemInstaller  
+import Item
 from utilities import *
-try:
-    import PassionHttpItemInstaller  
-    from Browser import Browser, ImageQueueElement
-except:
-    print sys.exc_info()
+from Browser import Browser, ImageQueueElement
+#from CONSTANTS import *
 
     
 class PassionHttpBrowser(Browser):
@@ -114,16 +113,16 @@ class PassionHttpBrowser(Browser):
     
     def incat( self, itemId=0):
         """
-        Liste des sous-catégories et fichiers de la catégorie sélectionnée
-        Renvoie un dictionnaire constitué comme suit : {id, name, parent, file,type}
+        Liste des sous-categories et fichiers de la categorie selectionnee
+        Renvoie un dictionnaire constitue comme suit : {id, name, parent, file,type}
         Chaque index du dictionnaire renvoie à une liste d'occurences.
-        Il faut l'appeler le numéro id de la catégorie dont on veut obtenir le contenu
-        Si on veut obtenir la liste des catégories racines, il alimenter la fonction avec 0 
+        Il faut l'appeler le numero id de la categorie dont on veut obtenir le contenu
+        Si on veut obtenir la liste des categories racines, il alimenter la fonction avec 0 
         """
         
         listOfItems = []
         
-        #Connection à la base de donnée
+        #Connection à la base de donnee
         conn = sqlite.connect(self.db)
         c = conn.cursor()
         #conn.text_factory = unicode
@@ -148,12 +147,12 @@ class PassionHttpBrowser(Browser):
 #                                 SELECT id_file, title, id_cat,fileurl,'FIC' AS type, previewpictureurl, description, script_language, version, author, createdate, date(date, 'unixepoch')  
     
                      
-        #pour chaque colonne fetchée par la requête on alimente une liste, l'ensemble des  
+        #pour chaque colonne fetchee par la requête on alimente une liste, l'ensemble des  
         #listes constitue le dictionnaire
         for row in c:   
             item = {}
             item['id']                = row[0]
-            item['name']              = row[1].decode('string_escape')
+            item['name']              = row[1].encode("cp1252").decode('string_escape')
             item['parent']            = row[2]
             item['fileexternurl']     = row[3].decode('string_escape')
             item['type']              = row[4].decode('string_escape')
@@ -161,7 +160,7 @@ class PassionHttpBrowser(Browser):
             #item['description']       = row[6].encode("cp1252") #unescape( strip_off( row[6].encode("utf8") ) )
             if (row[6] != None):
                 #item['description']       = row[6].encode("cp1252")
-                item['description']       = row[6].decode('string_escape')
+                item['description']       = row[6].encode("cp1252").decode('string_escape')
             else:
                 item['description'] = "No description" #TODO: support localization
             #item['description'] = unescape( (row[6]).encode( "cp1252" ) )
@@ -180,41 +179,49 @@ class PassionHttpBrowser(Browser):
                     item['previewpicture'] = "IPX-NotAvailable2.png"
                     
                 elif (item['type'] == 'CAT'):
-                    catTitle, catPath = self.getCategoryInfo( item['id'] )
+                    catTitle, catType = self.getCategoryInfo( item['id'] )
     
                     #TODO: use var for title and image file names
-                    if catTitle == "ScraperDir": #TODO replace by TYPE_SCRAPER form CONF
+                    
+                    if catType == Item.TYPE_SCRAPER: 
                         # Scraper
-                        item['thumbnail']      = "IPX-defaultScraper.png" #TODO replace by THUMB_SCRAPER
-                        item['previewpicture'] = "IPX-defaultScraper.png"
-                    elif catTitle == "ThemesDir": #TODO replace by TYPE_SKIN form CONF
+                        #item['thumbnail']      = "IPX-defaultScraper.png" #TODO replace by THUMB_SCRAPER
+                        #item['previewpicture'] = "IPX-defaultScraper.png"
+                        item['thumbnail']      = Item.get_thumb( Item.TYPE_SCRAPER )
+                        item['previewpicture'] = Item.get_thumb( Item.TYPE_SCRAPER )
+                        
+                    elif catType == Item.TYPE_SKIN: #TODO replace by TYPE_SKIN form CONF
                         # Theme
-                        item['thumbnail']      = "IPX-defaultSkin.png"
-                        item['previewpicture'] = "IPX-defaultSkin.png"
-                    elif catTitle == "ScriptsDir":
+                        item['thumbnail']      = Item.get_thumb( Item.TYPE_SKIN )
+                        item['previewpicture'] = Item.get_thumb( Item.TYPE_SKIN )
+                    elif catType == Item.TYPE_SCRIPT:
                         # Script
-                        item['thumbnail']      = "IPX-defaultScript_Plugin.png"
-                        item['previewpicture'] = "IPX-defaultScript_Plugin.png"
-                    elif catTitle == "PluginDir":
+                        #item['thumbnail']      = "IPX-defaultScript_Plugin.png"
+                        #item['previewpicture'] = "IPX-defaultScript_Plugin.png"
+                        item['thumbnail']      = Item.get_thumb( Item.TYPE_SCRIPT )
+                        item['previewpicture'] = Item.get_thumb( Item.TYPE_SCRIPT )
+                    elif catType == Item.TYPE_PLUGIN:
                         # Plugin
-                        item['thumbnail']      = "IPX-defaultScript_Plugin.png"
-                        item['previewpicture'] = "IPX-defaultScript_Plugin.png"
-                    elif catTitle == "PluginMusDir":
+                        #item['thumbnail']      = "IPX-defaultScript_Plugin.png"
+                        #item['previewpicture'] = "IPX-defaultScript_Plugin.png"
+                        item['thumbnail']      = Item.get_thumb( Item.TYPE_PLUGIN )
+                        item['previewpicture'] = Item.get_thumb( Item.TYPE_PLUGIN )
+                    elif catType == Item.TYPE_PLUGIN_MUSIC:
                         # Plugin
-                        item['thumbnail']      = "IPX-defaultPluginMusic.png"
-                        item['previewpicture'] = "IPX-defaultPluginMusic.png"
-                    elif catTitle == "PluginPictDir":
+                        item['thumbnail']      = Item.get_thumb( Item.TYPE_PLUGIN_MUSIC )
+                        item['previewpicture'] = Item.get_thumb( Item.TYPE_PLUGIN_MUSIC )
+                    elif catType == Item.TYPE_PLUGIN_PICTURES:
                         # Plugin
-                        item['thumbnail']      = "IPX-defaultPluginPicture.png"
-                        item['previewpicture'] = "IPX-defaultPluginPicture.png"
-                    elif catTitle == "PluginProgDir":
+                        item['thumbnail']      = Item.get_thumb( Item.TYPE_PLUGIN_PICTURES )
+                        item['previewpicture'] = Item.get_thumb( Item.TYPE_PLUGIN_PICTURES )
+                    elif catType == Item.TYPE_PLUGIN_PROGRAMS:
                         # Plugin
-                        item['thumbnail']      = "IPX-defaultPluginProgram.png"
-                        item['previewpicture'] = "IPX-defaultPluginProgram.png"
-                    elif catTitle == "PluginVidDir":
+                        item['thumbnail']      = Item.get_thumb( Item.TYPE_PLUGIN_PROGRAMS )
+                        item['previewpicture'] = Item.get_thumb( Item.TYPE_PLUGIN_PROGRAMS )
+                    elif catType == Item.TYPE_PLUGIN_VIDEO:
                         # Plugin
-                        item['thumbnail']      = "IPX-defaultScript_Plugin.png"
-                        item['previewpicture'] = "IPX-defaultScript_Plugin.png"
+                        item['thumbnail']      = Item.get_thumb( Item.TYPE_PLUGIN_VIDEO )
+                        item['previewpicture'] = Item.get_thumb( Item.TYPE_PLUGIN_VIDEO )
                     else:
                         skipItem = True
             else:
@@ -308,7 +315,9 @@ class PassionHttpBrowser(Browser):
         """
         Reload and returns the current list
         """
-        pass
+        # Get current categorie id 
+        catId = self.curList[0]['parent']
+        return self.getNextList(catId)
     
     def getContextMenu( self ):
         """
@@ -318,6 +327,7 @@ class PassionHttpBrowser(Browser):
     
     def getCategoryInfo( self, catId ):
         """
+        Retrieves Categorie Name and Install path
         """
         title = ""
         path = ""
@@ -325,10 +335,14 @@ class PassionHttpBrowser(Browser):
         conn = sqlite.connect(self.db)
         c = conn.cursor()  
         try:
-            c.execute('''SELECT A.title, A.path
-                         FROM Install_Paths A, Categories B
-                         WHERE B.id_cat = ? 
-                         AND A.id_path = B.id_path
+#            c.execute('''SELECT A.title, A.path
+#                         FROM Install_Paths A, Categories B
+#                         WHERE B.id_cat = ? 
+#                         AND A.id_path = B.id_path
+#                         ''',(catId,))
+            c.execute('''SELECT title, xbmc_type
+                         FROM Categories
+                         WHERE id_cat = ? 
                          ''',(catId,))
         except Exception, e:
             print "getCategoryTitle: exception"
@@ -337,12 +351,13 @@ class PassionHttpBrowser(Browser):
         for row in c:
             print row
             title = row[0].encode( "cp1252" )
-            path = row[1].encode( "utf8" )
+            type = row[1].encode( "utf8" )
         c.close()   
         print "title = %s"%title
-        print "path = %s"%path
-        return title, path
-       
+        print "type = %s"%type
+        return title, type
+
+
     def getInfo( self, index ):
         """
         Returns the information about a specific item (dictionnary)
@@ -353,11 +368,25 @@ class PassionHttpBrowser(Browser):
         """
         itemId = self.curList[index]['id']
     
-        #Connection à la base de donnée
+        #Connection à la base de donnee
         conn = sqlite.connect(self.db)
         c = conn.cursor()  
         
         try:
+#            c.execute('''SELECT A.id_file , 
+#                                A.title, 
+#                                A.description, 
+#                                A.previewpictureurl, 
+#                                A.totaldownloads, 
+#                                A.filename, 
+#                                A.filesize, 
+#                                A.createdate,
+#                                C.path
+#                         FROM Server_Items A, Categories B, Install_Paths C
+#                         WHERE id_file = ? 
+#                         AND A.id_cat = B.id_cat
+#                         AND B.id_path = C.id_path
+#                         ''',(itemId,))
             c.execute('''SELECT A.id_file , 
                                 A.title, 
                                 A.description, 
@@ -366,17 +395,16 @@ class PassionHttpBrowser(Browser):
                                 A.filename, 
                                 A.filesize, 
                                 A.createdate,
-                                C.path
-                         FROM Server_Items A, Categories B, Install_Paths C
+                                B.xbmc_type
+                         FROM Server_Items A, Categories B
                          WHERE id_file = ? 
                          AND A.id_cat = B.id_cat
-                         AND B.id_path = C.id_path
                          ''',(itemId,))
         except Exception, e:
             print e
                      
-        #ici une seule ligne est retournée par la requête
-        #pour chaque colonne fetchée par la requête on alimente un index du dictionnaire
+        #ici une seule ligne est retournee par la requête
+        #pour chaque colonne fetchee par la requête on alimente un index du dictionnaire
         dico = {}
         for row in c:
             print row
@@ -388,7 +416,7 @@ class PassionHttpBrowser(Browser):
             dico['filename'] = row[5]
             dico['filesize'] = row[6]
             dico['created'] = row[7]
-            dico['path2download']=row[8]
+            dico['type']=row[8]
         c.close()   
         return dico
     
@@ -430,6 +458,7 @@ class PassionHttpBrowser(Browser):
         """
         Returns an ItemInstaller instance
         """
+        itemInstaller = None
         try:            
             if ( ( len(self.curList)> 0 ) and ( self.curList[index]['type'] == 'FIC' ) ):
                 # Convert index to id
@@ -440,16 +469,19 @@ class PassionHttpBrowser(Browser):
                 # Get file size
                 itemInfos = self.getInfo(index)
                 filesize = itemInfos['filesize']
+                
+                print itemInfos
 
                 print "getInstaller - externalURL" 
                 print externalURL
                 print "getInstaller - filesize"
                 print filesize
             
-                type, installPath = self.getCategoryInfo( catId )
+                title, type = self.getCategoryInfo( catId )
                 
                 # Create the right type of Installer Object
-                itemInstaller = PassionHttpItemInstaller.PassionHTTPInstaller( itemId, type, installPath, filesize, externalURL )
+                #itemInstaller = PassionHttpItemInstaller.PassionHTTPInstaller( itemId, type, installPath, filesize, externalURL )
+                itemInstaller = PassionHttpItemInstaller.PassionHTTPInstaller( itemId, type, filesize, externalURL )
             else:
                 print "getInstaller: error impossible to install a category, it has to be an item "
 
@@ -464,6 +496,7 @@ class PassionHttpBrowser(Browser):
 
     def applyFilter( self ):
         pass
+
 
 
     #def _downloadImage( self, picname, listitem=None ):

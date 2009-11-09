@@ -53,7 +53,7 @@ try:
     logger = sys.modules[ "__main__" ].logger
 except:
     import script_log as logger
-
+    
 
 #REPERTOIRE RACINE ( default.py )
 CWD = os.getcwd().rstrip( ";" )
@@ -62,6 +62,7 @@ BASE_SETTINGS_PATH = os.path.join( sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA
 RSS_FEEDS_XML = os.path.join( CWD, "resources", "RssFeeds.xml" )
 
 BASE_THUMBS_PATH = os.path.join( sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA, "Thumbnails" )
+
 
 def set_cache_thumb_name( path ):
     try:
