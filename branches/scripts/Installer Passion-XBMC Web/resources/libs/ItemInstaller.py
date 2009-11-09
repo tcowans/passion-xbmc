@@ -23,7 +23,7 @@ except:
 # Modules custom
 #from utilities import *
 import CONF
-
+import Item
 
 class cancelRequest(Exception):
     def __init__(self, value):
@@ -36,11 +36,13 @@ class ItemInstaller:
     ABSTRACT
     """
     
-    def __init__( self , itemId, type, installPath, filesize ):
+    #def __init__( self , itemId, type, installPath, filesize ):
+    def __init__( self , itemId, type, filesize ):
         self.itemId          = itemId       # Id of the server item 
         self.type            = type         # Type of the item
-        self.typeInstallPath = installPath  # Install Path for this type of item
-        self.filesize        = filesize     # Size of the file to downlaod
+        #self.typeInstallPath = installPath  # Install Path for this type of item
+        self.typeInstallPath = Item.get_install_path( type )  # Install Path for this type of item
+        self.filesize        = filesize     # Size of the file to download
         
         self.configManager = CONF.configCtrl()
         if not self.configManager.is_conf_valid: raise
@@ -48,9 +50,23 @@ class ItemInstaller:
         
         
     def downloadItem( self, msgFunc=None,progressBar=None ):
+        """
+        Download an item form the server
+        """
+        pass
+
+    def isAlreadyInstalled( self ):
+        """
+        Check if extracted item is already installed
+        Needs to be called after extractItem
+        """
         pass
 
     def installItem( self, msgFunc=None,progressBar=None ):
+        """
+        Install item (download + extract + copy)
+        Needs to be called after extractItem
+        """
         pass
 
 

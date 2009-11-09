@@ -23,10 +23,12 @@ except:
 # Modules custom
 from utilities import *
 import CONF
+import Item
 try:
     from ItemInstaller import ItemInstaller, cancelRequest
 except:
     print sys.exc_info()
+    traceback.print_exc()
 #import extractor
 
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
@@ -38,8 +40,9 @@ class PassionHTTPInstaller(ItemInstaller):
     Download an item on Passion XBMC http server and install it
     """
 
-    def __init__( self , itemId, type, installPath, filesize, externalURL=None ):
-        ItemInstaller.__init__( self, itemId, type, installPath, filesize )
+    #def __init__( self , itemId, type, installPath, filesize, externalURL=None ):
+    def __init__( self , itemId, type, filesize, externalURL=None ):
+        ItemInstaller.__init__( self, itemId, type, filesize )
         
         #get base url for download
         self.baseurl = CONF.getBaseURLDownloadFile()
@@ -53,6 +56,9 @@ class PassionHTTPInstaller(ItemInstaller):
         self.status              = "INIT" # Status of install :[INIT | OK | ERROR | ALREADYINSTALLED |CANCELED]       
 
     def downloadItem( self, msgFunc=None,progressBar=None ):
+        """
+        Download an item form the server
+        """
         # Get ItemId
         cols = {}
         cols['$id_item'] = str(self.itemId)
@@ -68,7 +74,6 @@ class PassionHTTPInstaller(ItemInstaller):
             fileURL  = self.baseurl + str(self.itemId)
             
             # Download file (to cache dir) and get destination directory
-            #status, self.downloadArchivePath = self._downloadFile( fileURL, self.CACHEDIR, msgFunc=msgFunc, progressBar=progressBar )
             status, self.downloadArchivePath = self._downloadFile( fileURL, self.CACHEDIR, progressBar=progressBar )
         
         except Exception, e:
@@ -99,13 +104,11 @@ class PassionHTTPInstaller(ItemInstaller):
             if self.downloadArchivePath.endswith( 'zip' ) or self.downloadArchivePath.endswith( 'rar' ):
                 import extractor
                 process_error = False
-                # on extrait tous dans le cache et si c'est OK on copy par la suite
+                # Extraction in cache directory (if OK copy later on to the correct location)
                 file_path, OK = extractor.extract( self.downloadArchivePath, report=True )
-                #print file_path
-                #print OK
     
-                if self.type == "ScraperDir":
-                    # cas des Scrapers
+                if self.type == Item.TYPE_SCRAPER:
+                    # Scrapers
                     # ----------------
                     #self.extracter.extract( archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
                     if ( OK == bool( file_path ) ) and os.path.exists( file_path ):
@@ -117,7 +120,7 @@ class PassionHTTPInstaller(ItemInstaller):
                 else:
                     # Cas des scripts et plugins
                     # --------------------------
-                    # Recuperons le nom du repertorie a l'interieur de l'archive:
+                    # Recuperons le nom du repertoire a l'interieur de l'archive:
                     dirName = ""
                     if ( OK == bool( file_path ) ) and os.path.exists( file_path ):
                         dirName = os.path.basename( file_path )#self.extracter.getDirName( archive )
@@ -152,10 +155,12 @@ class PassionHTTPInstaller(ItemInstaller):
         Check if extracted item is already installed
         Needs to be called after extractItem
         """
-        if os.path.exists( self.destinationPath ):
-            return True
-        else:
-            return False
+        result = False
+        if self.type != Item.TYPE_SCRAPER:
+            if os.path.exists( self.destinationPath ):
+                result = True
+        #TODO : Scraper already installed case
+        return result
     
     def copyItem( self, msgFunc=None,progressBar=None ):
         """
@@ -171,7 +176,7 @@ class PassionHTTPInstaller(ItemInstaller):
         if progressBar != None:
             progressBar.update( percent, "Copy:", ( self.extractedDirPath ) )
         if ( ( self.extractedDirPath != None ) and ( self.destinationPath != None ) ):
-            if self.type == "ScraperDir":
+            if self.type == Item.TYPE_SCRAPER:
                 # cas des Scrapers
                 # ----------------
                 logger.LOG( logger.LOG_DEBUG, "ItemInstaller::installItem - Starting item copy" )
@@ -191,7 +196,6 @@ class PassionHTTPInstaller(ItemInstaller):
                 # Cas des scripts et plugins
                 # --------------------------
                 # Recuperons le nom du repertorie a l'interieur de l'archive:
-                dirName = ""
                 logger.LOG( logger.LOG_DEBUG, "ItemInstaller::installItem - Starting item copy" )
                 try:
                     #if ( OK == bool( self.extractedDirPath ) ) and os.path.exists( self.extractedDirPath ):
@@ -262,31 +266,31 @@ class PassionHTTPInstaller(ItemInstaller):
 
 
              
-#    def getFileSize(self, source):
-#        """
-#        get the size of the file (in octets)
-#        !!!ISSUE!!!: +1 on nb of download just calling this method
-#        """
-#        file_size = 0
-#        try:
-#            connection  = urllib2.urlopen(source)
-#            headers     = connection.info()
-#            file_size   = int(headers['Content-Length'])
-#            connection.close()
-#        except Exception, e:
-#            print "Exception during getFileSize"
-#            print e
-#            print sys.exc_info()
-#            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-#        return file_size
+    def getFileSize(self, sourceurl):
+        """
+        get the size of the file (in octets)
+        !!!ISSUE!!!: +1 on nb of download just calling this method with Passion-XBMC URL
+        """
+        file_size = 0
+        try:
+            connection  = urllib2.urlopen(sourceurl)
+            headers     = connection.info()
+            file_size   = int( headers['Content-Length'] )
+            connection.close()
+        except Exception, e:
+            print "Exception during getFileSize"
+            print e
+            print sys.exc_info()
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+        return file_size
 #
-#    def getFileName(self, source):
+#    def getFileName(self, sourceurl):
 #        """
 #        get the size of the file name
 #        """
 #        file_name = ""
 #        try:
-#            connection  = urllib2.urlopen(source)
+#            connection  = urllib2.urlopen(sourceurl)
 #            headers     = connection.info()
 #            file_name   = headers['Content-Disposition'].split('"')[1]
 #            connection.close()
@@ -306,20 +310,10 @@ class PassionHTTPInstaller(ItemInstaller):
         """
         print("_downloadFile with url = " + url)
         print("_downloadFile with destination directory = " + destinationDir)
-        #print "msgFunc:"
-        #print msgFunc
-        #print "progressBar:"
-        #print progressBar
-        
-#        msgType    = ""
-#        msgTite    = ""
-#        msg1       = ""
-#        msg2       = ""
-#        msg3       = ""
         destination = None
         #destination = os.path.join( destinationDir, filename )
         #noErrorOK  = True # When noErrorOK == True -> no error/Exception occured
-        status     = "OK" # Status of download :[OK | ERROR | CANCELED]       
+        status     = "OK" # Status of download :[OK | ERROR | CANCELED]
         
         try:
             # -- Downloading
@@ -330,30 +324,42 @@ class PassionHTTPInstaller(ItemInstaller):
             file_size           = None
             
             if self.displayProgBar == True:
-                req = urllib2.Request(url)
+                req = urllib2.Request(url) # Note: downloading item with passion XBMC URL (for download count) even when there is an external URL
                 req.add_header('User-Agent','Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.3) Gecko/20070309 Firefox/2.0.0.3')
                 connection  = urllib2.urlopen(req)           # Open connection
-                file_size   = self.filesize 
-                print "_downloadFile - file size : %d Octet(s)"%file_size
                 print 'self.externalURL'
                 print self.externalURL
                 if self.externalURL != 'None':
-                    #TODO: cover lengh max of file name (otherwise crash xbmc at writing)
-                    file_name = os.path.basename( self.externalURL )
-                    #file_name = "test.rar"
-#                    connection.close()
-#                    req = urllib2.Request(self.externalURL)
-#                    req.add_header('User-Agent','Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.3) Gecko/20070309 Firefox/2.0.0.3')
-#                    connection  = urllib2.urlopen(req)           # Open connection
+                    #TODO: cover length max of file name (otherwise crash xbmc at writing)
+                    file_name = os.path.basename( self.externalURL ).replace(";","").replace("?","")
                 else:
-                    headers     = connection.info()              # Get Headers
-                    print "headers:"
-                    print headers
-                    file_name   = headers['Content-Disposition'].split('"')[1]
+                    try:
+                        headers = connection.info()# Get Headers
+                        print "headers:"
+                        print headers
+                        file_name   = headers['Content-Disposition'].split('"')[1]
+                    except Exception, e:
+                        file_name = "unknownfilename.rar"
+                        print("_downloadFile - Exception retrieving header")
+                        print(str(e))
+
+                
                 print "_downloadFile - file name : %s "%file_name
                 destination = os.path.join( destinationDir, file_name )
                 print 'destination'
                 print destination
+                
+                # Check File Size
+                if self.filesize > 0:
+                    file_size = file_size = self.filesize
+                elif self.externalURL != 'None':
+                    # Try to get file size from the external URL header
+                    file_size = self.getFileSize(self.externalURL)
+                else:
+                    file_size = 0
+
+                print "_downloadFile - file size : %d Octet(s)"%file_size
+
                 file = open(destination,'w+b')        # Get ready for writing file
                 print "File opened"
                 # Ask for display of progress bar
@@ -400,6 +406,7 @@ class PassionHTTPInstaller(ItemInstaller):
                         print("_downloadFile - Exception computing percentage downloaded")
                         print(str(e))
                         #noErrorOK  = False
+                        New_percent_downloaded = 0
                         status = "ERROR"
                         # End of writing: Closing the connection and the file
                         #connection.close()
