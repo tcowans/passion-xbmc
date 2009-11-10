@@ -169,14 +169,15 @@ class PassionHttpBrowser(Browser):
             item['author']            = row[9]
             item['date']              = row[10]
             item['added']             = row[11]
+            item['image2retrieve']    = False # Temporary patch for reseting the flag after download (would be better in the thread in charge of the download)
             skipItem = False # Indicate if this item will be added to the list or not
             
             print 'HTTPBrowser::incat - previewpictureurl:'
             print item['previewpictureurl']
             if  item['previewpictureurl'] == 'None':
                 if (item['type'] == 'FIC'):
-                    item['thumbnail']      = "IPX-NotAvailable2.png"
-                    item['previewpicture'] = "IPX-NotAvailable2.png"
+                    item['thumbnail']      = Item.THUMB_NOT_AVAILABLE
+                    item['previewpicture'] = Item.THUMB_NOT_AVAILABLE
                     
                 elif (item['type'] == 'CAT'):
                     catTitle, catType = self.getCategoryInfo( item['id'] )
@@ -241,14 +242,15 @@ class PassionHttpBrowser(Browser):
                     downloadImage = True
                     
                 if downloadImage == True:
-
-                    # Telechargement et mise a jour de l'image (thread de separe)
-                    # Ajout a de l'image a la queue de telechargement
-                    #self.image_queue.append( ImageQueueElement( previewPictureURL, updateImage_cb, listitem ) )
-                    self.image_queue.append( ImageQueueElement( item['previewpictureurl'] ) )
-                    #TODO: dynamic update of image (right now image is not updatd in the GUI after download)
-            
-                
+                    # Set flag for download (separate thread)
+                    item['image2retrieve'] = True
+                    
+#                    # Telechargement et mise a jour de l'image (thread de separe)
+#                    # Ajout a de l'image a la queue de telechargement
+#                    #self.image_queue.append( ImageQueueElement( previewPictureURL, updateImage_cb, listitem ) )
+#                    self.image_queue.append( ImageQueueElement( item['previewpictureurl'] ) )
+#                    #TODO: dynamic update of image (right now image is not updatd in the GUI after download)
+                 
             #TODO: else case for type == 'CAT'
             if skipItem == False:
                 listOfItems.append(item)

@@ -13,6 +13,9 @@ try:
     logger = sys.modules[ "__main__" ].logger
 except:
     import script_log as logger
+
+# Modules custom
+import Item
     
 #Other module
 from threading import Thread
@@ -157,50 +160,36 @@ class Browser:
          # on vide la liste vide la Queue
         del self.image_queue[ : ]
         
-    def getImage( self, index, updateImage_cb=None, obj2update=None  ):
+#    def getImage( self, index, updateImage_cb=None, obj2update=None  ):
+    def imageUpdateRegister( self, item, updateImage_cb=None, obj2update=None ):
         """
         Register an external graphic object needing to update the picture (listitem, image ...)
         """
-        pass
-        item = self.curList[ index ]
-#        thumbfilename = item['thumbnail']     
-#        imagefilename = item['previewpicture']
+#        pass
+#        item = self.curList[ index ]
+        previewPictureURL   = item['previewpictureurl']
+#        previewPictureLocal = item['previewpicture']
+#        previewThumbLocal   = item['thumbnail']
         
-        # Checking if the pciture is already here or not
-        downloadImage = False
-        thumbnail, checkPathPic = set_cache_thumb_name( item['previewpictureurl'] )
-        if thumbnail and os.path.isfile( thumbnail ):
-            thumbfilename = thumbnail
-        else:
-            item['thumbnail'] = "IPX-NotAvailable2.png"
-            downloadImage = True
-            
-        if os.path.exists(checkPathPic):
-            imagefilename = checkPathPic
-        else:
-            imagefilename = "IPX-NotAvailable2.png"
-            downloadImage = True
-            
-        if downloadImage == True:
-
+        if item['image2retrieve'] == True:
             # Telechargement et mise a jour de l'image (thread de separe)
             # Ajout a de l'image a la queue de telechargement
             #self.image_queue.append( ImageQueueElement( previewPictureURL, updateImage_cb, listitem ) )
-            self.image_queue.append( ImageQueueElement( item['previewpictureurl'], updateImage_cb, obj2update  ) )
+            self.image_queue.append( ImageQueueElement( previewPictureURL, updateImage_cb=updateImage_cb, item=obj2update  ) )
             #TODO: dynamic update of image (right now image is not updatd in the GUI after download)
-            
-        return thumbfilename, imagefilename
+
+#        return previewThumbLocal, previewPictureLocal
        
-    def imageUpdateRegister( self, listItemId, updateImage_cb=None, obj2update=None ):
-        """
-        Register an external graphic object needing to update the picture (listitem, image ...)
-        """
-        previewPictureURL   = self.curList[listItemId]['previewpictureurl']
-        previewPictureLocal = self.curList[listItemId]['previewpicture']
-        previewThumbLocal   = self.curList[listItemId]['thumbnail']
-        if  ( previewPictureURL != 'None' and ( ( previewPictureLocal=="IPX-NotAvailable2.png"  ) or ( previewThumbLocal=="IPX-NotAvailable2.png" ) ) ):
-            # We will download the picture only we we have the url and we currently have a default picture displayed
-            self.image_queue.append( ImageQueueElement(previewPictureURL, updateImage_cb, obj2update ) )
+#    def imageUpdateRegister( self, listItemId, updateImage_cb=None, obj2update=None ):
+#        """
+#        Register an external graphic object needing to update the picture (listitem, image ...)
+#        """
+#        previewPictureURL   = self.curList[listItemId]['previewpictureurl']
+#        previewPictureLocal = self.curList[listItemId]['previewpicture']
+#        previewThumbLocal   = self.curList[listItemId]['thumbnail']
+#        if  ( previewPictureURL != 'None' and ( ( previewPictureLocal=="IPX-NotAvailable2.png"  ) or ( previewThumbLocal=="IPX-NotAvailable2.png" ) ) ):
+#            # We will download the picture only we we have the url and we currently have a default picture displayed
+#            self.image_queue.append( ImageQueueElement(previewPictureURL, updateImage_cb, obj2update ) )
     
     def _thread_getImagesQueue( self ):
         self.stopUpdateImageThread = False
@@ -211,7 +200,7 @@ class Browser:
             thumbnail, previewPicture = self._downloadImage( imageElt.filename )
             if ( thumbnail == "" ):
                 # Impossible to download picture and/or create thumb
-                thumbnail = "IPX-NotAvailable2.png"
+                thumbnail = "IPX-NotAvailable2.png" # Item.THUMB_NOT_AVAILABLE
 
             # Notifie la callback de mettre a jour l'image
             if imageElt.updateImage_cb:
