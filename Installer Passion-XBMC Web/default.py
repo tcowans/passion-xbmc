@@ -13,8 +13,8 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/Installer%20Passion-XBMC/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center"
-__date__         = "11-08-2009"
-__version__      = "pre-1.0.0"
+__date__         = "11-09-2009"
+__version__      = "2.0.0-Alpha"
 __svn_revision__ = 0
 
 

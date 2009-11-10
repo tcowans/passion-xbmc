@@ -18,6 +18,7 @@ __all__ = [
     "INDEX_PLUGIN_PICTURES",
     "INDEX_PLUGIN_PROGRAMS",
     "INDEX_PLUGIN_VIDEO",
+    "THUMB_NOT_AVAILABLE",
     "THUMB_SKIN",
     "THUMB_SCRAPER",
     "THUMB_SCRIPT",
@@ -92,6 +93,7 @@ INDEX_PLUGIN_PICTURES   = 5
 INDEX_PLUGIN_PROGRAMS   = 6
 INDEX_PLUGIN_VIDEO      = 7
 
+THUMB_NOT_AVAILABLE     = "IPX-NotAvailable2.png"
 THUMB_SKIN              = "IPX-defaultSkin.png"
 THUMB_SCRAPER           = "IPX-defaultScraper.png"
 THUMB_SCRIPT            = "IPX-defaultScript_Plugin.png"

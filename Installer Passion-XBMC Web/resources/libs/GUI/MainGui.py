@@ -669,9 +669,9 @@ class MainWindow( xbmcgui.WindowXML ):
             itemnumber = len( self.curDirList )
     
             print "Starting loop on list of items got from the browser"
-            for item in self.curDirList:
+            for elt in self.curDirList:
                 imagePath = ""
-                print item
+                print elt
     #            if ( self.type == "racine" ):
     #                # Nom de la section
     #                sectionName = self.downloadTypeList[ self.racineDisplayList[ j ] ] # On utilise le filtre
@@ -819,9 +819,13 @@ class MainWindow( xbmcgui.WindowXML ):
     
     
                 self.setProperty( "Category", self.browser.getCurrentCategory() )
-                displayListItem = xbmcgui.ListItem( item['name'], "", iconImage=item['previewpicture'], thumbnailImage=item['thumbnail'] )
+                
+                displayListItem = xbmcgui.ListItem( elt['name'], "", iconImage=elt['previewpicture'], thumbnailImage=elt['thumbnail'] )
  
-                self.set_item_infos( displayListItem, item )
+                # Register in case image is not downloaded yet
+                self.browser.imageUpdateRegister( elt, updateImage_cb=self._updateListThumb_cb, obj2update=displayListItem )
+
+                self.set_item_infos( displayListItem, elt )
                 
                 print "Item to display"
                 print displayListItem
@@ -891,8 +895,7 @@ class MainWindow( xbmcgui.WindowXML ):
             listItem.setProperty( "fanartpicture",   dataItem['previewpictureurl'] )
             listItem.setProperty( "previewVideoURL", "" )
             print "set_item_infos"
-            print dataItem
-        
+            print dataItem            
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
@@ -903,6 +906,7 @@ class MainWindow( xbmcgui.WindowXML ):
         """
         if imagePath and hasattr( listitem, "setThumbnailImage" ):
             listitem.setThumbnailImage( imagePath )
+            listitem.setIconImage( imagePath ) # TODO" do we keep the same resoltuin between thumb and image???
 
     def set_list_images( self ):
         """
