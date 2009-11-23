@@ -25,6 +25,7 @@ if DEV_TEST:
 #Modules general
 import os
 import sys
+import traceback
 
 #modules XBMC
 import xbmc
@@ -61,6 +62,7 @@ import script_log as logger
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE. ( ex: __language__( 0 ) = id="0" du fichier strings.xml )
 #__language__ = xbmc.Language( ROOTDIR, "french" ).getLocalizedString
 __language__ = xbmc.Language( ROOTDIR ).getLocalizedString
+LANGUAGE_IS_FRENCH = ( xbmc.getLanguage().lower() == "french" )
 
 DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
@@ -122,6 +124,7 @@ def MAIN():
                 MainGui.show_main()
             except:
                 logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+                traceback.print_exc()
                 dialog_error = True
         else:
             # LANCEMENT DE LA MISE A JOUR

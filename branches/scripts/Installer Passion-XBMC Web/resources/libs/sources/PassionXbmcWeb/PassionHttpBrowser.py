@@ -29,15 +29,33 @@ from utilities import *
 from Browser import Browser, ImageQueueElement
 #from CONSTANTS import *
 
+#FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
+_ = sys.modules[ "__main__" ].__language__
+LANGUAGE_IS_FRENCH = sys.modules[ "__main__" ].LANGUAGE_IS_FRENCH
+
+SPECIAL_SCRIPT_DATA = sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA
     
 class PassionHttpBrowser(Browser):
     """
     Browse the item on the HTTP server using only information in the Database
     """
-    def __init__( self, db, *args, **kwargs  ):
+    def __init__( self, *args, **kwargs  ):
         Browser.__init__( self, *args, **kwargs )
         #self.db  = kwargs[ "database" ] # Database file
-        self.db = db       # Database file
+
+
+        import DBManager
+        print "Creating DBMgr"
+        # Creating DB form CSV file from the server
+        self.db = os.path.join(SPECIAL_SCRIPT_DATA, 'Passion_XBMC_Installer.sqlite')  # Database file
+        csvFile = os.path.join(SPECIAL_SCRIPT_DATA, 'table.csv')
+        self.databaseMgr = DBManager.CsvDB( self.db, csvFile )
+        self.databaseMgr.update_datas()
+        self.conn, cursor = self.databaseMgr.getConnectionInfo() #TODO: move DBManager in the http browser (no interest to have it separated with current design)
+
+        print "update_datas"
+        
+        #self.db = db      
         self.curList = []  # Current list of item/category
 
         self.currentItemId = 0
@@ -47,6 +65,7 @@ class PassionHttpBrowser(Browser):
 #        self.incat(0)
         
         import CONF
+        #TODO: check if we still need those vars
         self.baseURLDownloadFile   = CONF.getBaseURLDownloadFile()
         self.baseURLPreviewPicture = CONF.getBaseURLPreviewPicture()
         del CONF
@@ -92,7 +111,7 @@ class PassionHttpBrowser(Browser):
             
                 self.curCategory = self.curList[index]['name'] # Save the current item name as category
                 list = self.incat(itemId) # Get content of the category
-                self.currentItemId = itemId
+                self.currentItemId = itemId #TODO: current categoryID??? instead
             elif ( len(self.curList)<= 0 ):
                 # 1st time (init), we display root list
                 list = self.incat(0)
@@ -109,22 +128,20 @@ class PassionHttpBrowser(Browser):
             print e
             print sys.exc_info()
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            traceback.print_exc()   
         return list
     
     def incat( self, itemId=0):
         """
-        Liste des sous-categories et fichiers de la categorie selectionnee
-        Renvoie un dictionnaire constitue comme suit : {id, name, parent, file,type}
-        Chaque index du dictionnaire renvoie à une liste d'occurences.
-        Il faut l'appeler le numero id de la categorie dont on veut obtenir le contenu
-        Si on veut obtenir la liste des categories racines, il alimenter la fonction avec 0 
+        List sub categories and files for the specified category
+        Returns a dictionary with the format: {id, name, parent, file,type}
         """
         
         listOfItems = []
         
         #Connection à la base de donnee
-        conn = sqlite.connect(self.db)
-        c = conn.cursor()
+#        conn = sqlite.connect(self.db)
+        c = self.conn.cursor()
         #conn.text_factory = unicode
         
         
@@ -132,14 +149,14 @@ class PassionHttpBrowser(Browser):
         cols['$id_parent'] = str(itemId)
         
         #requete
-        conn.text_factory = sqlite.OptimizedUnicode
-        c.execute(self.nicequery('''SELECT id_cat, title, id_parent,'None','CAT' AS type, image, description, 'None', 'None', 'None', 'None', 'None'
+        self.conn.text_factory = sqlite.OptimizedUnicode
+        c.execute(self.nicequery('''SELECT id_cat, title, id_parent,'None','CAT' AS type, image, description, 'None', 'None', 'None', 'None', 'None', 'None'
                                  FROM Categories
                                  WHERE id_parent = $id_parent
                                                 
                                  UNION ALL      
                                             
-                                 SELECT id_file, title, id_cat,fileurl,'FIC' AS type, previewpictureurl, description, script_language, version, author, createdate, strftime('%d-%m-%Y', date, 'unixepoch')  
+                                 SELECT id_file, title, id_cat,fileurl,'FIC' AS type, previewpictureurl, description, descript_en, script_language, version, author, createdate, strftime('%d-%m-%Y', date, 'unixepoch')  
                                  FROM Server_Items
                                  WHERE id_cat = $id_parent
                                  ORDER BY type ASC, title ASC
@@ -158,17 +175,23 @@ class PassionHttpBrowser(Browser):
             item['type']              = row[4].decode('string_escape')
             item['previewpictureurl'] = row[5].decode('string_escape')
             #item['description']       = row[6].encode("cp1252") #unescape( strip_off( row[6].encode("utf8") ) )
-            if (row[6] != None):
-                #item['description']       = row[6].encode("cp1252")
+            print "################ Description"
+            print row[6].encode("cp1252").decode('string_escape')
+            print row[7].encode("cp1252").decode('string_escape')
+            
+            if LANGUAGE_IS_FRENCH:
                 item['description']       = row[6].encode("cp1252").decode('string_escape')
             else:
-                item['description'] = "No description" #TODO: support localization
+                #item['description']       = urllib.unquote( row[7].encode("cp1252").decode('string_escape') )
+                item['description']       = row[7].encode("cp1252").decode('string_escape')
+            if item['description'] == 'None':
+                item['description'] = _( 604 ) 
             #item['description'] = unescape( (row[6]).encode( "cp1252" ) )
-            item['language']          = row[7]
-            item['version']           = row[8]
-            item['author']            = row[9]
-            item['date']              = row[10]
-            item['added']             = row[11]
+            item['language']          = row[8]
+            item['version']           = row[9]
+            item['author']            = row[10]
+            item['date']              = row[11]
+            item['added']             = row[12]
             item['image2retrieve']    = False # Temporary patch for reseting the flag after download (would be better in the thread in charge of the download)
             skipItem = False # Indicate if this item will be added to the list or not
             
@@ -232,13 +255,13 @@ class PassionHttpBrowser(Browser):
                 if thumbnail and os.path.isfile( thumbnail ):
                     item['thumbnail'] = thumbnail
                 else:
-                    item['thumbnail'] = "IPX-NotAvailable2.png"
+                    item['thumbnail'] = Item.THUMB_NOT_AVAILABLE
                     downloadImage = True
                     
                 if os.path.exists(checkPathPic):
                     item['previewpicture'] = checkPathPic
                 else:
-                    item['previewpicture'] = "IPX-NotAvailable2.png"
+                    item['previewpicture'] = Item.THUMB_NOT_AVAILABLE
                     downloadImage = True
                     
                 if downloadImage == True:
@@ -284,9 +307,9 @@ class PassionHttpBrowser(Browser):
         cols['$id_parent'] = str(catId)
                 
         #get parent id of current parent
-        conn = sqlite.connect(self.db)
-        #Initialisation de la base de donnÃ©e
-        c = conn.cursor()
+#        conn = sqlite.connect(self.db)
+#        #Initialisation de la base de donnÃ©e
+        c = self.conn.cursor()
         try:
             c.execute(self.nicequery('''SELECT id_parent 
                       FROM Categories
@@ -333,9 +356,9 @@ class PassionHttpBrowser(Browser):
         """
         title = ""
         path = ""
-        # Connect to Database
-        conn = sqlite.connect(self.db)
-        c = conn.cursor()  
+#        # Connect to Database
+#        conn = sqlite.connect(self.db)
+        c = self.conn.cursor()  
         try:
 #            c.execute('''SELECT A.title, A.path
 #                         FROM Install_Paths A, Categories B
@@ -371,8 +394,8 @@ class PassionHttpBrowser(Browser):
         itemId = self.curList[index]['id']
     
         #Connection à la base de donnee
-        conn = sqlite.connect(self.db)
-        c = conn.cursor()  
+#        conn = sqlite.connect(self.db)
+        c = self.conn.cursor()  
         
         try:
 #            c.execute('''SELECT A.id_file , 
@@ -545,5 +568,9 @@ class PassionHttpBrowser(Browser):
         print "localFilePath = %s"%localFilePath
         return thumbnail, localFilePath
 
-    
+    def close( self ):
+        """
+        Close browser: i.e close connection, free memory ...
+        """
+        self.databaseMgr.exit()
     

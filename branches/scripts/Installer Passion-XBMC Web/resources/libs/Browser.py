@@ -25,7 +25,7 @@ class ImageQueueElement:
     def __init__( self, filename, updateImage_cb=None, item=None ):
         self.filename       = filename
         self.updateImage_cb = updateImage_cb
-        self.item       = item
+        self.item           = item
 
     def __repr__( self ):
         return "(%s, %s, %s)" % ( self.filename, self.updateImage_cb, self.item )
