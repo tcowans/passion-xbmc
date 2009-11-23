@@ -16,6 +16,7 @@ import xbmc
 from utilities import *
 from CONF import configCtrl
 from pil_util import makeThumbnails
+import Item
 
 #module logger
 try:
@@ -69,6 +70,7 @@ class InfosWarehouse:
         self.author          = kwargs.get( "author" )          or ""
         self.itemType        = kwargs.get( "itemType" )        or ""
         self.itemId          = kwargs.get( "itemId" )          or ""
+        self.thumb_size_on_load = kwargs.get( "itemId" )          or ""
 
 
 class updateIWH( InfosWarehouse ):
@@ -127,7 +129,7 @@ class InfoWarehouseEltTreeXMLFTP:
         logger.LOG( logger.LOG_DEBUG,"InfoWarehouseEltTreeXMLFTP starts")
         self.mainwin  = kwargs[ "mainwin" ]
 
-        self.thumb_size_on_load = self.mainwin.settings[ "thumb_size" ]
+        #self.thumb_size_on_load = self.mainwin.settings[ "thumb_size" ]
 
         # FIFO des images a telecharger
         self.image_queue = []
@@ -245,7 +247,7 @@ class InfoWarehouseEltTreeXMLFTP:
         del elems
 
     def getInfo( self, itemName=None, itemType=None, itemId=None, updateImage_cb=None, listitem=None ):
-        self.check_thumb_size()
+        #self.check_thumb_size()
         """
         Lit les info
         retourne fileName, title, version, language, date , previewPicture, previewVideoURL, description_fr, description_en
@@ -267,13 +269,14 @@ class InfoWarehouseEltTreeXMLFTP:
 
         try:
             category = None
-            if   itemType == "Themes":             category = self.cat_skins
-            elif itemType == "Scripts":            category = self.cat_scripts
-            elif itemType == "Scrapers":           category = self.cat_scrapers
-            elif itemType == "Plugins Videos":     category = self.cat_videoplugin
-            elif itemType == "Plugins Musique":    category = self.cat_musicplugin
-            elif itemType == "Plugins Images":     category = self.cat_pictureplugin
-            elif itemType == "Plugins Programmes": category = self.cat_programplugin
+            #Item.TYPE_SCRAPER
+            if   itemType == Item.TYPE_SKIN:            category = self.cat_skins
+            elif itemType == Item.TYPE_SCRIPT:          category = self.cat_scripts
+            elif itemType == Item.TYPE_SCRAPER:         category = self.cat_scrapers
+            elif itemType == Item.TYPE_PLUGIN_VIDEO:    category = self.cat_videoplugin
+            elif itemType == Item.TYPE_PLUGIN_MUSIC:    category = self.cat_musicplugin
+            elif itemType == Item.TYPE_PLUGIN_PICTURES: category = self.cat_pictureplugin
+            elif itemType == Item.TYPE_PLUGIN_PROGRAMS: category = self.cat_programplugin
 
             notfound = True
             if category:
@@ -320,6 +323,7 @@ class InfoWarehouseEltTreeXMLFTP:
             #import traceback; traceback.print_exc()
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
+        print locals()
         return updateIWH( locals() )
         #return fileName, title, version, language, date, added, previewPicture, \
         #    previewVideoURL, description_fr, description_en, thumbnail, author

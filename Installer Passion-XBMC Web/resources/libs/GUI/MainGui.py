@@ -5,8 +5,10 @@ import re
 import md5
 import sys
 import time
+import urllib
 
 from threading import Thread, Timer
+import traceback
 
 #modules XBMC
 import xbmc
@@ -14,6 +16,7 @@ import xbmcgui
 
 #modules custom
 from PassionHttpBrowser import PassionHttpBrowser
+from PassionFtpBrowser import PassionFtpBrowser
 from utilities import *
 
 from info_item import ItemInfosManager
@@ -149,25 +152,15 @@ class MainWindow( xbmcgui.WindowXML ):
 
             # Connection au serveur FTP
             try:
-
-#                self.passionFTPCtrl = ftpDownloadCtrl( self.host, self.user, self.password, self.remotedirList, self.localdirList, self.downloadTypeList )
-#                self.connected = True
-                import DBManager
-                print "Creating DBMgr"
-                # Creating DB form CSV file from the server
-                db = os.path.join(SPECIAL_SCRIPT_DATA, 'Passion_XBMC_Installer.sqlite')
-                csvFile = os.path.join(SPECIAL_SCRIPT_DATA, 'table.csv')
-                myDatabaseMgr = DBManager.CsvDB( db, csvFile )
-                myDatabaseMgr.update_datas()
-                print "update_datas"
-                
+                DIALOG_PROGRESS.update( -1, _( 104 ), _( 110 ) )
                 # Starting browser of the DB
                 #myBrowser = Browser.PassionHttpBrowser( database=db )
                 # Use level of abstraction ItemBrowser (super class)
-                self.browser = PassionHttpBrowser( db )
-
+                self.browser_PassionHttp = PassionHttpBrowser()
+                self.browser = self.browser_PassionHttp
+#                self.browser_PassionFtp  = PassionFtpBrowser()
+#                self.browser = self.browser_PassionFtp
                 # Recuperation de la liste des elements
-                DIALOG_PROGRESS.update( -1, _( 104 ), _( 110 ) )
                 print "Updating displayed list"
                 self.updateData_Next()
                 self.updateList()
@@ -176,6 +169,7 @@ class MainWindow( xbmcgui.WindowXML ):
             except:
                 #print str(sys.exc_info()[0])
                 print sys.exc_info()
+                traceback.print_exc()
                 xbmcgui.Dialog().ok( _( 111 ), _( 112 ) )
                 logger.LOG( logger.LOG_DEBUG, "Window::__init__: Exception durant la connection FTP" )
                 logger.LOG( logger.LOG_DEBUG, "Impossible de se connecter au serveur FTP: %s", self.host )
@@ -655,173 +649,33 @@ class MainWindow( xbmcgui.WindowXML ):
         self._load_downloaded_property()
         if not xbmc.getCondVisibility( "Window.IsActive(progressdialog)" ):
             DIALOG_PROGRESS.create( _( 0 ), _( 104 ), _( 110 ) )
- 
-        try:            
+
+        try:
             #xbmcgui.lock()
-    
+
             # Clear all ListItems in this control list
             if hasattr( self, 'clearProperties' ):
                 self.clearProperties()
             self.clearList()
             self.listitems = []
-    
+
             # Calcul du nombre d'elements de la liste
             itemnumber = len( self.curDirList )
-    
+
             print "Starting loop on list of items got from the browser"
             for elt in self.curDirList:
                 imagePath = ""
                 print elt
-    #            if ( self.type == "racine" ):
-    #                # Nom de la section
-    #                sectionName = self.downloadTypeList[ self.racineDisplayList[ j ] ] # On utilise le filtre
-    #                # Met a jour le titre:
-    #                self.setProperty( "Category", _( 10 ) )
-    #
-    #                # Affichage de la liste des sections
-    #                # -> On compare avec la liste affichee dans l'interface
-    #                if sectionName == self.downloadTypeList[ 0 ]:
-    #                    # Theme
-    #                    imagePath = "IPX-defaultSkin.png"
-    #                    sectionLocTitle = _( 11 )
-    #                elif sectionName == self.downloadTypeList[ 1 ]:
-    #                    # Scraper
-    #                    imagePath = "IPX-defaultScraper.png"
-    #                    sectionLocTitle = _( 12 )
-    #                elif sectionName == self.downloadTypeList[ 2 ]:
-    #                    # Script
-    #                    imagePath = "IPX-defaultScript_Plugin.png"
-    #                    sectionLocTitle = _( 13 )
-    #                elif sectionName == self.downloadTypeList[ 3 ]:
-    #                    # Plugin
-    #                    imagePath = "IPX-defaultScript_Plugin.png"
-    #                    sectionLocTitle = _( 14 )
-    #
-    #                displayListItem = xbmcgui.ListItem( sectionLocTitle, "", iconImage=imagePath, thumbnailImage=imagePath )
-    #                displayListItem.setProperty( "title", sectionLocTitle )
-    #                displayListItem.setProperty( "description", " " )
-    #                displayListItem.setProperty( "Downloaded", "" )
-    #                self.addItem( displayListItem )
-    #
-    #            elif ( self.type == "Plugins" ):
-    #                # Nom de la section
-    #                sectionName = self.downloadTypeList[ self.pluginDisplayList[ j ] ] # On utilise le filtre
-    #                # Met a jour le titre:
-    #                self.setProperty( "Category", _( 14 ) )
-    #
-    #                if sectionName == self.downloadTypeList[ 4 ]:
-    #                    # Music
-    #                    imagePath = "IPX-defaultPluginMusic.png"
-    #                    sectionLocTitle = _( 15 )
-    #                elif sectionName == self.downloadTypeList[ 5 ]:
-    #                    # Pictures
-    #                    imagePath = "IPX-defaultPluginPicture.png"
-    #                    sectionLocTitle = _( 16 )
-    #                elif sectionName == self.downloadTypeList[ 6 ]:
-    #                    # Programs
-    #                    imagePath = "IPX-defaultPluginProgram.png"
-    #                    sectionLocTitle = _( 17 )
-    #                elif sectionName == self.downloadTypeList[ 7 ]:
-    #                    # Video
-    #                    imagePath = "IPX-defaultPluginVideo.png"
-    #                    sectionLocTitle = _( 18 )
-    #
-    #                displayListItem = xbmcgui.ListItem( sectionLocTitle, "", iconImage=imagePath, thumbnailImage=imagePath )
-    #                displayListItem.setProperty( "title", sectionLocTitle )
-    #                displayListItem.setProperty( "description", " " )
-    #                displayListItem.setProperty( "Downloaded", "" )
-    #                self.addItem( displayListItem )
-    #
-    #            elif "Plugins " in self.type:
-    #                # Element de la liste
-    #                ItemListPath = self.curDirList[ j ]
-    #
-    #                # on a tjrs besoin de connaitre la taille du chemin de base pour le soustraire/retirer du chemin global plus tard
-    #                lenindex = len( self.remotedirList[ self.pluginDisplayList[ self.index ] ] )
-    #
-    #                # Met a jour le titre et les icones:
-    #                if self.type == self.downloadTypeList[ 4 ]:
-    #                    # Music
-    #                    self.setProperty( "Category", _( 15 ) )
-    #                    imagePath = "IPX-defaultPluginMusic.png"
-    #                elif self.type == self.downloadTypeList[ 5 ]:
-    #                    # Pictures
-    #                    self.setProperty( "Category", _( 16 ) )
-    #                    imagePath = "IPX-defaultPluginPicture.png"
-    #                elif self.type == self.downloadTypeList[ 6 ]:
-    #                    # Programs
-    #                    self.setProperty( "Category", _( 17 ) )
-    #                    imagePath = "IPX-defaultPluginProgram.png"
-    #                elif self.type == self.downloadTypeList[ 7 ]:
-    #                    # Video
-    #                    self.setProperty( "Category", _( 18 ) )
-    #                    imagePath = "IPX-defaultPluginVideo.png"
-    #
-    #                # nettoyage du nom: replace les souligner pas un espace et enleve l'extension
-    #                try:
-    #                    item2download = ItemListPath[ lenindex: ].replace( "_", " " )
-    #                    if self.settings.get( "hide_extention", True ):
-    #                        item2download = os.path.splitext( item2download )[ 0 ]
-    #                except:
-    #                    item2download = ItemListPath[ lenindex: ]
-    #                DIALOG_PROGRESS.update( -1, _( 103 ), item2download, _( 110 ) )
-    #
-    #                if self.downloaded_property.__contains__( md5.new( item2download ).hexdigest() ):
-    #                    already_downloaded = "true"
-    #                else:
-    #                    already_downloaded = ""
-    #
-    #                displayListItem = xbmcgui.ListItem( item2download, "", iconImage=imagePath, thumbnailImage=imagePath )
-    #                displayListItem.setProperty( "Downloaded", already_downloaded )
-    #                self.set_item_infos( displayListItem, ItemListPath )
-    #                self.addItem( displayListItem )
-    #                DIALOG_PROGRESS.update( -1, _( 103 ), item2download, _( 110 ) )
-    
-    #            else:
-    #                # Element de la liste
-    #                ItemListPath = self.curDirList[ j ]
-    #
-    #                #affichage de l'interieur d'une section
-    #                #self.numindex = self.index
-    #                lenindex = len( self.remotedirList[ self.index ] ) # on a tjrs besoin de connaitre la taille du chemin de base pour le soustraire/retirer du chemin global plus tard
-    #
-    #                # Met a jour le titre et les icones:
-    #                if self.type == self.downloadTypeList[ 0 ]: #Themes
-    #                    self.setProperty( "Category", _( 11 ) )
-    #                    imagePath = "IPX-defaultSkin.png"
-    #                elif self.type == self.downloadTypeList[ 1 ]: #Scrapers
-    #                    self.setProperty( "Category", _( 12 ) )
-    #                    imagePath = "IPX-defaultScraper.png"
-    #                elif self.type == self.downloadTypeList[ 2 ]: #Scripts
-    #                    self.setProperty( "Category", _( 13 ) )
-    #                    imagePath = "IPX-defaultScript_Plugin.png"
-    #
-    #                # nettoyage du nom: replace les souligner pas un espace et enleve l'extension
-    #                try:
-    #                    item2download = ItemListPath[ lenindex: ].replace( "_", " " )
-    #                    if self.settings.get( "hide_extention", True ):
-    #                        item2download = os.path.splitext( item2download )[ 0 ]
-    #                except:
-    #                    item2download = ItemListPath[ lenindex: ]
-    #                DIALOG_PROGRESS.update( -1, _( 103 ), item2download, _( 110 ) )
-    #
-    #                if self.downloaded_property.__contains__( md5.new( item2download ).hexdigest() ):
-    #                    already_downloaded = "true"
-    #                else:
-    #                    already_downloaded = ""
-    #
-    #                displayListItem = xbmcgui.ListItem( item2download, "", iconImage=imagePath, thumbnailImage=imagePath )
-    #                displayListItem.setProperty( "Downloaded", already_downloaded )
-    #                self.set_item_infos( displayListItem, ItemListPath )
-    #                self.addItem( displayListItem )
-    #                DIALOG_PROGRESS.update( -1, _( 103 ), item2download, _( 110 ) )
-    
-    
-    
-                self.setProperty( "Category", self.browser.getCurrentCategory() )
                 
-                displayListItem = xbmcgui.ListItem( elt['name'], "", iconImage=elt['previewpicture'], thumbnailImage=elt['thumbnail'] )
- 
+                
+                self.setProperty( "Category", self.browser.getCurrentCategory() )
+                if self.settings.get( "hide_extention", True ):
+                    itemName = os.path.splitext( urllib.unquote( elt['name'] ) )[ 0 ]
+                else:
+                    itemName = urllib.unquote( elt['name'] )
+
+                displayListItem = xbmcgui.ListItem( itemName, "", iconImage=elt['previewpicture'], thumbnailImage=elt['thumbnail'] )
+
                 # Register in case image is not downloaded yet
                 self.browser.imageUpdateRegister( elt, updateImage_cb=self._updateListThumb_cb, obj2update=displayListItem )
 
@@ -835,8 +689,8 @@ class MainWindow( xbmcgui.WindowXML ):
                 self.listitems.append( displayListItem )
     
             self.current_cat = unicode( xbmc.getInfoLabel( 'Container.Property(Category)' ), 'utf-8')
-            print "Current Category"
-            print self.current_cat
+            #print "Current Category"
+            #print self.current_cat
     
             # Mise a jour des images
             self.set_list_images()
@@ -882,15 +736,17 @@ class MainWindow( xbmcgui.WindowXML ):
 
     def set_item_infos( self, listItem, dataItem ):
         try:
+            print "MainGUI - set_item_infos"
+            print dataItem['name']
             #infos = self.infoswarehouse.getInfo( itemName=os.path.basename( ipath ), itemType=self.type, listitem=listitem )
             listItem.setProperty( "itemId",          "" )
             listItem.setProperty( "fileName",        "" ) # Deprecated
             listItem.setProperty( "date",            dataItem['date'] )
-            listItem.setProperty( "title",           dataItem['name'].decode('string_escape') )
+            listItem.setProperty( "title",           urllib.unquote( dataItem['name'].decode('string_escape') ) )
             listItem.setProperty( "author",          dataItem['author'].decode('string_escape') )
             listItem.setProperty( "version",         dataItem['version'].decode('string_escape') )
             listItem.setProperty( "language",        dataItem['language'].decode('string_escape') )
-            listItem.setProperty( "description",     dataItem['description'].decode('string_escape') )
+            listItem.setProperty( "description",     urllib.unquote( dataItem['description'].decode('string_escape') ) )
             listItem.setProperty( "added",           dataItem['added'] )
             listItem.setProperty( "fanartpicture",   dataItem['previewpictureurl'] )
             listItem.setProperty( "previewVideoURL", "" )
@@ -898,6 +754,8 @@ class MainWindow( xbmcgui.WindowXML ):
             print dataItem            
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print sys.exc_info()
+            traceback.print_exc()
 
     def _updateListThumb_cb( self, imagePath, listitem ):
         """
@@ -924,6 +782,8 @@ class MainWindow( xbmcgui.WindowXML ):
         retourne True si le repertoire est effece False sinon
         """
         result = True
+        print "deleteDir"
+        print path
         if os.path.isdir( path ):
             dirItems=os.listdir( path )
             for item in dirItems:
@@ -956,8 +816,10 @@ class MainWindow( xbmcgui.WindowXML ):
         """
         Efface tous le contenu d'un repertoire ( fichiers  et sous-repertoires )
         mais pas le repertoire lui meme
-        folder: chemin du repertpoire local
+        folder: chemin du repertoire local
         """
+        print "delDirContent"
+        print path
         result = True
         if os.path.isdir( path ):
             dirItems=os.listdir( path )
@@ -974,6 +836,7 @@ class MainWindow( xbmcgui.WindowXML ):
                     result = False
                     logger.LOG( logger.LOG_DEBUG, "delDirContent: Exception la suppression du contenu du reperoire: %s", path )
                     logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                    traceback.print_exc()
         else:
             logger.LOG( logger.LOG_ERROR, "delDirContent: %s n'est pas un repertoire", path )
             result = False
