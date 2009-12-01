@@ -35,20 +35,19 @@ except:
 _ = sys.modules[ "__main__" ].__language__
 
 
-class PassionHTTPInstaller(ArchItemInstaller):
+class XbmcZoneItemInstaller(ArchItemInstaller):
     """
-    Download an item on Passion XBMC http server and install it
+    Download an item on XBMC Zone Web server and install it
     """
 
     #def __init__( self , itemId, type, installPath, filesize, externalURL=None ):
-    def __init__( self , itemId, type, filesize, externalURL=None ):
+    def __init__( self , itemId, type, filesize=None ):
         ArchItemInstaller.__init__( self, itemId, type, filesize )
         
-        #get base url for download
-        self.baseurl = CONF.getBaseURLDownloadFile()
+#        #get base url for download
+#        self.baseurl = "http://xbmczone.com/download.asp?id="
         
         #TODO: support progress bar display
-        self.externalURL         = externalURL # External URL for download (hosted on another server)
 
     def downloadItem( self, msgFunc=None,progressBar=None ):
         """

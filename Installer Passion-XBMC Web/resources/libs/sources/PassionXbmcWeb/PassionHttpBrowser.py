@@ -199,14 +199,17 @@ class PassionHttpBrowser(Browser):
             print item['previewpictureurl']
             if  item['previewpictureurl'] == 'None':
                 if (item['type'] == 'FIC'):
-                    item['thumbnail']      = Item.THUMB_NOT_AVAILABLE
+                    item['thumbnail']      = Item.get_thumb()
                     item['previewpicture'] = Item.THUMB_NOT_AVAILABLE
                     
                 elif (item['type'] == 'CAT'):
                     catTitle, catType = self.getCategoryInfo( item['id'] )
-    
+                    item['xbmc_type'] = catType
                     #TODO: use var for title and image file names
-                    
+                    #TODO:                     
+                        #item['thumbnail']      = Item.get_thumb( catType )
+                        #item['previewpicture'] = Item.get_thumb( catType )
+                        # Be careful with limit case (i.e skip case)
                     if catType == Item.TYPE_SCRAPER: 
                         # Scraper
                         #item['thumbnail']      = "IPX-defaultScraper.png" #TODO replace by THUMB_SCRAPER
@@ -502,7 +505,8 @@ class PassionHttpBrowser(Browser):
                 print "getInstaller - filesize"
                 print filesize
             
-                title, type = self.getCategoryInfo( catId )
+                #title, type = self.getCategoryInfo( catId )
+                type = self.curList[index]['xbmc_type']
                 
                 # Create the right type of Installer Object
                 #itemInstaller = PassionHttpItemInstaller.PassionHTTPInstaller( itemId, type, installPath, filesize, externalURL )

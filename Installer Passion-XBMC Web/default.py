@@ -13,8 +13,8 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/Installer%20Passion-XBMC/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center"
-__date__         = "11-09-2009"
-__version__      = "2.0.0-Alpha"
+__date__         = "01-12-2009"
+__version__      = "2.0.0-Dev01"
 __svn_revision__ = 0
 
 
@@ -47,6 +47,7 @@ sys.path.append( os.path.join( BASE_RESOURCE_PATH, "libs", "GUI" ) )
 #sys.path.append( os.path.join( BASE_RESOURCE_PATH, "libs", "sources" ) )
 sys.path.append( os.path.join( BASE_RESOURCE_PATH, "libs", "sources", "PassionXbmcWeb" ) )
 sys.path.append( os.path.join( BASE_RESOURCE_PATH, "libs", "sources", "PassionXbmcFtp" ) )
+sys.path.append( os.path.join( BASE_RESOURCE_PATH, "libs", "sources", "XbmcZone" ) )
 
 # recompile all modules, but script start slowly
 #from compileall import compile_dir

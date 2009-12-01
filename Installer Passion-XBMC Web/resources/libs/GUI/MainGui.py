@@ -17,6 +17,7 @@ import xbmcgui
 #modules custom
 from PassionHttpBrowser import PassionHttpBrowser
 from PassionFtpBrowser import PassionFtpBrowser
+from XbmcZoneBrowser import XbmcZoneBrowser
 from utilities import *
 
 from info_item import ItemInfosManager
@@ -56,10 +57,87 @@ ACTION_CONTEXT_MENU    = 117
 CLOSE_CONTEXT_MENU     = ( ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, ACTION_CONTEXT_MENU, )
 
 
+class Source:
+    """
+    Defines a source (Browser) used by the installer
+    """
+    def __init__( self, sourceName, className, instanceName=None, created=False ):
+        self.sourceName   = sourceName    # Name of the source
+        self.className    = className     # Browser class name for this source
+        self.instanceName = instanceName  # Browser instance name
+        self.created      = created       # flag set to True when a Browser instance has been created otherwise set to False
+
+class Context:
+    """
+    Context class, allows to retrieve browsers
+    """
+    def __init__( self ):
+        self.curSource = None # Current selected Browser
+        #self.listOfSources = []
+        self.listOfSources = {}
+        self.listOfSrCName = [] #Temporary #TODO use dict
+
+        try:
+            # Creating sources (not instanciating Browsers here)
+            srcPassionHttp = Source( "Passion XBMC Web", PassionHttpBrowser )
+            srcPassionFtp  = Source( "Passion XBMC FTP", PassionFtpBrowser )
+            srcXbmcZone    = Source( "XBMC Zone", XbmcZoneBrowser )
+            self.addSource(srcPassionHttp)
+            self.addSource(srcPassionFtp)
+            self.addSource(srcXbmcZone)
+            
+                    # self.browser_XbmcZone  = XbmcZoneBrowser()
+                    # # Recuperation de la liste des elements
+                    # #self.browser = self.browser_PassionHttp
+                    # #self.browser = self.browser_PassionFtp
+                    # self.browser = self.browser_XbmcZone
+            # SRC_PASSIONXBMCWEB = {'title': "Passion XBMC Web", 'browser': None}
+            # SRC_PASSIONXBMCFTP = {'title': "Passion XBMC FTP", 'browser': None}
+            # SRC_PASSIONXBMCSVN = {'title': "Passion XBMC SVN", 'browser': None}
+            # self.listOfSources.append(SRC_PASSIONXBMCWEB)
+            # self.listOfSources.append(SRC_PASSIONXBMCFTP)
+            # self.listOfSources.append(SRC_PASSIONXBMCSVN)
+        except Exception, e:
+            print "Exception during Context init"
+            print e
+            print sys.exc_info()
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            traceback.print_exc()
+            
+
+    def selectSource(self, sourceName):
+        #TODO use string as param
+        self.curSource = self.listOfSources[sourceName]
+        
+    def getBrowser(self):
+        if self.curSource.created == False:
+            # Create Browser instance for the 1st time
+            self.createBrowser( self.curSource )
+        return self.curSource.instanceName
+
+    def addSource(self, sourceItem):
+        #self.listOfSources.append(sourceItem)
+        self.listOfSources[sourceItem.sourceName] = sourceItem
+        self.listOfSrCName.append(sourceItem.sourceName)
+        
+    def createBrowser( self, source ):
+        # Create instance name form class name
+        instance = "browser_" + source.className.__name__
+        
+        # Create instance and update source information
+        #exec("%s = %s"%( source.instanceName, source.className()))
+        exec("%s = %s"%( instance, "source.className()"))
+        exec("source.instanceName  = %s"%( instance ))
+        source.created = True
+        
+    def getSourceNameList( self ):
+        return self.listOfSrCName
+
 class MainWindow( xbmcgui.WindowXML ):
     # control id's
     CONTROL_MAIN_LIST_START = 50
     CONTROL_MAIN_LIST_END   = 59
+    CONTROL_SOURCE_LIST     = 150
     CONTROL_FORUM_BUTTON    = 305
     CONTROL_FILE_MGR_BUTTON = 300
     CONTROL_OPTIONS_BUTTON  = 310
@@ -139,6 +217,14 @@ class MainWindow( xbmcgui.WindowXML ):
     def onInit( self ):
         self._get_settings()
         self._set_skin_colours()
+#        self.listOfSources = []
+#        SRC_PASSIONXBMCWEB = {'title': "Passion XBMC Web", 'browser': None}
+#        SRC_PASSIONXBMCFTP = {'title': "Passion XBMC FTP", 'browser': None}
+#        SRC_PASSIONXBMCSVN = {'title': "Passion XBMC SVN", 'browser': None}
+#        self.listOfSources.append(SRC_PASSIONXBMCWEB)
+#        self.listOfSources.append(SRC_PASSIONXBMCFTP)
+#        self.listOfSources.append(SRC_PASSIONXBMCSVN)
+#        self.set_list_container_150()
 
 #        if self.settings.get( "show_plash" ) == True:
 #            # splash desactive par le user 
@@ -156,11 +242,28 @@ class MainWindow( xbmcgui.WindowXML ):
                 # Starting browser of the DB
                 #myBrowser = Browser.PassionHttpBrowser( database=db )
                 # Use level of abstraction ItemBrowser (super class)
-                self.browser_PassionHttp = PassionHttpBrowser()
-                self.browser = self.browser_PassionHttp
-#                self.browser_PassionFtp  = PassionFtpBrowser()
-#                self.browser = self.browser_PassionFtp
+                #self.browser_PassionHttp = PassionHttpBrowser()
+                #SRC_PASSIONXBMCWEB = {'title': "Passion XBMC Web", 'browser': self.browser_PassionHttp}
+                #self.listOfSources.append(SRC_PASSIONXBMCWEB)
+                
+                #self.browser_PassionFtp  = PassionFtpBrowser()
+                #SRC_PASSIONXBMCFTP = {'title': "Passion XBMC FTP", 'browser': self.browser_PassionFtp}
+                #SRC_PASSIONXBMCFTP = {'title': "Passion XBMC FTP", 'browser': self.browser_PassionHttp}
+                #self.listOfSources.append(SRC_PASSIONXBMCFTP)
+
+
+                #self.browser_XbmcZone  = XbmcZoneBrowser()
                 # Recuperation de la liste des elements
+                #self.browser = self.browser_PassionHttp
+                #self.browser = self.browser_PassionFtp
+                #self.browser = self.browser_XbmcZone
+                self.contextSrc = Context()
+                self.contextSrc.selectSource("XBMC Zone")
+                self.browser = self.contextSrc.getBrowser()
+
+                self.set_list_container_150()
+
+
                 print "Updating displayed list"
                 self.updateData_Next()
                 self.updateList()
@@ -178,6 +281,8 @@ class MainWindow( xbmcgui.WindowXML ):
             # Title of the current pages
             self.setProperty( "Category", _( 10 ) )
             xbmc.executebuiltin( "Container.SetViewMode(%i)" % self.settings.get( "main_view_mode", self.CONTROL_MAIN_LIST_START ) )
+
+            self.setProperty( "DlSource", "Passion XBMC Web" )
 
 
             # Close the Loading Window
@@ -364,6 +469,28 @@ class MainWindow( xbmcgui.WindowXML ):
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
+    def set_list_container_150( self ):
+        #list_container = sorted( self.list_container_150.items(), key=lambda id: id[ 0 ] )
+        #self.rss_id = [ rss[ 0 ] for rss in list_container ]
+        label2 = ""#not used
+        icone = "windows.png"
+#        for key, value in list_container:
+        self.listOfSourceName = self.contextSrc.getSourceNameList()
+        print "set_list_container_150"
+        try:
+            for source in self.listOfSourceName:
+                #label1 = source['title']
+                label1 = source
+                print label1
+                #displayListItem = xbmcgui.ListItem( "test", "", iconImage=icone, thumbnailImage=icone )
+                #self.getControl( 150 ).addItem( displayListItem )
+                self.getControl( self.CONTROL_SOURCE_LIST ).addItem( xbmcgui.ListItem( label1, label1, icone, icone ) )
+            self.getControl( self.CONTROL_SOURCE_LIST ).setVisible( True )            
+        except:
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print sys.exc_info()
+            traceback.print_exc()
+            
     def onAction( self, action ):
         """
         Remonte l'arborescence et quitte le script
@@ -519,6 +646,16 @@ class MainWindow( xbmcgui.WindowXML ):
                     # else:
                         # print "Item is already installed - stopping install"
 
+            elif controlID == self.CONTROL_SOURCE_LIST:
+#                index = self.getControl( self.CONTROL_SOURCE_LIST ).getCurrentListPosition()
+#                sourceName = self.listOfSourceName[index]
+                sourceName = self.getControl( self.CONTROL_SOURCE_LIST ).getSelectedItem().getLabel()
+                self.contextSrc.selectSource(sourceName)
+                self.browser = self.contextSrc.getBrowser()
+                print "Updating displayed list on NEW SOURCE: %s"%sourceName
+                self.updateData_Next()
+                self.updateList()
+                
             elif controlID == self.CONTROL_OPTIONS_BUTTON:
                 self._show_settings()
 
@@ -545,6 +682,7 @@ class MainWindow( xbmcgui.WindowXML ):
             print "Exception during onClick"
             print e
             print sys.exc_info()
+            traceback.print_exc()
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def onExit( self ):
@@ -748,7 +886,8 @@ class MainWindow( xbmcgui.WindowXML ):
             listItem.setProperty( "language",        dataItem['language'].decode('string_escape') )
             listItem.setProperty( "description",     urllib.unquote( dataItem['description'].decode('string_escape') ) )
             listItem.setProperty( "added",           dataItem['added'] )
-            listItem.setProperty( "fanartpicture",   dataItem['previewpictureurl'] )
+            #listItem.setProperty( "fanartpicture",   dataItem['previewpictureurl'] )
+            listItem.setProperty( "fanartpicture",   dataItem['previewpicture'] )
             listItem.setProperty( "previewVideoURL", "" )
             print "set_item_infos"
             print dataItem            
