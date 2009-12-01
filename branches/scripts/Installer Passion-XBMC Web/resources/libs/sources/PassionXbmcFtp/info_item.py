@@ -71,6 +71,7 @@ class InfosWarehouse:
         self.itemType        = kwargs.get( "itemType" )        or ""
         self.itemId          = kwargs.get( "itemId" )          or ""
         self.thumb_size_on_load = kwargs.get( "itemId" )          or ""
+        self.previewPictureURL = kwargs.get( "previewPictureURL" ) or "None"
 
 
 class updateIWH( InfosWarehouse ):
@@ -296,8 +297,12 @@ class InfoWarehouseEltTreeXMLFTP:
                             author            = item.findtext( "author" )
 
                             previewPictureURL = item.findtext( "previewPictureURL" )
+                            print "getInfo: previewPictureURL"
+                            print previewPictureURL
                             if not previewPictureURL and hasattr( listitem, "setThumbnailImage" ):
                                 listitem.setThumbnailImage( "IPX-NotAvailable2.png" )
+                                #TODO: clean
+                                previewPictureURL = 'None'
                             elif previewPictureURL:
                                 # On verifie si l'image serait deja la
                                 thumbnail, checkPathPic = set_cache_thumb_name( previewPictureURL )

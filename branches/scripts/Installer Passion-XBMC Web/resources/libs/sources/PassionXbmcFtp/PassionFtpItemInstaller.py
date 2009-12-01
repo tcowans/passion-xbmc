@@ -9,10 +9,6 @@ import traceback
 from pysqlite2 import dbapi2 as sqlite
 
 #Other module
-import urllib
-import urllib2, httplib
-
-httplib.HTTPConnection.debuglevel = 1
 
 # Module logger
 try:
@@ -35,9 +31,9 @@ except:
 _ = sys.modules[ "__main__" ].__language__
 
 
-class PassionHTTPInstaller(ArchItemInstaller):
+class PassionFTPInstaller(ArchItemInstaller):
     """
-    Download an item on Passion XBMC http server and install it
+    Download an item on Passion XBMC FTP server and install it
     """
 
     #def __init__( self , itemId, type, installPath, filesize, externalURL=None ):

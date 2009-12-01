@@ -151,6 +151,8 @@
 			</control>
 		</control>
 
+
+
 		<control type="group">
 			<animation effect="slide" time="200" start="720,0" end="0,0" acceleration="-1">WindowOpen</animation>
 			<animation effect="slide" time="200" start="0,0" end="720,0" acceleration="1.1">WindowClose</animation>
@@ -329,7 +331,7 @@
 					<colordiffuse>ffffffff</colordiffuse>
 					<disabledcolor>60d0d0d0</disabledcolor>
 					<onleft>310</onleft>
-					<onright>2</onright>
+					<onright>8000</onright>
 					<onup>50</onup>
 					<ondown>50</ondown>
 					<animation effect="slide" start="0,0" end="-115,0" time="0" reversible="true" condition="!Control.IsVisible(305)">conditional</animation>
@@ -1930,6 +1932,101 @@
 					<effect type="zoom" center="auto" start="361,283,10,10" end="0,0,520,416" time="2000" delay="200" />
 				</animation>
 			</control>
+		</control>
+		
+		<control type="group" id="8000">
+			<!-- 
+			<animation effect="slide" time="200" start="720,0" end="0,0" acceleration="-1">WindowOpen</animation>
+			<animation effect="slide" time="200" start="0,0" end="720,0" acceleration="1.1">WindowClose</animation>
+			-->
+			<control type="image">
+				<description>contentpanel slice</description>
+				<posx>580</posx>
+				<posy>142</posy>
+				<width>120</width>
+				<height>180</height>
+				<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
+				<bordertexture border="5">IPX-list-border.png</bordertexture>
+				<bordersize>2</bordersize>
+				<onfocus>SetFocus(150)</onfocus>
+				<animation effect="zoom" start="580,142,120,20" end="580,142,120,180" time="800" condition="ControlGroup(8000).HasFocus">Conditional</animation>
+				<animation effect="zoom" start="580,142,120,180" end="580,142,120,20" time="400" condition="!ControlGroup(8000).HasFocus">Conditional</animation>
+			</control>
+			<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+			<!-- ** Required ** Do not change id's or type's -->
+			<control type="list" id="150">
+				<visible>ControlGroup(8000).HasFocus</visible>
+				<!-- 
+				<animation effect="zoom" start="570,120,120,20" end="570,120,120,372" time="800" condition="ControlGroup(8000).HasFocus">Conditional</animation>
+				<animation effect="zoom" start="570,120,120,372" end="570,120,120,20" time="400" condition="!ControlGroup(8000).HasFocus">Conditional</animation>
+				-->
+				<description>Browsing Sources</description>
+				<posx>585</posx>
+				<posy>142</posy>
+				<width>120</width>
+				<height>330</height>
+				<onleft>320</onleft>
+				<onright>2</onright>
+				<onup>150</onup>
+				<ondown>150</ondown>
+				<!-- 
+				<orientation>vertical</orientation>
+				-->
+				<pagecontrol>193</pagecontrol>
+				<scrolltime>200</scrolltime>
+				<itemlayout width="110" height="35">
+					<control type="label">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>110</width>
+						<height>22</height>
+						<font>font11</font>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<textcolor>ffffffff</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<info>ListItem.Label</info>
+					</control>
+				</itemlayout>
+				<focusedlayout width="110" height="35">
+					<control type="image">
+						<width>110</width>
+						<height>22</height>
+						<posx>0</posx>
+						<posy>0</posy>
+						<visible>Control.HasFocus(150)</visible>
+						<texture border="5">IPX-button-focus3.png</texture>
+					</control>
+					<control type="label">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>110</width>
+						<height>22</height>
+						<font>font11</font>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<textcolor>ffffffff</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<info>ListItem.Label</info>
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="button">
+				<description>tilte - source label</description>
+				<posx>585</posx>
+				<posy>117</posy>
+				<width>120</width>
+				<height>25</height>
+				<align>center</align>
+				<label>$INFO[Container.Property(DlSource)]</label>
+				<texturenofocus>-</texturenofocus>
+				<texturefocus border="5">IPX-button-focus3.png</texturefocus>
+				<colordiffuse>ffffffff</colordiffuse>
+				<textcolor>ffffffff</textcolor>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<onfocus>SetFocus(150)</onfocus>
+				<visible>!IsEmpty(Container.Property(DlSource))</visible>
+				</control>
 		</control>
 	</controls>
 </window>
