@@ -13,8 +13,11 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/Installer%20Passion-XBMC/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center"
-__date__         = "02-12-2009"
-__version__      = "2.0.0-Dev01"
+__version__      = "2.0.0-Dev01a"
+
+# don't edit __date__ and __svn_revision__ 
+# use svn:keywords http://svnbook.red-bean.com/en/1.4/svn.advanced.props.special.keywords.html
+__date__         = "$Date$"
 __svn_revision__ = "$Revision$".replace( "Revision", "" ).strip( "$: " )
 
 
