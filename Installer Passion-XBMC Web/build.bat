@@ -41,6 +41,7 @@ ECHO ----------------------------------------------------------------------
 ECHO.
 ECHO Copying required files to \Build\%ScriptName%\ folder . . .
 XCOPY resources "BUILD\%ScriptName%\resources" /E /Q /I /Y /EXCLUDE:BUILD\exclude.txt
+COPY default.py "BUILD\%ScriptName%\"
 COPY default.tbn "BUILD\%ScriptName%\"
 
 :Cleanup
