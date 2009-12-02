@@ -1,4 +1,4 @@
-
+﻿
 # GET AND PRINT ALL STATS OF SCRIPT
 TEST_PERFORMANCE = False
 #UNIT_TEST        = True
