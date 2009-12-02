@@ -701,7 +701,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
 
         #test pour avoir le choix du parent dir avec la souris
         if self.pardir_not_hidden:
-            self.addItem( xbmcgui.ListItem( "[B]..[/B]", "", iconImage="DefaultFolderBack.png", thumbnailImage="DefaultFolderBackBig.png" ) )
+            self.addItem( xbmcgui.ListItem( "..", "", iconImage="DefaultFolderBack.png", thumbnailImage="DefaultFolderBack.png" ) )
 
         # Calcul du nombre d'elements de la liste
         itemnumber = len( self.currentItemList )
