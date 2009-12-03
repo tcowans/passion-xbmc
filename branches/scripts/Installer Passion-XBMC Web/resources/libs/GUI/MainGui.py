@@ -76,7 +76,6 @@ class Context:
         #self.listOfSources = []
         self.listOfSources = {}
         self.listOfSrCName = [] #Temporary #TODO use dict
-
         try:
             # Creating sources (not instanciating Browsers here)
             srcPassionHttp = Source( "Passion XBMC Web", PassionHttpBrowser )
@@ -85,18 +84,6 @@ class Context:
             self.addSource(srcPassionHttp)
             self.addSource(srcPassionFtp)
             self.addSource(srcXbmcZone)
-            
-                    # self.browser_XbmcZone  = XbmcZoneBrowser()
-                    # # Recuperation de la liste des elements
-                    # #self.browser = self.browser_PassionHttp
-                    # #self.browser = self.browser_PassionFtp
-                    # self.browser = self.browser_XbmcZone
-            # SRC_PASSIONXBMCWEB = {'title': "Passion XBMC Web", 'browser': None}
-            # SRC_PASSIONXBMCFTP = {'title': "Passion XBMC FTP", 'browser': None}
-            # SRC_PASSIONXBMCSVN = {'title': "Passion XBMC SVN", 'browser': None}
-            # self.listOfSources.append(SRC_PASSIONXBMCWEB)
-            # self.listOfSources.append(SRC_PASSIONXBMCFTP)
-            # self.listOfSources.append(SRC_PASSIONXBMCSVN)
         except Exception, e:
             print "Exception during Context init"
             print e
@@ -106,21 +93,33 @@ class Context:
             
 
     def selectSource(self, sourceName):
+        """
+        Set a source as the current one
+        """
         #TODO use string as param
         self.curSource = self.listOfSources[sourceName]
         
     def getBrowser(self):
+        """
+        Returns the Browser instance for a source
+        """
         if self.curSource.created == False:
             # Create Browser instance for the 1st time
             self.createBrowser( self.curSource )
         return self.curSource.instanceName
 
     def addSource(self, sourceItem):
+        """
+        Adds a new source
+        """
         #self.listOfSources.append(sourceItem)
         self.listOfSources[sourceItem.sourceName] = sourceItem
         self.listOfSrCName.append(sourceItem.sourceName)
         
     def createBrowser( self, source ):
+        """
+        Instanciates the browser for a specific source
+        """
         # Create instance name form class name
         instance = "browser_" + source.className.__name__
         
@@ -131,7 +130,20 @@ class Context:
         source.created = True
         
     def getSourceNameList( self ):
+        """
+        Returns the list of the source's name
+        """
         return self.listOfSrCName
+    
+    def freeSources(self):
+        """
+        Free all the source (close the browser: closing connection ...) in order to exit properly 
+        """
+        print "Context: freeing sources"
+        for source in self.listOfSources:
+            print "freing %s ..."%source.sourceName
+            source.close()
+
 
 class MainWindow( xbmcgui.WindowXML ):
     # control id's
@@ -167,28 +179,13 @@ class MainWindow( xbmcgui.WindowXML ):
         self.configManager = configCtrl()
         if not self.configManager.is_conf_valid: raise
 
-#        self.host               = self.configManager.host
-#        self.user               = self.configManager.user
         self.rssfeed            = self.configManager.rssfeed
-#        self.password           = self.configManager.password
-#        self.remotedirList      = self.configManager.remotedirList
-
-#        self.localdirList       = self.configManager.localdirList
-#        self.downloadTypeList   = self.configManager.downloadTypeLst
-
-#        self.racineDisplayList  = [ 0, 1, 2, 3 ]
-#        self.pluginDisplayList  = [ 4, 5, 6, 7 ]
-#        self.pluginsDirSpyList  = []
-
         self.curDirList         = []
-#        self.connected          = False # status de la connection ( inutile pour le moment )
-#        self.index              = ""
         self.index              = 0
         self.scraperDir         = self.configManager.scraperDir
         self.type               = "racine"
         self.USRPath            = self.configManager.USRPath
         self.rightstest         = ""
-#        self.scriptDir          = self.configManager.scriptDir
         self.CacheDir           = self.configManager.CACHEDIR
         self.userDataDir        = self.configManager.userdatadir # userdata directory
         self.targetDir          = ""
@@ -217,14 +214,6 @@ class MainWindow( xbmcgui.WindowXML ):
     def onInit( self ):
         self._get_settings()
         self._set_skin_colours()
-#        self.listOfSources = []
-#        SRC_PASSIONXBMCWEB = {'title': "Passion XBMC Web", 'browser': None}
-#        SRC_PASSIONXBMCFTP = {'title': "Passion XBMC FTP", 'browser': None}
-#        SRC_PASSIONXBMCSVN = {'title': "Passion XBMC SVN", 'browser': None}
-#        self.listOfSources.append(SRC_PASSIONXBMCWEB)
-#        self.listOfSources.append(SRC_PASSIONXBMCFTP)
-#        self.listOfSources.append(SRC_PASSIONXBMCSVN)
-#        self.set_list_container_150()
 
 #        if self.settings.get( "show_plash" ) == True:
 #            # splash desactive par le user 
@@ -239,27 +228,10 @@ class MainWindow( xbmcgui.WindowXML ):
             # Connection au serveur FTP
             try:
                 DIALOG_PROGRESS.update( -1, _( 104 ), _( 110 ) )
-                # Starting browser of the DB
-                #myBrowser = Browser.PassionHttpBrowser( database=db )
-                # Use level of abstraction ItemBrowser (super class)
-                #self.browser_PassionHttp = PassionHttpBrowser()
-                #SRC_PASSIONXBMCWEB = {'title': "Passion XBMC Web", 'browser': self.browser_PassionHttp}
-                #self.listOfSources.append(SRC_PASSIONXBMCWEB)
-                
-                #self.browser_PassionFtp  = PassionFtpBrowser()
-                #SRC_PASSIONXBMCFTP = {'title': "Passion XBMC FTP", 'browser': self.browser_PassionFtp}
-                #SRC_PASSIONXBMCFTP = {'title': "Passion XBMC FTP", 'browser': self.browser_PassionHttp}
-                #self.listOfSources.append(SRC_PASSIONXBMCFTP)
-
-
-                #self.browser_XbmcZone  = XbmcZoneBrowser()
-                # Recuperation de la liste des elements
-                #self.browser = self.browser_PassionHttp
-                #self.browser = self.browser_PassionFtp
-                #self.browser = self.browser_XbmcZone
+                # Loading context
                 self.contextSrc = Context()
                 self.contextSrc.selectSource("XBMC Zone")
-                self.browser = self.contextSrc.getBrowser()
+                #self.browser = self.contextSrc.getBrowser()
 
                 self.set_list_container_150()
 
@@ -541,7 +513,7 @@ class MainWindow( xbmcgui.WindowXML ):
             itemName = self.curDirList[self.index]['name']
             if not xbmcgui.Dialog().yesno( _( 180 ), _( 181 ), itemName ): return
             
-            itemInstaller = self.browser.getInstaller(self.index)
+            itemInstaller = self.contextSrc.getBrowser().getInstaller(self.index)
             
             print "Download via itemInstaller"
             dp = xbmcgui.DialogProgress()
@@ -595,8 +567,8 @@ class MainWindow( xbmcgui.WindowXML ):
         self._stop_rss_timer()
 #        try: self.infoswarehouse.getImage_thread.cancel()
 #        except: pass
-        try: self.infoswarehouse.cancel_update_Images()
-        except: pass
+#        try: self.infoswarehouse.cancel_update_Images()
+#        except: pass
         for id in range( self.CONTROL_MAIN_LIST_START, self.CONTROL_MAIN_LIST_END + 1 ):
             try:
                 if xbmc.getCondVisibility( "Control.IsVisible(%i)" % id ):
@@ -621,7 +593,7 @@ class MainWindow( xbmcgui.WindowXML ):
         try:
             if ( self.CONTROL_MAIN_LIST_START <= controlID <= self.CONTROL_MAIN_LIST_END ):
                 self.index = self.getCurrentListPosition()
-                if self.browser.isCat(self.getCurrentListPosition()):
+                if self.contextSrc.getBrowser().isCat(self.getCurrentListPosition()):
                     try: self.main_list_last_pos.append( self.getCurrentListPosition() )
                     except: self.main_list_last_pos.append( 0 )
                     
@@ -634,24 +606,12 @@ class MainWindow( xbmcgui.WindowXML ):
                     print "Download and install case"
                     self.install_add_ons()
 
-                    # Save in local directory
-                    #TODO: support message callback in addition of pb callback
-                    # itemInstaller.downloadItem( progressBar=dp )
-                    # itemInstaller.extractItem( progressBar=dp )
-                    # if not itemInstaller.isAlreadyInstalled():
-                        # print "Item is not yet installed - installing"
-                        # import time
-                        # time.sleep(10)
-                        # itemInstaller.installItem( progressBar=dp )
-                    # else:
-                        # print "Item is already installed - stopping install"
-
             elif controlID == self.CONTROL_SOURCE_LIST:
 #                index = self.getControl( self.CONTROL_SOURCE_LIST ).getCurrentListPosition()
 #                sourceName = self.listOfSourceName[index]
                 sourceName = self.getControl( self.CONTROL_SOURCE_LIST ).getSelectedItem().getLabel()
                 self.contextSrc.selectSource(sourceName)
-                self.browser = self.contextSrc.getBrowser()
+                #self.browser = self.contextSrc.getBrowser()
                 print "Updating displayed list on NEW SOURCE: %s"%sourceName
                 self.updateData_Next()
                 self.updateList()
@@ -689,8 +649,9 @@ class MainWindow( xbmcgui.WindowXML ):
         """
         Action done on exit of the application
         """
-        # Close Browser
-        self.browser.close()
+        # Free all the sources
+        # self.browser.close()
+        self.contextSrc.freeSources()
 
         # Delete cache directory
         self.deleteDir( self.CacheDir )
@@ -751,7 +712,7 @@ class MainWindow( xbmcgui.WindowXML ):
             DIALOG_PROGRESS.create( _( 0 ), _( 104 ), _( 110 ) )
         try:            
             print "Getting list of items got from the browser"
-            self.curDirList = self.browser.getPrevList()
+            self.curDirList = self.contextSrc.getBrowser().getPrevList()
         except Exception, e:
             print "Excpetion during updateData_Prev"
             print e
@@ -770,7 +731,7 @@ class MainWindow( xbmcgui.WindowXML ):
         try:            
             print "Getting list of items from the browser for current item ID:"
             print self.index
-            self.curDirList = self.browser.getNextList(self.index)
+            self.curDirList = self.contextSrc.getBrowser().getNextList(self.index)
         except Exception, e:
             print "Exception during updateData_Next"
             print e
@@ -806,7 +767,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 print elt
                 
                 
-                self.setProperty( "Category", self.browser.getCurrentCategory() )
+                self.setProperty( "Category", self.contextSrc.getBrowser().getCurrentCategory() )
                 if self.settings.get( "hide_extention", True ):
                     itemName = os.path.splitext( urllib.unquote( elt['name'] ) )[ 0 ]
                 else:
@@ -815,7 +776,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 displayListItem = xbmcgui.ListItem( itemName, "", iconImage=elt['previewpicture'], thumbnailImage=elt['thumbnail'] )
 
                 # Register in case image is not downloaded yet
-                self.browser.imageUpdateRegister( elt, updateImage_cb=self._updateListThumb_cb, obj2update=displayListItem )
+                self.contextSrc.getBrowser().imageUpdateRegister( elt, updateImage_cb=self._updateListThumb_cb, obj2update=displayListItem )
 
                 self.set_item_infos( displayListItem, elt )
                 
@@ -911,7 +872,7 @@ class MainWindow( xbmcgui.WindowXML ):
         """
         try:
             # Recuperation des images dans un thread separe via la fonction update_Images()
-            self.browser.update_Images()
+            self.contextSrc.getBrowser().update_Images()
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
