@@ -199,7 +199,7 @@ class PassionHttpBrowser(Browser):
             print item['previewpictureurl']
             if  item['previewpictureurl'] == 'None':
                 if (item['type'] == 'FIC'):
-                    item['thumbnail']      = Item.get_thumb()
+                    item['thumbnail']      = Item.THUMB_NOT_AVAILABLE
                     item['previewpicture'] = Item.THUMB_NOT_AVAILABLE
                     
                 elif (item['type'] == 'CAT'):
@@ -577,4 +577,7 @@ class PassionHttpBrowser(Browser):
         Close browser: i.e close connection, free memory ...
         """
         self.databaseMgr.exit()
+        try: self.cancel_update_Images()
+        except: print "PassionHttpBrowser: error on close (cancel image)"
+
     

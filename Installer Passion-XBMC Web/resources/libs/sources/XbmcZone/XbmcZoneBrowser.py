@@ -664,5 +664,6 @@ class XbmcZoneBrowser(Browser):
         """
         Close browser: i.e close connection, free memory ...
         """
-        pass
+        try: self.cancel_update_Images()
+        except: print "XbmcZoneBrowser: error on close (cancel image)"
     

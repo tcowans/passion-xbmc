@@ -29,11 +29,6 @@ from INSTALLEUR import ftpDownloadCtrl, directorySpy, userDataXML
 import ftplib
 
 
-
-## Filtre sur les elemens a affciher selon le cas (racine ou plugin)
-#rootDisplayList   = [ TYPE_SKIN, TYPE_SCRAPER, TYPE_SCRIPT, TYPE_PLUGIN ]                                # Liste de la racine: Cette liste est un filtre ( utilisant l'index ) sur les listes ci-dessus
-#pluginDisplayList = [ TYPE_PLUGIN_MUSIC, TYPE_PLUGIN_PICTURES, TYPE_PLUGIN_PROGRAMS, TYPE_PLUGIN_VIDEO ] # Liste des plugins : Cette liste est un filtre ( utilisant l'index ) sur les listes ci-dessus
-
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
 _ = sys.modules[ "__main__" ].__language__
 LANGUAGE_IS_FRENCH = sys.modules[ "__main__" ].LANGUAGE_IS_FRENCH
@@ -46,10 +41,8 @@ class PassionFtpBrowser(Browser):
 #    def __init__(self):
     def __init__( self, *args, **kwargs  ):
         Browser.__init__( self, *args, **kwargs )
-        #self.db  = kwargs[ "database" ] # Database file
-        #self.db = db       # Database file
-        # Creation du configCtrl
 
+        # Creation du configCtrl
         from CONF import configCtrl
         self.configManager = configCtrl()
         if not self.configManager.is_conf_valid: raise
@@ -151,8 +144,8 @@ class PassionFtpBrowser(Browser):
         for cat in self.pluginDisplayList:   
             item = {}
             #item['id']                = ""
-            item['name']              = Item.get_type_title( cat )
             #item['parent']            = Item.TYPE_PLUGIN
+            item['name']              = Item.get_type_title( cat )
             item['downloadurl']       = None
             item['type']              = 'CAT'
             item['xbmc_type']         = cat
@@ -183,7 +176,7 @@ class PassionFtpBrowser(Browser):
             item['thumbnail']      = Item.get_thumb( item['xbmc_type'] ) # icone
             item['previewpicture'] = Item.THUMB_NOT_AVAILABLE # preview
         else:
-            # On verifie si l'image serait deja la
+            # Check if picture is already downloaded and available
             downloadImage = False
             thumbnail, checkPathPic = set_cache_thumb_name( item['previewpictureurl'] )
             if thumbnail and os.path.isfile( thumbnail ):
@@ -360,34 +353,22 @@ class PassionFtpBrowser(Browser):
     def _set_item_infos( self, item ):
         print "set_item_infos"
         try:
+            # Retrieve info (using V implementation mostly)
             infos = self.infoswarehouse.getInfo( itemName=os.path.basename( item['downloadurl'] ), itemType=item['xbmc_type'] )
-
-            print "+++++++     INFOS   ++++++++++"
             #item['itemId']            = infos.itemId
+            #item['infos.previewVideoURL'] = infos.infos.previewVideoURL
+            #item['fileName']          = infos.fileName
             item['name']              = infos.title
             item['previewpictureurl'] = infos.previewPictureURL
-            #item['infos.previewVideoURL'] = infos.infos.previewVideoURL
             item['description']       = infos.description
             item['language']          = infos.language
             item['version']           = infos.version
             item['author']            = infos.author
             item['date']              = infos.date
             item['added']             = infos.added or infos.date
-            # listitem.setProperty( "itemId",          infos.itemId )
-            # listitem.setProperty( "fileName",        infos.fileName )
-            # listitem.setProperty( "date",            infos.date )
-            # listitem.setProperty( "title",           infos.title )
-            # listitem.setProperty( "author",          infos.author )
-            # listitem.setProperty( "version",         infos.version )
-            # listitem.setProperty( "language",        infos.language )
-            # listitem.setProperty( "description",     infos.description )
-            # listitem.setProperty( "added",           infos.added or infos.date )
-            # listitem.setProperty( "fanartpicture",   infos.previewPicture )
-            # listitem.setProperty( "previewVideoURL", infos.previewVideoURL )
 
             # Set image
             self._setDefaultImages( item )
-
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
             traceback.print_exc()
@@ -608,6 +589,13 @@ class PassionFtpBrowser(Browser):
             return False
         
         
+    def close( self ):
+        """
+        Close browser: i.e close connection, free memory ...
+        """
+        self.passionFTPCtrl.closeConnection()
+        try: self.cancel_update_Images()
+        except: print "PassionFtpBrowser: error on close (cancel image)"
         
         
     
