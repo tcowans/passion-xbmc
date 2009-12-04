@@ -25,7 +25,7 @@ from Browser import Browser, ImageQueueElement
 import Item
 import ItemInstaller  
 from info_item import ItemInfosManager
-from INSTALLEUR import ftpDownloadCtrl, directorySpy, userDataXML
+from PassionFtpmanager import FtpDownloadCtrl
 import ftplib
 
 
@@ -83,7 +83,7 @@ class PassionFtpBrowser(Browser):
         # Connection au serveur FTP
         try:
 
-            self.passionFTPCtrl = ftpDownloadCtrl( self.host, self.user, self.password, self.remotedirList, self.localdirList, self.downloadTypeList )
+            self.passionFTPCtrl = FtpDownloadCtrl( self.host, self.user, self.password, self.remotedirList, self.localdirList, self.downloadTypeList )
             self.connected = True
 
             #self.updateList()
@@ -209,12 +209,13 @@ class PassionFtpBrowser(Browser):
             thumbnail, localFilePath = set_cache_thumb_name( picname )
             print thumbnail
             print localFilePath
-#            loc = urllib.URLopener()
-#            loc.retrieve(filetodlUrl, localFilePath)   
+
             ftp = ftplib.FTP( self.host, self.user, self.password )
+            #self.passionFTPCtrl.openConnection()
             localFile = open( localFilePath, "wb" )
             try:
                 ftp.retrbinary( 'RETR ' + filetodlUrl, localFile.write )
+                #self.passionFTPCtrl.retrbinary( self, 'RETR ' + filetodlUrl, callback, blocksize=8192, rest=None )
             except:
                 #import traceback; traceback.print_exc()
                 logger.LOG( logger.LOG_DEBUG, "_downloaddossier: Exception - Impossible de telecharger le fichier: %s", remoteFilePath )
@@ -223,6 +224,8 @@ class PassionFtpBrowser(Browser):
             localFile.close()
             ftp.quit()
 
+            #self.passionFTPCtrl.downloadImage(pathsrc, isSingleFile=True)
+            
             # remove file if size is 0 bytes and report error if exists error
             if localFilePath and os.path.isfile( localFilePath ):
                 if os.path.getsize( localFilePath ) <= 0:
