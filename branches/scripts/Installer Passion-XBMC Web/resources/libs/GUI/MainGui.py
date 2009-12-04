@@ -140,9 +140,9 @@ class Context:
         Free all the source (close the browser: closing connection ...) in order to exit properly 
         """
         print "Context: freeing sources"
-        for source in self.listOfSources:
-            print "freing %s ..."%source.sourceName
-            source.close()
+        for srcName in self.listOfSrCName:
+            print "freing %s ..."%(srcName)
+            self.listOfSources[srcName].instanceName.close()
 
 
 class MainWindow( xbmcgui.WindowXML ):

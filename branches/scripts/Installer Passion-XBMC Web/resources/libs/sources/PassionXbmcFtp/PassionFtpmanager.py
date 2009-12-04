@@ -23,9 +23,9 @@ class GDDFTP( ftplib.FTP ):
     """
     def __init__( self, adresse, port, user, password ):
         ftplib.FTP.__init__( self, '' )
-        self.adresse = adresse
-        self.port = port
-        self.user = user
+        self.adresse  = adresse
+        self.port     = port
+        self.user     = user
         self.password = password
 
     def Reconnect( self ):
@@ -46,18 +46,18 @@ class GDDFTP( ftplib.FTP ):
             return command( *args )
 
 
-class ftpDownloadCtrl:
+class FtpDownloadCtrl:
     """
     Controleur de download via FTP
     Cette classe gere les download via FTP de fichiers et repertoire
     """
     def __init__( self, host, user, password, remotedirList, localdirList, typeList ):
         """
-        Fonction d'init de la classe ftpDownloadCtrl
+        Fonction d'init de la classe FtpDownloadCtrl
         Initialise toutes les variables et lance la connection au serveur FTP
         """
 
-        #Initialise les attributs de la classe ftpDownloadCtrl avec les parametres donnes au constructeur
+        #Initialise les attributs de la classe FtpDownloadCtrl avec les parametres donnes au constructeur
         self.host             = host
         self.user             = user
         self.port             = 21
@@ -203,7 +203,7 @@ class ftpDownloadCtrl:
 
     def _download( self, pathsrc, isSingleFile=False, progressbar_cb=None, dialogProgressWin=None, curPercent=0, coeff=1 ):
         """
-        Fonction privee ( ne pouvant etre appelee que par la classe ftpDownloadCtrl elle meme )
+        Fonction privee ( ne pouvant etre appelee que par la classe FtpDownloadCtrl elle meme )
         Telecharge un element sur le server FTP
         Renvoi le status du download:
             - ( -1 ) pour telechargement annule
@@ -278,7 +278,7 @@ class ftpDownloadCtrl:
 
     def _downloaddossier( self, dirsrc, progressbar_cb=None, dialogProgressWin=None, curPercent=0, coeff=1 ):
         """
-        Fonction privee ( ne pouvant etre appelee que par la classe ftpDownloadCtrl elle meme )
+        Fonction privee ( ne pouvant etre appelee que par la classe FtpDownloadCtrl elle meme )
         Telecharge un repertoire sur le server FTP
         Note: fait un appel RECURSIF sur _download
         """
@@ -314,7 +314,7 @@ class ftpDownloadCtrl:
 
     def _downloadfichier( self, filesrc, isSingleFile=False, dialogProgressWin=None, curPercent=0, coeff=1 ):
         """
-        Fonction privee ( ne pouvant etre appelee que par la classe ftpDownloadCtrl elle meme )
+        Fonction privee ( ne pouvant etre appelee que par la classe FtpDownloadCtrl elle meme )
         Telecharge un fichier sur le server FTP
         """
         # Recupere la taille du fichier
@@ -389,6 +389,33 @@ class ftpDownloadCtrl:
         #return self.ftp.voidresp()
         return self.ftp.Command( self.ftp.voidresp )
 
+    def downloadImage( self, cmd, callback, blocksize=8192, rest=None ):
+        """
+        """
+#        abort = False
+#        #self.ftp.voidcmd( 'TYPE I' )
+#        self.ftp.Command( self.ftp.voidcmd, 'TYPE I' )
+#        #conn = self.ftp.transfercmd( cmd, rest )
+#        conn = self.ftp.Command( self.ftp.transfercmd, 'RETR ' , rest )
+#        fp = conn.makefile( 'rb' )
+#        while 1:
+#            data = fp.read( blocksize )
+#            if not data:
+#                break
+#            try:
+#                callback( data )
+#            except cancelRequest:
+#                abort = True
+#                logger.LOG( logger.LOG_NOTICE, "retrbinary: Download ARRETE par l'utilisateur" )
+#                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+#                break
+#        fp.close()
+#        conn.close()
+#        if abort:
+#            self.ftp.Command( self.ftp.abort ) # Afin d'eviter un blockage dans le cas d'un cancel et puis d'un self.ftp.voidresp
+#        #return self.ftp.voidresp()
+#        return self.ftp.Command( self.ftp.voidresp )
+        pass
 
 
 class FtpCallback( object ):
