@@ -86,6 +86,7 @@ tvshow_list= {}
 db_path=os.path.join(xbmc.translatePath( "special://profile/Database/" ), "MyVideos34.db")
 temp_xml=os.path.join(os.getcwd(), 'resources' , 'data' , 'temp.xml')
 base_url= "http://www.xbmcstuff.com/scrapping.php?"
+icons_path= os.path.join( BASE_RESOURCE_PATH , "icons" )
 
 options= "id_scrapper=1&size=%s&mode=1" % (resolution)
 
@@ -462,11 +463,11 @@ elif mode==1:
     current_show = Tvshow(url)
     current_show.get_xml()
     parser(current_show)
-    if current_show.clearart != "no clearart": addDir('Clearart',url,2,'')
-    if current_show.season: addDir('Seasonthumbs',url,2,'')
-    if current_show.tvshowthumb != "no tvthumb": addDir('TVthumbs',url,2,'')
+    if current_show.clearart != "no clearart": addDir('Clearart',url,2,os.path.join( icons_path , "clearart.png" ))
+    if current_show.season: addDir('Seasonthumbs',url,2,os.path.join( icons_path , "seasons.png" ))
+    if current_show.tvshowthumb != "no tvthumb": addDir('TVthumbs',url,2,os.path.join( icons_path , "thumbs.png" ))
     if current_show.collection:
-        for i in current_show.collection: addDir("Collection: %s" % (i),url,2,'')
+        for i in current_show.collection: addDir("Collection: %s" % (i),url,2,os.path.join( icons_path , "collections.png" ))
     end_of_directory( True )
 
 
