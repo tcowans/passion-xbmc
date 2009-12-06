@@ -1,6 +1,6 @@
 # -- coding: cp1252 -*-
 ########################################
-#xbmcstuff downloader v1.3
+#xbmcstuff downloader v1.3.1
 #by ppic
 ########################################
 ##changelog:
@@ -23,7 +23,8 @@
 ##19/09/09: v 1.2 added cache replace
 ##19/09/09: added language fix for image cache
 ##25/10/09: code cleaning
-##25/10/09: add cleararts download in tvshow folder option. 
+##25/10/09: add cleararts download in tvshow folder option.
+##05/12/09: add section iconimage
             
 ########################################
 
@@ -34,8 +35,8 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/video/XbmcStuff downloader/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "25-10-2009"
-__version__      = "1.3"
+__date__         = "05-12-2009"
+__version__      = "1.3.1"
 __svn_revision__  = "$Revision$"
 __XBMC_Revision__ = "20000" #XBMC Babylon
 
