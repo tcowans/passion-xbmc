@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!-- Les strings de 30000 à 30999 sont réservées aux paramètres plug-in -->
+  <!--GENERAL STRINGS -->
+  <string id="30000">Image Resolution</string>
+  <string id="30001">Select image resolution:</string>
+  <string id="30002">clearart folder</string>
+  <string id="30003">cleararts's folder path</string>
+  <string id="30004">Skin folder</string>
+  <string id="30005">TvShow folder (e.g Transparency skin)</string>
+  <string id="30006"></string>
+</strings>

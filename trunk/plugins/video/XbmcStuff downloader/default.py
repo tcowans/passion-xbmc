@@ -1,6 +1,6 @@
 # -- coding: cp1252 -*-
 ########################################
-#xbmcstuff downloader v1.3.1
+#xbmcstuff downloader v1.3.2
 #by ppic
 ########################################
 ##changelog:
@@ -25,6 +25,7 @@
 ##25/10/09: code cleaning
 ##25/10/09: add cleararts download in tvshow folder option.
 ##05/12/09: add section iconimage
+##11/12/09: add language support (for settings now)
             
 ########################################
 

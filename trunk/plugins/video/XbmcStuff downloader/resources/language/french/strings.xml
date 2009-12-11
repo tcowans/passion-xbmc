@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!-- Les strings de 30000 à 30999 sont réservées aux paramètres plug-in -->
+  <!--GENERAL STRINGS -->
+  <string id="30000">Résolution de l'image</string>
+  <string id="30001">Sélectionnez la resolution:</string>
+  <string id="30002">cleararts</string>
+  <string id="30003">Dossier des cleararts</string>
+  <string id="30004">Dans le dossier de la skin</string>
+  <string id="30005">Dans les répertoire séries (skin Transparency)</string>
+  <string id="30006"></string>
+</strings>
