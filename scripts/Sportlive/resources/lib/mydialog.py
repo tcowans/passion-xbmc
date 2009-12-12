@@ -11,10 +11,11 @@ import xbmcgui
 CWD = os.getcwd().rstrip( ";" )
 
 SPECIAL_PROFILE_DIR = xbmc.translatePath( "special://profile/" )
-
+GET_LOCALIZED_STRING = xbmc.Language( CWD ).getLocalizedString
 
 
 ACTION_PREVIOUS_MENU = 10
+
 
 
 
@@ -25,15 +26,17 @@ class MainGui( xbmcgui.WindowXMLDialog ):
         self.tempfile = os.path.join( os.getcwd() , "resources" , "sportsfr.temp" )
         self.filterfile = os.path.join( os.getcwd() , "resources" , "filter" )
         self.matchlist = eval( file( self.tempfile , "r" ).read() )
+        
  
     def onInit(self):
-      
+      self.title = self.getControl(210)
+      self.title.setLabel( GET_LOCALIZED_STRING( 32000 ) )
       #On identifie la liste par son id
       self.xml_list = self.getControl(200)
       
       #Création du dictionnaire
       self.liste_equipe = self.matchlist
-      if self.liste_equipe == []:self.liste_equipe = [ {'sport': 'no live match available', 'A_name': '', 'B_name': ''} ]
+      if self.liste_equipe == []:self.liste_equipe = [ {'sport': GET_LOCALIZED_STRING( 32100 ), 'A_name': '', 'B_name': ''} ]
       for equipe in self.liste_equipe :
           equipe['selection'] = 'false'
       self.listEquipe(self.liste_equipe)
@@ -43,6 +46,8 @@ class MainGui( xbmcgui.WindowXMLDialog ):
         
         
     ######PLACE TES DEF ICI
+
+    
       
     def listEquipe(self, equipes):
       self.xml_list.reset()  
