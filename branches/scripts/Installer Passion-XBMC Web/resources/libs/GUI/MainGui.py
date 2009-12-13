@@ -21,7 +21,7 @@ from XbmcZoneBrowser import XbmcZoneBrowser
 from utilities import *
 
 from info_item import ItemInfosManager
-from INSTALLEUR import ftpDownloadCtrl, directorySpy, userDataXML
+#from INSTALLEUR import ftpDownloadCtrl, directorySpy, userDataXML
 
 #module logger
 try:
