@@ -55,6 +55,12 @@ class XbmcZoneBrowser(Browser):
         #self.racineDisplayList  = [ Item.TYPE_SCRIPT, Item.TYPE_PLUGIN ]
         self.racineDisplayList  = [ Item.TYPE_SCRIPT_CAT, Item.TYPE_PLUGIN ]
 
+    def reset( self ):
+        """
+        Reset the browser (back to start page)
+        """
+        self.curList = []  
+
     def _mapType_Server2Local( self, serverType ):
         """
         Convert type string used on the server by local type

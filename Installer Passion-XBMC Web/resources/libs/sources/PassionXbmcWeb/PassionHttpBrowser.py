@@ -70,6 +70,13 @@ class PassionHttpBrowser(Browser):
         self.baseURLPreviewPicture = CONF.getBaseURLPreviewPicture()
         del CONF
 
+    def reset( self ):
+        """
+        Reset the browser (back to start page)
+        """
+        self.curList       = []  
+        self.currentItemId = 0
+
     def nicequery( self, query ,dico ):
         """
         Replace in a query variable starting by $ with corresponding value in a dictionary
@@ -343,8 +350,11 @@ class PassionHttpBrowser(Browser):
         """
         Reload and returns the current list
         """
-        # Get current categorie id 
-        catId = self.curList[0]['parent']
+        catId = 0
+        if ( len(self.curList) > 0 ):
+            # Not the 1st load
+            # Get current categorie id 
+            catId = self.curList[0]['parent']
         return self.getNextList(catId)
     
     def getContextMenu( self ):
@@ -491,8 +501,10 @@ class PassionHttpBrowser(Browser):
             if ( ( len(self.curList)> 0 ) and ( self.curList[index]['type'] == 'FIC' ) ):
                 # Convert index to id
                 itemId      = self.curList[index]['id']
+                name        = self.curList[index]['name']
                 catId       = self.curList[index]['parent']
                 externalURL = self.curList[index]['fileexternurl'].encode('utf8')
+                type = self.curList[index]['xbmc_type']
 
                 # Get file size
                 itemInfos = self.getInfo(index)
@@ -500,17 +512,17 @@ class PassionHttpBrowser(Browser):
                 
                 print itemInfos
 
+                print "getInstaller - name" 
+                print name
                 print "getInstaller - externalURL" 
                 print externalURL
                 print "getInstaller - filesize"
                 print filesize
-            
-                #title, type = self.getCategoryInfo( catId )
-                type = self.curList[index]['xbmc_type']
-                
+
                 # Create the right type of Installer Object
                 #itemInstaller = PassionHttpItemInstaller.PassionHTTPInstaller( itemId, type, installPath, filesize, externalURL )
-                itemInstaller = PassionHttpItemInstaller.PassionHTTPInstaller( itemId, type, filesize, externalURL )
+                #itemInstaller = PassionHttpItemInstaller.PassionHTTPInstaller( itemId, type, filesize, externalURL )
+                itemInstaller = PassionHttpItemInstaller.PassionHTTPInstaller( name, itemId, type, filesize, externalURL )
             else:
                 print "getInstaller: error impossible to install a category, it has to be an item "
 

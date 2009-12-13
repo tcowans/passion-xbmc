@@ -13,6 +13,9 @@ try:
 except:
     import script_log as logger
 
+# Module custom
+import Item
+
 
 class GDDFTP( ftplib.FTP ):
     """
@@ -176,7 +179,8 @@ class FtpDownloadCtrl:
             isDownloaded = os.path.exists( localAbsDirPath )
         return isDownloaded, localAbsDirPath
 
-    def download( self, pathsrc, rootdirsrc, typeIndex, progressbar_cb=None, dialogProgressWin=None ):
+    #def download( self, pathsrc, rootdirsrc, typeIndex, progressbar_cb=None, dialogProgressWin=None ):
+    def download( self, pathsrc, type, progressbar_cb=None, dialogProgressWin=None ):
         """
         Telecharge les elements a un chemin specifie ( repertoires, sous repertoires et fichiers )
         a dans un repertorie local dependant du type de telechargement ( theme, scraper, script ... )
@@ -188,10 +192,13 @@ class FtpDownloadCtrl:
             - ( 1 )  pour telechargement OK
         """
 
+        typeIndex = Item.get_type_index(type)
         self.curLocalDirRoot = self.localdirList[ typeIndex ]
-        self.curRemoteDirRoot = rootdirsrc
+        #self.curRemoteDirRoot = rootdirsrc
+        self.curRemoteDirRoot = self.remotedirList[ typeIndex ]
 
-        if typeIndex == "Themes":
+        #if typeIndex == "Themes":
+        if typeIndex == Item.TYPE_SKIN:
             isSingleFile = False
         else:
             isSingleFile = True
@@ -389,9 +396,9 @@ class FtpDownloadCtrl:
         #return self.ftp.voidresp()
         return self.ftp.Command( self.ftp.voidresp )
 
-    def downloadImage( self, cmd, callback, blocksize=8192, rest=None ):
-        """
-        """
+#    def downloadImage( self, cmd, callback, blocksize=8192, rest=None ):
+#        """
+#        """
 #        abort = False
 #        #self.ftp.voidcmd( 'TYPE I' )
 #        self.ftp.Command( self.ftp.voidcmd, 'TYPE I' )
@@ -416,6 +423,39 @@ class FtpDownloadCtrl:
 #        #return self.ftp.voidresp()
 #        return self.ftp.Command( self.ftp.voidresp )
         pass
+    def downloadImage( self, source, dest ):
+        """
+        Download picture from the server, save it, create the thumbnail and return path of it
+        """
+        print "_downloadImage %s"%source
+        result = False
+        try:
+        
+            print "source"
+            print source
+
+            #ftp = ftplib.FTP( self.host, self.user, self.password )
+            #self.passionFTPCtrl.openConnection()
+            localFile = open( dest, "wb" )
+            try:
+                #ftp.retrbinary( 'RETR ' + source, localFile.write )
+                self.ftp.Command( self.ftp.retrbinary, 'RETR ' + source, localFile.write )
+                result = True
+                #self.passionFTPCtrl.retrbinary( self, 'RETR ' + filetodlUrl, callback, blocksize=8192, rest=None )
+            except:
+                #import traceback; traceback.print_exc()
+                logger.LOG( logger.LOG_DEBUG, "downloadImage: Exception - Impossible to download picture: %s", source )
+                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            localFile.close()
+            #ftp.quit()
+        except Exception, e:
+            print "Exception during downloadImage"
+            print e
+            print sys.exc_info()
+            logger.LOG( logger.LOG_DEBUG, "downloadImage: Exception - Impossible to download the picture: %s", source )
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            traceback.print_exc()
+        return result
 
 
 class FtpCallback( object ):
