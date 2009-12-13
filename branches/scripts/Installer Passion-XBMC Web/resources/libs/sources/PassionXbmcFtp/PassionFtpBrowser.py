@@ -27,6 +27,7 @@ import ItemInstaller
 from info_item import ItemInfosManager
 from PassionFtpmanager import FtpDownloadCtrl
 import ftplib
+import PassionFtpItemInstaller
 
 
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
@@ -98,6 +99,13 @@ class PassionFtpBrowser(Browser):
         self.itemInfosManager = ItemInfosManager( mainwin=self )
         self.infoswarehouse = self.itemInfosManager.get_info_warehouse()
         
+
+    def reset( self ):
+        """
+        Reset the browser (back to start page)
+        """
+        self.curList = []  
+        #self.index   = ""
 
     def _createRootList(self):
         """
@@ -209,20 +217,25 @@ class PassionFtpBrowser(Browser):
             thumbnail, localFilePath = set_cache_thumb_name( picname )
             print thumbnail
             print localFilePath
-
-            ftp = ftplib.FTP( self.host, self.user, self.password )
-            #self.passionFTPCtrl.openConnection()
-            localFile = open( localFilePath, "wb" )
-            try:
-                ftp.retrbinary( 'RETR ' + filetodlUrl, localFile.write )
-                #self.passionFTPCtrl.retrbinary( self, 'RETR ' + filetodlUrl, callback, blocksize=8192, rest=None )
-            except:
-                #import traceback; traceback.print_exc()
-                logger.LOG( logger.LOG_DEBUG, "_downloaddossier: Exception - Impossible de telecharger le fichier: %s", remoteFilePath )
-                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            
+            # Retrieve image
+            if not self.passionFTPCtrl.downloadImage( filetodlUrl, localFilePath):
+                print "ERROR while retrieving image via FTP"
                 thumbnail, localFilePath = "", ""
-            localFile.close()
-            ftp.quit()
+
+#            ftp = ftplib.FTP( self.host, self.user, self.password )
+#            #self.passionFTPCtrl.openConnection()
+#            localFile = open( localFilePath, "wb" )
+#            try:
+#                ftp.retrbinary( 'RETR ' + filetodlUrl, localFile.write )
+#                #self.passionFTPCtrl.retrbinary( self, 'RETR ' + filetodlUrl, callback, blocksize=8192, rest=None )
+#            except:
+#                #import traceback; traceback.print_exc()
+#                logger.LOG( logger.LOG_DEBUG, "_downloaddossier: Exception - Impossible de telecharger le fichier: %s", remoteFilePath )
+#                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+#                thumbnail, localFilePath = "", ""
+#            localFile.close()
+#            ftp.quit()
 
             #self.passionFTPCtrl.downloadImage(pathsrc, isSingleFile=True)
             
@@ -375,210 +388,6 @@ class PassionFtpBrowser(Browser):
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
             traceback.print_exc()
-
-
-
-
-
-#        if not xbmc.getCondVisibility( "Window.IsActive(progressdialog)" ):
-#            DIALOG_PROGRESS.create( _( 0 ), _( 104 ), _( 110 ) )
-#        # On verifie self.type qui correspond au type de liste que l'on veut afficher
-#        if ( self.type == "racine" ):
-#            #liste virtuelle des sections
-#            #del self.curDirList[ : ] # on vide la liste
-#            self.curDirList = self.racineDisplayList
-#
-#        elif ( self.type == "Plugins" ):
-#            #liste virtuelle des sections
-#            self.curDirList = self.pluginDisplayList
-#        #elif ( self.type == "Plugins Musique" ) or ( self.type == "Plugins Images" ) or ( self.type == "Plugins Programmes" ) or ( self.type == "Plugins Videos" ):
-#        elif "Plugins " in self.type:
-#            # Arret du theard de chargement des images
-#            try: self.infoswarehouse.cancel_update_Images()
-#            except: pass
-#
-#            self.curDirList = self.passionFTPCtrl.getDirList( self.remotedirList[ self.pluginDisplayList[ self.index ] ] )
-#        else:
-#            #liste virtuelle des sections
-#            #del self.curDirList[ : ] # on vide la liste
-#
-#            # Arret du theard de chargement des images
-#            try: self.infoswarehouse.cancel_update_Images()
-#            except: pass
-#
-#            #liste physique d'une section sur le ftp
-#            self.curDirList = self.passionFTPCtrl.getDirList( self.remotedirList[ self.index ] )
-#            
-#
-#        #xbmcgui.lock()
-#
-#        # Clear all ListItems in this control list
-#        if hasattr( self, 'clearProperties' ):
-#            self.clearProperties()
-#        self.clearList()
-#        self.listitems = []
-#
-#        # Calcul du nombre d'elements de la liste
-#        itemnumber = len( self.curDirList )
-#
-#        # On utilise la fonction range pour faire l'iteration sur index
-#        for j in range( itemnumber ):
-#            imagePath = ""
-#            if ( self.type == "racine" ):
-#                # Nom de la section
-#                sectionName = self.downloadTypeList[ self.racineDisplayList[ j ] ] # On utilise le filtre
-#                # Met a jour le titre:
-#                self.setProperty( "Category", _( 10 ) )
-#
-#                # Affichage de la liste des sections
-#                # -> On compare avec la liste affichee dans l'interface
-#                if sectionName == self.downloadTypeList[ 0 ]:
-#                    # Theme
-#                    imagePath = "IPX-defaultSkin.png"
-#                    sectionLocTitle = _( 11 )
-#                elif sectionName == self.downloadTypeList[ 1 ]:
-#                    # Scraper
-#                    imagePath = "IPX-defaultScraper.png"
-#                    sectionLocTitle = _( 12 )
-#                elif sectionName == self.downloadTypeList[ 2 ]:
-#                    # Script
-#                    imagePath = "IPX-defaultScript_Plugin.png"
-#                    sectionLocTitle = _( 13 )
-#                elif sectionName == self.downloadTypeList[ 3 ]:
-#                    # Plugin
-#                    imagePath = "IPX-defaultScript_Plugin.png"
-#                    sectionLocTitle = _( 14 )
-#
-#                displayListItem = xbmcgui.ListItem( sectionLocTitle, "", iconImage=imagePath, thumbnailImage=imagePath )
-#                displayListItem.setProperty( "title", sectionLocTitle )
-#                displayListItem.setProperty( "description", " " )
-#                displayListItem.setProperty( "Downloaded", "" )
-#                self.addItem( displayListItem )
-#
-#            elif ( self.type == "Plugins" ):
-#                # Nom de la section
-#                sectionName = self.downloadTypeList[ self.pluginDisplayList[ j ] ] # On utilise le filtre
-#                # Met a jour le titre:
-#                self.setProperty( "Category", _( 14 ) )
-#
-#                if sectionName == self.downloadTypeList[ 4 ]:
-#                    # Music
-#                    imagePath = "IPX-defaultPluginMusic.png"
-#                    sectionLocTitle = _( 15 )
-#                elif sectionName == self.downloadTypeList[ 5 ]:
-#                    # Pictures
-#                    imagePath = "IPX-defaultPluginPicture.png"
-#                    sectionLocTitle = _( 16 )
-#                elif sectionName == self.downloadTypeList[ 6 ]:
-#                    # Programs
-#                    imagePath = "IPX-defaultPluginProgram.png"
-#                    sectionLocTitle = _( 17 )
-#                elif sectionName == self.downloadTypeList[ 7 ]:
-#                    # Video
-#                    imagePath = "IPX-defaultPluginVideo.png"
-#                    sectionLocTitle = _( 18 )
-#
-#                displayListItem = xbmcgui.ListItem( sectionLocTitle, "", iconImage=imagePath, thumbnailImage=imagePath )
-#                displayListItem.setProperty( "title", sectionLocTitle )
-#                displayListItem.setProperty( "description", " " )
-#                displayListItem.setProperty( "Downloaded", "" )
-#                self.addItem( displayListItem )
-#
-#            elif "Plugins " in self.type:
-#                # Element de la liste
-#                ItemListPath = self.curDirList[ j ]
-#
-#                # on a tjrs besoin de connaitre la taille du chemin de base pour le soustraire/retirer du chemin global plus tard
-#                lenindex = len( self.remotedirList[ self.pluginDisplayList[ self.index ] ] )
-#
-#                # Met a jour le titre et les icones:
-#                if self.type == self.downloadTypeList[ 4 ]:
-#                    # Music
-#                    self.setProperty( "Category", _( 15 ) )
-#                    imagePath = "IPX-defaultPluginMusic.png"
-#                elif self.type == self.downloadTypeList[ 5 ]:
-#                    # Pictures
-#                    self.setProperty( "Category", _( 16 ) )
-#                    imagePath = "IPX-defaultPluginPicture.png"
-#                elif self.type == self.downloadTypeList[ 6 ]:
-#                    # Programs
-#                    self.setProperty( "Category", _( 17 ) )
-#                    imagePath = "IPX-defaultPluginProgram.png"
-#                elif self.type == self.downloadTypeList[ 7 ]:
-#                    # Video
-#                    self.setProperty( "Category", _( 18 ) )
-#                    imagePath = "IPX-defaultPluginVideo.png"
-#
-#                # nettoyage du nom: replace les souligner pas un espace et enleve l'extension
-#                try:
-#                    item2download = ItemListPath[ lenindex: ].replace( "_", " " )
-#                    if self.settings.get( "hide_extention", True ):
-#                        item2download = os.path.splitext( item2download )[ 0 ]
-#                except:
-#                    item2download = ItemListPath[ lenindex: ]
-#                DIALOG_PROGRESS.update( -1, _( 103 ), item2download, _( 110 ) )
-#
-#                if self.downloaded_property.__contains__( md5.new( item2download ).hexdigest() ):
-#                    already_downloaded = "true"
-#                else:
-#                    already_downloaded = ""
-#
-#                displayListItem = xbmcgui.ListItem( item2download, "", iconImage=imagePath, thumbnailImage=imagePath )
-#                displayListItem.setProperty( "Downloaded", already_downloaded )
-#                self.set_item_infos( displayListItem, ItemListPath )
-#                self.addItem( displayListItem )
-#                DIALOG_PROGRESS.update( -1, _( 103 ), item2download, _( 110 ) )
-#
-#            else:
-#                # Element de la liste
-#                ItemListPath = self.curDirList[ j ]
-#
-#                #affichage de l'interieur d'une section
-#                #self.numindex = self.index
-#                lenindex = len( self.remotedirList[ self.index ] ) # on a tjrs besoin de connaitre la taille du chemin de base pour le soustraire/retirer du chemin global plus tard
-#
-#                # Met a jour le titre et les icones:
-#                if self.type == self.downloadTypeList[ 0 ]: #Themes
-#                    self.setProperty( "Category", _( 11 ) )
-#                    imagePath = "IPX-defaultSkin.png"
-#                elif self.type == self.downloadTypeList[ 1 ]: #Scrapers
-#                    self.setProperty( "Category", _( 12 ) )
-#                    imagePath = "IPX-defaultScraper.png"
-#                elif self.type == self.downloadTypeList[ 2 ]: #Scripts
-#                    self.setProperty( "Category", _( 13 ) )
-#                    imagePath = "IPX-defaultScript_Plugin.png"
-#
-#                # nettoyage du nom: replace les souligner pas un espace et enleve l'extension
-#                try:
-#                    item2download = ItemListPath[ lenindex: ].replace( "_", " " )
-#                    if self.settings.get( "hide_extention", True ):
-#                        item2download = os.path.splitext( item2download )[ 0 ]
-#                except:
-#                    item2download = ItemListPath[ lenindex: ]
-#                DIALOG_PROGRESS.update( -1, _( 103 ), item2download, _( 110 ) )
-#
-#                if self.downloaded_property.__contains__( md5.new( item2download ).hexdigest() ):
-#                    already_downloaded = "true"
-#                else:
-#                    already_downloaded = ""
-#
-#                displayListItem = xbmcgui.ListItem( item2download, "", iconImage=imagePath, thumbnailImage=imagePath )
-#                displayListItem.setProperty( "Downloaded", already_downloaded )
-#                self.set_item_infos( displayListItem, ItemListPath )
-#                self.addItem( displayListItem )
-#                DIALOG_PROGRESS.update( -1, _( 103 ), item2download, _( 110 ) )
-#
-#            # utiliser pour remettre la liste courante a jour lorsqu'on reviens sur cette fenetre depuis le forum ou le manager
-#            self.listitems.append( displayListItem )
-#        self.current_cat = unicode( xbmc.getInfoLabel( 'Container.Property(Category)' ), 'utf-8')
-#
-#        if ( self.type != "racine" ) and ( self.type != "Plugins" ):
-#            # Mise a jour des images
-#            self.set_list_images()
-#        #xbmcgui.unlock()
-#
-#        DIALOG_PROGRESS.close()
-        
         
         
     def isCat( self, index ):
@@ -601,5 +410,40 @@ class PassionFtpBrowser(Browser):
         except: print "PassionFtpBrowser: error on close (cancel image)"
         
         
+    def getInstaller( self, index ):
+        """
+        Returns an ItemInstaller instance
+        """
+        itemInstaller = None
+        try:            
+            if ( ( len(self.curList)> 0 ) and ( self.curList[index]['type'] == 'FIC' ) ):
+                if self.curList[index]['xbmc_type'] == Item.TYPE_SKIN:
+                    # Use installer for Skin (file per file download)
+                    print "Installing skin case"
+                    #TODO
+                else:
+                
+                    # Convert index to id
+                    name        = self.curList[index]['name']
+                    downloadurl = self.curList[index]['downloadurl']
+                    type        = self.curList[index]['xbmc_type']
+                    print "getInstaller - name" 
+                    print name
+                    print "getInstaller - downloadurl" 
+                    print downloadurl
+    
+                    # Create the right type of Installer Object
+                    itemInstaller = PassionFtpItemInstaller.PassionFTPInstaller( name, type, downloadurl, self.passionFTPCtrl )
+            else:
+                print "getInstaller: error impossible to install a category, it has to be an item "
+
+        except Exception, e:
+            print "Exception during getInstaller of Passion XBMC FTP Browser"
+            print e
+            print sys.exc_info()
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            traceback.print_exc()   
+                 
+        return itemInstaller
     
     

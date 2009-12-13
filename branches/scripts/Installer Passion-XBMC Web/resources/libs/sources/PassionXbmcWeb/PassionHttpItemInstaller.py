@@ -41,11 +41,14 @@ class PassionHTTPInstaller(ArchItemInstaller):
     """
 
     #def __init__( self , itemId, type, installPath, filesize, externalURL=None ):
-    def __init__( self , itemId, type, filesize, externalURL=None ):
-        ArchItemInstaller.__init__( self, itemId, type, filesize )
+    #def __init__( self , itemId, type, filesize, externalURL=None ):
+    def __init__( self , name, itemId, type, filesize, externalURL=None ):
+        ArchItemInstaller.__init__( self, name, type )
         
         #get base url for download
-        self.baseurl = CONF.getBaseURLDownloadFile()
+        self.itemId   = itemId       # Id of the server item 
+        self.filesize = filesize     # Size of the file to download
+        self.baseurl  = CONF.getBaseURLDownloadFile()
         
         #TODO: support progress bar display
         self.externalURL         = externalURL # External URL for download (hosted on another server)

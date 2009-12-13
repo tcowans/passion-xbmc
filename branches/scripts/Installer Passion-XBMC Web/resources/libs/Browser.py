@@ -52,6 +52,12 @@ class Browser:
         
         self.stopUpdateImageThread = False # Flag indiquant si on doit stopper ou non le thread getImagesQueue_thread
         
+    def reset( self ):
+        """
+        Reset the browser (back to start page)
+        """
+        pass
+    
     def close( self ):
         """
         Close browser: i.e close connection, free memory ...

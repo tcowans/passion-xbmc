@@ -40,12 +40,14 @@ class ItemInstaller:
     """
     
     #def __init__( self , itemId, type, installPath, filesize ):
-    def __init__( self , itemId, type, filesize ):
-        self.itemId          = itemId       # Id of the server item 
-        self.type            = type         # Type of the item
+    #def __init__( self , itemId, type, filesize ):
+    def __init__( self , name, type ):
+        #self.itemId          = itemId       # Id of the server item 
+        self.name            = name         # Name of teh item
+        self.type            = type         # XBMC Type of the item
         #self.typeInstallPath = installPath  # Install Path for this type of item
         self.typeInstallPath = Item.get_install_path( type )  # Install Path for this type of item
-        self.filesize        = filesize     # Size of the file to download
+        #self.filesize        = filesize     # Size of the file to download
         
         self.configManager = CONF.configCtrl()
         if not self.configManager.is_conf_valid: raise
@@ -79,8 +81,10 @@ class ArchItemInstaller(ItemInstaller):
     Installer from an archive
     """
 
-    def __init__( self , itemId, type, filesize ):
-        ItemInstaller.__init__( self, itemId, type, filesize )
+    #def __init__( self , itemId, type, filesize ):
+    def __init__( self , name, type ):
+        #ItemInstaller.__init__( self, itemId, type, filesize )
+        ItemInstaller.__init__( self, name, type )
 
         #TODO: support progress bar display
         self.displayProgBar      = True 
@@ -101,7 +105,7 @@ class ArchItemInstaller(ItemInstaller):
         # Check if the archive exists
         if os.path.exists( self.downloadArchivePath ):
             if progressBar != None:
-                progressBar.update( percent, "Extraction:", ( self.baseurl + str(self.itemId) ) )
+                progressBar.update( percent, "Extraction:", ( self.name ) )
             if self.downloadArchivePath.endswith( 'zip' ) or self.downloadArchivePath.endswith( 'rar' ):
                 import extractor
                 process_error = False
@@ -144,7 +148,7 @@ class ArchItemInstaller(ItemInstaller):
                 #print self.extractedDirPath
             percent = 100
             if progressBar != None:
-                progressBar.update( percent, "Fin Extraction", ( self.baseurl + str(self.itemId) ) )
+                progressBar.update( percent, "Fin Extraction", ( self.name ) )
         else:
             print "extractItem - Archive does not exist - extraction impossible"
             status = "ERROR"

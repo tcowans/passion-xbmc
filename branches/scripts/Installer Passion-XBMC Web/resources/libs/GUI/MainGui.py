@@ -67,6 +67,9 @@ class Source:
         self.instanceName = instanceName  # Browser instance name
         self.created      = created       # flag set to True when a Browser instance has been created otherwise set to False
 
+    def __repr__( self ):
+        return "Source ( sourceName: %s, className: %s, instanceName: %s, created: %s )" % ( self.sourceName, self.className, self.instanceName, self.created )
+
 class Context:
     """
     Context class, allows to retrieve browsers
@@ -92,22 +95,28 @@ class Context:
             traceback.print_exc()
             
 
-    def selectSource(self, sourceName):
+    def selectSource( self, sourceName ):
         """
         Set a source as the current one
         """
         #TODO use string as param
         self.curSource = self.listOfSources[sourceName]
         
-    def getBrowser(self):
+    def getBrowser( self ):
         """
-        Returns the Browser instance for a source
+        Returns Browser instance for the current source
         """
         if self.curSource.created == False:
             # Create Browser instance for the 1st time
             self.createBrowser( self.curSource )
         return self.curSource.instanceName
 
+    def getSourceName( self ):
+        """
+        Returns current source's name
+        """
+        return self.curSource.sourceName
+    
     def addSource(self, sourceItem):
         """
         Adds a new source
@@ -142,7 +151,16 @@ class Context:
         print "Context: freeing sources"
         for srcName in self.listOfSrCName:
             print "freing %s ..."%(srcName)
-            self.listOfSources[srcName].instanceName.close()
+            try:
+                print self.listOfSources[srcName]
+                if self.listOfSources[srcName].created:
+                    self.listOfSources[srcName].instanceName.close()
+            except Exception, e:
+                print "Exception during freeSources in Context"
+                print e
+                print sys.exc_info()
+                traceback.print_exc()
+                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
 
 class MainWindow( xbmcgui.WindowXML ):
@@ -230,7 +248,8 @@ class MainWindow( xbmcgui.WindowXML ):
                 DIALOG_PROGRESS.update( -1, _( 104 ), _( 110 ) )
                 # Loading context
                 self.contextSrc = Context()
-                self.contextSrc.selectSource("XBMC Zone")
+                #self.contextSrc.selectSource("XBMC Zone")
+                self.contextSrc.selectSource("Passion XBMC FTP")
                 #self.browser = self.contextSrc.getBrowser()
 
                 self.set_list_container_150()
@@ -254,7 +273,7 @@ class MainWindow( xbmcgui.WindowXML ):
             self.setProperty( "Category", _( 10 ) )
             xbmc.executebuiltin( "Container.SetViewMode(%i)" % self.settings.get( "main_view_mode", self.CONTROL_MAIN_LIST_START ) )
 
-            self.setProperty( "DlSource", "Passion XBMC Web" )
+            self.setProperty( "DlSource", self.contextSrc.getSourceName() )
 
 
             # Close the Loading Window
@@ -470,6 +489,7 @@ class MainWindow( xbmcgui.WindowXML ):
         try:
             if action == ACTION_PREVIOUS_MENU:
                 # Sortie du script
+                print "exiting script"
                 self.onExit()
 
             elif action == ACTION_PARENT_DIR:
@@ -609,12 +629,17 @@ class MainWindow( xbmcgui.WindowXML ):
             elif controlID == self.CONTROL_SOURCE_LIST:
 #                index = self.getControl( self.CONTROL_SOURCE_LIST ).getCurrentListPosition()
 #                sourceName = self.listOfSourceName[index]
+                previousBrowser = self.contextSrc.getBrowser()
                 sourceName = self.getControl( self.CONTROL_SOURCE_LIST ).getSelectedItem().getLabel()
                 self.contextSrc.selectSource(sourceName)
                 #self.browser = self.contextSrc.getBrowser()
                 print "Updating displayed list on NEW SOURCE: %s"%sourceName
                 self.updateData_Next()
                 self.updateList()
+                self.setProperty( "DlSource", self.contextSrc.getSourceName() )
+                
+                # Reset previosu Browser for next time
+                previousBrowser.reset() 
                 
             elif controlID == self.CONTROL_OPTIONS_BUTTON:
                 self._show_settings()
@@ -633,7 +658,8 @@ class MainWindow( xbmcgui.WindowXML ):
                 self._show_direct_infos()
 
             elif controlID == self.CONTROL_EXIT_BUTTON:
-                self._close_script()
+                #self._close_script()
+                self.onExit()
 
             else:
                 pass
