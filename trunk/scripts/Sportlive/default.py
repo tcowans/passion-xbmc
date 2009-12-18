@@ -7,8 +7,8 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/"
 __credits__      = "Team XBMC passion, http://passion-xbmc.org/developpement-python/%28script%29-sporlive-display/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "11-12-2009"
-__version__      = "1.1.0"
+__date__         = "18-12-2009"
+__version__      = "1.1.1"
 __svn_revision__  = "$Revision$".replace( "Revision", "" ).strip( "$: " )
 __XBMC_Revision__ = "20000" #XBMC Babylon
 
@@ -27,6 +27,13 @@ flag_list = {}
 filterfile = os.path.join( os.getcwd() , "resources" , "filter" )
 
 import mydialog
+
+#coloration texte:
+def coloring( text , color , colorword ):
+    if color == "red": color="FFFF0000"
+    if color == "green": color="ffe2ff43"
+    colored_text = text.replace( colorword , "[COLOR=%s]%s[/COLOR]" % ( color , colorword ) )
+    return colored_text
 
 def get_html_source( url ):
     """ fetch the html source """
@@ -223,8 +230,8 @@ def print_all_stats(txt):
 
 def check_filter(update):
     user_filter = eval( file( filterfile , "r" ).read() )
-    print "update:%s" % update
-    print "filtre:%s" % user_filter
+    #print "update:%s" % update
+    #print "filtre:%s" % user_filter
     for line in user_filter:
         if line['sport'] == update['sport'] and line['A_name'] == update['A_name'].strip(" *") and line['B_name'] == update['B_name'].strip(" *") : return True
     return False
@@ -244,27 +251,33 @@ def watcher():
                 print "filtered: %s" % check_filter(update)
                 if update['diff'] and check_filter(update):
                     print "%s %s | %s  %s - %s  %s" % ( update['sport'] , update['country'] , update['A_name'] , update['A_score'] , update['B_score'] , update['B_name'] )
-                    if "A" in update:
-                        print "A"
-                        try:img = os.path.join ( img_path , update['sport'] , "%s.png" % update['A_name'] )
-                        except:
-                            print "no image for %s" % update['A_name']
-                    if "B" in update:
-                        print "B"
-                        try:img = os.path.join ( img_path , update['sport'] , "%s.png" % update['B_name'] )
-                        except:print "no image for %s" % update['B_name']
                     if "A" in update and "B" in update or update['sport'] == "tennis":
                         print "both scored or tennis"
                         try:img = os.path.join ( img_path , update['sport'] , "default.png" )
                         except:print "no image for %s" % update['B_name']
+                        update['B_name'] = coloring( update['B_name'] , "green" , update['B_name'] )
+                        update['A_name'] = coloring( update['A_name'] , "green" , update['A_name'] )
+                    elif "A" in update:
+                        print "A"
+                        try:img = os.path.join ( img_path , update['sport'] , "%s.png" % update['A_name'] )
+                        except: print "no image for %s" % update['A_name']
+                        update['A_name'] = coloring( update['A_name'] , "green" , update['A_name'] )
+                        update['B_name'] = coloring( update['B_name'] , "red" , update['B_name'] )
+                    elif "B" in update:
+                        print "B"
+                        try:img = os.path.join ( img_path , update['sport'] , "%s.png" % update['B_name'] )
+                        except:print "no image for %s" % update['B_name']
+                        update['B_name'] = coloring( update['B_name'] , "green" , update['B_name'] )
+                        update['A_name'] = coloring( update['A_name'] , "red" , update['A_name'] )
+                    
 
-                    lign2 = "%s %s - %s" % ( update['sport'] , update['country'] , update['part'] )
+                    lign2 = ("%s %s - %s" % ( update['sport'] , update['country'] , update['part'] )).strip( "- ")
                     lign1 = "%s %s - %s %s" % ( update['A_name'] , update['A_score'] , update['B_score'] , update['B_name'] )
                     xbmc.executebuiltin("XBMC.Notification(%s,%s,5000,%s)"%(lign1,lign2,img))
                     
                     time.sleep(5)
                          
-        time.sleep(15)
+        time.sleep(25)
 
 sportsfr = Sportsfr()        
 match_list = sportsfr.get_current_match()
