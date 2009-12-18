@@ -1,6 +1,5 @@
-# -- coding: cp1252 -*-
 ########################################
-#xbmcstuff downloader v1.3.2
+#xbmcstuff downloader v1.4.2
 #by ppic
 ########################################
 ##changelog:
@@ -26,6 +25,9 @@
 ##25/10/09: add cleararts download in tvshow folder option.
 ##05/12/09: add section iconimage
 ##11/12/09: add language support (for settings now)
+##16/12/09: v1.4 add accentuation support, now show the current tvthumb on listing
+##17/12/09: v1.4.1 add clearart and tvshow thumb on tvshow menu.
+##18/12/09: v1.4.2 add translation to plugin english _ french
             
 ########################################
 
@@ -36,13 +38,22 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/video/XbmcStuff downloader/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "05-12-2009"
-__version__      = "1.3.1"
+__date__         = "18-12-2009"
+__version__      = "1.4.2"
 __svn_revision__  = "$Revision$"
 __XBMC_Revision__ = "20000" #XBMC Babylon
 
 #import des librairies
-import urllib,urllib2,re,xbmcplugin,xbmcgui,sys,os,shutil
+import urllib
+import urllib2
+import re
+import xbmcplugin
+import xbmcgui
+import sys
+import os
+import shutil
+import unicodedata
+
 
 from traceback import print_exc
 
@@ -91,6 +102,15 @@ base_url= "http://www.xbmcstuff.com/scrapping.php?"
 icons_path= os.path.join( BASE_RESOURCE_PATH , "icons" )
 
 options= "id_scrapper=1&size=%s&mode=1" % (resolution)
+Language = xbmc.Language(os.getcwd())
+#print Language.getLocalizedString(30006)
+
+#coloration texte:
+def coloring( text , color , colorword ):
+    if color == "red": color="FFFF0000"
+    if color == "green": color="ffe2ff43"
+    colored_text = text.replace( colorword , "[COLOR=%s]%s[/COLOR]" % ( color , colorword ) )
+    return colored_text
 
 #fonction du plugin All Game by Frost
 from string import maketrans
@@ -152,7 +172,7 @@ class Tvshow:
             print "-%s-" % (url)
             
             if name =="Clearart":
-                if clearart_in_tv_folder: folder = repr( self.path ).strip( "u'\"" )
+                if clearart_in_tv_folder: folder = self.path.encode("utf8")
                 else: folder = clearart_path
                 print "folder: %s" % (folder)
                 try:
@@ -164,7 +184,7 @@ class Tvshow:
                 
             elif name == "TVthumbs":
                 filename = "folder.jpg"
-                folder = repr( self.path ).strip( "u'\"" )
+                folder = self.path.encode("utf8")
                 thumb = thumbnails.get_cached_video_thumb( self.path )
                 
             elif name[:6] == "season":
@@ -172,7 +192,7 @@ class Tvshow:
                     filename = "%s.tbn" % (name[:10])
                 else:
                     filename = "%s.tbn" % (name[:8])
-                folder = repr( self.path ).strip( "u'\"" )
+                folder = self.path.encode("utf8")
                 try:
                     if name[6:8] == "-a": thumb =  thumbnails.get_cached_season_thumb( "%s%s" % (self.path , xbmc.getLocalizedString(20366)) )
                     elif int(name[6:8]) == 0: thumb = thumbnails.get_cached_season_thumb( "%s%s" % (self.path, xbmc.getLocalizedString(20381)) )
@@ -232,7 +252,7 @@ class Tvshow:
         
     #génération menus images    
     def menu_list(self,type):
-        if type == "TVthumbs":
+        if translate_string(type) == translate_string(Language.getLocalizedString(30103)):
             selec = self.tvshowthumb.rsplit("|")
             for i in range(len(selec)-1):
                 if i == 0:
@@ -242,7 +262,7 @@ class Tvshow:
                 addDir(selec[i],"TVthumbs&&%s" %(self.tvid),3,selec[i].replace(" ", "%20"))
 
                     
-        elif type == "Clearart":
+        elif translate_string(type) == translate_string(Language.getLocalizedString(30101)):
             selec = self.clearart.rsplit("|")
       
             for i in range(len(selec)-1):
@@ -257,7 +277,7 @@ class Tvshow:
                     pass
 
         
-        elif type == "Seasonthumbs":
+        elif translate_string(type) == translate_string(Language.getLocalizedString(30102)):
             
             for season, imgurl in sorted(set(self.season.items())):                
                 selec = imgurl.rsplit("|")
@@ -384,12 +404,16 @@ def parser(data):
 def listing():
     conn = sqlite3.connect(db_path)
     c = conn.cursor()
-    c.execute('select c00,c12 from tvshow')
+    c.execute('select c00,c12,strPath from tvshowview')
     try:
         for import_base in c:
-            tvshow_list[import_base[1]] = import_base[0]    
-        for tvshow_id, tvshow_name in sorted(tvshow_list.items(), key=lambda item: item[1]):
-                addDir(tvshow_name,tvshow_id,1,"")
+            try: thumb = thumbnails.get_cached_video_thumb( import_base[2] )
+            except: thumb = ""
+            tvshow_list[import_base[1]] =  ( import_base[0] , thumb )
+            print repr( import_base[1] ).strip( "u'\"" )
+
+        for tvshow_id, tvshow_name_img in sorted(tvshow_list.items(), key=lambda item: item[1]):
+            addDir(tvshow_name_img[0],tvshow_id,1,tvshow_name_img[1])
         c.close()
     except:
         print "no tvdbid found in db"
@@ -465,9 +489,24 @@ elif mode==1:
     current_show = Tvshow(url)
     current_show.get_xml()
     parser(current_show)
-    if current_show.clearart != "no clearart": addDir('Clearart',url,2,os.path.join( icons_path , "clearart.png" ))
-    if current_show.season: addDir('Seasonthumbs',url,2,os.path.join( icons_path , "seasons.png" ))
-    if current_show.tvshowthumb != "no tvthumb": addDir('TVthumbs',url,2,os.path.join( icons_path , "thumbs.png" ))
+    if current_show.clearart != "no clearart":
+        if clearart_in_tv_folder:
+            folder = current_show.path.encode("utf8")
+            cl_name = "clearart.png"
+        else:
+            folder = clearart_path
+            cl_name = translate_string( current_show.name)
+        print os.path.join( folder , cl_name )
+        if os.path.isfile(os.path.join( folder , cl_name )): addDir(Language.getLocalizedString(30101),url,2, os.path.join( folder , cl_name ) )
+        else:addDir(Language.getLocalizedString(30101),url,2,os.path.join( icons_path , "clearart.png" ))
+
+    if current_show.season: addDir(Language.getLocalizedString(30102),url,2,os.path.join( icons_path , "seasons.png" ))
+
+    if current_show.tvshowthumb != "no tvthumb":
+        try: thumb = thumbnails.get_cached_video_thumb( current_show.path )
+        except: thumb = ""
+        if os.path.isfile(thumb): addDir(Language.getLocalizedString(30103),url,2,os.path.join( icons_path , thumb ))
+        else: addDir(Language.getLocalizedString(30103),url,2,os.path.join( icons_path , "thumbs.png" ))
     if current_show.collection:
         for i in current_show.collection: addDir("Collection: %s" % (i),url,2,os.path.join( icons_path , "collections.png" ))
     end_of_directory( True )
@@ -496,7 +535,13 @@ elif mode==3:
     print "--id: %s"%(id)
     print "--url: %s"%(url)
     current_show = Tvshow(id)
-    print "tvshowpath= %s" % (current_show.path)
+    #current_show.path=current_show.path.encode("utf8" )
+    
+    #namePath = unicode(current_show.path, "utf8")
+    #namePath = unicodedata.normalize("NFD", current_show.path).encode("ascii", "ignore" )
+    #namePath = namePath.replace(":", "")
+
+    print "tvshowpath= %s" % current_show.path.encode("utf8")
     
     end_of_directory( False )
     

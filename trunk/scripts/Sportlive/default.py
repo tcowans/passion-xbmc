@@ -8,7 +8,7 @@ __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/"
 __credits__      = "Team XBMC passion, http://passion-xbmc.org/developpement-python/%28script%29-sporlive-display/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
 __date__         = "18-12-2009"
-__version__      = "1.1.1"
+__version__      = "1.1.2"
 __svn_revision__  = "$Revision$".replace( "Revision", "" ).strip( "$: " )
 __XBMC_Revision__ = "20000" #XBMC Babylon
 
