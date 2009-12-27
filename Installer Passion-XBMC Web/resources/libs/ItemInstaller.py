@@ -226,16 +226,20 @@ class ArchItemInstaller(ItemInstaller):
         Install item (download + extract + copy)
         Needs to be called after extractItem
         """
-        print "Download and install case"
+        print "installItem: Download and install case"
         percent = 0
         result  = "OK" # result after install :[ OK | ERROR | ALREADYINSTALLED |CANCELED]       
         
         
-        print "Download via itemInstaller"
+        print "installItem: Download via itemInstaller"
         if self.status == "INIT":
             #TODO: support message callback in addition of pb callback
             #statusDownload = self.downloadItem( msgFunc=msgFunc, progressBar=progressBar )
-            statusDownload = self.downloadItem( progressBar=progressBar )
+            statusDownload, downloadArchivePath = self.downloadItem( progressBar=progressBar )
+            print "installItem: statusDownload and downloadArchivePath"
+            print statusDownload
+            print downloadArchivePath
+            print 
             if statusDownload == "OK":
                 if self.extractItem( msgFunc=msgFunc, progressBar=progressBar ) == "OK":
                     if not self.isAlreadyInstalled():

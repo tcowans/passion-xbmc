@@ -9,6 +9,7 @@ import traceback
 from pysqlite2 import dbapi2 as sqlite
 
 #Other module
+import xbmc
 
 # Module logger
 try:
@@ -48,12 +49,14 @@ class PassionFTPInstaller(ArchItemInstaller):
         Download an item form the server
         Returns the status of the download attemos : OK | ERROR
         """
-        percent = 0
+        percent      = 0
         totalpercent = 0
+        destination  = None
+        status       = "OK" # Status of download :[OK | ERROR | CANCELED]
         if progressBar != None:
             progressBar.update( percent, _( 122 ) % ( self.downloadurl ), _( 123 ) % totalpercent )
         try:            
-            logger.LOG( logger.LOG_DEBUG, "PassionFTPInstaller::downloadItem - itemId = %d"%self.itemId)
+            logger.LOG( logger.LOG_DEBUG, "PassionFTPInstaller::downloadItem - name = %s"%self.name)
             
 #            # Get download link
 #                               
@@ -66,20 +69,25 @@ class PassionFTPInstaller(ArchItemInstaller):
 
 
 
-            lenbasepath = len( self.remotedirList[ self.downloadTypeList.index( self.type ) ] )
-            downloadItem = source[ lenbasepath: ]
-            downloadStatus = self.ftpCtrl.download( source, self.type, progressbar_cb=_pbhook, dialogProgressWin = progressBar )
-        
+            #lenbasepath = len( self.remotedirList[ self.downloadTypeList.index( self.type ) ] )
+            #downloadItem = source[ lenbasepath: ]
+            #downloadStatus = self.ftpCtrl.download( os.path.basename(self.downloadurl), self.type, progressbar_cb=self._pbhook, dialogProgressWin = progressBar )
+            downloadStatus = self.ftpCtrl.download( self.downloadurl, self.type, progressbar_cb=self._pbhook, dialogProgressWin = progressBar )
+            
+            #TODO: this is a temp solution,downloadArchivePath should be returned by PassionFtpManager
+            self.downloadArchivePath = xbmc.translatePath( os.path.join( self.CACHEDIR, os.path.basename(self.downloadurl) ) )
         except Exception, e:
-            #print "Exception during downlaodItem"
-            #print e
-            #print sys.exc_info()
+            print "Exception during downlaodItem"
+            print e
+            print sys.exc_info()
+            traceback.print_exc()
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
             self.downloadArchivePath = None
+            status = "ERROR"
         if progressBar != None:
-            progressBar.update( percent, _( 122 ) % ( self.baseurl + str(self.itemId) ), _( 134 ) )
-        #return status, self.downloadArchivePath
-        return status
+            progressBar.update( percent, _( 122 ) % ( self.downloadurl ), _( 134 ) )
+        return status, self.downloadArchivePath
+        #return status
 
 
 

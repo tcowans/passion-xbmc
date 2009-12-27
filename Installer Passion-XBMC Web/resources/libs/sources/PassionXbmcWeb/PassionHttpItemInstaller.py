@@ -83,8 +83,8 @@ class PassionHTTPInstaller(ArchItemInstaller):
             self.downloadArchivePath = None
         if progressBar != None:
             progressBar.update( percent, _( 122 ) % ( self.baseurl + str(self.itemId) ), _( 134 ) )
-        #return status, self.downloadArchivePath
-        return status
+        return status, self.downloadArchivePath
+        #return status
 
 
 
@@ -150,7 +150,7 @@ class PassionHTTPInstaller(ArchItemInstaller):
                 req = urllib2.Request(url) # Note: downloading item with passion XBMC URL (for download count) even when there is an external URL
                 req.add_header('User-Agent','Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.3) Gecko/20070309 Firefox/2.0.0.3')
                 connection  = urllib2.urlopen(req)           # Open connection
-                print 'self.externalURL'
+                print '_downloadFile: self.externalURL'
                 print self.externalURL
                 if self.externalURL != 'None':
                     #TODO: cover length max of file name (otherwise crash xbmc at writing)
@@ -158,7 +158,7 @@ class PassionHTTPInstaller(ArchItemInstaller):
                 else:
                     try:
                         headers = connection.info()# Get Headers
-                        print "headers:"
+                        print "_downloadFile: headers:"
                         print headers
                         file_name   = headers['Content-Disposition'].split('"')[1]
                     except Exception, e:
@@ -169,7 +169,7 @@ class PassionHTTPInstaller(ArchItemInstaller):
                 
                 print "_downloadFile - file name : %s "%file_name
                 destination = os.path.join( destinationDir, file_name )
-                print 'destination'
+                print '_downloadFile: destination'
                 print destination
                 
                 # Check File Size
@@ -184,7 +184,7 @@ class PassionHTTPInstaller(ArchItemInstaller):
                 print "_downloadFile - file size : %d Octet(s)"%file_size
 
                 file = open(destination,'w+b')        # Get ready for writing file
-                print "File opened"
+                print "_downloadFile: File opened"
                 # Ask for display of progress bar
                 try:
                     if (progressBar != None):
@@ -197,11 +197,11 @@ class PassionHTTPInstaller(ArchItemInstaller):
                 ###########
                 # Download
                 ###########
-                print "Starting download"
+                print "_downloadFile: Starting download"
                 while 1:
                     if (progressBar != None):
                         if progressBar.iscanceled():
-                            print "Downloaded STOPPED by the user"
+                            print "_downloadFile: Downloaded STOPPED by the user"
                             break
                     try:
                         cur_block  = connection.read(block_size)
@@ -213,7 +213,7 @@ class PassionHTTPInstaller(ArchItemInstaller):
                     except Exception, e:        
                         print("_downloadFile - Exception during reading of the remote file and writing it locally")
                         print(str(e))
-                        print ("error during reading of the remote file and writing it locally: " + str(sys.exc_info()[0]))
+                        print ("_downloadFile: error during reading of the remote file and writing it locally: " + str(sys.exc_info()[0]))
                         traceback.print_exc()
                         #noErrorOK  = False
                         status = "ERROR"
@@ -250,9 +250,9 @@ class PassionHTTPInstaller(ArchItemInstaller):
                 connection.close()
         except Exception, e:
             status = "ERROR"
-            print("Exception while source retrieving")
+            print("_downloadFile: Exception while source retrieving")
             print(str(e))
-            print ("error while source retrieving: " + str(sys.exc_info()[0]))
+            print ("_downloadFile: error while source retrieving: " + str(sys.exc_info()[0]))
             traceback.print_exc()
             print("_downloadFile ENDED with ERROR")
 
@@ -264,44 +264,8 @@ class PassionHTTPInstaller(ArchItemInstaller):
 #            msg3    = ""
 
         print("_downloadFile ENDED")
-
-#        if status == "OK":
-#            # Prepare message to the UI
-#            msgType = "OK"
-#            msgTite = _( 137 )
-#            msg1    = file_name
-#            msg2    = _( 134 )
-#            msg3    = ""
-#        elif status == "CANCELED":
-#            # Prepare message to the UI
-#            msgType = "OK"
-#            msgTite = _ ( 124 )
-#            msg1    = file_name
-#            msg2    = _ ( 125 )
-#            msg3    = ""
-#        else:
-#            print "_downloadFile - An error has occured"
-#            destination = None
-#
-#            # Prepare message to the UI
-#            msgType = "Error"
-#            msgTite = _ ( 144 )
-#            msg1    = file_name
-#            msg2    = ""
-#            msg3    = ""
-                            
-#        # Close/Reset progress bar
-#        if (progressBar != None):
-#            progressBar.close()
-        
-#        # Send the message to the UI
-#        try:
-#            if (msgFunc != None):
-#                msgFunc(msgType, msgTite, msg1,msg2, msg3)
-#        except Exception, e:        
-#            print("_downloadFile - Exception calling UI callback for message")
-#            print(str(e))
-#            print msgFunc
+        print "_downloadFile: status of download"
+        print status
                 
         return status, destination
         
