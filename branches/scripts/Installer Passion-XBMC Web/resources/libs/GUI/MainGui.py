@@ -336,7 +336,7 @@ class MainWindow( xbmcgui.WindowXML ):
         import RSSParser
         try:
             title_color = repr( self.getControl( 101 ).getLabel() ).strip( "u'" )
-            text_color = repr( self.getControl( 101 ).getLabel2() ).strip( "u'" )
+            text_color  = repr( self.getControl( 101 ).getLabel2() ).strip( "u'" )
             #print repr( title_color ), repr( text_color )
             self.rss_feed = RSSParser.rssReader( self.rss_title, self.rssfeed, title_color, text_color ).GetRssInfo()[ 1 ]
         except:
@@ -422,6 +422,7 @@ class MainWindow( xbmcgui.WindowXML ):
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def _switch_media( self ):
+        #TODO: adpat implementation to multisources
         try:
             import DialogContextMenu
             buttons = { 1000: _( 11 ), 1001: _( 12 ), 1002: _( 13 ), 1003: _( 14 ),
@@ -538,6 +539,7 @@ class MainWindow( xbmcgui.WindowXML ):
             print "Download via itemInstaller"
             dp = xbmcgui.DialogProgress()
             dp.create(_( 137 ))
+            #status, destination = itemInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )
             status, destination = itemInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )
     
             dp.close()

@@ -4,8 +4,11 @@ FTP Manager: this module manager FTP connection, browsing, download ...
 # Modules general
 import os
 import sys
+import traceback
 
 import ftplib
+import xbmc
+import xbmcgui
 
 # Module logger
 try:
@@ -16,6 +19,8 @@ except:
 # Module custom
 import Item
 
+#FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
+_ = sys.modules[ "__main__" ].__language__
 
 class GDDFTP( ftplib.FTP ):
     """
@@ -324,6 +329,8 @@ class FtpDownloadCtrl:
         Fonction privee ( ne pouvant etre appelee que par la classe FtpDownloadCtrl elle meme )
         Telecharge un fichier sur le server FTP
         """
+        print "_downloadfichier - filesrc:"
+        print filesrc
         # Recupere la taille du fichier
         remoteFileSize = 1
         block_size = 4096
@@ -337,7 +344,11 @@ class FtpDownloadCtrl:
             if remoteFileSize <= 0:
                 # Dans le cas ou un fichier n'a pas une taille valide ou corrompue
                 remoteFileSize = 1
-        except:
+        except Exception, e:
+            print "Exception during _downloadfichier"
+            print e
+            print sys.exc_info()
+            traceback.print_exc()
             logger.LOG( logger.LOG_DEBUG, "_downloadfichier: Exception - Impossible de recuperer la taille du fichier: %s", filesrc )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
@@ -352,6 +363,8 @@ class FtpDownloadCtrl:
         localAbsFilePath = xbmc.translatePath( os.path.join( self.curLocalDirRoot, localRelFilePath ) )
         #localFileName = os.path.basename( localAbsFilePath )
 
+        print "_downloadfichier - localAbsFilePath:"
+        print localAbsFilePath
         localFile = open( localAbsFilePath, "wb" )
         try:
             # Creation de la fonction callback appele a chaque block_size telecharge
