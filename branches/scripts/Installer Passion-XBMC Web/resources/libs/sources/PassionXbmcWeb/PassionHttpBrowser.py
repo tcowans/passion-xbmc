@@ -34,6 +34,8 @@ _ = sys.modules[ "__main__" ].__language__
 LANGUAGE_IS_FRENCH = sys.modules[ "__main__" ].LANGUAGE_IS_FRENCH
 
 SPECIAL_SCRIPT_DATA = sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA
+DIR_CACHE = sys.modules[ "__main__" ].DIR_CACHE
+#CACHEDIR = os.path.join( ROOTDIR, "cache" )
     
 class PassionHttpBrowser(Browser):
     """
@@ -44,11 +46,20 @@ class PassionHttpBrowser(Browser):
         #self.db  = kwargs[ "database" ] # Database file
 
 
+        import CONF
+        #TODO: check if we still need those vars
+        self.baseURLDownloadFile   = CONF.getBaseURLDownloadFile()
+        self.baseURLPreviewPicture = CONF.getBaseURLPreviewPicture()
+        del CONF
+
         import DBManager
         print "Creating DBMgr"
         # Creating DB form CSV file from the server
-        self.db = os.path.join(SPECIAL_SCRIPT_DATA, 'Passion_XBMC_Installer.sqlite')  # Database file
-        csvFile = os.path.join(SPECIAL_SCRIPT_DATA, 'table.csv')
+        #self.db = os.path.join(SPECIAL_SCRIPT_DATA, 'Passion_XBMC_Installer.sqlite')  # Database file
+        #csvFile = os.path.join(SPECIAL_SCRIPT_DATA, 'table.csv')
+        self.db = os.path.join(DIR_CACHE, 'Passion_XBMC_Installer.sqlite')  # Database file
+        csvFile = os.path.join(DIR_CACHE, 'table.csv')
+        
         self.databaseMgr = DBManager.CsvDB( self.db, csvFile )
         self.databaseMgr.update_datas()
         self.conn, cursor = self.databaseMgr.getConnectionInfo() #TODO: move DBManager in the http browser (no interest to have it separated with current design)
@@ -64,11 +75,6 @@ class PassionHttpBrowser(Browser):
         # TODO: temporary here
 #        self.incat(0)
         
-        import CONF
-        #TODO: check if we still need those vars
-        self.baseURLDownloadFile   = CONF.getBaseURLDownloadFile()
-        self.baseURLPreviewPicture = CONF.getBaseURLPreviewPicture()
-        del CONF
 
     def reset( self ):
         """

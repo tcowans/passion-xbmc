@@ -52,14 +52,16 @@ sys.path.append( os.path.join( BASE_RESOURCE_PATH, "libs", "sources", "PassionXb
 sys.path.append( os.path.join( BASE_RESOURCE_PATH, "libs", "sources", "PassionXbmcFtp" ) )
 sys.path.append( os.path.join( BASE_RESOURCE_PATH, "libs", "sources", "XbmcZone" ) )
 
+#modules custom
+from specialpath import *
+import script_log as logger
+
+
 # recompile all modules, but script start slowly
 #from compileall import compile_dir
 #compile_dir( os.path.join( BASE_RESOURCE_PATH, "libs" ), force=True, quiet=True )
 
 
-#modules custom
-from specialpath import *
-import script_log as logger
 
 
 #frost: changer la langue par default pour l'anglais, car de cette maniere on ai pas obliger de rejouter le strings manquant dans les autres language
@@ -152,7 +154,6 @@ def RUN_UNIT_TEST():
     try:
         # INITIALISATION CHEMINS DE FICHIER LOCAUX
         print "Starting UNIT TESTS"
-        print SPECIAL_SCRIPT_DATA
         import CONF
         config = CONF.ReadConfig()
 
