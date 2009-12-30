@@ -118,20 +118,49 @@ class fileMgr:
 
         return dirList
 
+#    def renameItem( self, base_path, old_name, new_name):
+#        """
+#        Rename an item (file or directory)
+#        Return True if success, False otherwise
+#        """
+#        result = True
+#        try:
+#            os.rename( os.path.join(base_path, old_name), os.path.join(base_path, new_name) )
+#        except:
+#            result = False
+#            logger.LOG( logger.LOG_DEBUG, "renameItem: Exception renaming Item: %s", old_name )
+#            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+#        return result
+
     def renameItem( self, base_path, old_name, new_name):
         """
         Rename an item (file or directory)
         Return True if success, False otherwise
         """
+        print "renameItem"
+        print "renameItem - base_path"
+        print base_path
+        print "renameItem - old_name"
+        print old_name
+        print "renameItem - new_name"
+        print new_name
         result = True
         try:
-            os.rename( os.path.join(base_path, old_name), os.path.join(base_path, new_name) )
+            if base_path == None:
+                # old_name and new_name are path and not just filename
+                print "renameItem - base_path == None"
+                os.rename( old_name, new_name )                
+            else:
+                # old_name and new_name are just filename
+                # concatenating with base path
+                print "renameItem - base_path != None"
+                os.rename( os.path.join(base_path, old_name), os.path.join(base_path, new_name) )
         except:
             result = False
             logger.LOG( logger.LOG_DEBUG, "renameItem: Exception renaming Item: %s", old_name )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         return result
-
+    
     def deleteItem( self, item_path):
         """
         Delete an item (file or directory)
