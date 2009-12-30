@@ -12,6 +12,9 @@ from pysqlite2 import dbapi2 as sqlite
 import urllib
 import urllib2, httplib
 
+# XBMC
+import xbmc
+
 httplib.HTTPConnection.debuglevel = 1
 
 # Module logger
@@ -168,7 +171,7 @@ class PassionHTTPInstaller(ArchItemInstaller):
 
                 
                 print "_downloadFile - file name : %s "%file_name
-                destination = os.path.join( destinationDir, file_name )
+                destination = xbmc.translatePath( os.path.join( destinationDir, file_name ) )
                 print '_downloadFile: destination'
                 print destination
                 

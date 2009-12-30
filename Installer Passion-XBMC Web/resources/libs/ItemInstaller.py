@@ -24,6 +24,7 @@ except:
 #from utilities import *
 import CONF
 import Item
+from FileManager import fileMgr
 
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
 _ = sys.modules[ "__main__" ].__language__
@@ -52,8 +53,13 @@ class ItemInstaller:
         self.configManager = CONF.configCtrl()
         if not self.configManager.is_conf_valid: raise
         self.CACHEDIR = self.configManager.CACHEDIR
+        self.fileMgr = fileMgr()
         
-        
+        # NOTE: need to be set in a subclass before calling isAlreadyInstalled or deleteInstalledItem
+        self.scraperName     = None
+        self.scraperFileList = None # List of teh file for a scraper (xml, image ...)
+        self.destinationPath = None # Path of the installation directory (i.e script dir path, plugin dir path, skin dir path, scraper xml file path)
+
     def downloadItem( self, msgFunc=None,progressBar=None ):
         """
         Download an item form the server
@@ -64,9 +70,26 @@ class ItemInstaller:
     def isAlreadyInstalled( self ):
         """
         Check if extracted item is already installed
-        Needs to be called after extractItem
+        Needs to be called after extractItem (destinationPath has to be determined first)
+        ==> self.destinationPath need to be set (in a subclass) before calling this method
         """
-        pass
+        result = False
+        if self.type != Item.TYPE_SCRAPER:
+            if os.path.exists( self.destinationPath ):
+                result = True
+        else:
+            #Scraper
+            
+            if self.scraperName != None:
+            #or
+            #if len(self.scraperFileList) > 0:
+                # Check if scraper exist (only done on xml file)
+                if os.path.exists( os.path.join( self.destinationPath, self.scraperName + ".xml" ) ):
+                #if os.path.exists( os.path.join( self.destinationPath, os.path.splitext(self.scraperFileList[0])[0] + ".xml" ) ):
+                    result = True
+                
+        #TODO : Scraper already installed case
+        return result
 
     def installItem( self, msgFunc=None,progressBar=None ):
         """
@@ -74,6 +97,84 @@ class ItemInstaller:
         Needs to be called after extractItem
         """
         pass
+
+
+    def getItemInstallName( self ):
+        """
+        Return the real name of the item (install name) not the name for description
+        """
+        
+    def _getItemPaths( self ):
+        """
+        Returns the list of path of the current item (dir or file path)
+        NOTE: self.destinationPath need to be set (in a subclass) before calling this method
+        """
+        
+        #TODO: return path or name in both scenario
+        
+        item_path = None
+        if self.type == Item.TYPE_SCRAPER:
+            # Files case
+            if self.scraperName != None:
+                # Note: for time being we only delete the XML
+                # TODO: delete images and other file too?
+                #item_path = os.path.join( self.destinationPath, self.scraperName + ".xml" )
+                item_path = self.scraperFileList
+        else:
+            # Directory case
+            item_path = [ self.destinationPath ]
+        return item_path
+
+    def deleteInstalledItem( self ):
+        """
+        Delete an item already installed (file or directory)
+        Return True if success, False otherwise
+        NOTE: self.destinationPath need to be set (in a subclass) before calling this method
+        """
+        result = None
+        item_path = _getItemPath ()
+
+        if len( item_path ) > None:
+            for path in item_path:
+                result = self.fileMgr.deleteItem( path )
+                if result == False:
+                    print "deleteInstalledItem: Impossible to delete one of the element in the item: %s"%path
+                    logger.LOG( logger.LOG_ERROR, "deleteInstalledItem: Impossible to delete ob of the element in the item: %s", path )
+                    
+                    break
+        else:
+            result = False
+            print "deleteInstalledItem: Item invalid - error"
+            logger.LOG( logger.LOG_ERROR, "deleteInstalledItem: Item invalid - error" )
+        return result
+
+    def renameInstalledItem( self, inputText ):
+        """
+        Rename an item already installed (file or directory)
+        Return True if success, False otherwise
+        NOTE: self.destinationPath need to be set (in a subclass) before calling this method
+        """
+        
+        #TODO; iuse same fomat between delete and rename: path or name
+        
+        
+        result = None
+        item_path = _getItemPath ()
+
+        if len( self.typeInstallPath ) > None:
+            for path in item_path:
+                result = self.fileMgr.renameItem( self.typeInstallPath, path, path.replace( os.path.splitext(path)[0], inputText) )
+                if result == False:
+                    print "renameInstalledItem: Impossible to rename one of the element in the item: %s"%path
+                    logger.LOG( logger.LOG_ERROR, "deleteInstalledItem: Impossible to delete one of the element in the item: %s", path )
+                    
+                    break
+        else:
+            result = False
+            print "renameInstalledItem: Item invalid - error"
+            logger.LOG( logger.LOG_ERROR, "renameInstalledItem: Item invalid - error" )
+        return result
+
 
 
 class ArchItemInstaller(ItemInstaller):
@@ -89,7 +190,7 @@ class ArchItemInstaller(ItemInstaller):
         #TODO: support progress bar display
         self.displayProgBar      = True 
         self.downloadArchivePath = None # Path of the archive to extract
-        self.destinationPath     = None # Path of the destination directory
+        #self.destinationPath     = None # Path of the installation directory (i.e script dir path, plugin dir path, skin dir path, scraper xml file path)
         self.extractedDirPath    = None # Path of the extracted item
         self.status              = "INIT" # Status of install :[INIT | OK | ERROR | ALREADYINSTALLED |CANCELED]       
 
@@ -120,6 +221,21 @@ class ArchItemInstaller(ItemInstaller):
                         # Extraction sucessfull
                         self.destinationPath = self.typeInstallPath
                         self.extractedDirPath = file_path
+                        
+                        # Get scraper file's name
+                        try:
+                            self.scraperFileList = os.listdir( str( self.extractedDirPath ) )
+                            self.scraperName = os.path.splitext(self.scraperFileList[0])[0]
+                            print "self.scraperFileList"
+                            print selfscraperFileList
+                            print "self.scraperName"
+                            print self.scraperName
+                        except Exception, e:
+                            print("ArchItemInstaller: Exception in extractItem while listing scraper files: %s"%self.extractedDirPath)
+                            print(str(e))
+                            traceback.print_exc()
+                            logger.LOG( logger.LOG_ERROR, "ArchItemInstaller: Exception in extractItem while listing scraper files: %s", self.extractedDirPath )
+                            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
                     else:
                         status = "ERROR"
                 else:
@@ -155,17 +271,24 @@ class ArchItemInstaller(ItemInstaller):
         #return status, self.type, self.destinationPath, self.extractedDirPath
         return status
 
-    def isAlreadyInstalled( self ):
-        """
-        Check if extracted item is already installed
-        Needs to be called after extractItem (destinationPath has to be determined fisrt)
-        """
-        result = False
-        if self.type != Item.TYPE_SCRAPER:
-            if os.path.exists( self.destinationPath ):
-                result = True
-        #TODO : Scraper already installed case
-        return result
+#    def isAlreadyInstalled( self ):
+#        """
+#        Check if extracted item is already installed
+#        Needs to be called after extractItem (destinationPath has to be determined fisrt)
+#        """
+#        result = False
+#        if self.type != Item.TYPE_SCRAPER:
+#            if os.path.exists( self.destinationPath ):
+#                result = True
+#        else:
+#            #Scraper
+#            if self.scraperName != None:
+#                # Check if scraper exist (only done on xml file)
+#                if os.path.exists( os.path.join( self.destinationPath, self.scraperName + ".xml" ) ):
+#                    result = True
+#                
+#        #TODO : Scraper already installed case
+#        return result
     
     def copyItem( self, msgFunc=None,progressBar=None ):
         """
@@ -273,5 +396,22 @@ class ArchItemInstaller(ItemInstaller):
         return result, self.destinationPath
 
 
+
+class DirItemInstaller(ItemInstaller):
+    """
+    Installer from a directory
+    """
+
+    #def __init__( self , itemId, type, filesize ):
+    def __init__( self , name, type ):
+        #ItemInstaller.__init__( self, itemId, type, filesize )
+        ItemInstaller.__init__( self, name, type )
+
+        #TODO: support progress bar display
+        self.displayProgBar      = True 
+        self.downloadArchivePath = None # Path of the archive to extract
+        self.destinationPath     = None # Path of the destination directory
+        self.extractedDirPath    = None # Path of the extracted item
+        self.status              = "INIT" # Status of install :[INIT | OK | ERROR | ALREADYINSTALLED |CANCELED]       
 
              
