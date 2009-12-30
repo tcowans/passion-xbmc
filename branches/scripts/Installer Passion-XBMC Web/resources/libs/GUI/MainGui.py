@@ -562,8 +562,8 @@ class MainWindow( xbmcgui.WindowXML ):
                 title = _( 144 )
                 msg1  = _( 149 )%(unicode(itemName,'cp1252'))
                 msg2  = ""
-                if self.processOldDownload( destination ):
-                #if self.processOldDownload( itemInstaller ):
+                #if self.processOldDownload( destination ):
+                if self.processOldDownload( itemInstaller ):
                     # Continue install
                     dp = xbmcgui.DialogProgress()
                     dp.create(_( 137 ))
@@ -1016,48 +1016,68 @@ class MainWindow( xbmcgui.WindowXML ):
             else:
                 self.rightstest = False
 
-    def processOldDownload( self, localAbsDirPath ):
-    #def processOldDownload( self, itemInstaller ):
+    #def processOldDownload( self, localAbsDirPath ):
+    def processOldDownload( self, itemInstaller ):
         """
         Traite les ancien download suivant les desirs de l'utilisateur
         retourne True si le download peut continuer.
         """
-        from FileManager import fileMgr
-        fileMgr = fileMgr()
+
+#        from FileManager import fileMgr
+#        fileMgr = fileMgr()
 
         continueDownload = True
 
+        # Get Item install name
+        itemInstallName = itemInstaller.getItemInstallName()
+        
         # Verifie se on telecharge un repertoire ou d'un fichier
-        if os.path.isdir( localAbsDirPath ):
-            # Repertoire
+#        if os.path.isdir( localAbsDirPath ):
+#            # Repertoire
+        exit = False
+        while exit == False:
             menuList = [ _( 150 ), _( 151 ), _( 152 ), _( 153 ) ]
             dialog = xbmcgui.Dialog()
-            chosenIndex = dialog.select( _( 149 ) % os.path.basename( localAbsDirPath ), menuList )
+            #chosenIndex = dialog.select( _( 149 ) % os.path.basename( localAbsDirPath ), menuList )
+            chosenIndex = dialog.select( _( 149 ) % itemInstallName, menuList )
             if chosenIndex == 0:
                 # Delete
-                print "Deleting: %s"%localAbsDirPath
-                OK = self.deleteDir( localAbsDirPath )
+                print "Deleting: %s"%itemInstallName
+                #OK = self.deleteDir( localAbsDirPath )
                 #OK = fileMgr.deleteItem( localAbsDirPath )
-                print OK
+                OK = itemInstaller.deleteInstalledItem()
+                if OK == True:
+                    exit = True
+                else:
+                    xbmcgui.Dialog().ok( _(148), _( 117) )
             elif chosenIndex == 1: 
                 # Rename
-                keyboard = xbmc.Keyboard( os.path.basename( localAbsDirPath ), _( 154 ) )
+                #keyboard = xbmc.Keyboard( os.path.basename( localAbsDirPath ), _( 154 ) )
+                keyboard = xbmc.Keyboard( os.path.basename( itemInstallName ), _( 154 ) )
                 keyboard.doModal()
                 if ( keyboard.isConfirmed() ):
                     inputText = keyboard.getText()
-                    os.rename( localAbsDirPath, localAbsDirPath.replace( os.path.basename( localAbsDirPath ), inputText ) )
+                    #os.rename( localAbsDirPath, localAbsDirPath.replace( os.path.basename( localAbsDirPath ), inputText ) )
                     #OK = fileMgr.renameItem( base_path, old_name, new_name)
-
-                    xbmcgui.Dialog().ok( _( 155 ), localAbsDirPath.replace( os.path.basename( localAbsDirPath ), inputText ) )
+                    OK = itemInstaller.renameInstalledItem( inputText )
+                    #xbmcgui.Dialog().ok( _( 155 ), localAbsDirPath.replace( os.path.basename( localAbsDirPath ), inputText ) )
+                    if OK == True:
+                        xbmcgui.Dialog().ok( _( 155 ), inputText  )
+                        exit = True
+                    else:
+                        xbmcgui.Dialog().ok( _(148), _( 117) )
+                        
                 del keyboard
             elif chosenIndex == 2: # Ecraser
-                pass
+                exit = True
             else:
+                # EXIT
+                exit = True
                 continueDownload = False
-        else:
-            # Fichier
-            logger.LOG( logger.LOG_ERROR, "processOldDownload: Fichier : %s - ce cas n'est pas encore traite", localAbsDirPath )
-            #TODO: cas a implementer
+#        else:
+#            # Fichier
+#            logger.LOG( logger.LOG_ERROR, "processOldDownload: Fichier : %s - ce cas n'est pas encore traite", localAbsDirPath )
+#            #TODO: cas a implementer
 
         return continueDownload
         

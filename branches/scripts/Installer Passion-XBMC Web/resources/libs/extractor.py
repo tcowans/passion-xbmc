@@ -126,7 +126,7 @@ def unzip( filename, destination=None, report=False ):
     from zipfile import ZipFile
     base_dir = ""
     if destination is None:
-        destination = os.path.dirname( filename )
+        destination = os.path.dirname( filename ) #=> extraction in current directory
     try:
         zip = ZipFile( filename, "r" )
         namelist = zip.namelist()

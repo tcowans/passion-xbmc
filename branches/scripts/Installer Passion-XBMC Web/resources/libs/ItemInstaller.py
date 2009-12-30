@@ -58,7 +58,9 @@ class ItemInstaller:
         # NOTE: need to be set in a subclass before calling isAlreadyInstalled or deleteInstalledItem
         self.scraperName     = None
         self.scraperFileList = None # List of teh file for a scraper (xml, image ...)
-        self.destinationPath = None # Path of the installation directory (i.e script dir path, plugin dir path, skin dir path, scraper xml file path)
+        #self.installNameList = None
+        self.installName     = None # Name of the addon used by XBMC: i.e script dir name, plugin dir name, skin dir name, scraper xml file name
+        self.destinationPath = None # 
 
     def downloadItem( self, msgFunc=None,progressBar=None ):
         """
@@ -80,11 +82,11 @@ class ItemInstaller:
         else:
             #Scraper
             
-            if self.scraperName != None:
+            #if self.scraperName != None:
             #or
-            #if len(self.scraperFileList) > 0:
+            if len(self.scraperFileList) > 0:
                 # Check if scraper exist (only done on xml file)
-                if os.path.exists( os.path.join( self.destinationPath, self.scraperName + ".xml" ) ):
+                if os.path.exists( os.path.join( self.destinationPath, self.installName + ".xml" ) ):
                 #if os.path.exists( os.path.join( self.destinationPath, os.path.splitext(self.scraperFileList[0])[0] + ".xml" ) ):
                     result = True
                 
@@ -103,7 +105,8 @@ class ItemInstaller:
         """
         Return the real name of the item (install name) not the name for description
         """
-        
+        return self.installName
+
     def _getItemPaths( self ):
         """
         Returns the list of path of the current item (dir or file path)
@@ -112,18 +115,21 @@ class ItemInstaller:
         
         #TODO: return path or name in both scenario
         
-        item_path = None
+        paths = []
         if self.type == Item.TYPE_SCRAPER:
             # Files case
-            if self.scraperName != None:
+            #if self.scraperName != None:
+            if len( self.scraperFileList ) > 0:
+                for scraperFile in self.scraperFileList:
+                    paths.append( os.path.join( self.destinationPath, scraperFile ) )
                 # Note: for time being we only delete the XML
                 # TODO: delete images and other file too?
                 #item_path = os.path.join( self.destinationPath, self.scraperName + ".xml" )
-                item_path = self.scraperFileList
+                #item_path = self.scraperFileList
         else:
             # Directory case
-            item_path = [ self.destinationPath ]
-        return item_path
+            paths.append( self.destinationPath )
+        return paths
 
     def deleteInstalledItem( self ):
         """
@@ -132,15 +138,14 @@ class ItemInstaller:
         NOTE: self.destinationPath need to be set (in a subclass) before calling this method
         """
         result = None
-        item_path = _getItemPath ()
+        item_paths = self._getItemPaths ()
 
-        if len( item_path ) > None:
-            for path in item_path:
+        if len( item_paths ) > None:
+            for path in item_paths:
                 result = self.fileMgr.deleteItem( path )
                 if result == False:
                     print "deleteInstalledItem: Impossible to delete one of the element in the item: %s"%path
-                    logger.LOG( logger.LOG_ERROR, "deleteInstalledItem: Impossible to delete ob of the element in the item: %s", path )
-                    
+                    logger.LOG( logger.LOG_ERROR, "deleteInstalledItem: Impossible to delete one of the element in the item: %s", path )
                     break
         else:
             result = False
@@ -159,15 +164,16 @@ class ItemInstaller:
         
         
         result = None
-        item_path = _getItemPath ()
+        item_paths = self._getItemPaths ()
+        print "renameInstalledItem"
 
-        if len( self.typeInstallPath ) > None:
-            for path in item_path:
-                result = self.fileMgr.renameItem( self.typeInstallPath, path, path.replace( os.path.splitext(path)[0], inputText) )
+        if len( item_paths ) > None:
+            for path in item_paths:
+                print "Renaming %s by %s"%(path, path.replace( self.installName, inputText))
+                result = self.fileMgr.renameItem( None, path, path.replace( self.installName, inputText) )
                 if result == False:
                     print "renameInstalledItem: Impossible to rename one of the element in the item: %s"%path
-                    logger.LOG( logger.LOG_ERROR, "deleteInstalledItem: Impossible to delete one of the element in the item: %s", path )
-                    
+                    logger.LOG( logger.LOG_ERROR, "renameInstalledItem: Impossible to rename one of the element in the item: %s", path )
                     break
         else:
             result = False
@@ -225,11 +231,13 @@ class ArchItemInstaller(ItemInstaller):
                         # Get scraper file's name
                         try:
                             self.scraperFileList = os.listdir( str( self.extractedDirPath ) )
-                            self.scraperName = os.path.splitext(self.scraperFileList[0])[0]
+                            #self.installNameList = os.listdir( str( self.extractedDirPath ) )
+                            #self.scraperName = os.path.splitext(self.scraperFileList[0])[0]
+                            self.installName = os.path.splitext(self.scraperFileList[0])[0]
                             print "self.scraperFileList"
-                            print selfscraperFileList
-                            print "self.scraperName"
-                            print self.scraperName
+                            print self.scraperFileList
+                            #print "self.scraperName"
+                            #print self.scraperName
                         except Exception, e:
                             print("ArchItemInstaller: Exception in extractItem while listing scraper files: %s"%self.extractedDirPath)
                             print(str(e))
@@ -254,6 +262,8 @@ class ArchItemInstaller(ItemInstaller):
                     else:
                         # Extraction sucessfull
                         self.destinationPath = os.path.join( self.typeInstallPath, os.path.basename( file_path ) )
+                        #self.installNameList = [ os.path.basename( file_path ) ] # For the future if we manage package of addons
+                        self.installName = os.path.basename( file_path )
                         self.extractedDirPath = file_path
                         logger.LOG( logger.LOG_NOTICE, self.destinationPath )
                 #TODO: add skin case (requirements need to be defined first)
@@ -268,6 +278,10 @@ class ArchItemInstaller(ItemInstaller):
         else:
             print "extractItem - Archive does not exist - extraction impossible"
             status = "ERROR"
+        print "self.destinationPath"
+        print self.destinationPath
+        print "self.installName"
+        print self.installName
         #return status, self.type, self.destinationPath, self.extractedDirPath
         return status
 
