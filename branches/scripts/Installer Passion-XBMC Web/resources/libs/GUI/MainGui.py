@@ -563,12 +563,18 @@ class MainWindow( xbmcgui.WindowXML ):
                 msg1  = _( 149 )%(unicode(itemName,'cp1252'))
                 msg2  = ""
                 if self.processOldDownload( destination ):
+                #if self.processOldDownload( itemInstaller ):
                     # Continue install
                     dp = xbmcgui.DialogProgress()
                     dp.create(_( 137 ))
                     status, destination = itemInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )                
                     dp.close()
                     del dp
+                    self._save_downloaded_property()
+                    title = _( 141 )
+                    msg1  = _( 142 )%(unicode(itemName,'cp1252')) # should we manage only unicode instead of string?
+                    #msg1  = _( 142 )%"" + itemName
+                    msg2  = _( 143 )
                 else:
                     installCancelled = True
                     logger.LOG( logger.LOG_WARNING, "L'installation de %s a ete annulee par l'utilisateur", downloadItem  )
@@ -1011,10 +1017,14 @@ class MainWindow( xbmcgui.WindowXML ):
                 self.rightstest = False
 
     def processOldDownload( self, localAbsDirPath ):
+    #def processOldDownload( self, itemInstaller ):
         """
         Traite les ancien download suivant les desirs de l'utilisateur
         retourne True si le download peut continuer.
         """
+        from FileManager import fileMgr
+        fileMgr = fileMgr()
+
         continueDownload = True
 
         # Verifie se on telecharge un repertoire ou d'un fichier
@@ -1024,17 +1034,20 @@ class MainWindow( xbmcgui.WindowXML ):
             dialog = xbmcgui.Dialog()
             chosenIndex = dialog.select( _( 149 ) % os.path.basename( localAbsDirPath ), menuList )
             if chosenIndex == 0:
-                # Supprimer
-                print "Delete Dir: %s"%localAbsDirPath
+                # Delete
+                print "Deleting: %s"%localAbsDirPath
                 OK = self.deleteDir( localAbsDirPath )
+                #OK = fileMgr.deleteItem( localAbsDirPath )
                 print OK
-            elif chosenIndex == 1: # Renommer
-                # Suppression du repertoire
+            elif chosenIndex == 1: 
+                # Rename
                 keyboard = xbmc.Keyboard( os.path.basename( localAbsDirPath ), _( 154 ) )
                 keyboard.doModal()
                 if ( keyboard.isConfirmed() ):
                     inputText = keyboard.getText()
                     os.rename( localAbsDirPath, localAbsDirPath.replace( os.path.basename( localAbsDirPath ), inputText ) )
+                    #OK = fileMgr.renameItem( base_path, old_name, new_name)
+
                     xbmcgui.Dialog().ok( _( 155 ), localAbsDirPath.replace( os.path.basename( localAbsDirPath ), inputText ) )
                 del keyboard
             elif chosenIndex == 2: # Ecraser

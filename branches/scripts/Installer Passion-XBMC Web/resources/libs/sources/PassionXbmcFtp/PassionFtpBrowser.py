@@ -67,7 +67,7 @@ class PassionFtpBrowser(Browser):
 #        self.USRPath            = self.configManager.USRPath
         self.rightstest         = ""
 #        self.scriptDir          = self.configManager.scriptDir
-#        self.CacheDir           = self.configManager.CACHEDIR
+        self.CACHEDIR           = self.configManager.CACHEDIR
 #        self.userDataDir        = self.configManager.userdatadir # userdata directory
 #        self.targetDir          = ""
 
@@ -84,7 +84,7 @@ class PassionFtpBrowser(Browser):
         # Connection au serveur FTP
         try:
 
-            self.passionFTPCtrl = FtpDownloadCtrl( self.host, self.user, self.password, self.remotedirList, self.localdirList, self.downloadTypeList )
+            self.passionFTPCtrl = FtpDownloadCtrl( self.host, self.user, self.password, self.remotedirList, self.localdirList, self.downloadTypeList, self.CACHEDIR )
             self.connected = True
 
             #self.updateList()

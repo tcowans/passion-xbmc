@@ -59,7 +59,7 @@ class FtpDownloadCtrl:
     Controleur de download via FTP
     Cette classe gere les download via FTP de fichiers et repertoire
     """
-    def __init__( self, host, user, password, remotedirList, localdirList, typeList ):
+    def __init__( self, host, user, password, remotedirList, localdirList, typeList, cacheDir ):
         """
         Fonction d'init de la classe FtpDownloadCtrl
         Initialise toutes les variables et lance la connection au serveur FTP
@@ -73,6 +73,7 @@ class FtpDownloadCtrl:
         self.remotedirList    = remotedirList
         self.localdirList     = localdirList
         self.downloadTypeList = typeList
+        self.CACHEDIR         = cacheDir
 
         self.connected = False # status de la connection ( inutile pour le moment )
         self.curLocalDirRoot = ""
@@ -198,7 +199,8 @@ class FtpDownloadCtrl:
         """
 
         typeIndex = Item.get_type_index(type)
-        self.curLocalDirRoot = self.localdirList[ typeIndex ]
+        #self.curLocalDirRoot = self.localdirList[ typeIndex ]
+        self.curLocalDirRoot = self.CACHEDIR # Downloading in cache directory first
         #self.curRemoteDirRoot = rootdirsrc
         self.curRemoteDirRoot = self.remotedirList[ typeIndex ]
 
@@ -221,7 +223,8 @@ class FtpDownloadCtrl:
             - ( -1 ) pour telechargement annule
             - ( 1 )  pour telechargement OK
         """
-        result = 1 # 1 pour telechargement OK
+        status     = "OK" # Status of download :[OK | ERROR | CANCELED]
+        #result = 1 # 1 pour telechargement OK
         # Liste le repertoire
         #curDirList = self.ftp.nlst( pathsrc ) #TODO: ajouter try/except
         curDirList = self.ftp.Command( self.ftp.nlst, pathsrc ) #TODO: ajouter try/except
@@ -231,7 +234,8 @@ class FtpDownloadCtrl:
             if dialogProgressWin.iscanceled():
                 logger.LOG( logger.LOG_WARNING, "Telechargement annuler par l'utilisateur" )
                 # Sortie de la boucle via return
-                result = -1 # -1 pour telechargement annule
+                #result = -1 # -1 pour telechargement annule
+                status = "CANCELED"
                 break
             else:
                 # Calcule le pourcentage avant download
@@ -284,9 +288,11 @@ class FtpDownloadCtrl:
             logger.LOG( logger.LOG_WARNING, "Telechargement annule par l'utilisateur" )
 
             # Sortie de la boucle via return
-            result = -1 # -1 pour telechargement annule
+            #result = -1 # -1 pour telechargement annule
+            status = "CANCELED"
 
-        return result
+        #return result
+        return status
 
     def _downloaddossier( self, dirsrc, progressbar_cb=None, dialogProgressWin=None, curPercent=0, coeff=1 ):
         """

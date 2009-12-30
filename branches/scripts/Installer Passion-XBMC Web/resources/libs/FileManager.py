@@ -1,3 +1,9 @@
+__all__ = [
+    # public names
+#    "copy_func",
+    "ListItemObject",
+    "fileMgr"
+    ]
 
 #Modules general
 import os
@@ -54,18 +60,18 @@ CLOSE_CONTEXT_MENU = ( ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, ACTION_CONTEXT_M
 ##################################################
 
 
-def copy_func( cpt_blk, taille_blk, total_taille, dialogCB=None ):
-    try:
-        updt_val = int( ( cpt_blk * taille_blk ) / 10.0 / total_taille )
-        if updt_val > 100: updt_val = 100
-        if dialogCB != None:
-            dialogCB.update( updt_val )
-    except:
-        pass
-        #dialogCB.update( 100 )
-    # DON'T ALLOW Progress().iscanceled() BUG CREATE, FIXED SOON
-    #if xbmcgui.DialogProgress().iscanceled():
-    #    xbmcgui.DialogProgress().close()
+#def copy_func( cpt_blk, taille_blk, total_taille, dialogCB=None ):
+#    try:
+#        updt_val = int( ( cpt_blk * taille_blk ) / 10.0 / total_taille )
+#        if updt_val > 100: updt_val = 100
+#        if dialogCB != None:
+#            dialogCB.update( updt_val )
+#    except:
+#        pass
+#        #dialogCB.update( 100 )
+#    # DON'T ALLOW Progress().iscanceled() BUG CREATE, FIXED SOON
+#    #if xbmcgui.DialogProgress().iscanceled():
+#    #    xbmcgui.DialogProgress().close()
 
 class ListItemObject:
     """
@@ -88,20 +94,24 @@ class fileMgr:
     def verifrep(self, folder):
         """
         Check a folder exists and make it if necessary
+        Return True if success, False otherwise
         """
+        result = True
         try:
             #print("verifrep check if directory: " + folder + " exists")
             if not os.path.exists(folder):
-                logger.LOG( logger.LOG_DEBUG, "verifrep: Impossible de trouver le repertoire - Tentative de creation du repertoire: %s", folder )
+                logger.LOG( logger.LOG_DEBUG, "verifrep: Impossible to find the directory - Trying to create directory: %s", folder )
                 os.makedirs(folder)
         except Exception, e:
-            logger.LOG( logger.LOG_DEBUG, "verifrep: Exception durant la suppression du reperoire: %s", folder )
+            result = False
+            logger.LOG( logger.LOG_DEBUG, "verifrep: Exception while creating the directory: %s", folder )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+        return result
 
     def listDirFiles(self, path):
         """
         List the files of a directory
-        @param path:
+        @param path: path of directory we want to list the content of
         """
         logger.LOG( logger.LOG_DEBUG, "listDirFiles: Liste le repertoire: %s", path )
         dirList = os.listdir( str( path ) )
@@ -110,30 +120,55 @@ class fileMgr:
 
     def renameItem( self, base_path, old_name, new_name):
         """
-        Renomme un fichier ou repertoire
+        Rename an item (file or directory)
+        Return True if success, False otherwise
         """
-        os.rename( os.path.join(base_path, old_name), os.path.join(base_path, new_name) )
+        result = True
+        try:
+            os.rename( os.path.join(base_path, old_name), os.path.join(base_path, new_name) )
+        except:
+            result = False
+            logger.LOG( logger.LOG_DEBUG, "renameItem: Exception renaming Item: %s", old_name )
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+        return result
 
     def deleteItem( self, item_path):
         """
-        Supprime un element (repertoire ou fichier)
+        Delete an item (file or directory)
+        Return True if success, False otherwise
         """
+        result = None
         if os.path.isdir(item_path):
-            self.deleteDir(item_path)
+            result = self.deleteDir(item_path)
         else:
-            self.deleteFile(item_path)
+            result = self.deleteFile(item_path)
+            
+        return result
 
     def deleteFile(self, filename):
         """
         Delete a file form download directory
-        @param filename:
+        @param filename: name of the file to delete
+        Return True if success, False otherwise
         """
-        os.remove(filename)
+        result = True
+        try:
+            if os.path.exists( filename ):
+                os.remove( filename )
+            else:
+                logger.LOG( logger.LOG_DEBUG, "deleteFile: File %s does NOT exist", filename )
+                result = False
+        except:
+            result = False
+            logger.LOG( logger.LOG_DEBUG, "deleteFile: Exception deleting file: %s", filename )
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+        return result
 
     def deleteDir( self, path ):
         """
-        Efface un repertoire et tout son contenu ( le repertoire n'a pas besoin d'etre vide )
-        retourne True si le repertoire est effece False sinon
+        Delete a directory and all in content (files and subdirs)
+        Note: the directory does NOT need to be empty
+        Return True if success, False otherwise
         """
         result = True
         if os.path.isdir( path ):
@@ -149,17 +184,17 @@ class fileMgr:
                         self.deleteDir( itemFullPath )
                 except:
                     result = False
-                    logger.LOG( logger.LOG_DEBUG, "deleteDir: Exception la suppression du reperoire: %s", path )
+                    logger.LOG( logger.LOG_DEBUG, "deleteDir: Exception deleting directory: %s", path )
                     logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
             # Suppression du repertoire pere
             try:
                 os.rmdir( path )
             except:
                 result = False
-                logger.LOG( logger.LOG_DEBUG, "deleteDir: Exception la suppression du reperoire: %s", path )
+                logger.LOG( logger.LOG_DEBUG, "deleteDir: Exception deleting directory: %s", path )
                 logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         else:
-            logger.LOG( logger.LOG_DEBUG, "deleteDir: %s n'est pas un repertoire", path )
+            logger.LOG( logger.LOG_DEBUG, "deleteDir: %s is not a directory", path )
             result = False
 
         return result
