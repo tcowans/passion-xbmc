@@ -1,7 +1,7 @@
 
 import os
 import sys
-import traceback
+from traceback import print_exc
 from StringIO import StringIO
 from urllib import urlopen, urlretrieve
 from PIL import Image, ImageEnhance
@@ -111,9 +111,9 @@ def makeThumbnails( source, destination=None, watched=False, w_h=None, prefix="t
         #    try: 
         #        urlretrieve(source, thumbnail)
         #        if os.path.isfile(thumbnail): return thumbnail
-        #    except: traceback.print_exc()
+        #    except: print_exc()
     except:
-        traceback.print_exc()
+        print_exc()
     return ""
 
 

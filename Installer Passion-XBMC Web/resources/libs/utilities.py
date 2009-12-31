@@ -161,6 +161,7 @@ def getUserSkin():
     try: skin_setting = Settings().get_settings().get( "current_skin", "Default" )
     except: skin_setting = "Default"
     current_skin = xbmc.getSkinDir()
+    xbmc.executebuiltin( 'Skin.SetString(xbmc.currentskin,%s)' % current_skin )
     if skin_setting != "Default" and os.path.exists( os.path.join( CWD, "resources", "skins", skin_setting ) ):
         current_skin = skin_setting
     #if not current_skin: current_skin = xbmc.getSkinDir()
@@ -254,7 +255,7 @@ def strip_off_CSV( text, by="" ):
 
 def unescape(s):
     """
-    remplace les sequences d'échappement par leurs caracteres equivalent
+    remplace les sequences d'echappement par leurs caracteres equivalent
     """
     p = htmllib.HTMLParser(None)
     p.save_bgn()
@@ -409,7 +410,7 @@ def get_infos_path( path, get_size=False, report_progress=None ):
                             logger.LOG( logger.LOG_ERROR, "Size: %s", fpath )
                             pass
         if size <= 0:
-            size = "0.0 KB"
+            size = ""#"0.0 KB"
         elif size <= ( 1024.0 * 1024.0 ):
             size = "%00s KB" % round( size / 1024.0, 2 )
         elif size >= ( 1024.0 * 1024.0 ):

@@ -28,7 +28,7 @@ __version__ = "%s.%s" % ( sys.modules[ "__main__" ].__version__, __svn_revision_
 
 
 class ScriptSettings( xbmcgui.WindowXMLDialog ):
-    TOPIC_LIMIT = [ "5", "10", "15", "20" ] #_( 504 ).split( "|" ) #values[ "00", "5", "10", "25", "50", "100" ]
+    TOPIC_LIMIT = [ "5", "10", "15", "20", "25", "50", "100" ] #_( 504 ).split( "|" ) #values[ "00", "5", "10", "25", "50", "100" ]
     TSIZE_LIMIT = [ "192", "256", "384", "512", "1024" ]
 
     # control id's

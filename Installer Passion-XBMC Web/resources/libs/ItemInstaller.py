@@ -3,7 +3,7 @@ ItemInstaller: this module allows download and install an item
 """
 import os
 import sys
-import traceback
+from traceback import print_exc
 
 # SQLite
 from pysqlite2 import dbapi2 as sqlite

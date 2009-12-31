@@ -23,6 +23,7 @@ class ContextMenu( xbmcgui.WindowXMLDialog ):
         xbmcgui.WindowXMLDialog.__init__( self, *args, **kwargs )
         self.control_enabled_buttons = range( self.CONTROL_CM_BUTTON_START, ( self.CONTROL_CM_BUTTON_END + 1 ) )
         self.buttons = kwargs.get( "buttons", {} )
+        self.view_mode = kwargs.get( "view_mode", "0" )
         xbmc.executebuiltin( "Skin.SetString(totals_cm_buttons,%i)" % ( len( self.buttons ), ) )
         self.selected = 0
 
@@ -52,14 +53,38 @@ class ContextMenu( xbmcgui.WindowXMLDialog ):
             try:logger = sys.modules[ "__main__" ].logger
             except: import script_log as logger
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            try:
+                #new methode for default.hd
+                for key in self.CONTROL_CM_BUTTONS:
+                    label = self.buttons.get( key )
+                    if label is not None:
+                        if isinstance( label, tuple ):
+                            label = label[ 0 ]
+                        context_item = xbmcgui.ListItem( label )
+                        context_item.setProperty( "controlID", str( key ) )
+                        context_item.setProperty( "main_view_mode", self.view_mode )
+                        self.getControl( 10000 ).addItem( context_item )
+            except:
+                try:logger = sys.modules[ "__main__" ].logger
+                except: import script_log as logger
+                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
             xbmcgui.unlock()
-            self.close()
+            #self.close()
 
     def onFocus( self, controlID ):
         pass
 
     def onClick( self, controlID ):
-        if controlID in self.CONTROL_CM_BUTTONS:
+        if controlID == 10000:
+            try:
+                #new methode for default.hd
+                self.selected = int( self.getControl( 10000 ).getSelectedItem().getProperty( "controlID" ) )
+            except:
+                pass
+            xbmc.sleep( 10 )
+            self.close()
+
+        elif controlID in self.CONTROL_CM_BUTTONS:
             try:
                 self.selected = controlID
                 try:
@@ -81,12 +106,12 @@ class ContextMenu( xbmcgui.WindowXMLDialog ):
             self.close()
 
 
-def show_context_menu( buttons={} ):
-    file_xml = "passion-ContextMenu.xml"
+def show_context_menu( buttons={}, view_mode="0" ):
     dir_path = os.getcwd().rstrip( ";" )
     current_skin, force_fallback = getUserSkin()
+    file_xml = ( "IPX-ContextMenu.xml", "passion-ContextMenu.xml" )[ current_skin != "Default.HD" ]
 
-    w = ContextMenu( file_xml, dir_path, current_skin, force_fallback, buttons=buttons )
+    w = ContextMenu( file_xml, dir_path, current_skin, force_fallback, buttons=buttons, view_mode=view_mode )
     w.doModal()
     selected = w.selected
     del w

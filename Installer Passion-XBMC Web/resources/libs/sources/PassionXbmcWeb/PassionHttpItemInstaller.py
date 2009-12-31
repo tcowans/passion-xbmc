@@ -3,7 +3,7 @@ ItemInstaller: this module allows download and install an item
 """
 import os
 import sys
-import traceback
+from traceback import print_exc
 
 # SQLite
 from pysqlite2 import dbapi2 as sqlite
@@ -31,7 +31,7 @@ try:
     from ItemInstaller import ArchItemInstaller, cancelRequest
 except:
     print sys.exc_info()
-    traceback.print_exc()
+    print_exc()
 #import extractor
 
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
@@ -217,7 +217,7 @@ class PassionHTTPInstaller(ArchItemInstaller):
                         print("_downloadFile - Exception during reading of the remote file and writing it locally")
                         print(str(e))
                         print ("_downloadFile: error during reading of the remote file and writing it locally: " + str(sys.exc_info()[0]))
-                        traceback.print_exc()
+                        print_exc()
                         #noErrorOK  = False
                         status = "ERROR"
                         # End of writing: Closing the connection and the file
@@ -256,7 +256,7 @@ class PassionHTTPInstaller(ArchItemInstaller):
             print("_downloadFile: Exception while source retrieving")
             print(str(e))
             print ("_downloadFile: error while source retrieving: " + str(sys.exc_info()[0]))
-            traceback.print_exc()
+            print_exc()
             print("_downloadFile ENDED with ERROR")
 
 #            # Prepare message to the UI

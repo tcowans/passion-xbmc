@@ -3,6 +3,7 @@
 import os
 import re
 import sys
+from traceback import print_exc
 
 #modules XBMC
 import xbmc
@@ -222,6 +223,9 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         self.configManager = configCtrl()
         if not self.configManager.is_conf_valid: raise
 
+        #used for show cat from new home gui
+        self.HomeAction = kwargs.get( "HomeAction" )
+
         self.rightstest        = kwargs[ "rightstest" ]
         self._show_settings    = kwargs[ "mainfunctions" ][ 0 ]
         self._close_script     = kwargs[ "mainfunctions" ][ 1 ]
@@ -238,22 +242,40 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         self.index              = ""
         self.main_list_last_pos = []
 
+        if self.HomeAction is not None:
+            try:
+                # exemple : self.HomeAction = 'TYPE, INDEX = TYPE_PLUGIN_VIDEO, 3'
+                exec self.HomeAction
+                self.curListType = TYPE
+                self.index       = INDEX
+            except:
+                print_exc()
+
         self.fileMgr            = fileMgr()
 
 
     def onInit( self ):
-        # Title of the current pages
-        self.setProperty( "Category", _( 10 ) )
+        self.SET_VIEW_MODE = True
+        try:
+            # Title of the current pages
 
-        self._get_settings()
-        self._set_skin_colours()
-        self.pardir_not_hidden = self.settings.get( "pardir_not_hidden", 1 )
+            self._get_settings()
+            self._set_skin_colours()
+            self.pardir_not_hidden = self.settings.get( "pardir_not_hidden", 1 )
 
-        # Verifications des permissions sur les repertoires
-        self.check_w_rights()
+            # Verifications des permissions sur les repertoires
+            self.check_w_rights()
 
-        self.updateDataAndList()
-        xbmc.executebuiltin( "Container.SetViewMode(%i)" % self.settings.get( "manager_view_mode", self.CONTROL_MAIN_LIST_START ) )
+            self.updateDataAndList()
+            self.set_view_mode()
+            id = self.settings.get( "manager_view_mode", self.CONTROL_MAIN_LIST_START )
+            xbmc.executebuiltin( "Container.SetViewMode(%i)" % id )
+
+            if self.curListType == TYPE_ROOT:
+                self.setProperty( "Category", _( 10 ) )
+
+        except:
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def onFocus( self, controlID ):
         #self.controlID = controlID
@@ -288,7 +310,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                     self.updateDataAndList()
             elif controlID == self.CONTROL_EXIT_BUTTON:
                 self._close_dialog()
-                self._close_script()
+                #self._close_script()
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
@@ -300,6 +322,18 @@ class FileMgrWindow( xbmcgui.WindowXML ):
             del ForumDirectInfos
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+
+    def get_view_mode( self ):
+        view_mode = ""
+        for id in range( self.CONTROL_MAIN_LIST_START, self.CONTROL_MAIN_LIST_END + 1 ):
+            try:
+                if xbmc.getCondVisibility( "Control.IsVisible(%i)" % id ):
+                    view_mode = repr( id )
+                    return view_mode
+                    break
+            except:
+                pass
+        return view_mode
 
     def _show_context_menu( self ):
         self.index = self.getCurrentListPosition()
@@ -320,7 +354,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                 buttons = { 1001: _( 157 ), 1002: _( 156 ), 1003: _( 161 ), 1004: _( 162 ), 1005: _( 185 ), 1006: _( 1002 ) }
 
             from DialogContextMenu import show_context_menu
-            selected = show_context_menu( buttons )
+            selected = show_context_menu( buttons, self.get_view_mode() )
             del show_context_menu
 
             if selected == 1000: # Executer/Lancer
@@ -410,7 +444,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                             except:
                                 xbmcgui.Dialog().ok( _( 169 ), _( 170 ), _( 171 ) )
                                 logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-                                #import traceback; traceback.print_exc()
+                                #from traceback import print_exc; print_exc()
                             #self.updateDataAndList()
                             DIALOG_PROGRESS.close()
                 else:
@@ -430,7 +464,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                             except:
                                 xbmcgui.Dialog().ok( _( 169 ), _( 170 ), _( 171 ) )
                                 logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-                                #import traceback; traceback.print_exc()
+                                #from traceback import print_exc; print_exc()
                             #self.updateDataAndList()
                             DIALOG_PROGRESS.close()
 
@@ -457,7 +491,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                             except:
                                 xbmcgui.Dialog().ok( _( 169 ), _( 172 ), _( 173 ) )
                                 logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-                                #import traceback; traceback.print_exc()
+                                #from traceback import print_exc; print_exc()
                             self.updateDataAndList()
                             DIALOG_PROGRESS.close()
                 else:
@@ -478,7 +512,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                             except:
                                 xbmcgui.Dialog().ok( _( 169 ), _( 172 ), _( 173 ) )
                                 logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-                                #import traceback; traceback.print_exc()
+                                #from traceback import print_exc; print_exc()
                             self.updateDataAndList()
                             DIALOG_PROGRESS.close()
 
@@ -500,7 +534,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         try:
             from DialogContextMenu import show_context_menu
             buttons = { 1000: _( 11 ), 1001: _( 12 ), 1002: _( 13 ), 1003: _( 14 ), 1004: _( 18 ), 1005: _( 16 ), 1006: _( 15 ), 1007: _( 17 ) }
-            selected = show_context_menu( buttons )
+            selected = show_context_menu( buttons, self.get_view_mode() )
             del show_context_menu
             switch = None
             if selected == 1000:
@@ -585,7 +619,10 @@ class FileMgrWindow( xbmcgui.WindowXML ):
     def _get_settings( self, defaults=False ):
         """ reads settings """
         self.settings = Settings().get_settings( defaults=defaults )
-        self.getControl( self.CONTROL_FORUM_BUTTON ).setVisible( not self.settings.get( "hide_forum", False ) )
+        try:
+            self.getControl( self.CONTROL_FORUM_BUTTON ).setVisible( not self.settings.get( "hide_forum", False ) )
+        except:
+            pass
 
     def _set_skin_colours( self ):
         #xbmcgui.lock()
@@ -615,7 +652,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
             self.updateData() # On met a jour les donnees
             self.updateList() # On raffraichit la page pour afficher le contenu
         except:
-            #import traceback; traceback.print_exc()
+            #from traceback import print_exc; print_exc()
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         DIALOG_PROGRESS.close()
 
@@ -703,6 +740,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         #test pour avoir le choix du parent dir avec la souris
         if self.pardir_not_hidden:
             self.addItem( xbmcgui.ListItem( "..", "", iconImage="DefaultFolderBack.png", thumbnailImage="DefaultFolderBack.png" ) )
+            self.set_view_mode()
 
         # Calcul du nombre d'elements de la liste
         itemnumber = len( self.currentItemList )
@@ -725,13 +763,43 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                 displayListItem.setProperty( "last_modification", last_modification )
                 displayListItem.setProperty( "last_access", last_access )
                 displayListItem.setProperty( "path", item.local_path )
+                displayListItem.setProperty( "objects", "" )
+                try:
+                    if os.path.isdir( item.local_path ): #if ( self.curListType in [ TYPE_ROOT, TYPE_PLUGIN ] ):
+                        if ( item.name == TYPE_SCRAPER ):
+                            num_item = len( [ scraper for scraper in os.listdir( item.local_path ) if scraper.endswith( ".xml" ) ] )
+                        elif ( item.name == TYPE_PLUGIN != self.curListType ):
+                            num_item = len( os.listdir( item.local_path+os.sep+"music" ) )
+                            num_item += len( os.listdir( item.local_path+os.sep+"pictures" ) )
+                            num_item += len( os.listdir( item.local_path+os.sep+"Programs" ) )
+                            num_item += len( os.listdir( item.local_path+os.sep+"Video" ) )
+                            num_item += len( os.listdir( item.local_path+os.sep+"weather" ) )
+                        else:
+                            num_item = len( os.listdir( item.local_path ) )
+                        displayListItem.setProperty( "objects", str( num_item ) )
+                except:
+                    print_exc()
             except:
+                print_exc()
                 displayListItem.setProperty( "size", "" )
                 displayListItem.setProperty( "created", "" )
                 displayListItem.setProperty( "last_modification", "" )
                 displayListItem.setProperty( "last_access", "" )
                 displayListItem.setProperty( "path", "" )
+                displayListItem.setProperty( "objects", "" )
             self.addItem( displayListItem )
+            self.set_view_mode()
+
+    def set_view_mode( self ):
+        try:
+            pass
+            #if self.SET_VIEW_MODE:
+            #    id = self.settings.get( "manager_view_mode", self.CONTROL_MAIN_LIST_START )
+            #    xbmc.executebuiltin( "Container.SetViewMode(%i)" % id )
+            #    self.SET_VIEW_MODE = not xbmc.getCondVisibility( "Control.IsVisible(%i)" % id )
+            #    #xbmc.sleep( 1000 )
+        except:
+            print_exc()
 
     def check_w_rights(self):
         """
@@ -772,16 +840,13 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         self.close()
 
 
-def show_file_manager( mainfunctions, rightstest="" ):
-    """
-    Affiche la fenetre du gestionnaire de fichier
-    Merci a Frost pour l'algo
-    """
-    file_xml = "passion-FileMgr.xml"
+def show_file_manager( mainfunctions, rightstest="", args=None ):
     dir_path = os.getcwd().rstrip( ";" )
     #recupere le nom du skin et si force_fallback est vrai, il va chercher les images du defaultSkin.
     current_skin, force_fallback = getUserSkin() # Appel fonction dans Utilities
+    file_xml = ( "IPX-FileMgr.xml", "passion-FileMgr.xml" )[ current_skin != "Default.HD" ]
 
-    w = FileMgrWindow( file_xml, dir_path, current_skin, force_fallback, mainfunctions=mainfunctions, rightstest=rightstest )
+    w = FileMgrWindow( file_xml, dir_path, current_skin, force_fallback,
+        mainfunctions=mainfunctions, rightstest=rightstest, HomeAction=args )
     w.doModal()
     del w

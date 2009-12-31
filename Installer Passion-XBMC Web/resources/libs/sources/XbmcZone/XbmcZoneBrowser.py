@@ -7,7 +7,7 @@ Module inspired from Dan Dar3 excellent work on the XBMC Zone Installer (thank y
 # Modules general
 import os
 import sys
-import traceback
+from traceback import print_exc
 
 # Module logger
 try:
@@ -76,7 +76,7 @@ class XbmcZoneBrowser(Browser):
         except:
             print sys.exc_info()
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-            traceback.print_exc()
+            print_exc()
             result = None
         return result
 
@@ -95,7 +95,7 @@ class XbmcZoneBrowser(Browser):
         except:
             print sys.exc_info()
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-            traceback.print_exc()
+            print_exc()
             result = None
         return result
 
@@ -125,7 +125,7 @@ class XbmcZoneBrowser(Browser):
             item['date']              = ""
             item['added']             = ""
             item['thumbnail']         = Item.get_thumb( cat )
-            item['previewpicture']    = Item.get_thumb( cat )
+            item['previewpicture']    = ""#Item.get_thumb( cat )
             item['image2retrieve']    = False # Temporary patch for reseting the flag after download (would be better in the thread in charge of the download)
 
             list.append(item)
@@ -182,7 +182,7 @@ class XbmcZoneBrowser(Browser):
             item['date']              = ""
             item['added']             = ""
             item['thumbnail']         = Item.get_thumb( item['xbmc_type'] )
-            item['previewpicture']    = Item.get_thumb( item['xbmc_type'] )
+            item['previewpicture']    = ""#Item.get_thumb( item['xbmc_type'] )
             item['image2retrieve']    = False # Temporary patch for reseting the flag after download (would be better in the thread in charge of the download)
 
             list.append(item)
@@ -278,7 +278,7 @@ class XbmcZoneBrowser(Browser):
             item['language']          = ""
             item['added']             = ""
             item['thumbnail']         = Item.get_thumb( item['xbmc_type'] )
-            item['previewpicture']    = Item.get_thumb( item['xbmc_type'] )
+            item['previewpicture']    = ""#Item.get_thumb( item['xbmc_type'] )
             item['image2retrieve']    = False # Temporary patch for reseting the flag after download (would be better in the thread in charge of the download)
             
 #            # Set image
@@ -334,7 +334,7 @@ class XbmcZoneBrowser(Browser):
             print e
             print sys.exc_info()
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-            traceback.print_exc()
+            print_exc()
         #TODO: find better solution, temporary fix for the case of empty list, with current implemntation of hetPrevList backward is not possible when list is empty    
         if len( list ) > 0:
             # Replace current list
@@ -372,7 +372,7 @@ class XbmcZoneBrowser(Browser):
             print e
             print sys.exc_info()
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-            traceback.print_exc()
+            print_exc()
         # Replace current list
         self.curList = list
         return list
@@ -430,7 +430,7 @@ class XbmcZoneBrowser(Browser):
             try:
                 ftp.retrbinary( 'RETR ' + filetodlUrl, localFile.write )
             except:
-                #import traceback; traceback.print_exc()
+                #from traceback import print_exc; print_exc()
                 logger.LOG( logger.LOG_DEBUG, "_downloaddossier: Exception - Impossible de telecharger le fichier: %s", remoteFilePath )
                 logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
                 thumbnail, localFilePath = "", ""
@@ -462,7 +462,7 @@ class XbmcZoneBrowser(Browser):
             print sys.exc_info()
             logger.LOG( logger.LOG_DEBUG, "_downloadImage: Exception - Impossible to download the picture: %s", picname )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-            traceback.print_exc()
+            print_exc()
         print "thumbnail = %s"%thumbnail
         print "localFilePath = %s"%localFilePath
         return thumbnail, localFilePath
@@ -613,7 +613,7 @@ class XbmcZoneBrowser(Browser):
             print e
             print sys.exc_info()
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-            traceback.print_exc()   
+            print_exc()   
                  
         return itemInstaller
 
@@ -656,7 +656,7 @@ class XbmcZoneBrowser(Browser):
             else:
                 thumbnail, localFilePath = "", ""
         except:
-            #import traceback; traceback.print_exc()
+            #from traceback import print_exc; print_exc()
             logger.LOG( logger.LOG_DEBUG, "_downloadImage: Exception - Impossible to downlod the picture: %s", picname )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
             #TODO: create a thumb for the default image?
