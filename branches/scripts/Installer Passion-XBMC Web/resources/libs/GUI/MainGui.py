@@ -8,7 +8,7 @@ import time
 import urllib
 
 from threading import Thread, Timer
-import traceback
+from traceback import print_exc
 
 #modules XBMC
 import xbmc
@@ -88,12 +88,11 @@ class Context:
             self.addSource(srcPassionFtp)
             self.addSource(srcXbmcZone)
         except Exception, e:
-            print "Exception during Context init"
-            print e
-            print sys.exc_info()
+            #print "Exception during Context init"
+            #print e
+            #print sys.exc_info()
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-            traceback.print_exc()
-            
+            print_exc()
 
     def selectSource( self, sourceName ):
         """
@@ -179,6 +178,7 @@ class MainWindow( xbmcgui.WindowXML ):
         Initialisation de l'interface
         """
         xbmcgui.WindowXML.__init__( self, *args, **kwargs )
+        self.HomeAction = kwargs.get( "HomeAction" )
         self.main_list_last_pos = []
 
         # Display Loading Window while we are loading the information from the website
@@ -188,6 +188,7 @@ class MainWindow( xbmcgui.WindowXML ):
         else:
             #si le dialog PROGRESS n'est pas visible affiche le dialog
             DIALOG_PROGRESS.create( _( 0 ), _( 103 ), _( 110 ) )
+        #DIALOG_PROGRESS.close()
 
         #TODO: TOUTES ces varibales devraient etre passees en parametre du constructeur de la classe ( __init__ si tu preferes )
         # On ne devraient pas utiliser de variables globale ou rarement en prog objet
@@ -230,70 +231,84 @@ class MainWindow( xbmcgui.WindowXML ):
         self.current_cat = ""
 
     def onInit( self ):
-        self._get_settings()
-        self._set_skin_colours()
+        try:
+            self._get_settings()
+            self._set_skin_colours()
 
-#        if self.settings.get( "show_plash" ) == True:
-#            # splash desactive par le user 
-#            self.getControl( self.CONTROL_SHOW_SPLASH_IMG ).setVisible( 0 )
-        self.getControl( self.CONTROL_SHOW_SPLASH_IMG ).setVisible( 0 )
+            # desactive le splash
+            try: self.getControl( self.CONTROL_SHOW_SPLASH_IMG ).setVisible( 0 )
+            except: pass
+    #        if self.settings.get( "show_plash" ) == True:
+    #            # splash desactive par le user
+    #            self.getControl( self.CONTROL_SHOW_SPLASH_IMG ).setVisible( 0 )
 
-        if self.is_started:
-            self.is_started = False
+            if self.is_started:
+                self.is_started = False
 
-            self._start_rss_timer()
+                self._start_rss_timer()
 
-            # Connection au serveur FTP
-            try:
-                DIALOG_PROGRESS.update( -1, _( 104 ), _( 110 ) )
-                # Loading context
-                self.contextSrc = Context()
-                #self.contextSrc.selectSource("XBMC Zone")
-                self.contextSrc.selectSource("Passion XBMC FTP")
-                #self.browser = self.contextSrc.getBrowser()
+                # Connection au serveur FTP
+                try:
+                    DIALOG_PROGRESS.update( -1, _( 104 ), _( 110 ) )
+                    if self.HomeAction and "default_content" in self.HomeAction:
+                        self.default_content = self.HomeAction.split( "=" )[ 1 ]
+                    else:
+                        self.default_content = "Passion XBMC Web"
+                    # Loading context
+                    self.contextSrc = Context()
+                    self.contextSrc.selectSource( self.default_content )#"XBMC Zone" )
+                    #self.browser = self.contextSrc.getBrowser()
 
-                self.set_list_container_150()
-
-
-                print "Updating displayed list"
-                self.updateData_Next()
-                self.updateList()
-                print "End of update for the displayed list" 
-
-            except:
-                #print str(sys.exc_info()[0])
-                print sys.exc_info()
-                traceback.print_exc()
-                xbmcgui.Dialog().ok( _( 111 ), _( 112 ) )
-                logger.LOG( logger.LOG_DEBUG, "Window::__init__: Exception durant la connection FTP" )
-                logger.LOG( logger.LOG_DEBUG, "Impossible de se connecter au serveur FTP: %s", self.host )
-                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-
-            # Title of the current pages
-            self.setProperty( "Category", _( 10 ) )
-            xbmc.executebuiltin( "Container.SetViewMode(%i)" % self.settings.get( "main_view_mode", self.CONTROL_MAIN_LIST_START ) )
-
-            self.setProperty( "DlSource", self.contextSrc.getSourceName() )
+                    self.set_list_container_150()
 
 
-            # Close the Loading Window
-            DIALOG_PROGRESS.close()
-        else:
-            # pas le choix avec les nouvelles vue, mais on lui joue un tour avec une listitems deja ready :P
-            if xbmc.getCondVisibility( "Window.IsActive(passion-main.xml)" ):
-                if self.listitems: self.re_updateList()
-                else: self.updateList()
-            # .addItems( items=listitems )
-            # print "self.addItems( items= )", hasattr( self, 'addItems' )
-            # for ControlList only :(
+                    #print "Updating displayed list"
+                    self.updateData_Next()
+                    self.updateList()
+                    #print "End of update for the displayed list
 
-        # desactive le splash
-        self.getControl( self.CONTROL_SHOW_SPLASH_IMG ).setVisible( 0 )
+                except:
+                    #print str(sys.exc_info()[0])
+                    #print sys.exc_info()
+                    print_exc()
+                    xbmcgui.Dialog().ok( _( 111 ), _( 112 ) )
+                    logger.LOG( logger.LOG_DEBUG, "Window::__init__: Exception durant la connection FTP" )
+                    logger.LOG( logger.LOG_DEBUG, "Impossible de se connecter au serveur FTP: %s", self.host )
+                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+
+                # Title of the current pages
+                self.setProperty( "Category", _( 10 ) )
+                self.setProperty( "DlSource", self.default_content )
+                xbmc.executebuiltin( "Container.SetViewMode(%i)" % self.settings.get( "main_view_mode", self.CONTROL_MAIN_LIST_START ) )
+
+
+
+                # Close the Loading Window
+                DIALOG_PROGRESS.close()
+                if self.HomeAction and self.HomeAction.startswith( "self." ):
+                    exec self.HomeAction
+            else:
+                # pas le choix avec les nouvelles vue, mais on lui joue un tour avec une listitems deja ready :P
+                if xbmc.getCondVisibility( "Window.IsActive(passion-main.xml)" ):
+                    if self.listitems: self.re_updateList()
+                    else: self.updateList()
+                # .addItems( items=listitems )
+                # print "self.addItems( items= )", hasattr( self, 'addItems' )
+                # for ControlList only :(
+
+            # desactive le splash
+            try: self.getControl( self.CONTROL_SHOW_SPLASH_IMG ).setVisible( 0 )
+            except: pass
+        except:
+            print_exc()
 
     def _get_settings( self, defaults=False ):
         """ reads settings """
         self.settings = Settings().get_settings( defaults=defaults )
-        self.getControl( self.CONTROL_FORUM_BUTTON ).setVisible( not self.settings.get( "hide_forum", False ) )
+        try:
+            self.getControl( self.CONTROL_FORUM_BUTTON ).setVisible( not self.settings.get( "hide_forum", False ) )
+        except:
+            print_exc()
 
     def _set_skin_colours( self ):
         #xbmcgui.lock()
@@ -351,6 +366,7 @@ class MainWindow( xbmcgui.WindowXML ):
             self.getControl( 100 ).addLabel( self.rss_feed )
             self.getControl( 100 ).setVisible( True )
         except:
+            print_exc()
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
             try: self.getControl( 100 ).setVisible( False )
             except: pass
@@ -379,6 +395,7 @@ class MainWindow( xbmcgui.WindowXML ):
 
     def _show_settings( self ):
         try:
+            self.HomeAction = None
             thumb_size_on_load = self.settings[ "thumb_size" ]
             import DialogSettings
             DialogSettings.show_settings( self )
@@ -391,6 +408,7 @@ class MainWindow( xbmcgui.WindowXML ):
 
     def _show_direct_infos( self ):
         try:
+            self.HomeAction = None
             import ForumDirectInfos
             ForumDirectInfos.show_direct_infos()
             #on a plus besoin, on le delete
@@ -398,14 +416,40 @@ class MainWindow( xbmcgui.WindowXML ):
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
+    def _show_file_manager( self, args=None ):
+        try:
+            self.HomeAction = None
+            thumb_size_on_load = self.settings[ "thumb_size" ]
+            import FileManagerGui
+            mainfunctions = [ self._show_settings, self._close_script ]
+            FileManagerGui.show_file_manager( mainfunctions, self.rightstest, args )
+            #on a plus besoin du manager, on le delete
+            del FileManagerGui
+            if thumb_size_on_load != self.settings[ "thumb_size" ]:
+                self.updateList() #on raffraichit la page pour afficher la taille des vignettes
+        except:
+            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+
+    def get_view_mode( self ):
+        view_mode = ""
+        for id in range( self.CONTROL_MAIN_LIST_START, self.CONTROL_MAIN_LIST_END + 1 ):
+            try:
+                if xbmc.getCondVisibility( "Control.IsVisible(%i)" % id ):
+                    view_mode = repr( id )
+                    return view_mode
+                    break
+            except:
+                pass
+        return view_mode
+
     def _show_context_menu( self ):
         try:
-            if ( not self.type.lower() in ( "racine", "plugins", ) ) and ( self.CONTROL_MAIN_LIST_START <= self.getFocusId() <= self.CONTROL_MAIN_LIST_END ):#( self.getFocusId() == self.CONTROL_MAIN_LIST ):
+            if ( not self.current_cat.lower() in [ "root", "racine", "plugins", _( 10 ).lower() ] ) and ( self.CONTROL_MAIN_LIST_START <= self.getFocusId() <= self.CONTROL_MAIN_LIST_END ):#( self.getFocusId() == self.CONTROL_MAIN_LIST ):
                 import DialogContextMenu
                 #buttons = { 1000 : ( "teste 1", "disabled" ), 1001 : "teste 2", 1002 : "teste 3",
                 #    1003 : "teste 4", 1004 : ( "teste 5", "disabled" ), 1005 : "teste 6", 1006 : "teste 7" }
                 buttons = { 1000: _( 1000 ), 1001: _( 1001 ), 1002: _( 184 ), 1003: _( 1002 ) }
-                selected = DialogContextMenu.show_context_menu( buttons )
+                selected = DialogContextMenu.show_context_menu( buttons, self.get_view_mode() )
                 del DialogContextMenu
                 if selected == 1000:
                     #installe add-ons
@@ -419,7 +463,8 @@ class MainWindow( xbmcgui.WindowXML ):
                 else:
                     pass
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
+            #logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def _switch_media( self ):
         #TODO: adpat implementation to multisources
@@ -427,7 +472,7 @@ class MainWindow( xbmcgui.WindowXML ):
             import DialogContextMenu
             buttons = { 1000: _( 11 ), 1001: _( 12 ), 1002: _( 13 ), 1003: _( 14 ),
                 1004: _( 18 ), 1005: _( 16 ), 1006: _( 15 ), 1007: _( 17 ) }
-            selected = DialogContextMenu.show_context_menu( buttons )
+            selected = DialogContextMenu.show_context_menu( buttons, self.get_view_mode() )
             del DialogContextMenu
             switch = None
             if selected == 1000:
@@ -464,25 +509,25 @@ class MainWindow( xbmcgui.WindowXML ):
     def set_list_container_150( self ):
         #list_container = sorted( self.list_container_150.items(), key=lambda id: id[ 0 ] )
         #self.rss_id = [ rss[ 0 ] for rss in list_container ]
-        label2 = ""#not used
-        icone = "windows.png"
-#        for key, value in list_container:
-        self.listOfSourceName = self.contextSrc.getSourceNameList()
-        print "set_list_container_150"
         try:
+            label2 = ""#not used
+            icone = "windows.png"
+    #        for key, value in list_container:
+            self.listOfSourceName = self.contextSrc.getSourceNameList()
+            #print "set_list_container_150"
             for source in self.listOfSourceName:
                 #label1 = source['title']
                 label1 = source
-                print label1
+                #print label1
                 #displayListItem = xbmcgui.ListItem( "test", "", iconImage=icone, thumbnailImage=icone )
                 #self.getControl( 150 ).addItem( displayListItem )
                 self.getControl( self.CONTROL_SOURCE_LIST ).addItem( xbmcgui.ListItem( label1, label1, icone, icone ) )
-            self.getControl( self.CONTROL_SOURCE_LIST ).setVisible( True )            
+            self.getControl( self.CONTROL_SOURCE_LIST ).setVisible( True )
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-            print sys.exc_info()
-            traceback.print_exc()
-            
+            #print sys.exc_info()
+            print_exc()
+
     def onAction( self, action ):
         """
         Remonte l'arborescence et quitte le script
@@ -494,7 +539,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 self.onExit()
 
             elif action == ACTION_PARENT_DIR:
-                print "ACTION_PARENT_DIR"
+                #print "ACTION_PARENT_DIR"
                 # remonte l'arborescence
                 if not self.main_list_last_pos:
                     try: self.main_list_last_pos.append( self.getCurrentListPosition() )
@@ -511,7 +556,7 @@ class MainWindow( xbmcgui.WindowXML ):
                     self.setCurrentListPosition( self.main_list_last_pos.pop() )
 
             elif action == ACTION_SHOW_INFO:
-                 print "_show_descript - ItemDescription"
+                 #print "_show_descript - ItemDescription"
                  self._show_descript()
 
             elif action == ACTION_CONTEXT_MENU:
@@ -535,19 +580,19 @@ class MainWindow( xbmcgui.WindowXML ):
             if not xbmcgui.Dialog().yesno( _( 180 ), _( 181 ), itemName ): return
             
             itemInstaller = self.contextSrc.getBrowser().getInstaller(self.index)
-            
-            print "Download via itemInstaller"
+
+            #print "Download via itemInstaller"
             dp = xbmcgui.DialogProgress()
             dp.create(_( 137 ))
             #status, destination = itemInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )
             status, destination = itemInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )
-    
+
             dp.close()
             del dp
-    
+
             #Check if install went well
-            print itemName
-            print repr(itemName)
+            #print itemName
+            #print repr(itemName)
             if status == "OK":
                 self._save_downloaded_property()
                 title = _( 141 )
@@ -567,7 +612,7 @@ class MainWindow( xbmcgui.WindowXML ):
                     # Continue install
                     dp = xbmcgui.DialogProgress()
                     dp.create(_( 137 ))
-                    status, destination = itemInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )                
+                    status, destination = itemInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )
                     dp.close()
                     del dp
                     self._save_downloaded_property()
@@ -631,36 +676,34 @@ class MainWindow( xbmcgui.WindowXML ):
     
                     #TODO: case of install an item
                 else:
-                    print "Download and install case"
+                    #print "Download and install case"
                     self.install_add_ons()
 
-            elif controlID == self.CONTROL_SOURCE_LIST:
-#                index = self.getControl( self.CONTROL_SOURCE_LIST ).getCurrentListPosition()
-#                sourceName = self.listOfSourceName[index]
-                previousBrowser = self.contextSrc.getBrowser()
-                sourceName = self.getControl( self.CONTROL_SOURCE_LIST ).getSelectedItem().getLabel()
-                self.contextSrc.selectSource(sourceName)
-                #self.browser = self.contextSrc.getBrowser()
-                print "Updating displayed list on NEW SOURCE: %s"%sourceName
-                self.updateData_Next()
-                self.updateList()
-                self.setProperty( "DlSource", self.contextSrc.getSourceName() )
-                
-                # Reset previosu Browser for next time
-                previousBrowser.reset() 
-                
+            elif controlID in [ 201, 202, 203, self.CONTROL_SOURCE_LIST ]:
+                new_content = None
+                if controlID == self.CONTROL_SOURCE_LIST:
+                    #index = self.getControl( self.CONTROL_SOURCE_LIST ).getCurrentListPosition()
+                    #sourceName = self.listOfSourceName[index]
+                    new_contentt = self.getControl( self.CONTROL_SOURCE_LIST ).getSelectedItem().getLabel()
+                elif controlID == 201:
+                    new_content = "Passion XBMC Web"
+                elif controlID == 202:
+                    new_content = "Passion XBMC FTP"
+                elif controlID == 203:
+                    new_content = "XBMC Zone"
+                if new_content is not None:
+                    self.default_content = new_content
+                    self.contextSrc.selectSource( self.default_content )
+                    #self.browser = self.contextSrc.getBrowser()
+                    #print "Updating displayed list on NEW SOURCE: %s"%sourceName
+                    self.updateData_Next()
+                    self.updateList()
+
             elif controlID == self.CONTROL_OPTIONS_BUTTON:
                 self._show_settings()
 
             elif controlID == self.CONTROL_FILE_MGR_BUTTON:
-                thumb_size_on_load = self.settings[ "thumb_size" ]
-                import FileManagerGui
-                mainfunctions = [ self._show_settings, self._close_script ]
-                FileManagerGui.show_file_manager( mainfunctions, self.rightstest )
-                #on a plus besoin du manager, on le delete
-                del FileManagerGui
-                if thumb_size_on_load != self.settings[ "thumb_size" ]:
-                    self.updateList() #on raffraichit la page pour afficher la taille des vignettes
+                self._show_file_manager()
 
             elif controlID == self.CONTROL_FORUM_BUTTON:
                 self._show_direct_infos()
@@ -673,22 +716,27 @@ class MainWindow( xbmcgui.WindowXML ):
                 pass
 
         except Exception, e:
-            print "Exception during onClick"
-            print e
-            print sys.exc_info()
-            traceback.print_exc()
+            #print "Exception during onClick"
+            #print e
+            #print sys.exc_info()
+            print_exc()
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def onExit( self ):
         """
         Action done on exit of the application
         """
-        # Free all the sources
-        # self.browser.close()
-        self.contextSrc.freeSources()
-
-        # Delete cache directory
-        self.deleteDir( self.CacheDir )
+        try:
+            # Free all the sources
+            # self.browser.close()
+            self.contextSrc.freeSources()
+        except:
+            print_exc()
+        try:
+            # Delete cache directory
+            self.deleteDir( self.CacheDir )
+        except:
+            print_exc()
 
         # Closing everything
         self._close_script()
@@ -732,6 +780,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 self.clearProperties()
             self.clearList()
             self.setProperty( "Category", self.current_cat )
+            self.setProperty( "DlSource", self.default_content )
             for item in self.listitems:
                 self.addItem( item )
         except:
@@ -744,13 +793,13 @@ class MainWindow( xbmcgui.WindowXML ):
         #TODO: use correct string for update data (for time being we use the one of update list)
         if not xbmc.getCondVisibility( "Window.IsActive(progressdialog)" ):
             DIALOG_PROGRESS.create( _( 0 ), _( 104 ), _( 110 ) )
-        try:            
-            print "Getting list of items got from the browser"
+        try:
+            #print "Getting list of items got from the browser"
             self.curDirList = self.contextSrc.getBrowser().getPrevList()
         except Exception, e:
-            print "Excpetion during updateData_Prev"
-            print e
-            print sys.exc_info()
+            #print "Excpetion during updateData_Prev"
+            #print e
+            #print sys.exc_info()
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         if not xbmc.getCondVisibility( "Window.IsActive(progressdialog)" ):
             DIALOG_PROGRESS.close()
@@ -762,14 +811,14 @@ class MainWindow( xbmcgui.WindowXML ):
         #TODO: use correct string for update data (for time being we use the one of update list)
         if not xbmc.getCondVisibility( "Window.IsActive(progressdialog)" ):
             DIALOG_PROGRESS.create( _( 0 ), _( 104 ), _( 110 ) )
-        try:            
-            print "Getting list of items from the browser for current item ID:"
-            print self.index
+        try:
+            #print "Getting list of items from the browser for current item ID:"
+            #print self.index
             self.curDirList = self.contextSrc.getBrowser().getNextList(self.index)
         except Exception, e:
-            print "Exception during updateData_Next"
-            print e
-            print sys.exc_info()
+            #print "Exception during updateData_Next"
+            #print e
+            #print sys.exc_info()
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
         if not xbmc.getCondVisibility( "Window.IsActive(progressdialog)" ):
             DIALOG_PROGRESS.close()
@@ -795,33 +844,39 @@ class MainWindow( xbmcgui.WindowXML ):
             # Calcul du nombre d'elements de la liste
             itemnumber = len( self.curDirList )
 
-            print "Starting loop on list of items got from the browser"
+            self.current_cat = self.contextSrc.getBrowser().getCurrentCategory()
+            self.setProperty( "Category", self.current_cat )
+            self.setProperty( "DlSource", self.default_content )
+            #print "Current Category"
+            #print self.current_cat
+
+            #self.setProperty( "Category", self.contextSrc.getBrowser().getCurrentCategory() )
+
+            #print "Starting loop on list of items got from the browser"
             for elt in self.curDirList:
                 imagePath = ""
-                print elt
-                
-                
-                self.setProperty( "Category", self.contextSrc.getBrowser().getCurrentCategory() )
+                #print elt
+
                 if self.settings.get( "hide_extention", True ):
                     itemName = os.path.splitext( urllib.unquote( elt['name'] ) )[ 0 ]
                 else:
                     itemName = urllib.unquote( elt['name'] )
 
-                displayListItem = xbmcgui.ListItem( itemName, "", iconImage=elt['previewpicture'], thumbnailImage=elt['thumbnail'] )
+                displayListItem = xbmcgui.ListItem( itemName, "", elt['thumbnail'], elt['thumbnail'] )
 
                 # Register in case image is not downloaded yet
                 self.contextSrc.getBrowser().imageUpdateRegister( elt, updateImage_cb=self._updateListThumb_cb, obj2update=displayListItem )
 
                 self.set_item_infos( displayListItem, elt )
-                
-                print "Item to display"
-                print displayListItem
-                
-                self.addItem( displayListItem )                
+
+                #print "Item to display"
+                #print displayListItem
+
+                self.addItem( displayListItem )
                 # utiliser pour remettre la liste courante a jour lorsqu'on reviens sur cette fenetre depuis le forum ou le manager
                 self.listitems.append( displayListItem )
-    
-            self.current_cat = unicode( xbmc.getInfoLabel( 'Container.Property(Category)' ), 'utf-8')
+
+            #self.current_cat = unicode( xbmc.getInfoLabel( 'Container.Property(Category)' ), 'utf-8')
             #print "Current Category"
             #print self.current_cat
     
@@ -830,9 +885,9 @@ class MainWindow( xbmcgui.WindowXML ):
             
             #xbmcgui.unlock()
         except Exception, e:
-            print "Excpetion during updateList"
-            print e
-            print sys.exc_info()
+            #print "Excpetion during updateList"
+            #print e
+            #print sys.exc_info()
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
             
         DIALOG_PROGRESS.close()
@@ -847,6 +902,7 @@ class MainWindow( xbmcgui.WindowXML ):
             listitem.setProperty( "version",         "" )
             listitem.setProperty( "language",        "" )
             listitem.setProperty( "description",     "" )
+            listitem.setProperty( "outline",         "" )
             listitem.setProperty( "added",           "" )
             listitem.setProperty( "fanartpicture",   "" )
             listitem.setProperty( "previewVideoURL", "" )
@@ -869,27 +925,44 @@ class MainWindow( xbmcgui.WindowXML ):
 
     def set_item_infos( self, listItem, dataItem ):
         try:
-            print "MainGUI - set_item_infos"
-            print dataItem['name']
+            #print "MainGUI - set_item_infos"
+            #print dataItem['name']
             #infos = self.infoswarehouse.getInfo( itemName=os.path.basename( ipath ), itemType=self.type, listitem=listitem )
-            listItem.setProperty( "itemId",          "" )
-            listItem.setProperty( "fileName",        "" ) # Deprecated
-            listItem.setProperty( "date",            dataItem['date'] )
-            listItem.setProperty( "title",           urllib.unquote( dataItem['name'].decode('string_escape') ) )
-            listItem.setProperty( "author",          dataItem['author'].decode('string_escape') )
-            listItem.setProperty( "version",         dataItem['version'].decode('string_escape') )
-            listItem.setProperty( "language",        dataItem['language'].decode('string_escape') )
-            listItem.setProperty( "description",     urllib.unquote( dataItem['description'].decode('string_escape') ) )
-            listItem.setProperty( "added",           dataItem['added'] )
-            #listItem.setProperty( "fanartpicture",   dataItem['previewpictureurl'] )
-            listItem.setProperty( "fanartpicture",   dataItem['previewpicture'] )
-            listItem.setProperty( "previewVideoURL", "" )
-            print "set_item_infos"
-            print dataItem            
+
+            listItem.setProperty( "itemId",           "" )
+
+            listItem.setProperty( "fileName",         "" ) # Deprecated
+
+            listItem.setProperty( "date",             dataItem['date'].replace( "None", "" ) )
+
+            try: listItem.setProperty( "title",       urllib.unquote( dataItem['name'].decode('string_escape') ).replace( "None", "" ) )
+            except: listItem.setProperty( "title",    urllib.unquote( dataItem['name'] ).replace( "None", "" ) )
+
+            try: listItem.setProperty( "author",      dataItem['author'].decode('string_escape').replace( "None", "" ) )
+            except: listItem.setProperty( "author",   dataItem['author'].replace( "None", "" ) )
+
+            try: listItem.setProperty( "version",     dataItem['version'].decode('string_escape').replace( "None", "" ) )
+            except: listItem.setProperty( "version",  dataItem['version'].replace( "None", "" ) )
+
+            try: listItem.setProperty( "language",    dataItem['language'].decode('string_escape').replace( "None", "" ) )
+            except: listItem.setProperty( "language", dataItem['language'].replace( "None", "" ) )
+
+            listItem.setProperty( "added",            dataItem['added'].replace( "None", "" ) )
+
+            #listItem.setProperty( "fanartpicture",    dataItem['previewpictureurl'] )
+            listItem.setProperty( "fanartpicture",    dataItem['previewpicture'].replace( "None", "" ) )
+
+            listItem.setProperty( "previewVideoURL",  "" )
+
+            try: description = urllib.unquote( dataItem['description'].decode('string_escape') )
+            except: description = urllib.unquote( dataItem['description'] )
+            listItem.setProperty( "description", description.replace( "None", "" ) )
+            listItem.setProperty( "outline",     description.replace( "None", "" ).replace( "\r", "\n" ).replace( "\n\n", "  " ).replace( "\n", " " ).replace( "[CR]", " " ) )
+            #print "set_item_infos"
+            #print dataItem
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-            print sys.exc_info()
-            traceback.print_exc()
+            print_exc()
 
     def _updateListThumb_cb( self, imagePath, listitem ):
         """
@@ -916,8 +989,8 @@ class MainWindow( xbmcgui.WindowXML ):
         retourne True si le repertoire est effece False sinon
         """
         result = True
-        print "deleteDir"
-        print path
+        #print "deleteDir"
+        #print path
         if os.path.isdir( path ):
             dirItems=os.listdir( path )
             for item in dirItems:
@@ -952,8 +1025,8 @@ class MainWindow( xbmcgui.WindowXML ):
         mais pas le repertoire lui meme
         folder: chemin du repertoire local
         """
-        print "delDirContent"
-        print path
+        #print "delDirContent"
+        #print path
         result = True
         if os.path.isdir( path ):
             dirItems=os.listdir( path )
@@ -970,7 +1043,7 @@ class MainWindow( xbmcgui.WindowXML ):
                     result = False
                     logger.LOG( logger.LOG_DEBUG, "delDirContent: Exception la suppression du contenu du reperoire: %s", path )
                     logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-                    traceback.print_exc()
+                    print_exc()
         else:
             logger.LOG( logger.LOG_ERROR, "delDirContent: %s n'est pas un repertoire", path )
             result = False
@@ -1103,15 +1176,15 @@ class MainWindow( xbmcgui.WindowXML ):
         return result
 
 
-def show_main():
+
+def show_main( HomeAction=None ):
     #Fonction de demarrage
-    file_xml = "passion-main.xml"
     #depuis la revision 14811 on a plus besoin de mettre le chemin complet, la racine suffit
     dir_path = os.getcwd().replace( ";", "" )
     #recupere le nom du skin et si force_fallback est vrai, il va chercher les images du defaultSkin.
     current_skin, force_fallback = getUserSkin()
+    file_xml = ( "IPX-Installer.xml", "passion-main.xml" )[ current_skin != "Default.HD" ]
 
-    w = MainWindow( file_xml, dir_path, current_skin, force_fallback )
-    #w = MainWindow()
+    w = MainWindow( file_xml, dir_path, current_skin, force_fallback, HomeAction=HomeAction )
     w.doModal()
     del w

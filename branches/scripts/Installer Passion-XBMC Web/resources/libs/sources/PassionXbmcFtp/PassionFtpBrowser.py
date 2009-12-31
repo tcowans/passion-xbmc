@@ -132,7 +132,7 @@ class PassionFtpBrowser(Browser):
             item['date']              = ""
             item['added']             = ""
             item['thumbnail']         = Item.get_thumb( cat )
-            item['previewpicture']    = Item.get_thumb( cat )
+            item['previewpicture']    = ""#Item.get_thumb( cat )
             item['image2retrieve']    = False # Temporary patch for reseting the flag after download (would be better in the thread in charge of the download)
 
             list.append(item)
@@ -165,7 +165,7 @@ class PassionFtpBrowser(Browser):
             item['date']              = ""
             item['added']             = ""
             item['thumbnail']         = Item.get_thumb( cat )
-            item['previewpicture']    = Item.get_thumb( cat )
+            item['previewpicture']    = ""#Item.get_thumb( cat )
             item['image2retrieve']    = False # Temporary patch for reseting the flag after download (would be better in the thread in charge of the download)
 
             list.append(item)
@@ -182,7 +182,7 @@ class PassionFtpBrowser(Browser):
         if  item['previewpictureurl'] == 'None':
             # No picture available -> use default one
             item['thumbnail']      = Item.get_thumb( item['xbmc_type'] ) # icone
-            item['previewpicture'] = Item.THUMB_NOT_AVAILABLE # preview
+            item['previewpicture'] = ""#Item.THUMB_NOT_AVAILABLE # preview
         else:
             # Check if picture is already downloaded and available
             downloadImage = False
@@ -196,7 +196,7 @@ class PassionFtpBrowser(Browser):
             if os.path.exists(checkPathPic):
                 item['previewpicture'] = checkPathPic
             else:
-                item['previewpicture'] = Item.THUMB_NOT_AVAILABLE
+                item['previewpicture'] = ""#Item.THUMB_NOT_AVAILABLE
                 downloadImage = True
                 
             if downloadImage == True:
@@ -309,7 +309,7 @@ class PassionFtpBrowser(Browser):
                             item['date']              = ""
                             item['added']             = ""
                             item['thumbnail']         = Item.THUMB_NOT_AVAILABLE
-                            item['previewpicture']    = Item.THUMB_NOT_AVAILABLE
+                            item['previewpicture']    = ""#Item.THUMB_NOT_AVAILABLE
                             item['image2retrieve']    = False # Temporary patch for reseting the flag after download (would be better in the thread in charge of the download)
         
                             self._set_item_infos(item) # Update infos

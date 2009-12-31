@@ -6,7 +6,7 @@ Browser: this module allows browsing of server content
 # Modules general
 import os
 import sys
-import traceback
+from traceback import print_exc
 
 # Module logger
 try:

@@ -302,7 +302,7 @@
 				<textcolor>FF000000</textcolor>
 				<font>font13</font>
 				<align>justify</align>
-				<label>$INFO[Container(191).ListItem.Property(Topic)]</label>
+				<label>[B]$INFO[Container(191).ListItem.Property(general_category),,[CR]][/B]$INFO[Container(191).ListItem.Property(Topic)]</label>
 				<autoscroll time="2000" delay="3000">Skin.HasSetting(AutoScroll)</autoscroll>
 				<visible>Control.IsVisible(194)</visible>
 			</control>
@@ -316,7 +316,7 @@
 				<textcolor>FF000000</textcolor>
 				<font>font13</font>
 				<align>justify</align>
-				<label>$INFO[Container(191).ListItem.Property(Topic)]</label>
+				<label>[B]$INFO[Container(191).ListItem.Property(general_category),,[CR]][/B]$INFO[Container(191).ListItem.Property(Topic)]</label>
 				<autoscroll time="2000" delay="3000">Skin.HasSetting(AutoScroll)</autoscroll>
 				<visible>!Control.IsVisible(194)</visible>
 			</control>

@@ -1,0 +1,1292 @@
+<window id="3005">
+	<defaultcontrol always="true">10</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+	<!-- <animation effect="fade" time="200">WindowOpen</animation> -->
+	<animation effect="fade" time="200">WindowClose</animation>
+
+	<!-- solution temporaire le temps de le faire pour le HD -->
+	<animation effect="zoom" center="auto" start="100" end="178,125" time="0">WindowOpen</animation>
+	<animation effect="slide" start="0,0" end="280,72" reversible="false" time="0" condition="true">Conditional</animation>
+
+	<!-- Important if you don't want to use the WindowLists you still need to remember not to use the ids for other stuff. -->
+	<!-- * id 3 - Button - For the View button (to change between the lists) -->
+	<!-- * id 4/5 - Reserved (Don't actually do anything at the moment) -->
+	<!-- * id 12 - Label - For displaying the number of items in the WindowLists -->
+	<!-- * id 50-59 - Lists/Panels - The actual lists for displaying the information in the window lists -->
+
+	<!-- ** Required ** Do not change any <control type="xxxx" id="XX"> -->
+	<!-- ** Required ** Do not change any skin settings or skin infos -->
+	<!-- ** Infos ** if you not control in your skin, set and add <visible>false</visible>, results no bugs created in scripts. If remove control the bugs or freeze are created. -->
+
+	<!-- REMARQUE QUE LES "<texture>" COMMANCENT toutes par "passion-blablabla.bla", -->
+	<!-- ceci et pour pas avoir des conflits ou des images pas afficher, -->
+	<!-- que meme des images qui font pas partie du theme du script "Default". -->
+	<!-- Avec le theme d'XBMC qui est en fonction -->
+
+	<controls>
+		<!-- BACKGROUNDS DIALOG -->
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>720</width>
+			<height>576</height>
+			<texture>IPX-black.png</texture>
+			<animation effect="fade" time="1000">WindowOpen</animation>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>720</width>
+			<height>576</height>
+			<texture border="20">IPX-DialogBack.png</texture>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>720</width>
+			<height>576</height>
+			<texture border="20">IPX-DialogFront.png</texture>
+		</control>
+		<control type="button" id="303">
+			<description>Close Window button</description>
+			<posx>656</posx>
+			<posy>37</posy>
+			<width>25</width>
+			<height>20</height>
+			<hitrect x="646" y="37" w="35" h="30" />
+			<label>-</label>
+			<font>-</font>
+			<texturefocus>IPX-close-windowFO.png</texturefocus>
+			<texturenofocus>IPX-close-window.png</texturenofocus>
+			<onleft>9000</onleft>
+			<onright>9000</onright>
+			<onup>9000</onup>
+			<ondown>9000</ondown>
+			<visible>system.getbool(lookandfeel.enablemouse)</visible>
+		</control>
+
+		<!-- LABELS DIALOG -->
+		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+		<!-- ** Required ** Do not change id's or type's -->
+		<control type="label" id="1">
+			<description>dialog Heading</description>
+			<posx>50</posx>
+			<posy>50</posy>
+			<label>$LOCALIZE[SCRIPT0] - $LOCALIZE[SCRIPT500]</label>
+			<font>special13</font>
+			<textcolor>DDced8da</textcolor>
+			<shadowcolor>FF000000</shadowcolor>
+		</control>
+		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+		<!-- ** Required ** Do not change id's or type's -->
+		<control type="label" id="99">
+			<description>script version</description>
+			<posx>655</posx>
+			<posy>50</posy>
+			<label>SCRIPT499</label>
+			<font>font12</font>
+			<textcolor>DDced8da</textcolor>
+			<shadowcolor>FF000000</shadowcolor>
+			<align>right</align>
+		</control>
+
+		<!-- Main buttons ** required ** -->
+		<control type="group" id="1000">
+			<posx>45</posx>
+			<posy>90</posy>
+			<control type="image">
+				<description>divider</description>
+				<posx>-11</posx>
+				<posy>26</posy>
+				<width>11</width>
+				<height>4</height>
+				<texture flipy="true">IPX-tab.png</texture>
+			</control>
+			<control type="togglebutton" id="10">
+				<description>general Button</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>102</width>
+				<height>30</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>SCRIPT200</label>
+				<font>special12</font>
+				<textcolor>99ffffff</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<textoffsetx>17</textoffsetx>
+				<pulseonselect>no</pulseonselect>
+				<texturenofocus border="3">IPX-button-nofocus2.png</texturenofocus>
+				<texturefocus border="3,3,3,0">-</texturefocus>
+				<usealttexture>Skin.String(PassionSettings,1)</usealttexture>
+				<alttexturefocus border="3,20,3,0">IPX-button-focus2.png</alttexturefocus>
+				<alttexturenofocus border="3">IPX-button-nofocus-tab.png</alttexturenofocus>
+				<onfocus>Skin.SetString(PassionSettings,1)</onfocus>
+				<onleft>70</onleft>
+				<onright>20</onright>
+				<onup>9000</onup>
+				<ondown>9001</ondown>
+			</control>
+			<control type="image">
+				<description>divider</description>
+				<posx>102</posx>
+				<posy>26</posy>
+				<width>2</width>
+				<height>4</height>
+				<texture flipy="true">IPX-tab.png</texture>
+			</control>
+			<control type="togglebutton" id="20">
+				<description>skin Button</description>
+				<posx>104</posx>
+				<posy>0</posy>
+				<width>102</width>
+				<height>30</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>SCRIPT11</label>
+				<font>special12</font>
+				<textcolor>99ffffff</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<textoffsetx>17</textoffsetx>
+				<pulseonselect>no</pulseonselect>
+				<texturenofocus border="3">IPX-button-nofocus2.png</texturenofocus>
+				<texturefocus border="3,3,3,0">-</texturefocus>
+				<usealttexture>Skin.String(PassionSettings,2)</usealttexture>
+				<alttexturefocus border="3,20,3,0">IPX-button-focus2.png</alttexturefocus>
+				<alttexturenofocus border="3">IPX-button-nofocus-tab.png</alttexturenofocus>
+				<onfocus>Skin.SetString(PassionSettings,2)</onfocus>
+				<onleft>10</onleft>
+				<onright>30</onright>
+				<onup>9000</onup>
+				<ondown>9021</ondown>
+			</control>
+			<control type="image">
+				<description>divider</description>
+				<posx>206</posx>
+				<posy>26</posy>
+				<width>2</width>
+				<height>4</height>
+				<texture flipy="true">IPX-tab.png</texture>
+			</control>
+			<control type="togglebutton" id="30">
+				<description>forum Button</description>
+				<posx>208</posx>
+				<posy>0</posy>
+				<width>102</width>
+				<height>30</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>SCRIPT1</label>
+				<font>special12</font>
+				<textcolor>99ffffff</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<textoffsetx>17</textoffsetx>
+				<pulseonselect>no</pulseonselect>
+				<texturenofocus border="3">IPX-button-nofocus2.png</texturenofocus>
+				<texturefocus border="3,3,3,0">-</texturefocus>
+				<usealttexture>Skin.String(PassionSettings,3)</usealttexture>
+				<alttexturefocus border="3,20,3,0">IPX-button-focus2.png</alttexturefocus>
+				<alttexturenofocus border="3">IPX-button-nofocus-tab.png</alttexturenofocus>
+				<onfocus>Skin.SetString(PassionSettings,3)</onfocus>
+				<onleft>20</onleft>
+				<onright>40</onright>
+				<onup>9000</onup>
+				<ondown>9003</ondown>
+			</control>
+			<control type="image">
+				<description>divider</description>
+				<posx>310</posx>
+				<posy>26</posy>
+				<width>106</width>
+				<height>4</height>
+				<texture flipy="true">IPX-tab.png</texture>
+			</control>
+			<control type="togglebutton" id="40">
+				<description>more Button</description>
+				<posx>312</posx>
+				<posy>0</posy>
+				<width>102</width>
+				<height>30</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>More...</label>
+				<font>special12</font>
+				<textcolor>99ffffff</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<textoffsetx>17</textoffsetx>
+				<pulseonselect>no</pulseonselect>
+				<texturenofocus border="3">IPX-button-nofocus2.png</texturenofocus>
+				<texturefocus border="3,3,3,0">-</texturefocus>
+				<usealttexture>Skin.String(PassionSettings,4)</usealttexture>
+				<alttexturefocus border="3,20,3,0">IPX-button-focus2.png</alttexturefocus>
+				<alttexturenofocus border="3">IPX-button-nofocus-tab.png</alttexturenofocus>
+				<onfocus>Skin.SetString(PassionSettings,4)</onfocus>
+				<onleft>30</onleft>
+				<onright>60</onright>
+				<onup>9000</onup>
+				<ondown>9004</ondown>
+				<visible>false</visible>
+			</control>
+			<control type="image">
+				<description>divider</description>
+				<posx>414</posx>
+				<posy>26</posy>
+				<width>4</width>
+				<height>3</height>
+				<texture flipy="true">IPX-tab.png</texture>
+				<visible>false</visible>
+			</control>
+			<control type="togglebutton" id="60">
+				<description>help Button</description>
+				<posx>416</posx>
+				<posy>0</posy>
+				<width>103</width>
+				<height>30</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>SCRIPT3</label>
+				<font>special12</font>
+				<textcolor>99ffffff</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<textoffsetx>17</textoffsetx>
+				<pulseonselect>no</pulseonselect>
+				<texturenofocus border="3">IPX-button-nofocus2.png</texturenofocus>
+				<texturefocus border="3,3,3,0">-</texturefocus>
+				<usealttexture>Skin.String(PassionSettings,5)</usealttexture>
+				<alttexturefocus border="3,20,3,0">IPX-button-focus2.png</alttexturefocus>
+				<alttexturenofocus border="3">IPX-button-nofocus-tab.png</alttexturenofocus>
+				<onfocus>Skin.SetString(PassionSettings,5)</onfocus>
+				<onleft>40</onleft>
+				<onright>70</onright>
+				<onup>9000</onup>
+				<ondown>9006</ondown>
+			</control>
+			<control type="image">
+				<description>divider</description>
+				<posx>519</posx>
+				<posy>26</posy>
+				<width>2</width>
+				<height>4</height>
+				<texture flipy="true">IPX-tab.png</texture>
+			</control>
+			<control type="togglebutton" id="70">
+				<description>help Button</description>
+				<description>about Button</description>
+				<posx>521</posx>
+				<posy>0</posy>
+				<width>103</width>
+				<height>30</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>SCRIPT4</label>
+				<font>special12</font>
+				<textcolor>99ffffff</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<textoffsetx>17</textoffsetx>
+				<pulseonselect>no</pulseonselect>
+				<texturenofocus border="3">IPX-button-nofocus2.png</texturenofocus>
+				<texturefocus border="3,3,3,0">-</texturefocus>
+				<usealttexture>Skin.String(PassionSettings,6)</usealttexture>
+				<alttexturefocus border="3,20,3,0">IPX-button-focus2.png</alttexturefocus>
+				<alttexturenofocus border="3">IPX-button-nofocus-tab.png</alttexturenofocus>
+				<onfocus>Skin.SetString(PassionSettings,6)</onfocus>
+				<onleft>60</onleft>
+				<onright>10</onright>
+				<onup>9000</onup>
+				<ondown>9007</ondown>
+			</control>
+			<control type="image">
+				<description>divider</description>
+				<posx>624</posx>
+				<posy>26</posy>
+				<width>11</width>
+				<height>4</height>
+				<texture flipy="true">IPX-tab.png</texture>
+			</control>
+		</control>
+
+		<!-- MENU GENERAL -->
+		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+		<!-- ** Required ** Do not change id's or type's -->
+		<control type="group" id="9001">
+			<description>rss button 1</description>
+			<posx>45</posx>
+			<posy>126</posy>
+			<visible>Skin.String(PassionSettings,1)</visible>
+			<control type="image" id="1">
+				<description>rss background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>625</width>
+				<height>34</height>
+				<texture border="5">IPX-button-focus.png</texture>
+				<visible>ControlGroup(9001).HasFocus()</visible>
+			</control>
+			<control type="button" id="100">
+				<description>Decrease rss button</description>
+				<posx>580</posx>
+				<posy>9</posy>
+				<width>18</width>
+				<height>16</height>
+				<texturenofocus>IPX-scroll-down.png</texturenofocus>
+				<texturefocus>IPX-scroll-down-focus.png</texturefocus>
+				<onleft>9000</onleft>
+				<onright>110</onright>
+				<ondown>160</ondown>
+				<onup>1000</onup>
+			</control>
+			<control type="button" id="110">
+				<description>Increase rss button</description>
+				<posx>598</posx>
+				<posy>9</posy>
+				<width>18</width>
+				<height>16</height>
+				<texturenofocus>IPX-scroll-up.png</texturenofocus>
+				<texturefocus>IPX-scroll-up-focus.png</texturefocus>
+				<onleft>100</onleft>
+				<onright>9000</onright>
+				<ondown>160</ondown>
+				<onup>1000</onup>
+			</control>
+			<control type="button" id="120">
+				<description>rss label</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>580</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT511</label>
+				<label2>SCRIPT506</label2>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<aligny>center</aligny>
+				<texturefocus>-</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<onleft>110</onleft>
+				<onright>100</onright>
+				<ondown>160</ondown>
+				<onup>1000</onup>
+			</control>
+		</control>
+		<control type="grouplist" id="9010">
+			<description>menu general</description>
+			<visible>Skin.String(PassionSettings,1)</visible>
+			<posx>45</posx>
+			<posy>160</posy>
+			<width>625</width>
+			<height>320</height>
+			<itemgap>0</itemgap>
+			<pagecontrol>-</pagecontrol>
+			<orientation>vertical</orientation>
+			<onleft>9000</onleft>
+			<onright>9000</onright>
+			<onup>9001</onup>
+			<ondown>9000</ondown>
+			<!-- <usecontrolcoords>true</usecontrolcoords> -->
+			<control type="image" id="129">
+				<description>separator image</description>
+				<posx>-5</posx>
+				<posy>0</posy>
+				<width>630</width>
+				<height>5</height>
+				<texture>IPX-separator.png</texture>
+			</control>
+			<control type="radiobutton" id="160">
+				<description>button general 4</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>625</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT514</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<aligny>center</aligny>
+				<texturefocus border="5">IPX-button-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<textureradiofocus>IPX-settings-check-box.png</textureradiofocus>
+				<textureradionofocus>IPX-settings-check-boxNF.png</textureradionofocus>
+			</control>
+			<control type="radiobutton" id="170">
+				<description>button general 5</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>625</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT515</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<aligny>center</aligny>
+				<texturefocus border="5">IPX-button-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<textureradiofocus>IPX-settings-check-box.png</textureradiofocus>
+				<textureradionofocus>IPX-settings-check-boxNF.png</textureradionofocus>
+			</control>
+			<control type="radiobutton" id="130">
+				<description>button general 1</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>625</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT501</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<aligny>center</aligny>
+				<texturefocus border="5">IPX-button-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<textureradiofocus>IPX-settings-check-box.png</textureradiofocus>
+				<textureradionofocus>IPX-settings-check-boxNF.png</textureradionofocus>
+			</control>
+			<control type="image" id="139">
+				<description>separator image</description>
+				<posx>-5</posx>
+				<posy>0</posy>
+				<width>630</width>
+				<height>5</height>
+				<texture>IPX-separator.png</texture>
+			</control>
+			<control type="radiobutton" id="140">
+				<description>button general 2</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>625</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT510</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<aligny>center</aligny>
+				<texturefocus border="5">IPX-button-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<textureradiofocus>IPX-settings-check-box.png</textureradiofocus>
+				<textureradionofocus>IPX-settings-check-boxNF.png</textureradionofocus>
+			</control>
+			<control type="radiobutton" id="150">
+				<description>button general 3</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>625</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT512</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<aligny>center</aligny>
+				<texturefocus border="5">IPX-button-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<textureradiofocus>IPX-settings-check-box.png</textureradiofocus>
+				<textureradionofocus>IPX-settings-check-boxNF.png</textureradionofocus>
+			</control>
+			<control type="image" id="179">
+				<description>separator image</description>
+				<posx>-5</posx>
+				<posy>0</posy>
+				<width>630</width>
+				<height>5</height>
+				<texture>IPX-separator.png</texture>
+			</control>
+			<control type="radiobutton" id="180">
+				<description>button general 6</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>625</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT530</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<aligny>center</aligny>
+				<texturefocus border="5">IPX-button-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<textureradiofocus>IPX-settings-check-box.png</textureradiofocus>
+				<textureradionofocus>IPX-settings-check-boxNF.png</textureradionofocus>
+			</control>
+		</control>
+
+		<!-- theme colours List Decrease/Increase -->
+		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+		<!-- ** Required ** Do not change id's or type's -->
+		<control type="group" id="9021">
+			<description>theme button 1</description>
+			<posx>45</posx>
+			<posy>126</posy>
+			<visible>Skin.String(PassionSettings,2)</visible>
+			<control type="image">
+				<description>skin background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>625</width>
+				<height>34</height>
+				<texture border="5">IPX-button-focus.png</texture>
+				<visible>ControlGroup(9021).HasFocus()</visible>
+			</control>
+			<control type="button" id="290">
+				<description>Decrease skin button</description>
+				<posx>580</posx>
+				<posy>9</posy>
+				<width>18</width>
+				<height>16</height>
+				<texturenofocus>IPX-scroll-down.png</texturenofocus>
+				<texturefocus>IPX-scroll-down-focus.png</texturefocus>
+				<onleft>9000</onleft>
+				<onright>291</onright>
+				<ondown>9002</ondown>
+				<onup>1000</onup>
+			</control>
+			<control type="button" id="291">
+				<description>Increase skin button</description>
+				<posx>598</posx>
+				<posy>9</posy>
+				<width>18</width>
+				<height>16</height>
+				<texturenofocus>IPX-scroll-up.png</texturenofocus>
+				<texturefocus>IPX-scroll-up-focus.png</texturefocus>
+				<onleft>290</onleft>
+				<onright>9000</onright>
+				<ondown>9002</ondown>
+				<onup>1000</onup>
+			</control>
+			<control type="button" id="292">
+				<description>skin label</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>580</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT531</label>
+				<label2>Default</label2>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<aligny>center</aligny>
+				<texturefocus>-</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<onleft>291</onleft>
+				<onright>290</onright>
+				<ondown>9002</ondown>
+				<onup>1000</onup>
+			</control>
+		</control>
+		<control type="group" id="9002">
+			<description>theme button 1</description>
+			<posx>45</posx>
+			<posy>160</posy><!-- 126 + 34 -->
+			<visible>Skin.String(PassionSettings,2)</visible>
+			<control type="image" id="1">
+				<description>colour background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>625</width>
+				<height>34</height>
+				<texture border="5">IPX-button-focus.png</texture>
+				<visible>ControlGroup(9002).HasFocus()</visible>
+			</control>
+			<control type="button" id="200">
+				<description>Decrease colour button</description>
+				<posx>580</posx>
+				<posy>9</posy>
+				<width>18</width>
+				<height>16</height>
+				<texturenofocus>IPX-scroll-down.png</texturenofocus>
+				<texturefocus>IPX-scroll-down-focus.png</texturefocus>
+				<onleft>9000</onleft>
+				<onright>210</onright>
+				<ondown>9022</ondown>
+				<onup>9021</onup>
+			</control>
+			<control type="button" id="210">
+				<description>Increase colour button</description>
+				<posx>598</posx>
+				<posy>9</posy>
+				<width>18</width>
+				<height>16</height>
+				<texturenofocus>IPX-scroll-up.png</texturenofocus>
+				<texturefocus>IPX-scroll-up-focus.png</texturefocus>
+				<onleft>200</onleft>
+				<onright>9000</onright>
+				<ondown>9022</ondown>
+				<onup>9021</onup>
+			</control>
+			<control type="button" id="220">
+				<description>colour label</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>580</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT505</label>
+				<label2>SCRIPT506</label2>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<aligny>center</aligny>
+				<texturefocus>-</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<onleft>210</onleft>
+				<onright>200</onright>
+				<ondown>9022</ondown>
+				<onup>9021</onup>
+			</control>
+			<control type="image" id="249">
+				<description>separator image</description>
+				<posx>-5</posx>
+				<posy>34</posy>
+				<width>630</width>
+				<height>5</height>
+				<texture>IPX-separator.png</texture>
+				<visible></visible>
+			</control>
+		</control>
+		<control type="group" id="9022">
+			<description>theme button 2</description>
+			<posx>45</posx>
+			<posy>199</posy><!-- 165 + 39 -->
+			<visible>Skin.String(PassionSettings,2)</visible>
+			<control type="image" id="1">
+				<description>colour background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>625</width>
+				<height>34</height>
+				<texture border="5">IPX-button-focus.png</texture>
+				<visible>ControlGroup(9022).HasFocus()</visible>
+			</control>
+			<control type="button" id="260">
+				<description>Decrease thumb size button</description>
+				<posx>580</posx>
+				<posy>9</posy>
+				<width>18</width>
+				<height>16</height>
+				<texturenofocus>IPX-scroll-down.png</texturenofocus>
+				<texturefocus>IPX-scroll-down-focus.png</texturefocus>
+				<onleft>9000</onleft>
+				<onright>270</onright>
+				<ondown>250</ondown>
+				<onup>9002</onup>
+			</control>
+			<control type="button" id="270">
+				<description>Increase thumb size button</description>
+				<posx>598</posx>
+				<posy>9</posy>
+				<width>18</width>
+				<height>16</height>
+				<texturenofocus>IPX-scroll-up.png</texturenofocus>
+				<texturefocus>IPX-scroll-up-focus.png</texturefocus>
+				<onleft>260</onleft>
+				<onright>9000</onright>
+				<ondown>250</ondown>
+				<onup>9002</onup>
+			</control>
+			<control type="button" id="280">
+				<description>thumb size label</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>580</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT517</label>
+				<label2></label2>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<aligny>center</aligny>
+				<texturefocus>-</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<onleft>270</onleft>
+				<onright>260</onright>
+				<ondown>250</ondown>
+				<onup>9002</onup>
+			</control>
+		</control>
+		<control type="grouplist" id="9020">
+			<visible>Skin.String(PassionSettings,2)</visible>
+			<posx>45</posx>
+			<posy>233</posy><!-- 199 + 34 -->
+			<width>625</width>
+			<height>266</height>
+			<itemgap>0</itemgap>
+			<pagecontrol>-</pagecontrol>
+			<orientation>vertical</orientation>
+			<onleft>9000</onleft>
+			<onright>9000</onright>
+			<onup>9022</onup>
+			<ondown>9000</ondown>
+			<control type="radiobutton" id="250">
+				<description>theme button 5</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>625</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT516</label>
+				<onclick>Skin.ToggleSetting(PassionShowFanart)</onclick>
+				<selected>Skin.HasSetting(PassionShowFanart)</selected>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<aligny>center</aligny>
+				<texturefocus border="5">IPX-button-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<textureradiofocus>IPX-settings-check-box.png</textureradiofocus>
+				<textureradionofocus>IPX-settings-check-boxNF.png</textureradionofocus>
+			</control>
+			<control type="image" id="229">
+				<description>separator image</description>
+				<posx>-5</posx>
+				<posy>0</posy>
+				<width>630</width>
+				<height>5</height>
+				<texture>IPX-separator.png</texture>
+				<visible>Control.IsVisible(230) | Control.IsVisible(240)</visible>
+			</control>
+			<control type="radiobutton" id="230">
+				<description>theme button 3</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>625</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT507</label>
+				<onclick>Skin.ToggleSetting(use_passion_custom_background)</onclick>
+				<selected>Skin.HasSetting(use_passion_custom_background)</selected>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<aligny>center</aligny>
+				<texturefocus border="5">IPX-button-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<textureradiofocus>IPX-settings-check-box.png</textureradiofocus>
+				<textureradionofocus>IPX-settings-check-boxNF.png</textureradionofocus>
+			</control>
+			<control type="button" id="240">
+				<description>theme button 4</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>625</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT508</label>
+				<label2>$INFO[Skin.String(passion_custom_background)]</label2>
+				<onclick>Skin.SetImage(passion_custom_background)</onclick>
+				<enable>Skin.HasSetting(use_passion_custom_background)</enable>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<aligny>center</aligny>
+				<texturefocus border="5">IPX-button-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+			</control>
+		</control>
+
+		<!-- topics List Limit Decrease/Increase -->
+		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+		<!-- ** Required ** Do not change id's or type's -->
+		<control type="group" id="9003">
+			<description>forum setting 1</description>
+			<posx>45</posx>
+			<posy>126</posy>
+			<visible>Skin.String(PassionSettings,3)</visible>
+			<control type="image" id="1">
+				<description>Limit background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>625</width>
+				<height>34</height>
+				<texture border="5">IPX-button-focus.png</texture>
+				<visible>ControlGroup(9003).HasFocus()</visible>
+			</control>
+			<control type="button" id="300">
+				<description>Decrease Limit button</description>
+				<posx>580</posx>
+				<posy>9</posy>
+				<width>18</width>
+				<height>16</height>
+				<texturenofocus>IPX-scroll-down.png</texturenofocus>
+				<texturefocus>IPX-scroll-down-focus.png</texturefocus>
+				<onleft>9000</onleft>
+				<onright>310</onright>
+				<ondown>350</ondown>
+				<onup>1000</onup>
+			</control>
+			<control type="button" id="310">
+				<description>Increase Limit button</description>
+				<posx>598</posx>
+				<posy>9</posy>
+				<width>18</width>
+				<height>16</height>
+				<texturenofocus>IPX-scroll-up.png</texturenofocus>
+				<texturefocus>IPX-scroll-up-focus.png</texturefocus>
+				<onleft>300</onleft>
+				<onright>9000</onright>
+				<ondown>350</ondown>
+				<onup>1000</onup>
+			</control>
+			<control type="button" id="320">
+				<description>Limit label</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>580</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT502</label>
+				<label2>SCRIPT503</label2>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<aligny>center</aligny>
+				<texturefocus>-</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<onleft>310</onleft>
+				<onright>300</onright>
+				<ondown>350</ondown>
+				<onup>1000</onup>
+			</control>
+		</control>
+		<control type="grouplist" id="9030">
+			<visible>Skin.String(PassionSettings,3)</visible>
+			<posx>45</posx>
+			<posy>160</posy>
+			<width>625</width>
+			<height>320</height>
+			<itemgap>0</itemgap>
+			<pagecontrol>-</pagecontrol>
+			<orientation>vertical</orientation>
+			<onleft>9000</onleft>
+			<onright>9000</onright>
+			<onup>9003</onup>
+			<ondown>9000</ondown>
+			<control type="radiobutton" id="350">
+				<description>forum setting 4</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>625</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT513</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<aligny>center</aligny>
+				<texturefocus border="5">IPX-button-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<textureradiofocus>IPX-settings-check-box.png</textureradiofocus>
+				<textureradionofocus>IPX-settings-check-boxNF.png</textureradionofocus>
+			</control>
+			<control type="image" id="329">
+				<description>separator image</description>
+				<posx>-5</posx>
+				<posy>0</posy>
+				<width>630</width>
+				<height>5</height>
+				<texture>IPX-separator.png</texture>
+				<visible>Control.IsVisible(340) | Control.IsVisible(330)</visible>
+			</control>
+			<control type="button" id="330">
+				<description>forum setting 2</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>625</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT518</label>
+				<label2>SCRIPT506</label2>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<aligny>center</aligny>
+				<texturefocus border="5">IPX-button-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<visible>!System.Platform.Xbox</visible>
+			</control>
+			<control type="radiobutton" id="340">
+				<description>forum setting 3</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>625</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT519</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<aligny>center</aligny>
+				<texturefocus border="5">IPX-button-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<textureradiofocus>IPX-settings-check-box.png</textureradiofocus>
+				<textureradionofocus>IPX-settings-check-boxNF.png</textureradionofocus>
+				<visible>System.Platform.Windows + Control.IsVisible(330)</visible>
+			</control>
+		</control>
+
+		<!-- help section -->
+		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+		<!-- ** Required ** Do not change id's or type's -->
+		<control type="grouplist" id="9007">
+			<description>help section</description>
+			<visible>Skin.String(PassionSettings,5)</visible>
+			<posx>45</posx>
+			<posy>126</posy>
+			<width>625</width>
+			<height>350</height>
+			<itemgap>0</itemgap>
+			<pagecontrol>-</pagecontrol>
+			<orientation>vertical</orientation>
+			<onleft>9000</onleft>
+			<onright>9000</onright>
+			<onup>1000</onup>
+			<ondown>9000</ondown>
+			<usecontrolcoords>true</usecontrolcoords>
+			<control type="image">
+				<description>Cover image</description>
+				<posx>0</posx>
+				<posy>5</posy>
+				<width>625</width>
+				<height>340</height>
+				<texture>IPX-help.png</texture>
+				<aspectratio>keep</aspectratio>
+				<bordertexture border="5">IPX-folder-focus.png</bordertexture>
+				<bordersize>5</bordersize>
+			</control>
+			<control type="label" id="700">
+				<description>help - temporaire label</description>
+				<posx>0</posx>
+				<posy>-350</posy>
+				<width>625</width>
+				<height>350</height>
+				<label>?</label>
+				<font>special12</font>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>ffffffff</textcolor>
+				<shadowcolor>$INFO[Skin.String(PassionSkinHexColour)]</shadowcolor>
+				<animation effect="zoom" loop="true" center="auto" start="100" end="500" time="2000" acceleration="-2" condition="Control.IsVisible(9007)">conditional</animation>
+			</control>
+		</control>
+
+		<!-- About section -->
+		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+		<!-- ** Required ** Do not change id's or type's -->
+		<control type="image">
+			<description>Team image</description>
+			<posx>45</posx>
+			<posy>126</posy>
+			<width>625</width>
+			<height>350</height>
+			<texture>IPX-splash.png</texture>
+			<bordertexture border="5">IPX-folder-focus.png</bordertexture>
+			<bordersize>5</bordersize>
+			<visible>Skin.String(PassionSettings,6)</visible>
+			<colordiffuse>60ffffff</colordiffuse>
+		</control>
+		<control type="grouplist" id="9006">
+			<description>about section</description>
+			<visible>Skin.String(PassionSettings,6)</visible>
+			<posx>45</posx>
+			<posy>126</posy>
+			<width>625</width>
+			<height>350</height>
+			<itemgap>0</itemgap>
+			<pagecontrol>-</pagecontrol>
+			<orientation>vertical</orientation>
+			<onleft>9000</onleft>
+			<onright>9000</onright>
+			<onup>1000</onup>
+			<ondown>9000</ondown>
+			<usecontrolcoords>true</usecontrolcoords>
+
+			<control type="label">
+				<description>Version label</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>625</width>
+				<align>center</align>
+				<font>special12</font>
+				<textcolor>98ffffff</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<label>SCRIPT700</label>
+			</control>
+			<!-- ** Required ** Do not change <id> or <type> -->
+			<control type="list" id="601">
+				<description>Version List</description>
+				<posx>0</posx>
+				<posy>25</posy>
+				<width>625</width>
+				<height>60</height>
+				<scrolltime>200</scrolltime>
+				<itemlayout height="20">
+					<control type="label">
+						<posx>7</posx>
+						<posy>1</posy>
+						<width>200</width>
+						<height>20</height>
+						<font>font13</font>
+						<align>left</align>
+						<info>ListItem.Label</info>
+						<textcolor>ffffffff</textcolor>
+						<selectedcolor>ffffffff</selectedcolor>
+						<shadowcolor>FF000000</shadowcolor>
+					</control>
+					<control type="label">
+						<posx>618</posx>
+						<posy>1</posy>
+						<width>200</width>
+						<height>20</height>
+						<font>font13</font>
+						<align>right</align>
+						<info>ListItem.Label2</info>
+						<textcolor>ffffffff</textcolor>
+						<selectedcolor>ffffffff</selectedcolor>
+						<shadowcolor>FF000000</shadowcolor>
+					</control>
+				</itemlayout>
+				<focusedlayout height="20">
+					<control type="label">
+						<posx>7</posx>
+						<posy>1</posy>
+						<width>200</width>
+						<height>20</height>
+						<font>font13</font>
+						<align>left</align>
+						<info>ListItem.Label</info>
+						<textcolor>ffffffff</textcolor>
+						<selectedcolor>ffffffff</selectedcolor>
+						<shadowcolor>FF000000</shadowcolor>
+					</control>
+					<control type="label">
+						<posx>618</posx>
+						<posy>1</posy>
+						<width>200</width>
+						<height>20</height>
+						<font>font13</font>
+						<align>right</align>
+						<info>ListItem.Label2</info>
+						<textcolor>ffffffff</textcolor>
+						<selectedcolor>ffffffff</selectedcolor>
+						<shadowcolor>FF000000</shadowcolor>
+					</control>
+				</focusedlayout>
+			</control>
+
+			<control type="image">
+				<description>separator image</description>
+				<posx>0</posx>
+				<posy>5</posy>
+				<width>625</width>
+				<height>5</height>
+				<texture>IPX-separator.png</texture>
+			</control>
+			<control type="label">
+				<description>Team Credits Label</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>630</width>
+				<align>center</align>
+				<font>special12</font>
+				<textcolor>98ffffff</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<label>SCRIPT701</label>
+			</control>
+			<!-- ** Required ** Do not change <id> or <type> -->
+			<control type="list" id="602">
+				<description>Team Credits List</description>
+				<posx>0</posx>
+				<posy>25</posy>
+				<width>625</width>
+				<height>80</height>
+				<scrolltime>200</scrolltime>
+				<itemlayout height="20">
+					<control type="label">
+						<posx>7</posx>
+						<posy>1</posy>
+						<width>200</width>
+						<height>20</height>
+						<font>font13</font>
+						<align>left</align>
+						<info>ListItem.Label</info>
+						<textcolor>ffffffff</textcolor>
+						<selectedcolor>ffffffff</selectedcolor>
+						<shadowcolor>FF000000</shadowcolor>
+					</control>
+					<control type="label">
+						<posx>618</posx>
+						<posy>1</posy>
+						<width>200</width>
+						<height>20</height>
+						<font>font13</font>
+						<align>right</align>
+						<info>ListItem.Label2</info>
+						<textcolor>ffffffff</textcolor>
+						<selectedcolor>ffffffff</selectedcolor>
+						<shadowcolor>FF000000</shadowcolor>
+					</control>
+				</itemlayout>
+				<focusedlayout height="20">
+					<control type="label">
+						<posx>7</posx>
+						<posy>1</posy>
+						<width>200</width>
+						<height>20</height>
+						<font>font13</font>
+						<align>left</align>
+						<info>ListItem.Label</info>
+						<textcolor>ffffffff</textcolor>
+						<selectedcolor>ffffffff</selectedcolor>
+						<shadowcolor>FF000000</shadowcolor>
+					</control>
+					<control type="label">
+						<posx>618</posx>
+						<posy>1</posy>
+						<width>200</width>
+						<height>20</height>
+						<font>font13</font>
+						<align>right</align>
+						<info>ListItem.Label2</info>
+						<textcolor>ffffffff</textcolor>
+						<selectedcolor>ffffffff</selectedcolor>
+						<shadowcolor>FF000000</shadowcolor>
+					</control>
+				</focusedlayout>
+			</control>
+
+			<control type="image">
+				<description>separator image</description>
+				<posx>0</posx>
+				<posy>5</posy>
+				<width>625</width>
+				<height>5</height>
+				<texture>IPX-separator.png</texture>
+			</control>
+			<control type="label">
+				<description>Description Label</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>625</width>
+				<align>center</align>
+				<font>special12</font>
+				<textcolor>99ffffff</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<label>SCRIPT600</label>
+			</control>
+			<control type="textbox">
+				<description>Description content</description>
+				<posx>7</posx>
+				<posy>25</posy>
+				<width>610</width>
+				<height>100</height>
+				<font>font13</font>
+				<align>justify</align>
+				<label>SCRIPT710</label>
+				<textcolor>ffffffff</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<autoscroll time="2000" delay="3000">Skin.HasSetting(AutoScroll)</autoscroll>
+			</control>
+		</control>
+
+		<!-- GROUPE OPTION MENU -->
+		<!-- NOTE: CES BOUTONS ONT LE LANGUAGE D'XBMC ET NON DU SCRIPT -->
+		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+		<!-- ** Required ** Do not change id's or type's -->
+		<control type="group" id="9000">
+			<posx>480</posx>
+			<posy>490</posy>
+			<control type="button" id="80">
+				<description>ok</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>90</width>
+				<height>32</height>
+				<align>center</align>
+				<label>186</label>
+				<texturefocus border="5">IPX-button-focus.png</texturefocus>
+				<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
+				<pulseonselect>no</pulseonselect>
+				<textcolor>ffffffff</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<onleft>82</onleft>
+				<onright>81</onright>
+				<onup>1000</onup>
+				<ondown>1000</ondown>
+			</control>
+			<control type="button" id="81">
+				<description>cancel</description>
+				<posx>100</posx>
+				<posy>0</posy>
+				<width>90</width>
+				<height>32</height>
+				<align>center</align>
+				<label>222</label>
+				<texturefocus border="5">IPX-button-focus.png</texturefocus>
+				<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
+				<pulseonselect>no</pulseonselect>
+				<textcolor>ffffffff</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<onleft>80</onleft>
+				<onright>82</onright>
+				<onup>1000</onup>
+				<ondown>1000</ondown>
+			</control>
+			<control type="button" id="82">
+				<description>default settings (reset)</description>
+				<posx>-100</posx>
+				<posy>0</posy>
+				<width>90</width>
+				<height>32</height>
+				<align>center</align>
+				<label>409</label>
+				<texturefocus border="5">IPX-button-focus.png</texturefocus>
+				<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
+				<pulseonselect>no</pulseonselect>
+				<textcolor>ffffffff</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<onleft>81</onleft>
+				<onright>80</onright>
+				<onup>1000</onup>
+				<ondown>1000</ondown>
+				<visible>Skin.String(PassionSettings,1) | Skin.String(PassionSettings,2) | Skin.String(PassionSettings,3)</visible>
+			</control>
+		</control>
+	</controls>
+</window>

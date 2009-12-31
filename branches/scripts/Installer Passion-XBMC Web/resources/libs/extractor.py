@@ -31,7 +31,7 @@ def get_time_sleep( filename ):
     try:
         slp = int( os.path.getsize( filename ) / 1000 )
     except:
-        #import traceback; traceback.print_exc()
+        #from traceback import print_exc; print_exc()
         logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
         slp = 0
     if slp < 1000: slp = 1000
@@ -117,7 +117,7 @@ def unrar( filename, destination=None, report=False ):
         # si list_size est pas declarer une erreur automatique est creer ;)
         return base_dir, list_size == total_items
     except:
-        #import traceback; traceback.print_exc()
+        #from traceback import print_exc; print_exc()
         logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
         return "", False
 
@@ -170,7 +170,7 @@ def unzip( filename, destination=None, report=False ):
         del zip
         return base_dir, True
     except:
-        #import traceback; traceback.print_exc()
+        #from traceback import print_exc; print_exc()
         logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
         return "", False
 

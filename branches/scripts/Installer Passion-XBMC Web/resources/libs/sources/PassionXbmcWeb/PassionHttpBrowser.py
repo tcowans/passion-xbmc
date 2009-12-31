@@ -6,7 +6,7 @@ PassionHttpBrowser: this module allows browsing of server content on the web ser
 # Modules general
 import os
 import sys
-import traceback
+from traceback import print_exc
 
 # Module logger
 try:
@@ -141,7 +141,7 @@ class PassionHttpBrowser(Browser):
             print e
             print sys.exc_info()
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-            traceback.print_exc()   
+            print_exc()   
         return list
     
     def incat( self, itemId=0):
@@ -213,7 +213,7 @@ class PassionHttpBrowser(Browser):
             if  item['previewpictureurl'] == 'None':
                 if (item['type'] == 'FIC'):
                     item['thumbnail']      = Item.THUMB_NOT_AVAILABLE
-                    item['previewpicture'] = Item.THUMB_NOT_AVAILABLE
+                    item['previewpicture'] = ""#Item.THUMB_NOT_AVAILABLE
                     
                 elif (item['type'] == 'CAT'):
                     catTitle, catType = self.getCategoryInfo( item['id'] )
@@ -228,40 +228,40 @@ class PassionHttpBrowser(Browser):
                         #item['thumbnail']      = "IPX-defaultScraper.png" #TODO replace by THUMB_SCRAPER
                         #item['previewpicture'] = "IPX-defaultScraper.png"
                         item['thumbnail']      = Item.get_thumb( Item.TYPE_SCRAPER )
-                        item['previewpicture'] = Item.get_thumb( Item.TYPE_SCRAPER )
+                        item['previewpicture'] = ""#Item.get_thumb( Item.TYPE_SCRAPER )
                         
                     elif catType == Item.TYPE_SKIN: #TODO replace by TYPE_SKIN form CONF
                         # Theme
                         item['thumbnail']      = Item.get_thumb( Item.TYPE_SKIN )
-                        item['previewpicture'] = Item.get_thumb( Item.TYPE_SKIN )
+                        item['previewpicture'] = ""#Item.get_thumb( Item.TYPE_SKIN )
                     elif catType == Item.TYPE_SCRIPT:
                         # Script
                         #item['thumbnail']      = "IPX-defaultScript_Plugin.png"
                         #item['previewpicture'] = "IPX-defaultScript_Plugin.png"
                         item['thumbnail']      = Item.get_thumb( Item.TYPE_SCRIPT )
-                        item['previewpicture'] = Item.get_thumb( Item.TYPE_SCRIPT )
+                        item['previewpicture'] = ""#Item.get_thumb( Item.TYPE_SCRIPT )
                     elif catType == Item.TYPE_PLUGIN:
                         # Plugin
                         #item['thumbnail']      = "IPX-defaultScript_Plugin.png"
                         #item['previewpicture'] = "IPX-defaultScript_Plugin.png"
                         item['thumbnail']      = Item.get_thumb( Item.TYPE_PLUGIN )
-                        item['previewpicture'] = Item.get_thumb( Item.TYPE_PLUGIN )
+                        item['previewpicture'] = ""#Item.get_thumb( Item.TYPE_PLUGIN )
                     elif catType == Item.TYPE_PLUGIN_MUSIC:
                         # Plugin
                         item['thumbnail']      = Item.get_thumb( Item.TYPE_PLUGIN_MUSIC )
-                        item['previewpicture'] = Item.get_thumb( Item.TYPE_PLUGIN_MUSIC )
+                        item['previewpicture'] = ""#Item.get_thumb( Item.TYPE_PLUGIN_MUSIC )
                     elif catType == Item.TYPE_PLUGIN_PICTURES:
                         # Plugin
                         item['thumbnail']      = Item.get_thumb( Item.TYPE_PLUGIN_PICTURES )
-                        item['previewpicture'] = Item.get_thumb( Item.TYPE_PLUGIN_PICTURES )
+                        item['previewpicture'] = ""#Item.get_thumb( Item.TYPE_PLUGIN_PICTURES )
                     elif catType == Item.TYPE_PLUGIN_PROGRAMS:
                         # Plugin
                         item['thumbnail']      = Item.get_thumb( Item.TYPE_PLUGIN_PROGRAMS )
-                        item['previewpicture'] = Item.get_thumb( Item.TYPE_PLUGIN_PROGRAMS )
+                        item['previewpicture'] = ""#Item.get_thumb( Item.TYPE_PLUGIN_PROGRAMS )
                     elif catType == Item.TYPE_PLUGIN_VIDEO:
                         # Plugin
                         item['thumbnail']      = Item.get_thumb( Item.TYPE_PLUGIN_VIDEO )
-                        item['previewpicture'] = Item.get_thumb( Item.TYPE_PLUGIN_VIDEO )
+                        item['previewpicture'] = ""#Item.get_thumb( Item.TYPE_PLUGIN_VIDEO )
                     else:
                         skipItem = True
             else:
@@ -277,7 +277,7 @@ class PassionHttpBrowser(Browser):
                 if os.path.exists(checkPathPic):
                     item['previewpicture'] = checkPathPic
                 else:
-                    item['previewpicture'] = Item.THUMB_NOT_AVAILABLE
+                    item['previewpicture'] = ""#Item.THUMB_NOT_AVAILABLE
                     downloadImage = True
                     
                 if downloadImage == True:
@@ -539,7 +539,7 @@ class PassionHttpBrowser(Browser):
             print e
             print sys.exc_info()
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-            traceback.print_exc()   
+            print_exc()   
                  
         return itemInstaller
 
@@ -582,7 +582,7 @@ class PassionHttpBrowser(Browser):
             else:
                 thumbnail, localFilePath = "", ""
         except:
-            #import traceback; traceback.print_exc()
+            #from traceback import print_exc; print_exc()
             logger.LOG( logger.LOG_DEBUG, "_downloadImage: Exception - Impossible to downlod the picture: %s", picname )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
             #TODO: create a thumb for the default image?

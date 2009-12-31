@@ -47,7 +47,7 @@ def set_cache_thumb_name( path ):
             os.makedirs( os.path.dirname( thumbnail ) )
         return thumbnail, preview_pic
     except:
-        #import traceback; traceback.print_exc()
+        #from traceback import print_exc; print_exc()
         logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
         return "", ""
 
@@ -325,7 +325,7 @@ class InfoWarehouseEltTreeXMLFTP:
             #i = updateIWH( locals() )
             #print i.fileName, i.description
         except:
-            #import traceback; traceback.print_exc()
+            #from traceback import print_exc; print_exc()
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
         print locals()
@@ -352,7 +352,7 @@ class InfoWarehouseEltTreeXMLFTP:
                 try:
                     ftp.retrbinary( 'RETR ' + filetodlUrl, localFile.write )
                 except:
-                    #import traceback; traceback.print_exc()
+                    #from traceback import print_exc; print_exc()
                     logger.LOG( logger.LOG_DEBUG, "_downloaddossier: Exception - Impossible de telecharger le fichier: %s", remoteFilePath )
                     logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
                     thumbnail, localFilePath = "", ""
@@ -371,7 +371,7 @@ class InfoWarehouseEltTreeXMLFTP:
             if thumbnail and os.path.isfile( thumbnail ) and hasattr( listitem, "setThumbnailImage" ):
                 listitem.setThumbnailImage( thumbnail )
         except:
-            #import traceback; traceback.print_exc()
+            #from traceback import print_exc; print_exc()
             logger.LOG( logger.LOG_DEBUG, "_downloaddossier: Exception - Impossible de telecharger le fichier: %s", remoteFilePath )
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 

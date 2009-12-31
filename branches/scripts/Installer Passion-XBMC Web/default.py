@@ -1,34 +1,35 @@
 ﻿
 # GET AND PRINT ALL STATS OF SCRIPT
 TEST_PERFORMANCE = False
-#UNIT_TEST        = True
+
 UNIT_TEST        = False
 DEV_TEST         = True
 
+
 # script constants
 __script__       = "Installer Passion-XBMC"
+if DEV_TEST: __script__ += " Web"
+
 __plugin__       = "Unknown"
 __author__       = "Team Passion-XBMC"
 __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/Installer%20Passion-XBMC/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center"
-__version__      = "2.0.0-Dev01"
+
+__version__      = "pre-2.0"
+__statut__       = "DevHD; Beta 1" #(dev,svn,release,etc)
 
 # don't edit __date__ and __svn_revision__ 
 # use svn:keywords http://svnbook.red-bean.com/en/1.4/svn.advanced.props.special.keywords.html
-__date__         = "$Date$"
+__date__         = "$Date$".split()[ 1 ]
 __svn_revision__ = "$Revision$".replace( "Revision", "" ).strip( "$: " )
-
-
-if DEV_TEST:
-    __script__       = "Installer Passion-XBMC Web"
 
 
 #Modules general
 import os
 import sys
-import traceback
+from traceback import print_exc
 
 #modules XBMC
 import xbmc
@@ -39,29 +40,30 @@ ROOTDIR = os.getcwd().replace( ";", "" )
 
 # Shared resources
 BASE_RESOURCE_PATH = os.path.join( ROOTDIR, "resources" )
+PLATFORM_LIBRARIES = os.path.join( BASE_RESOURCE_PATH, "platform_libraries" )
+LIBS               = os.path.join( BASE_RESOURCE_PATH, "libs" )
+GUI_LIBS           = os.path.join( LIBS, "GUI" )
+CONTENTS_LIBS      = os.path.join( LIBS, "sources" )
+
 # append the proper platforms folder to our path, xbox is the same as win32
-env = ( os.environ.get( "OS", "win32" ), "win32", )[ os.environ.get( "OS", "win32" ) == "xbox" ]
-sys.path.append( os.path.join( BASE_RESOURCE_PATH, "platform_libraries", env ) )
+sys.path.append( os.path.join( PLATFORM_LIBRARIES, ( os.environ.get( "OS", "win32" ), "win32", )[ os.environ.get( "OS", "win32" ) == "xbox" ] ) )
 # append the proper libs folder to our path
-sys.path.append( os.path.join( BASE_RESOURCE_PATH, "libs" ) )
+sys.path.append( LIBS )
 # append the proper GUI folder to our path
-sys.path.append( os.path.join( BASE_RESOURCE_PATH, "libs", "GUI" ) )
-# append the proper GUI folder to our path
-#sys.path.append( os.path.join( BASE_RESOURCE_PATH, "libs", "sources" ) )
-sys.path.append( os.path.join( BASE_RESOURCE_PATH, "libs", "sources", "PassionXbmcWeb" ) )
-sys.path.append( os.path.join( BASE_RESOURCE_PATH, "libs", "sources", "PassionXbmcFtp" ) )
-sys.path.append( os.path.join( BASE_RESOURCE_PATH, "libs", "sources", "XbmcZone" ) )
-
-#modules custom
-from specialpath import *
-import script_log as logger
-
+sys.path.append( GUI_LIBS )
+# append the proper sources contents ("PassionXbmcWeb","PassionXbmcFtp","XbmcZone",etc...) folder to our path
+for content in os.listdir( CONTENTS_LIBS ):
+    try: sys.path.append( os.path.join( CONTENTS_LIBS, content ) )
+    except: print_exc()
 
 # recompile all modules, but script start slowly
 #from compileall import compile_dir
 #compile_dir( os.path.join( BASE_RESOURCE_PATH, "libs" ), force=True, quiet=True )
 
 
+#modules custom
+from specialpath import *
+import script_log as logger
 
 
 #frost: changer la langue par default pour l'anglais, car de cette maniere on ai pas obliger de rejouter le strings manquant dans les autres language
@@ -72,7 +74,7 @@ LANGUAGE_IS_FRENCH = ( xbmc.getLanguage().lower() == "french" )
 
 DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
-# Info version
+# Info version (deprecated)
 __version_l1__ = __language__( 700 )#"version"
 __version_r1__ = __version__
 __version_l2__ = __language__( 707 )#"date"
@@ -126,11 +128,20 @@ def MAIN():
         if not config.getboolean( 'Version', 'UPDATING' ):
             try:
                 # LANCEMENT DU SCRIPT
-                import MainGui
-                MainGui.show_main()
+                try:
+                    import Home
+                    DIALOG_PROGRESS.close()
+                    HomeAction = Home.show_home()
+                except:
+                    print_exc()
+                    HomeAction = "error"
+
+                if HomeAction == "error":
+                    import MainGui
+                    MainGui.show_main()
             except:
                 logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
-                traceback.print_exc()
+                print_exc()
                 dialog_error = True
         else:
             # LANCEMENT DE LA MISE A JOUR
@@ -215,6 +226,6 @@ if __name__ == "__main__":
         else:
             MAIN()
     except:
-        #import traceback; traceback.print_exc()
+        #print_exc()
         logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
         DIALOG_PROGRESS.close()

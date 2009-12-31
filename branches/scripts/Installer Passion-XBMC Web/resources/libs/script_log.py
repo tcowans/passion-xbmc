@@ -1,3 +1,33 @@
+"""
+    DEPRECATED module, for/in future use:
+    xbmc.log( "[SCRIPT] '%s: Version - %s-r%s' initialized!" % ( __script__, __version__, __svn_revision__ ), xbmc.LOGNOTICE )
+
+    log(...)
+        log(msg[, level]) -- Write a string to XBMC's log file.
+         
+        msg            : string - text to output.
+        level          : [opt] integer - log level to ouput at. (default=LOGNOTICE)
+                        LOGDEBUG   = 0
+                        LOGERROR   = 4
+                        LOGFATAL   = 6
+                        LOGINFO    = 1
+                        LOGNONE    = 7
+                        LOGNOTICE  = 2
+                        LOGSEVERE  = 5
+                        LOGWARNING = 3
+
+        *Note, You can use the above as keywords for arguments and skip certain optional arguments.
+               Once you use a keyword, all following arguments require the keyword.
+         
+               Text is written to the log for the following conditions.
+                 XBMC loglevel == -1 (NONE, nothing at all is logged)
+                 XBMC loglevel == 0 (NORMAL, shows LOGNOTICE, LOGERROR, LOGSEVERE and LOGFATAL)
+                 XBMC loglevel == 1 (DEBUG, shows all)       See pydocs for valid values for level.
+
+        example:
+          - xbmc.log(This is a test string.', xbmc.LOGDEBUG)
+"""
+
 
 import os
 import sys
@@ -142,7 +172,7 @@ def create_log_file():
             platform = platform.replace( "linux", "GNU/Linux" ).replace( "osx", "Mac OS X" ).replace( "win32", "Windows" ).replace( "xbox", "XBox" ).replace( "os x", "Mac OS X" )
             LOG( LOG_NOTICE, "XBMC, Platform: %s (version: %s).  Built on %s", platform, xbmc.getInfoLabel( "System.BuildVersion" ), xbmc.getInfoLabel( "System.BuildDate" ) )
             LOG( LOG_NOTICE, "Q is mapped to: %s", sys.modules[ "__main__" ].SPECIAL_XBMC_HOME )
-            LOG( LOG_NOTICE, "The executable script running is: %s", os.path.join( os.getcwd().rstrip( ";" ), sys.modules[ "__main__" ].__file__ ) )
+            LOG( LOG_NOTICE, "The executable script running is: %s", os.path.join( os.getcwd().rstrip( ";" ), "default.py" ) )
             LOG( LOG_NOTICE, "Log File is located: %s", LOG_SCRIPT )
             LOG( LOG_NOTICE, SEPARATOR )
             LOG( LOG_NOTICE, "Checking the Date!" )

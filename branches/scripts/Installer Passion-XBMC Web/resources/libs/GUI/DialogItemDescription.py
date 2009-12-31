@@ -54,6 +54,8 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
     i_type            = unicode( xbmc.getInfoLabel( "Container.Property(Category)" ), "utf-8")
     i_description     = unicode( xbmc.getInfoLabel( "ListItem.Property(description)" ), "utf-8")
     i_previewVideoURL = unicode( xbmc.getInfoLabel( "ListItem.Property(previewVideoURL)" ), 'utf-8')
+    i_dlsource        = unicode( xbmc.getInfoLabel( "container.Property(DLSource)" ), 'utf-8')
+    i_outline         = unicode( xbmc.getInfoLabel( "ListItem.Property(outline)" ), "utf-8")
 
     def __init__( self, *args, **kwargs ):
         xbmcgui.WindowXMLDialog.__init__( self, *args, **kwargs )
@@ -80,15 +82,19 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
         try:
             self.getControl( 48 ).reset()
             listitem = xbmcgui.ListItem( self.i_title, "", self.i_thumbnail, self.i_thumbnail )
-            listitem.setProperty( "type", self.i_type )
-            listitem.setProperty( "date", self.i_date )#
             listitem.setProperty( "title", self.i_title )
-            listitem.setProperty( "added", self.i_added )
             listitem.setProperty( "itemId", self.i_itemId )
             listitem.setProperty( "author", self.i_author )
-            listitem.setProperty( "version", self.i_version )
+            listitem.setProperty( "DLSource", self.i_dlsource )
+            listitem.setProperty( "type", self.i_type )
             listitem.setProperty( "language", self.i_language )
+            listitem.setProperty( "version", self.i_version )
+            listitem.setProperty( "date", self.i_date )
+            listitem.setProperty( "added", self.i_added )
+            listitem.setProperty( "outline", self.i_outline )
+            #listitem.setProperty( "rating", self.rating ) # not implanted
             listitem.setProperty( "fileName", self.i_fileName )
+
             listitem.setProperty( "description", self.i_description or _( 604 ) )
             listitem.setProperty( "fanartpicture", self.i_previewPicture )
             listitem.setProperty( "previewVideoURL", self.i_previewVideoURL )
@@ -98,7 +104,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
         try:
             self.getControl( 49 ).reset()
 
-            listitem = xbmcgui.ListItem( "ID", self.i_itemId or _( 612 ) )
+            listitem = xbmcgui.ListItem( "ID", self.i_itemId or _( 612 ) )#
             self.getControl( 49 ).addItem( listitem )
 
             listitem = xbmcgui.ListItem( _( 601 ), self.i_type or _( 612 ) )
@@ -113,7 +119,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
             listitem = xbmcgui.ListItem( _( 603 ), self.i_date or _( 612 ) )
             self.getControl( 49 ).addItem( listitem )
 
-            listitem = xbmcgui.ListItem( _( 620 ), self.i_author or _( 612 ) )
+            listitem = xbmcgui.ListItem( _( 620 ), self.i_author or _( 612 ) )#
             self.getControl( 49 ).addItem( listitem )
 
             listitem = xbmcgui.ListItem( _( 613 ), self.i_added or _( 612 ) )
@@ -184,7 +190,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
             else:
                 pass
         except:
-            #import traceback; traceback.print_exc()
+            #from traceback import print_exc; print_exc()
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
     def onAction( self, action ):
@@ -198,15 +204,12 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
 
 def show_description( mainwin ):
     """
-    Affiche une fenetre contenant les informations sur un item
+        Affiche une fenetre contenant les informations sur un item
     """
-    file_xml = "passion-ItemDescript.xml"
-    #depuis la revision 14811 on a plus besoin de mettre le chemin complet, la racine suffit
-    dir_path = os.getcwd().rstrip( ";" )
-    #recupere le nom du skin et si force_fallback est vrai, il va chercher les images du defaultSkin.
-    current_skin, force_fallback = getUserSkin()
 
-    #TODO: ajouter check si infoWarehouse n'a pas ete cree
+    dir_path = os.getcwd().rstrip( ";" )
+    current_skin, force_fallback = getUserSkin()
+    file_xml = ( "IPX-ItemDescript.xml", "passion-ItemDescript.xml" )[ current_skin != "Default.HD" ]
 
     w = ItemDescription( file_xml, dir_path, current_skin, force_fallback, mainwin=mainwin )
     w.doModal()

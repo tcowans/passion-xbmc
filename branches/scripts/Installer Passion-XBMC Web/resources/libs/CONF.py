@@ -102,8 +102,8 @@ INDEX_SRV_ITEM_FORMAT_INVALID  = 2
 
 def ReadConfig():
     config = ConfigParser()
-    print "ReadConfig"
-    print profile_conf
+    #print "ReadConfig"
+    #print profile_conf
     if not os.path.exists( profile_conf ):
         config.read( default_conf )
         config.write( open( profile_conf, "w" ) )
