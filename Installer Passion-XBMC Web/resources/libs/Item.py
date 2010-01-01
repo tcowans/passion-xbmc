@@ -1,4 +1,6 @@
-
+"""
+Item Module: This module provide constants, functions ... in order to get generic information about an item depending on its type
+"""
 __all__ = [
     # public names
     "TYPE_ROOT",

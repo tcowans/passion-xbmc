@@ -5,8 +5,6 @@ import os
 import sys
 import traceback
 
-# SQLite
-from pysqlite2 import dbapi2 as sqlite
 
 # XBMC
 import xbmc
@@ -19,8 +17,6 @@ except:
 
 # Modules custom
 from utilities import *
-import CONF
-import Item
 try:
     from ItemInstaller import ArchItemInstaller, cancelRequest
 except:

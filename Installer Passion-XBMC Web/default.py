@@ -163,52 +163,26 @@ def MAIN():
 
 def RUN_UNIT_TEST():
     try:
-        # INITIALISATION CHEMINS DE FICHIER LOCAUX
+        # LOADING CONF
         print "Starting UNIT TESTS"
         import CONF
         config = CONF.ReadConfig()
 
         DIALOG_PROGRESS.update( -1, __language__( 101 ), __language__( 110 ) )
         if not config.getboolean( 'InstallPath', 'pathok' ):
-            # GENERATION DES INFORMATIONS LOCALES
             CONF.SetConfiguration()
-
         config = CONF.ReadConfig()
         del CONF
 
-        # LANCEMENT DU SCRIPT
-        import DBManager
-        print "Creating DBMgr"
-        db = os.path.join(SPECIAL_SCRIPT_DATA, 'Passion_XBMC_Installer.sqlite')
-        csvFile = os.path.join(SPECIAL_SCRIPT_DATA, 'table.csv')
-        myDatabaseMgr = DBManager.CsvDB( db, csvFile )
-        #myDatabaseMgr = DBManager.XmlDB( db, csvFile )
-        myDatabaseMgr.update_datas()
-        print "update_datas"
-        import Browser
-        #myBrowser = Browser.HTTPBrowser( database=db )
-        myBrowser = Browser.HTTPBrowser( db )
-        listOfItem = myBrowser.getNextList(6) # Script
-        print "List of Item (6)"
-        print listOfItem
-        listOfItem = myBrowser.getNextList(0) # multimedia
-        print "List of Item (0)"
-        print listOfItem
-        for i in range(len(listOfItem)):
-            print "register i=%d"%i
-            myBrowser.imageUpdateRegister(i)
-        print "update_Images"
-        myBrowser.update_Images()
-        myBrowser.getCategoryInfo(20)
-#        listOfItem = myBrowser.getPrevList() # a script
-#        print "getPrevList List of Item "
-#        print listOfItem
-#        listOfItem = myBrowser.getPrevList() # a script
-#        print "getPrevList List of Item "
-#        print listOfItem
+        # UNIT TEST
+        
+        # Write your unit tests Here
+        # ...
+        # ...
     except:
         logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
         dialog_error = True
+    DIALOG_PROGRESS.close()
 
 
 if __name__ == "__main__":

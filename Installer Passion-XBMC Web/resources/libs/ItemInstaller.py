@@ -1,5 +1,5 @@
 """
-ItemInstaller: this module allows download and install an item
+ItemInstaller: this module allows download and install of an item (addons: script, plugin, scraper, skin ...)
 """
 import os
 import sys
