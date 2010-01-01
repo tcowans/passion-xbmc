@@ -289,7 +289,7 @@ class MainWindow( xbmcgui.WindowXML ):
                     exec self.HomeAction
             else:
                 # pas le choix avec les nouvelles vue, mais on lui joue un tour avec une listitems deja ready :P
-                if xbmc.getCondVisibility( "Window.IsActive(passion-main.xml)" ):
+                if xbmc.getCondVisibility( "Window.IsActive(IPX-Installer.xml)" ) or xbmc.getCondVisibility( "Window.IsActive(passion-main.xml)" ):
                     if self.listitems: self.re_updateList()
                     else: self.updateList()
                 # .addItems( items=listitems )
