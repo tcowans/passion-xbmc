@@ -308,7 +308,9 @@ class PassionFtpBrowser(Browser):
                             item['author']            = ""
                             item['date']              = ""
                             item['added']             = ""
-                            item['thumbnail']         = Item.THUMB_NOT_AVAILABLE
+                            #TODO: have different icon between cat and item without thumb
+                            #item['thumbnail']         = Item.THUMB_NOT_AVAILABLE
+                            item['thumbnail']         = Item.get_thumb( item['xbmc_type'] )
                             item['previewpicture']    = ""#Item.THUMB_NOT_AVAILABLE
                             item['image2retrieve']    = False # Temporary patch for reseting the flag after download (would be better in the thread in charge of the download)
         

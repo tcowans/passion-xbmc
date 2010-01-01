@@ -212,7 +212,11 @@ class PassionHttpBrowser(Browser):
             print item['previewpictureurl']
             if  item['previewpictureurl'] == 'None':
                 if (item['type'] == 'FIC'):
-                    item['thumbnail']      = Item.THUMB_NOT_AVAILABLE
+                    #item['thumbnail']      = Item.THUMB_NOT_AVAILABLE
+                    #TODO: have different icon between cat and item without thumb
+                    parentTitle, xbmc_type = self.getCategoryInfo( item['parent'] )
+                    item['xbmc_type']      = xbmc_type
+                    item['thumbnail']      = Item.get_thumb( item['xbmc_type'] )
                     item['previewpicture'] = ""#Item.THUMB_NOT_AVAILABLE
                     
                 elif (item['type'] == 'CAT'):
