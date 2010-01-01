@@ -26,7 +26,6 @@ except:
 # Modules custom
 from utilities import *
 import CONF
-import Item
 try:
     from ItemInstaller import ArchItemInstaller, cancelRequest
 except:
