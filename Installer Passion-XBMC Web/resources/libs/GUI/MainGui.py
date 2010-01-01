@@ -573,6 +573,10 @@ class MainWindow( xbmcgui.WindowXML ):
         """
         installation de l'item selectionner
         """
+        # Default message: error
+        title = _( 144 )
+        msg1  = _( 136 )%(unicode(itemName,'cp1252'))
+        msg2  = ""
 
         try:
             # Get the installer Object who now how to do the job (depending on the source)
@@ -581,57 +585,69 @@ class MainWindow( xbmcgui.WindowXML ):
             
             itemInstaller = self.contextSrc.getBrowser().getInstaller(self.index)
 
-            #print "Download via itemInstaller"
-            dp = xbmcgui.DialogProgress()
-            dp.create(_( 137 ))
-            #status, destination = itemInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )
-            status, destination = itemInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )
-
-            dp.close()
-            del dp
-
-            #Check if install went well
-            #print itemName
-            #print repr(itemName)
-            if status == "OK":
-                self._save_downloaded_property()
-                title = _( 141 )
-                msg1  = _( 142 )%(unicode(itemName,'cp1252')) # should we manage only unicode instead of string?
-                #msg1  = _( 142 )%"" + itemName
-                msg2  = _( 143 )
-            elif status == "CANCELED":
-                title = _( 146 )
-                msg1  = _( 147 )%(unicode(itemName,'cp1252'))
-                msg2  = ""
-            elif status == "ALREADYINSTALLED":
-                title = _( 144 )
-                msg1  = _( 149 )%(unicode(itemName,'cp1252'))
-                msg2  = ""
-                #if self.processOldDownload( destination ):
-                if self.processOldDownload( itemInstaller ):
-                    # Continue install
-                    dp = xbmcgui.DialogProgress()
-                    dp.create(_( 137 ))
-                    status, destination = itemInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )
-                    dp.close()
-                    del dp
+            if itemInstaller != None:
+                #print "Download via itemInstaller"
+                dp = xbmcgui.DialogProgress()
+                dp.create(_( 137 ))
+                #status, destination = itemInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )
+                status, destination = itemInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )
+    
+                dp.close()
+                del dp
+    
+                #Check if install went well
+                #print itemName
+                #print repr(itemName)
+                if status == "OK":
                     self._save_downloaded_property()
                     title = _( 141 )
                     msg1  = _( 142 )%(unicode(itemName,'cp1252')) # should we manage only unicode instead of string?
                     #msg1  = _( 142 )%"" + itemName
                     msg2  = _( 143 )
+                elif status == "CANCELED":
+                    title = _( 146 )
+                    msg1  = _( 147 )%(unicode(itemName,'cp1252'))
+                    msg2  = ""
+                elif status == "ALREADYINSTALLED":
+                    title = _( 144 )
+                    msg1  = _( 149 )%(unicode(itemName,'cp1252'))
+                    msg2  = ""
+                    #if self.processOldDownload( destination ):
+                    if self.processOldDownload( itemInstaller ):
+                        # Continue install
+                        dp = xbmcgui.DialogProgress()
+                        dp.create(_( 137 ))
+                        status, destination = itemInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )
+                        dp.close()
+                        del dp
+                        self._save_downloaded_property()
+                        title = _( 141 )
+                        msg1  = _( 142 )%(unicode(itemName,'cp1252')) # should we manage only unicode instead of string?
+                        #msg1  = _( 142 )%"" + itemName
+                        msg2  = _( 143 )
+                    else:
+                        installCancelled = True
+                        logger.LOG( logger.LOG_WARNING, "%s install has been cancelled by the user", itemName  )
+                        title = _( 146 )
+                        msg1  = _( 147 )%(unicode(itemName,'cp1252'))
+                        msg2  = ""
                 else:
-                    installCancelled = True
-                    logger.LOG( logger.LOG_WARNING, "L'installation de %s a ete annulee par l'utilisateur", downloadItem  )
-
+                    title = _( 144 )
+                    msg1  = _( 136 )%(unicode(itemName,'cp1252'))
+                    msg2  = ""
+                del itemInstaller
             else:
+                # No installer available
+                logger.LOG( logger.LOG_WARNING, "No installer available for %s - Install impossible", itemName  )
+                #TODO: create string for this particular case i.e: Install not supported for this type of item
                 title = _( 144 )
-                msg1  = _( 136 )%itemName
+                msg1  = _( 136 )%(unicode(itemName,'cp1252'))
                 msg2  = ""
-            xbmcgui.Dialog().ok( title, msg1, msg2 )
-            del itemInstaller
+            
         except:
             logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+
+        xbmcgui.Dialog().ok( title, msg1, msg2 )
 
     def _close_script( self ):
         #**IMPORTANT** faut annuler les thread avant de fermer le script, sinon xbmc risque de planter
