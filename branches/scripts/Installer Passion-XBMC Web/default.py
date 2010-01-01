@@ -14,6 +14,8 @@ __plugin__       = "Unknown"
 __author__       = "Team Passion-XBMC"
 __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/Installer%20Passion-XBMC/"
+if DEV_TEST: 
+    __svn_url__  = "http://passion-xbmc.googlecode.com/svn/branches/scripts/Installer%20Passion-XBMC%20Web/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center"
 
@@ -22,9 +24,14 @@ __statut__       = "DevHD; Beta 1" #(dev,svn,release,etc)
 
 # don't edit __date__ and __svn_revision__ 
 # use svn:keywords http://svnbook.red-bean.com/en/1.4/svn.advanced.props.special.keywords.html
-__date__         = "$Date$".split()[ 1 ]
-__svn_revision__ = "$Revision$".replace( "Revision", "" ).strip( "$: " )
-
+__svn_revision__ = "$Revision$".replace( "Revision", "" ).strip( "$: " ) or __statut__
+__date__         = "$Date$"[ 7:17 ]
+if not __date__:
+    try:
+        from urllib import urlopen
+        __date__ = urlopen( __svn_url__ + "default.py" ).info()[ "Last-Modified" ]
+    except: pass
+__date__ = __date__ or "Unknown"
 
 #Modules general
 import os
