@@ -1,11 +1,14 @@
 
+# Modules general
 import os
 import sys
-from traceback import print_exc
 from StringIO import StringIO
+from traceback import print_exc
 from urllib import urlopen, urlretrieve
+
 from PIL import Image, ImageEnhance
 
+# Modules XBMC
 import xbmc
 
 

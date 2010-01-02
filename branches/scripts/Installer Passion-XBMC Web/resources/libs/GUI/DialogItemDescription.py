@@ -1,26 +1,15 @@
 
-#Modules general
+# Modules general
 import os
 import sys
-import shutil
-import ftplib
+from traceback import print_exc
 
-#Other module
-from threading import Thread
-
-#modules XBMC
+# Modules XBMC
 import xbmc
 import xbmcgui
 
-#modules custom
+# Modules custom
 from utilities import *
-from pil_util import makeThumbnails
-
-#module logger
-try:
-    logger = sys.modules[ "__main__" ].logger
-except:
-    import script_log as logger
 
 
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
@@ -67,7 +56,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
         try:
             self._set_controls_labels()
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
     def _set_controls_labels( self ):
         xbmcgui.lock()
@@ -78,7 +67,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
                 thumbnail = os.path.join( BASE_THUMBS_PATH, filename[ 0 ], filename )
                 if os.path.isfile( thumbnail ): self.i_thumbnail = thumbnail
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
         try:
             self.getControl( 48 ).reset()
             listitem = xbmcgui.ListItem( self.i_title, "", self.i_thumbnail, self.i_thumbnail )
@@ -100,7 +89,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
             listitem.setProperty( "previewVideoURL", self.i_previewVideoURL )
             self.getControl( 48 ).addItem( listitem )
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
         try:
             self.getControl( 49 ).reset()
 
@@ -129,7 +118,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
             self.getControl( 49 ).addItem( listitem )
 
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
         xbmcgui.unlock()
 
     def get_item_infos( self, main_listitem ):
@@ -146,7 +135,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
             self.i_previewPicture  = unicode( main_listitem.getProperty( "fanartpicture" ), 'utf-8')
             self.i_previewVideoURL = unicode( main_listitem.getProperty( "previewVideoURL" ), 'utf-8')
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
     def _set_skin_colours( self ):
         #xbmcgui.lock()
@@ -156,7 +145,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
         except:
             xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,ffffffff)" )
             xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,default)" )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
         #xbmcgui.unlock()
 
     def onFocus( self, controlID ):
@@ -190,8 +179,7 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
             else:
                 pass
         except:
-            #from traceback import print_exc; print_exc()
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
     def onAction( self, action ):
         #( ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, ACTION_CONTEXT_MENU, )

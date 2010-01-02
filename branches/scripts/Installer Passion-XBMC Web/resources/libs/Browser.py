@@ -2,23 +2,15 @@
 Browser: this module allows browsing of server content
 """
 
-
 # Modules general
 import os
 import sys
+from threading import Thread
 from traceback import print_exc
-
-# Module logger
-try:
-    logger = sys.modules[ "__main__" ].logger
-except:
-    import script_log as logger
 
 # Modules custom
 import Item
-    
-#Other module
-from threading import Thread
+
 
 class ImageQueueElement:
     """ Structure d'un element a mettre dans la FIFO des images a telecharger """
@@ -29,6 +21,7 @@ class ImageQueueElement:
 
     def __repr__( self ):
         return "(%s, %s, %s)" % ( self.filename, self.updateImage_cb, self.item )
+
 
 class Browser:
     """
@@ -157,11 +150,11 @@ class Browser:
 
     def cancel_update_Images(self):
         self.stopUpdateImageThread = True
-        logger.LOG( logger.LOG_DEBUG,"cancel_update_Images: Stopping theard ...")
+        print "cancel_update_Images: Stopping theard ..."
 
         # On attend la fin du thread
         self.getImagesQueue_thread.join(10)
-        logger.LOG( logger.LOG_DEBUG,"cancel_update_Images: Thread STOPPED")
+        print "cancel_update_Images: Thread STOPPED"
         
          # on vide la liste vide la Queue
         del self.image_queue[ : ]
@@ -213,10 +206,10 @@ class Browser:
                 try:
                     imageElt.updateImage_cb( thumbnail, imageElt.item )
                 except TypeError:
-                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                    print_exc()
                         
         if ( self.stopUpdateImageThread == True):
-            logger.LOG( logger.LOG_DEBUG,"_thread_getImagesQueue CANCELLED")
+            print "_thread_getImagesQueue CANCELLED"
 
     def _downloadImage( self, picname ):
         """

@@ -1,24 +1,12 @@
 """
 ItemInstaller: this module allows download and install of an item (addons: script, plugin, scraper, skin ...)
 """
+
+# Modules general
 import os
 import sys
+import httplib
 from traceback import print_exc
-
-# SQLite
-from pysqlite2 import dbapi2 as sqlite
-
-#Other module
-import urllib
-import urllib2, httplib
-
-httplib.HTTPConnection.debuglevel = 1
-
-# Module logger
-try:
-    logger = sys.modules[ "__main__" ].logger
-except:
-    import script_log as logger
 
 # Modules custom
 #from utilities import *
@@ -26,14 +14,18 @@ import CONF
 import Item
 from FileManager import fileMgr
 
+httplib.HTTPConnection.debuglevel = 1
+
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
 _ = sys.modules[ "__main__" ].__language__
+
 
 class cancelRequest(Exception):
     def __init__(self, value):
         self.value = value
     def __str__(self):
         return repr(self.value)
+
 
 class ItemInstaller:
     """
@@ -144,13 +136,11 @@ class ItemInstaller:
             for path in item_paths:
                 result = self.fileMgr.deleteItem( path )
                 if result == False:
-                    print "deleteInstalledItem: Impossible to delete one of the element in the item: %s"%path
-                    logger.LOG( logger.LOG_ERROR, "deleteInstalledItem: Impossible to delete one of the element in the item: %s", path )
+                    print "deleteInstalledItem: Impossible to delete one of the element in the item: %s" % path
                     break
         else:
             result = False
             print "deleteInstalledItem: Item invalid - error"
-            logger.LOG( logger.LOG_ERROR, "deleteInstalledItem: Item invalid - error" )
         return result
 
     def renameInstalledItem( self, inputText ):
@@ -172,13 +162,11 @@ class ItemInstaller:
                 print "Renaming %s by %s"%(path, path.replace( self.installName, inputText))
                 result = self.fileMgr.renameItem( None, path, path.replace( self.installName, inputText) )
                 if result == False:
-                    print "renameInstalledItem: Impossible to rename one of the element in the item: %s"%path
-                    logger.LOG( logger.LOG_ERROR, "renameInstalledItem: Impossible to rename one of the element in the item: %s", path )
+                    print "renameInstalledItem: Impossible to rename one of the element in the item: %s" % path
                     break
         else:
             result = False
             print "renameInstalledItem: Item invalid - error"
-            logger.LOG( logger.LOG_ERROR, "renameInstalledItem: Item invalid - error" )
         return result
 
 
@@ -239,11 +227,8 @@ class ArchItemInstaller(ItemInstaller):
                             #print "self.scraperName"
                             #print self.scraperName
                         except Exception, e:
-                            print("ArchItemInstaller: Exception in extractItem while listing scraper files: %s"%self.extractedDirPath)
-                            print(str(e))
-                            traceback.print_exc()
-                            logger.LOG( logger.LOG_ERROR, "ArchItemInstaller: Exception in extractItem while listing scraper files: %s", self.extractedDirPath )
-                            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                            print "ArchItemInstaller: Exception in extractItem while listing scraper files: %s" % self.extractedDirPath
+                            print_exc()
                     else:
                         status = "ERROR"
                 else:
@@ -257,7 +242,7 @@ class ArchItemInstaller(ItemInstaller):
     
                     if dirName == "":
                         installError = _( 139 ) % archive
-                        logger.LOG( logger.LOG_ERROR, "Erreur durant l'extraction de %s - impossible d'extraire le nom du repertoire", archive )
+                        print "Erreur durant l'extraction de %s - impossible d'extraire le nom du repertoire" % archive
                         status = "ERROR"
                     else:
                         # Extraction sucessfull
@@ -265,7 +250,7 @@ class ArchItemInstaller(ItemInstaller):
                         #self.installNameList = [ os.path.basename( file_path ) ] # For the future if we manage package of addons
                         self.installName = os.path.basename( file_path )
                         self.extractedDirPath = file_path
-                        logger.LOG( logger.LOG_NOTICE, self.destinationPath )
+                        print self.destinationPath
                 #TODO: add skin case (requirements need to be defined first)
                 del extractor
                 
@@ -321,34 +306,34 @@ class ArchItemInstaller(ItemInstaller):
             if self.type == Item.TYPE_SCRAPER:
                 # cas des Scrapers
                 # ----------------
-                logger.LOG( logger.LOG_DEBUG, "ItemInstaller::installItem - Starting item copy" )
+                print "ItemInstaller::installItem - Starting item copy"
                 try:
                     #if ( OK == bool( self.extractedDirPath ) ) and os.path.exists( self.extractedDirPath ):
                     if os.path.exists( self.extractedDirPath ):
                         extractor.copy_inside_dir( self.extractedDirPath, self.destinationPath )
                         OK = True
                     else:
-                        logger.LOG( logger.LOG_DEBUG, "ItemInstaller::installItem - self.extractedDirPath does not exist")
+                        print "ItemInstaller::installItem - self.extractedDirPath does not exist"
                 except Exception, e:        
-                    logger.LOG( logger.LOG_DEBUG, "ItemInstaller::installItem - Exception during copy of the directory %s", self.extractedDirPath )
-                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                    print "ItemInstaller::installItem - Exception during copy of the directory %s" % self.extractedDirPath
+                    print_exc()
                     process_error = True
                 print "Install Scraper completed"
             else:
                 # Cas des scripts et plugins
                 # --------------------------
                 # Recuperons le nom du repertorie a l'interieur de l'archive:
-                logger.LOG( logger.LOG_DEBUG, "ItemInstaller::installItem - Starting item copy" )
+                print "ItemInstaller::installItem - Starting item copy"
                 try:
                     #if ( OK == bool( self.extractedDirPath ) ) and os.path.exists( self.extractedDirPath ):
                     if os.path.exists( self.extractedDirPath ):
                         extractor.copy_dir( self.extractedDirPath, self.destinationPath )
                         OK = True
                     else:
-                        logger.LOG( logger.LOG_DEBUG, "ItemInstaller::installItem - self.extractedDirPath does not exist")
+                        print "ItemInstaller::installItem - self.extractedDirPath does not exist"
                 except Exception, e:        
-                    logger.LOG( logger.LOG_DEBUG, "ItemInstaller::installItem - Exception during copy of the directory %s", self.extractedDirPath )
-                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                    print "ItemInstaller::installItem - Exception during copy of the directory %s" % self.extractedDirPath
+                    print_exc()
                     process_error = True
                 print "Install item completed"
 

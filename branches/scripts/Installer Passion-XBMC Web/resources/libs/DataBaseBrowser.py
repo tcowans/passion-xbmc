@@ -1,21 +1,17 @@
 # -*- coding: utf-8 -*-
+
+# Modules general
 import os
-import csv
-import urllib
-import xbmcgui
-import sys
-   
+#import sys
     
-#cette methode provient d'apple movie trailer
 # append the proper platforms folder to our path, xbox is the same as win32
-env = ( os.environ.get( "OS", "win32" ), "win32", )[ os.environ.get( "OS", "win32" ) == "xbox" ]
-sys.path.append( os.path.join( os.getcwd(),"platform_libraries", env ) )
+#env = ( os.environ.get( "OS", "win32" ), "win32", )[ os.environ.get( "OS", "win32" ) == "xbox" ]
+#sys.path.append( os.path.join( os.getcwd(),"platform_libraries", env ) )
 from pysqlite2 import dbapi2 as sqlite
-#from platform_libraries.Linux.pysqlite2 import dbapi2 as sqlite
 
 RootDir  = os.getcwd().replace( ";", "" ) # Create a path with valid format
-#cacheDir = os.path.join(RootDir, "cache")
-DB = os.path.join(RootDir, 'Passion_XBMC_Installer.sqlite')
+cacheDir = os.path.join(RootDir, "cache")
+DB = os.path.join(cacheDir, 'Passion_XBMC_Installer.sqlite')
 
 
 def nicequery(query,dico):

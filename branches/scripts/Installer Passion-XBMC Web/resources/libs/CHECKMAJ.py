@@ -1,18 +1,13 @@
 
+# Modules general
 import os
 import sys
 import ftplib
+from traceback import print_exc
 from ConfigParser import ConfigParser
 
-import xbmc
+# Modules XBMC
 import xbmcgui
-
-
-#module logger
-try:
-    logger = sys.modules[ "__main__" ].logger
-except:
-    import script_log as logger
 
 
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
@@ -24,9 +19,10 @@ _ = sys.modules[ "__main__" ].__language__
 # CHECKMAJ.go()
 UPDATE_STARTUP = True
 
-logger.LOG( logger.LOG_DEBUG, str( "*" * 85 ) )
-logger.LOG( logger.LOG_DEBUG, "Script de mise a jour auto".center( 85 ) )
-logger.LOG( logger.LOG_DEBUG, str( "*" * 85 ) )
+# print depend of output.PRINT_DEBUG is True or False
+print "*" * 85
+print "Script de mise a jour auto".center( 85 )
+print "*" * 85
 
 
 class CheckMAJ:
@@ -93,8 +89,8 @@ class CheckMAJ:
                 os.makedirs(folder)
 
         except:
-            logger.LOG( logger.LOG_DEBUG, "verifrep - Exception while creating folder %s", folder )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+            print "verifrep - Exception while creating folder %s" % folder
+            print_exc()
 
     def download(self):
         """
@@ -184,11 +180,11 @@ class CheckMAJ:
     def delFiles(self,folder):
         for root, dirs, files in os.walk(folder , topdown=False):
             for name in files:
-                logger.LOG( logger.LOG_WARNING, "Effaccement de %s en cours ...", name )
+                print "bypass_debug: Effaccement de %s en cours ..." % name
                 try:
                     os.remove(os.path.join(root, name))
                 except:
-                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+                    print_exc()
 
 #TODO: QUESTIOn : ne devrait t'on pas faire "self.localConfParser.write(open(self.fichier,'w'))" qu'une seule fois a la fin plutot que plusieurs fois dans le code?
 

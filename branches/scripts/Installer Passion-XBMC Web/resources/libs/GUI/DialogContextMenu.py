@@ -1,15 +1,16 @@
 
 #context menu du plugin "All Game" de frost
 
-#Modules general
+# Modules general
 import os
 import sys
+from traceback import print_exc
 
-#modules XBMC
+# Modules XBMC
 import xbmc
 import xbmcgui
 
-#modules custom
+# Modules custom
 from utilities import *
 
 
@@ -50,9 +51,7 @@ class ContextMenu( xbmcgui.WindowXMLDialog ):
                 self.setFocusId( first_cm_button )
             xbmcgui.unlock()
         except:
-            try:logger = sys.modules[ "__main__" ].logger
-            except: import script_log as logger
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
             try:
                 #new methode for default.hd
                 for key in self.CONTROL_CM_BUTTONS:
@@ -65,9 +64,7 @@ class ContextMenu( xbmcgui.WindowXMLDialog ):
                         context_item.setProperty( "main_view_mode", self.view_mode )
                         self.getControl( 10000 ).addItem( context_item )
             except:
-                try:logger = sys.modules[ "__main__" ].logger
-                except: import script_log as logger
-                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                print_exc()
             xbmcgui.unlock()
             #self.close()
 

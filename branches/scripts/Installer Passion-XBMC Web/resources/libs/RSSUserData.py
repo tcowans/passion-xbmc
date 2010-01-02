@@ -1,7 +1,10 @@
 
+# Modules General
 from traceback import print_exc
+
 import elementtree.ElementTree as ET
 
+# Modules XBMC
 try: import xbmc
 except ImportError:
     xbmc = None
@@ -11,6 +14,7 @@ if xbmc: XML_PATH = 'special://userdata/RssFeeds.xml'
 else: XML_PATH = r'C:\Program Files\XBMC\userdata\RssFeeds.xml'
 
 ENCODING = ( "", "ISO-8859-1", "UTF-8", )[ 2 ]
+
 
 def refresh_rss():
     """ Reload RSS feeds from RSSFeeds.xml """

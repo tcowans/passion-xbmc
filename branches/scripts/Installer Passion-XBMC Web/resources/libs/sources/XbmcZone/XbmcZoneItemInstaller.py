@@ -1,35 +1,25 @@
 """
 ItemInstaller: this module allows download and install an item
 """
+
+# Modules general
 import os
 import sys
+import httplib
+import urllib2
 from traceback import print_exc
 
-# SQLite
-from pysqlite2 import dbapi2 as sqlite
-
-#Other module
-import urllib
-import urllib2, httplib
-
-httplib.HTTPConnection.debuglevel = 1
-
-# Module logger
-try:
-    logger = sys.modules[ "__main__" ].logger
-except:
-    import script_log as logger
-
 # Modules custom
-from utilities import *
-import CONF
 import Item
+import CONF
+#import extractor
+from utilities import *
 try:
     from ItemInstaller import ArchItemInstaller, cancelRequest
 except:
-    print sys.exc_info()
     print_exc()
-#import extractor
+
+httplib.HTTPConnection.debuglevel = 1
 
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
 _ = sys.modules[ "__main__" ].__language__
@@ -62,7 +52,7 @@ class XbmcZoneItemInstaller(ArchItemInstaller):
         if progressBar != None:
             progressBar.update( percent, _( 122 ) % ( self.baseurl + str(self.itemId) ), _( 123 ) % totalpercent )
         try:            
-            logger.LOG( logger.LOG_DEBUG, "HTTPInstaller::downloadItem - itemId = %d"%self.itemId)
+            print "HTTPInstaller::downloadItem - itemId = %d" % self.itemId
             
             # Get download link
                                
@@ -75,7 +65,7 @@ class XbmcZoneItemInstaller(ArchItemInstaller):
             #print "Exception during downlaodItem"
             #print e
             #print sys.exc_info()
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
             self.downloadArchivePath = None
         if progressBar != None:
             progressBar.update( percent, _( 122 ) % ( self.baseurl + str(self.itemId) ), _( 134 ) )
@@ -99,7 +89,7 @@ class XbmcZoneItemInstaller(ArchItemInstaller):
             print "Exception during getFileSize"
             print e
             print sys.exc_info()
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
         return file_size
 #
 #    def getFileName(self, sourceurl):
@@ -116,7 +106,7 @@ class XbmcZoneItemInstaller(ArchItemInstaller):
 #            print "Exception during getFileName"
 #            print e
 #            print sys.exc_info()
-#            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+#            print_exc()
 #        return file_name
     
 

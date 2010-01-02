@@ -1,28 +1,22 @@
 
-#Modules general
+# Modules general
 import os
 import sys
 import shutil
 import ftplib
-
-#Other module
 from threading import Thread
+from traceback import print_exc
+
 import elementtree.ElementTree as ET
 
-#modules XBMC
+# Modules XBMC
 import xbmc
 
-#modules custom
+# Modules custom
 from utilities import *
 from CONF import configCtrl
 from pil_util import makeThumbnails
 import Item
-
-#module logger
-try:
-    logger = sys.modules[ "__main__" ].logger
-except:
-    import script_log as logger
 
 
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
@@ -47,8 +41,7 @@ def set_cache_thumb_name( path ):
             os.makedirs( os.path.dirname( thumbnail ) )
         return thumbnail, preview_pic
     except:
-        #from traceback import print_exc; print_exc()
-        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+        print_exc()
         return "", ""
 
 
@@ -127,7 +120,7 @@ class InfoWarehouseEltTreeXMLFTP:
         self.srvItemDescripDir  = self.configManager.itemDescripDir
         self.srvItemDescripFile = self.configManager.itemDescripFile
 
-        logger.LOG( logger.LOG_DEBUG,"InfoWarehouseEltTreeXMLFTP starts")
+        print "InfoWarehouseEltTreeXMLFTP starts"
         self.mainwin  = kwargs[ "mainwin" ]
 
         #self.thumb_size_on_load = self.mainwin.settings[ "thumb_size" ]
@@ -156,11 +149,11 @@ class InfoWarehouseEltTreeXMLFTP:
 
     def cancel_update_Images(self):
         self.stopUpdateImageThread = True
-        logger.LOG( logger.LOG_DEBUG,"cancel_update_Images: Stopping theard ...")
+        print "cancel_update_Images: Stopping theard ..."
 
         # On attend la fin du thread
         self.getImagesQueue_thread.join(10)
-        logger.LOG( logger.LOG_DEBUG,"cancel_update_Images: Thread STOPPED")
+        print "cancel_update_Images: Thread STOPPED"
         
          # on vide la liste vide la Queue
         del self.image_queue[ : ]
@@ -184,10 +177,10 @@ class InfoWarehouseEltTreeXMLFTP:
                     try:
                         imageElt.updateImage_cb( previewPicture, imageElt.listitem )
                     except TypeError:
-                        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                        print_exc()
                         
         if ( self.stopUpdateImageThread == True):
-            logger.LOG( logger.LOG_DEBUG,"_thread_getImagesQueue CANCELLED")
+            print "_thread_getImagesQueue CANCELLED"
 
 
 #    def _getImage( self, pictureURL, updateImage_cb=None, listitem=None ):
@@ -222,7 +215,7 @@ class InfoWarehouseEltTreeXMLFTP:
 #            try:
 #                updateImage_cb( previewPicture, listitem )
 #            except TypeError:
-#                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+#                print_exc()
 
     def check_thumb_size( self ):
         if self.thumb_size_on_load != self.mainwin.settings[ "thumb_size" ]:
@@ -230,7 +223,7 @@ class InfoWarehouseEltTreeXMLFTP:
             try:
                 shutil.rmtree( BASE_THUMBS_PATH )
             except:
-                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                print_exc()
 
     def parse_xml_sections( self ):
         elems = ET.parse( open( os.path.join( self.configManager.CACHEDIR, self.srvItemDescripFile ), "r" ) ).getroot()
@@ -325,8 +318,7 @@ class InfoWarehouseEltTreeXMLFTP:
             #i = updateIWH( locals() )
             #print i.fileName, i.description
         except:
-            #from traceback import print_exc; print_exc()
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
         print locals()
         return updateIWH( locals() )
@@ -352,9 +344,8 @@ class InfoWarehouseEltTreeXMLFTP:
                 try:
                     ftp.retrbinary( 'RETR ' + filetodlUrl, localFile.write )
                 except:
-                    #from traceback import print_exc; print_exc()
-                    logger.LOG( logger.LOG_DEBUG, "_downloaddossier: Exception - Impossible de telecharger le fichier: %s", remoteFilePath )
-                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                    print "_downloaddossier: Exception - Impossible de telecharger le fichier: %s" % remoteFilePath
+                    print_exc()
                     thumbnail, localFilePath = "", ""
                 localFile.close()
                 ftp.quit()
@@ -371,9 +362,8 @@ class InfoWarehouseEltTreeXMLFTP:
             if thumbnail and os.path.isfile( thumbnail ) and hasattr( listitem, "setThumbnailImage" ):
                 listitem.setThumbnailImage( thumbnail )
         except:
-            #from traceback import print_exc; print_exc()
-            logger.LOG( logger.LOG_DEBUG, "_downloaddossier: Exception - Impossible de telecharger le fichier: %s", remoteFilePath )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print "_downloaddossier: Exception - Impossible de telecharger le fichier: %s" % remoteFilePath
+            print_exc()
 
 
 class ItemInfosManager:

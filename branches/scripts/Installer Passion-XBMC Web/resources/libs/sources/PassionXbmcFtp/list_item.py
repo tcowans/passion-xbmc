@@ -1,17 +1,10 @@
 
-#Modules general
+# Modules general
 import os
-import re
 import sys
 
-#modules custom
+# Modules custom
 from utilities import *
-
-#module logger
-try:
-    logger = sys.modules[ "__main__" ].logger
-except:
-    import script_log as logger
 
 
 # INITIALISATION CHEMIN RACINE

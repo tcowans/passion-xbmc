@@ -1,29 +1,21 @@
 ﻿
-#Modules general
+# Modules general
 import os
 import re
 import sys
-import urllib
 from StringIO import StringIO
 from traceback import print_exc
 
 import elementtree.HTMLTreeBuilder as HTB
 
-
-#modules XBMC
+# Modules XBMC
 import xbmc
 import xbmcgui
 
-#modules custom
+# Modules custom
 import PassionXBMC
 from utilities import *
 from convert_utc_time import set_local_time
-
-#module logger
-try:
-    logger = sys.modules[ "__main__" ].logger
-except:
-    import script_log as logger
 
 
 SPECIAL_TEMP_DIR = sys.modules[ "__main__" ].SPECIAL_TEMP_DIR
@@ -33,22 +25,18 @@ DIALOG_PROGRESS = xbmcgui.DialogProgress()
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
 _ = sys.modules[ "__main__" ].__language__
 
-DIRECT_INFOS = "http://passion-xbmc.org%s/?action=.xml;type=rss;limit=" #max 100
 
 EXCLUDE_IMGS = re.compile( "smiley|imagesonboard" ).search
 
 
 def load_infos( url, onerror=True ):
     try:
-        #html = urllib.urlopen( url )
         html = PassionXBMC.get_page( url )
-        source = re.sub( "<!\[CDATA\[|\]\]>", "", html )#.read() )
-        #html.close()
+        source = re.sub( "<!\[CDATA\[|\]\]>", "", html )
         return HTB.parse( StringIO( source ), "utf-8"  ).findall( "channel" )[ 0 ]
     except:
         if onerror:
             print_exc()
-            #logger.EXC_INFO( logger.LOG_DEBUG, sys.exc_info() )
         # si on arrive ici le retour est automatiquement None
 
 
@@ -77,7 +65,7 @@ class DirectInfos( xbmcgui.WindowXML ):
                 self.set_list_container_150()
                 self.set_list_container_191()
         except:
-            print_exc()#logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()#print_exc()
         DIALOG_PROGRESS.close()
 
     def _get_settings( self, defaults=False ):
@@ -102,7 +90,7 @@ class DirectInfos( xbmcgui.WindowXML ):
         except:
             xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,ffffffff)" )
             xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,default)" )
-            print_exc()#logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()#print_exc()
         #xbmcgui.unlock()
 
     def set_user_authentification( self, connect=False ):
@@ -209,7 +197,7 @@ class DirectInfos( xbmcgui.WindowXML ):
                             # pour la page general seulement
                             general_category = item.findtext( "category" )
                     except:
-                        print_exc()#logger.EXC_INFO( logger.LOG_DEBUG, sys.exc_info(), self )
+                        print_exc()
                     else:
                         DIALOG_PROGRESS.update( int( percent ), "Topic: %i / %i" % ( count + 1, total_items, ), title )
                         listitem = xbmcgui.ListItem( title, pubdate, icone, icone )
@@ -223,7 +211,7 @@ class DirectInfos( xbmcgui.WindowXML ):
             else:
                 xbmcgui.Dialog().ok( _( 199 ), self.category, _( 240 ) )
         except:
-            print_exc()#logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()#print_exc()
             xbmcgui.Dialog().ok( _( 199 ), self.category, _( 241 ) )
         DIALOG_PROGRESS.close()
 
@@ -312,13 +300,13 @@ class DirectInfos( xbmcgui.WindowXML ):
             else:
                 pass
         except:
-            print_exc()#logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()#print_exc()
             DIALOG_PROGRESS.close()
 
     def _url_launcher( self, url ):
         if not url: return
         if ( not SYSTEM_PLATFORM in ( "windows", "linux", "osx" ) ):
-            logger.LOG( logger.LOG_INFO, "Unsupported platform: %s", SYSTEM_PLATFORM )
+            print "bypass: Unsupported platform: %s" % SYSTEM_PLATFORM
             return
         try:
             if not self.settings[ "web_navigator" ]:
@@ -345,7 +333,7 @@ class DirectInfos( xbmcgui.WindowXML ):
                 command = '%s(%s %s)' % ( cmd, self.settings[ "web_navigator" ], url, )
 
             if command is not None:
-                logger.LOG( logger.LOG_DEBUG, "Url Launcher: %s", command )
+                print "Url Launcher: %s" % command
                 selected_label = self._unicode( self.getControl( self.CONTROL_FEEDS_LIST ).getSelectedItem().getLabel() )
                 if xbmcgui.Dialog().yesno( self.settings[ "web_title" ], _( 236 ), selected_label, url.split( "/" )[ -1 ], _( 237 ), _( 238 ) ):
                     try:
@@ -354,7 +342,7 @@ class DirectInfos( xbmcgui.WindowXML ):
                         os.system( "%s %s" % ( web_navigator, url, ) )
 
         except:
-            print_exc()#logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()#print_exc()
 
     def get_redirected_url( self, url ):
         from urllib2 import urlopen
@@ -365,7 +353,7 @@ class DirectInfos( xbmcgui.WindowXML ):
             scheme2, host2, path2, params2, query2, fragment2 = urlparse( redirection )
             url = urlunparse( ( scheme2, host2, path2, params2, None, fragment1 ) )
         except:
-            print_exc()#logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()#print_exc()
         del urlopen, urlparse, urlunparse
         return url
 
@@ -394,7 +382,7 @@ class DirectInfos( xbmcgui.WindowXML ):
                         f.close()
                         xbmc.executehttpapi( "PlaySlideshow(%s;false)" % ( m3u, ) )
             except:
-                print_exc()#logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                print_exc()#print_exc()
 
     def _close_dialog( self ):
         #xbmc.sleep( 100 )

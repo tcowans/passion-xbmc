@@ -2,32 +2,22 @@
 PassionFtpBrowser: this module allows browsing of server content on the FTP server of Passion-XBMC.org
 """
 
-
 # Modules general
 import os
 import sys
-import traceback
-
-# Module logger
-try:
-    logger = sys.modules[ "__main__" ].logger
-except:
-    import script_log as logger
-    
-#Other module
+import ftplib
 from threading import Thread
-from pil_util import makeThumbnails
-#import urllib
+from traceback import print_exc
 
 # Modules custom
-from utilities import *
-from Browser import Browser, ImageQueueElement
 import Item
-import ItemInstaller  
+import ItemInstaller
+from utilities import *
+import PassionFtpItemInstaller
+from pil_util import makeThumbnails
 from info_item import ItemInfosManager
 from PassionFtpmanager import FtpDownloadCtrl
-import ftplib
-import PassionFtpItemInstaller
+from Browser import Browser, ImageQueueElement
 
 
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
@@ -90,10 +80,9 @@ class PassionFtpBrowser(Browser):
             #self.updateList()
 
         except:
-            logger.LOG( logger.LOG_DEBUG, "PassionFtpBrowser::__init__: Exception durant la connection FTP" )
-            logger.LOG( logger.LOG_DEBUG, "Impossible de se connecter au serveur FTP: %s", self.host )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-            traceback.print_exc()
+            print "PassionFtpBrowser::__init__: Exception durant la connection FTP"
+            print "Impossible de se connecter au serveur FTP: %s" % self.host
+            print_exc()
 
         # Creons ItemInfosManager afin de recuperer les descriptions des items
         self.itemInfosManager = ItemInfosManager( mainwin=self )
@@ -230,9 +219,8 @@ class PassionFtpBrowser(Browser):
 #                ftp.retrbinary( 'RETR ' + filetodlUrl, localFile.write )
 #                #self.passionFTPCtrl.retrbinary( self, 'RETR ' + filetodlUrl, callback, blocksize=8192, rest=None )
 #            except:
-#                #import traceback; traceback.print_exc()
-#                logger.LOG( logger.LOG_DEBUG, "_downloaddossier: Exception - Impossible de telecharger le fichier: %s", remoteFilePath )
-#                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+#                print_exc()
+#                print "_downloaddossier: Exception - Impossible de telecharger le fichier: %s" % remoteFilePath
 #                thumbnail, localFilePath = "", ""
 #            localFile.close()
 #            ftp.quit()
@@ -256,15 +244,11 @@ class PassionFtpBrowser(Browser):
             else:
                 thumbnail, localFilePath = "", ""
         except Exception, e:
-            print "Exception during _downloadImage"
-            print e
             #TODO: create a thumb for the default image?
             #TODO: return empty and manage default image at the level of the caller
             thumbnail, localFilePath = "", "" 
-            print sys.exc_info()
-            logger.LOG( logger.LOG_DEBUG, "_downloadImage: Exception - Impossible to download the picture: %s", picname )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-            traceback.print_exc()
+            print "_downloadImage: Exception - Impossible to download the picture: %s" % picname
+            print_exc()
         print "thumbnail = %s"%thumbnail
         print "localFilePath = %s"%localFilePath
         return thumbnail, localFilePath
@@ -334,10 +318,7 @@ class PassionFtpBrowser(Browser):
                 self.curCategory, list = self._createRootList()
         except Exception, e:
             print "Exception during getNextList"
-            print e
-            print sys.exc_info()
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-            traceback.print_exc()
+            print_exc()
         # Replace current list
         self.curList = list
         return self.curList
@@ -360,10 +341,7 @@ class PassionFtpBrowser(Browser):
                 self.curCategory, list = self._createRootList()
         except Exception, e:
             print "Exception during getPrevList"
-            print e
-            print sys.exc_info()
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-            traceback.print_exc()
+            print_exc()
         # Replace current list
         self.curList = list
         return list
@@ -388,8 +366,7 @@ class PassionFtpBrowser(Browser):
             # Set image
             self._setDefaultImages( item )
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-            traceback.print_exc()
+            print_exc()
         
         
     def isCat( self, index ):
@@ -441,10 +418,7 @@ class PassionFtpBrowser(Browser):
 
         except Exception, e:
             print "Exception during getInstaller of Passion XBMC FTP Browser"
-            print e
-            print sys.exc_info()
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-            traceback.print_exc()   
+            print_exc() 
                  
         return itemInstaller
     

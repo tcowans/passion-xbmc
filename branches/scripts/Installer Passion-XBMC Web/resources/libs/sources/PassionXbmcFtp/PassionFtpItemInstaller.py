@@ -1,28 +1,23 @@
 """
 ItemInstaller: this module allows download and install an item
 """
+
+# Modules general
 import os
 import sys
-import traceback
+from traceback import print_exc
 
 
-# XBMC
+# Modules XBMC
 import xbmc
 
-# Module logger
-try:
-    logger = sys.modules[ "__main__" ].logger
-except:
-    import script_log as logger
-
 # Modules custom
+#import extractor
 from utilities import *
 try:
     from ItemInstaller import ArchItemInstaller, cancelRequest
 except:
-    print sys.exc_info()
-    traceback.print_exc()
-#import extractor
+    print_exc()
 
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
 _ = sys.modules[ "__main__" ].__language__
@@ -52,7 +47,7 @@ class PassionFTPInstaller(ArchItemInstaller):
         if progressBar != None:
             progressBar.update( percent, _( 122 ) % ( self.downloadurl ), _( 123 ) % totalpercent )
         try:            
-            logger.LOG( logger.LOG_DEBUG, "PassionFTPInstaller::downloadItem - name = %s"%self.name)
+            print "PassionFTPInstaller::downloadItem - name = %s" % self.name
             
             downloadStatus = self.ftpCtrl.download( self.downloadurl, self.type, progressbar_cb=self._pbhook, dialogProgressWin = progressBar )
             
@@ -60,10 +55,7 @@ class PassionFTPInstaller(ArchItemInstaller):
             self.downloadArchivePath = xbmc.translatePath( os.path.join( self.CACHEDIR, os.path.basename(self.downloadurl) ) )
         except Exception, e:
             print "Exception during downlaodItem"
-            print e
-            print sys.exc_info()
-            traceback.print_exc()
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
             self.downloadArchivePath = None
             status = "ERROR"
         if progressBar != None:
@@ -88,7 +80,7 @@ class PassionFTPInstaller(ArchItemInstaller):
 #            print "Exception during getFileSize"
 #            print e
 #            print sys.exc_info()
-#            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+#            print_exc()
         return file_size
         
     def _pbhook(self,numblocks, blocksize, filesize, url=None,dp=None):
@@ -162,12 +154,12 @@ class PassionFTPInstaller(ArchItemInstaller):
 #                isDownloaded, localDirPath = self.passionFTPCtrl.isAlreadyDownloaded( source, self.remotedirList[ self.downloadTypeList.index( self.type ) ], self.downloadTypeList.index( self.type ) )
 #
 #                if ( isDownloaded ) and ( localDirPath != None ):
-#                    logger.LOG( logger.LOG_NOTICE, "Repertoire deja present localement" )
+#                    print "Repertoire deja present localement"
 #                    # On traite le repertorie deja present en demandant a l'utilisateur de choisir
 #                    continueDownload = self.processOldDownload( localDirPath )
 #                else:
-#                    logger.LOG( logger.LOG_DEBUG, "localDirPath: %s", repr( localDirPath ) )
-#                    logger.LOG( logger.LOG_DEBUG, "isDownloaded: %s", repr( isDownloaded ) )
+#                    print "localDirPath: %s" % repr( localDirPath )
+#                    print "isDownloaded: %s" % repr( isDownloaded )
 #
 #                if continueDownload == True:
 #                    # Fenetre de telechargement
@@ -190,7 +182,7 @@ class PassionFTPInstaller(ArchItemInstaller):
 #                        message2 = _( 125 )
 #                        message3 = _( 126 )
 #                        if xbmcgui.Dialog().yesno( title, message1, message2, message3 ):
-#                            logger.LOG( logger.LOG_WARNING, "Suppression du repertoire %s", localDirPath )
+#                            print "Suppression du repertoire %s" % localDirPath
 #                            if os.path.isdir( localDirPath ):
 #                                if self.deleteDir( localDirPath ):
 #                                    xbmcgui.Dialog().ok( _( 127 ), _( 128 ), localDirPath, _( 129 ) )
@@ -263,16 +255,16 @@ class PassionFTPInstaller(ArchItemInstaller):
 #
 #                                if dirName == "":
 #                                    installError = _( 139 ) % archive
-#                                    logger.LOG( logger.LOG_ERROR, "Erreur durant l'extraction de %s - impossible d'extraire le nom du repertoire", archive )
+#                                    print "Erreur durant l'extraction de %s - impossible d'extraire le nom du repertoire" % archive
 #                                else:
 #                                    #destination = os.path.join( self.localdirList[ self.downloadTypeList.index( self.type ) ], dirName )
-#                                    logger.LOG( logger.LOG_NOTICE, destination )
+#                                    print destination
 #                                    if os.path.exists( destination ):
 #                                        # Repertoire deja present
 #                                        # On demande a l'utilisateur ce qu'il veut faire
 #                                        if self.processOldDownload( destination ):
 #                                            try:
-#                                                #logger.LOG( logger.LOG_NOTICE, "Extraction de %s vers %s", archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
+#                                                #print "Extraction de %s vers %s" % ( archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
 #                                                #self.extracter.extract( archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
 #                                                if ( OK == bool( file_path ) ) and os.path.exists( file_path ):
 #                                                    extractor.copy_dir( file_path, destination )
@@ -280,11 +272,11 @@ class PassionFTPInstaller(ArchItemInstaller):
 #                                                process_error = True
 #                                        else:
 #                                            installCancelled = True
-#                                            logger.LOG( logger.LOG_WARNING, "L'installation de %s a ete annulee par l'utilisateur", downloadItem  )
+#                                            print "L'installation de %s a ete annulee par l'utilisateur" % downloadItem
 #                                    else:
 #                                        # Le Repertoire n'est pas present localement -> on peut deplacer le repertoire depuis cache
 #                                        try:
-#                                            #logger.LOG( logger.LOG_NOTICE, "Extraction de %s vers %s", archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
+#                                            #print "Extraction de %s vers %s" % ( archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
 #                                            #self.extracter.extract( archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
 #                                            if ( OK == bool( file_path ) ) and os.path.exists( file_path ):
 #                                                extractor.copy_dir( file_path, destination )
@@ -297,8 +289,8 @@ class PassionFTPInstaller(ArchItemInstaller):
 #
 #                            if process_error:
 #                                installError = _( 140 ) % archive
-#                                logger.LOG( logger.LOG_ERROR, "Exception durant l'extraction de %s", archive )
-#                                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+#                                print "Exception durant l'extraction de %s" % archive
+#                                print_exc()
 #
 #                            if installCancelled == False and installError == None:
 #                                self._save_downloaded_property()
@@ -320,5 +312,5 @@ class PassionFTPInstaller(ArchItemInstaller):
 #                    # Close the Loading Window
 #                    dp.close()
 #        except:
-#            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+#            print_exc()
 

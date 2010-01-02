@@ -4,22 +4,17 @@ extractor for zip and rar file and a future support file 7-zip.
 frost
 """
 
-#Modules general
+# Modules general
 import os
 import sys
+from traceback import print_exc
 
-#modules custom
-import shutil2
-
-#modules XBMC
+# Modules XBMC
 from xbmcgui import DialogProgress
 from xbmc import executebuiltin, sleep
 
-#module logger
-try:
-    logger = sys.modules[ "__main__" ].logger
-except:
-    import script_log as logger
+# Modules custom
+import shutil2
 
 
 DIALOG_PROGRESS = DialogProgress()
@@ -31,8 +26,7 @@ def get_time_sleep( filename ):
     try:
         slp = int( os.path.getsize( filename ) / 1000 )
     except:
-        #from traceback import print_exc; print_exc()
-        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+        print_exc()
         slp = 0
     if slp < 1000: slp = 1000
     return slp
@@ -106,19 +100,16 @@ def unrar( filename, destination=None, report=False ):
                     if file in namelist:
                         size += os.path.getsize( os.path.join( root, file ) )
                     else:
-                        logger.LOG( logger.LOG_ERROR, "Error %s est dans la liste de depart!", file )
-                        #print "Error %s est dans la liste de depart!" % file
+                        print "Error %s est dans la liste de depart!" % file
             #print size
             if not size:
-                logger.LOG( logger.LOG_ERROR, "Error for extracting rar: %s", filename )
-                #print "Error for extracting rar: %s" % filename
+                print "Error for extracting rar: %s" % filename
         rar.close()
         del rar
         # si list_size est pas declarer une erreur automatique est creer ;)
         return base_dir, list_size == total_items
     except:
-        #from traceback import print_exc; print_exc()
-        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+        print_exc()
         return "", False
 
 
@@ -170,8 +161,7 @@ def unzip( filename, destination=None, report=False ):
         del zip
         return base_dir, True
     except:
-        #from traceback import print_exc; print_exc()
-        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+        print_exc()
         return "", False
 
 
@@ -187,8 +177,7 @@ def extract( filename, destination=None, report=False ):
         # reste a compiler cette lib pour xbmc linux, win32/xbox et osx semble pas etre supporter
         # Note faut compiler cette lib avec python 2.4, sinon elle sera pas compatible avec xbmc, pas certain a 100 pour 100.
         #ok = executebuiltin( 'XBMC.Extract(%s)' % ( filename, ) )
-        logger.LOG( logger.NOTICE, "L'archive '%s' n'est pas pris en charge...", os.path.basename( filename ) )
-        pass
+        print "L'archive '%s' n'est pas pris en charge..." % os.path.basename( filename )
     return "", False
 
 

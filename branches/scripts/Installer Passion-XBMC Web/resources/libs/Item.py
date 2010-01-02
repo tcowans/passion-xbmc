@@ -44,17 +44,11 @@ __all__ = [
     ]
 
 
-#Modules general
+# Modules general
 import os
 import sys
 
-#module logger
-try:
-    logger = sys.modules[ "__main__" ].logger
-except:
-    import script_log as logger
-
-#Module custom
+# Modules custom
 from specialpath import *
 
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
