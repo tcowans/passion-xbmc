@@ -29,20 +29,15 @@ __all__ = [
     "THUMB_PLUGIN_VIDEO",
     ]
 
-#Modules general
+# Modules general
 import os
 import sys
+from traceback import print_exc
 from ConfigParser import ConfigParser
 
-#modules XBMC
-import xbmc
+# Modules XBMC
 from xbmcgui import Dialog
 
-#module logger
-try:
-    logger = sys.modules[ "__main__" ].logger
-except:
-    import script_log as logger
 
 # FICHIERS DE CONFIGURATION
 default_conf = os.path.join( os.getcwd().replace( ";", "" ), "resources", "conf.cfg" )
@@ -117,10 +112,10 @@ def SetConfiguration():
     from utilities import SYSTEM_PLATFORM
     XBMC_ROOT = sys.modules[ "__main__" ].SPECIAL_XBMC_HOME
 
-    logger.LOG( logger.LOG_DEBUG, str( "*" * 85 ) )
-    logger.LOG( logger.LOG_DEBUG, "Setting Configuration".center( 85 ) )
-    logger.LOG( logger.LOG_DEBUG, str( "*" * 85 ) )
-    logger.LOG( logger.LOG_DEBUG, "%s case", SYSTEM_PLATFORM )
+    print "*" * 85
+    print "Setting Configuration".center( 85 )
+    print "*" * 85
+    print "%s case" % SYSTEM_PLATFORM
 
     ROOTDIR = os.getcwd().replace( ";", "" )
 
@@ -129,7 +124,7 @@ def SetConfiguration():
 
     if not os.path.isdir( XBMC_ROOT ):
         XBMC_ROOT = Dialog().browse( 0, sys.modules[ "__main__" ].__language__( 100 ), "files" )
-        logger.LOG( logger.LOG_DEBUG, "Other case, XBMC = %s", XBMC_ROOT )
+        print "Other case, XBMC = %s" % XBMC_ROOT
     config.set( "InstallPath", "path", XBMC_ROOT )
 
     if SYSTEM_PLATFORM == "linux":
@@ -191,7 +186,7 @@ def GetInstallPaths():
     
     if not os.path.isdir( XBMC_ROOT ):
         XBMC_ROOT = Dialog().browse( 0, "Dossier d'installation de XBMC", "files" )
-        #logger.LOG( logger.LOG_DEBUG, "Other case, XBMC = %s", XBMC_ROOT )
+        #print "Other case, XBMC = %s" % XBMC_ROOT
     Path_list.append(XBMC_ROOT)
     Path_name.append("path") 
 
@@ -341,8 +336,8 @@ class configCtrl:
             self.is_conf_valid = True
         except:
             self.is_conf_valid = False
-            logger.LOG( logger.LOG_DEBUG, "Exception while loading configuration file conf.cfg" )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print "Exception while loading configuration file conf.cfg"
+            print_exc()
 
     def getSrvHost( self ):
         return self.host

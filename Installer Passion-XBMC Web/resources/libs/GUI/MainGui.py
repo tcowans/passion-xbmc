@@ -1,33 +1,23 @@
-#
-#Modules general
+
+# Modules general
 import os
-import re
 import md5
 import sys
-import time
 import urllib
 
-from threading import Thread, Timer
 from traceback import print_exc
+from threading import Thread, Timer
 
-#modules XBMC
+# Modules XBMC
 import xbmc
 import xbmcgui
 
-#modules custom
-from PassionHttpBrowser import PassionHttpBrowser
-from PassionFtpBrowser import PassionFtpBrowser
-from XbmcZoneBrowser import XbmcZoneBrowser
+# Modules custom
 from utilities import *
-
 from info_item import ItemInfosManager
-#from INSTALLEUR import ftpDownloadCtrl, directorySpy, userDataXML
-
-#module logger
-try:
-    logger = sys.modules[ "__main__" ].logger
-except:
-    import script_log as logger
+from XbmcZoneBrowser import XbmcZoneBrowser
+from PassionFtpBrowser import PassionFtpBrowser
+from PassionHttpBrowser import PassionHttpBrowser
 
 
 SPECIAL_SCRIPT_DATA = sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA
@@ -70,6 +60,7 @@ class Source:
     def __repr__( self ):
         return "Source ( sourceName: %s, className: %s, instanceName: %s, created: %s )" % ( self.sourceName, self.className, self.instanceName, self.created )
 
+
 class Context:
     """
     Context class, allows to retrieve browsers
@@ -91,7 +82,7 @@ class Context:
             #print "Exception during Context init"
             #print e
             #print sys.exc_info()
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
             print_exc()
 
     def selectSource( self, sourceName ):
@@ -156,10 +147,7 @@ class Context:
                     self.listOfSources[srcName].instanceName.close()
             except Exception, e:
                 print "Exception during freeSources in Context"
-                print e
-                print sys.exc_info()
-                traceback.print_exc()
-                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                print_exc()
 
 
 class MainWindow( xbmcgui.WindowXML ):
@@ -268,13 +256,10 @@ class MainWindow( xbmcgui.WindowXML ):
                     #print "End of update for the displayed list
 
                 except:
-                    #print str(sys.exc_info()[0])
-                    #print sys.exc_info()
-                    print_exc()
                     xbmcgui.Dialog().ok( _( 111 ), _( 112 ) )
-                    logger.LOG( logger.LOG_DEBUG, "Window::__init__: Exception durant la connection FTP" )
-                    logger.LOG( logger.LOG_DEBUG, "Impossible de se connecter au serveur FTP: %s", self.host )
-                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                    print "Window::__init__: Exception durant la connection FTP"
+                    print "Impossible de se connecter au serveur FTP: %s" % self.host
+                    print_exc()
 
                 # Title of the current pages
                 self.setProperty( "Category", _( 10 ) )
@@ -318,7 +303,7 @@ class MainWindow( xbmcgui.WindowXML ):
         except:
             xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,ffffffff)" )
             xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,default)" )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
         #xbmcgui.unlock()
 
     def _start_rss_timer( self ):
@@ -333,7 +318,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 self.rss_title = rss_feeds_xml.get( "title", self.rss_title )
                 self.rssfeed = rss_feeds_xml.get( "feed", self.rssfeed )
             except:
-                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                print_exc()
             self.rss_thread = Thread( target=self._set_control_rss_feed )
             self.rss_thread.start()
         else:
@@ -355,11 +340,11 @@ class MainWindow( xbmcgui.WindowXML ):
             #print repr( title_color ), repr( text_color )
             self.rss_feed = RSSParser.rssReader( self.rss_title, self.rssfeed, title_color, text_color ).GetRssInfo()[ 1 ]
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
             try:
                 self.rss_feed = RSSParser.rssReader( self.rss_title, self.rssfeed ).GetRssInfo()[ 1 ]
             except:
-                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                print_exc()
         del RSSParser
         try:
             self.getControl( 100 ).reset()
@@ -367,7 +352,7 @@ class MainWindow( xbmcgui.WindowXML ):
             self.getControl( 100 ).setVisible( True )
         except:
             print_exc()
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
             try: self.getControl( 100 ).setVisible( False )
             except: pass
             self._stop_rss_timer()
@@ -376,7 +361,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 self.rss_timer = Timer( self.rss_update_interval, self._set_control_rss_feed, () )
                 self.rss_timer.start()
             except:
-                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                print_exc()
 
     def _show_descript( self ):
         try:
@@ -391,7 +376,7 @@ class MainWindow( xbmcgui.WindowXML ):
                     DialogItemDescription.show_description( self )
                     del DialogItemDescription
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
     def _show_settings( self ):
         try:
@@ -404,7 +389,7 @@ class MainWindow( xbmcgui.WindowXML ):
             if thumb_size_on_load != self.settings[ "thumb_size" ]:
                 self.updateList() #on raffraichit la page pour afficher la taille des vignettes
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
     def _show_direct_infos( self ):
         try:
@@ -414,7 +399,7 @@ class MainWindow( xbmcgui.WindowXML ):
             #on a plus besoin, on le delete
             del ForumDirectInfos
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
     def _show_file_manager( self, args=None ):
         try:
@@ -428,7 +413,7 @@ class MainWindow( xbmcgui.WindowXML ):
             if thumb_size_on_load != self.settings[ "thumb_size" ]:
                 self.updateList() #on raffraichit la page pour afficher la taille des vignettes
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
     def get_view_mode( self ):
         view_mode = ""
@@ -464,7 +449,7 @@ class MainWindow( xbmcgui.WindowXML ):
                     pass
         except:
             print_exc()
-            #logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            #print_exc()
 
     def _switch_media( self ):
         #TODO: adpat implementation to multisources
@@ -504,7 +489,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 self.index = self.index
                 self.updateList() #on raffraichit la page pour afficher le contenu
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
     def set_list_container_150( self ):
         #list_container = sorted( self.list_container_150.items(), key=lambda id: id[ 0 ] )
@@ -524,7 +509,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 self.getControl( self.CONTROL_SOURCE_LIST ).addItem( xbmcgui.ListItem( label1, label1, icone, icone ) )
             self.getControl( self.CONTROL_SOURCE_LIST ).setVisible( True )
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
             #print sys.exc_info()
             print_exc()
 
@@ -549,8 +534,8 @@ class MainWindow( xbmcgui.WindowXML ):
                     self.updateData_Prev()
                     self.updateList()
                 except:
-                    logger.LOG( logger.LOG_DEBUG, "Window::onAction::ACTION_PREVIOUS_MENU: Exception durant updateList()" )
-                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                    print "Window::onAction::ACTION_PREVIOUS_MENU: Exception durant updateList()"
+                    print_exc()
 
                 if self.main_list_last_pos:
                     self.setCurrentListPosition( self.main_list_last_pos.pop() )
@@ -566,8 +551,8 @@ class MainWindow( xbmcgui.WindowXML ):
                 pass
 
         except:
-            logger.LOG( logger.LOG_DEBUG, "Window::onAction: Exception" )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print "Window::onAction: Exception"
+            print_exc()
 
     def install_add_ons( self ):
         """
@@ -627,7 +612,7 @@ class MainWindow( xbmcgui.WindowXML ):
                         msg2  = _( 143 )
                     else:
                         installCancelled = True
-                        logger.LOG( logger.LOG_WARNING, "%s install has been cancelled by the user", itemName  )
+                        print "bypass: %s install has been cancelled by the user" % itemName
                         title = _( 146 )
                         msg1  = _( 147 )%(unicode(itemName,'cp1252'))
                         msg2  = ""
@@ -638,14 +623,14 @@ class MainWindow( xbmcgui.WindowXML ):
                 del itemInstaller
             else:
                 # No installer available
-                logger.LOG( logger.LOG_WARNING, "No installer available for %s - Install impossible", itemName  )
+                print "No installer available for %s - Install impossible" % itemName
                 #TODO: create string for this particular case i.e: Install not supported for this type of item
                 title = _( 144 )
                 msg1  = _( 136 )%(unicode(itemName,'cp1252'))
                 msg2  = ""
             
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
         xbmcgui.Dialog().ok( title, msg1, msg2 )
 
@@ -736,7 +721,7 @@ class MainWindow( xbmcgui.WindowXML ):
             #print e
             #print sys.exc_info()
             print_exc()
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
     def onExit( self ):
         """
@@ -764,7 +749,7 @@ class MainWindow( xbmcgui.WindowXML ):
             if os.path.exists( file_path ):
                 self.downloaded_property = eval( file( file_path, "r" ).read() )
         except:
-            logger.EXC_INFO( logger.LOG_DEBUG, sys.exc_info(), self )
+            print_exc()
 
     def _save_downloaded_property( self ):
         try:
@@ -774,7 +759,7 @@ class MainWindow( xbmcgui.WindowXML ):
             file_path = os.path.join( SPECIAL_SCRIPT_DATA, "downloaded.txt" )
             file( file_path, "w" ).write( repr( self.downloaded_property ) )
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
         else:
             self.getListItem( self.getCurrentListPosition() ).setProperty( "Downloaded", "isDownloaded" )
 
@@ -816,7 +801,7 @@ class MainWindow( xbmcgui.WindowXML ):
             #print "Excpetion during updateData_Prev"
             #print e
             #print sys.exc_info()
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
         if not xbmc.getCondVisibility( "Window.IsActive(progressdialog)" ):
             DIALOG_PROGRESS.close()
     
@@ -835,7 +820,7 @@ class MainWindow( xbmcgui.WindowXML ):
             #print "Exception during updateData_Next"
             #print e
             #print sys.exc_info()
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
         if not xbmc.getCondVisibility( "Window.IsActive(progressdialog)" ):
             DIALOG_PROGRESS.close()
 
@@ -904,7 +889,7 @@ class MainWindow( xbmcgui.WindowXML ):
             #print "Excpetion during updateList"
             #print e
             #print sys.exc_info()
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
             
         DIALOG_PROGRESS.close()
 
@@ -923,7 +908,7 @@ class MainWindow( xbmcgui.WindowXML ):
             listitem.setProperty( "fanartpicture",   "" )
             listitem.setProperty( "previewVideoURL", "" )
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
     def refresh_item( self ):
         DIALOG_PROGRESS.create( _( 0 ), _( 104 ), _( 110 ) )
@@ -935,7 +920,7 @@ class MainWindow( xbmcgui.WindowXML ):
 #            self.infoswarehouse = self.itemInfosManager.get_info_warehouse()
             self.set_item_infos( listitem, self.curDirList[ self.index ] )
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
         DIALOG_PROGRESS.close()
         return listitem
 
@@ -977,7 +962,7 @@ class MainWindow( xbmcgui.WindowXML ):
             #print "set_item_infos"
             #print dataItem
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
             print_exc()
 
     def _updateListThumb_cb( self, imagePath, listitem ):
@@ -997,7 +982,7 @@ class MainWindow( xbmcgui.WindowXML ):
             # Recuperation des images dans un thread separe via la fonction update_Images()
             self.contextSrc.getBrowser().update_Images()
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
     def deleteDir( self, path ):
         """
@@ -1020,17 +1005,17 @@ class MainWindow( xbmcgui.WindowXML ):
                         self.deleteDir( itemFullPath )
                 except:
                     result = False
-                    logger.LOG( logger.LOG_DEBUG, "deleteDir: Exception la suppression du reperoire: %s", path )
-                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                    print "deleteDir: Exception la suppression du reperoire: %s" % path
+                    print_exc()
             # Suppression du repertoire pere
             try:
                 os.rmdir( path )
             except:
                 result = False
-                logger.LOG( logger.LOG_DEBUG, "deleteDir: Exception la suppression du reperoire: %s", path )
-                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                print "deleteDir: Exception la suppression du reperoire: %s" % path
+                print_exc()
         else:
-            logger.LOG( logger.LOG_DEBUG, "deleteDir: %s n'est pas un repertoire", path )
+            print "deleteDir: %s n'est pas un repertoire" % path
             result = False
 
         return result
@@ -1057,11 +1042,10 @@ class MainWindow( xbmcgui.WindowXML ):
                         self.deleteDir( itemFullPath )
                 except:
                     result = False
-                    logger.LOG( logger.LOG_DEBUG, "delDirContent: Exception la suppression du contenu du reperoire: %s", path )
-                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                    print "delDirContent: Exception la suppression du contenu du reperoire: %s" % path
                     print_exc()
         else:
-            logger.LOG( logger.LOG_ERROR, "delDirContent: %s n'est pas un repertoire", path )
+            print "delDirContent: %s n'est pas un repertoire" % path
             result = False
 
         return result
@@ -1075,9 +1059,8 @@ class MainWindow( xbmcgui.WindowXML ):
             if not os.path.exists( folder ):
                 os.makedirs( folder )
         except:
-            logger.LOG( logger.LOG_DEBUG, "verifrep - Exception durant la creation du repertoire: %s", folder )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-            pass
+            print "verifrep - Exception durant la creation du repertoire: %s" % folder
+            print_exc()
 
     def linux_chmod( self, path ):
         """
@@ -1086,7 +1069,7 @@ class MainWindow( xbmcgui.WindowXML ):
         Wtest = os.access( path, os.W_OK )
         if Wtest == True:
             self.rightstest = True
-            logger.LOG( logger.LOG_NOTICE, "linux chmod rightest OK" )
+            print "linux chmod rightest OK"
         else:
             xbmcgui.Dialog().ok( _( 19 ), _( 20 ) )
             keyboard = xbmc.Keyboard( "", _( 21 ), True )
@@ -1100,8 +1083,8 @@ class MainWindow( xbmcgui.WindowXML ):
                     self.rightstest = True
                 except:
                     self.rightstest = False
-                    logger.LOG( logger.LOG_ERROR, "erreur CHMOD %s", path )
-                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                    print "bypass: erreur CHMOD %s" % path
+                    print_exc()
             else:
                 self.rightstest = False
 
@@ -1165,7 +1148,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 continueDownload = False
 #        else:
 #            # Fichier
-#            logger.LOG( logger.LOG_ERROR, "processOldDownload: Fichier : %s - ce cas n'est pas encore traite", localAbsDirPath )
+#            print "bypass: processOldDownload: Fichier : %s - ce cas n'est pas encore traite" % localAbsDirPath
 #            #TODO: cas a implementer
 
         return continueDownload

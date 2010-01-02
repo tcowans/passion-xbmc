@@ -1,26 +1,19 @@
 
-#Modules general
+# Modules general
 import os
-import re
 import sys
 from traceback import print_exc
 
-#modules XBMC
+# Modules XBMC
 import xbmc
 import xbmcgui
 
-#modules custom
+# Modules custom
 import shutil2
+from CONF import *
 from utilities import *
 from FileManager import *
 
-#module logger
-try:
-    logger = sys.modules[ "__main__" ].logger
-except:
-    import script_log as logger
-
-from CONF import *
 
 # INITIALISATION CHEMIN RACINE
 ROOTDIR = os.getcwd().replace( ";", "" )
@@ -69,140 +62,6 @@ def copy_func( cpt_blk, taille_blk, total_taille ):
     # DON'T ALLOW Progress().iscanceled() BUG CREATE, FIXED SOON
     #if xbmcgui.DialogProgress().iscanceled():
     #    xbmcgui.DialogProgress().close()
-
-#class ListItemObject:
-#    """
-#    Structure de donnee definissant un element de la liste
-#    """
-#    def __init__( self, type='unknown', name='', local_path=None, thumb='default' ):
-#        self.type       = type
-#        self.name       = name
-#        self.local_path = local_path
-#        self.thumb      = thumb
-#
-#    def __repr__(self):
-#        return "(%s, %s, %s, %s)" % ( self.type, self.name, self.local_path, self.thumb )
-#
-#
-#class fileMgr:
-#    """
-#    File manager
-#    """
-#    def verifrep(self, folder):
-#        """
-#        Check a folder exists and make it if necessary
-#        """
-#        try:
-#            #print("verifrep check if directory: " + folder + " exists")
-#            if not os.path.exists(folder):
-#                logger.LOG( logger.LOG_DEBUG, "verifrep: Impossible de trouver le repertoire - Tentative de creation du repertoire: %s", folder )
-#                os.makedirs(folder)
-#        except Exception, e:
-#            logger.LOG( logger.LOG_DEBUG, "verifrep: Exception durant la suppression du reperoire: %s", folder )
-#            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-#
-#    def listDirFiles(self, path):
-#        """
-#        List the files of a directory
-#        @param path:
-#        """
-#        logger.LOG( logger.LOG_DEBUG, "listDirFiles: Liste le repertoire: %s", path )
-#        dirList = os.listdir( str( path ) )
-#
-#        return dirList
-#
-#    def renameItem( self, base_path, old_name, new_name):
-#        """
-#        Renomme un fichier ou repertoire
-#        """
-#        os.rename( os.path.join(base_path, old_name), os.path.join(base_path, new_name) )
-#
-#    def deleteItem( self, item_path):
-#        """
-#        Supprime un element (repertoire ou fichier)
-#        """
-#        if os.path.isdir(item_path):
-#            self.deleteDir(item_path)
-#        else:
-#            self.deleteFile(item_path)
-#
-#    def deleteFile(self, filename):
-#        """
-#        Delete a file form download directory
-#        @param filename:
-#        """
-#        os.remove(filename)
-#
-#    def deleteDir( self, path ):
-#        """
-#        Efface un repertoire et tout son contenu ( le repertoire n'a pas besoin d'etre vide )
-#        retourne True si le repertoire est effece False sinon
-#        """
-#        result = True
-#        if os.path.isdir( path ):
-#            dirItems=os.listdir( path )
-#            for item in dirItems:
-#                itemFullPath=os.path.join( path, item )
-#                try:
-#                    if os.path.isfile( itemFullPath ):
-#                        # Fichier
-#                        os.remove( itemFullPath )
-#                    elif os.path.isdir( itemFullPath ):
-#                        # Repertoire
-#                        self.deleteDir( itemFullPath )
-#                except:
-#                    result = False
-#                    logger.LOG( logger.LOG_DEBUG, "deleteDir: Exception la suppression du reperoire: %s", path )
-#                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-#            # Suppression du repertoire pere
-#            try:
-#                os.rmdir( path )
-#            except:
-#                result = False
-#                logger.LOG( logger.LOG_DEBUG, "deleteDir: Exception la suppression du reperoire: %s", path )
-#                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-#        else:
-#            logger.LOG( logger.LOG_DEBUG, "deleteDir: %s n'est pas un repertoire", path )
-#            result = False
-#
-#        return result
-#
-#    def extract(self,archive,targetDir):
-#        """
-#        Extract an archive in targetDir
-#        """
-#        xbmc.executebuiltin('XBMC.Extract(%s,%s)'%(archive,targetDir) )
-#
-#    def linux_is_write_access( self, path ):
-#        """
-#        Linux
-#        Verifie si on a les dorit en ecriture sur un element
-#        """
-#        Wtest = os.access( path, os.W_OK )
-#        if Wtest == True:
-#            rightstest = True
-#            logger.LOG( logger.LOG_NOTICE, "linux chmod rightest OK for %s"%path )
-#        else:
-#            logger.LOG( logger.LOG_NOTICE, "linux chmod rightest NOT OK for %s"%path )
-#            rightstest = False
-#        return rightstest
-#
-#    def linux_set_write_access( self, path, password ):
-#        """
-#        Linux
-#        Effectue un chmod sur un repertoire pour ne plus etre bloque par les droits root sur plateforme linux
-#        Retourne True en cas de succes ou False dans le cas contraire
-#        """
-#        PassStr = "echo %s | "%password
-#        ChmodStr = "sudo -S chmod 777 -R %s"%path
-#        try:
-#            os.system( PassStr + ChmodStr )
-#            rightstest = True
-#        except:
-#            rightstest = False
-#            logger.LOG( logger.LOG_ERROR, "erreur CHMOD %s", path )
-#            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-#        return rightstest
 
 
 class FileMgrWindow( xbmcgui.WindowXML ):
@@ -275,7 +134,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                 self.setProperty( "Category", _( 10 ) )
 
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
     def onFocus( self, controlID ):
         #self.controlID = controlID
@@ -312,7 +171,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                 self._close_dialog()
                 #self._close_script()
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
     def _show_direct_infos( self ):
         try:
@@ -321,7 +180,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
             #on a plus besoin, on le delete
             del ForumDirectInfos
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
     def get_view_mode( self ):
         view_mode = ""
@@ -443,8 +302,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                                     shutil2.copy( src + icon_ext, dst + icon_ext, reportcopy=copy_func, overwrite=True )
                             except:
                                 xbmcgui.Dialog().ok( _( 169 ), _( 170 ), _( 171 ) )
-                                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-                                #from traceback import print_exc; print_exc()
+                                print_exc()
                             #self.updateDataAndList()
                             DIALOG_PROGRESS.close()
                 else:
@@ -463,8 +321,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                                     shutil2.copy( src, dst, reportcopy=copy_func, overwrite=True )
                             except:
                                 xbmcgui.Dialog().ok( _( 169 ), _( 170 ), _( 171 ) )
-                                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-                                #from traceback import print_exc; print_exc()
+                                print_exc()
                             #self.updateDataAndList()
                             DIALOG_PROGRESS.close()
 
@@ -490,8 +347,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                                     self.fileMgr.deleteItem( src + icon_ext )
                             except:
                                 xbmcgui.Dialog().ok( _( 169 ), _( 172 ), _( 173 ) )
-                                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-                                #from traceback import print_exc; print_exc()
+                                print_exc()
                             self.updateDataAndList()
                             DIALOG_PROGRESS.close()
                 else:
@@ -511,8 +367,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                                 self.fileMgr.deleteItem( src )
                             except:
                                 xbmcgui.Dialog().ok( _( 169 ), _( 172 ), _( 173 ) )
-                                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-                                #from traceback import print_exc; print_exc()
+                                print_exc()
                             self.updateDataAndList()
                             DIALOG_PROGRESS.close()
 
@@ -528,7 +383,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
             else:
                 pass
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
     def _switch_media( self ):
         try:
@@ -565,7 +420,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                 self.curListType = switch
                 self.updateDataAndList()
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
     def parentDir( self ):
         # remonte l'arborescence
@@ -583,8 +438,8 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                     self.curListType = TYPE_ROOT
                 self.updateDataAndList()
             except:
-                logger.LOG( logger.LOG_DEBUG, "FileMgrWindow::onAction::ACTION_PREVIOUS_MENU: Exception durant updateList()" )
-                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                print "FileMgrWindow::onAction::ACTION_PREVIOUS_MENU: Exception durant updateList()"
+                print_exc()
 
         if self.main_list_last_pos:
             self.setCurrentListPosition( self.main_list_last_pos.pop() )
@@ -613,8 +468,8 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                 pass
 
         except:
-            logger.LOG( logger.LOG_DEBUG, "FileMgrWindow::onAction: Exception" )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print "FileMgrWindow::onAction: Exception"
+            print_exc()
 
     def _get_settings( self, defaults=False ):
         """ reads settings """
@@ -632,7 +487,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         except:
             xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,ffffffff)" )
             xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,default)" )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
         #xbmcgui.unlock()
 
     def updateProgress_cb( self, percent, dp=None ):
@@ -652,8 +507,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
             self.updateData() # On met a jour les donnees
             self.updateList() # On raffraichit la page pour afficher le contenu
         except:
-            #from traceback import print_exc; print_exc()
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
         DIALOG_PROGRESS.close()
 
     def updateData( self ):
@@ -720,8 +574,8 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                     listItemObj = ListItemObject( type=self.curListType, name=item, local_path=os.path.join(self.localdirList[ self.itemTypeList.index(self.curListType) ],item), thumb=self.itemThumbList[ self.itemTypeList.index(self.curListType) ] )
                     self.currentItemList.append(listItemObj)
         except:
-            logger.LOG( logger.LOG_DEBUG, "FileMgrWindow: Exception durant la recuperation des donnees" )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print "FileMgrWindow: Exception durant la recuperation des donnees"
+            print_exc()
 
         #DIALOG_PROGRESS.close()
 

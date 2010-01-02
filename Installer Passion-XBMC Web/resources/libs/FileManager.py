@@ -1,29 +1,24 @@
+
 __all__ = [
     # public names
-#    "copy_func",
+    #"copy_func",
     "ListItemObject",
     "fileMgr"
     ]
 
-#Modules general
+# Modules general
 import os
 import sys
+from traceback import print_exc
 
+# Modules XBMC
+import xbmc
 
-#modules custom
+# Modules custom
 import shutil2
+from CONF import *
 from utilities import *
 
-#module logger
-try:
-    logger = sys.modules[ "__main__" ].logger
-except:
-    import script_log as logger
-
-from CONF import *
-
-# Import XBMC
-import xbmc
 
 # INITIALISATION CHEMIN RACINE
 ROOTDIR = os.getcwd().replace( ";", "" )
@@ -100,12 +95,12 @@ class fileMgr:
         try:
             #print("verifrep check if directory: " + folder + " exists")
             if not os.path.exists(folder):
-                logger.LOG( logger.LOG_DEBUG, "verifrep: Impossible to find the directory - Trying to create directory: %s", folder )
+                print "verifrep: Impossible to find the directory - Trying to create directory: %s" % folder
                 os.makedirs(folder)
         except Exception, e:
             result = False
-            logger.LOG( logger.LOG_DEBUG, "verifrep: Exception while creating the directory: %s", folder )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print "verifrep: Exception while creating the directory: %s" % folder
+            print_exc()
         return result
 
     def listDirFiles(self, path):
@@ -113,7 +108,7 @@ class fileMgr:
         List the files of a directory
         @param path: path of directory we want to list the content of
         """
-        logger.LOG( logger.LOG_DEBUG, "listDirFiles: Liste le repertoire: %s", path )
+        print "listDirFiles: Liste le repertoire: %s" % path
         dirList = os.listdir( str( path ) )
 
         return dirList
@@ -128,8 +123,8 @@ class fileMgr:
 #            os.rename( os.path.join(base_path, old_name), os.path.join(base_path, new_name) )
 #        except:
 #            result = False
-#            logger.LOG( logger.LOG_DEBUG, "renameItem: Exception renaming Item: %s", old_name )
-#            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+#            print "renameItem: Exception renaming Item: %s" % old_name 
+#            print_exc()
 #        return result
 
     def renameItem( self, base_path, old_name, new_name):
@@ -157,8 +152,8 @@ class fileMgr:
                 os.rename( os.path.join(base_path, old_name), os.path.join(base_path, new_name) )
         except:
             result = False
-            logger.LOG( logger.LOG_DEBUG, "renameItem: Exception renaming Item: %s", old_name )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print "renameItem: Exception renaming Item: %s" % old_name
+            print_exc()
         return result
     
     def deleteItem( self, item_path):
@@ -185,12 +180,12 @@ class fileMgr:
             if os.path.exists( filename ):
                 os.remove( filename )
             else:
-                logger.LOG( logger.LOG_DEBUG, "deleteFile: File %s does NOT exist", filename )
+                print "deleteFile: File %s does NOT exist" % filename
                 result = False
         except:
             result = False
-            logger.LOG( logger.LOG_DEBUG, "deleteFile: Exception deleting file: %s", filename )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print "deleteFile: Exception deleting file: %s" % filename
+            print_exc()
         return result
 
     def deleteDir( self, path ):
@@ -213,17 +208,17 @@ class fileMgr:
                         self.deleteDir( itemFullPath )
                 except:
                     result = False
-                    logger.LOG( logger.LOG_DEBUG, "deleteDir: Exception deleting directory: %s", path )
-                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                    print "deleteDir: Exception deleting directory: %s" % path
+                    print_exc()
             # Suppression du repertoire pere
             try:
                 os.rmdir( path )
             except:
                 result = False
-                logger.LOG( logger.LOG_DEBUG, "deleteDir: Exception deleting directory: %s", path )
-                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                print "deleteDir: Exception deleting directory: %s" % path
+                print_exc()
         else:
-            logger.LOG( logger.LOG_DEBUG, "deleteDir: %s is not a directory", path )
+            print "deleteDir: %s is not a directory" % path
             result = False
 
         return result
@@ -242,9 +237,9 @@ class fileMgr:
         Wtest = os.access( path, os.W_OK )
         if Wtest == True:
             rightstest = True
-            logger.LOG( logger.LOG_NOTICE, "linux chmod rightest OK for %s"%path )
+            print "linux chmod rightest OK for %s" % path
         else:
-            logger.LOG( logger.LOG_NOTICE, "linux chmod rightest NOT OK for %s"%path )
+            print "linux chmod rightest NOT OK for %s" % path
             rightstest = False
         return rightstest
 
@@ -261,8 +256,8 @@ class fileMgr:
             rightstest = True
         except:
             rightstest = False
-            logger.LOG( logger.LOG_ERROR, "erreur CHMOD %s", path )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print "erreur CHMOD %s" % path
+            print_exc()
         return rightstest
 
 

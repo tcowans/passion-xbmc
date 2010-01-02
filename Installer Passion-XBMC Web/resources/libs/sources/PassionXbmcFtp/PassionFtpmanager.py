@@ -4,17 +4,12 @@ FTP Manager: this module manager FTP connection, browsing, download ...
 # Modules general
 import os
 import sys
-import traceback
-
 import ftplib
+from traceback import print_exc
+
+# Modules XBMC
 import xbmc
 import xbmcgui
-
-# Module logger
-try:
-    logger = sys.modules[ "__main__" ].logger
-except:
-    import script_log as logger
 
 # Module custom
 import Item
@@ -50,7 +45,7 @@ class GDDFTP( ftplib.FTP ):
         try: return command( *args )
         except:
             self.Reconnect()
-            logger.EXC_INFO( logger.LOG_DEBUG, sys.exc_info(), self )
+            #print_exc()
             return command( *args )
 
 
@@ -79,8 +74,8 @@ class FtpDownloadCtrl:
         self.curLocalDirRoot = ""
         self.curRemoteDirRoot = ""
 
-        logger.LOG( logger.LOG_INFO, "host = %s", self.host )
-        logger.LOG( logger.LOG_INFO, "user = %s", self.user )
+        print "host = %s" % self.host
+        print "user = %s" % self.user
 
         #Connection au serveur FTP
         self.openConnection()
@@ -98,11 +93,11 @@ class FtpDownloadCtrl:
             #self.ftp.set_debuglevel( 2 )
 
             self.connected = True
-            logger.LOG( logger.LOG_INFO, "Connecte au serveur FTP" )
+            print "Connecte au serveur FTP"
 
         except:
-            logger.LOG( logger.LOG_DEBUG, "Exception durant la connection, mpossible de se connecter au serveur FTP: %s", self.host )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print "Exception durant la connection, mpossible de se connecter au serveur FTP: %s" % self.host
+            print_exc()
 
     def closeConnection( self ):
         """
@@ -112,11 +107,11 @@ class FtpDownloadCtrl:
         try:
             self.ftp.quit
         except:
-            logger.LOG( logger.LOG_DEBUG, "Exception durant la fermeture de la connection FTP" )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print "Exception durant la fermeture de la connection FTP"
+            print_exc()
         else:
             # la fermeture a reussi avec succes
-            logger.LOG( logger.LOG_NOTICE, "Connection avec le serveur FTP fermee" )
+            print "Connection avec le serveur FTP fermee"
 
     def getDirList( self, remotedir ):
         """
@@ -129,8 +124,8 @@ class FtpDownloadCtrl:
             #curDirList = self.ftp.nlst( remotedir )
             curDirList = self.ftp.Command( self.ftp.nlst, remotedir )
         except:
-            logger.LOG( logger.LOG_DEBUG, "Exception durant la recuperation de la liste des fichiers du repertoire: %s", remotedir )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print "Exception durant la recuperation de la liste des fichiers du repertoire: %s" % remotedir
+            print_exc()
 
         # Tri de la liste et renvoi
         curDirList.sort( key=str.lower )
@@ -146,9 +141,9 @@ class FtpDownloadCtrl:
             #self.ftp.cwd( pathsrc ) # c'est cette commande qui genere l'exception dans le cas d'un fichier
             self.ftp.Command( self.ftp.cwd, pathsrc ) # c'est cette commande qui genere l'exception dans le cas d'un fichier
             # Pas d'excpetion => il s'agit d'un dossier
-            logger.LOG( logger.LOG_DEBUG, "isDir: %s EST un DOSSIER", pathsrc )
+            print "isDir: %s EST un DOSSIER" % pathsrc
         except:
-            logger.LOG( logger.LOG_DEBUG, "isDir: %s EST un FICHIER", pathsrc )
+            print "isDir: %s EST un FICHIER" % pathsrc
             isDir = False
         return isDir
 
@@ -232,7 +227,7 @@ class FtpDownloadCtrl:
 
         for i in curDirList:
             if dialogProgressWin.iscanceled():
-                logger.LOG( logger.LOG_WARNING, "Telechargement annuler par l'utilisateur" )
+                print "Telechargement annuler par l'utilisateur"
                 # Sortie de la boucle via return
                 #result = -1 # -1 pour telechargement annule
                 status = "CANCELED"
@@ -247,8 +242,8 @@ class FtpDownloadCtrl:
                     # percent est le poucentage du FICHIER telecharger et non le pourcentage total
                     dialogProgressWin.update( 0, _( 123 )%percentBefore, "%s"%i )
                 except:
-                    logger.LOG( logger.LOG_DEBUG, "download - Exception calling UI callback for download" )
-                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                    print "download - Exception calling UI callback for download"
+                    print_exc()
 
                 # Verifie si le chemin correspond a un repertoire
                 if self.isDir( i ):
@@ -271,8 +266,8 @@ class FtpDownloadCtrl:
                     dialogProgressWin.update( 100, _( 123 ) % percentAfter, i )
                     #time.sleep( 1 )
                 except:
-                    logger.LOG( logger.LOG_DEBUG, "download - Exception calling UI callback for download" )
-                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                    print "download - Exception calling UI callback for download"
+                    print_exc()
 
         # Calcul pourcentage final
         percent = min( curPercent + int( 100/( coeff ) ), 100 )
@@ -280,12 +275,12 @@ class FtpDownloadCtrl:
             #Mise a jour de la barre de progression ( via callback )
             dialogProgressWin.update( 100, _( 123 ) % percent, i )
         except:
-            logger.LOG( logger.LOG_DEBUG, "download - Exception calling UI callback for download" )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print "download - Exception calling UI callback for download"
+            print_exc()
 
         # verifie si on a annule le telechargement
         if dialogProgressWin.iscanceled():
-            logger.LOG( logger.LOG_WARNING, "Telechargement annule par l'utilisateur" )
+            print "Telechargement annule par l'utilisateur"
 
             # Sortie de la boucle via return
             #result = -1 # -1 pour telechargement annule
@@ -304,7 +299,7 @@ class FtpDownloadCtrl:
         try:
             #dirContent = self.ftp.nlst( dirsrc )
             dirContent = self.ftp.Command( self.ftp.nlst, dirsrc )
-            logger.LOG( logger.LOG_DEBUG, "dirContent: %s", repr( dirContent ) )
+            print "dirContent: %s" % repr( dirContent )
         except Exception, e:
             # Repertoire non vide -> il faut telecharger les elementss de ce repertoire
             emptydir = True
@@ -324,8 +319,8 @@ class FtpDownloadCtrl:
             if not os.path.isdir( localAbsDirPath ):
                 os.makedirs( localAbsDirPath )
         except:
-            logger.LOG( logger.LOG_DEBUG, "_downloaddossier: Exception - Impossible de creer le dossier: %s", localAbsDirPath )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print "_downloaddossier: Exception - Impossible de creer le dossier: %s" % localAbsDirPath
+            print_exc()
         if ( emptydir == False ):
             # Repertoire non vide - lancement du download ( !!!APPEL RECURSIF!!! )
             self._download( dirsrc, dialogProgressWin=dialogProgressWin, curPercent=curPercent, coeff=coeff )
@@ -351,12 +346,8 @@ class FtpDownloadCtrl:
                 # Dans le cas ou un fichier n'a pas une taille valide ou corrompue
                 remoteFileSize = 1
         except Exception, e:
-            print "Exception during _downloadfichier"
-            print e
-            print sys.exc_info()
-            traceback.print_exc()
-            logger.LOG( logger.LOG_DEBUG, "_downloadfichier: Exception - Impossible de recuperer la taille du fichier: %s", filesrc )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print "_downloadfichier: Exception - Impossible de recuperer la taille du fichier: %s" % filesrc
+            print_exc()
 
         # Cree le chemin du repertorie local
         # Extraction du chemin relatif: soustrait au chemin remote le chemin de base: par exemple on veut retirer du chemin; /.passionxbmc/Themes
@@ -379,10 +370,10 @@ class FtpDownloadCtrl:
             # Telecahrgement ( on passe la CB en parametre )
             # !!NOTE!!: on utilise un implemenation locale et non celle de ftplib qui ne supporte pas l'interuption d'un telechargement
             result = self.retrbinary( 'RETR ' + filesrc, ftpCB, block_size )
-            logger.LOG( logger.LOG_DEBUG, "Response Server FTP sur retrieve: %s", repr( result ) )
+            print "Response Server FTP sur retrieve: %s" % repr( result )
         except:
-            logger.LOG( logger.LOG_DEBUG, "_downloadfichier: Exception - Impossible de telecharger le fichier: %s", filesrc )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print "_downloadfichier: Exception - Impossible de telecharger le fichier: %s" % filesrc
+            print_exc()
         # On ferme le fichier
         localFile.close()
 
@@ -405,8 +396,8 @@ class FtpDownloadCtrl:
                 callback( data )
             except cancelRequest:
                 abort = True
-                logger.LOG( logger.LOG_NOTICE, "retrbinary: Download ARRETE par l'utilisateur" )
-                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                print "retrbinary: Download ARRETE par l'utilisateur"
+                print_exc()
                 break
         fp.close()
         conn.close()
@@ -432,8 +423,8 @@ class FtpDownloadCtrl:
 #                callback( data )
 #            except cancelRequest:
 #                abort = True
-#                logger.LOG( logger.LOG_NOTICE, "retrbinary: Download ARRETE par l'utilisateur" )
-#                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+#                print "retrbinary: Download ARRETE par l'utilisateur"
+#                print_exc()
 #                break
 #        fp.close()
 #        conn.close()
@@ -462,18 +453,13 @@ class FtpDownloadCtrl:
                 result = True
                 #self.passionFTPCtrl.retrbinary( self, 'RETR ' + filetodlUrl, callback, blocksize=8192, rest=None )
             except:
-                #import traceback; traceback.print_exc()
-                logger.LOG( logger.LOG_DEBUG, "downloadImage: Exception - Impossible to download picture: %s", source )
-                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                print "downloadImage: Exception - Impossible to download picture: %s" % source
+                print_exc()
             localFile.close()
             #ftp.quit()
         except Exception, e:
-            print "Exception during downloadImage"
-            print e
-            print sys.exc_info()
-            logger.LOG( logger.LOG_DEBUG, "downloadImage: Exception - Impossible to download the picture: %s", source )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-            traceback.print_exc()
+            print "downloadImage: Exception - Impossible to download the picture: %s" % source
+            print_exc()
         return result
 
 
@@ -496,15 +482,15 @@ class FtpCallback( object ):
         if self.dp != None:
             if self.dp.iscanceled():
                 #dp.close() #-> will be close in calling function
-                logger.LOG( logger.LOG_WARNING, "User pressed CANCEL button" )
+                print "User pressed CANCEL button"
                 raise cancelRequest, "User pressed CANCEL button"
         self.localfile.write( data )
         self.received += len( data )
         try:
             percent = min( ( self.received*100 )/self.filesize, 100 )
         except:
-            logger.LOG( logger.LOG_DEBUG, "FtpCallback - Exception during percent computing AND update" )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print "FtpCallback - Exception during percent computing AND update"
+            print_exc()
             percent = 100
 
         if self.isSingleFile:

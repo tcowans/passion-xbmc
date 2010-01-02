@@ -1,23 +1,26 @@
 
-#Modules general
+# Modules general
 import os
 import sys
 
 from traceback import print_exc
 
-#modules XBMC
+# Modules XBMC
 import xbmc
 import xbmcgui
 
-#modules custom
+# Modules custom
 import RSSUserData
 from utilities import *
+
 
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
 _ = sys.modules[ "__main__" ].__language__
 
 DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
+# set our xbmc.settings path for xbmc get '/resources/settings.xml'
+XBMC_SETTINGS = xbmc.Settings( os.getcwd() )
 
 
 class Home( xbmcgui.WindowXML ):
@@ -74,10 +77,13 @@ class Home( xbmcgui.WindowXML ):
             xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,%s)" % ( self.settings[ "skin_colours_path" ], ) )
             xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,%s)" % ( ( self.settings[ "skin_colours" ] or get_default_hex_color() ), ) )
         except:
+            print_exc()
             xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,ffffffff)" )
             xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,default)" )
-            print_exc()
         #xbmcgui.unlock()
+
+    def _start_rss_timer( self ):
+        pass
 
     def onFocus( self, controlID ):
         pass
@@ -124,7 +130,11 @@ class Home( xbmcgui.WindowXML ):
                     elif item_id == "4":
                         self._show_direct_infos()
                     elif item_id == "5":
-                        self._show_settings()
+                        XBMC_SETTINGS.openSettings()
+                        xbmc.sleep( 500 )
+                        debug_mode = XBMC_SETTINGS.getSetting( "script_debug" )
+                        print "script_debug = %s" % debug_mode
+                        sys.modules[ "__main__" ].output.PRINT_DEBUG = ( debug_mode == "true" )
                     elif item_id == "10":
                         self.action = "default_content=Passion XBMC Web"
                         self._show_main()

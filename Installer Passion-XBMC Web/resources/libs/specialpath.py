@@ -24,30 +24,16 @@ __all__ = [
     ]
 
 
+# Modules General
 import os
 import sys
+
+# Modules XBMC
 from xbmc import translatePath, getCondVisibility
 
 
-#PLATFORM_MAC = os.environ.get( "OS", "" ).lower() == "os x"
-
 try: scriptname = sys.modules[ "__main__" ].__script__
 except: scriptname = os.path.basename( os.getcwd() )
-
-def get_system_platform():
-    """ fonction: pour recuperer la platform que xbmc tourne """
-    platform = "unknown"
-    if getCondVisibility( "system.platform.linux" ):
-        platform = "linux"
-    elif getCondVisibility( "system.platform.xbox" ):
-        platform = "xbox"
-    elif getCondVisibility( "system.platform.windows" ):
-        platform = "windows"
-    elif getCondVisibility( "system.platform.osx" ):
-        platform = "osx"
-    return platform
-
-
 
 SPECIAL_XBMC_DIR = translatePath( "special://xbmc/" )
 #if PLATFORM_MAC or not os.path.isdir( SPECIAL_XBMC_DIR  ): SPECIAL_XBMC_DIR = translatePath( "Q:\\" )
@@ -75,6 +61,20 @@ XBMC_IS_HOME = SPECIAL_HOME_DIR == SPECIAL_XBMC_DIR
 
 SPECIAL_SCRIPT_DATA = os.path.join( SPECIAL_PROFILE_DIR, "script_data", scriptname )
 if not os.path.isdir( SPECIAL_SCRIPT_DATA ): os.makedirs( SPECIAL_SCRIPT_DATA )
+
+
+def get_system_platform():
+    """ fonction: pour recuperer la platform que xbmc tourne """
+    platform = "unknown"
+    if getCondVisibility( "system.platform.linux" ):
+        platform = "linux"
+    elif getCondVisibility( "system.platform.xbox" ):
+        platform = "xbox"
+    elif getCondVisibility( "system.platform.windows" ):
+        platform = "windows"
+    elif getCondVisibility( "system.platform.osx" ):
+        platform = "osx"
+    return platform
 
 
 SYSTEM_PLATFORM = get_system_platform()

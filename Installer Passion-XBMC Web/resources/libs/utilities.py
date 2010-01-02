@@ -39,21 +39,15 @@ import os
 import re
 import sys
 import time
-import urllib
-import urllib2
-import elementtree.ElementTree as ET
 import htmllib
+from traceback import print_exc
+
+import elementtree.ElementTree as ET
 
 #modules XBMC
 import xbmc
 import xbmcgui
 
-#module logger
-try:
-    logger = sys.modules[ "__main__" ].logger
-except:
-    import script_log as logger
-    
 
 #REPERTOIRE RACINE ( default.py )
 CWD = os.getcwd().rstrip( ";" )
@@ -78,8 +72,7 @@ def set_cache_thumb_name( path ):
             os.makedirs( os.path.dirname( thumbnail ) )
         return thumbnail, preview_pic
     except:
-        #import traceback; traceback.print_exc()
-        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+        print_exc()
         return "", ""
 
 def get_system_platform():
@@ -116,10 +109,10 @@ def parse_rss_xml( xml_path=RSS_FEEDS_XML ):
                         "feed": feed.text,
                         }
             except:
-                logger.EXC_INFO( logger.LOG_DEBUG, sys.exc_info() )
+                print_exc()
         del tree
     except:
-        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+        print_exc()
     return feeds
 
 
@@ -151,7 +144,7 @@ def is_playable_media( filename, media="picture" ):
     try:
         return os.path.splitext( filename )[ 1 ].lower() in media_types
     except:
-        logger.EXC_INFO( logger.LOG_DEBUG, sys.exc_info() )
+        print_exc()
         # si on arrive ici le retour est automatiquement None
 
 
@@ -180,14 +173,14 @@ def getSkinColors():
             colors = re.compile( '<color name="(.*?)">(.*?)</color>' ).findall( file( colors_file, "r" ).read() )
             return colors
     except:
-        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+        print_exc()
 
 
 def get_default_hex_color():
     try:
         default_hex_color = dict( getSkinColors() ).get( "default", "FFFFFFFF" )
     except:
-        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+        print_exc()
         default_hex_color = "FFFFFFFF"
     return default_hex_color
 
@@ -217,7 +210,7 @@ def add_pretty_color( word, start="all", end=None, color=None ):
             pretty_word = "".join( pretty_word )
         return pretty_word
     except:
-        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+        print_exc()
         return word
 
 
@@ -323,16 +316,16 @@ class Settings:
     def _check_compatibility( self, current_settings={} ):
         try:
             if sorted( current_settings.keys() ) != sorted( self._settings_defaults_values().keys() ):
-                logger.LOG( logger.LOG_WARNING, "Settings: [added default values for missing settings]" )
+                print "Settings: [added default values for missing settings]"
                 return self._use_defaults( current_settings )
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+            print_exc()
         return current_settings
 
     def _use_defaults( self, current_settings=None, save=True ):
         """ setup default values if none obtained """
         #TODO: verifier pourquoi la ligne suivante fait planter XBMC sous Mac
-        #logger.LOG( logger.LOG_DEBUG, "Settings: [used default settings]" )
+        #print "Settings: [used default settings]"
         settings = {}
         defaults = self._settings_defaults_values()
         for key, value in defaults.items():
@@ -350,7 +343,7 @@ class Settings:
             settings_file.close()
             return True
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
             return False
 
 
@@ -393,7 +386,7 @@ def get_infos_path( path, get_size=False, report_progress=None ):
                 try:
                     size += os.path.getsize( path )
                     if report_progress:
-                        #logger.LOG( logger.LOG_INFO, "Size: %s", path )
+                        #print "Size: %s", path
                         report_progress.update( -1, sys.modules[ "__main__" ].__language__( 186 ), path, sys.modules[ "__main__" ].__language__( 361 ) + " %00s KB" % round( size / 1024.0, 2 ) )
                 except: pass
             elif get_size:
@@ -404,11 +397,10 @@ def get_infos_path( path, get_size=False, report_progress=None ):
                             if os.access( fpath, os.R_OK ):
                                 size += os.path.getsize( fpath )
                                 if report_progress:
-                                    #logger.LOG( logger.LOG_INFO, "Size: %s", fpath )
+                                    #print "Size: %s", fpath
                                     report_progress.update( -1, sys.modules[ "__main__" ].__language__( 186 ), fpath, sys.modules[ "__main__" ].__language__( 361 ) + " %00s KB" % round( size / 1024.0, 2 ) )
                         except:
-                            logger.LOG( logger.LOG_ERROR, "Size: %s", fpath )
-                            pass
+                            print "Size: %s" % fpath
         if size <= 0:
             size = ""#"0.0 KB"
         elif size <= ( 1024.0 * 1024.0 ):
@@ -418,7 +410,7 @@ def get_infos_path( path, get_size=False, report_progress=None ):
         else:
             size = "%00s Bytes" % size
     except:
-        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+        print_exc()
         size = "0.0 KB"
 
     return size, c_time, last_access, last_modification

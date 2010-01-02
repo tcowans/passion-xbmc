@@ -3,17 +3,15 @@
     please don't edit credits this fonction is reserved for manager of Installer. thanks
 """
 
-
-#Modules general
+# Modules general
 import os
 import sys
 from threading import Timer
 from traceback import print_exc
 
-#modules XBMC
+# Modules XBMC
 import xbmc
 import xbmcgui
-
 
 
 class ScriptCredits( xbmcgui.WindowXML ):

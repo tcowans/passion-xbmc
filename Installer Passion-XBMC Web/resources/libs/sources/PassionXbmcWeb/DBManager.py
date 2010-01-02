@@ -4,34 +4,24 @@ Database Manager: this module manage Database reading, writing, browsing, downlo
 
 # Modules general
 import os
+import csv #TODO: import CSV/ET only if we instanciate CsvDB/XmlDB
 import sys
 import urllib
-import ftplib
-import traceback
-import urllib
+from traceback import print_exc
 
-#module logger
-try:
-    logger = sys.modules[ "__main__" ].logger
-except:
-    import script_log as logger
+import elementtree.ElementTree as ET
+from pysqlite2 import dbapi2 as sqlite
 
 # Modules custom
 import Item
 from utilities import *
 
+
 SPECIAL_SCRIPT_DATA = sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA
 
-
-# SQLite
-from pysqlite2 import dbapi2 as sqlite
-
-#TODO: import CSV/ET only if we instanciate CsvDB/XmlDB
-import csv
-import elementtree.ElementTree as ET
-
 categories = {'None': 'None', 'Other': 'None', 'ThemesDir': Item.TYPE_SKIN, 'Scraper': Item.TYPE_SCRAPER, 'ThemesDir': Item.TYPE_SKIN, 'ScriptsDir': Item.TYPE_SCRIPT, 'PluginDir': Item.TYPE_PLUGIN, 'PluginMusDir': Item.TYPE_PLUGIN_MUSIC, 'PluginPictDir': Item.TYPE_PLUGIN_PICTURES, 'PluginProgDir': Item.TYPE_PLUGIN_PROGRAMS,  'PluginVidDir': Item.TYPE_PLUGIN_VIDEO }
-    
+
+
 class DBMgr:
     """
     Abstract class allowing to populate, query the DB
@@ -47,13 +37,10 @@ class DBMgr:
             #Init Database
             self.cursor = self.conn.cursor()
         except Exception, e:
-            print "Exception in DBMgr __init__"
-            print e
             self.conn   = None
             self.cursor = None
-            traceback.print_exc()
-            logger.LOG( logger.LOG_DEBUG, "Exception while SQLite DB connection: %s", datafile )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print "Exception while SQLite DB connection: %s" % datafile
+            print_exc()
 
     def getConnectionInfo(self): 
         """
@@ -144,8 +131,7 @@ class DBMgr:
             self.conn.commit()
         except Exception, e:
             print "Exception in makeServer_Items"
-            print e        
-            traceback.print_exc()
+            print_exc()
 
     def update_categories( self ):
         """
@@ -192,8 +178,7 @@ class DBMgr:
             self.conn.close()
         except Exception, e:
             print "DBMgr - Exception in exit"
-            print e        
-            traceback.print_exc()
+            print_exc()
         
         
 class CsvDB(DBMgr):
@@ -297,11 +282,9 @@ class CsvDB(DBMgr):
         
                     self._insertServerItems(self.cursor,cols)
                 except Exception, e:
-                    print e
-                    traceback.print_exc()
+                    print_exc()
         except Exception, e:
-            print e
-            traceback.print_exc()
+            print_exc()
                 
         #Sauvegarde des modifications
         self.conn.commit()   
@@ -363,8 +346,7 @@ class CsvDB(DBMgr):
                                ''',cols))
         except Exception, e:
             print "CsvDB - Exception in _insertServerItems"
-            print e     
-            traceback.print_exc()
+            print_exc()
 
 
     def update_categories( self ):
@@ -378,7 +360,7 @@ class CsvDB(DBMgr):
             print "CsvDB - update_categories: delete failed"
             print e
             print sys.exc_info()
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
             self.make_Categories()
         args = '?action=getcat'
         try:
@@ -406,11 +388,9 @@ class CsvDB(DBMgr):
                     self._insertCategories(self.cursor,cols)
                 except Exception, e:
                     print 'erreur categorie'
-                    print e
-                    traceback.print_exc()
+                    print_exc()
         except Exception, e:
-            print e
-            traceback.print_exc()
+            print_exc()
             
         #Sauvegarde des modifications
         self.conn.commit()    
@@ -461,7 +441,6 @@ class CsvDB(DBMgr):
                                 )''',cols))
         except Exception, e:
             print 'CsvDB - erreur insert'
-            print e
-            traceback.print_exc()
+            print_exc()
 
  

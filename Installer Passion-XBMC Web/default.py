@@ -1,28 +1,28 @@
 ﻿
 # GET AND PRINT ALL STATS OF SCRIPT
 TEST_PERFORMANCE = False
-
 UNIT_TEST        = False
+# On release version 2, replace dev_test = False
 DEV_TEST         = True
 
 
 # script constants
 __script__       = "Installer Passion-XBMC"
-if DEV_TEST: __script__ += " Web"
-
 __plugin__       = "Unknown"
 __author__       = "Team Passion-XBMC"
 __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/Installer%20Passion-XBMC/"
-if DEV_TEST: 
-    __svn_url__  = "http://passion-xbmc.googlecode.com/svn/branches/scripts/Installer%20Passion-XBMC%20Web/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center"
 
 __version__      = "pre-2.0"
 __statut__       = "DevHD; Beta 1" #(dev,svn,release,etc)
 
-# don't edit __date__ and __svn_revision__ 
+if DEV_TEST:
+    __script__  += " Web"
+    __svn_url__  = "http://passion-xbmc.googlecode.com/svn/branches/scripts/Installer%20Passion-XBMC%20Web/"
+
+# don't edit __date__ and __svn_revision__
 # use svn:keywords http://svnbook.red-bean.com/en/1.4/svn.advanced.props.special.keywords.html
 __svn_revision__ = "$Revision$".replace( "Revision", "" ).strip( "$: " ) or __statut__
 __date__         = "$Date$"[ 7:17 ]
@@ -31,16 +31,18 @@ if not __date__:
         from urllib import urlopen
         __date__ = urlopen( __svn_url__ + "default.py" ).info()[ "Last-Modified" ]
     except: pass
-__date__ = __date__ or "Unknown"
+__date__         = __date__ or "Unknown"
+
 
 #Modules general
 import os
 import sys
 from traceback import print_exc
 
-#modules XBMC
+# Modules XBMC
 import xbmc
 import xbmcgui
+
 
 # INITIALISATION CHEMIN RACINE
 ROOTDIR = os.getcwd().replace( ";", "" )
@@ -63,23 +65,26 @@ for content in os.listdir( CONTENTS_LIBS ):
     try: sys.path.append( os.path.join( CONTENTS_LIBS, content ) )
     except: print_exc()
 
-# recompile all modules, but script start slowly
-#from compileall import compile_dir
-#compile_dir( os.path.join( BASE_RESOURCE_PATH, "libs" ), force=True, quiet=True )
-
 
 #modules custom
 from specialpath import *
-import script_log as logger
+# custom_sys_stdout_stderr is new module for xbmc output
+# for active print debug in output, set "PRINT_DEBUG = True", but use options in settings window.
+# if you want force print. start print with "bypass: |bypass_debug: |bypass_comment: "
+# NB: the variables bypass not printed, look example at end module custom_sys_stdout_stderr
+import custom_sys_stdout_stderr as output
 
 
-#frost: changer la langue par default pour l'anglais, car de cette maniere on ai pas obliger de rejouter le strings manquant dans les autres language
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE. ( ex: __language__( 0 ) = id="0" du fichier strings.xml )
-#__language__ = xbmc.Language( ROOTDIR, "french" ).getLocalizedString
 __language__ = xbmc.Language( ROOTDIR ).getLocalizedString
 LANGUAGE_IS_FRENCH = ( xbmc.getLanguage().lower() == "french" )
 
 DIALOG_PROGRESS = xbmcgui.DialogProgress()
+
+# set our xbmc.settings path for xbmc get '/resources/settings.xml'
+XBMC_SETTINGS = xbmc.Settings( os.getcwd() )
+
+
 
 # Info version (deprecated)
 __version_l1__ = __language__( 700 )#"version"
@@ -89,7 +94,7 @@ __version_r2__ = __date__
 __version_l3__ = __language__( 708 )#"SVN"
 __version_r3__ = str( __svn_revision__ )
 
-# team credits
+# team credits (deprecated)
 __credits_l1__ = __language__( 702 )#"Developpeurs"
 __credits_r1__ = "Frost & Seb & Temhil"
 __credits_l2__ = __language__( 703 )#"Conception Graphique"
@@ -101,9 +106,12 @@ __credits_r4__ = "Alexsolex & Shaitan"
 
 
 def MAIN():
-    logger.LOG( logger.LOG_DEBUG, str( "*" * 85 ) )
-    logger.LOG( logger.LOG_DEBUG, "Lanceur".center( 85 ) )
-    logger.LOG( logger.LOG_DEBUG, str( "*" * 85 ) )
+    try: output.PRINT_DEBUG = ( XBMC_SETTINGS.getSetting( "script_debug" ) == "true" )
+    except: print_exc()
+    # print depend of output.PRINT_DEBUG is True or False
+    print "*" * 85
+    print "Lanceur".center( 85 )
+    print "*" * 85
 
     try:
         # INITIALISATION CHEMINS DE FICHIER LOCAUX
@@ -118,11 +126,13 @@ def MAIN():
         # VERIFICATION DE LA MISE A JOUR
         import CHECKMAJ
         try:
-            from utilities import Settings
-            CHECKMAJ.UPDATE_STARTUP = Settings().get_settings().get( "update_startup", True )
-            del Settings
+            #from utilities import Settings
+            #try: output.PRINT_DEBUG = Settings().get_settings().get( "script_debug", False )
+            #except: print_exc()
+            CHECKMAJ.UPDATE_STARTUP = ( XBMC_SETTINGS.getSetting( "update_startup" ) == "true" )#Settings().get_settings().get( "update_startup", True )
+            #del Settings
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+            print_exc()
         if CHECKMAJ.UPDATE_STARTUP:
             DIALOG_PROGRESS.update( -1, __language__( 102 ), __language__( 110 ) )
         CHECKMAJ.go()
@@ -147,7 +157,6 @@ def MAIN():
                     import MainGui
                     MainGui.show_main()
             except:
-                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
                 print_exc()
                 dialog_error = True
         else:
@@ -155,58 +164,34 @@ def MAIN():
             try:
                 scriptmaj = config.get( 'Version', 'SCRIPTMAJ' )
                 xbmc.executescript( scriptmaj )
-
-                #import MainGui
-                #MainGui.show_main()
             except:
-                logger.LOG( logger.LOG_DEBUG, "default : Exception pendant le chargement et/ou La mise a jour" )
-                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+                print "bypass_debug: default : Exception pendant le chargement et/ou La mise a jour"
+                print_exc()
                 dialog_error = True
 
         if dialog_error: xbmcgui.Dialog().ok( __language__( 111 ), __language__( 112 ) )
     except:
-        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+        print_exc()
     DIALOG_PROGRESS.close()
 
-def RUN_UNIT_TEST():
-    try:
-        # LOADING CONF
-        print "Starting UNIT TESTS"
-        import CONF
-        config = CONF.ReadConfig()
-
-        DIALOG_PROGRESS.update( -1, __language__( 101 ), __language__( 110 ) )
-        if not config.getboolean( 'InstallPath', 'pathok' ):
-            CONF.SetConfiguration()
-        config = CONF.ReadConfig()
-        del CONF
-
-        # UNIT TEST
-        
-        # Write your unit tests Here
-        # ...
-        # ...
-    except:
-        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
-        dialog_error = True
-    DIALOG_PROGRESS.close()
 
 
 if __name__ == "__main__":
     try:
         DIALOG_PROGRESS.create( __language__( 0 ), "", "" )
         if TEST_PERFORMANCE:
-            import profile, pstats
-            report_file = os.path.join( ROOTDIR, "MainPerform.profile.log" )
-            profile.run( "MAIN()", report_file )
-            pstats.Stats( report_file ).sort_stats( "time", "name" ).print_stats()
+            import misc
+            misc.RUN_PERFORMANCE()
         elif UNIT_TEST:
-            print "Running Unit tests"
-            RUN_UNIT_TEST()      
-            print "Tests done"      
+            import misc
+            misc.RUN_UNIT_TEST()
         else:
             MAIN()
     except:
-        #print_exc()
-        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+        print_exc()
         DIALOG_PROGRESS.close()
+
+    if not TEST_PERFORMANCE:
+        # replace standard stdout and stderr, modified by import custom_sys_stdout_stderr
+        sys.stdout = sys.stdout.terminal
+        sys.stderr = sys.stderr.terminal

@@ -3,36 +3,28 @@ XbmcZoneBrowser: this module allows browsing of server content on the web server
 Module inspired from Dan Dar3 excellent work on the XBMC Zone Installer (thank you to him)
 """
 
-
 # Modules general
 import os
 import sys
-from traceback import print_exc
-
-# Module logger
-try:
-    logger = sys.modules[ "__main__" ].logger
-except:
-    import script_log as logger
-    
-
-#Other module
-from threading import Thread
-from pil_util import makeThumbnails
 import urllib
 from xml.dom import minidom #TODO: replace minidom by ET
+from threading import Thread
+from traceback import print_exc
 
 # Modules custom
 import Item
 from utilities import *
-from Browser import Browser, ImageQueueElement
 #from CONSTANTS import *
+from pil_util import makeThumbnails
+from Browser import Browser, ImageQueueElement
+
 
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
 _ = sys.modules[ "__main__" ].__language__
 LANGUAGE_IS_FRENCH = sys.modules[ "__main__" ].LANGUAGE_IS_FRENCH
 
 SPECIAL_SCRIPT_DATA = sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA
+
     
 class XbmcZoneBrowser(Browser):
     """
@@ -75,7 +67,7 @@ class XbmcZoneBrowser(Browser):
             result = mapTypeSrv2Local[serverType]
         except:
             print sys.exc_info()
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
             print_exc()
             result = None
         return result
@@ -94,7 +86,7 @@ class XbmcZoneBrowser(Browser):
             result = mapTypeLocal2Srv[serverType]
         except:
             print sys.exc_info()
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
             print_exc()
             result = None
         return result
@@ -333,7 +325,7 @@ class XbmcZoneBrowser(Browser):
             print "Exception during getNextList"
             print e
             print sys.exc_info()
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
             print_exc()
         #TODO: find better solution, temporary fix for the case of empty list, with current implemntation of hetPrevList backward is not possible when list is empty    
         if len( list ) > 0:
@@ -371,7 +363,7 @@ class XbmcZoneBrowser(Browser):
             print "Exception during getPrevList"
             print e
             print sys.exc_info()
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
             print_exc()
         # Replace current list
         self.curList = list
@@ -430,9 +422,8 @@ class XbmcZoneBrowser(Browser):
             try:
                 ftp.retrbinary( 'RETR ' + filetodlUrl, localFile.write )
             except:
-                #from traceback import print_exc; print_exc()
-                logger.LOG( logger.LOG_DEBUG, "_downloaddossier: Exception - Impossible de telecharger le fichier: %s", remoteFilePath )
-                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                print "_downloaddossier: Exception - Impossible de telecharger le fichier: %s" % remoteFilePath
+                print_exc()
                 thumbnail, localFilePath = "", ""
             localFile.close()
             ftp.quit()
@@ -454,14 +445,10 @@ class XbmcZoneBrowser(Browser):
             else:
                 thumbnail, localFilePath = "", ""
         except Exception, e:
-            print "Exception during _downloadImage"
-            print e
             #TODO: create a thumb for the default image?
             #TODO: return empty and manage default image at the level of the caller
             thumbnail, localFilePath = "", "" 
-            print sys.exc_info()
-            logger.LOG( logger.LOG_DEBUG, "_downloadImage: Exception - Impossible to download the picture: %s", picname )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print "_downloadImage: Exception - Impossible to download the picture: %s" % picname
             print_exc()
         print "thumbnail = %s"%thumbnail
         print "localFilePath = %s"%localFilePath
@@ -612,7 +599,7 @@ class XbmcZoneBrowser(Browser):
             print "Exception during getInstaller"
             print e
             print sys.exc_info()
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
             print_exc()   
                  
         return itemInstaller
@@ -656,9 +643,8 @@ class XbmcZoneBrowser(Browser):
             else:
                 thumbnail, localFilePath = "", ""
         except:
-            #from traceback import print_exc; print_exc()
-            logger.LOG( logger.LOG_DEBUG, "_downloadImage: Exception - Impossible to downlod the picture: %s", picname )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print "_downloadImage: Exception - Impossible to downlod the picture: %s" % picname
+            print_exc()
             #TODO: create a thumb for the default image?
             #TODO: return empty and manage default image at the level of the caller
             thumbnail, localFilePath = "", "" 

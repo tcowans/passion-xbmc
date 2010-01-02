@@ -1,21 +1,19 @@
 
-#Modules general
+# Modules general
 import os
 import sys
 from collections import deque
+from traceback import print_exc
 
-#modules XBMC
+# Modules XBMC
 import xbmc
 import xbmcgui
 
-#modules custom
+# Modules custom
 from utilities import *
 
-#module logger
-try:
-    logger = sys.modules[ "__main__" ].logger
-except:
-    import script_log as logger
+# set our xbmc.settings path for xbmc get '/resources/settings.xml'
+XBMC_SETTINGS = xbmc.Settings( os.getcwd() )
 
 
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
@@ -89,7 +87,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             self.rss_on_load = self.settings[ "rss_feed" ]
             self.skin_on_load = self.settings.get( "current_skin", "Default" )
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
             self._close_dialog()
 
     def _get_settings( self, defaults=False  ):
@@ -97,6 +95,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
         self.topic_limit = deque( self.TOPIC_LIMIT )
         self.skin_colours = getSkinColors()
         self.settings = Settings().get_settings( defaults=defaults )
+        self.settings[ "script_debug" ] = ( XBMC_SETTINGS.getSetting( "script_debug" ) == "true" )
         if defaults:
             xbmc.executebuiltin( "Skin.Reset(use_passion_custom_background)" )
             xbmc.executebuiltin( "Skin.Reset(passion_custom_background)" )
@@ -110,7 +109,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
         except:
             xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,ffffffff)" )
             xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,default)" )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
         #xbmcgui.unlock()
 
     def _set_controls_labels( self ):
@@ -137,7 +136,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             list_item = xbmcgui.ListItem( sys.modules[ "__main__" ].__credits_l4__, sys.modules[ "__main__" ].__credits_r4__ )
             self.getControl( 602 ).addItem( list_item )
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
     def _set_controls_values( self ):
         xbmcgui.lock()
@@ -173,7 +172,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             # boutons pour le web
             self._set_control_web_visibility()
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
         xbmcgui.unlock()
 
     def _set_control_skins( self ):
@@ -191,7 +190,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             except: skin_label = self.skins_listing[ 0 ]
             self.getControl( self.CONTROL_SKIN_LABEL ).setLabel( "Skin", label2=skin_label )
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
     def _set_control_web_visibility( self ):
         compatible = ( SYSTEM_PLATFORM in ( "windows", "linux", "osx" ) )
@@ -222,7 +221,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             limit = self.thumbs_size[ 0 ]
             self.getControl( self.CONTROL_THUMB_SIZE_LABEL ).setLabel( _( 517 ), label2=str( limit ) )
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
             #default_thumb_size = self.settings.get( "thumb_size" ) or ( "512", "192" )[ ( SYSTEM_PLATFORM == "xbox" ) ]
             #self.getControl( self.CONTROL_THUMB_SIZE_LABEL ).setLabel( _( 517 ), label2=str( default_thumb_size ) )
 
@@ -245,14 +244,14 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             else:
                 enable_control = True
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
             enable_control = True
         if enable_control:
             try:
                 self.getControl( self.CONTROL_DECREASE_COLOR_BUTTON ).setEnabled( 0 )
                 self.getControl( self.CONTROL_INCREASE_COLOR_BUTTON ).setEnabled( 0 )
             except:
-                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                print_exc()
 
     def _set_control_rss_feeds( self ):
         enable_control = False
@@ -270,14 +269,14 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             else:
                 enable_control = True
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
             enable_control = True
         if enable_control:
             try:
                 self.getControl( self.CONTROL_DECREASE_RSS_BUTTON ).setEnabled( 0 )
                 self.getControl( self.CONTROL_INCREASE_RSS_BUTTON ).setEnabled( 0 )
             except:
-                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                print_exc()
 
     def onFocus( self, controlID ):
         #cette fonction n'est pas utiliser ici, mais dans les XML si besoin
@@ -303,7 +302,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
                 self.settings[ "current_skin" ] = self.current_skin
                 self.getControl( self.CONTROL_OK_BUTTON ).setEnabled( True )
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
     def onClick( self, controlID ):
         try:
@@ -382,7 +381,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             else:
                 pass
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
     def _set_web_navigator( self ):
         web_navigator = set_web_navigator( self.settings[ "web_navigator" ] )
@@ -421,7 +420,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
                 self.settings[ "rss_feed" ] = rss_id
                 self.getControl( self.CONTROL_OK_BUTTON ).setEnabled( True )
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
     def toggle_topic_control( self, controlID ):
         try:
@@ -441,7 +440,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
                 self.settings[ "topics_limit" ] = self.topics_limit
                 self.getControl( self.CONTROL_OK_BUTTON ).setEnabled( True )
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
     def toggle_tbn_size_control( self, controlID ):
         try:
@@ -460,7 +459,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
                 self.settings[ "thumb_size" ] = self.thumb_size
                 self.getControl( self.CONTROL_OK_BUTTON ).setEnabled( True )
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
     def toggle_color_control( self, controlID ):
         try:
@@ -483,7 +482,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
                 self.settings[ "skin_colours" ] = self.skin_colour
                 self.getControl( self.CONTROL_OK_BUTTON ).setEnabled( True )
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
     def _save_settings( self ):
         """ save values settings """
@@ -497,7 +496,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             #required script reload
             if xbmcgui.Dialog().yesno( _( 532 ), _( 533 ), _( 534 ) ):
                 self.reload_script = True
-
+        XBMC_SETTINGS.setSetting( "script_debug", repr( self.settings[ "script_debug" ] ).lower() )
         self._close_dialog( OK )
 
     def _get_defaults( self ):
@@ -525,6 +524,7 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
         if self.reload_script:
             self.mainwin._close_script()
             sys.modules[ "__main__" ].MAIN()
+        sys.modules[ "__main__" ].output.PRINT_DEBUG = ( XBMC_SETTINGS.getSetting( "script_debug" ) == "true" )
 
 
 def show_settings( mainwin ):

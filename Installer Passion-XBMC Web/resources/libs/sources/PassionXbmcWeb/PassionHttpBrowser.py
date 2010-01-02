@@ -2,32 +2,23 @@
 PassionHttpBrowser: this module allows browsing of server content on the web server of Passion-XBMC.org
 """
 
-
 # Modules general
 import os
 import sys
+import urllib
+from threading import Thread
 from traceback import print_exc
 
-# Module logger
-try:
-    logger = sys.modules[ "__main__" ].logger
-except:
-    import script_log as logger
-    
-# SQLite
 from pysqlite2 import dbapi2 as sqlite
 
-#Other module
-from threading import Thread
-from pil_util import makeThumbnails
-import urllib
-
-# Modules custom
-import PassionHttpItemInstaller  
+# Modules custom 
 import Item
 from utilities import *
-from Browser import Browser, ImageQueueElement
 #from CONSTANTS import *
+import PassionHttpItemInstaller 
+from pil_util import makeThumbnails
+from Browser import Browser, ImageQueueElement
+
 
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
 _ = sys.modules[ "__main__" ].__language__
@@ -36,7 +27,8 @@ LANGUAGE_IS_FRENCH = sys.modules[ "__main__" ].LANGUAGE_IS_FRENCH
 SPECIAL_SCRIPT_DATA = sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA
 DIR_CACHE = sys.modules[ "__main__" ].DIR_CACHE
 #CACHEDIR = os.path.join( ROOTDIR, "cache" )
-    
+
+
 class PassionHttpBrowser(Browser):
     """
     Browse the item on the HTTP server using only information in the Database
@@ -140,7 +132,7 @@ class PassionHttpBrowser(Browser):
             print "Exception during getNextList"
             print e
             print sys.exc_info()
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
             print_exc()   
         return list
     
@@ -540,10 +532,7 @@ class PassionHttpBrowser(Browser):
 
         except Exception, e:
             print "Exception during getInstaller"
-            print e
-            print sys.exc_info()
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-            print_exc()   
+            print_exc()
                  
         return itemInstaller
 
@@ -586,9 +575,8 @@ class PassionHttpBrowser(Browser):
             else:
                 thumbnail, localFilePath = "", ""
         except:
-            #from traceback import print_exc; print_exc()
-            logger.LOG( logger.LOG_DEBUG, "_downloadImage: Exception - Impossible to downlod the picture: %s", picname )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print "_downloadImage: Exception - Impossible to downlod the picture: %s" % picname
+            print_exc()
             #TODO: create a thumb for the default image?
             #TODO: return empty and manage default image at the level of the caller
             thumbnail, localFilePath = "", "" 
