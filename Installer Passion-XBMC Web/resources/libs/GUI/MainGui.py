@@ -292,8 +292,9 @@ class MainWindow( xbmcgui.WindowXML ):
         self.settings = Settings().get_settings( defaults=defaults )
         try:
             self.getControl( self.CONTROL_FORUM_BUTTON ).setVisible( not self.settings.get( "hide_forum", False ) )
-        except:
-            print_exc()
+        except Exception, e:
+            if not "Non-Existent Control" in str( e ):
+                print_exc()
 
     def _set_skin_colours( self ):
         #xbmcgui.lock()
@@ -339,8 +340,9 @@ class MainWindow( xbmcgui.WindowXML ):
             text_color  = repr( self.getControl( 101 ).getLabel2() ).strip( "u'" )
             #print repr( title_color ), repr( text_color )
             self.rss_feed = RSSParser.rssReader( self.rss_title, self.rssfeed, title_color, text_color ).GetRssInfo()[ 1 ]
-        except:
-            print_exc()
+        except Exception, e:
+            if not "Non-Existent Control" in str( e ):
+                print_exc()
             try:
                 self.rss_feed = RSSParser.rssReader( self.rss_title, self.rssfeed ).GetRssInfo()[ 1 ]
             except:
@@ -350,9 +352,9 @@ class MainWindow( xbmcgui.WindowXML ):
             self.getControl( 100 ).reset()
             self.getControl( 100 ).addLabel( self.rss_feed )
             self.getControl( 100 ).setVisible( True )
-        except:
-            print_exc()
-            print_exc()
+        except Exception, e:
+            if not "Non-Existent Control" in str( e ):
+                print_exc()
             try: self.getControl( 100 ).setVisible( False )
             except: pass
             self._stop_rss_timer()
@@ -497,7 +499,7 @@ class MainWindow( xbmcgui.WindowXML ):
         try:
             label2 = ""#not used
             icone = "windows.png"
-    #        for key, value in list_container:
+            #for key, value in list_container:
             self.listOfSourceName = self.contextSrc.getSourceNameList()
             #print "set_list_container_150"
             for source in self.listOfSourceName:
@@ -508,10 +510,9 @@ class MainWindow( xbmcgui.WindowXML ):
                 #self.getControl( 150 ).addItem( displayListItem )
                 self.getControl( self.CONTROL_SOURCE_LIST ).addItem( xbmcgui.ListItem( label1, label1, icone, icone ) )
             self.getControl( self.CONTROL_SOURCE_LIST ).setVisible( True )
-        except:
-            print_exc()
-            #print sys.exc_info()
-            print_exc()
+        except Exception, e:
+            if not "Non-Existent Control" in str( e ):
+                print_exc()
 
     def onAction( self, action ):
         """

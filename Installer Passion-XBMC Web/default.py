@@ -43,6 +43,9 @@ from traceback import print_exc
 import xbmc
 import xbmcgui
 
+# set our xbmc.settings path for xbmc get '/resources/settings.xml'
+XBMC_SETTINGS = xbmc.Settings( os.getcwd() )
+
 
 # INITIALISATION CHEMIN RACINE
 ROOTDIR = os.getcwd().replace( ";", "" )
@@ -81,10 +84,6 @@ LANGUAGE_IS_FRENCH = ( xbmc.getLanguage().lower() == "french" )
 
 DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
-# set our xbmc.settings path for xbmc get '/resources/settings.xml'
-XBMC_SETTINGS = xbmc.Settings( os.getcwd() )
-
-
 
 # Info version (deprecated)
 __version_l1__ = __language__( 700 )#"version"
@@ -108,10 +107,20 @@ __credits_r4__ = "Alexsolex & Shaitan"
 def MAIN():
     try: output.PRINT_DEBUG = ( XBMC_SETTINGS.getSetting( "script_debug" ) == "true" )
     except: print_exc()
+
     # print depend of output.PRINT_DEBUG is True or False
-    print "*" * 85
-    print "Lanceur".center( 85 )
-    print "*" * 85
+    print "bypass_debug: %s" % str( "-" * 100 )
+    print "bypass_debug: Starting %s %s, %s, SVN r%s. Built on %s" % ( __script__, __version__, __statut__, __svn_revision__, __date__ )
+    print "bypass_debug: The executable script running is: %s" % os.path.join( os.getcwd(), "default.py" )
+    print "bypass_debug: %s" % str( "-" * 100 )
+    try:
+        from utilities import getUserSkin
+        current_skin, force_fallback = getUserSkin()
+        print "bypass_debug: load default skin:[%s]" % current_skin
+        print "bypass_debug: default skin use force fallback: %s" % repr( force_fallback )
+        del getUserSkin
+    except:
+        pass
 
     try:
         # INITIALISATION CHEMINS DE FICHIER LOCAUX
