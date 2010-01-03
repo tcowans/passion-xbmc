@@ -27,24 +27,6 @@ LANGUAGE_IS_FRENCH = ( xbmc.getLanguage().lower() == "french" )
 BASE_THUMBS_PATH = os.path.join( sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA, "Thumbnails" )
 
 
-def set_cache_thumb_name( path ):
-    try:
-        fpath = path
-        # make the proper cache filename and path so duplicate caching is unnecessary
-        filename = xbmc.getCacheThumbName( fpath )
-        thumbnail = os.path.join( BASE_THUMBS_PATH, filename[ 0 ], filename )
-        preview_pic = os.path.join( BASE_THUMBS_PATH, "originals", filename[ 0 ], filename )
-        # if the cached thumbnail does not exist check for dir does not exist create dir
-        if not os.path.isdir( os.path.dirname( preview_pic ) ):
-            os.makedirs( os.path.dirname( preview_pic ) )
-        if not os.path.isdir( os.path.dirname( thumbnail ) ):
-            os.makedirs( os.path.dirname( thumbnail ) )
-        return thumbnail, preview_pic
-    except:
-        print_exc()
-        return "", ""
-
-
 class InfosWarehouse:
     """ Class Abstraite contenant toutes les informations necessaires a la description d'un item """
     def __init__( self, kwargs ):
@@ -165,7 +147,7 @@ class InfoWarehouseEltTreeXMLFTP:
             cached_thumbs = set_cache_thumb_name( imageElt.url )
             if not os.path.exists( cached_thumbs[ 0 ] ) or not os.path.exists( cached_thumbs[ 1 ] ):
                 # Telechargement de l'image
-                self._downloadFile( imageElt.url, listitem=imageElt.listitem )
+                self._downloadFile( imageElt.url, True, listitem=imageElt.listitem )
 
                 if os.path.exists( cached_thumbs[ 1 ] ):
                     previewPicture = cached_thumbs[ 1 ]
