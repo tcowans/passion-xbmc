@@ -320,7 +320,7 @@ class PassionHttpBrowser(Browser):
                 
         #get parent id of current parent
 #        conn = sqlite.connect(self.db)
-#        #Initialisation de la base de donnÃ©e
+#        #Initialisation de la base de donnée
         c = self.conn.cursor()
         try:
             c.execute(self.nicequery('''SELECT id_parent 
