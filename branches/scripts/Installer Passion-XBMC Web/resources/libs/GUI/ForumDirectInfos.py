@@ -65,7 +65,7 @@ class DirectInfos( xbmcgui.WindowXML ):
                 self.set_list_container_150()
                 self.set_list_container_191()
         except:
-            print_exc()#print_exc()
+            print_exc()
         DIALOG_PROGRESS.close()
 
     def _get_settings( self, defaults=False ):
@@ -90,7 +90,7 @@ class DirectInfos( xbmcgui.WindowXML ):
         except:
             xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,ffffffff)" )
             xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,default)" )
-            print_exc()#print_exc()
+            print_exc()
         #xbmcgui.unlock()
 
     def set_user_authentification( self, connect=False ):
@@ -211,7 +211,7 @@ class DirectInfos( xbmcgui.WindowXML ):
             else:
                 xbmcgui.Dialog().ok( _( 199 ), self.category, _( 240 ) )
         except:
-            print_exc()#print_exc()
+            print_exc()
             xbmcgui.Dialog().ok( _( 199 ), self.category, _( 241 ) )
         DIALOG_PROGRESS.close()
 
@@ -300,7 +300,7 @@ class DirectInfos( xbmcgui.WindowXML ):
             else:
                 pass
         except:
-            print_exc()#print_exc()
+            print_exc()
             DIALOG_PROGRESS.close()
 
     def _url_launcher( self, url ):
@@ -315,34 +315,38 @@ class DirectInfos( xbmcgui.WindowXML ):
                     self.settings[ "web_title" ] = web_navigator[ 0 ] # utiliser dans le dialog settings
                     self.settings[ "web_navigator" ] = web_navigator[ 1 ]
                     OK = Settings().save_settings( self.settings )
+                else:
+                    return
 
-            if self.settings[ "win32_exec_wait" ] and ( SYSTEM_PLATFORM == "windows" ):
-                # Execute shell commands and freezes XBMC until shell is closed
-                cmd = "System.ExecWait"
-            else:
-                # cette commande semble fonctionel pour linux, osx and windows
-                # Execute shell commands
-                cmd = "System.Exec"
+            #if self.settings[ "win32_exec_wait" ] and ( SYSTEM_PLATFORM == "windows" ):
+            #    # Execute shell commands and freezes XBMC until shell is closed
+            #    cmd = "System.ExecWait"
+            #else:
+            #    # cette commande semble fonctionel pour linux, osx and windows
+            #    # Execute shell commands
+            #    cmd = "System.Exec"
 
             command = None
             if ( SYSTEM_PLATFORM == "windows" ):
-                command = '%s("%s" "%s")' % ( cmd, self.settings[ "web_navigator" ], url, )
+                #command = '%s("%s" "%s")' % ( cmd, self.settings[ "web_navigator" ], url, )
+                command = 'start "%s" "%s"' % ( self.settings[ "web_navigator" ], url, )
             else:#if ( SYSTEM_PLATFORM == "linux" ):
                 # sous linux la vigule pose probleme. solution obtenir la redirection de l'url
                 url = self.get_redirected_url( url )
-                command = '%s(%s %s)' % ( cmd, self.settings[ "web_navigator" ], url, )
+                #command = '%s(%s %s)' % ( cmd, self.settings[ "web_navigator" ], url, )
+                command = '%s %s' % ( self.settings[ "web_navigator" ], url, )
 
             if command is not None:
+                #print SYSTEM_PLATFORM
                 print "Url Launcher: %s" % command
                 selected_label = self._unicode( self.getControl( self.CONTROL_FEEDS_LIST ).getSelectedItem().getLabel() )
                 if xbmcgui.Dialog().yesno( self.settings[ "web_title" ], _( 236 ), selected_label, url.split( "/" )[ -1 ], _( 237 ), _( 238 ) ):
-                    try:
-                        xbmc.executebuiltin( command )
-                    except:
-                        os.system( "%s %s" % ( web_navigator, url, ) )
-
+                    #try:
+                    #    xbmc.executebuiltin( command )
+                    #except:
+                    os.system( command )#'%s %s' % ( self.settings[ "web_navigator" ], url, ) )
         except:
-            print_exc()#print_exc()
+            print_exc()
 
     def get_redirected_url( self, url ):
         from urllib2 import urlopen
@@ -353,7 +357,7 @@ class DirectInfos( xbmcgui.WindowXML ):
             scheme2, host2, path2, params2, query2, fragment2 = urlparse( redirection )
             url = urlunparse( ( scheme2, host2, path2, params2, None, fragment1 ) )
         except:
-            print_exc()#print_exc()
+            print_exc()
         del urlopen, urlparse, urlunparse
         return url
 
@@ -382,7 +386,7 @@ class DirectInfos( xbmcgui.WindowXML ):
                         f.close()
                         xbmc.executehttpapi( "PlaySlideshow(%s;false)" % ( m3u, ) )
             except:
-                print_exc()#print_exc()
+                print_exc()
 
     def _close_dialog( self ):
         #xbmc.sleep( 100 )
