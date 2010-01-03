@@ -177,11 +177,13 @@ def getSkinColors():
 
 
 def get_default_hex_color():
+    default_hex_color = "FFFFFFFF"
     try:
         default_hex_color = dict( getSkinColors() ).get( "default", "FFFFFFFF" )
+    except TypeError:
+        pass
     except:
         print_exc()
-        default_hex_color = "FFFFFFFF"
     return default_hex_color
 
 

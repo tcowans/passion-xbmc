@@ -1,4 +1,4 @@
-"""
+ï»¿"""
 XbmcZoneBrowser: this module allows browsing of server content on the web server of Passion-XBMC.org
 Module inspired from Dan Dar3 excellent work on the XBMC Zone Installer (thank you to him)
 """
@@ -507,12 +507,12 @@ class XbmcZoneBrowser(Browser):
         Returns the information about a specific item (dictionnary)
         Returns a dictionnary with the structure:
         {name, description, icon, downloads, file, created, screenshot}
-        Chaque index du dictionnaire renvoie à une liste d'occurences.
+        Chaque index du dictionnaire renvoie Ã  une liste d'occurences.
         Alimenter cette fonction avec l'id du fichier dont on veut obtenir les infos.
         """
                      
-#        #ici une seule ligne est retournee par la requête
-#        #pour chaque colonne fetchee par la requête on alimente un index du dictionnaire
+#        #ici une seule ligne est retournee par la requÃªte
+#        #pour chaque colonne fetchee par la requÃªte on alimente un index du dictionnaire
 #        dico = {}
 #        for row in c:
 #            print row

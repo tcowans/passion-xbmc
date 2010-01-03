@@ -1,4 +1,4 @@
-"""
+ï»¿"""
 PassionHttpBrowser: this module allows browsing of server content on the web server of Passion-XBMC.org
 """
 
@@ -144,7 +144,7 @@ class PassionHttpBrowser(Browser):
         
         listOfItems = []
         
-        #Connection à la base de donnee
+        #Connection Ã  la base de donnee
 #        conn = sqlite.connect(self.db)
         c = self.conn.cursor()
         #conn.text_factory = unicode
@@ -169,7 +169,7 @@ class PassionHttpBrowser(Browser):
 #                                 SELECT id_file, title, id_cat,fileurl,'FIC' AS type, previewpictureurl, description, script_language, version, author, createdate, date(date, 'unixepoch')  
     
                      
-        #pour chaque colonne fetchee par la requête on alimente une liste, l'ensemble des  
+        #pour chaque colonne fetchee par la requÃªte on alimente une liste, l'ensemble des  
         #listes constitue le dictionnaire
         for row in c:   
             item = {}
@@ -320,7 +320,7 @@ class PassionHttpBrowser(Browser):
                 
         #get parent id of current parent
 #        conn = sqlite.connect(self.db)
-#        #Initialisation de la base de donnÃ©e
+#        #Initialisation de la base de donnÃƒÂ©e
         c = self.conn.cursor()
         try:
             c.execute(self.nicequery('''SELECT id_parent 
@@ -403,12 +403,12 @@ class PassionHttpBrowser(Browser):
         Returns the information about a specific item (dictionnary)
         Returns a dictionnary with the structure:
         {name, description, icon, downloads, file, created, screenshot}
-        Chaque index du dictionnaire renvoie à une liste d'occurences.
+        Chaque index du dictionnaire renvoie Ã  une liste d'occurences.
         Alimenter cette fonction avec l'id du fichier dont on veut obtenir les infos.
         """
         itemId = self.curList[index]['id']
     
-        #Connection à la base de donnee
+        #Connection Ã  la base de donnee
 #        conn = sqlite.connect(self.db)
         c = self.conn.cursor()  
         
@@ -443,8 +443,8 @@ class PassionHttpBrowser(Browser):
         except Exception, e:
             print e
                      
-        #ici une seule ligne est retournee par la requête
-        #pour chaque colonne fetchee par la requête on alimente un index du dictionnaire
+        #ici une seule ligne est retournee par la requÃªte
+        #pour chaque colonne fetchee par la requÃªte on alimente un index du dictionnaire
         dico = {}
         for row in c:
             print row
