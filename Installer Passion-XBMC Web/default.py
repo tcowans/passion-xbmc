@@ -19,7 +19,7 @@ __version__      = "pre-2.0"
 __statut__       = "DevHD; Beta 1" #(dev,svn,release,etc)
 
 if DEV_TEST:
-    __script__  += " Web"
+    __script__  += " Web" 
     __svn_url__  = "http://passion-xbmc.googlecode.com/svn/branches/scripts/Installer%20Passion-XBMC%20Web/"
 
 # don't edit __date__ and __svn_revision__

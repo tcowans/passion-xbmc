@@ -10,7 +10,7 @@ from PIL import Image, ImageEnhance
 
 
 #set temp file path
-TEMP_FILE = "temp.jpg"#os.path.join( sys.modules[ "__main__" ].SPECIAL_TEMP_DIR, "temp.jpg" )
+TEMP_FILE = os.path.join( sys.modules[ "__main__" ].SPECIAL_TEMP_DIR, "temp.jpg" )
 
 
 def _samefile( src, dst ):
