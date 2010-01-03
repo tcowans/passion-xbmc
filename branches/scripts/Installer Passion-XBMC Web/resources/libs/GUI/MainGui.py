@@ -561,7 +561,7 @@ class MainWindow( xbmcgui.WindowXML ):
         """
         # Default message: error
         title = _( 144 )
-        msg1  = _( 136 )%(unicode(itemName,'cp1252'))
+        msg1  = _( 144 )
         msg2  = ""
 
         try:

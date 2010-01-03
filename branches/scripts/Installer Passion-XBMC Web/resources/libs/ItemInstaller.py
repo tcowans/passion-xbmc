@@ -57,7 +57,7 @@ class ItemInstaller:
     def downloadItem( self, msgFunc=None,progressBar=None ):
         """
         Download an item form the server
-        Returns the status of the download attemos : OK | ERROR
+        Returns the status of the download attempt : OK | ERROR
         """
         pass
 
