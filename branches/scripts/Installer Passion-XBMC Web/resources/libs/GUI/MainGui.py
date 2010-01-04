@@ -612,16 +612,23 @@ class MainWindow( xbmcgui.WindowXML ):
                         #msg1  = _( 142 )%"" + itemName
                         msg2  = _( 143 )
                     else:
-                        installCancelled = True
+                        #installCancelled = True
                         print "bypass: %s install has been cancelled by the user" % itemName
                         title = _( 146 )
                         msg1  = _( 147 )%(unicode(itemName,'cp1252'))
                         msg2  = ""
+                elif status == "ALREADYINUSE":
+                    print "%s currently used by XBMC, install impossible" % itemName
+                    title = _( 117 )
+                    msg1  = _( 117 )
+                    msg2  = _( 119 )
                 else:
                     title = _( 144 )
                     msg1  = _( 136 )%(unicode(itemName,'cp1252'))
                     msg2  = ""
                 del itemInstaller
+                
+                
             else:
                 # No installer available
                 print "No installer available for %s - Install impossible" % itemName
@@ -1089,7 +1096,6 @@ class MainWindow( xbmcgui.WindowXML ):
             else:
                 self.rightstest = False
 
-    #def processOldDownload( self, localAbsDirPath ):
     def processOldDownload( self, itemInstaller ):
         """
         Traite les ancien download suivant les desirs de l'utilisateur

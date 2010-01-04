@@ -31,23 +31,37 @@ class GDDFTP( ftplib.FTP ):
         self.user     = user
         self.password = password
 
-    def Reconnect( self ):
+    def reconnect( self ):
         """
         Permet la ( re )connexion au serveur
         """
         self.connect( self.adresse, self.port ) # Recherche FTP
         self.login( self.user, self.password )  # Connexion
 
-    def Command( self, command, *args ):
+    def command( self, command, *args ):
         """
         Execute la requete command avec la liste de parametres donnes par *args en se reconnectant si necessaire au serveur
         """
         try: return command( *args )
         except:
-            self.Reconnect()
+            self.reconnect()
             #print_exc()
             return command( *args )
 
+    def quit(self):
+        """
+        Ferme la connexion FTP
+        """
+        #on se deconnecte du serveur pour etre plus propre
+        try:
+            self.quit()
+        except:
+            print "Exception durant la fermeture de la connection FTP"
+            print_exc()
+        else:
+            # la fermeture a reussi avec succes
+            print "Connection avec le serveur FTP fermee"
+    
 
 class FtpDownloadCtrl:
     """
@@ -87,7 +101,10 @@ class FtpDownloadCtrl:
         #Connection au serveur FTP
         try:
             #self.ftp = ftplib.FTP( self.host, self.user, self.password ) # on se connecte
-            self.ftp = GDDFTP( self.host, self.port, self.user, self.password ) # on se connecte
+            self.ftp = GDDFTP( self.host, self.port, self.user, self.password ) 
+            
+            # on se connecte
+            self.ftp.reconnect()
 
             # DEBUG: Seulement pour le dev
             #self.ftp.set_debuglevel( 2 )
@@ -105,7 +122,7 @@ class FtpDownloadCtrl:
         """
         #on se deconnecte du serveur pour etre plus propre
         try:
-            self.ftp.quit
+            self.ftp.quit()
         except:
             print "Exception durant la fermeture de la connection FTP"
             print_exc()
@@ -122,7 +139,7 @@ class FtpDownloadCtrl:
         # Recuperation de la liste
         try:
             #curDirList = self.ftp.nlst( remotedir )
-            curDirList = self.ftp.Command( self.ftp.nlst, remotedir )
+            curDirList = self.ftp.command( self.ftp.nlst, remotedir )
         except:
             print "Exception durant la recuperation de la liste des fichiers du repertoire: %s" % remotedir
             print_exc()
@@ -139,7 +156,7 @@ class FtpDownloadCtrl:
         # Verifie se on telecharge un repertoire ou d'un fichier
         try:
             #self.ftp.cwd( pathsrc ) # c'est cette commande qui genere l'exception dans le cas d'un fichier
-            self.ftp.Command( self.ftp.cwd, pathsrc ) # c'est cette commande qui genere l'exception dans le cas d'un fichier
+            self.ftp.command( self.ftp.cwd, pathsrc ) # c'est cette commande qui genere l'exception dans le cas d'un fichier
             # Pas d'excpetion => il s'agit d'un dossier
             print "isDir: %s EST un DOSSIER" % pathsrc
         except:
@@ -207,6 +224,9 @@ class FtpDownloadCtrl:
 
         # Appel de la fonction privee en charge du download - on passe en parametre l'index correspondant au type
         status = self._download( pathsrc, isSingleFile, progressbar_cb, dialogProgressWin, 0, 1 )
+
+        #TODO: disconenct form server once big downlaod is done
+        #self.closeConnection()
         return  status # retour du status du download recupere
 
 
@@ -222,7 +242,7 @@ class FtpDownloadCtrl:
         #result = 1 # 1 pour telechargement OK
         # Liste le repertoire
         #curDirList = self.ftp.nlst( pathsrc ) #TODO: ajouter try/except
-        curDirList = self.ftp.Command( self.ftp.nlst, pathsrc ) #TODO: ajouter try/except
+        curDirList = self.ftp.command( self.ftp.nlst, pathsrc ) #TODO: ajouter try/except
         curDirListSize = len( curDirList ) # Defini le nombre d'elements a telecharger correspondant a 100% - pour le moment on ne gere que ce niveau de granularite pour la progressbar
 
         for i in curDirList:
@@ -298,7 +318,7 @@ class FtpDownloadCtrl:
         emptydir = False
         try:
             #dirContent = self.ftp.nlst( dirsrc )
-            dirContent = self.ftp.Command( self.ftp.nlst, dirsrc )
+            dirContent = self.ftp.command( self.ftp.nlst, dirsrc )
             print "dirContent: %s" % repr( dirContent )
         except Exception, e:
             # Repertoire non vide -> il faut telecharger les elementss de ce repertoire
@@ -339,9 +359,9 @@ class FtpDownloadCtrl:
         # Recuperation de la taille du fichier
         try:
             #self.ftp.sendcmd( 'TYPE I' )
-            self.ftp.Command( self.ftp.sendcmd, 'TYPE I' )
+            self.ftp.command( self.ftp.sendcmd, 'TYPE I' )
             #remoteFileSize = int( self.ftp.size( filesrc ) )
-            remoteFileSize = int( self.ftp.Command( self.ftp.size, filesrc ) )
+            remoteFileSize = int( self.ftp.command( self.ftp.size, filesrc ) )
             if remoteFileSize <= 0:
                 # Dans le cas ou un fichier n'a pas une taille valide ou corrompue
                 remoteFileSize = 1
@@ -384,9 +404,9 @@ class FtpDownloadCtrl:
         """
         abort = False
         #self.ftp.voidcmd( 'TYPE I' )
-        self.ftp.Command( self.ftp.voidcmd, 'TYPE I' )
+        self.ftp.command( self.ftp.voidcmd, 'TYPE I' )
         #conn = self.ftp.transfercmd( cmd, rest )
-        conn = self.ftp.Command( self.ftp.transfercmd, cmd, rest )
+        conn = self.ftp.command( self.ftp.transfercmd, cmd, rest )
         fp = conn.makefile( 'rb' )
         while 1:
             data = fp.read( blocksize )
@@ -402,18 +422,18 @@ class FtpDownloadCtrl:
         fp.close()
         conn.close()
         if abort:
-            self.ftp.Command( self.ftp.abort ) # Afin d'eviter un blockage dans le cas d'un cancel et puis d'un self.ftp.voidresp
+            self.ftp.command( self.ftp.abort ) # Afin d'eviter un blockage dans le cas d'un cancel et puis d'un self.ftp.voidresp
         #return self.ftp.voidresp()
-        return self.ftp.Command( self.ftp.voidresp )
+        return self.ftp.command( self.ftp.voidresp )
 
 #    def downloadImage( self, cmd, callback, blocksize=8192, rest=None ):
 #        """
 #        """
 #        abort = False
 #        #self.ftp.voidcmd( 'TYPE I' )
-#        self.ftp.Command( self.ftp.voidcmd, 'TYPE I' )
+#        self.ftp.command( self.ftp.voidcmd, 'TYPE I' )
 #        #conn = self.ftp.transfercmd( cmd, rest )
-#        conn = self.ftp.Command( self.ftp.transfercmd, 'RETR ' , rest )
+#        conn = self.ftp.command( self.ftp.transfercmd, 'RETR ' , rest )
 #        fp = conn.makefile( 'rb' )
 #        while 1:
 #            data = fp.read( blocksize )
@@ -429,9 +449,9 @@ class FtpDownloadCtrl:
 #        fp.close()
 #        conn.close()
 #        if abort:
-#            self.ftp.Command( self.ftp.abort ) # Afin d'eviter un blockage dans le cas d'un cancel et puis d'un self.ftp.voidresp
+#            self.ftp.command( self.ftp.abort ) # Afin d'eviter un blockage dans le cas d'un cancel et puis d'un self.ftp.voidresp
 #        #return self.ftp.voidresp()
-#        return self.ftp.Command( self.ftp.voidresp )
+#        return self.ftp.command( self.ftp.voidresp )
         pass
     def downloadImage( self, source, dest ):
         """
@@ -449,7 +469,7 @@ class FtpDownloadCtrl:
             localFile = open( dest, "wb" )
             try:
                 #ftp.retrbinary( 'RETR ' + source, localFile.write )
-                self.ftp.Command( self.ftp.retrbinary, 'RETR ' + source, localFile.write )
+                self.ftp.command( self.ftp.retrbinary, 'RETR ' + source, localFile.write )
                 result = True
                 #self.passionFTPCtrl.retrbinary( self, 'RETR ' + filetodlUrl, callback, blocksize=8192, rest=None )
             except:

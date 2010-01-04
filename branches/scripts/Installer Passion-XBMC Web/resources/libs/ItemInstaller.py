@@ -19,6 +19,8 @@ httplib.HTTPConnection.debuglevel = 1
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
 _ = sys.modules[ "__main__" ].__language__
 
+# XBMC modules
+import xbmc
 
 class cancelRequest(Exception):
     def __init__(self, value):
@@ -36,7 +38,7 @@ class ItemInstaller:
     #def __init__( self , itemId, type, filesize ):
     def __init__( self , name, type ):
         #self.itemId          = itemId       # Id of the server item 
-        self.name            = name         # Name of teh item
+        self.name            = name         # Name of the item
         self.type            = type         # XBMC Type of the item
         #self.typeInstallPath = installPath  # Install Path for this type of item
         self.typeInstallPath = Item.get_install_path( type )  # Install Path for this type of item
@@ -53,6 +55,7 @@ class ItemInstaller:
         #self.installNameList = None
         self.installName     = None # Name of the addon used by XBMC: i.e script dir name, plugin dir name, skin dir name, scraper xml file name
         self.destinationPath = None # 
+        self.status          = "INIT" # Status of install :[ INIT | OK | ERROR | DOWNLOADED | EXTRACTED | ALREADYINSTALLED | ALREADYINUSE | CANCELED | INSTALL_DONE ]       
 
     def downloadItem( self, msgFunc=None,progressBar=None ):
         """
@@ -63,7 +66,7 @@ class ItemInstaller:
 
     def isAlreadyInstalled( self ):
         """
-        Check if extracted item is already installed
+        Check if item is already installed
         Needs to be called after extractItem (destinationPath has to be determined first)
         ==> self.destinationPath need to be set (in a subclass) before calling this method
         """
@@ -71,6 +74,7 @@ class ItemInstaller:
         if self.type != Item.TYPE_SCRAPER:
             if os.path.exists( self.destinationPath ):
                 result = True
+                
         else:
             #Scraper
             
@@ -85,6 +89,24 @@ class ItemInstaller:
         #TODO : Scraper already installed case
         return result
 
+    def isInUse( self ):
+        """
+        Check if item is currently in use
+        Needs to be called after extractItem (destinationPath has to be determined first)
+        ==> installName need to be set (in a subclass) before calling this method
+        """
+        result = False
+        if self.type != Item.TYPE_SKIN:
+            # Check if skin is currently the one used by XBMC
+            mySkinInUse = xbmc.getSkinDir()
+            if mySkinInUse in self.installName:
+                # Impossible to replace skin currently in use
+#                dialog = xbmcgui.Dialog()
+#                dialog.ok( _( 117 ), _( 118 ), _( 119 ) )
+                result = True
+        return result
+
+    
     def installItem( self, msgFunc=None,progressBar=None ):
         """
         Install item (download + extract + copy)
@@ -186,7 +208,6 @@ class ArchItemInstaller(ItemInstaller):
         self.downloadArchivePath = None # Path of the archive to extract
         #self.destinationPath     = None # Path of the installation directory (i.e script dir path, plugin dir path, skin dir path, scraper xml file path)
         self.extractedDirPath    = None # Path of the extracted item
-        self.status              = "INIT" # Status of install :[INIT | OK | ERROR | ALREADYINSTALLED |CANCELED]       
 
     def extractItem( self, msgFunc=None,progressBar=None ):
         """
@@ -354,39 +375,49 @@ class ArchItemInstaller(ItemInstaller):
         
         
         print "installItem: Download via itemInstaller"
-        if self.status == "INIT":
+        if ( self.status == "INIT" ) or ( self.status == "ERROR" ):
             #TODO: support message callback in addition of pb callback
             #statusDownload = self.downloadItem( msgFunc=msgFunc, progressBar=progressBar )
-            statusDownload, downloadArchivePath = self.downloadItem( progressBar=progressBar )
+            statusDownload, self.downloadArchivePath = self.downloadItem( progressBar=progressBar )
             print "installItem: statusDownload and downloadArchivePath"
             print statusDownload
-            print downloadArchivePath
+            print self.downloadArchivePath
             print 
             if statusDownload == "OK":
                 if self.extractItem( msgFunc=msgFunc, progressBar=progressBar ) == "OK":
                     if not self.isAlreadyInstalled():
-                        print "installItem - Item is not yet installed - installing"
-                        # TODO: in case of skin check skin is not the one currently used
-                        if self.copyItem( msgFunc=msgFunc, progressBar=progressBar ) == False:
-                            result = "ERROR"
-                            print "installItem - Error during copy"
+                        if not self.isInUse():
+                            print "installItem - Item is not yet installed - installing"
+                            # TODO: in case of skin check skin is not the one currently used
+                            if self.copyItem( msgFunc=msgFunc, progressBar=progressBar ) == False:
+                                result = "ERROR"
+                                #self.status = "DOWNLOADED"
+                                self.status = "ERROR"
+                                print "installItem - Error during copy"
+                            else:
+                                self.status = "INSTALL_DONE"
                         else:
-                            self.status = "INSTALL_DONE"
+                            print "installItem - Item is already currently used by XBMC - stopping install"
+                            result = "ALREADYINUSE"
+                            self.status = "EXTRACTED"
                     else:
                         print "installItem - Item is already installed - stopping install"
                         result = "ALREADYINSTALLED"
                         self.status = "EXTRACTED"
             elif statusDownload == "CANCELED":
-                result = "CANCELED"
+                result      = "CANCELED"
+                self.status = "CANCELED"
                 print "installItem - Install cancelled by the user"
             else:
-                result = "ERROR"
+                result      = "ERROR"
+                self.status = "ERROR"
                 print "installItem - Error during download"
         elif self.status == "EXTRACTED":
             print "installItem - continue install"
             # TODO: in case of skin check skin is not the one currently used
             if self.copyItem( msgFunc=msgFunc, progressBar=progressBar ) == False:
-                result = "ERROR"
+                result      = "ERROR"
+                self.status = "ERROR"
                 print "installItem - Error during copy"
             else:
                 self.status = "INSTALL_DONE"
@@ -410,7 +441,122 @@ class DirItemInstaller(ItemInstaller):
         self.displayProgBar      = True 
         self.downloadArchivePath = None # Path of the archive to extract
         self.destinationPath     = None # Path of the destination directory
-        self.extractedDirPath    = None # Path of the extracted item
+        self.downloadDirPath     = None # Path of the extracted item
         self.status              = "INIT" # Status of install :[INIT | OK | ERROR | ALREADYINSTALLED |CANCELED]       
 
+    def copyItem( self, msgFunc=None,progressBar=None ):
+        """
+        Install item from extracted archive
+        Needs to be called after extractItem
+        """
+        #TODO: update a progress bar during copy
+        import extractor
+        OK = False
+        # get install path
+        process_error = False
+        percent = 0
+        if progressBar != None:
+            progressBar.update( percent, "Copy:", ( self.downloadDirPath ) )
+        if ( ( self.downloadDirPath != None ) and ( self.destinationPath != None ) ):
+            if self.type == Item.TYPE_SCRAPER:
+                # cas des Scrapers
+                # ----------------
+                print "ItemInstaller::installItem - Starting item copy" 
+                try:
+                    #if ( OK == bool( self.downloadDirPath ) ) and os.path.exists( self.downloadDirPath ):
+                    if os.path.exists( self.downloadDirPath ):
+                        extractor.copy_inside_dir( self.downloadDirPath, self.destinationPath )
+                        OK = True
+                    else:
+                        print "ItemInstaller::installItem - self.downloadDirPath does not exist"
+                except Exception, e:        
+                    print "ItemInstaller::installItem - Exception during copy of the directory %s"%self.downloadDirPath
+                    print_exc()
+                    process_error = True
+                print "Install Scraper completed"
+            else:
+                # Cas des scripts et plugins
+                # --------------------------
+                # Recuperons le nom du repertorie a l'interieur de l'archive:
+                print "ItemInstaller::installItem - Starting item copy"
+                try:
+                    #if ( OK == bool( self.downloadDirPath ) ) and os.path.exists( self.downloadDirPath ):
+                    if os.path.exists( self.downloadDirPath ):
+                        extractor.copy_dir( self.downloadDirPath, self.destinationPath )
+                        OK = True
+                    else:
+                        print "ItemInstaller::installItem - self.downloadDirPath does not exist"
+                except Exception, e:        
+                    print "ItemInstaller::installItem - Exception during copy of the directory %s"%self.downloadDirPath
+                    print_exc()
+                    process_error = True
+                print "Install item completed"
+
+        del extractor
+        percent = 100
+        if progressBar != None:
+            progressBar.update( percent, "Copy:", ( self.downloadDirPath ) )
+        return OK
+
+    def installItem( self, msgFunc=None,progressBar=None ):
+        """
+        Install item (download + extract + copy)
+        Needs to be called after extractItem
+        """
+        print "installItem: Download and install case"
+        percent = 0
+        result  = "OK" # result after install :[ OK | ERROR | ALREADYINSTALLED |CANCELED]
+        print self.destinationPath
+        print "installItem: Download via itemInstaller"
+        if ( self.status == "INIT" ) or ( self.status == "ERROR" ):
+            #TODO: support message callback in addition of pb callback
+            statusDownload, self.downloadDirPath = self.downloadItem( progressBar=progressBar )
+            print "installItem: statusDownload and downloadDirPath"
+            print statusDownload
+            print self.downloadDirPath
+            print 
+            self.installName = os.path.basename( self.downloadDirPath )
+            self.destinationPath = os.path.join( self.typeInstallPath, self.installName )
+            if statusDownload == "OK":
+                #TODO: check is dir exist
+                #if self.extractItem( msgFunc=msgFunc, progressBar=progressBar ) == "OK":
+                if os.path.exists( self.downloadDirPath ):
+                    if not self.isAlreadyInstalled():
+                        if not self.isInUse():
+                            print "installItem - Item is not yet installed - installing"
+                            # TODO: in case of skin check skin is not the one currently used
+                            if self.copyItem( msgFunc=msgFunc, progressBar=progressBar ) == False:
+                                result = "ERROR"
+                                print "installItem - Error during copy"
+                            else:
+                                self.status = "INSTALL_DONE"
+                        else:
+                            print "installItem - Item is already currently used by XBMC - stopping install"
+                            result = "ALREADYINUSE"
+                            self.status = "EXTRACTED"
+                    else:
+                        print "installItem - Item is already installed - stopping install"
+                        result = "ALREADYINSTALLED"
+                        self.status = "DOWNLOADED"
+            elif statusDownload == "CANCELED":
+                result      = "CANCELED"
+                self.status = "CANCELED"
+                print "installItem - Install cancelled by the user"
+            else:
+                result      = "ERROR"
+                self.status = "ERROR"
+                print "installItem - Error during download"
+        elif self.status == "DOWNLOADED":
+            print "installItem - continue install"
+            # TODO: in case of skin check skin is not the one currently used
+            if self.copyItem( msgFunc=msgFunc, progressBar=progressBar ) == False:
+                result      = "ERROR"
+                self.status = "ERROR"
+                print "installItem - Error during copy"
+            else:
+                self.status = "INSTALL_DONE"
+            
+
+        return result, self.destinationPath
              
+

@@ -176,7 +176,11 @@ class PassionHttpBrowser(Browser):
             item['id']                = row[0]
             item['name']              = row[1].encode("cp1252").decode('string_escape')
             item['parent']            = row[2]
-            item['fileexternurl']     = row[3].decode('string_escape')
+            # Temporary and dirty patch against playlist used recently on the website and for whaterver reason added in the DB for this field
+            if "[smg type=" in row[3].decode('string_escape'):
+                item['fileexternurl']     = row[3].decode('string_escape')
+            else:
+                item['fileexternurl']     = "None"
             item['type']              = row[4].decode('string_escape')
             item['previewpictureurl'] = row[5].decode('string_escape')
             #item['description']       = row[6].encode("cp1252") #unescape( strip_off( row[6].encode("utf8") ) )

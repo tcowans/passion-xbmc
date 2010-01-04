@@ -18,6 +18,7 @@ from utilities import *
 from pil_util import makeThumbnails
 from Browser import Browser, ImageQueueElement
 
+import XbmcZoneItemInstaller
 
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
 _ = sys.modules[ "__main__" ].__language__
@@ -571,27 +572,29 @@ class XbmcZoneBrowser(Browser):
         try:            
             if ( ( len(self.curList)> 0 ) and ( self.curList[index]['type'] == 'FIC' ) ):
                 # Convert index to id
-                itemId      = self.curList[index]['id']
-                catId       = self.curList[index]['parent']
-                externalURL = self.curList[index]['fileexternurl'].encode('utf8')
+#                itemId      = self.curList[index]['id']
+#                catId       = self.curList[index]['parent']
+#                externalURL = self.curList[index]['fileexternurl'].encode('utf8')
+                name        = self.curList[index]['name']
+                xbmc_type   = self.curList[index]['xbmc_type']
+                downloadurl = self.curList[index]['downloadurl'].encode('utf8')
 
-                # Get file size
-                itemInfos = self.getInfo(index)
-                filesize = itemInfos['filesize']
-                
-                print itemInfos
-
-                print "getInstaller - externalURL" 
-                print externalURL
-                print "getInstaller - filesize"
-                print filesize
+#                # Get file size
+#                itemInfos = self.getInfo(index)
+#                filesize = itemInfos['filesize']
+#                
+#                print itemInfos
+#
+#                print "getInstaller - externalURL" 
+#                print externalURL
+#                print "getInstaller - filesize"
+#                print filesize
             
-                #title, type = self.getCategoryInfo( catId )
-                type = self.curList[index]['cattype']
+#                #title, type = self.getCategoryInfo( catId )
+#                type = self.curList[index]['cattype']
                 
                 # Create the right type of Installer Object
-                #itemInstaller = PassionHttpItemInstaller.PassionHTTPInstaller( itemId, type, installPath, filesize, externalURL )
-                itemInstaller = PassionHttpItemInstaller.PassionHTTPInstaller( itemId, type, filesize, externalURL )
+                itemInstaller = XbmcZoneItemInstaller.XbmcZoneItemInstaller( name, xbmc_type, downloadurl )
             else:
                 print "getInstaller: error impossible to install a category, it has to be an item "
 
