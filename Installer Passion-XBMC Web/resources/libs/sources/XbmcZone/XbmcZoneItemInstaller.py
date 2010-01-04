@@ -31,9 +31,10 @@ class XbmcZoneItemInstaller(ArchItemInstaller):
     """
 
     #def __init__( self , itemId, type, installPath, filesize, externalURL=None ):
-    def __init__( self , itemId, type, filesize=None ):
-        ArchItemInstaller.__init__( self, itemId, type, filesize )
-        
+    def __init__( self , name, type, downloadurl ):
+        ArchItemInstaller.__init__( self, name, type )
+        self.downloadurl = downloadurl
+
 #        #get base url for download
 #        self.baseurl = "http://xbmczone.com/download.asp?id="
         
@@ -44,22 +45,19 @@ class XbmcZoneItemInstaller(ArchItemInstaller):
         Download an item form the server
         Returns the status of the download attemos : OK | ERROR
         """
-        # Get ItemId
-        cols = {}
-        cols['$id_item'] = str(self.itemId)
         percent = 0
         totalpercent = 0
         if progressBar != None:
-            progressBar.update( percent, _( 122 ) % ( self.baseurl + str(self.itemId) ), _( 123 ) % totalpercent )
+            progressBar.update( percent, _( 122 ) % ( self.name ), _( 123 ) % totalpercent )
         try:            
-            print "HTTPInstaller::downloadItem - itemId = %d" % self.itemId
+            print "HTTPInstaller::downloadItem - Downloading item %s" % self.name
             
             # Get download link
                                
-            fileURL  = self.baseurl + str(self.itemId)
+            #fileURL  = self.baseurl + str(self.itemId)
             
             # Download file (to cache dir) and get destination directory
-            status, self.downloadArchivePath = self._downloadFile( fileURL, self.CACHEDIR, progressBar=progressBar )
+            status, self.downloadArchivePath = self._downloadFile( self.downloadurl, self.CACHEDIR, progressBar=progressBar )
         
         except Exception, e:
             #print "Exception during downlaodItem"

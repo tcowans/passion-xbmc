@@ -396,21 +396,20 @@ class PassionFtpBrowser(Browser):
         itemInstaller = None
         try:            
             if ( ( len(self.curList)> 0 ) and ( self.curList[index]['type'] == 'FIC' ) ):
+                # Convert index to id
+                name        = self.curList[index]['name']
+                downloadurl = self.curList[index]['downloadurl']
+                type        = self.curList[index]['xbmc_type']
+                print "getInstaller - name" 
+                print name
+                print "getInstaller - downloadurl" 
+                print downloadurl
                 if self.curList[index]['xbmc_type'] == Item.TYPE_SKIN:
-                    # Use installer for Skin (file per file download)
                     print "Installing skin case"
+                    # Use installer for Skin (file per file download)
+                    itemInstaller = PassionFtpItemInstaller.PassionSkinFTPInstaller( name, type, downloadurl, self.passionFTPCtrl )
                     #TODO
                 else:
-                
-                    # Convert index to id
-                    name        = self.curList[index]['name']
-                    downloadurl = self.curList[index]['downloadurl']
-                    type        = self.curList[index]['xbmc_type']
-                    print "getInstaller - name" 
-                    print name
-                    print "getInstaller - downloadurl" 
-                    print downloadurl
-    
                     # Create the right type of Installer Object
                     itemInstaller = PassionFtpItemInstaller.PassionFTPInstaller( name, type, downloadurl, self.passionFTPCtrl )
             else:

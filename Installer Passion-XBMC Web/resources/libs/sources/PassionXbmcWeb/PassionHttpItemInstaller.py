@@ -121,7 +121,7 @@ class PassionHTTPInstaller(ArchItemInstaller):
     def _downloadFile(self, url, destinationDir, progressBar=None):
         """
         Download a file at a specific URL and send event to registerd UI if requested
-        Returns the status of the download attemos : OK | ERROR
+        Returns the status of the download attempt : OK | ERROR
         """
         print("_downloadFile with url = " + url)
         print("_downloadFile with destination directory = " + destinationDir)

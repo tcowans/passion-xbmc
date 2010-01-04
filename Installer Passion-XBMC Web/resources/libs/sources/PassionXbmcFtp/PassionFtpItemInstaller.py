@@ -15,7 +15,7 @@ import xbmc
 #import extractor
 from utilities import *
 try:
-    from ItemInstaller import ArchItemInstaller, cancelRequest
+    from ItemInstaller import ArchItemInstaller, DirItemInstaller, cancelRequest
 except:
     print_exc()
 
@@ -38,7 +38,8 @@ class PassionFTPInstaller(ArchItemInstaller):
     def downloadItem( self, msgFunc=None,progressBar=None ):
         """
         Download an item form the server
-        Returns the status of the download attemos : OK | ERROR
+        Returns - the status of the download attempt : OK | ERROR 
+                - the path of the archive downloaded
         """
         percent      = 0
         totalpercent = 0
@@ -52,15 +53,15 @@ class PassionFTPInstaller(ArchItemInstaller):
             downloadStatus = self.ftpCtrl.download( self.downloadurl, self.type, progressbar_cb=self._pbhook, dialogProgressWin = progressBar )
             
             #TODO: this is a temp solution,downloadArchivePath should be returned by PassionFtpManager
-            self.downloadArchivePath = xbmc.translatePath( os.path.join( self.CACHEDIR, os.path.basename(self.downloadurl) ) )
+            downloadArchivePath = xbmc.translatePath( os.path.join( self.CACHEDIR, os.path.basename(self.downloadurl) ) )
         except Exception, e:
             print "Exception during downlaodItem"
             print_exc()
-            self.downloadArchivePath = None
+            downloadArchivePath = None
             status = "ERROR"
         if progressBar != None:
             progressBar.update( percent, _( 122 ) % ( self.downloadurl ), _( 134 ) )
-        return status, self.downloadArchivePath
+        return status, downloadArchivePath
         #return status
 
 
@@ -314,3 +315,51 @@ class PassionFTPInstaller(ArchItemInstaller):
 #        except:
 #            print_exc()
 
+
+class PassionSkinFTPInstaller(DirItemInstaller):
+    """
+    Download a skin item on Passion XBMC FTP server and install it
+    """
+
+    def __init__( self , name, type, downloadurl, ftpCtrl ):
+        DirItemInstaller.__init__( self, name, type )
+        self.downloadurl = downloadurl
+        self.ftpCtrl     = ftpCtrl # FtpDownloadCtrl instance
+
+    def downloadItem( self, msgFunc=None,progressBar=None ):
+        """
+        Download an item form the server
+        Returns the status of the download attemos : OK | ERROR
+        """
+        percent      = 0
+        totalpercent = 0
+        destination  = None
+        status       = "OK" # Status of download :[OK | ERROR | CANCELED]
+        if progressBar != None:
+            progressBar.update( percent, _( 122 ) % ( self.downloadurl ), _( 123 ) % totalpercent )
+        try:            
+            print "PassionFTPInstaller::downloadItem - name = %s" % self.name
+            
+            downloadStatus = self.ftpCtrl.download( self.downloadurl, self.type, progressbar_cb=self._pbhook, dialogProgressWin = progressBar )
+            
+            #TODO: this is a temp solution,downloadDirPath should be returned by PassionFtpManager
+            downloadDirPath = xbmc.translatePath( os.path.join( self.CACHEDIR, os.path.basename(self.downloadurl) ) )
+        except Exception, e:
+            print "Exception during downlaodItem"
+            print_exc()
+            downloadDirPath = None
+            status = "ERROR"
+        if progressBar != None:
+            progressBar.update( percent, _( 122 ) % ( self.downloadurl ), _( 134 ) )
+        return status, downloadDirPath
+
+    def _pbhook(self,numblocks, blocksize, filesize, url=None,dp=None):
+        """
+        Hook function for progress bar
+        Inspired from the example on xbmc.org wiki
+        """
+        if ( ( dp != None ) and ( dp.iscanceled() ) ): 
+            print "_pbhook: DOWNLOAD CANCELLED" # need to get this part working
+            #dp.close() #-> will be calose in calling function
+            #raise IOError
+            raise cancelRequest,"User pressed CANCEL button"
