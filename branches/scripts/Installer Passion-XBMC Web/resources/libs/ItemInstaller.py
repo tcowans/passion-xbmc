@@ -204,7 +204,6 @@ class ArchItemInstaller(ItemInstaller):
         ItemInstaller.__init__( self, name, type )
 
         #TODO: support progress bar display
-        self.displayProgBar      = True 
         self.downloadArchivePath = None # Path of the archive to extract
         #self.destinationPath     = None # Path of the installation directory (i.e script dir path, plugin dir path, skin dir path, scraper xml file path)
         self.extractedDirPath    = None # Path of the extracted item
@@ -438,7 +437,6 @@ class DirItemInstaller(ItemInstaller):
         ItemInstaller.__init__( self, name, type )
 
         #TODO: support progress bar display
-        self.displayProgBar      = True 
         self.downloadArchivePath = None # Path of the archive to extract
         self.destinationPath     = None # Path of the destination directory
         self.downloadDirPath     = None # Path of the extracted item

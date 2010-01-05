@@ -587,16 +587,19 @@ class MainWindow( xbmcgui.WindowXML ):
                 if status == "OK":
                     self._save_downloaded_property()
                     title = _( 141 )
-                    msg1  = _( 142 )%(unicode(itemName,'cp1252')) # should we manage only unicode instead of string?
+                    #msg1  = _( 142 )%(unicode(itemName,'cp1252')) # should we manage only unicode instead of string?
+                    msg1  = _( 142 )%itemName # should we manage only unicode instead of string?
                     #msg1  = _( 142 )%"" + itemName
                     msg2  = _( 143 )
                 elif status == "CANCELED":
                     title = _( 146 )
-                    msg1  = _( 147 )%(unicode(itemName,'cp1252'))
+                    #msg1  = _( 147 )%(unicode(itemName,'cp1252'))
+                    msg1  = _( 147 )%itemName
                     msg2  = ""
                 elif status == "ALREADYINSTALLED":
                     title = _( 144 )
-                    msg1  = _( 149 )%(unicode(itemName,'cp1252'))
+                    #msg1  = _( 149 )%(unicode(itemName,'cp1252'))
+                    msg1  = _( 149 )%itemName
                     msg2  = ""
                     #if self.processOldDownload( destination ):
                     if self.processOldDownload( itemInstaller ):

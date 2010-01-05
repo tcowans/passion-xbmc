@@ -46,7 +46,7 @@ class XbmcZoneBrowser(Browser):
 #        self.baseURLPreviewPicture = CONF.getBaseURLPreviewPicture()
 #        del CONF
         #self.racineDisplayList  = [ Item.TYPE_SCRIPT, Item.TYPE_PLUGIN ]
-        self.racineDisplayList  = [ Item.TYPE_SCRIPT_CAT, Item.TYPE_PLUGIN ]
+        self.racineDisplayList  = [ Item.TYPE_NEW, Item.TYPE_SCRIPT_CAT, Item.TYPE_PLUGIN ]
 
     def reset( self ):
         """
@@ -131,7 +131,8 @@ class XbmcZoneBrowser(Browser):
         Create and return the list of plugin categories
         Returns list and name of the list
         """
-        categoryURL = {Item.TYPE_PLUGIN     : "http://www.xbmczone.com/installer/addon_categories.asp?type=Plugin",
+        categoryURL = {Item.TYPE_NEW        : "http://www.xbmczone.com/installer/addon_list_edit.asp?category=New",
+                       Item.TYPE_PLUGIN     : "http://www.xbmczone.com/installer/addon_categories.asp?type=Plugin",
                        Item.TYPE_SCRIPT_CAT : "http://www.xbmczone.com/installer/addon_categories.asp?type=Script"}
         list = []
         listTitle = Item.get_type_title( typeList )
@@ -302,7 +303,9 @@ class XbmcZoneBrowser(Browser):
                     elif self.curList[index]['xbmc_type'] == Item.TYPE_SCRIPT_CAT:
                         self.type = Item.TYPE_SCRIPT_CAT
                         self.curCategory, list = self._createCatList( Item.TYPE_SCRIPT_CAT )
-                        
+                    elif self.curList[index]['xbmc_type'] == Item.TYPE_NEW:
+                        self.type = Item.TYPE_NEW
+                        self.curCategory, list = self._createCatList( Item.TYPE_NEW )
                     else:
                         # List of item to download case                  
                         #list = self.incat(itemId) # Get content of the category
@@ -578,23 +581,12 @@ class XbmcZoneBrowser(Browser):
                 name        = self.curList[index]['name']
                 xbmc_type   = self.curList[index]['xbmc_type']
                 downloadurl = self.curList[index]['downloadurl'].encode('utf8')
-
-#                # Get file size
-#                itemInfos = self.getInfo(index)
-#                filesize = itemInfos['filesize']
-#                
-#                print itemInfos
-#
-#                print "getInstaller - externalURL" 
-#                print externalURL
-#                print "getInstaller - filesize"
-#                print filesize
-            
-#                #title, type = self.getCategoryInfo( catId )
-#                type = self.curList[index]['cattype']
+                #downloadurl = self.curList[index]['downloadurl']
+                filename    = self.curList[index]['filename'].encode('utf8')
+                #filename    = self.curList[index]['filename']
                 
                 # Create the right type of Installer Object
-                itemInstaller = XbmcZoneItemInstaller.XbmcZoneItemInstaller( name, xbmc_type, downloadurl )
+                itemInstaller = XbmcZoneItemInstaller.XbmcZoneItemInstaller( name, xbmc_type, filename, downloadurl )
             else:
                 print "getInstaller: error impossible to install a category, it has to be an item "
 
@@ -612,7 +604,6 @@ class XbmcZoneBrowser(Browser):
 
 
 
-    #def _downloadImage( self, picname, listitem=None ):
     def _downloadImage( self, picname ):
         """
         Download picture from the server, save it, create the thumbnail and return path of it

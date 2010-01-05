@@ -528,8 +528,6 @@ class PassionHttpBrowser(Browser):
                 print filesize
 
                 # Create the right type of Installer Object
-                #itemInstaller = PassionHttpItemInstaller.PassionHTTPInstaller( itemId, type, installPath, filesize, externalURL )
-                #itemInstaller = PassionHttpItemInstaller.PassionHTTPInstaller( itemId, type, filesize, externalURL )
                 itemInstaller = PassionHttpItemInstaller.PassionHTTPInstaller( name, itemId, xbmc_type, filesize, externalURL )
             else:
                 print "getInstaller: error impossible to install a category, it has to be an item "

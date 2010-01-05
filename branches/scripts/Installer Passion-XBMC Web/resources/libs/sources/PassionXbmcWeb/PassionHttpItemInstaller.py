@@ -56,7 +56,7 @@ class PassionHTTPInstaller(ArchItemInstaller):
         percent = 0
         totalpercent = 0
         if progressBar != None:
-            progressBar.update( percent, _( 122 ) % ( self.baseurl + str(self.itemId) ), _( 123 ) % totalpercent )
+            progressBar.update( percent, _( 122 ) % ( self.name ), _( 123 ) % totalpercent )
         try:            
             print "HTTPInstaller::downloadItem - itemId = %d" % self.itemId
             
@@ -74,7 +74,7 @@ class PassionHTTPInstaller(ArchItemInstaller):
             print_exc()
             self.downloadArchivePath = None
         if progressBar != None:
-            progressBar.update( percent, _( 122 ) % ( self.baseurl + str(self.itemId) ), _( 134 ) )
+            progressBar.update( percent, _( 122 ) % ( self.name ), _( 134 ) )
         return status, self.downloadArchivePath
         #return status
 
@@ -138,108 +138,108 @@ class PassionHTTPInstaller(ArchItemInstaller):
             num_blocks          = 0
             file_size           = None
             
-            if self.displayProgBar == True:
-                req = urllib2.Request(url) # Note: downloading item with passion XBMC URL (for download count) even when there is an external URL
-                req.add_header('User-Agent','Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.3) Gecko/20070309 Firefox/2.0.0.3')
-                connection  = urllib2.urlopen(req)           # Open connection
-                print '_downloadFile: self.externalURL'
-                print self.externalURL
-                if self.externalURL != 'None':
-                    #TODO: cover length max of file name (otherwise crash xbmc at writing)
-                    file_name = os.path.basename( self.externalURL ).replace(";","").replace("?","")
-                else:
-                    try:
-                        headers = connection.info()# Get Headers
-                        print "_downloadFile: headers:"
-                        print headers
-                        file_name   = headers['Content-Disposition'].split('"')[1]
-                    except Exception, e:
-                        file_name = "unknownfilename.rar"
-                        print("_downloadFile - Exception retrieving header")
-                        print(str(e))
-
-                
-                print "_downloadFile - file name : %s "%file_name
-                destination = xbmc.translatePath( os.path.join( destinationDir, file_name ) )
-                print '_downloadFile: destination'
-                print destination
-                
-                # Check File Size
-                if self.filesize > 0:
-                    file_size = file_size = self.filesize
-                elif self.externalURL != 'None':
-                    # Try to get file size from the external URL header
-                    file_size = self.getFileSize(self.externalURL)
-                else:
-                    file_size = 0
-
-                print "_downloadFile - file size : %d Octet(s)"%file_size
-
-                file = open(destination,'w+b')        # Get ready for writing file
-                print "_downloadFile: File opened"
-                # Ask for display of progress bar
+            req = urllib2.Request(url) # Note: downloading item with passion XBMC URL (for download count) even when there is an external URL
+            req.add_header('User-Agent','Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.3) Gecko/20070309 Firefox/2.0.0.3')
+            connection  = urllib2.urlopen(req)           # Open connection
+            print '_downloadFile: self.externalURL'
+            print self.externalURL
+            if self.externalURL != 'None':
+                #TODO: cover length max of file name (otherwise crash xbmc at writing)
+                file_name = os.path.basename( self.externalURL ).replace(";","").replace("?","")
+            else:
                 try:
+                    headers = connection.info()# Get Headers
+                    print "_downloadFile: headers:"
+                    print headers
+                    file_name   = headers['Content-Disposition'].split('"')[1]
+                except Exception, e:
+                    file_name = "unknownfilename.rar"
+                    print("_downloadFile - Exception retrieving header")
+                    print(str(e))
+
+            
+            print "_downloadFile - file name : %s "%file_name
+            destination = xbmc.translatePath( os.path.join( destinationDir, file_name ) )
+            print '_downloadFile: destination'
+            print destination
+            
+            # Check File Size
+            if self.filesize > 0:
+                file_size = file_size = self.filesize
+            elif self.externalURL != 'None':
+                # Try to get file size from the external URL header
+                file_size = self.getFileSize(self.externalURL)
+            else:
+                file_size = 0
+
+            print "_downloadFile - file size : %d Octet(s)"%file_size
+
+            file = open(destination,'w+b')        # Get ready for writing file
+            print "_downloadFile: File opened"
+            # Ask for display of progress bar
+            try:
+                if (progressBar != None):
+                    progressBar.update(percent_downloaded)
+            except Exception, e:        
+                print("_downloadFile - Exception calling UI callback for download")
+                print(str(e))
+                print progressBar
+                
+            ###########
+            # Download
+            ###########
+            print "_downloadFile: Starting download"
+            while 1:
+                if (progressBar != None):
+                    if progressBar.iscanceled():
+                        print "_downloadFile: Downloaded STOPPED by the user"
+                        status = "CANCELED"
+                        break
+                try:
+                    cur_block  = connection.read(block_size)
+                    if not cur_block:
+                        break
+                    file.write(cur_block)
+                    # Increment for next block
+                    num_blocks = num_blocks + 1
+                except Exception, e:        
+                    print("_downloadFile - Exception during reading of the remote file and writing it locally")
+                    print(str(e))
+                    print ("_downloadFile: error during reading of the remote file and writing it locally: " + str(sys.exc_info()[0]))
+                    print_exc()
+                    #noErrorOK  = False
+                    status = "ERROR"
+                    # End of writing: Closing the connection and the file
+                    #connection.close()
+                    #file.close()
+                    #raise e
+                try:
+                    # Compute percent of download in progress
+                    New_percent_downloaded = min((num_blocks*block_size*100)/file_size, 100)
+                    #print "_downloadFile - Percent = %d"%New_percent_downloaded
+                except Exception, e:        
+                    print("_downloadFile - Exception computing percentage downloaded")
+                    print(str(e))
+                    #noErrorOK  = False
+                    New_percent_downloaded = 0
+                    status = "ERROR"
+                    # End of writing: Closing the connection and the file
+                    #connection.close()
+                    #file.close()
+                    #raise e
+                # We send an update only when percent number increases
+                if (New_percent_downloaded > percent_downloaded):
+                    percent_downloaded = New_percent_downloaded
+                    #print ("_downloadFile - Downloaded %d %%"%percent_downloaded)
+                    # Call UI callback in order to update download progress info
                     if (progressBar != None):
                         progressBar.update(percent_downloaded)
-                except Exception, e:        
-                    print("_downloadFile - Exception calling UI callback for download")
-                    print(str(e))
-                    print progressBar
-                    
-                ###########
-                # Download
-                ###########
-                print "_downloadFile: Starting download"
-                while 1:
-                    if (progressBar != None):
-                        if progressBar.iscanceled():
-                            print "_downloadFile: Downloaded STOPPED by the user"
-                            break
-                    try:
-                        cur_block  = connection.read(block_size)
-                        if not cur_block:
-                            break
-                        file.write(cur_block)
-                        # Increment for next block
-                        num_blocks = num_blocks + 1
-                    except Exception, e:        
-                        print("_downloadFile - Exception during reading of the remote file and writing it locally")
-                        print(str(e))
-                        print ("_downloadFile: error during reading of the remote file and writing it locally: " + str(sys.exc_info()[0]))
-                        print_exc()
-                        #noErrorOK  = False
-                        status = "ERROR"
-                        # End of writing: Closing the connection and the file
-                        #connection.close()
-                        #file.close()
-                        #raise e
-                    try:
-                        # Compute percent of download in progress
-                        New_percent_downloaded = min((num_blocks*block_size*100)/file_size, 100)
-                        #print "_downloadFile - Percent = %d"%New_percent_downloaded
-                    except Exception, e:        
-                        print("_downloadFile - Exception computing percentage downloaded")
-                        print(str(e))
-                        #noErrorOK  = False
-                        New_percent_downloaded = 0
-                        status = "ERROR"
-                        # End of writing: Closing the connection and the file
-                        #connection.close()
-                        #file.close()
-                        #raise e
-                    # We send an update only when percent number increases
-                    if (New_percent_downloaded > percent_downloaded):
-                        percent_downloaded = New_percent_downloaded
-                        #print ("_downloadFile - Downloaded %d %%"%percent_downloaded)
-                        # Call UI callback in order to update download progress info
-                        if (self.displayProgBar == True):
-                            progressBar.update(percent_downloaded)
 
-    
-                # Closing the file
-                file.close()
-                # End of writing: Closing the connection and the file
-                connection.close()
+
+            # Closing the file
+            file.close()
+            # End of writing: Closing the connection and the file
+            connection.close()
         except Exception, e:
             status = "ERROR"
             print("_downloadFile: Exception while source retrieving")
@@ -261,24 +261,3 @@ class PassionHTTPInstaller(ArchItemInstaller):
                 
         return status, destination
         
-    def _pbhook(self,numblocks, blocksize, filesize, url=None,dp=None):
-        """
-        Hook function for progress bar
-        Inspired from the example on xbmc.org wiki
-        """
-#        try:
-#            percent = min((numblocks*blocksize*100)/filesize, 100)
-#            print "_pbhook - percent = %s%%"%percent
-#            dp.update(percent)
-#        except Exception, e:        
-#            print("_pbhook - Exception during percent computing AND update")
-#            print(e)
-#            percent = 100
-#            dp.update(percent)
-        if ( ( dp != None ) and ( dp.iscanceled() ) ): 
-            print "_pbhook: DOWNLOAD CANCELLED" # need to get this part working
-            #dp.close() #-> will be calose in calling function
-            #raise IOError
-            raise cancelRequest,"User pressed CANCEL button"
-
-

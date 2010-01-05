@@ -14,6 +14,10 @@ import xbmcgui
 # Module custom
 import Item
 
+try:
+    from ItemInstaller import cancelRequest
+except:
+    print_exc()
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
 _ = sys.modules[ "__main__" ].__language__
 
@@ -227,6 +231,7 @@ class FtpDownloadCtrl:
 
         #TODO: disconenct form server once big downlaod is done
         #self.closeConnection()
+        print "FtpDownloadCtrl - download - status: %s"%status
         return  status # retour du status du download recupere
 
 
