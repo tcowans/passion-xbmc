@@ -12,6 +12,7 @@ __all__ = [
     "TYPE_PLUGIN_PICTURES",
     "TYPE_PLUGIN_PROGRAMS",
     "TYPE_PLUGIN_VIDEO",
+    "TYPE_NEW",
     "INDEX_SKIN",
     "INDEX_SCRAPER",
     "INDEX_SCRIPT",
@@ -69,6 +70,7 @@ TYPE_PLUGIN_PICTURES    = "PLUGIN_PICTURES"
 TYPE_PLUGIN_PROGRAMS    = "PLUGIN_PROGRAMS"
 TYPE_PLUGIN_VIDEO       = "PLUGIN_VIDEO"
 TYPE_SCRIPT_CAT         = "SCRIPT_CAT"
+TYPE_NEW                = "NEW"
 
 TITLE_ROOT               = _( 10 )
 TITLE_SKIN               = _( 11 )
@@ -90,6 +92,7 @@ INDEX_PLUGIN_PICTURES   = 5
 INDEX_PLUGIN_PROGRAMS   = 6
 INDEX_PLUGIN_VIDEO      = 7
 INDEX_SCRIPT_CAT        = 8
+INDEX_NEW               = 9
 
 THUMB_NOT_AVAILABLE     = "IPX-NotAvailable2.png"
 THUMB_SKIN              = "IPX-defaultSkin.png"
@@ -115,7 +118,8 @@ item_path = { TYPE_SCRAPER         : DIR_SCRAPER,
               TYPE_PLUGIN_PICTURES : DIR_PLUGIN_PICTURES, 
               TYPE_PLUGIN_PROGRAMS : DIR_PLUGIN_PROGRAMS, 
               TYPE_PLUGIN_VIDEO    : DIR_PLUGIN_VIDEO,
-              TYPE_SCRIPT_CAT      : None }
+              TYPE_SCRIPT_CAT      : None,
+              TYPE_NEW             : None }
 
 item_thumb = { TYPE_SCRAPER         : THUMB_SCRAPER, 
                TYPE_SKIN            : THUMB_SKIN, 
@@ -125,7 +129,8 @@ item_thumb = { TYPE_SCRAPER         : THUMB_SCRAPER,
                TYPE_PLUGIN_PICTURES : THUMB_PLUGIN_PICTURES, 
                TYPE_PLUGIN_PROGRAMS : THUMB_PLUGIN_PROGRAMS, 
                TYPE_PLUGIN_VIDEO    : THUMB_PLUGIN_VIDEO,
-               TYPE_SCRIPT_CAT      : THUMB_SCRIPT }
+               TYPE_SCRIPT_CAT      : THUMB_SCRIPT,
+               TYPE_NEW             : THUMB_SCRIPT }
 
 item_title = { TYPE_SCRAPER         : TITLE_SCRAPER, 
                TYPE_SKIN            : TITLE_SKIN, 
@@ -135,7 +140,8 @@ item_title = { TYPE_SCRAPER         : TITLE_SCRAPER,
                TYPE_PLUGIN_PICTURES : TITLE_PLUGIN_PICTURES, 
                TYPE_PLUGIN_PROGRAMS : TITLE_PLUGIN_PROGRAMS, 
                TYPE_PLUGIN_VIDEO    : TITLE_PLUGIN_VIDEO,
-               TYPE_SCRIPT_CAT      : TITLE_SCRIPT }
+               TYPE_SCRIPT_CAT      : TITLE_SCRIPT, 
+               TYPE_NEW             : "NEW"}
 
 item_index = { TYPE_SCRAPER         : INDEX_SCRAPER, 
                TYPE_SKIN            : INDEX_SKIN, 
@@ -145,7 +151,8 @@ item_index = { TYPE_SCRAPER         : INDEX_SCRAPER,
                TYPE_PLUGIN_PICTURES : INDEX_PLUGIN_PICTURES, 
                TYPE_PLUGIN_PROGRAMS : INDEX_PLUGIN_PROGRAMS, 
                TYPE_PLUGIN_VIDEO    : INDEX_PLUGIN_VIDEO,
-               TYPE_SCRIPT_CAT      : INDEX_SCRIPT_CAT }
+               TYPE_SCRIPT_CAT      : INDEX_SCRIPT_CAT,
+               TYPE_NEW             : INDEX_NEW }
 
 def get_install_path( type ):
     """
