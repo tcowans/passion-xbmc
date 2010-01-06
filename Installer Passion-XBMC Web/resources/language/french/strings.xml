@@ -5,7 +5,7 @@
   <string id="1">Forum</string>
   <string id="2">Options</string>
   <string id="3">Aide</string>
-  <string id="4">À propos</string>
+  <string id="4">À Propos</string>
   <string id="5">Gestionnaire</string>
   <string id="6">Gestionnaire des add-ons</string>
   <string id="7">Installer</string>
@@ -237,7 +237,7 @@
   <!--ABOUT STRINGS -->
   <string id="700">Version</string>
   <string id="701">Equipe des créateurs</string>
-  <string id="702">Développeurs</string>
+  <string id="702">Développeur</string>
   <string id="703">Conception Graphique</string>
   <string id="704">Crée sur une idée de %s</string>
   <string id="705">Un grand merci à %s</string>  
@@ -245,8 +245,7 @@
   <string id="707">Date</string>  
   <string id="708">SVN</string>  
   <string id="709">Langues</string>  
-  <string id="710">Ce script permet d'installer directement depuis XBMC les thèmes, scripts, plugins et scrapers disponibles sur le serveur FTP de Passion-XBMC (passion-xbmc.org) maintenu par la Team Passion-XBMC.</string>
-
+  <string id="710">Ce script permet d'installer directement depuis XBMC les thèmes, scripts, plugins et scrapers disponibles sur les serveurs WEB et FTP de passion XBMC (passion-xbmc.org) maintenu par la Team Passion-XBMC et de sources diverses.</string>
   <!--CONTEXT MENU STRINGS -->
   <string id="1000">Installer</string>
   <string id="1001">Information</string>

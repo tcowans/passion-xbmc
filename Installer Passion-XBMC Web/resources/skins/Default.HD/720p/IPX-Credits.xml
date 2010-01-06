@@ -561,11 +561,11 @@ ppic [COLOR=88FFFFFF]- CDT[/COLOR]
 				<scroll>false</scroll>
 				<align>center</align>
 				<aligny>center</aligny>
-				<label>Team XBMC [COLOR=88FFFFFF]- For best media center[/COLOR]
+				<label>DecIRC [COLOR=88FFFFFF]- For FTP Server[/COLOR]
+Team XBMC [COLOR=88FFFFFF]- For best media center[/COLOR]
 Jezz_X [COLOR=88FFFFFF]- For nice skin Confluence ;)[/COLOR]
 Passion-XBMC [COLOR=88FFFFFF]- Members / Visitors ...[/COLOR]
 All Coders [COLOR=88FFFFFF]- Python / XML / PHP ...[/COLOR]
-
 ...</label>
 				<animation type="WindowOpen" reversible="false">
 					<effect type="fade" start="0" end="100" time="0" />
@@ -587,7 +587,7 @@ All Coders [COLOR=88FFFFFF]- Python / XML / PHP ...[/COLOR]
 				<posy>0</posy>
 				<width>640</width>
 				<height>256</height>
-				<texture>special://home/media/icon.png</texture>
+				<texture>special://xbmc/media/icon.png</texture>
 				<aspectratio align="center">keep</aspectratio>
 				<animation  type="WindowOpen" reversible="false">
 					<effect type="rotatey" center="auto" start="0" end="-1440" time="20000" delay="130000" tween="back" easing="out"  />
