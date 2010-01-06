@@ -1,4 +1,8 @@
 ﻿
+# warning: use update_svn_keywords if you want auto update svn:keywords
+# just add or remove space value ( "" or " " )
+update_svn_keywords = ""
+
 # GET AND PRINT ALL STATS OF SCRIPT
 TEST_PERFORMANCE = False
 UNIT_TEST        = False
