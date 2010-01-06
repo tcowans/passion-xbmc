@@ -2,7 +2,6 @@
 # Modules general
 import os
 import sys
-
 from traceback import print_exc
 
 # Modules XBMC
@@ -105,9 +104,17 @@ class Home( xbmcgui.WindowXML ):
                 self._show_main()
             elif controlID == 90141:
                 self._show_settings()
+            elif controlID == 90144:
+                # Caches Cleaner, bugs si le caches cleaner a ete lancer depuis le xbmc.settings !!!
+                import caches_cleaner
+                caches_cleaner.Main()
+                del caches_cleaner
             elif controlID == 90145:
                 # script credits
                 self._show_credits()
+            elif controlID == 90165:
+                # nightly builds
+                self._show_nightly()
             elif controlID == 20:
                 self.action = "exit"
                 self._close_script()
@@ -160,6 +167,15 @@ class Home( xbmcgui.WindowXML ):
             import MainGui
             MainGui.show_main( self.action )
             del MainGui
+        except:
+            print_exc()
+        self.action = None
+
+    def _show_nightly( self ):
+        try:
+            import nightly_builds
+            nightly_builds.show_nightly()
+            del nightly_builds
         except:
             print_exc()
         self.action = None

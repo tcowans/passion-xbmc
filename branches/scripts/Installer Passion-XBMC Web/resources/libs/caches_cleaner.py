@@ -1,6 +1,7 @@
 
 # Modules general
 import os
+#import sys
 from traceback import print_exc
 
 # Modules XBMC
@@ -8,7 +9,8 @@ import xbmc
 import xbmcgui
 
 # Modules custom
-import custom_sys_stdout_stderr as output
+#if not hasattr( sys.stdout, "terminal" ):
+#    import custom_sys_stdout_stderr as output
 
 
 DIALOG_PROGRESS = xbmcgui.DialogProgress()

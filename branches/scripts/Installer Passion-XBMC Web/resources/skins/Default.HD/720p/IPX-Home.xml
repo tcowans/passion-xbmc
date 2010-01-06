@@ -288,8 +288,8 @@
 						<label>5</label>
 						<onclick>-</onclick>
 					</control>
-					<control type="button" id="90142">
-						<description>system filenamager button</description>
+					<control type="button" id="90144">
+						<description>caches cleaner button</description>
 						<height>40</height>
 						<width>241</width>
 						<textoffsetx>20</textoffsetx>
@@ -299,8 +299,7 @@
 						<texturefocus border="5">button-focus.png</texturefocus>
 						<texturenofocus border="5">button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
-						<label>7</label>
-						<onclick>ActivateWindow(FileManager)</onclick>
+						<label>Caches Cleaner</label>
 					</control>
 					<control type="button" id="90143">
 						<description>system output button</description>
@@ -316,8 +315,8 @@
 						<label>Debug Info</label>
 						<onclick>ActivateWindow(ScriptsDebugInfo)</onclick>
 					</control>
-					<control type="button" id="90144">
-						<description>system infos button</description>
+					<control type="button" id="90142">
+						<description>system filenamager button</description>
 						<height>40</height>
 						<width>241</width>
 						<textoffsetx>20</textoffsetx>
@@ -327,8 +326,8 @@
 						<texturefocus border="5">button-focus.png</texturefocus>
 						<texturenofocus border="5">button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
-						<label>130</label>
-						<onclick>ActivateWindow(SystemInfo)</onclick>
+						<label>7</label>
+						<onclick>ActivateWindow(FileManager)</onclick>
 					</control>
 					<control type="button" id="90145">
 						<description>script credits button</description>
@@ -351,7 +350,7 @@
 					<posx>10</posx>
 					<posy>0</posy>
 					<width>240</width>
-					<height>240</height>
+					<height>300</height>
 					<align>center</align>
 					<onleft>9000</onleft>
 					<onright>Control.SetFocus(8000,0)</onright>
@@ -359,6 +358,15 @@
 					<ondown>9016</ondown>
 					<itemgap>0</itemgap>
 					<visible>Container(9000).HasFocus(10)</visible>
+					<control type="label" id="90160">
+						<width>240</width>
+						<height>45</height>
+						<font>font12caps</font>
+						<label>21866</label>
+						<textcolor>DDced8da</textcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+					</control>
 					<control type="button" id="90161">
 						<description>source passion web button</description>
 						<height>40</height>
@@ -414,7 +422,30 @@
 						<pulseonselect>false</pulseonselect>
 						<label>SVN Repo Installer</label>
 						<onclick>ActivateWindow(10001,plugin://programs/SVN Repo Installer/)</onclick>
-						<enable>false</enable>
+						<visible>false</visible>
+					</control>
+					<control type="label" id="91165">
+						<width>240</width>
+						<height>45</height>
+						<font>font12caps</font>
+						<label>XBMC SVN</label>
+						<textcolor>DDced8da</textcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+					</control>
+					<control type="button" id="90165">
+						<description>nightly builds button</description>
+						<height>40</height>
+						<width>241</width>
+						<textoffsetx>20</textoffsetx>
+						<textwidth>215</textwidth>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">button-focus.png</texturefocus>
+						<texturenofocus border="5">button-nofocus.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
+						<label>Nightly Builds</label>
+						<onclick>Control.SetFocus(9014)</onclick>
 					</control>
 					<!--<visible>stringcompare(lookandfeel.skin,Confluence)</visible>
 					<visible>stringcompare(Skin.String(xbmc.currentskin),Confluence)</visible>-->
