@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <strings>
   <!-- Les strings de 30000 à 30999 sont réservées aux paramètres plug-in -->
   <!--GENERAL STRINGS -->
@@ -11,5 +11,13 @@
   <string id="30101">Select a Clearart</string>
   <string id="30102">Select SeasonThumbs</string>
   <string id="30103">Select a TVshow Thumb</string>
-  <string id="30104"></string>
+  <string id="30104">Do you want to download this collection ?</string>
+  <string id="30105">Collection download</string>
+  <string id="30106">Download the collection</string>
+  <string id="30107">Download canceled</string>
+  <string id="30108">Collection downloaded successfully</string>
+  <string id="30109">Error while downloading collection</string>
+  <string id="30110">Error while downloading</string>
+  <string id="30111">Downloading:</string>
+  <string id="30112">From:</string>
 </strings>

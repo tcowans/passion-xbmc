@@ -1,5 +1,5 @@
 ########################################
-#xbmcstuff downloader v1.4.2
+#xbmcstuff downloader v1.5
 #by ppic
 ########################################
 ##changelog:
@@ -28,6 +28,7 @@
 ##16/12/09: v1.4 add accentuation support, now show the current tvthumb on listing
 ##17/12/09: v1.4.1 add clearart and tvshow thumb on tvshow menu.
 ##18/12/09: v1.4.2 add translation to plugin english _ french
+##07/01/10: v1.5 add coloring , previews on different stage, detect bad thumb size, even for season thumbs! adding PIL lib.
             
 ########################################
 
@@ -38,8 +39,8 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/video/XbmcStuff downloader/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "18-12-2009"
-__version__      = "1.4.2"
+__date__         = "07-01-2010"
+__version__      = "1.5"
 __svn_revision__  = "$Revision$"
 __XBMC_Revision__ = "20000" #XBMC Babylon
 
@@ -67,6 +68,7 @@ sys.path.append( os.path.join( BASE_RESOURCE_PATH, "platform_libraries", env ) )
 #import platform's librairies
 from pysqlite2 import dbapi2 as sqlite3
 import elementtree.ElementTree as ET
+from PIL import Image
 from file_item import Thumbnails
 thumbnails = Thumbnails()
 
@@ -106,9 +108,25 @@ Language = xbmc.Language(os.getcwd())
 #print Language.getLocalizedString(30006)
 
 #coloration texte:
+
+
+
+def correct_size(img_path):
+    try:
+        im = Image.open(img_path)
+        print im.size# => (width, height)
+        if im.size == ( 500 , 281 ) or im.size == ( 356 , 200 ): return( True )
+        else: return( False )
+    except:
+        print_exc()
+        return( False )
+
+
+
 def coloring( text , color , colorword ):
     if color == "red": color="FFFF0000"
-    if color == "green": color="ffe2ff43"
+    if color == "green": color="ff00FF00"
+    if color == "yellow": color="ffFFFF00"
     colored_text = text.replace( colorword , "[COLOR=%s]%s[/COLOR]" % ( color , colorword ) )
     return colored_text
 
@@ -140,6 +158,35 @@ def translate_string( strtrans, del_char="" ):
     #    s = unicode( s )#, "utf-8" )
     return s
 
+def get_season_list_img(strPath):
+    try:
+        liste_saison = ""
+        conn_b = sqlite3.connect(db_path)
+        d = conn_b.cursor()
+        d.execute('SELECT DISTINCT episodeview.c12 FROM episodeview , tvshowview WHERE tvshowview.idShow = episodeview.idShow AND tvshowview.strPath = "%s"' % strPath )
+        for season_item in d:
+            print "saison: %s" % season_item[0]
+            try:
+                if int(season_item[0]) == 0 :
+                    thumb = thumbnails.get_cached_season_thumb( "%s%s" % (strPath, xbmc.getLocalizedString(20381)) )
+                elif int(season_item[0]) < 10:
+                    thumb = thumbnails.get_cached_season_thumb( "%s%s%s" % (strPath , xbmc.getLocalizedString(20358).strip("%i"), season_item[0]) )
+                else:
+                    thumb = thumbnails.get_cached_season_thumb( "%s%s%s" % (strPath , xbmc.getLocalizedString(20358).strip("%i"), season_item[0]) )
+                print "correct size: %s" % correct_size(thumb)
+
+                if correct_size(thumb):
+                    liste_saison = "%s %s" % (liste_saison , coloring( "S%s" % season_item[0], "green" , "S%s" % season_item[0] ))
+                else:
+                    liste_saison = "%s %s" % (liste_saison , coloring( "S%s" % season_item[0], "red" , "S%s" % season_item[0] ))
+            except:
+                print_exc()
+        #print "liste saison: %s" % liste_saison
+        return liste_saison
+
+        d.close
+    except: print_exc()
+
 #classe permettant de manipuler chaque serie
 class Tvshow:
     def __init__(self,tvid):
@@ -155,14 +202,13 @@ class Tvshow:
     #récupération de l'id tvdb dans le nfo si un imdb est présent en base.
     def get_nfo_id(self):
         nfo= os.path.join(self.path , "tvshow.nfo")
-        print nfo
+        #print nfo
         nfo_read = file(repr(nfo).strip("u'\""), "r" ).read()
         tvdb_id = re.findall( "<tvdbid>(\d{1,10})</tvdbid>", nfo_read )
         print "thetvdb id: %s" % tvdb_id[0]
         return tvdb_id[0]
 
-
-    
+  
     #télechargement image par image
     def get_image(self,name,url):
         success = False
@@ -227,15 +273,15 @@ class Tvshow:
         for i, (imgname , imgurl) in enumerate(self.collection[name]):
             current_item= float(i+1)
             ratio= int(current_item/total_item*100)
-            dp.update(ratio , "Downloading %s" % imgname , "From %s" % imgurl)
+            dp.update(ratio , "%s %s" % (Language.getLocalizedString(30111),imgname) , "%s %s" % (Language.getLocalizedString(30112),imgurl))
             if dp.iscanceled() :
-                message = "Download canceled"
+                message = Language.getLocalizedString(30107)
                 break                    
             try:
-                if self.get_image( imgname, imgurl ): message = "Collection downloaded successfully"
-                else: message = "Error while downloading collection"
+                if self.get_image( imgname, imgurl ): message = Language.getLocalizedString(30108)
+                else: message = Language.getLocalizedString(30109)
             except:
-                message = "Error while downloading"
+                message = Language.getLocalizedString(30110)
                 print_exc()
         dp.close()
         end_of_directory( False )
@@ -301,7 +347,7 @@ class Tvshow:
                 except:
                     print_exc()
             #ajout d'un élément pour télécharger une collection
-            addDir("Download the collection" ,"%s&&%s" %(type[12:],self.tvid),4,"")
+            addDir(Language.getLocalizedString(30106) ,"%s&&%s" %(type[12:],self.tvid),4,"")
        
     #methode pour récup les info en base, passage en parametre de l'action
     def get_db(self,action):
@@ -321,7 +367,7 @@ class Tvshow:
         if req is not None:
             for raw in c.execute( req ):
                 c.close()
-                print repr( raw[0] ).strip( "u'\"" ) #print "%s" % raw[0]
+                #print repr( raw[0] ).strip( "u'\"" ) #print "%s" % raw[0]
                 return raw[0]
         c.close()
 
@@ -407,13 +453,21 @@ def listing():
     c.execute('select c00,c12,strPath from tvshowview')
     try:
         for import_base in c:
-            try: thumb = thumbnails.get_cached_video_thumb( import_base[2] )
-            except: thumb = ""
+            try:
+                thumb = thumbnails.get_cached_video_thumb( import_base[2] )
+                if not os.path.isfile(thumb):
+                    thumb = os.path.join( icons_path , "thumbs.png" )
+                #print "correct size: %s" % correct_size(thumb)
+                #if not correct size(thumb): import_base[0] = coloring( import_base[0] , "red" , import_base[0] )
+            except: thumb = os.path.join( icons_path , "thumbs.png" )
             tvshow_list[import_base[1]] =  ( import_base[0] , thumb )
-            print repr( import_base[1] ).strip( "u'\"" )
+            #print repr( import_base[1] ).strip( "u'\"" )
 
         for tvshow_id, tvshow_name_img in sorted(tvshow_list.items(), key=lambda item: item[1]):
-            addDir(tvshow_name_img[0],tvshow_id,1,tvshow_name_img[1])
+            #print "tvshow_name_img: %s - %s" % ( tvshow_name_img[0] , tvshow_name_img[1] )
+            if not correct_size(tvshow_name_img[1]): tvshow_name = coloring( tvshow_name_img[0] , "red" , tvshow_name_img[0] )
+            else: tvshow_name = tvshow_name_img[0]
+            addDir(tvshow_name,tvshow_id,1,tvshow_name_img[1])
         c.close()
     except:
         print "no tvdbid found in db"
@@ -497,16 +551,24 @@ elif mode==1:
             folder = clearart_path
             cl_name = translate_string( current_show.name)
         print os.path.join( folder , cl_name )
-        if os.path.isfile(os.path.join( folder , cl_name )): addDir(Language.getLocalizedString(30101),url,2, os.path.join( folder , cl_name ) )
-        else:addDir(Language.getLocalizedString(30101),url,2,os.path.join( icons_path , "clearart.png" ))
+        if os.path.isfile(os.path.join( folder , cl_name )): addDir(coloring(Language.getLocalizedString(30101) , "green" , Language.getLocalizedString(30101) ),url,2, os.path.join( folder , cl_name ) )
+        else:addDir(coloring(Language.getLocalizedString(30101) , "red" , Language.getLocalizedString(30101) ),url,2,os.path.join( icons_path , "clearart.png" ))
 
-    if current_show.season: addDir(Language.getLocalizedString(30102),url,2,os.path.join( icons_path , "seasons.png" ))
+    if current_show.season:
+        try: titre = "%s  %s" % ( Language.getLocalizedString(30102) , get_season_list_img(current_show.path) )
+        except:
+            print_exc()
+            titre = Language.getLocalizedString(30102)
+        addDir(titre,url,2,os.path.join( icons_path , "seasons.png" ))
 
     if current_show.tvshowthumb != "no tvthumb":
         try: thumb = thumbnails.get_cached_video_thumb( current_show.path )
         except: thumb = ""
-        if os.path.isfile(thumb): addDir(Language.getLocalizedString(30103),url,2,os.path.join( icons_path , thumb ))
-        else: addDir(Language.getLocalizedString(30103),url,2,os.path.join( icons_path , "thumbs.png" ))
+        if os.path.isfile(thumb):
+            if correct_size(thumb): addDir(coloring(Language.getLocalizedString(30103) , "green" , Language.getLocalizedString(30103) ),url,2,os.path.join( icons_path , thumb ))
+            else: addDir(coloring(Language.getLocalizedString(30103) , "red" , Language.getLocalizedString(30103) ),url,2,os.path.join( icons_path , thumb ))
+        else: addDir(coloring(Language.getLocalizedString(30103) , "red" , Language.getLocalizedString(30103) ),url,2,os.path.join( icons_path , "thumbs.png" ))
+
     if current_show.collection:
         for i in current_show.collection: addDir("Collection: %s" % (i),url,2,os.path.join( icons_path , "collections.png" ))
     end_of_directory( True )
@@ -516,7 +578,16 @@ elif mode==1:
 elif mode==2:
     current_show = Tvshow(url)
     parser(current_show)
+    #print "string: %s" % Language.getLocalizedString(30102)
+    if translate_string(Language.getLocalizedString(30101)) in translate_string(name):
+        name=Language.getLocalizedString(30101)
+    elif translate_string(Language.getLocalizedString(30102)) in translate_string(name):
+        name=Language.getLocalizedString(30102)
+    elif translate_string(Language.getLocalizedString(30103)) in translate_string(name):
+        name=Language.getLocalizedString(30103)
+    
     current_show.menu_list(name)
+
     end_of_directory( True )
     
 #mode de téléchargement des images
@@ -558,7 +629,7 @@ elif mode==4:
     print "--collection name: %s"%(name)
     
     
-    if xbmcgui.Dialog().yesno( "collection download" , "Do you want to download this collection?" ):
+    if xbmcgui.Dialog().yesno( Language.getLocalizedString(30105) , Language.getLocalizedString(30104) ):
         current_show = Tvshow(id)
         parser(current_show)
         current_show.dl_collection(type,id,name)
