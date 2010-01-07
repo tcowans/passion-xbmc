@@ -22,6 +22,9 @@ class ContextMenu( xbmcgui.WindowXMLDialog ):
 
     def __init__( self, *args, **kwargs ):
         xbmcgui.WindowXMLDialog.__init__( self, *args, **kwargs )
+        xbmc.executebuiltin( "Skin.Reset(AnimeWindowXMLDialogClose)" )
+        xbmc.executebuiltin( "Skin.SetBool(AnimeWindowXMLDialogClose)" )
+
         self.control_enabled_buttons = range( self.CONTROL_CM_BUTTON_START, ( self.CONTROL_CM_BUTTON_END + 1 ) )
         self.buttons = kwargs.get( "buttons", {} )
         self.view_mode = kwargs.get( "view_mode", "0" )
@@ -66,7 +69,7 @@ class ContextMenu( xbmcgui.WindowXMLDialog ):
             except:
                 print_exc()
             xbmcgui.unlock()
-            #self.close()
+            #self.close_dialog()
 
     def onFocus( self, controlID ):
         pass
@@ -78,8 +81,7 @@ class ContextMenu( xbmcgui.WindowXMLDialog ):
                 self.selected = int( self.getControl( 10000 ).getSelectedItem().getProperty( "controlID" ) )
             except:
                 pass
-            xbmc.sleep( 10 )
-            self.close()
+            self.close_dialog()
 
         elif controlID in self.CONTROL_CM_BUTTONS:
             try:
@@ -91,17 +93,20 @@ class ContextMenu( xbmcgui.WindowXMLDialog ):
                             self.selected = 0 #"disabled"
                 except:
                     pass
-                xbmc.sleep( 10 )
-                self.close()
+                self.close_dialog()
             except:
                 pass
 
     def onAction( self, action ):
-        xbmc.sleep( 10 )
         if action in ( 9, 10, 117 ):
             self.selected = 0
-            self.close()
+            self.close_dialog()
 
+    def close_dialog( self ):
+        import time
+        xbmc.executebuiltin( "Skin.Reset(AnimeWindowXMLDialogClose)" )
+        time.sleep( .1 ) # pour les fade plus que .1 pas beau :(
+        self.close()
 
 def show_context_menu( buttons={}, view_mode="0" ):
     dir_path = os.getcwd().rstrip( ";" )

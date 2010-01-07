@@ -224,11 +224,31 @@ class Home( xbmcgui.WindowXML ):
         self.close()
 
 
+def addBackgroundsToSin( current_skin ):
+    # fonction pour Default.HD pour une meilleur prise en change des images par XBMC
+    # ça prend un chemin complet dans l'attribut fallback pour etre afficher plus vite !!!
+    # <imagepath fallback="special://profile/script_data/skin_backgrounds/IPX/pictures.jpg" background="true">
+    # copy all BG in skin if not exists :P
+    import shutil
+    bg_path = os.path.join( os.getcwd(), "resources", "skins", current_skin, "backgrounds" )
+    cache_bg_path = xbmc.translatePath( "special://profile/script_data/skin_backgrounds/IPX/" )
+    if os.path.exists( bg_path ):
+        try:
+            if not os.path.exists( cache_bg_path ):
+                os.makedirs( cache_bg_path )
+            for bg in os.listdir( bg_path ):
+                if not os.path.exists( os.path.join( cache_bg_path, bg ) ):
+                    shutil.copyfile( os.path.join( bg_path, bg ), os.path.join( cache_bg_path, bg ) )
+        except:
+            print_exc()
+
+
 
 def show_home():
     file_xml = "IPX-Home.xml"
     dir_path = os.getcwd().replace( ";", "" )
     current_skin, force_fallback = getUserSkin()
+    addBackgroundsToSin( current_skin )
     #myfont = os.path.join( dir_path, "resources", "skins", current_skin, "fonts", "MyFont.py" )
     #if os.path.exists( myfont ): xbmc.executescript( myfont )
     try:
