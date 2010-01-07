@@ -48,6 +48,9 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
 
     def __init__( self, *args, **kwargs ):
         xbmcgui.WindowXMLDialog.__init__( self, *args, **kwargs )
+        xbmc.executebuiltin( "Skin.Reset(AnimeWindowXMLDialogClose)" )
+        xbmc.executebuiltin( "Skin.SetBool(AnimeWindowXMLDialogClose)" )
+
         self.mainwin = kwargs[ "mainwin" ]
         self._set_skin_colours()
 
@@ -186,6 +189,9 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
         if action in ( 9, 10, 117 ): self._close_dialog()
 
     def _close_dialog( self, OK=False ):
+        import time
+        xbmc.executebuiltin( "Skin.Reset(AnimeWindowXMLDialogClose)" )
+        time.sleep( .4 )
         #xbmc.sleep( 100 )
         self.close()
 

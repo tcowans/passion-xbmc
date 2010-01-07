@@ -132,7 +132,7 @@
 						<posy>0</posy>
 						<width>630</width>
 						<height>256</height>
-						<texture>special://home/scripts/Installer Passion-XBMC Web/default.tbn</texture>
+						<texture>IPX_logo.png</texture>
 						<bordertexture border="5">-</bordertexture>
 						<bordersize>5</bordersize>
 						<aspectratio align="left" aligny="top">keep</aspectratio>
@@ -675,7 +675,7 @@ Installer Passion-XBMC [COLOR=88FFFFFF](French support): http://passion-xbmc.org
 				<posy>64r</posy>
 				<width>1280</width>
 				<height>64</height>
-				<texture>floor.png</texture>
+				<texture>IPX-floor.png</texture>
 				<animation effect="fade" time="300">Visible</animation>
 				<animation effect="fade" time="300">Hidden</animation>
 			</control>
@@ -704,11 +704,11 @@ Installer Passion-XBMC [COLOR=88FFFFFF](French support): http://passion-xbmc.org
 					<height>50</height>
 					<font>-</font>
 					<label>-</label>
-					<texturefocus>OSDPreFO.png</texturefocus>
-					<texturenofocus>OSDPreNF.png</texturenofocus>
+					<texturefocus>IPX-OSDPreFO.png</texturefocus>
+					<texturenofocus>IPX-OSDPreNF.png</texturenofocus>
 					<usealttexture>Skin.HasSetting(IPX_HideVisu)</usealttexture>
-					<alttexturefocus>OSDPreNO.png</alttexturefocus>
-					<alttexturenofocus>OSDPreNF.png</alttexturenofocus>
+					<alttexturefocus>IPX-OSDPreNO.png</alttexturefocus>
+					<alttexturenofocus>IPX-OSDPreNF.png</alttexturenofocus>
 					<onclick>Skin.ToggleSetting(IPX_HideVisu)</onclick>
 					<visible>Player.HasAudio</visible>
 					<animation effect="fade" time="500">Visible</animation>
@@ -720,11 +720,11 @@ Installer Passion-XBMC [COLOR=88FFFFFF](French support): http://passion-xbmc.org
 					<height>50</height>
 					<font>-</font>
 					<label>-</label>
-					<texturefocus>OSDMute.png</texturefocus>
-					<texturenofocus>OSDAudioNF.png</texturenofocus>
+					<texturefocus>IPX-OSDMute.png</texturefocus>
+					<texturenofocus>IPX-OSDAudioNF.png</texturenofocus>
 					<usealttexture>Window.IsVisible(MuteBug)</usealttexture>
-					<alttexturefocus>OSDAudioFO.png</alttexturefocus>
-					<alttexturenofocus>OSDAudioNF.png</alttexturenofocus>
+					<alttexturefocus>IPX-OSDAudioFO.png</alttexturefocus>
+					<alttexturenofocus>IPX-OSDAudioNF.png</alttexturenofocus>
 					<onclick>Mute</onclick>
 					<visible>Player.HasAudio</visible>
 					<animation effect="fade" time="500">Visible</animation>
@@ -734,8 +734,8 @@ Installer Passion-XBMC [COLOR=88FFFFFF](French support): http://passion-xbmc.org
 					<description>Stop credits</description>
 					<width>50</width>
 					<height>50</height>
-					<texturefocus>OSDStopFO.png</texturefocus>
-					<texturenofocus>OSDStopNF.png</texturenofocus>
+					<texturefocus>IPX-OSDStopFO.png</texturefocus>
+					<texturenofocus>IPX-OSDStopNF.png</texturenofocus>
 					<textoffsetx>57</textoffsetx>
 					<textwidth>200</textwidth>
 					<aligny>center</aligny>
@@ -757,14 +757,14 @@ Installer Passion-XBMC [COLOR=88FFFFFF](French support): http://passion-xbmc.org
 				<posy>0</posy>
 				<width>846</width>
 				<height>720</height>
-				<texture>HomeBlade.png</texture>
+				<texture>IPX-HomeBlade.png</texture>
 			</control>
 			<control type="image">
 				<posx>26r</posx>
 				<posy>0</posy>
 				<width>846</width>
 				<height>720</height>
-				<texture flipx="true">HomeBlade.png</texture>
+				<texture flipx="true">IPX-HomeBlade.png</texture>
 			</control>
 		</control>
 
@@ -779,7 +779,7 @@ Installer Passion-XBMC [COLOR=88FFFFFF](French support): http://passion-xbmc.org
 				<posy>0</posy>
 				<width>250</width>
 				<height>35</height>
-				<texture border="0,0,32,0">header.png</texture>
+				<texture border="0,0,32,0">IPX-header.png</texture>
 			</control>
 			<control type="label">
 				<posx>220</posx>
@@ -805,7 +805,7 @@ Installer Passion-XBMC [COLOR=88FFFFFF](French support): http://passion-xbmc.org
 				<posy>0</posy>
 				<width>80</width>
 				<height>35</height>
-				<texture border="0,0,32,0">header.png</texture>
+				<texture border="0,0,32,0">IPX-header.png</texture>
 			</control>
 			<control type="button" id="320">
 				<hitrect x="0" y="0" w="60" h="30" />
@@ -813,8 +813,8 @@ Installer Passion-XBMC [COLOR=88FFFFFF](French support): http://passion-xbmc.org
 				<posy>5</posy>
 				<width>25</width>
 				<height>20</height>
-				<texturenofocus>HomeIcon.png</texturenofocus>
-				<texturefocus>HomeIcon-Focus.png</texturefocus>
+				<texturenofocus>IPX-HomeIcon.png</texturenofocus>
+				<texturefocus>IPX-HomeIcon-Focus.png</texturefocus>
 				<label>-</label>
 				<onclick>-</onclick>
 			</control>
@@ -832,7 +832,7 @@ Installer Passion-XBMC [COLOR=88FFFFFF](French support): http://passion-xbmc.org
 				<posy>0</posy>
 				<width>150</width>
 				<height>35</height>
-				<texture flipx="true" border="32,0,0,0">header.png</texture>
+				<texture flipx="true" border="32,0,0,0">IPX-header.png</texture>
 			</control>
 			<control type="label">
 				<description>time label</description>

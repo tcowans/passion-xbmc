@@ -10,7 +10,7 @@
 			<posy>0</posy>
 			<width>1280</width>
 			<height>720</height>
-			<imagepath background="true">$INFO[Container(9000).ListItem.Icon]</imagepath>
+			<imagepath fallback="special://profile/script_data/skin_backgrounds/IPX/installer.jpg" background="true">$INFO[Container(9000).ListItem.Icon]</imagepath>
 			<timeperimage>8000</timeperimage>
 			<randomize>true</randomize>
 			<fadetime>1000</fadetime>
@@ -42,7 +42,7 @@
 				<posy>0</posy>
 				<width>180</width>
 				<height>35</height>
-				<texture flipx="true" border="32,0,0,0">header.png</texture>
+				<texture flipx="true" border="32,0,0,0">IPX-header.png</texture>
 			</control>
 			<control type="image">
 				<description>Weather image</description>
@@ -93,7 +93,7 @@
 					<posy>0</posy>
 					<width>1</width>
 					<height>720</height>
-					<texture>HomeBladeSub_Part1.png</texture>
+					<texture>IPX-HomeBladeSub_Part1.png</texture>
 					<animation effect="zoom" start="379,0,1,720" end="379,0,249,720" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation>
 				</control>
 				<control type="image">
@@ -101,7 +101,7 @@
 					<posy>0</posy>
 					<width>12</width>
 					<height>720</height>
-					<texture>HomeBladeSub_Part2.png</texture>
+					<texture>IPX-HomeBladeSub_Part2.png</texture>
 					<animation effect="slide" end="248,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation>
 				</control>
 			</control>
@@ -140,8 +140,8 @@
 						<textwidth>215</textwidth>
 						<aligny>center</aligny>
 						<font>font12_title</font>
-						<texturefocus border="5">button-focus.png</texturefocus>
-						<texturenofocus border="5">button-nofocus.png</texturenofocus>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
 						<label>SCRIPT11</label>
 						<onclick>-</onclick>
@@ -154,8 +154,8 @@
 						<textwidth>215</textwidth>
 						<aligny>center</aligny>
 						<font>font12_title</font>
-						<texturefocus border="5">button-focus.png</texturefocus>
-						<texturenofocus border="5">button-nofocus.png</texturenofocus>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
 						<label>SCRIPT12</label>
 						<onclick>-</onclick>
@@ -168,8 +168,8 @@
 						<textwidth>215</textwidth>
 						<aligny>center</aligny>
 						<font>font12_title</font>
-						<texturefocus border="5">button-focus.png</texturefocus>
-						<texturenofocus border="5">button-nofocus.png</texturenofocus>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
 						<label>SCRIPT13</label>
 						<onclick>-</onclick>
@@ -182,8 +182,8 @@
 						<textwidth>215</textwidth>
 						<aligny>center</aligny>
 						<font>font12_title</font>
-						<texturefocus border="5">button-focus.png</texturefocus>
-						<texturenofocus border="5">button-nofocus.png</texturenofocus>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
 						<label>SCRIPT14</label>
 						<onclick>-</onclick>
@@ -196,8 +196,8 @@
 						<textwidth>215</textwidth>
 						<aligny>center</aligny>
 						<font>font12_title</font>
-						<texturefocus border="5">button-focus.png</texturefocus>
-						<texturenofocus border="5">button-nofocus.png</texturenofocus>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
 						<label>23000</label>
 						<onclick>-</onclick>
@@ -211,8 +211,8 @@
 						<textwidth>215</textwidth>
 						<aligny>center</aligny>
 						<font>font12_title</font>
-						<texturefocus border="5">button-focus.png</texturefocus>
-						<texturenofocus border="5">button-nofocus.png</texturenofocus>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
 						<label>SCRIPT18</label>
 						<onclick>-</onclick>
@@ -225,8 +225,8 @@
 						<textwidth>215</textwidth>
 						<aligny>center</aligny>
 						<font>font12_title</font>
-						<texturefocus border="5">button-focus.png</texturefocus>
-						<texturenofocus border="5">button-nofocus.png</texturenofocus>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
 						<label>SCRIPT16</label>
 						<onclick>-</onclick>
@@ -239,8 +239,8 @@
 						<textwidth>215</textwidth>
 						<aligny>center</aligny>
 						<font>font12_title</font>
-						<texturefocus border="5">button-focus.png</texturefocus>
-						<texturenofocus border="5">button-nofocus.png</texturenofocus>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
 						<label>SCRIPT15</label>
 						<onclick>-</onclick>
@@ -253,8 +253,8 @@
 						<textwidth>215</textwidth>
 						<aligny>center</aligny>
 						<font>font12_title</font>
-						<texturefocus border="5">button-focus.png</texturefocus>
-						<texturenofocus border="5">button-nofocus.png</texturenofocus>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
 						<label>SCRIPT17</label>
 						<onclick>-</onclick>
@@ -282,8 +282,8 @@
 						<textwidth>215</textwidth>
 						<aligny>center</aligny>
 						<font>font12_title</font>
-						<texturefocus border="5">button-focus.png</texturefocus>
-						<texturenofocus border="5">button-nofocus.png</texturenofocus>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
 						<label>5</label>
 						<onclick>-</onclick>
@@ -296,8 +296,8 @@
 						<textwidth>215</textwidth>
 						<aligny>center</aligny>
 						<font>font12_title</font>
-						<texturefocus border="5">button-focus.png</texturefocus>
-						<texturenofocus border="5">button-nofocus.png</texturenofocus>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
 						<label>Caches Cleaner</label>
 					</control>
@@ -309,8 +309,8 @@
 						<textwidth>215</textwidth>
 						<aligny>center</aligny>
 						<font>font12_title</font>
-						<texturefocus border="5">button-focus.png</texturefocus>
-						<texturenofocus border="5">button-nofocus.png</texturenofocus>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
 						<label>Debug Info</label>
 						<onclick>ActivateWindow(ScriptsDebugInfo)</onclick>
@@ -323,8 +323,8 @@
 						<textwidth>215</textwidth>
 						<aligny>center</aligny>
 						<font>font12_title</font>
-						<texturefocus border="5">button-focus.png</texturefocus>
-						<texturenofocus border="5">button-nofocus.png</texturenofocus>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
 						<label>7</label>
 						<onclick>ActivateWindow(FileManager)</onclick>
@@ -337,8 +337,8 @@
 						<textwidth>215</textwidth>
 						<aligny>center</aligny>
 						<font>font12_title</font>
-						<texturefocus border="5">button-focus.png</texturefocus>
-						<texturenofocus border="5">button-nofocus.png</texturenofocus>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
 						<label>SCRIPT4</label>
 						<onclick>-</onclick>
@@ -375,8 +375,8 @@
 						<textwidth>215</textwidth>
 						<aligny>center</aligny>
 						<font>font12_title</font>
-						<texturefocus border="5">button-focus.png</texturefocus>
-						<texturenofocus border="5">button-nofocus.png</texturenofocus>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
 						<label>Passion-XBMC Web</label>
 						<onclick>-</onclick>
@@ -389,8 +389,8 @@
 						<textwidth>215</textwidth>
 						<aligny>center</aligny>
 						<font>font12_title</font>
-						<texturefocus border="5">button-focus.png</texturefocus>
-						<texturenofocus border="5">button-nofocus.png</texturenofocus>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
 						<label>Passion-XBMC FTP</label>
 						<onclick>-</onclick>
@@ -403,8 +403,8 @@
 						<textwidth>215</textwidth>
 						<aligny>center</aligny>
 						<font>font12_title</font>
-						<texturefocus border="5">button-focus.png</texturefocus>
-						<texturenofocus border="5">button-nofocus.png</texturenofocus>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
 						<label>XBMC Zone</label>
 						<onclick>-</onclick>
@@ -417,8 +417,8 @@
 						<textwidth>215</textwidth>
 						<aligny>center</aligny>
 						<font>font12_title</font>
-						<texturefocus border="5">button-focus.png</texturefocus>
-						<texturenofocus border="5">button-nofocus.png</texturenofocus>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
 						<label>SVN Repo Installer</label>
 						<onclick>ActivateWindow(10001,plugin://programs/SVN Repo Installer/)</onclick>
@@ -441,8 +441,8 @@
 						<textwidth>215</textwidth>
 						<aligny>center</aligny>
 						<font>font12_title</font>
-						<texturefocus border="5">button-focus.png</texturefocus>
-						<texturenofocus border="5">button-nofocus.png</texturenofocus>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
 						<label>Nightly Builds</label>
 						<onclick>Control.SetFocus(9014)</onclick>
@@ -458,7 +458,7 @@
 				<width>846</width>
 				<height>720</height>
 				<colordiffuse>DAFFFFFF</colordiffuse>
-				<texture>HomeBlade_bottom.png</texture>
+				<texture>IPX-HomeBlade_bottom.png</texture>
 			</control>
 			<control type="fixedlist" id="9000">
 				<description>Main menu buttons</description>
@@ -511,7 +511,7 @@
 						<posy>63</posy>
 						<width>18</width>
 						<height>18</height>
-						<texture>HomeHasSub.png</texture>
+						<texture>IPX-HomeHasSub.png</texture>
 						<visible>Container(9000).HasFocus(2) | Container(9000).HasFocus(5) | Container(9000).HasFocus(10)</visible>
 						<animation effect="fade" start="0" end="100" time="200">Focus</animation>
 						<animation effect="fade" start="100" end="0" time="200">UnFocus</animation>
@@ -524,32 +524,32 @@
 					<item id="4">
 						<label>Forum</label>
 						<onclick>SetProperty(Container_9000_item_id,4)</onclick>
-						<icon>special://skin/backgrounds/pictures.jpg</icon>
-						<thumb>$INFO[Skin.String(Home_Custom_Back_Pictures_Folder)]</thumb>
+						<icon>special://profile/script_data/skin_backgrounds/IPX/pictures.jpg</icon>
+						<thumb>-</thumb>
 					</item>
 					<item id="2">
 						<label>Manager</label>
 						<onclick>SetProperty(Container_9000_item_id,2)</onclick>
-						<icon>special://skin/backgrounds/scripts.jpg</icon>
-						<thumb>$INFO[Skin.String(Home_Custom_Back_Video_Folder)]</thumb>
+						<icon>special://profile/script_data/skin_backgrounds/IPX/scripts.jpg</icon>
+						<thumb>-</thumb>
 					</item>
 					<item id="10">
 						<label>Installer</label>
 						<onclick>SetProperty(Container_9000_item_id,10)</onclick>
-						<icon>background-installer.jpg</icon>
-						<!--<thumb>$INFO[Skin.String(Home_Custom_Back_Movies_Folder)]</thumb>-->
+						<icon>special://profile/script_data/skin_backgrounds/IPX/installer.jpg</icon>
+						<thumb>-</thumb>
 					</item>
 					<item id="5">
 						<label>13000</label>
 						<onclick>SetProperty(Container_9000_item_id,5)</onclick>
-						<icon>special://skin/backgrounds/settings.jpg</icon>
-						<thumb>$INFO[Skin.String(Home_Custom_Back_Settings_Folder)]</thumb>
+						<icon>special://profile/script_data/skin_backgrounds/IPX/settings.jpg</icon>
+						<thumb>-</thumb>
 					</item>
 					<item id="11">
 						<label>Exit</label>
 						<onclick>SetProperty(Container_9000_item_id,11)</onclick>
-						<icon>background-installer2.jpg</icon>
-						<!--<thumb>$INFO[Skin.String(Home_Custom_Back_Settings_Folder)]</thumb>-->
+						<icon>special://profile/script_data/skin_backgrounds/IPX/exit.jpg</icon>
+						<thumb>-</thumb>
 					</item>
 				</content>
 			</control>
@@ -558,7 +558,7 @@
 				<posy>-205</posy>
 				<width>385</width>
 				<height>1130</height>
-				<texture>HomeBlade_middle.png</texture>
+				<texture>IPX-HomeBlade_middle.png</texture>
 				<animation effect="slide" end="0,-204" time="300" condition="Container(9000).Row(1)">conditional</animation>
 				<animation effect="slide" end="0,-102" time="300" condition="Container(9000).Row(2)">conditional</animation>
 				<animation effect="slide" end="0,102" time="300" condition="Container(9000).Row(4)">conditional</animation>
@@ -570,14 +570,15 @@
 				<posy>0</posy>
 				<width>846</width>
 				<height>720</height>
-				<texture>HomeBlade_top.png</texture>
+				<texture>IPX-HomeBlade_top.png</texture>
 			</control>
 			<control type="image">
 				<description>LOGO</description>
 				<posx>10</posx>
 				<posy>10</posy>
-				<width>150</width>
-				<height>50</height>
+				<width>220</width>
+				<height>80</height>
+				<aspectratio>keep</aspectratio>
 				<texture>IPX-logo.png</texture>
 			</control>
 			<control type="image">
@@ -586,14 +587,14 @@
 				<posy>52</posy>
 				<width>150</width>
 				<height>50</height>
-				<texture diffuse="diffuse_mirror.png" flipy="true">IPX-logo.png</texture>
+				<texture diffuse="IPX-diffuse_mirror.png" flipy="true">IPX-logo.png</texture>
 			</control>
 			<control type="image">
 				<posx>0</posx>
 				<posy>100r</posy>
 				<width>256</width>
 				<height>100</height>
-				<texture>HomeButtonsBack.png</texture>
+				<texture>IPX-HomeButtonsBack.png</texture>
 			</control>
 
 			<control type="group" id="10">
@@ -609,8 +610,8 @@
 					<font>-</font>
 					<aligny>-</aligny>
 					<onclick>-</onclick>
-					<texturefocus>home-power-FO.png</texturefocus>
-					<texturenofocus>home-power.png</texturenofocus>
+					<texturefocus>IPX-home-power-FO.png</texturefocus>
+					<texturenofocus>IPX-home-power.png</texturenofocus>
 					<onleft>21</onleft>
 					<onright>9000</onright>
 					<onup>9000</onup>
@@ -631,7 +632,7 @@
 				<posy>0</posy>
 				<width>860</width>
 				<height>35</height>
-				<texture border="32,0,0,0">Rss_Back.png</texture>
+				<texture border="32,0,0,0">IPX-Rss_Back.png</texture>
 			</control>
 			<control type="rss">
 				<description>RSS feed</description>
@@ -651,7 +652,7 @@
 				<posy>0</posy>
 				<width>100</width>
 				<height>35</height>
-				<texture border="32,0,0,0">Rss_Back_Overlay.png</texture>
+				<texture border="32,0,0,0">IPX-Rss_Back_Overlay.png</texture>
 			</control>
 		</control>
 
@@ -667,7 +668,7 @@
 				<posy>0</posy>
 				<width>440</width>
 				<height>35</height>
-				<texture flipx="true" border="32,0,0,0">header.png</texture>
+				<texture flipx="true" border="32,0,0,0">IPX-header.png</texture>
 			</control>
 			<control type="label">
 				<description>time label</description>
@@ -689,39 +690,9 @@
 			<posy>0</posy>
 			<width>846</width>
 			<height>720</height>
-			<texture flipx="true">HomeBlade.png</texture>
+			<texture flipx="true">IPX-HomeBlade.png</texture>
 			<animation effect="slide" end="-35,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
 			<animation effect="slide" start="-35,0" time="300" tween="quadratic" easing="out" condition="!Window.Previous(startup)">WindowOpen</animation>
-		</control>
-
-		<control type="group" id="999">
-			<visible>false</visible>
-			<animation effect="fade" start="100" end="0" time="0">WindowClose</animation>
-			<animation type="WindowOpen" reversible="false">
-				<effect type="fade" time="0"/> 
-				<effect type="fade" start="100" end="0" time="200" delay="3000" /> 
-			</animation>
-			<control type="image">
-				<description>splash black screen</description>
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1280</width>
-				<height>720</height>
-				<texture>IPX-solid.png</texture>
-			</control>
-			<control type="image">
-				<description>splash image</description>
-				<posx>641</posx>
-				<posy>361</posy>
-				<width>10</width>
-				<height>10</height>
-				<texture>IPX-logo.png</texture>
-				<aspectratio>keep</aspectratio>
-				<animation type="WindowOpen" reversible="false">
-					<effect type="rotatey" center="auto" start="-360" end="360" time="2000" />
-					<effect type="zoom" center="auto" start="641,361,10,10" end="0,0,520,416" time="2000" delay="400" />
-				</animation>
-			</control>
 		</control>
 	</controls>
 </window>

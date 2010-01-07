@@ -64,6 +64,8 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
 
     def __init__( self, *args, **kwargs ):
         xbmcgui.WindowXMLDialog.__init__( self, *args, **kwargs )
+        xbmc.executebuiltin( "Skin.Reset(AnimeWindowXMLDialogClose)" )
+        xbmc.executebuiltin( "Skin.SetBool(AnimeWindowXMLDialogClose)" )
         # __init__ normal de python
         # On recupere le "self" de le fenetre principal pour benificier de ces variables.
         self.mainwin = kwargs[ "mainwin" ]
@@ -519,7 +521,11 @@ class ScriptSettings( xbmcgui.WindowXMLDialog ):
             if ( self.custom_background != unicode( xbmc.getInfoLabel( 'Skin.String(passion_custom_background)' ), 'utf-8') ):
                 xbmc.executebuiltin( "Skin.SetString(passion_custom_background,%s)" % ( self.custom_background, ) )
 
-        xbmc.sleep( 100 )
+        import time
+        xbmc.executebuiltin( "Skin.Reset(AnimeWindowXMLDialogClose)" )
+        time.sleep( .1 ) # pour les fade plus que .1 pas beau :(
+
+        #xbmc.sleep( 100 )
         self.close()
         if self.reload_script:
             self.mainwin._close_script()

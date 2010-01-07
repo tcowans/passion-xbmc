@@ -1,7 +1,6 @@
 <window id="3006">
 	<defaultcontrol>10000</defaultcontrol>
 	<animation effect="fade" time="250">WindowOpen</animation>
-	<animation effect="fade" time="250">WindowClose</animation>
 
 	<coordinates>
 		<system>1</system>
@@ -12,6 +11,7 @@
 
 	<controls>
 		<control type="group">
+			<animation effect="fade" time="250" condition="!Skin.HasSetting(AnimeWindowXMLDialogClose)">conditional</animation>
 			<animation effect="slide" start="0,0" end="0,19" condition="stringcompare(Container(10000).NumItems,7)">Conditional</animation>
 			<animation effect="slide" start="0,0" end="0,38" condition="stringcompare(Container(10000).NumItems,6)">Conditional</animation>
 			<animation effect="slide" start="0,0" end="0,57" condition="stringcompare(Container(10000).NumItems,5)">Conditional</animation>
@@ -26,7 +26,7 @@
 				<posy>-74</posy>
 				<width>370</width>
 				<height>74</height>
-				<texture border="45,45,45,0">DialogContextTop.png</texture>
+				<texture border="45,45,45,0">IPX-DialogContextTop.png</texture>
 			</control>
 			<control type="label">
 				<description>header label</description>
@@ -50,8 +50,8 @@
 				<label>-</label>
 				<font>-</font>
 				<onclick>PreviousMenu</onclick>
-				<texturefocus>DialogCloseButton-focus.png</texturefocus>
-				<texturenofocus>DialogCloseButton.png</texturenofocus>
+				<texturefocus>IPX-DialogCloseButton-focus.png</texturefocus>
+				<texturenofocus>IPX-DialogCloseButton.png</texturenofocus>
 				<onleft>1000</onleft>
 				<onright>1000</onright>
 				<onup>1000</onup>
@@ -63,7 +63,7 @@
 				<posy>-6</posy>
 				<width>297</width>
 				<height>4</height>
-				<texture>separator.png</texture>
+				<texture>IPX-separator.png</texture>
 			</control>
 			<control type="image">
 				<description>background image</description>
@@ -71,7 +71,7 @@
 				<posy>0</posy>
 				<width>370</width>
 				<height>300</height>
-				<texture border="45,0,45,0">DialogContextMiddle.png</texture>
+				<texture border="45,0,45,0">IPX-DialogContextMiddle.png</texture>
 				<animation effect="zoom" start="100" end="0,0,370,34" condition="stringcompare(Container(10000).NumItems,1)">Conditional</animation>
 				<animation effect="zoom" start="100" end="0,0,370,72" condition="stringcompare(Container(10000).NumItems,2)">Conditional</animation>
 				<animation effect="zoom" start="100" end="0,0,370,110" condition="stringcompare(Container(10000).NumItems,3)">Conditional</animation>
@@ -86,7 +86,7 @@
 				<posy>300</posy>
 				<width>370</width>
 				<height>50</height>
-				<texture border="45,0,45,49">DialogContextBottom.png</texture>
+				<texture border="45,0,45,49">IPX-DialogContextBottom.png</texture>
 				<animation effect="slide" start="0,0" end="0,-266" condition="stringcompare(Container(10000).NumItems,1)">Conditional</animation>
 				<animation effect="slide" start="0,0" end="0,-228" condition="stringcompare(Container(10000).NumItems,2)">Conditional</animation>
 				<animation effect="slide" start="0,0" end="0,-190" condition="stringcompare(Container(10000).NumItems,3)">Conditional</animation>
@@ -127,7 +127,7 @@
 						<posy>0</posy>
 						<width>297</width>
 						<height>38</height>
-						<texture  border="5">button-focus.png</texture>
+						<texture  border="5">IPX-button-focus.png</texture>
 						<visible>Control.HasFocus(10000)</visible>
 						<animation effect="fade" time="300">Visible</animation>
 						<animation effect="fade" time="300">Hidden</animation>

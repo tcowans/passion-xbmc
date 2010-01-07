@@ -115,6 +115,8 @@ def downloader( heading, url, destination="", onBackground=False ):
 class Nightly( xbmcgui.WindowXMLDialog ):
     def __init__( self, *args, **kwargs ):
         xbmcgui.WindowXMLDialog.__init__( self, *args, **kwargs )
+        xbmc.executebuiltin( "Skin.Reset(AnimeWindowXMLDialogClose)" )
+        xbmc.executebuiltin( "Skin.SetBool(AnimeWindowXMLDialogClose)" )
         self._get_nightly_builds()
 
     def onInit( self ):
@@ -192,8 +194,9 @@ class Nightly( xbmcgui.WindowXMLDialog ):
 
     def onAction( self, action ):
         if action in ( 9, 10, ):
+            xbmc.executebuiltin( "Skin.Reset(AnimeWindowXMLDialogClose)" )
+            time.sleep( .4 )
             self.close()
-            xbmc.sleep( 1000 )
 
 
 

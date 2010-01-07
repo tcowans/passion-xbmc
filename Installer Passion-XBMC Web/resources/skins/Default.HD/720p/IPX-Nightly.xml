@@ -8,20 +8,20 @@
 			<posy>0</posy>
 			<width>190</width>
 			<height>720</height>
-			<texture>black-back.png</texture>
+			<texture>IPX-black-back.png</texture>
 			<animation effect="slide" start="-200,0" end="0,0" time="400" tween="quadratic" easing="out">WindowOpen</animation>
-			<animation effect="slide" start="0,0" end="-200,0" time="400" tween="quadratic" easing="out">WindowClose</animation>
+			<animation effect="slide" start="0,0" end="-200,0" time="400" tween="quadratic" easing="out" condition="!Skin.HasSetting(AnimeWindowXMLDialogClose)">conditional</animation>
 		</control>
 		<control type="group">
 			<animation effect="slide" start="1100,0" end="0,0" time="400" tween="quadratic" easing="out">WindowOpen</animation>
-			<animation effect="slide" start="0,0" end="1100,0" time="400" tween="quadratic" easing="out">WindowClose</animation>
+			<animation effect="slide" start="0,0" end="1100,0" time="400" tween="quadratic" easing="out" condition="!Skin.HasSetting(AnimeWindowXMLDialogClose)">conditional</animation>
 
 			<control type="image">
 				<posx>180</posx>
 				<posy>0</posy>
 				<width>1100</width>
 				<height>720</height>
-				<texture border="15,0,0,0" flipx="true">MediaBladeSub.png</texture>
+				<texture border="15,0,0,0" flipx="true">IPX-MediaBladeSub.png</texture>
 			</control>
 			<control type="button">
 				<description>Close Window button</description>
@@ -32,8 +32,8 @@
 				<label>-</label>
 				<font>-</font>
 				<onclick>PreviousMenu</onclick>
-				<texturefocus>DialogCloseButton-focus.png</texturefocus>
-				<texturenofocus>DialogCloseButton.png</texturenofocus>
+				<texturefocus>IPX-DialogCloseButton-focus.png</texturefocus>
+				<texturenofocus>IPX-DialogCloseButton.png</texturenofocus>
 				<onleft>9000</onleft>
 				<onright>9000</onright>
 				<onup>9000</onup>
@@ -117,14 +117,14 @@
 								<posy>0</posy>
 								<width>515</width>
 								<height>110</height>
-								<texture border="5">button-nofocus.png</texture>
+								<texture border="5">IPX-button-nofocus.png</texture>
 							</control>
 							<control type="image">
 								<posx>10</posx>
 								<posy>5</posy>
 								<width>100</width>
 								<height>100</height>
-								<bordertexture border="5">button-nofocus.png</bordertexture>
+								<bordertexture border="5">IPX-button-nofocus.png</bordertexture>
 								<bordersize>5</bordersize>
 								<texture>$INFO[Listitem.Icon,icones\]</texture>
 								<aspectratio>keep</aspectratio>
@@ -159,7 +159,7 @@
 								<posy>0</posy>
 								<width>515</width>
 								<height>110</height>
-								<texture border="5">button-focus.png</texture>
+								<texture border="5">IPX-button-focus.png</texture>
 								<visible>Control.hasfocus(49)</visible>
 							</control>
 							<control type="image">
@@ -167,7 +167,7 @@
 								<posy>5</posy>
 								<width>100</width>
 								<height>100</height>
-								<bordertexture border="5">button-nofocus.png</bordertexture>
+								<bordertexture border="5">IPX-button-nofocus.png</bordertexture>
 								<bordersize>5</bordersize>
 								<texture>$INFO[Listitem.Icon,icones\]</texture>
 								<aspectratio>keep</aspectratio>
@@ -203,7 +203,7 @@
 						<width>740</width>
 						<height>4</height>
 						<aspectratio>stretch</aspectratio>
-						<texture>separator.png</texture>
+						<texture>IPX-separator.png</texture>
 					</control>
 				</control>
 
@@ -306,8 +306,8 @@
 						<align>center</align>
 						<aligny>center</aligny>
 						<font>font12_title</font>
-						<texturefocus border="5">button-focus.png</texturefocus>
-						<texturenofocus border="5">button-nofocus.png</texturenofocus>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
 						<label>SCRIPT607</label>
 					</control>
@@ -319,8 +319,8 @@
 						<align>center</align>
 						<aligny>center</aligny>
 						<font>font12_title</font>
-						<texturefocus border="5">button-focus.png</texturefocus>
-						<texturenofocus border="5">button-nofocus.png</texturenofocus>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
 						<label>184</label>
 					</control>
@@ -332,8 +332,8 @@
 						<align>center</align>
 						<aligny>center</aligny>
 						<font>font12_title</font>
-						<texturefocus border="5">button-focus.png</texturefocus>
-						<texturenofocus border="5">button-nofocus.png</texturenofocus>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
 						<label>SCRIPT605</label>
 						<onclick>PreviousMenu</onclick>
@@ -346,7 +346,7 @@
 			<posy>0</posy>
 			<width>846</width>
 			<height>720</height>
-			<texture flipx="true">HomeBlade.png</texture>
+			<texture flipx="true">IPX-HomeBlade.png</texture>
 		</control>
 		<control type="group">
 			<posx>160r</posx>
@@ -360,7 +360,7 @@
 				<posy>0</posy>
 				<width>150</width>
 				<height>35</height>
-				<texture flipx="true" border="32,0,0,0">header.png</texture>
+				<texture flipx="true" border="32,0,0,0">IPX-header.png</texture>
 			</control>
 			<control type="label">
 				<description>time label</description>

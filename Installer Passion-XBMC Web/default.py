@@ -79,6 +79,7 @@ from specialpath import *
 # for active print debug in output, set "PRINT_DEBUG = True", but use options in settings window.
 # if you want force print. start print with "bypass: |bypass_debug: |bypass_comment: "
 # NB: the variables bypass not printed, look example at end module custom_sys_stdout_stderr
+default_sys_std = sys.stdout, sys.stderr
 import custom_sys_stdout_stderr as output
 
 
@@ -206,5 +207,4 @@ if __name__ == "__main__":
 
     if not TEST_PERFORMANCE:
         # replace standard stdout and stderr, modified by import custom_sys_stdout_stderr
-        sys.stdout = sys.stdout.terminal
-        sys.stderr = sys.stderr.terminal
+        sys.stdout, sys.stderr = default_sys_std
