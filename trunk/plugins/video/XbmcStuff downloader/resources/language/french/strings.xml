@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <strings>
   <!-- Les strings de 30000 à 30999 sont réservées aux paramètres plug-in -->
   <!--GENERAL STRINGS -->
@@ -11,5 +11,13 @@
   <string id="30101">Voir les Cleararts</string>
   <string id="30102">Voir les Vignettes de Saison</string>
   <string id="30103">Voir les Vignettes de Série</string>
-  <string id="30104"></string>
+  <string id="30104">Voulez-vous télécharger cette Collection ?</string>
+  <string id="30105">Téléchargement de Collection</string>
+  <string id="30106">Télécharger cette Collection</string>
+  <string id="30107">Téléchargement annulé</string>
+  <string id="30108">Collection téléchargée avec succès</string>
+  <string id="30109">erreur durant le téléchargement de la collection</string>
+  <string id="30110">erreur durant le téléchargement</string>
+  <string id="30111">Téléchargement:</string>
+  <string id="30112">Depuis:</string>
 </strings>
