@@ -8,7 +8,7 @@ __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/"
 __credits__      = "Team XBMC passion, http://passion-xbmc.org/developpement-python/%28script%29-sporlive-display/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
 __date__         = "07-01-2011"
-__version__      = "1.0"
+__version__      = "1.1"
 __svn_revision__  = "$Revision$".replace( "Revision", "" ).strip( "$: " )
 __XBMC_Revision__ = "20000" #XBMC Babylon
 __useragent__    = "Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.0.1) Gecko/2008070208 Firefox/3.0.1"
@@ -24,8 +24,10 @@ from traceback import print_exc
 
 BASE_RESOURCE_PATH = os.path.join( os.getcwd(), "resources" )
 sys.path.append( os.path.join( BASE_RESOURCE_PATH, "lib" ) )
-cache_dir = os.path.join ( BASE_RESOURCE_PATH , "cache" )
+cache_dir = os.path.join ( BASE_RESOURCE_PATH , "Cache" )
 tempfile= os.path.join ( cache_dir , "data.html" )
+if not os.path.isdir(cache_dir):
+    os.makedirs(cache_dir)
 
 from convert import set_entity_or_charref
 
