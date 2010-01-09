@@ -40,7 +40,7 @@ __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/video/X
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
 __date__         = "07-01-2010"
-__version__      = "1.5"
+__version__      = "1.5.1"
 __svn_revision__  = "$Revision$"
 __XBMC_Revision__ = "20000" #XBMC Babylon
 
@@ -199,7 +199,7 @@ class Tvshow:
         self.xmldata = ""
         self.collection = ""
 
-    #récupération de l'id tvdb dans le nfo si un imdb est présent en base.
+    #rÃ©cupÃ©ration de l'id tvdb dans le nfo si un imdb est prÃ©sent en base.
     def get_nfo_id(self):
         nfo= os.path.join(self.path , "tvshow.nfo")
         #print nfo
@@ -209,7 +209,7 @@ class Tvshow:
         return tvdb_id[0]
 
   
-    #télechargement image par image
+    #tÃ©lechargement image par image
     def get_image(self,name,url):
         success = False
         try:
@@ -288,7 +288,7 @@ class Tvshow:
         xbmcgui.Dialog().ok( name, message )
 
 
-    #téléchargement du xml
+    #tÃ©lÃ©chargement du xml
     def get_xml(self):
         if not self.tvid.isdigit(): url_id = self.get_nfo_id()
         else: url_id = self.tvid
@@ -296,7 +296,7 @@ class Tvshow:
         open(temp_xml, 'wb').write(str(self.xmldata.strip()))
         print "!!!!!!!! xml download: %s  : %s%s&thetvdb=%s !!!!!!!!" % (url,base_url, options, self.tvid)
         
-    #génération menus images    
+    #gÃ©nÃ©ration menus images    
     def menu_list(self,type):
         if translate_string(type) == translate_string(Language.getLocalizedString(30103)):
             selec = self.tvshowthumb.rsplit("|")
@@ -346,10 +346,10 @@ class Tvshow:
                     addDir("%s" % (imgname),"%s&&%s" %(imgurl,self.tvid),3,imgurl.replace(" ", "%20"))
                 except:
                     print_exc()
-            #ajout d'un élément pour télécharger une collection
+            #ajout d'un Ã©lÃ©ment pour tÃ©lÃ©charger une collection
             addDir(Language.getLocalizedString(30106) ,"%s&&%s" %(type[12:],self.tvid),4,"")
        
-    #methode pour récup les info en base, passage en parametre de l'action
+    #methode pour rÃ©cup les info en base, passage en parametre de l'action
     def get_db(self,action):
         conn = sqlite3.connect(db_path)
         c = conn.cursor()
@@ -388,7 +388,7 @@ def parser(data):
     elems = load_infos(temp_xml)
     collect = {}
 
-    # récup collection --> {'collection_name1': [['tvthumb', 'image_url'], ['season00', 'image_url']], 'collection2_name': [['image_url'], ['season00', 'image_url']]}
+    # rÃ©cup collection --> {'collection_name1': [['tvthumb', 'image_url'], ['season00', 'image_url']], 'collection2_name': [['image_url'], ['season00', 'image_url']]}
     def add_collection(c_name,imgname,imgurl):
         if c_name in collect:
             collect[c_name].append([imgname,imgurl])
@@ -396,7 +396,7 @@ def parser(data):
             collect[c_name] = []
             collect[c_name].append([imgname,imgurl])
     
-    # récup url vignettes tv --> "url1|url2|url3|..."    
+    # rÃ©cup url vignettes tv --> "url1|url2|url3|..."    
     try:
         for elem in elems.find( "tvthumbs" ).findall( "tvthumb" ):
             if elem.attrib.has_key('collection'):
@@ -405,7 +405,7 @@ def parser(data):
     except:
         data.tvshowthumb="no tvthumb"
         
-    # récup url vignettes saison --> {"seasonxx": "url1|url2|url3|...",...}        
+    # rÃ©cup url vignettes saison --> {"seasonxx": "url1|url2|url3|...",...}        
     season = {}
     try:
         for i in range(0,20):
@@ -434,7 +434,7 @@ def parser(data):
     
     data.season = season
     
-    # récup url clearart --> "url1|url2|url3|..." 
+    # rÃ©cup url clearart --> "url1|url2|url3|..." 
     try:
         for elem in elems.find( "cleararts" ).findall( "clearart" ):
             if elem.attrib.has_key('collection'):
@@ -446,7 +446,7 @@ def parser(data):
     #enregistrement des collection dans l'instance
     data.collection=collect
 
-#récupération du nom et de l'id des tvshow dans la base xbmc pour faire une liste
+#rÃ©cupÃ©ration du nom et de l'id des tvshow dans la base xbmc pour faire une liste
 def listing():
     conn = sqlite3.connect(db_path)
     c = conn.cursor()
@@ -473,7 +473,7 @@ def listing():
         print "no tvdbid found in db"
         print_exc()
 
-#génération des entrée de menu
+#gÃ©nÃ©ration des entrÃ©e de menu
 def addDir(name,url,mode,iconimage):
         u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)
         ok=True
@@ -488,7 +488,7 @@ def end_of_directory( OK ):
     xbmcplugin.endOfDirectory( handle=int( sys.argv[ 1 ] ), succeeded=OK )
 
         
-#récupération des paramètres entre chaque menu
+#rÃ©cupÃ©ration des paramÃ¨tres entre chaque menu
 def get_params():
         param=[]
         print "runplugin", sys.argv[ 0 ] + sys.argv[ 2 ]
@@ -538,7 +538,7 @@ if mode==None:
     listing()
     end_of_directory( True )
     
-#Menu série tv
+#Menu sÃ©rie tv
 elif mode==1:
     current_show = Tvshow(url)
     current_show.get_xml()
@@ -566,7 +566,7 @@ elif mode==1:
         except: thumb = ""
         if os.path.isfile(thumb):
             if correct_size(thumb): addDir(coloring(Language.getLocalizedString(30103) , "green" , Language.getLocalizedString(30103) ),url,2,os.path.join( icons_path , thumb ))
-            else: addDir(coloring(Language.getLocalizedString(30103) , "red" , Language.getLocalizedString(30103) ),url,2,os.path.join( icons_path , thumb ))
+            else: addDir(coloring(translate_string(Language.getLocalizedString(30103)) , "red" , translate_string(Language.getLocalizedString(30103)) ),url,2,os.path.join( icons_path , thumb ))
         else: addDir(coloring(Language.getLocalizedString(30103) , "red" , Language.getLocalizedString(30103) ),url,2,os.path.join( icons_path , "thumbs.png" ))
 
     if current_show.collection:
@@ -590,9 +590,9 @@ elif mode==2:
 
     end_of_directory( True )
     
-#mode de téléchargement des images
+#mode de tÃ©lÃ©chargement des images
 elif mode==3:
-    #tri car les saisons arrive avec des parametres différents
+    #tri car les saisons arrive avec des parametres diffÃ©rents
     if name[:6] == "season":
         type = name
         id = url.rsplit("&&")[1]
@@ -619,7 +619,7 @@ elif mode==3:
     from mydialog import MyDialog
     MyDialog( type, url, type=type )
     
-#mode de téléchargement de collection
+#mode de tÃ©lÃ©chargement de collection
 elif mode==4:
     type=name[13:]
     id=url.rsplit("&&")[1]
