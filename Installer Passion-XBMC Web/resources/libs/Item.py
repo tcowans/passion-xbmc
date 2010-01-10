@@ -81,6 +81,7 @@ TITLE_PLUGIN_MUSIC       = _( 15 )
 TITLE_PLUGIN_PICTURES    = _( 16 )
 TITLE_PLUGIN_PROGRAMS    = _( 17 )
 TITLE_PLUGIN_VIDEO       = _( 18 )
+TITLE_NEW                = _( 22 )
 
 #INDEX_ROOT              = None
 INDEX_SKIN              = 0
@@ -103,6 +104,7 @@ THUMB_PLUGIN_MUSIC      = "IPX-defaultPluginMusic.png"
 THUMB_PLUGIN_PICTURES   = "IPX-defaultPluginPicture.png"
 THUMB_PLUGIN_PROGRAMS   = "IPX-defaultPluginProgram.png"
 THUMB_PLUGIN_VIDEO      = "IPX-defaultPluginVideo.png"  
+THUMB_NEW               = THUMB_SCRIPT  
 
 INDEX_SRV_ITEM_FORMAT_DIR      = 0
 INDEX_SRV_ITEM_FORMAT_FILE_ZIP = 1
@@ -130,7 +132,7 @@ item_thumb = { TYPE_SCRAPER         : THUMB_SCRAPER,
                TYPE_PLUGIN_PROGRAMS : THUMB_PLUGIN_PROGRAMS, 
                TYPE_PLUGIN_VIDEO    : THUMB_PLUGIN_VIDEO,
                TYPE_SCRIPT_CAT      : THUMB_SCRIPT,
-               TYPE_NEW             : THUMB_SCRIPT }
+               TYPE_NEW             : THUMB_NEW }
 
 item_title = { TYPE_SCRAPER         : TITLE_SCRAPER, 
                TYPE_SKIN            : TITLE_SKIN, 
@@ -141,7 +143,7 @@ item_title = { TYPE_SCRAPER         : TITLE_SCRAPER,
                TYPE_PLUGIN_PROGRAMS : TITLE_PLUGIN_PROGRAMS, 
                TYPE_PLUGIN_VIDEO    : TITLE_PLUGIN_VIDEO,
                TYPE_SCRIPT_CAT      : TITLE_SCRIPT, 
-               TYPE_NEW             : "NEW"}
+               TYPE_NEW             : TITLE_NEW}
 
 item_index = { TYPE_SCRAPER         : INDEX_SCRAPER, 
                TYPE_SKIN            : INDEX_SKIN, 

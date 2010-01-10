@@ -23,6 +23,7 @@
   <string id="19">要求密码</string>
   <string id="20">请输入您的系统管理员密码</string>
   <string id="21">系统管理员密码</string>
+  <string id="22">Latest Add-ons</string>
 
   <string id="24">页</string>
   <string id="25">项目数</string>
@@ -256,4 +257,21 @@
   <string id="1005"></string>
   <string id="1006"></string>
   <string id="1007"></string> 
+
+  <string id="1026">Misc Options</string>
+
+  <!-- Caches Cleaner -->
+  <string id="32650">Cleaning: %s</string>
+  <string id="32651">%i files and %i folders cleaned</string>
+  <string id="32652">Dir: %s</string>
+  <string id="32653">File: %s</string>
+  <string id="32654">Clear All Caches</string>
+  <string id="32655">Clear All Caches of XBMC</string>
+  <string id="32656">Clear XBMC Cache [COLOR=88FFFFFF][%s][/COLOR]</string>
+  <string id="32657">Clear MS Cache [COLOR=88FFFFFF][E:\CACHE\][/COLOR]</string>
+  <string id="32658">Clear XBox Caches [COLOR=88FFFFFF][X:\, Y:\, Z:\][/COLOR]</string>
+  <string id="32659">Caches Cleaner...</string>
+  <string id="32660">Caches Cleaner</string>
+  <string id="32661">Clear Caches</string>
+  <string id="32662">Clear All Caches of Installer Passion-XBMC</string>
 </strings>
