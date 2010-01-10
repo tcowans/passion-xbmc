@@ -82,9 +82,10 @@ class XbmcZoneBrowser(Browser):
                              Item.TYPE_PLUGIN_MUSIC    : "Music Plugin",
                              Item.TYPE_PLUGIN_PICTURES : "Picture Plugin",
                              Item.TYPE_PLUGIN_PROGRAMS : "Program Plugin",
-                             Item.TYPE_PLUGIN_VIDEO    : "Video Plugin" }
+                             Item.TYPE_PLUGIN_VIDEO    : "Video Plugin",
+                             Item.TYPE_SCRIPT_CAT      : "Script" }
         try:
-            result = mapTypeLocal2Srv[serverType]
+            result = mapTypeLocal2Srv[localType]
         except:
             print sys.exc_info()
             print_exc()
@@ -131,8 +132,7 @@ class XbmcZoneBrowser(Browser):
         Create and return the list of plugin categories
         Returns list and name of the list
         """
-        categoryURL = {Item.TYPE_NEW        : "http://www.xbmczone.com/installer/addon_list_edit.asp?category=New",
-                       Item.TYPE_PLUGIN     : "http://www.xbmczone.com/installer/addon_categories.asp?type=Plugin",
+        categoryURL = {Item.TYPE_PLUGIN     : "http://www.xbmczone.com/installer/addon_categories.asp?type=Plugin",
                        Item.TYPE_SCRIPT_CAT : "http://www.xbmczone.com/installer/addon_categories.asp?type=Script"}
         list = []
         listTitle = Item.get_type_title( typeList )
@@ -142,16 +142,40 @@ class XbmcZoneBrowser(Browser):
         dom   = minidom.parse( usock )
         usock.close()
         
+
+        # Add 'All' category
+        item = {}
+        item['cattype']   = self._mapType_Local2Server( typeList )
+        item['name']      = "All"
+        if self._mapType_Local2Server( typeList ) == "Script":
+            item['xbmc_type'] = Item.TYPE_SCRIPT
+        else: # Plugins
+            item['xbmc_type'] = Item.TYPE_PLUGIN_VIDEO # Temporary patch ALL is not video plugin
+        item['description']       = ""
+        item['downloadurl']       = None
+        item['type']              = 'CAT'
+        item['previewpictureurl'] = None
+        item['language']          = ""
+        item['version']           = ""
+        item['author']            = ""
+        item['date']              = ""
+        item['added']             = ""
+        item['thumbnail']         = Item.get_thumb( item['xbmc_type'] )
+        item['previewpicture']    = ""#Item.get_thumb( item['xbmc_type'] )
+        item['image2retrieve']    = False # Temporary patch for reseting the flag after download (would be better in the thread in charge of the download)
+        list.append(item)
+        
         # Parse XML...
         for category in dom.getElementsByTagName('Category') :
             item = {}
             for child in category.childNodes:
                 if child.localName == "Type" :
                     #type = child.childNodes[0].data
-                    item['cattype']   = child.childNodes[0].data
+                    item['cattype'] = child.childNodes[0].data
                     #TODO: find cleaner solution for defining xbmc_type
                     if item['cattype'] == "Script":
-                        item['xbmc_type'] = self._mapType_Server2Local( child.childNodes[0].data )
+                        #item['xbmc_type'] = self._mapType_Server2Local( child.childNodes[0].data )
+                        item['xbmc_type'] = Item.TYPE_SCRIPT
                     
                 elif child.localName == "Name" :
                     #category = child.childNodes[0].data
@@ -184,12 +208,28 @@ class XbmcZoneBrowser(Browser):
             
         return listTitle, list
 
+    def _createLastestList( self ):
+        """
+        Create and return the list of Lastest addons
+        Returns list and name of the list
+        """
+        xmlURL = "http://www.xbmczone.com/installer/addon_list_edit.asp?category=New"
+        listTitle = Item.get_type_title( Item.TYPE_NEW )
+        
+        # Get page (XML)...
+        usock = urllib.urlopen( xmlURL )
+        dom   = minidom.parse( usock )
+        usock.close()
+        
+        # Parse XML...
+        list = self._createItemList( dom )
+        return listTitle, list
 
-    def _createItemList( self, categoryItem ) :
+
+    def _createCatItemList( self, categoryItem ) :
         """
         Create the list of item to download based on a category (full category item is passed)
         """
-        list = []
         listTitle = categoryItem['name']
         #addon_zip_url      = "http://xbmczone.com/download.asp?id=%s" % ( params[ "id" ] )
         
@@ -202,6 +242,17 @@ class XbmcZoneBrowser(Browser):
         dom   = minidom.parse( usock )
         usock.close()
         
+        # Parse XML...
+        list = self._createItemList( dom )
+        return listTitle, list
+            
+
+
+    def _createItemList( self, dom ) :
+        """
+        Parse XML and create the list of item defined in the XML file
+        """
+        list = []
         # Parse XML...
         for category_node in dom.getElementsByTagName('Addon') :
             item = {}
@@ -281,7 +332,7 @@ class XbmcZoneBrowser(Browser):
             list.append(item)
             print item
             
-        return listTitle, list
+        return list
 
 
     def getNextList( self, index=0 ):
@@ -305,13 +356,13 @@ class XbmcZoneBrowser(Browser):
                         self.curCategory, list = self._createCatList( Item.TYPE_SCRIPT_CAT )
                     elif self.curList[index]['xbmc_type'] == Item.TYPE_NEW:
                         self.type = Item.TYPE_NEW
-                        self.curCategory, list = self._createCatList( Item.TYPE_NEW )
+                        self.curCategory, list = self._createLastestList()
                     else:
                         # List of item to download case                  
                         #list = self.incat(itemId) # Get content of the category
                         #self.currentItemId = itemId
                         self.type = self.curList[index]['xbmc_type']
-                        self.curCategory, list = self._createItemList( self.curList[index] )
+                        self.curCategory, list = self._createCatItemList( self.curList[index] )
                         
                         
                 else:

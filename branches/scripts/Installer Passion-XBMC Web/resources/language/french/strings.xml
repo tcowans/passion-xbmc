@@ -23,6 +23,7 @@
   <string id="19">Demande de mot de passe</string>
   <string id="20">Vous devez saisir votre mot de passe administrateur[CR]système</string>
   <string id="21">Mot de passe Administrateur</string>
+  <string id="22">Derniers Ajouts</string>
 
   <string id="24">Page</string>
   <string id="25">Objet(s)</string>
@@ -257,4 +258,19 @@
   <string id="1007"></string>
   
   <string id="1026">Options diverses</string>
+
+  <!-- Effacement des Caches -->
+  <string id="32650">Effacement: %s</string>
+  <string id="32651">%i fichiers et %i répertoires supprimés</string>
+  <string id="32652">Répertoire: %s</string>
+  <string id="32653">Fichier: %s</string>
+  <string id="32654">Vider tous les Caches</string>
+  <string id="32655">Vider tous les Caches de XBMC</string>
+  <string id="32656">Vider le Cache de XBMC [COLOR=88FFFFFF][%s][/COLOR]</string>
+  <string id="32657">Vider le Cache de MS [COLOR=88FFFFFF][E:\CACHE\][/COLOR]</string>
+  <string id="32658">Vider tous les Caches de la XBox [COLOR=88FFFFFF][X:\, Y:\, Z:\][/COLOR]</string>
+  <string id="32659">Effacement des Caches...</string>
+  <string id="32660">Effacement des Caches</string>
+  <string id="32661">Vider les Caches</string>
+  <string id="32662">Vider tous les Caches de l'Installer Passion-XBMC</string>
 </strings>
