@@ -36,11 +36,14 @@ Place in Q:\plugins\video\artePLUS7
     - Added finnish language (thanks to Kottis)
     - Fixed few localization bug (few strings still in french) 
 07-05-09 Version 1.1 by Temhil
-	- Fixed regex for automatic proxy due to changes on webiste
-	- Use www.surferanonymement.com now for getting the real video URL (country check is done)
-	- Moved webpage download management in a separate function
+    - Fixed regex for automatic proxy due to changes on webiste
+    - Use www.surferanonymement.com now for getting the real video URL (country check is done)
+    - Moved webpage download management in a separate function
 07-27-09 Version 1.2 by Temhil
-	- Fixed bug on video loading (wrong param paassed to getwebpage)
+    - Fixed bug on video loading (wrong param passed to getwebpage)
+01-10-10 Version 1.3 by Temhil
+    - Replaced automatic proxy website www.surferanonymement.com (need account now) by anonymouse.org
+    - Fixed bug on list (end of directory wasn't called)
 """
 
 __script__ = "Unknown"
@@ -50,8 +53,8 @@ __url__ = "http://passion-xbmc.org/index.php"
 __svn_url__ = "http://code.google.com/p/passion-xbmc/source/browse/#svn/trunk/plugins/video/artePLUS7"
 __credits__ = "Team XBMC Passion"
 __platform__ = "xbmc media center"
-__date__ = "05-07-2009"
-__version__ = "1.1"
+__date__ = "10-01-2010"
+__version__ = "1.3"
 __svn_revision__ = 0
 
 import xml.dom.minidom, urllib, os, string, traceback, time, re
@@ -151,8 +154,10 @@ class SearchParser:
         """
         Download webpage using specfic proxy settings
         """
-        base_webproxy_url="http://www.surferanonymement.com/includes/process.php?action=update"
-        referer = "http://www.surferanonymement.com/"
+        #base_webproxy_url="http://www.surferanonymement.com/includes/process.php?action=update"
+        base_webproxy_url="http://anonymouse.org/cgi-bin/anon-www.cgi/"
+        #referer = "http://www.surferanonymement.com/"
+        referer = "http://anonymouse.org/"
         nameInForm = 'u'
         
         opener              = None
@@ -164,13 +169,14 @@ class SearchParser:
             print "getVideoURL - Auto: Use of Webproxy viproxy.info"
             
             h=urllib2.HTTPHandler(debuglevel=0)
-            values = {'%s'%nameInForm : url}
-            data = urllib.urlencode(values)
+            #values = {'%s'%nameInForm : url}
+            #data = urllib.urlencode(values)
             print base_webproxy_url
-            print data
+            #print data
             # Get the Web page with the video url container link
             #req=urllib2.Request(base_webproxy_url + urllib.quote(url) + "&b=4&f=norefer")
-            req=urllib2.Request(base_webproxy_url, data)
+            #req=urllib2.Request(base_webproxy_url, data)
+            req=urllib2.Request(base_webproxy_url + url)
             req.add_header('Referer', '%s'%referer)
             req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.7) Gecko/2009021910 MRA 5.3 (build 02560) Firefox/3.0.7 FirePHP/0.2.4')
             req.add_header('Accept','text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8')
@@ -333,7 +339,7 @@ class SearchParser:
         self.startDates={}
         self.speakingthumbs={}
         self.previewVideoUrl={}
-        itemObjects = []
+        #itemObjects = []
         i=0
         for item in items:
             i=i+1
@@ -377,11 +383,11 @@ class SearchParser:
                 
         #TODO: Use language localization
         xbmcplugin.setPluginCategory( handle=int( sys.argv[ 1 ] ), category=__language__( 30204 ) )
- 
+
         path_img = os.path.join(ROOTDIR,"arte_tv.png")
-        fanart_color1 = "ffffff00"
-        fanart_color2 = ""
-        fanart_color3 = ""
+        #fanart_color1 = "ffffff00"
+        #fanart_color2 = ""
+        #fanart_color3 = ""
         try:
             #xbmcplugin.setPluginFanart( handle=int( sys.argv[ 1 ] ), image=path_img, color1=fanart_color1, color2=fanart_color2, color3=fanart_color3 )
             #TODO  :
@@ -394,7 +400,13 @@ class SearchParser:
             print (str(sys.exc_info()[0]))
             traceback.print_exc()
             
-        return itemObjects
+        # Allow sort by Date (to display dates)...
+        # xbmcplugin.addSortMethod( handle=int( sys.argv[ 1 ] ), sortMethod=xbmcplugin.SORT_METHOD_DATE )
+        
+        # End of directory...
+        xbmcplugin.endOfDirectory( handle=int( sys.argv[ 1 ] ), succeeded=True )
+
+        #return itemObjects
 
     def _parseInfo(self, urlInfo):
         # Extract video infos:
