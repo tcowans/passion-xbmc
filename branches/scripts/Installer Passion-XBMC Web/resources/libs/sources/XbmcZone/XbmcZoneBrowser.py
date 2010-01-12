@@ -34,7 +34,6 @@ class XbmcZoneBrowser(Browser):
     def __init__( self, *args, **kwargs  ):
         Browser.__init__( self, *args, **kwargs )
         self.curList = []  # Current list of item/category
-#        self.currentItemId = 0
         
         #self.racineDisplayList  = [ Item.TYPE_SCRIPT, Item.TYPE_PLUGIN ]
         self.racineDisplayList  = [ Item.TYPE_NEW, Item.TYPE_SCRIPT_CAT, Item.TYPE_PLUGIN ]
@@ -46,7 +45,7 @@ class XbmcZoneBrowser(Browser):
         """
         Reset the browser (back to start page)
         """
-        self.curList = []  
+        Browser.reset()
 
     def _mapType_Server2Local( self, serverType ):
         """
