@@ -16,7 +16,7 @@ import Item
 from utilities import *
 #from CONSTANTS import *
 from pil_util import makeThumbnails
-from Browser import Browser, ImageQueueElement
+from Browser import Browser, History, ImageQueueElement
 
 import XbmcZoneItemInstaller
 
@@ -36,17 +36,11 @@ class XbmcZoneBrowser(Browser):
         self.curList = []  # Current list of item/category
 #        self.currentItemId = 0
         
-        # Init the root list
-        # TODO: temporary here
-#        self.incat(0)
-        
-#        import CONF
-#        #TODO: check if we still need those vars
-#        self.baseURLDownloadFile   = CONF.getBaseURLDownloadFile()
-#        self.baseURLPreviewPicture = CONF.getBaseURLPreviewPicture()
-#        del CONF
         #self.racineDisplayList  = [ Item.TYPE_SCRIPT, Item.TYPE_PLUGIN ]
         self.racineDisplayList  = [ Item.TYPE_NEW, Item.TYPE_SCRIPT_CAT, Item.TYPE_PLUGIN ]
+
+        # Create History instance in order to store browsing history
+        self.history = History()
 
     def reset( self ):
         """
@@ -335,6 +329,46 @@ class XbmcZoneBrowser(Browser):
         return list
 
 
+    def _getList( self, listItem=None ):
+        """
+        Retrieves list matching to a specific list Item
+        """
+        # Check type of selected item
+        list = []
+        curCategory = None
+        #TODO: manage exception
+        try:            
+            if listItem != None:
+                if listItem['type'] == 'CAT':
+                    if listItem['xbmc_type'] == Item.TYPE_PLUGIN:
+                        # root plugin case
+                        curCategory, list = self._createCatList( Item.TYPE_PLUGIN )
+                    elif listItem['xbmc_type'] == Item.TYPE_SCRIPT_CAT:
+                        curCategory, list = self._createCatList( Item.TYPE_SCRIPT_CAT )
+                    elif listItem['xbmc_type'] == Item.TYPE_NEW:
+                        curCategory, list = self._createLastestList()
+                    else:
+                        # List of item to download case                  
+                        curCategory, list = self._createCatItemList( listItem )
+                else:
+                    # Return the current list
+                    #TODO: start download here?
+                    print "This is not a category but an item (download)"
+                    list = None
+            else: # listItem == None 
+                # 1st time (init), we display root list
+                # List the main categorie at the root level
+                curCategory, list = self._createRootList()
+        except Exception, e:
+            print "Exception during getNextList"
+            print e
+            print sys.exc_info()
+            print_exc()
+            print_exc()
+            
+        return curCategory, list
+
+
     def getNextList( self, index=0 ):
         """
         Returns the list of item (dictionary) on the server depending on the location we are on the server
@@ -346,48 +380,25 @@ class XbmcZoneBrowser(Browser):
         #TODO: manage exception
         try:            
             if len(self.curList)> 0 :
-                if self.curList[index]['type'] == 'CAT':
-                    if self.curList[index]['xbmc_type'] == Item.TYPE_PLUGIN:
-                        # root plugin case
-                        self.type = Item.TYPE_PLUGIN
-                        self.curCategory, list = self._createCatList( Item.TYPE_PLUGIN )
-                    elif self.curList[index]['xbmc_type'] == Item.TYPE_SCRIPT_CAT:
-                        self.type = Item.TYPE_SCRIPT_CAT
-                        self.curCategory, list = self._createCatList( Item.TYPE_SCRIPT_CAT )
-                    elif self.curList[index]['xbmc_type'] == Item.TYPE_NEW:
-                        self.type = Item.TYPE_NEW
-                        self.curCategory, list = self._createLastestList()
-                    else:
-                        # List of item to download case                  
-                        #list = self.incat(itemId) # Get content of the category
-                        #self.currentItemId = itemId
-                        self.type = self.curList[index]['xbmc_type']
-                        self.curCategory, list = self._createCatItemList( self.curList[index] )
-                        
-                        
-                else:
-                    # Return the current list
-                    #TODO: start download here?
-                    print "This is not a category but an item (download)"
-                    list = self.curList
-               
+                # Retrieve the list for the selected item
+                self.curCategory, list = self._getList( self.curList[index] )
+                self.history.push(self.curCategory, self.curList[index], "LIST_ITEM")
             else: # len(self.curList)<= 0 
                 # 1st time (init), we display root list
-                self.type = Item.TYPE_ROOT
-                # List the main categorie at the root level
-                self.curCategory, list = self._createRootList()
+                self.curCategory, list = self._getList()
+                self.history.push(self.curCategory, None, "LIST_ITEM")
         except Exception, e:
             print "Exception during getNextList"
             print e
             print sys.exc_info()
             print_exc()
             print_exc()
-        #TODO: find better solution, temporary fix for the case of empty list, with current implemntation of hetPrevList backward is not possible when list is empty    
+        #TODO: find better solution, temporary fix for the case of empty list, with current implementation of hetPrevList backward is not possible when list is empty    
         if len( list ) > 0:
             # Replace current list
             self.curList = list
+            
         return self.curList
-
 
     def getPrevList( self ):
         """
@@ -400,20 +411,16 @@ class XbmcZoneBrowser(Browser):
         item = self.curList[0] # We have to check the info one of the items in the list (why not the 1st?)
 
         try:
-            # Check the info one of the items in the list
-            if item['type'] == 'FIC':
-                # File -> we have to go one level up.
-                if Item.TYPE_PLUGIN in item['xbmc_type']:
-                    self.type = Item.TYPE_PLUGIN #TODO: deprecating self.type?
-                    self.curCategory, list = self._createCatList( Item.TYPE_PLUGIN )
-                elif item['xbmc_type'] == Item.TYPE_SCRIPT :
-                    self.type = Item.TYPE_SCRIPT_CAT
-                    self.curCategory, list = self._createCatList( Item.TYPE_SCRIPT_CAT )
-            else:
-                # Category (either script or plugin categories list)
-                # We display root
-                self.type = Item.TYPE_ROOT
-                self.curCategory, list = self._createRootList()
+            # delete current page from history (we are going to load the previous one)
+            self.history.pop()
+
+            # Get previous entry (the one we gonna reload) but since we did a pop this is the current
+            #previousIndex, previousHdl, previousHdlType, previousTitleLabel = self.history.getPrevious()
+            previousCategory, previousItem, previousHdlType = self.history.getCurrent()
+            
+            # Get the list
+            self.curCategory, list = self._getList( previousItem )
+
         except Exception, e:
             print "Exception during getPrevList"
             print e
@@ -423,40 +430,7 @@ class XbmcZoneBrowser(Browser):
         # Replace current list
         self.curList = list
         return list
-        
-        
-#    def _setDefaultImages(self, item):
-#        """
-#        Set the images with default value depending on the type of the item
-#        """
-#        print "_setDefaultImages"
-#        print item['previewpictureurl']
-#        if  item['previewpictureurl'] == 'None':
-#            # No picture available -> use default one
-#            item['thumbnail']      = Item.get_thumb( item['xbmc_type'] ) # icone
-#            #item['previewpicture'] = Item.THUMB_NOT_AVAILABLE # preview
-#            item['previewpicture'] = item['thumbnail']
-#        else:
-#            # On verifie si l'image serait deja la
-#            downloadImage = False
-#            thumbnail, checkPathPic = set_cache_thumb_name( item['previewpictureurl'] )
-#            if thumbnail and os.path.isfile( thumbnail ):
-#                item['thumbnail'] = thumbnail
-#            else:
-#                item['thumbnail'] = Item.THUMB_NOT_AVAILABLE
-#                downloadImage = True
-#                
-#            if os.path.exists(checkPathPic):
-#                item['previewpicture'] = checkPathPic
-#            else:
-#                item['previewpicture'] = Item.THUMB_NOT_AVAILABLE
-#                downloadImage = True
-#                
-#            if downloadImage == True:
-#                # Set flag for download (separate thread)
-#                item['image2retrieve'] = True
 
-                
     def _downloadImage( self, picname ):
         """
         Download picture from the server, save it, create the thumbnail and return path of it
@@ -626,9 +600,6 @@ class XbmcZoneBrowser(Browser):
         try:            
             if ( ( len(self.curList)> 0 ) and ( self.curList[index]['type'] == 'FIC' ) ):
                 # Convert index to id
-#                itemId      = self.curList[index]['id']
-#                catId       = self.curList[index]['parent']
-#                externalURL = self.curList[index]['fileexternurl'].encode('utf8')
                 name        = self.curList[index]['name']
                 xbmc_type   = self.curList[index]['xbmc_type']
                 downloadurl = self.curList[index]['downloadurl'].encode('utf8')
@@ -703,4 +674,7 @@ class XbmcZoneBrowser(Browser):
         """
         try: self.cancel_update_Images()
         except: print "XbmcZoneBrowser: error on close (cancel image)"
+
+
+
     
