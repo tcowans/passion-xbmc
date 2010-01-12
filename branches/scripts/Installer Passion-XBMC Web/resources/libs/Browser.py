@@ -219,3 +219,71 @@ class Browser:
         pass
     
     
+class History:
+    """
+    Class history save history of webpage browsed
+    in the future we can even cache here all the page info including lists
+    """
+    def __init__(self):
+        self.handler        = []
+        self.handlerType    = []
+        self.titleLabel     = []
+        self.current        = - 1
+        
+    def push(self, title, hdl, hdlType):
+        """
+        Add a webpage to history
+        @param title:
+        @param hdl:
+        @param hdlType:
+        """
+        self.handler.append(hdl)
+        self.handlerType.append(hdlType)
+        self.titleLabel.append(title)
+        self.current = self.current + 1
+        
+    def pop(self):
+        """
+        Remove a webpage from 
+        """
+        if self.current >= 0:
+            self.handler.pop()
+            self.handlerType.pop()
+            self.titleLabel.pop()
+            self.current = self.current - 1
+        else:
+            print "history: History already empty!!! - cannot do pop"
+            
+    def getCurrent(self):
+        """
+        Returns current page info (index / Handler / Handler Type) on succes
+                or "None" if failure (no current page)
+        """
+        if self.current >= 0:
+            return self.titleLabel[self.current],self.handler[self.current], self.handlerType[self.current]
+        else:
+            return "None", "None", "None"
+            
+    def getPrevious(self):
+        """
+        Returns previous page info (index / Handler / Handler Type) on succes
+                or "None" if failure (no previous page)
+        """
+        if (self.current - 1) >= 0:
+            return self.titleLabel[(self.current - 1)], self.handler[(self.current - 1)], self.handlerType[(self.current - 1)]
+        else:
+            return "None", "None", "None"
+
+    def getEntry(self, index):
+        """
+        Returns an history entry for a specific Index
+        @param index: history entry index 
+        """
+        return self.titleLabel[index], self.handler[index], self.handlerType[index]
+        
+    def getHistoryTitle(self):
+        """
+        Returns list ot Titles stored in history
+        """
+        return self.titleLabel
+        

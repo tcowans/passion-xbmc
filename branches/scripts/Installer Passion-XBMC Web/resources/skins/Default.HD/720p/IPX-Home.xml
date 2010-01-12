@@ -422,7 +422,7 @@
 						<pulseonselect>false</pulseonselect>
 						<label>SVN Repo Installer</label>
 						<onclick>ActivateWindow(10001,plugin://programs/SVN Repo Installer/)</onclick>
-						<visible>false</visible>
+						<visible>true</visible>
 					</control>
 					<control type="label" id="91165">
 						<width>240</width>
