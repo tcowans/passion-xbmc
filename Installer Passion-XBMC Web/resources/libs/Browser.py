@@ -42,6 +42,7 @@ class Browser:
         # FIFO des images a telecharger
         self.image_queue = []
         self.curCategory = "root"
+        self.curList = []  # Current list of item/category
         
         self.stopUpdateImageThread = False # Flag indiquant si on doit stopper ou non le thread getImagesQueue_thread
         
@@ -49,7 +50,8 @@ class Browser:
         """
         Reset the browser (back to start page)
         """
-        pass
+        self.curList = []  
+        self.curCategory = "root"
     
     def close( self ):
         """
@@ -100,19 +102,34 @@ class Browser:
         """
         Returns current list sorted by date
         """
-        pass
+        try:
+            sortedList = sorted(self.curList, key=lambda k: k['date'])
+        except:
+            print"sortByDate - failed sorting current by date"
+            sortedList = self.curList
+            print_exc()
 
     def sortByLang( self ):
         """
         Returns current list sorted by language
         """
-        pass
+        try:
+            sortedList = sorted(self.curList, key=lambda k: k['language'])
+        except:
+            print"sortByDate - failed sorting current by date"
+            sortedList = self.curList
+            print_exc()
     
     def sortByAuthor( self ):
         """
         Returns current list sorted by author
         """
-        pass    
+        try:
+            sortedList = sorted(self.curList, key=lambda k: k['author'])
+        except:
+            print"sortByDate - failed sorting current by date"
+            sortedList = self.curList
+            print_exc()
     
     def isCat( self, index ):
         """

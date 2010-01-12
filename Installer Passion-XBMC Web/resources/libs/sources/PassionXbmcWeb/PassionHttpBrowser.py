@@ -59,7 +59,7 @@ class PassionHttpBrowser(Browser):
         print "update_datas"
         
         #self.db = db      
-        self.curList = []  # Current list of item/category
+        #self.curList = []  # Current list of item/category
 
         self.currentItemId = 0
         
@@ -72,7 +72,7 @@ class PassionHttpBrowser(Browser):
         """
         Reset the browser (back to start page)
         """
-        self.curList       = []  
+        Browser.reset()
         self.currentItemId = 0
 
     def nicequery( self, query ,dico ):

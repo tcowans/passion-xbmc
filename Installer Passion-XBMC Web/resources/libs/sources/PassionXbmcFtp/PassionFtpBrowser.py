@@ -67,7 +67,6 @@ class PassionFtpBrowser(Browser):
 #        self.curCategory = Item.get_type_title( self.type )
         
         
-        self.curList = []  # Current list of item/category
 
         #self.currentItemId = 0
 
@@ -93,8 +92,7 @@ class PassionFtpBrowser(Browser):
         """
         Reset the browser (back to start page)
         """
-        self.curList = []  
-        #self.index   = ""
+        Browser.reset()
 
     def _createRootList(self):
         """
