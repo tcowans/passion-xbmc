@@ -29,7 +29,7 @@
 ##17/12/09: v1.4.1 add clearart and tvshow thumb on tvshow menu.
 ##18/12/09: v1.4.2 add translation to plugin english _ french
 ##07/01/10: v1.5 add coloring , previews on different stage, detect bad thumb size, even for season thumbs! adding PIL lib.
-            
+##18/01/10: v1.5.2 modification to use xbmcstuff scraper.
 ########################################
 
 # plugin constants
@@ -39,8 +39,8 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/video/XbmcStuff downloader/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "07-01-2010"
-__version__      = "1.5.1"
+__date__         = "18-01-2010"
+__version__      = "1.5.2"
 __svn_revision__  = "$Revision$"
 __XBMC_Revision__ = "20000" #XBMC Babylon
 
@@ -100,14 +100,15 @@ if not clearart_in_tv_folder:
 tvshow_list= {}
 db_path=os.path.join(xbmc.translatePath( "special://profile/Database/" ), "MyVideos34.db")
 temp_xml=os.path.join(os.getcwd(), 'resources' , 'data' , 'temp.xml')
-base_url= "http://www.xbmcstuff.com/scrapping.php?"
+base_url= "http://www.xbmcstuff.com/tv_scraper.php?&id_scraper=p7iuVTQXQWGyWXPS" #"http://www.xbmcstuff.com/scrapping.php?"
 icons_path= os.path.join( BASE_RESOURCE_PATH , "icons" )
-
-options= "id_scrapper=1&size=%s&mode=1" % (resolution)
+if resolution == "356" : options= "&size=small"
+else: options = "&size=big"
+#options= "id_scrapper=1&size=%s&mode=1" % (resolution)
 Language = xbmc.Language(os.getcwd())
 #print Language.getLocalizedString(30006)
 
-#coloration texte:
+#coloration texte:http://www.xbmcstuff.com/tv_scraper.php?&id_scraper=p7iuVTQXQWGyWXPS
 
 
 
