@@ -297,7 +297,7 @@ class DirectInfos( xbmcgui.WindowXML ):
             elif controlID == 201:
                 DIALOG_PROGRESS.create( "Passion-XBMC", "Messages personnels...", _( 110 ) )
                 self.set_list_container_191_for_pm()
-            elif controlID == 3:
+            elif controlID == 5:
                 self.set_list_container_191()
             elif controlID == 320:
                  self._close_dialog()
