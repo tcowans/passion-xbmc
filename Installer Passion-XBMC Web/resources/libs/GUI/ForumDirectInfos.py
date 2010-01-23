@@ -87,7 +87,9 @@ class DirectInfos( xbmcgui.WindowXML ):
         try:
             xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,%s)" % ( self.settings[ "skin_colours_path" ], ) )
             xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,%s)" % ( ( self.settings[ "skin_colours" ] or get_default_hex_color() ), ) )
+            xbmc.executebuiltin( "Skin.SetString(PassionLabelHexColour,%s)" % ( ( self.settings[ "labels_colours" ] or get_default_hex_color( "Blue Confluence" ) ), ) )
         except:
+            xbmc.executebuiltin( "Skin.SetString(PassionLabelHexColour,ffffffff)" )
             xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,ffffffff)" )
             xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,default)" )
             print_exc()
@@ -295,8 +297,10 @@ class DirectInfos( xbmcgui.WindowXML ):
             elif controlID == 201:
                 DIALOG_PROGRESS.create( "Passion-XBMC", "Messages personnels...", _( 110 ) )
                 self.set_list_container_191_for_pm()
-            elif controlID == 5:
+            elif controlID == 3:
                 self.set_list_container_191()
+            elif controlID == 320:
+                 self._close_dialog()
             else:
                 pass
         except:

@@ -20,7 +20,7 @@ __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center"
 
 __version__      = "pre-2.0"
-__statut__       = "DevHD; Beta 1" #(dev,svn,release,etc)
+__statut__       = "DevHD; Beta 2" #(dev,svn,release,etc)
 
 if DEV_TEST:
     __script__  += " Web"
@@ -90,25 +90,6 @@ LANGUAGE_IS_FRENCH = ( xbmc.getLanguage().lower() == "french" )
 DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
 
-# Info version (deprecated)
-__version_l1__ = __language__( 700 )#"version"
-__version_r1__ = __version__
-__version_l2__ = __language__( 707 )#"date"
-__version_r2__ = __date__
-__version_l3__ = __language__( 708 )#"SVN"
-__version_r3__ = str( __svn_revision__ )
-
-# team credits (deprecated)
-__credits_l1__ = __language__( 702 )#"Developpeurs"
-__credits_r1__ = "Frost & Seb & Temhil"
-__credits_l2__ = __language__( 703 )#"Conception Graphique"
-__credits_r2__ = "Frost & Jahnrik & Temhil"
-__credits_l3__ = __language__( 709 )#"Langues"
-__credits_r3__ = "Frost & Kottis & Temhil"
-__credits_l4__ = __language__( 706 )#"Conseils et soutien"
-__credits_r4__ = "Alexsolex & Shaitan"
-
-
 def MAIN():
     try: output.PRINT_DEBUG = ( XBMC_SETTINGS.getSetting( "script_debug" ) == "true" )
     except: print_exc()
@@ -127,6 +108,14 @@ def MAIN():
     except:
         pass
 
+    #setup skins utilities and reload xbmc skin if necessary
+    import skins_utilities
+    if skins_utilities.setupUtilities():
+        print "Reloaded Skin: %s" % xbmc.getSkinDir()
+        xbmc.executebuiltin( "XBMC.Notification(%s,Reloaded Skin...,3000,%s)" % ( xbmc.getSkinDir(), os.path.join( os.getcwd(), "default.tbn" ), ) )
+        xbmc.executebuiltin( "XBMC.ReloadSkin()" )
+        xbmc.sleep( 2000 )
+
     try:
         # INITIALISATION CHEMINS DE FICHIER LOCAUX
         import CONF
@@ -140,11 +129,7 @@ def MAIN():
         # VERIFICATION DE LA MISE A JOUR
         import CHECKMAJ
         try:
-            #from utilities import Settings
-            #try: output.PRINT_DEBUG = Settings().get_settings().get( "script_debug", False )
-            #except: print_exc()
-            CHECKMAJ.UPDATE_STARTUP = ( XBMC_SETTINGS.getSetting( "update_startup" ) == "true" )#Settings().get_settings().get( "update_startup", True )
-            #del Settings
+            CHECKMAJ.UPDATE_STARTUP = ( XBMC_SETTINGS.getSetting( "update_startup" ) == "true" )
         except:
             print_exc()
         if CHECKMAJ.UPDATE_STARTUP:

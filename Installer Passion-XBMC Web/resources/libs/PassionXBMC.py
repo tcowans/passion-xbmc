@@ -107,7 +107,7 @@ def get_page( url, params={}, referer="", savehtml=True, filename="default.html"
     try:
         connexion = opener.open( req ) #matérialise la page à télécharger
     except Exception, msg:
-        print msg.info()
+        print msg#.info()
         raise
 
     if debuglevel:

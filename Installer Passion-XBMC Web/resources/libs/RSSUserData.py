@@ -104,7 +104,7 @@ def save_xml( kwargs, filename="" ):
 
 
 if __name__  == "__main__":
-    add = {'100': {'feed': [{'feed': 'http://code.google.com/feeds/p/passion-xbmc/updates/basic', 'updateinterval': '30'}], 'rtl': 'false'}}
+    add = {'100': {'feed': [{'feed': 'http://passion-xbmc.org/scraper/?forumrss=1', 'updateinterval': '30'}], 'rtl': 'false'}}
     rss = parse_xml()
     rss.update( add )
     print save_xml( rss, "test_rss.xml" )

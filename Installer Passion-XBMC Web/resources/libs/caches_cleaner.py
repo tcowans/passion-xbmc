@@ -36,7 +36,7 @@ def clear( cache_path, excludes=[], t_file=0, t_dir=0 ):
                     DIALOG_PROGRESS.update( -1, _( 32651 ) % ( t_file, t_dir, ), _( 32652 ) % root, _( 32653 ) % file )
                     try:
                         os.remove( fpath )
-                        print "[SCRIPT IPX] Caches Cleaner::clear: '%s'" % fpath
+                        print "Caches Cleaner::clear: '%s'" % fpath
                     except:
                         print_exc()
 
@@ -53,7 +53,7 @@ def clear( cache_path, excludes=[], t_file=0, t_dir=0 ):
                     DIALOG_PROGRESS.update( -1, _( 32651 ) % ( t_file, t_dir, ), _( 32652 ) % root, _( 32653 ) % dir )
                     try:
                         os.rmdir( dpath )
-                        print "[SCRIPT IPX] Caches Cleaner::clear: '%s'" % dpath
+                        print "Caches Cleaner::clear: '%s'" % dpath
                     except:
                         print_exc()
     except:

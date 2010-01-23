@@ -3,19 +3,9 @@
 	<allowoverlay>no</allowoverlay>
 
 	<controls>
+		<include>IPXContainerSettings</include>
 		<!-- backgrounds -->
-		<control type="multiimage">
-			<description>control list 9000 backgrounds</description>
-			<posx>0</posx>
-			<posy>0</posy>
-			<width>1280</width>
-			<height>720</height>
-			<imagepath fallback="special://profile/script_data/skin_backgrounds/IPX/installer.jpg" background="true">$INFO[Container(9000).ListItem.Icon]</imagepath>
-			<timeperimage>8000</timeperimage>
-			<randomize>true</randomize>
-			<fadetime>1000</fadetime>
-		</control>
-
+		<include>IPXCommonHomeBackground</include>
 		<control type="image">
 			<posx>0</posx>
 			<posy>0</posy>
@@ -23,8 +13,7 @@
 			<height>720</height>
 			<texture flipx="true" flipy="true">background-credits.gif</texture>
 			<visible>Control.HasFocus(90145)</visible>
-			<animation effect="fade" time="300">Visible</animation>
-			<animation effect="fade" time="300">Hidden</animation>
+			<include>IPXVisibleFadeEffect</include>
 		</control>
 
 		<!-- weather Info -->
@@ -43,6 +32,7 @@
 				<width>180</width>
 				<height>35</height>
 				<texture flipx="true" border="32,0,0,0">IPX-header.png</texture>
+				<include>IPXSkinColor</include>
 			</control>
 			<control type="image">
 				<description>Weather image</description>
@@ -53,20 +43,6 @@
 				<aspectratio>keep</aspectratio>
 				<texture>$INFO[Weather.Conditions]</texture>
 			</control>
-			<!--<visible>Skin.HasSetting(animated-weather)</visible>
-			<control type="multiimage">
-				<description>Weather animated image</description>
-				<posx>30</posx>
-				<posy>1</posy>
-				<width>25</width>
-				<height>25</height>
-				<aspectratio>keep</aspectratio>
-				<imagepath>special://skin/animated-weather-icons/$INFO[Window(Weather).Property(Current.FanartCode)]</imagepath>
-				<timeperimage>100</timeperimage>
-				<randomize>false</randomize>
-				<fadetime>0</fadetime>
-				<visible>!Skin.HasSetting(animated-weather)</visible>
-			</control>-->
 			<control type="label">
 				<description>Weather label</description>
 				<posx>60</posx>
@@ -94,6 +70,7 @@
 					<width>1</width>
 					<height>720</height>
 					<texture>IPX-HomeBladeSub_Part1.png</texture>
+					<include>IPXSkinColor</include>
 					<animation effect="zoom" start="379,0,1,720" end="379,0,249,720" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation>
 				</control>
 				<control type="image">
@@ -102,6 +79,7 @@
 					<width>12</width>
 					<height>720</height>
 					<texture>IPX-HomeBladeSub_Part2.png</texture>
+					<include>IPXSkinColor</include>
 					<animation effect="slide" end="248,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation>
 				</control>
 			</control>
@@ -127,136 +105,64 @@
 					<height>360</height>
 					<align>center</align>
 					<onleft>9000</onleft>
-					<onright>Control.SetFocus(8000,0)</onright>
+					<onright>9000</onright>
 					<onup>9010</onup>
 					<ondown>9010</ondown>
 					<itemgap>0</itemgap>
 					<visible>Container(9000).HasFocus(2)</visible>
-					<control type="button" id="90101">
-						<description>manager skin button</description>
-						<height>40</height>
-						<width>241</width>
-						<textoffsetx>20</textoffsetx>
-						<textwidth>215</textwidth>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<texturefocus border="5">IPX-button-focus.png</texturefocus>
-						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
-						<label>SCRIPT11</label>
-						<onclick>-</onclick>
-					</control>
-					<control type="button" id="90102">
-						<description>manager scrapers button</description>
-						<height>40</height>
-						<width>241</width>
-						<textoffsetx>20</textoffsetx>
-						<textwidth>215</textwidth>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<texturefocus border="5">IPX-button-focus.png</texturefocus>
-						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
-						<label>SCRIPT12</label>
+					<control type="button" id="90104">
+						<description>manager plugins button</description>
+						<include>IPXButtonHomeSubCommonValues</include>
+						<label>SCRIPT14</label>
 						<onclick>-</onclick>
 					</control>
 					<control type="button" id="90103">
 						<description>manager scripts button</description>
-						<height>40</height>
-						<width>241</width>
-						<textoffsetx>20</textoffsetx>
-						<textwidth>215</textwidth>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<texturefocus border="5">IPX-button-focus.png</texturefocus>
-						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
-						<label>SCRIPT13</label>
+						<include>IPXButtonHomeSubCommonValues</include>
+						<label>247</label>
 						<onclick>-</onclick>
 					</control>
-					<control type="button" id="90104">
-						<description>manager plugins button</description>
-						<height>40</height>
-						<width>241</width>
-						<textoffsetx>20</textoffsetx>
-						<textwidth>215</textwidth>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<texturefocus border="5">IPX-button-focus.png</texturefocus>
-						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
-						<label>SCRIPT14</label>
+					<control type="button" id="90101">
+						<description>manager skin button</description>
+						<include>IPXButtonHomeSubCommonValues</include>
+						<label>21895</label>
+						<onclick>-</onclick>
+					</control>
+					<control type="button" id="90102">
+						<description>manager scrapers button</description>
+						<include>IPXButtonHomeSubCommonValues</include>
+						<label>21412</label>
 						<onclick>-</onclick>
 					</control>
 					<control type="button" id="90109">
 						<description>manager plugins weather button</description>
-						<height>40</height>
-						<width>241</width>
-						<textoffsetx>20</textoffsetx>
-						<textwidth>215</textwidth>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<texturefocus border="5">IPX-button-focus.png</texturefocus>
-						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
+						<include>IPXButtonHomeSubCommonValues</include>
 						<label>23000</label>
 						<onclick>-</onclick>
-						<enable>false</enable>
-					</control>
-					<control type="button" id="90105">
-						<description>manager plugins video button</description>
-						<height>40</height>
-						<width>241</width>
-						<textoffsetx>20</textoffsetx>
-						<textwidth>215</textwidth>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<texturefocus border="5">IPX-button-focus.png</texturefocus>
-						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
-						<label>SCRIPT18</label>
-						<onclick>-</onclick>
+						<visible>false</visible>
 					</control>
 					<control type="button" id="90106">
 						<description>manager plugins pictures button</description>
-						<height>40</height>
-						<width>241</width>
-						<textoffsetx>20</textoffsetx>
-						<textwidth>215</textwidth>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<texturefocus border="5">IPX-button-focus.png</texturefocus>
-						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
-						<label>SCRIPT16</label>
-						<onclick>-</onclick>
-					</control>
-					<control type="button" id="90107">
-						<description>manager plugins music button</description>
-						<height>40</height>
-						<width>241</width>
-						<textoffsetx>20</textoffsetx>
-						<textwidth>215</textwidth>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<texturefocus border="5">IPX-button-focus.png</texturefocus>
-						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
-						<label>SCRIPT15</label>
+						<include>IPXButtonHomeSubCommonValues</include>
+						<label>1039</label>
 						<onclick>-</onclick>
 					</control>
 					<control type="button" id="90108">
 						<description>manager plugins programs button</description>
-						<height>40</height>
-						<width>241</width>
-						<textoffsetx>20</textoffsetx>
-						<textwidth>215</textwidth>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<texturefocus border="5">IPX-button-focus.png</texturefocus>
-						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
-						<label>SCRIPT17</label>
+						<include>IPXButtonHomeSubCommonValues</include>
+						<label>1043</label>
+						<onclick>-</onclick>
+					</control>
+					<control type="button" id="90107">
+						<description>manager plugins music button</description>
+						<include>IPXButtonHomeSubCommonValues</include>
+						<label>1038</label>
+						<onclick>-</onclick>
+					</control>
+					<control type="button" id="90105">
+						<description>manager plugins video button</description>
+						<include>IPXButtonHomeSubCommonValues</include>
+						<label>1037</label>
 						<onclick>-</onclick>
 					</control>
 				</control>
@@ -269,77 +175,37 @@
 					<height>240</height>
 					<align>center</align>
 					<onleft>9000</onleft>
-					<onright>9001</onright>
+					<onright>9000</onright>
 					<onup>9014</onup>
 					<ondown>9014</ondown>
 					<itemgap>0</itemgap>
 					<visible>Container(9000).HasFocus(5)</visible>
 					<control type="button" id="90141">
-						<description>system params button</description>
-						<height>40</height>
-						<width>241</width>
-						<textoffsetx>20</textoffsetx>
-						<textwidth>215</textwidth>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<texturefocus border="5">IPX-button-focus.png</texturefocus>
-						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
+						<description>script params button</description>
+						<include>IPXButtonHomeSubCommonValues</include>
 						<label>5</label>
 						<onclick>-</onclick>
 					</control>
 					<control type="button" id="90144">
 						<description>caches cleaner button</description>
-						<height>40</height>
-						<width>241</width>
-						<textoffsetx>20</textoffsetx>
-						<textwidth>215</textwidth>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<texturefocus border="5">IPX-button-focus.png</texturefocus>
-						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
+						<include>IPXButtonHomeSubCommonValues</include>
 						<label>Caches Cleaner</label>
 					</control>
 					<control type="button" id="90143">
-						<description>system output button</description>
-						<height>40</height>
-						<width>241</width>
-						<textoffsetx>20</textoffsetx>
-						<textwidth>215</textwidth>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<texturefocus border="5">IPX-button-focus.png</texturefocus>
-						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
+						<description>script output button</description>
+						<include>IPXButtonHomeSubCommonValues</include>
 						<label>Debug Info</label>
 						<onclick>ActivateWindow(ScriptsDebugInfo)</onclick>
 					</control>
 					<control type="button" id="90142">
 						<description>system filenamager button</description>
-						<height>40</height>
-						<width>241</width>
-						<textoffsetx>20</textoffsetx>
-						<textwidth>215</textwidth>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<texturefocus border="5">IPX-button-focus.png</texturefocus>
-						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
+						<include>IPXButtonHomeSubCommonValues</include>
 						<label>7</label>
 						<onclick>ActivateWindow(FileManager)</onclick>
 					</control>
 					<control type="button" id="90145">
 						<description>script credits button</description>
-						<height>40</height>
-						<width>241</width>
-						<textoffsetx>20</textoffsetx>
-						<textwidth>215</textwidth>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<texturefocus border="5">IPX-button-focus.png</texturefocus>
-						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
+						<include>IPXButtonHomeSubCommonValues</include>
 						<label>SCRIPT4</label>
 						<onclick>-</onclick>
 					</control>
@@ -353,7 +219,7 @@
 					<height>300</height>
 					<align>center</align>
 					<onleft>9000</onleft>
-					<onright>Control.SetFocus(8000,0)</onright>
+					<onright>9000</onright>
 					<onup>9016</onup>
 					<ondown>9016</ondown>
 					<itemgap>0</itemgap>
@@ -366,63 +232,32 @@
 						<textcolor>DDced8da</textcolor>
 						<align>center</align>
 						<aligny>center</aligny>
+						<visible>false</visible>
 					</control>
 					<control type="button" id="90161">
 						<description>source passion web button</description>
-						<height>40</height>
-						<width>241</width>
-						<textoffsetx>20</textoffsetx>
-						<textwidth>215</textwidth>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<texturefocus border="5">IPX-button-focus.png</texturefocus>
-						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
+						<include>IPXButtonHomeSubCommonValues</include>
 						<label>Passion-XBMC Web</label>
 						<onclick>-</onclick>
 					</control>
 					<control type="button" id="90162">
 						<description>source passion ftp button</description>
-						<height>40</height>
-						<width>241</width>
-						<textoffsetx>20</textoffsetx>
-						<textwidth>215</textwidth>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<texturefocus border="5">IPX-button-focus.png</texturefocus>
-						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
+						<include>IPXButtonHomeSubCommonValues</include>
 						<label>Passion-XBMC FTP</label>
 						<onclick>-</onclick>
 					</control>
 					<control type="button" id="90163">
 						<description>source xbmc zone button</description>
-						<height>40</height>
-						<width>241</width>
-						<textoffsetx>20</textoffsetx>
-						<textwidth>215</textwidth>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<texturefocus border="5">IPX-button-focus.png</texturefocus>
-						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
+						<include>IPXButtonHomeSubCommonValues</include>
 						<label>XBMC Zone</label>
 						<onclick>-</onclick>
 					</control>
 					<control type="button" id="90164">
 						<description>run plugin "SVN Repo Installer" button</description>
-						<height>40</height>
-						<width>241</width>
-						<textoffsetx>20</textoffsetx>
-						<textwidth>215</textwidth>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<texturefocus border="5">IPX-button-focus.png</texturefocus>
-						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
+						<include>IPXButtonHomeSubCommonValues</include>
 						<label>SVN Repo Installer</label>
 						<onclick>ActivateWindow(10001,plugin://programs/SVN Repo Installer/)</onclick>
-						<visible>true</visible>
+						<visible>false</visible>
 					</control>
 					<control type="label" id="91165">
 						<width>240</width>
@@ -432,20 +267,14 @@
 						<textcolor>DDced8da</textcolor>
 						<align>center</align>
 						<aligny>center</aligny>
+						<visible>false</visible>
 					</control>
 					<control type="button" id="90165">
 						<description>nightly builds button</description>
-						<height>40</height>
-						<width>241</width>
-						<textoffsetx>20</textoffsetx>
-						<textwidth>215</textwidth>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<texturefocus border="5">IPX-button-focus.png</texturefocus>
-						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
+						<include>IPXButtonHomeSubCommonValues</include>
 						<label>Nightly Builds</label>
 						<onclick>Control.SetFocus(9014)</onclick>
+						<visible>false</visible>
 					</control>
 					<!--<visible>stringcompare(lookandfeel.skin,Confluence)</visible>
 					<visible>stringcompare(Skin.String(xbmc.currentskin),Confluence)</visible>-->
@@ -459,6 +288,7 @@
 				<height>720</height>
 				<colordiffuse>DAFFFFFF</colordiffuse>
 				<texture>IPX-HomeBlade_bottom.png</texture>
+				<include>IPXSkinColor</include>
 			</control>
 			<control type="fixedlist" id="9000">
 				<description>Main menu buttons</description>
@@ -526,6 +356,7 @@
 						<onclick>SetProperty(Container_9000_item_id,4)</onclick>
 						<icon>special://profile/script_data/skin_backgrounds/IPX/pictures.jpg</icon>
 						<thumb>-</thumb>
+						<visible>IsEmpty(Container(99999).ListItem.Property(script.setting.hideforum))</visible>
 					</item>
 					<item id="2">
 						<label>Manager</label>
@@ -533,11 +364,25 @@
 						<icon>special://profile/script_data/skin_backgrounds/IPX/scripts.jpg</icon>
 						<thumb>-</thumb>
 					</item>
+					<item id="12">
+						<label>Nightly</label>
+						<onclick>SetProperty(Container_9000_item_id,12)</onclick>
+						<icon>special://profile/script_data/skin_backgrounds/IPX/nightly2.jpg</icon>
+						<thumb>-</thumb>
+						<visible>!IsEmpty(Container(99999).ListItem.Property(script.setting.hideforum))</visible>
+					</item>
 					<item id="10">
 						<label>Installer</label>
 						<onclick>SetProperty(Container_9000_item_id,10)</onclick>
 						<icon>special://profile/script_data/skin_backgrounds/IPX/installer.jpg</icon>
 						<thumb>-</thumb>
+					</item>
+					<item id="12">
+						<label>Nightly</label>
+						<onclick>SetProperty(Container_9000_item_id,12)</onclick>
+						<icon>special://profile/script_data/skin_backgrounds/IPX/nightly2.jpg</icon>
+						<thumb>-</thumb>
+						<visible>IsEmpty(Container(99999).ListItem.Property(script.setting.hideforum))</visible>
 					</item>
 					<item id="5">
 						<label>13000</label>
@@ -550,6 +395,7 @@
 						<onclick>SetProperty(Container_9000_item_id,11)</onclick>
 						<icon>special://profile/script_data/skin_backgrounds/IPX/exit.jpg</icon>
 						<thumb>-</thumb>
+						<visible>!IsEmpty(Container(99999).ListItem.Property(script.setting.hideforum))</visible>
 					</item>
 				</content>
 			</control>
@@ -571,6 +417,7 @@
 				<width>846</width>
 				<height>720</height>
 				<texture>IPX-HomeBlade_top.png</texture>
+				<include>IPXSkinColor</include>
 			</control>
 			<control type="image">
 				<description>LOGO</description>
@@ -612,7 +459,7 @@
 					<onclick>-</onclick>
 					<texturefocus>IPX-home-power-FO.png</texturefocus>
 					<texturenofocus>IPX-home-power.png</texturenofocus>
-					<onleft>21</onleft>
+					<onleft>9000</onleft>
 					<onright>9000</onright>
 					<onup>9000</onup>
 					<ondown>9000</ondown>
@@ -621,11 +468,11 @@
 		</control>
 
 		<control type="group" id="1000">
-			<posx>420</posx>
-			<posy>35r</posy>
 			<animation effect="slide" end="0,35" time="300" tween="quadratic" easing="out">WindowClose</animation>
 			<animation effect="slide" start="0,35" time="300" tween="quadratic" easing="out">WindowOpen</animation>
 			<visible>system.getbool(lookandfeel.enablerssfeeds)</visible>
+			<posx>420</posx>
+			<posy>35r</posy>
 			<control type="image">
 				<description>RSS background</description>
 				<posx>0</posx>
@@ -633,6 +480,7 @@
 				<width>860</width>
 				<height>35</height>
 				<texture border="32,0,0,0">IPX-Rss_Back.png</texture>
+				<include>IPXSkinColor</include>
 			</control>
 			<control type="rss">
 				<description>RSS feed</description>
@@ -642,8 +490,7 @@
 				<width>825</width>
 				<font>font12</font>
 				<urlset>100</urlset><!-- if not exists, auto created/updated on start script -->
-				<textcolor>FF0055be</textcolor>
-				<titlecolor>FF0055be</titlecolor>
+				<include>IPXLabelColor</include>
 				<headlinecolor>ffffffff</headlinecolor>
 			</control>
 			<control type="image">
@@ -653,6 +500,7 @@
 				<width>100</width>
 				<height>35</height>
 				<texture border="32,0,0,0">IPX-Rss_Back_Overlay.png</texture>
+				<include>IPXSkinColor</include>
 			</control>
 		</control>
 
@@ -669,6 +517,7 @@
 				<width>440</width>
 				<height>35</height>
 				<texture flipx="true" border="32,0,0,0">IPX-header.png</texture>
+				<include>IPXSkinColor</include>
 			</control>
 			<control type="label">
 				<description>time label</description>
@@ -691,8 +540,9 @@
 			<width>846</width>
 			<height>720</height>
 			<texture flipx="true">IPX-HomeBlade.png</texture>
+			<include>IPXSkinColor</include>
 			<animation effect="slide" end="-35,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
-			<animation effect="slide" start="-35,0" time="300" tween="quadratic" easing="out" condition="!Window.Previous(startup)">WindowOpen</animation>
+			<animation effect="slide" start="-35,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
 		</control>
 	</controls>
 </window>
