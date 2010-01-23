@@ -21,6 +21,8 @@ DIALOG_PROGRESS = xbmcgui.DialogProgress()
 # set our xbmc.settings path for xbmc get '/resources/settings.xml'
 XBMC_SETTINGS = xbmc.Settings( os.getcwd() )
 
+current_skin, force_fallback = getUserSkin()
+
 
 class Home( xbmcgui.WindowXML ):
     def __init__( self, *args, **kwargs ):
@@ -32,18 +34,35 @@ class Home( xbmcgui.WindowXML ):
 
     def onInit( self ):
         try:
+            self.set_gui_settings()
+            self._set_skin_colours()
             if self.is_started:
                 self.is_started = False
                 if self.settings.get( "show_plash" ) == True:
                     # splash desactive par le user 
                     self.getControl( 999 ).setVisible( 0 )
             else:
-                self.getControl( 999 ).setVisible( 0 )
+                try: self.getControl( 999 ).setVisible( 0 )
+                except: pass
 
             if self.last_pos_container_9000 is not None:
                 xbmc.sleep( 100 )
-                xbmc.executebuiltin( 'Control.Move(%i,%i)' % ( 9000, int( self.last_pos_container_9000 ) ) )
+                xbmc.executebuiltin( 'Control.Move(%i,%i)' % ( 9000, int( self.last_pos_container_9000 )-3 ) )
                 self.last_pos_container_9000 = None
+
+            self.getControl( 1000 ).setVisible( self.settings[ "rss_feed" ] != "0" )
+        except:
+            print_exc()
+
+    def set_gui_settings( self ):
+        try:
+            # test for replace skin.setting etc....
+            listitem = xbmcgui.ListItem( "GUI Settings" )
+            listitem.setProperty( "script.setting.hideforum", ( "", "hide" )[ self.settings.get( "hide_forum" ) ] )
+            listitem.setProperty( "script.skinpath", os.path.join( os.getcwd(), "resources", "skins", current_skin ) )
+            #listitem.setProperty( "script.setting.", "" )
+            self.getControl( 99999 ).reset()
+            self.getControl( 99999 ).addItem( listitem )
         except:
             print_exc()
 
@@ -75,10 +94,12 @@ class Home( xbmcgui.WindowXML ):
         try:
             xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,%s)" % ( self.settings[ "skin_colours_path" ], ) )
             xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,%s)" % ( ( self.settings[ "skin_colours" ] or get_default_hex_color() ), ) )
+            xbmc.executebuiltin( "Skin.SetString(PassionLabelHexColour,%s)" % ( ( self.settings[ "labels_colours" ] or get_default_hex_color( "Blue Confluence" ) ), ) )
         except:
-            print_exc()
+            xbmc.executebuiltin( "Skin.SetString(PassionLabelHexColour,ffffffff)" )
             xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,ffffffff)" )
             xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,default)" )
+            print_exc()
         #xbmcgui.unlock()
 
     def _start_rss_timer( self ):
@@ -104,8 +125,11 @@ class Home( xbmcgui.WindowXML ):
                 self._show_main()
             elif controlID == 90141:
                 self._show_settings()
+            elif controlID == 90142:
+                self.last_pos_container_9000 = xbmc.getInfoLabel( "Container(9000).Position" )
             elif controlID == 90144:
                 # Caches Cleaner, bugs si le caches cleaner a ete lancer depuis le xbmc.settings !!!
+                self.last_pos_container_9000 = xbmc.getInfoLabel( "Container(9000).Position" )
                 import caches_cleaner
                 caches_cleaner.Main()
                 del caches_cleaner
@@ -143,17 +167,19 @@ class Home( xbmcgui.WindowXML ):
                         print "script_debug = %s" % debug_mode
                         sys.modules[ "__main__" ].output.PRINT_DEBUG = ( debug_mode == "true" )
                     elif item_id == "10":
-                        self.action = "default_content=Passion XBMC Web"
+                        self.action = "default_content=%s" % self.settings.get( "server_shortcut_button", "Passion XBMC Web" )
                         self._show_main()
                     elif item_id == "11":
                         self.action = "exit"
                         self._close_script()
+                    elif item_id == "12":
+                        self._show_nightly()
             self.clearProperties()
         except:
             print_exc()
 
     def _show_credits( self ):
-        self.last_pos_container_9000 = 1
+        self.last_pos_container_9000 = xbmc.getInfoLabel( "Container(9000).Position" )
         self.action = None
         try:
             import Credits
@@ -163,6 +189,7 @@ class Home( xbmcgui.WindowXML ):
             print_exc()
 
     def _show_main( self ):
+        self.last_pos_container_9000 = xbmc.getInfoLabel( "Container(9000).Position" )
         try:
             import MainGui
             MainGui.show_main( self.action )
@@ -172,6 +199,7 @@ class Home( xbmcgui.WindowXML ):
         self.action = None
 
     def _show_nightly( self ):
+        self.last_pos_container_9000 = xbmc.getInfoLabel( "Container(9000).Position" )
         try:
             import nightly_builds
             nightly_builds.show_nightly()
@@ -181,7 +209,7 @@ class Home( xbmcgui.WindowXML ):
         self.action = None
 
     def _show_settings( self ):
-        self.last_pos_container_9000 = 1
+        self.last_pos_container_9000 = xbmc.getInfoLabel( "Container(9000).Position" )
         try:
             import DialogSettings
             DialogSettings.show_settings( self )
@@ -192,7 +220,7 @@ class Home( xbmcgui.WindowXML ):
         self.action = None
 
     def _show_direct_infos( self ):
-        self.last_pos_container_9000 = -2
+        self.last_pos_container_9000 = xbmc.getInfoLabel( "Container(9000).Position" )
         try:
             import ForumDirectInfos
             ForumDirectInfos.show_direct_infos()
@@ -203,7 +231,7 @@ class Home( xbmcgui.WindowXML ):
         self.action = None
 
     def _show_file_manager( self ):
-        self.last_pos_container_9000 = -1
+        self.last_pos_container_9000 = xbmc.getInfoLabel( "Container(9000).Position" )
         try:
             import FileManagerGui
             mainfunctions = [ self._show_settings, self._close_script ]
@@ -224,31 +252,10 @@ class Home( xbmcgui.WindowXML ):
         self.close()
 
 
-def addBackgroundsToSin( current_skin ):
-    # fonction pour Default.HD pour une meilleur prise en change des images par XBMC
-    # ça prend un chemin complet dans l'attribut fallback pour etre afficher plus vite !!!
-    # <imagepath fallback="special://profile/script_data/skin_backgrounds/IPX/pictures.jpg" background="true">
-    # copy all BG in skin if not exists :P
-    import shutil
-    bg_path = os.path.join( os.getcwd(), "resources", "skins", current_skin, "backgrounds" )
-    cache_bg_path = xbmc.translatePath( "special://profile/script_data/skin_backgrounds/IPX/" )
-    if os.path.exists( bg_path ):
-        try:
-            if not os.path.exists( cache_bg_path ):
-                os.makedirs( cache_bg_path )
-            for bg in os.listdir( bg_path ):
-                if not os.path.exists( os.path.join( cache_bg_path, bg ) ):
-                    shutil.copyfile( os.path.join( bg_path, bg ), os.path.join( cache_bg_path, bg ) )
-        except:
-            print_exc()
-
-
 
 def show_home():
     file_xml = "IPX-Home.xml"
     dir_path = os.getcwd().replace( ";", "" )
-    current_skin, force_fallback = getUserSkin()
-    addBackgroundsToSin( current_skin )
     #myfont = os.path.join( dir_path, "resources", "skins", current_skin, "fonts", "MyFont.py" )
     #if os.path.exists( myfont ): xbmc.executescript( myfont )
     try:

@@ -151,15 +151,14 @@ def is_playable_media( filename, media="picture" ):
 def getUserSkin():
     """ FONCTION POUR RECUPERER LE THEME UTILISE PAR L'UTILISATEUR """
     # get user preference skin settings
-    try: skin_setting = Settings().get_settings().get( "current_skin", "Default" )
-    except: skin_setting = "Default"
+    try: skin_setting = Settings().get_settings().get( "current_skin", "Default.HD" )
+    except: skin_setting = "Default.HD"
     current_skin = xbmc.getSkinDir()
-    xbmc.executebuiltin( 'Skin.SetString(xbmc.currentskin,%s)' % current_skin )
-    if skin_setting != "Default" and os.path.exists( os.path.join( CWD, "resources", "skins", skin_setting ) ):
+    if skin_setting != "Default.HD" and os.path.exists( os.path.join( CWD, "resources", "skins", skin_setting ) ):
         current_skin = skin_setting
     #if not current_skin: current_skin = xbmc.getSkinDir()
     force_fallback = os.path.exists( os.path.join( CWD, "resources", "skins", current_skin ) )
-    if not force_fallback: current_skin = "Default"
+    if not force_fallback: current_skin = "Default.HD"
     return current_skin, force_fallback
 
 
@@ -176,10 +175,11 @@ def getSkinColors():
         print_exc()
 
 
-def get_default_hex_color():
+def get_default_hex_color( default="Default" ):
     default_hex_color = "FFFFFFFF"
     try:
-        default_hex_color = dict( getSkinColors() ).get( "default", "FFFFFFFF" )
+        default_hex_color = dict( getSkinColors() ).get( default, "FFFFFFFF" )
+        print default, default_hex_color
     except TypeError:
         pass
     except:
@@ -190,7 +190,8 @@ def get_default_hex_color():
 def getSkinsListing():
     skins_dir = os.path.join( CWD, "resources", "skins" )
     skins = [ skin for skin in os.listdir( skins_dir ) if ".svn" not in skin and os.path.isdir( os.path.join( skins_dir, skin ) ) ]
-    return skins
+    del skins[ skins.index( "Default.HD" ) ]
+    return [ "Default.HD" ] + sorted( skins, key=lambda l: l.lower() )
 
 
 #NOTE: CE CODE PEUT ETRE REMPLACER PAR UN CODE MIEUX FAIT
@@ -282,11 +283,13 @@ class Settings:
             "script_debug": False,
             "manager_view_mode": 50,
             "main_view_mode": 50,
+            "server_shortcut_button": "Passion XBMC Web",
             # SKINS
             "show_plash": False,
-            "current_skin": "Default",
+            "current_skin": "Default.HD",
             "skin_colours_path": "default",
             "skin_colours": "",
+            "labels_colours": "",
             "thumb_size": ( "512", "192" )[ ( SYSTEM_PLATFORM == "xbox" ) ],
             # SERVEUR FTP
             "host": "stock.passionxbmc.org",

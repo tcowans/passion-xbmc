@@ -79,10 +79,6 @@ class Context:
             self.addSource(srcPassionFtp)
             self.addSource(srcXbmcZone)
         except Exception, e:
-            #print "Exception during Context init"
-            #print e
-            #print sys.exc_info()
-            print_exc()
             print_exc()
 
     def selectSource( self, sourceName ):
@@ -241,7 +237,7 @@ class MainWindow( xbmcgui.WindowXML ):
                     if self.HomeAction and "default_content" in self.HomeAction:
                         self.default_content = self.HomeAction.split( "=" )[ 1 ]
                     else:
-                        self.default_content = "Passion XBMC Web"
+                        self.default_content = self.settings.get( "server_shortcut_button", "Passion XBMC Web" )
                     # Loading context
                     self.contextSrc = Context()
                     self.contextSrc.selectSource( self.default_content )#"XBMC Zone" )
@@ -301,7 +297,9 @@ class MainWindow( xbmcgui.WindowXML ):
         try:
             xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,%s)" % ( self.settings[ "skin_colours_path" ], ) )
             xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,%s)" % ( ( self.settings[ "skin_colours" ] or get_default_hex_color() ), ) )
+            xbmc.executebuiltin( "Skin.SetString(PassionLabelHexColour,%s)" % ( ( self.settings[ "labels_colours" ] or get_default_hex_color( "Blue Confluence" ) ), ) )
         except:
+            xbmc.executebuiltin( "Skin.SetString(PassionLabelHexColour,ffffffff)" )
             xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,ffffffff)" )
             xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,default)" )
             print_exc()

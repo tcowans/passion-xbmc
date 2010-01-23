@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <strings>
   <!--GENERAL STRINGS -->
   <string id="0">Installer Passion-XBMC</string>
@@ -183,7 +183,7 @@
   <string id="499">Version: %s</string>
   <string id="500">Paramètres</string>
   <string id="501">Activer la modification du fichier sources.xml</string>
-  <string id="502">Limite des topics par page</string>
+  <string id="502">Limite des messages par page</string>
   <string id="503">[B]&#126;&#126;[/B]</string><!--illimited symbol -->
   <string id="504">00|5|10|25|50|100</string><!--LIST LIMIT FOR TOPICS IN DIRECT INFOS: 00=illimited -->
   <string id="505">Couleur du thème</string>
@@ -194,7 +194,7 @@
   <string id="510">Activer la vérification de la mise à jour au démarrage</string>
   <string id="511">Flux RSS</string>
   <string id="512">Activer le mode débogue du [B]*script*[/B]</string>
-  <string id="513">Masquer le bouton forum dans le menu principal</string>
+  <string id="513">Masquer le bouton "Forum"</string>
   <string id="514">Masquer l'accès au répertoire parent</string>
   <string id="515">Masquer les extensions des fichiers</string>
   <string id="516">Activer l'image des add-ons comme fanart</string>

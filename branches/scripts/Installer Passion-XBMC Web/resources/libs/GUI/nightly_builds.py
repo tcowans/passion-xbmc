@@ -1,9 +1,12 @@
 
 # Modules general
 import os
+import re
 import sys
 import time
 import urllib
+from glob import glob
+from shutil import copy
 from traceback import print_exc
 
 # Modules XBMC
@@ -24,8 +27,22 @@ SPECIAL_SCRIPT_DATA = sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA
 
 NIGHTLY_BUILDS_DATA = os.path.join( SPECIAL_SCRIPT_DATA, "nightly_builds.svn" )
 
+PLATFORM_DIR = os.path.join( os.getcwd(), "resources", "platform_updater", os.environ.get( "OS", "xbox" ) )
+EXCLUDE_TXT = os.path.join( PLATFORM_DIR, "exclude.txt" )
 
 __script__ = "IPX"#sys.modules[ "__main__" ].__script__
+
+
+def _samefile( src, dst ):
+    # Macintosh, Unix.
+    if hasattr( os.path, 'samefile' ):
+        try:
+            return os.path.samefile( src, dst )
+        except OSError:
+            return False
+
+    # All other platforms: check for same pathname.
+    return ( os.path.normcase( os.path.abspath( src ) ) == os.path.normcase( os.path.abspath( dst ) ) )
 
 
 def get_browse_dialog( default="", heading="", dlg_type=3, shares="files", mask="", use_thumbs=False, treat_as_folder=False ):
@@ -38,6 +55,66 @@ def get_browse_dialog( default="", heading="", dlg_type=3, shares="files", mask=
     dialog = xbmcgui.Dialog()
     value = dialog.browse( dlg_type, heading, shares, mask, use_thumbs, treat_as_folder, default )
     return value
+
+
+def manage_exclude_txt():
+    excludes = []
+    try:
+        try:
+            f = open( EXCLUDE_TXT, "r" )
+            for line in f.readlines():
+                exclude = line.strip( os.linesep )
+                if exclude:
+                    excludes.append( exclude )
+            f.close()
+        except IOError:
+            pass
+        except:
+            print_exc()
+
+        excludes = sorted( list( set( excludes ) ) )
+        excludes_list = [ "Add file", "Add folder", "Remove all", "Cancel" ] + [ "Excluded: %s" % exclude for exclude in excludes ]
+        
+        selected = xbmcgui.Dialog().select( "Add/Remove file or folder on update", excludes_list )
+        if selected != -1:
+            if selected == 0:
+                # Add file
+                add_file = get_browse_dialog( "special://xbmc/", "Browse for exclude file on update", 1 )
+                if not add_file.lower() == "special://xbmc/xbmc.exe":
+                    add_file = os.path.basename( add_file )
+                    excludes.append( add_file )
+                    str_excludes = "\n".join( excludes ) + "\n"
+                    file( EXCLUDE_TXT, "w" ).write( str_excludes )
+                manage_exclude_txt()
+            elif selected == 1:
+                # Add folder
+                add_folder = get_browse_dialog( "special://xbmc/", "Browse for exclude folder on update" )
+                if not add_folder.lower() == "special://xbmc/":
+                    add_folder = os.path.basename( add_folder.strip( "/" ) )
+                    excludes.append( add_folder )
+                    str_excludes = "\n".join( excludes ) + "\n"
+                    file( EXCLUDE_TXT, "w" ).write( str_excludes )
+                manage_exclude_txt()
+            elif selected == 2:
+                # Remove all
+                if xbmcgui.Dialog().yesno( "Confirmer le retrait", "Êtes-vous sûr de vouloir de tout les retirés?" ):
+                    try: os.remove( EXCLUDE_TXT )
+                    except IOError: pass
+                    except: print_exc()
+                manage_exclude_txt()
+            elif selected == 3:
+                # cancel
+                return
+            else:
+                # demande pour retirer un item
+                if xbmcgui.Dialog().yesno( "Confirmer le retrait", "Êtes-vous sûr de vouloir retirer:", excludes[ selected-4 ] ):
+                    del excludes[ selected-4 ]
+                    str_excludes = "\n".join( excludes ) + "\n"
+                    file( EXCLUDE_TXT, "w" ).write( str_excludes )
+                manage_exclude_txt()
+
+    except:
+        print_exc()
 
 
 class pDialogCanceled( Exception ):
@@ -130,7 +207,7 @@ class Nightly( xbmcgui.WindowXMLDialog ):
         try:
             nightly_builds = self._load_nightly_data( refresh )
             if nightly_builds is None:
-                nightly_builds = get_nightly_builds()
+                nightly_builds = get_nightly_builds( xbmc.getInfoLabel( "System.BuildVersion" ).split( " r" )[ -1 ] )
                 try: file( NIGHTLY_BUILDS_DATA, "w" ).write( repr( nightly_builds ) )
                 except: print_exc()
             # types : str, str, str, str, list returned by get_nightly_builds
@@ -151,6 +228,10 @@ class Nightly( xbmcgui.WindowXMLDialog ):
             print_exc()
 
     def _set_containers( self ):
+        try:
+            self.getControl( 7 ).setVisible( os.path.exists( os.path.join( PLATFORM_DIR, "paths.txt" ) ) )
+        except:
+            print_exc()
         try:
             self.getControl( 48 ).reset()
             listitem = xbmcgui.ListItem( self.heading )
@@ -183,12 +264,47 @@ class Nightly( xbmcgui.WindowXMLDialog ):
                 item = self.getControl( 49 ).getSelectedItem()
                 build_url = item.getProperty( "build_url" )
                 heading = item.getLabel()
+
                 if xbmcgui.Dialog().yesno( "XBMC Nightly Builds", "Confirmer le téléchargement!", "%s: %s" % ( heading, os.path.basename( build_url ) ), "Êtes-vous sûr de vouloir télécharger cette build?"  ):
                     # onBackground : pas implanter doit deplacer le downloader et utiliser runscript avec des parametres et tester sans thread
-                    print downloader( heading, build_url )#, destination="", onBackground=False )
+                    new_build = downloader( heading, build_url )#, destination="", onBackground=False )
+                    #new_build = "F:\\XBMC_PC_26532.rar"
+                    if new_build and os.path.exists( new_build ):
+                        exclude_txt = ( "", EXCLUDE_TXT )[ os.path.exists( EXCLUDE_TXT ) ]
+                        InfoPaths = open( os.path.join( PLATFORM_DIR, "paths.txt" ), "w" )
+                        # pour une raison X, XBMC change le %CD% de dos pour la racine d'xbmc!!!!
+                        # donc au besoin selon le OS ajoute le vrai %CD% dans les paths si le programme en a de besoin
+                        InfoPaths.write( 'cd_real="%s"\n' % PLATFORM_DIR )
+                        InfoPaths.write( 'xbmc_install_path="%s"\n' % xbmc.translatePath( "special://xbmc/" ) )
+                        InfoPaths.write( 'xbmc_build="%s"\n' % new_build )
+                        InfoPaths.write( 'exclude_txt="%s"\n' % exclude_txt )
+                        InfoPaths.write( 'backup_revision=r%s\n' % xbmc.getInfoLabel( "System.BuildVersion" ).split( " r" )[ -1 ] )
+                        # add info xbmc run on portable mode true or false
+                        InfoPaths.write( 'xbmc_is_portable="%s"\n' % repr( _samefile( xbmc.translatePath( "special://xbmc/" ), xbmc.translatePath( "special://home/" ) ) ).lower() )
+                        InfoPaths.close()
+                        self.getControl( 7 ).setVisible( os.path.exists( os.path.join( PLATFORM_DIR, "paths.txt" ) ) )
+            elif controlID == 7:
+                # get and run externe program - win32: updater.bat, xbox: updater.xbe, linux: ..., osx: ...
+                platform_updater = ( glob( os.path.join( PLATFORM_DIR, "updater*" ) ) + [ "" ] )[ 0 ]
+                # set french updater if exists and current language is french
+                platform_updater_fr = os.path.join( os.path.dirname( platform_updater ), "fr_" + os.path.basename( platform_updater ) )
+                if ( xbmc.getLanguage().lower() == "french" ) and ( os.path.exists( platform_updater_fr ) ):
+                    platform_updater = platform_updater_fr
+                if platform_updater:
+                    #pour des besoins sous MS-DOS et que XBMC change le %CD% de dos pour la racine d'xbmc, fait une copie dans la racine d'xbmc
+                    copy( os.path.join( PLATFORM_DIR, "paths.txt" ), os.path.join( xbmc.translatePath( "special://xbmc/" ), "paths.txt" ) )
+                    build_path = re.findall( 'xbmc_build="(.*?)"', file( os.path.join( xbmc.translatePath( "special://xbmc/" ), "paths.txt" ), "r" ).read() )[ 0 ]
+                    build_name = os.path.basename( build_path )
+                    if xbmcgui.Dialog().yesno( "XBMC %s Updater" % os.environ.get( "OS", "XBox" ), "Confirmer le lancement de la mise à jour.", "Votre version: " + xbmc.getInfoLabel( "System.BuildVersion" ), "MAJ vers: " + build_name ):
+                        command = '"%s"' % platform_updater
+                        os.system( command )
+                else:
+                    xbmcgui.Dialog().ok( "XBMC %s Updater" % os.environ.get( "OS", "XBox" ), "Il y a pas d'Updater pour vôtre Platform!", "Soyez patient cela serait tardé!" )
             elif controlID == 6:
                 self._get_nightly_builds( True )
                 self._set_containers()
+            elif controlID == 8:
+                manage_exclude_txt()
         except:
             print_exc()
 

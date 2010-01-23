@@ -13,23 +13,17 @@
 				<width>1100</width>
 				<height>720</height>
 				<texture border="15,0,0,0" flipx="true">IPX-MediaBladeSub.png</texture>
+				<include>IPXSkinColor</include>
 			</control>
 			<control type="button">
 				<description>Close Window button</description>
 				<posx>230</posx>
 				<posy>0</posy>
-				<width>64</width>
-				<height>32</height>
-				<label>-</label>
-				<font>-</font>
-				<onclick>PreviousMenu</onclick>
-				<texturefocus>IPX-DialogCloseButton-focus.png</texturefocus>
-				<texturenofocus>IPX-DialogCloseButton.png</texturenofocus>
+				<include>IPXCloseWindowDialogButton</include>
 				<onleft>9000</onleft>
 				<onright>9000</onright>
 				<onup>9000</onup>
 				<ondown>9000</ondown>
-				<visible>system.getbool(input.enablemouse)</visible>
 				<onfocus>Skin.Reset(IPX_item_dialog_fanart_fullscreen)</onfocus>
 			</control>
 
@@ -80,8 +74,7 @@
 					<visible>Control.HasFocus(9) | Control.HasFocus(8) | Control.HasFocus(7)</visible>
 					<posy>90</posy>
 					<posx>387</posx>
-					<animation effect="fade" time="300">Visible</animation>
-					<animation effect="fade" time="300">Hidden</animation>
+					<include>IPXVisibleFadeEffect</include>
 					<control type="group">
 						<visible>!IsEmpty(Container(48).ListItem.Property(fanartpicture))</visible>
 						<control type="image">
@@ -109,14 +102,13 @@
 							<width>675</width>
 							<height>40</height>
 							<font>font30_title</font>
-							<textcolor>FF0055be</textcolor>
+							<include>IPXLabelColor</include>
 							<shadowcolor>FF000000</shadowcolor>
 							<align>center</align>
 							<aligny>center</aligny>
 							<label>Click For Zoom Image</label>
 							<visible>!Skin.HasSetting(IPX_item_dialog_fanart_fullscreen)</visible>
-							<animation effect="fade" time="300">Visible</animation>
-							<animation effect="fade" time="300">Hidden</animation>
+							<include>IPXVisibleFadeEffect</include>
 						</control>
 					</control>
 					<control type="group">
@@ -153,8 +145,7 @@
 					<visible>!Control.HasFocus(9) + !Control.HasFocus(8) + !Control.HasFocus(7)</visible>
 					<posy>90</posy>
 					<posx>210</posx>
-					<animation effect="fade" time="300">Visible</animation>
-					<animation effect="fade" time="300">Hidden</animation>
+					<include>IPXVisibleFadeEffect</include>
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
@@ -195,7 +186,7 @@
 								<font>font13_title</font>
 								<align>right</align>
 								<aligny>center</aligny>
-								<textcolor>FF0055be</textcolor>
+								<include>IPXLabelColor</include>
 								<selectedcolor>FFEB9E17</selectedcolor>
 								<info>ListItem.Label</info>
 							</control>
@@ -220,8 +211,7 @@
 								<height>30</height>
 								<visible>Control.HasFocus(49)</visible>
 								<texture>IPX-MenuItemFO.png</texture>
-								<animation effect="fade" time="300">Visible</animation>
-								<animation effect="fade" time="300">Hidden</animation>
+								<include>IPXVisibleFadeEffect</include>
 							</control>
 							<control type="label">
 								<posx>165</posx>
@@ -231,7 +221,7 @@
 								<font>font13_title</font>
 								<align>right</align>
 								<aligny>center</aligny>
-								<textcolor>FF0055be</textcolor>
+								<include>IPXLabelColor</include>
 								<selectedcolor>FFEB9E17</selectedcolor>
 								<info>ListItem.Label</info>
 							</control>
@@ -330,17 +320,30 @@
 				<control type="group">
 					<visible>Control.IsVisible(400) + !Skin.HasSetting(IPX_item_dialog_fanart_fullscreen)</visible>
 					<control type="label">
+						<posx>210</posx>
+						<posy>480</posy>
+						<width>400</width>
+						<height>30</height>
+						<font>font13_title</font>
+						<include>IPXLabelColor</include>
+						<shadowcolor>FF000000</shadowcolor>
+						<scroll>true</scroll>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>207</label>
+					</control>
+					<control type="label">
 						<posx>130r</posx>
 						<posy>480</posy>
 						<width>400</width>
 						<height>30</height>
 						<font>font13_title</font>
-						<textcolor>88FFFFFF</textcolor>
+						<include>IPXLabelColor</include>
 						<shadowcolor>FF000000</shadowcolor>
 						<scroll>true</scroll>
 						<align>right</align>
 						<aligny>center</aligny>
-						<label>[COLOR=FF0055be]$LOCALIZE[207][/COLOR]$INFO[Container(400).CurrentPage, ( $LOCALIZE[31024] ]$INFO[Container(400).NumPages,/, )]</label>
+						<label>$LOCALIZE[31024] [COLOR=88FFFFFF]([/COLOR]$INFO[Container(400).CurrentPage][COLOR=88FFFFFF]/[/COLOR]$INFO[Container(400).NumPages][COLOR=88FFFFFF])[/COLOR]</label>
 					</control>
 					<control type="spincontrol" id="61">
 						<description>Next page button</description>
@@ -386,87 +389,39 @@
 					<ondown>49</ondown>
 					<control type="button" id="5">
 						<description>install button</description>
-						<height>40</height>
-						<width>170</width>
-						<textoffsetx>20</textoffsetx>
-						<align>center</align>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<texturefocus border="5">IPX-button-focus.png</texturefocus>
-						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
+						<include>IPXButtonDialogsCommonValues</include>
 						<label>SCRIPT607</label>
 						<onfocus>Skin.Reset(IPX_item_dialog_fanart_fullscreen)</onfocus>
 					</control>
 					<control type="button" id="8">
 						<description>zoom image</description>
-						<height>40</height>
-						<width>170</width>
-						<textoffsetx>20</textoffsetx>
-						<align>center</align>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<texturefocus border="5">IPX-button-focus.png</texturefocus>
-						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
+						<include>IPXButtonDialogsCommonValues</include>
 						<label>SCRIPT606</label>
 						<onclick>Skin.ToggleSetting(IPX_item_dialog_fanart_fullscreen)</onclick>
 						<visible>!IsEmpty(Container(48).ListItem.Property(fanartpicture))</visible>
 					</control>
 					<control type="button" id="9">
 						<description>image</description>
-						<height>40</height>
-						<width>170</width>
-						<textoffsetx>20</textoffsetx>
-						<align>center</align>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<texturefocus border="5">IPX-button-focus.png</texturefocus>
-						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
+						<include>IPXButtonDialogsCommonValues</include>
 						<label>Image</label>
 						<onfocus>Skin.Reset(IPX_item_dialog_fanart_fullscreen)</onfocus>
 						<visible>IsEmpty(Container(48).ListItem.Property(fanartpicture))</visible>
 					</control>
 					<control type="button" id="7">
 						<description>flip</description>
-						<height>40</height>
-						<width>170</width>
-						<textoffsetx>20</textoffsetx>
-						<align>center</align>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<texturefocus border="5">IPX-button-focus.png</texturefocus>
-						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
+						<include>IPXButtonDialogsCommonValues</include>
 						<label>Flip Image</label>
 						<visible>Skin.HasSetting(IPX_item_dialog_fanart_fullscreen)</visible>
 					</control>
 					<control type="button" id="6">
 						<description>Refresh</description>
-						<height>40</height>
-						<width>170</width>
-						<textoffsetx>20</textoffsetx>
-						<align>center</align>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<texturefocus border="5">IPX-button-focus.png</texturefocus>
-						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
+						<include>IPXButtonDialogsCommonValues</include>
 						<label>184</label>
 						<onfocus>Skin.Reset(IPX_item_dialog_fanart_fullscreen)</onfocus>
 					</control>
 					<control type="button" id="10">
 						<description>Get Thumb</description>
-						<height>40</height>
-						<width>170</width>
-						<textoffsetx>20</textoffsetx>
-						<align>center</align>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<texturefocus border="5">IPX-button-focus.png</texturefocus>
-						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
+						<include>IPXButtonDialogsCommonValues</include>
 						<label>13405</label>
 						<enable>false</enable>
 						<visible>false</visible>
@@ -474,15 +429,7 @@
 					</control>
 					<control type="button" id="11">
 						<description>Play Trailer</description>
-						<height>40</height>
-						<width>170</width>
-						<textoffsetx>20</textoffsetx>
-						<align>center</align>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<texturefocus border="5">IPX-button-focus.png</texturefocus>
-						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
+						<include>IPXButtonDialogsCommonValues</include>
 						<label>20410</label>
 						<enable>!IsEmpty(Container(48).ListItem.Property(previewVideoURL))</enable>
 						<visible>!IsEmpty(Container(48).ListItem.Property(previewVideoURL))</visible>
@@ -490,15 +437,7 @@
 					</control>
 					<control type="button" id="12">
 						<description>close</description>
-						<height>40</height>
-						<width>170</width>
-						<textoffsetx>20</textoffsetx>
-						<align>center</align>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<texturefocus border="5">IPX-button-focus.png</texturefocus>
-						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
+						<include>IPXButtonDialogsCommonValues</include>
 						<label>SCRIPT605</label>
 						<onfocus>Skin.Reset(IPX_item_dialog_fanart_fullscreen)</onfocus>
 					</control>
@@ -511,33 +450,8 @@
 			<width>846</width>
 			<height>720</height>
 			<texture flipx="true">IPX-HomeBlade.png</texture>
+			<include>IPXSkinColor</include>
 		</control>
-		<control type="group">
-			<posx>160r</posx>
-			<posy>0</posy>
-			<animation effect="slide" start="0,0" end="-60,0" delay="0" time="300" condition="Window.IsVisible(MuteBug)">conditional</animation>
-			<animation effect="slide" start="0,0" end="210,0" delay="0" time="300" condition="Window.Next(Home) | Window.IsVisible(FullscreenVideo) | Window.IsVisible(Visualisation)">WindowClose</animation>
-			<animation effect="slide" start="210,0" end="0,0" delay="0" time="300" condition="Window.Previous(Home) | Window.IsVisible(FullscreenVideo) | Window.IsVisible(Visualisation)">WindowOpen</animation>
-			<control type="image">
-				<description>time background</description>
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>150</width>
-				<height>35</height>
-				<texture flipx="true" border="32,0,0,0">IPX-header.png</texture>
-			</control>
-			<control type="label">
-				<description>time label</description>
-				<posx>30</posx>
-				<posy>0</posy>
-				<width>400</width>
-				<height>28</height>
-				<align>left</align>
-				<aligny>center</aligny>
-				<font>font12</font>
-				<textcolor>FFFFFFFF</textcolor>
-				<label>$INFO[System.Time]</label>
-			</control>
-		</control>
+		<include>IPXClock</include>
 	</controls>
 </window>
