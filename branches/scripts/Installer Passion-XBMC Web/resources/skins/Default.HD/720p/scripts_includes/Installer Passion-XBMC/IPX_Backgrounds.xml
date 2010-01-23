@@ -61,7 +61,7 @@
 			<fadetime>1000</fadetime>
 		</control>
 	</include>
-	<include name="CommonNightlyBackground">
+	<include name="IPXCommonNightlyBackground">
 		<control type="multiimage">
 			<posx>0</posx>
 			<posy>0</posy>
@@ -73,7 +73,7 @@
 			<fadetime>1000</fadetime>
 		</control>
 	</include>
-	<include name="CommonSettingsBackground">
+	<include name="IPXCommonSettingsBackground">
 		<control type="multiimage">
 			<posx>0</posx>
 			<posy>0</posy>
