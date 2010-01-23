@@ -2,7 +2,7 @@
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<controls>
 		<include>IPXContainerSettings</include>
-		<include>CommonSettingsBackground</include>
+		<include>IPXCommonSettingsBackground</include>
 
 		<control type="group">
 			<posx>90</posx>
