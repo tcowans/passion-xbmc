@@ -7,8 +7,8 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/"
 __credits__      = "Team XBMC passion, http://passion-xbmc.org/developpement-python/%28script%29-sporlive-display/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "07-01-2011"
-__version__      = "1.1"
+__date__         = "26-01-2011"
+__version__      = "1.2"
 __svn_revision__  = "$Revision$".replace( "Revision", "" ).strip( "$: " )
 __XBMC_Revision__ = "20000" #XBMC Babylon
 __useragent__    = "Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.0.1) Gecko/2008070208 Firefox/3.0.1"
@@ -143,13 +143,15 @@ def get_film_list( url , database = False):
             print "page %s: %s" % ( pager , current_url )
             page_data = get_html_source( current_url )
         try:        
-            MEDIA=re.compile( '<div class="picturezone">(.*?)</div>', re.DOTALL ).findall(page_data)
+            MEDIA=re.compile( '<div class="mainzone">(.*?)<div class="spacer">', re.DOTALL ).findall(page_data)
             for i in  MEDIA:
+                print i
                 count = count+1
                 ratio= int(100*float(count)/float(total_item))
                 
-                try: name = re.findall( "<b>(.*?)</b>", i )[0]
-                except: name = re.findall( 'alt="Photo : (.*?)" />', i )[0]
+                match = re.search( "<span class='bold'>(.*?)</span>", i )
+                if match : name = match.group(1)
+                else: name = ""
                 
                 print "récupération info film (%s/%s): %s" % ( count , total_item , name )
                 dp.update(ratio , "récupération info film (%s/%s)" % ( count , total_item ), name)
