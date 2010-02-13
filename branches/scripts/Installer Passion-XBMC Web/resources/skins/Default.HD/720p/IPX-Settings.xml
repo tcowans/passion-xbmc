@@ -1,8 +1,28 @@
 <window id="3005">
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<controls>
-		<include>IPXContainerSettings</include>
-		<include>IPXCommonSettingsBackground</include>
+		<control type="list" id="99999">
+			<description>Dummy Container Script Settings</description>
+			<hitrect x="0" y="0" w="0" h="0" />
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>0</width>
+			<height>0</height>
+			<onleft>9000</onleft>
+			<onright>9000</onright>
+			<onup>9000</onup>
+			<ondown>9000</ondown>
+			<pagecontrol>-</pagecontrol>
+			<itemlayout height="30" />
+			<focusedlayout height="30" />
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1280</width>
+			<height>720</height>
+			<texture background="true">settings.jpg</texture>
+		</control>
 
 		<control type="group">
 			<posx>90</posx>
@@ -21,7 +41,7 @@
 				<width>1100</width>
 				<height>640</height>
 				<texture border="20">IPX-DialogBack.png</texture>
-				<include>IPXSkinColor</include>
+				<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 			</control>
 			<control type="image">
 				<description>LOGO</description>
@@ -242,7 +262,7 @@
 				<height>100</height>
 				<aspectratio>stretch</aspectratio>
 				<texture>IPX-GlassTitleBar.png</texture>
-				<include>IPXSkinColor</include>
+				<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 			</control>
 			<control type="label">
 				<description>header label</description>
@@ -272,7 +292,7 @@
 						<height>45</height>
 						<font>font13_title</font>
 						<label>10000</label>
-						<include>IPXLabelColor</include>
+						<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 						<shadowcolor>FF000000</shadowcolor>
 						<textoffsetx>0</textoffsetx>
 						<align>left</align>
@@ -288,7 +308,8 @@
 							<hitrect x="0" y="0" w="750" h="40" />
 							<posx>0</posx>
 							<posy>0</posy>
-							<include>IPXSettingsWidthHeightCommonValues</include>
+							<width>750</width>
+							<height>40</height>
 							<onleft>9120</onleft>
 							<onright>9120</onright>
 							<onup>9102</onup>
@@ -300,14 +321,16 @@
 								<control type="image">
 									<posx>0</posx>
 									<posy>0</posy>
-									<include>IPXSettingsWidthHeightCommonValues</include>
+									<width>750</width>
+									<height>40</height>
 									<texture>IPX-MenuItemNF.png</texture>
 									<visible>![Control.HasFocus(9102) | Controlgroup(9120).HasFocus]</visible>
 								</control>
 								<control type="image">
 									<posx>0</posx>
 									<posy>0</posy>
-									<include>IPXSettingsWidthHeightCommonValues</include>
+									<width>750</width>
+									<height>40</height>
 									<texture>IPX-MenuItemFO.png</texture>
 									<visible>[Control.HasFocus(9102) | Controlgroup(9120).HasFocus]</visible>
 								</control>
@@ -368,7 +391,12 @@
 								<description>Menu Item Prev Button</description>
 								<posx>0</posx>
 								<posy>0</posy>
-								<include>IPXScrollDownButtonCommonValues</include>
+								<width>33</width>
+								<height>22</height>
+								<label>-</label>
+								<font>-</font>
+								<texturenofocus>IPX-scroll-down-2.png</texturenofocus>
+								<texturefocus>IPX-scroll-down-focus-2.png</texturefocus>
 								<onclick>Control.Move(9102,-1)</onclick>
 								<onleft>9000</onleft>
 								<onright>9122</onright>
@@ -379,7 +407,12 @@
 								<description>Menu Item Next Button</description>
 								<posx>33</posx>
 								<posy>0</posy>
-								<include>IPXScrollUpButtonCommonValues</include>
+								<width>33</width>
+								<height>22</height>
+								<label>-</label>
+								<font>-</font>
+								<texturenofocus>IPX-scroll-up-2.png</texturenofocus>
+								<texturefocus>IPX-scroll-up-focus-2.png</texturefocus>
 								<onclick>Control.Move(9102,1)</onclick>
 								<onleft>9121</onleft>
 								<onright>9000</onright>
@@ -395,7 +428,8 @@
 							<hitrect x="0" y="0" w="750" h="40" />
 							<posx>0</posx>
 							<posy>0</posy>
-							<include>IPXSettingsWidthHeightCommonValues</include>
+							<width>750</width>
+							<height>40</height>
 							<onleft>9170</onleft>
 							<onright>9170</onright>
 							<onup>9107</onup>
@@ -407,14 +441,16 @@
 								<control type="image">
 									<posx>0</posx>
 									<posy>0</posy>
-									<include>IPXSettingsWidthHeightCommonValues</include>
+									<width>750</width>
+									<height>40</height>
 									<texture>IPX-MenuItemNF.png</texture>
 									<visible>![Control.HasFocus(9107) | Controlgroup(9170).HasFocus]</visible>
 								</control>
 								<control type="image">
 									<posx>0</posx>
 									<posy>0</posy>
-									<include>IPXSettingsWidthHeightCommonValues</include>
+									<width>750</width>
+									<height>40</height>
 									<texture>IPX-MenuItemFO.png</texture>
 									<visible>[Control.HasFocus(9107) | Controlgroup(9170).HasFocus]</visible>
 								</control>
@@ -475,7 +511,12 @@
 								<description>Menu Item Prev Button</description>
 								<posx>0</posx>
 								<posy>0</posy>
-								<include>IPXScrollDownButtonCommonValues</include>
+								<width>33</width>
+								<height>22</height>
+								<label>-</label>
+								<font>-</font>
+								<texturenofocus>IPX-scroll-down-2.png</texturenofocus>
+								<texturefocus>IPX-scroll-down-focus-2.png</texturefocus>
 								<onclick>Control.Move(9107,-1)</onclick>
 								<onleft>9000</onleft>
 								<onright>9172</onright>
@@ -486,7 +527,12 @@
 								<description>Menu Item Next Button</description>
 								<posx>33</posx>
 								<posy>0</posy>
-								<include>IPXScrollUpButtonCommonValues</include>
+								<width>33</width>
+								<height>22</height>
+								<label>-</label>
+								<font>-</font>
+								<texturenofocus>IPX-scroll-up-2.png</texturenofocus>
+								<texturefocus>IPX-scroll-up-focus-2.png</texturefocus>
 								<onclick>Control.Move(9107,1)</onclick>
 								<onleft>9171</onleft>
 								<onright>9000</onright>
@@ -509,8 +555,17 @@
 						<control type="radiobutton" id="9103">
 							<posx>0</posx>
 							<posy>0</posy>
-							<include>IPXRadioButtonCommonValues</include>
-							<include>IPXSettingsButtonCommonValues</include>
+							<radiowidth>24</radiowidth>
+							<radioheight>24</radioheight>
+							<textureradioon>IPX-radiobutton-focus.png</textureradioon>
+							<textureradiooff>IPX-radiobutton-nofocus.png</textureradiooff>
+							<width>750</width>
+							<height>40</height>
+							<font>font13</font>
+							<textcolor>88FFFFFF</textcolor>
+							<focusedcolor>FFFFFFFF</focusedcolor>
+							<texturefocus>IPX-MenuItemFO.png</texturefocus>
+							<texturenofocus>IPX-MenuItemNF.png</texturenofocus>
 							<label>SCRIPT513</label>
 						</control>
 
@@ -521,7 +576,7 @@
 							<height>45</height>
 							<font>font13_title</font>
 							<label>SCRIPT1026</label>
-							<include>IPXLabelColor</include>
+							<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 							<shadowcolor>FF000000</shadowcolor>
 							<align>left</align>
 							<aligny>center</aligny>
@@ -529,15 +584,33 @@
 						<control type="radiobutton" id="9105">
 							<posx>0</posx>
 							<posy>0</posy>
-							<include>IPXRadioButtonCommonValues</include>
-							<include>IPXSettingsButtonCommonValues</include>
+							<radiowidth>24</radiowidth>
+							<radioheight>24</radioheight>
+							<textureradioon>IPX-radiobutton-focus.png</textureradioon>
+							<textureradiooff>IPX-radiobutton-nofocus.png</textureradiooff>
+							<width>750</width>
+							<height>40</height>
+							<font>font13</font>
+							<textcolor>88FFFFFF</textcolor>
+							<focusedcolor>FFFFFFFF</focusedcolor>
+							<texturefocus>IPX-MenuItemFO.png</texturefocus>
+							<texturenofocus>IPX-MenuItemNF.png</texturenofocus>
 							<label>SCRIPT515</label>
 						</control>
 						<control type="radiobutton" id="9106">
 							<posx>0</posx>
 							<posy>0</posy>
-							<include>IPXRadioButtonCommonValues</include>
-							<include>IPXSettingsButtonCommonValues</include>
+							<radiowidth>24</radiowidth>
+							<radioheight>24</radioheight>
+							<textureradioon>IPX-radiobutton-focus.png</textureradioon>
+							<textureradiooff>IPX-radiobutton-nofocus.png</textureradiooff>
+							<width>750</width>
+							<height>40</height>
+							<font>font13</font>
+							<textcolor>88FFFFFF</textcolor>
+							<focusedcolor>FFFFFFFF</focusedcolor>
+							<texturefocus>IPX-MenuItemFO.png</texturefocus>
+							<texturenofocus>IPX-MenuItemNF.png</texturenofocus>
 							<label>$LOCALIZE[SCRIPT514] [COLOR=88FFFFFF](Manager only)[/COLOR]</label>
 						</control>
 					</control>
@@ -556,7 +629,7 @@
 						<height>45</height>
 						<font>font13_title</font>
 						<label>166</label>
-						<include>IPXLabelColor</include>
+						<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 						<shadowcolor>FF000000</shadowcolor>
 						<disabledcolor>$INFO[Skin.String(PassionLabelHexColour)]</disabledcolor>
 						<textoffsetx>0</textoffsetx>
@@ -573,7 +646,8 @@
 							<hitrect x="0" y="0" w="750" h="40" />
 							<posx>0</posx>
 							<posy>0</posy>
-							<include>IPXSettingsWidthHeightCommonValues</include>
+							<width>750</width>
+							<height>40</height>
 							<onleft>9520</onleft>
 							<onright>9520</onright>
 							<onup>9502</onup>
@@ -585,14 +659,16 @@
 								<control type="image">
 									<posx>0</posx>
 									<posy>0</posy>
-									<include>IPXSettingsWidthHeightCommonValues</include>
+									<width>750</width>
+									<height>40</height>
 									<texture>IPX-MenuItemNF.png</texture>
 									<visible>![Control.HasFocus(9502) | Controlgroup(9520).HasFocus]</visible>
 								</control>
 								<control type="image">
 									<posx>0</posx>
 									<posy>0</posy>
-									<include>IPXSettingsWidthHeightCommonValues</include>
+									<width>750</width>
+									<height>40</height>
 									<texture>IPX-MenuItemFO.png</texture>
 									<visible>[Control.HasFocus(9502) | Controlgroup(9520).HasFocus]</visible>
 								</control>
@@ -653,7 +729,12 @@
 								<description>Menu Item Prev Button</description>
 								<posx>0</posx>
 								<posy>0</posy>
-								<include>IPXScrollDownButtonCommonValues</include>
+								<width>33</width>
+								<height>22</height>
+								<label>-</label>
+								<font>-</font>
+								<texturenofocus>IPX-scroll-down-2.png</texturenofocus>
+								<texturefocus>IPX-scroll-down-focus-2.png</texturefocus>
 								<onclick>Control.Move(9502,-1)</onclick>
 								<onleft>9000</onleft>
 								<onright>9522</onright>
@@ -664,7 +745,12 @@
 								<description>Menu Item Next Button</description>
 								<posx>33</posx>
 								<posy>0</posy>
-								<include>IPXScrollUpButtonCommonValues</include>
+								<width>33</width>
+								<height>22</height>
+								<label>-</label>
+								<font>-</font>
+								<texturenofocus>IPX-scroll-up-2.png</texturenofocus>
+								<texturefocus>IPX-scroll-up-focus-2.png</texturefocus>
 								<onclick>Control.Move(9502,1)</onclick>
 								<onleft>9521</onleft>
 								<onright>9000</onright>
@@ -707,7 +793,8 @@
 								<hitrect x="0" y="0" w="740" h="40" />
 								<posx>0</posx>
 								<posy>0</posy>
-								<include>IPXSettingsWidthHeightCommonValues</include>
+								<width>750</width>
+								<height>40</height>
 								<onleft>9560</onleft>
 								<onright>9560</onright>
 								<onup>9506</onup>
@@ -719,14 +806,16 @@
 									<control type="image">
 										<posx>0</posx>
 										<posy>0</posy>
-										<include>IPXSettingsWidthHeightCommonValues</include>
+										<width>750</width>
+										<height>40</height>
 										<texture>IPX-MenuItemNF.png</texture>
 										<visible>![Control.HasFocus(9506) | Controlgroup(9560).HasFocus]</visible>
 									</control>
 									<control type="image">
 										<posx>0</posx>
 										<posy>0</posy>
-										<include>IPXSettingsWidthHeightCommonValues</include>
+										<width>750</width>
+										<height>40</height>
 										<texture>IPX-MenuItemFO.png</texture>
 										<visible>!Skin.HasSetting(synchronize_colors_listing) + [Control.HasFocus(9506) | Controlgroup(9560).HasFocus]</visible>
 									</control>
@@ -797,7 +886,12 @@
 									<description>Menu Item Prev Button</description>
 									<posx>0</posx>
 									<posy>0</posy>
-									<include>IPXScrollDownButtonCommonValues</include>
+									<width>33</width>
+									<height>22</height>
+									<label>-</label>
+									<font>-</font>
+									<texturenofocus>IPX-scroll-down-2.png</texturenofocus>
+									<texturefocus>IPX-scroll-down-focus-2.png</texturefocus>
 									<onclick>Control.Move(9506,-1)</onclick>
 									<enable>!Skin.HasSetting(synchronize_colors_listing)</enable>
 								</control>
@@ -805,7 +899,12 @@
 									<description>Menu Item Next Button</description>
 									<posx>33</posx>
 									<posy>0</posy>
-									<include>IPXScrollUpButtonCommonValues</include>
+									<width>33</width>
+									<height>22</height>
+									<label>-</label>
+									<font>-</font>
+									<texturenofocus>IPX-scroll-up-2.png</texturenofocus>
+									<texturefocus>IPX-scroll-up-focus-2.png</texturefocus>
 									<onclick>Control.Move(9506,1)</onclick>
 									<enable>!Skin.HasSetting(synchronize_colors_listing)</enable>
 								</control>
@@ -818,7 +917,8 @@
 								<hitrect x="0" y="0" w="740" h="40" />
 								<posx>0</posx>
 								<posy>0</posy>
-								<include>IPXSettingsWidthHeightCommonValues</include>
+								<width>750</width>
+								<height>40</height>
 								<onleft>9530</onleft>
 								<onright>9530</onright>
 								<onup>9503</onup>
@@ -830,14 +930,16 @@
 									<control type="image">
 										<posx>0</posx>
 										<posy>0</posy>
-										<include>IPXSettingsWidthHeightCommonValues</include>
+										<width>750</width>
+										<height>40</height>
 										<texture>IPX-MenuItemNF.png</texture>
 										<visible>![Control.HasFocus(9503) | Controlgroup(9530).HasFocus]</visible>
 									</control>
 									<control type="image">
 										<posx>0</posx>
 										<posy>0</posy>
-										<include>IPXSettingsWidthHeightCommonValues</include>
+										<width>750</width>
+										<height>40</height>
 										<texture>IPX-MenuItemFO.png</texture>
 										<visible>!Skin.HasSetting(synchronize_colors_listing) + [Control.HasFocus(9503) | Controlgroup(9530).HasFocus]</visible>
 									</control>
@@ -916,7 +1018,12 @@
 									<description>Menu Item Prev Button</description>
 									<posx>0</posx>
 									<posy>0</posy>
-									<include>IPXScrollDownButtonCommonValues</include>
+									<width>33</width>
+									<height>22</height>
+									<label>-</label>
+									<font>-</font>
+									<texturenofocus>IPX-scroll-down-2.png</texturenofocus>
+									<texturefocus>IPX-scroll-down-focus-2.png</texturefocus>
 									<onclick>Control.Move(9503,-1)</onclick>
 									<onleft>9000</onleft>
 									<onright>9532</onright>
@@ -928,7 +1035,12 @@
 									<description>Menu Item Next Button</description>
 									<posx>33</posx>
 									<posy>0</posy>
-									<include>IPXScrollUpButtonCommonValues</include>
+									<width>33</width>
+									<height>22</height>
+									<label>-</label>
+									<font>-</font>
+									<texturenofocus>IPX-scroll-up-2.png</texturenofocus>
+									<texturefocus>IPX-scroll-up-focus-2.png</texturefocus>
 									<onclick>Control.Move(9503,1)</onclick>
 									<onleft>9531</onleft>
 									<onright>9507</onright>
@@ -946,7 +1058,7 @@
 						<height>45</height>
 						<font>font13_title</font>
 						<label>SCRIPT1026</label>
-						<include>IPXLabelColor</include>
+						<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 						<shadowcolor>FF000000</shadowcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -958,7 +1070,8 @@
 							<hitrect x="0" y="0" w="750" h="40" />
 							<posx>0</posx>
 							<posy>0</posy>
-							<include>IPXSettingsWidthHeightCommonValues</include>
+							<width>750</width>
+							<height>40</height>
 							<onleft>9550</onleft>
 							<onright>9550</onright>
 							<onup>9505</onup>
@@ -970,14 +1083,16 @@
 								<control type="image">
 									<posx>0</posx>
 									<posy>0</posy>
-									<include>IPXSettingsWidthHeightCommonValues</include>
+									<width>750</width>
+									<height>40</height>
 									<texture>IPX-MenuItemNF.png</texture>
 									<visible>![Control.HasFocus(9505) | Controlgroup(9550).HasFocus]</visible>
 								</control>
 								<control type="image">
 									<posx>0</posx>
 									<posy>0</posy>
-									<include>IPXSettingsWidthHeightCommonValues</include>
+									<width>750</width>
+									<height>40</height>
 									<texture>IPX-MenuItemFO.png</texture>
 									<visible>[Control.HasFocus(9505) | Controlgroup(9550).HasFocus]</visible>
 								</control>
@@ -1038,7 +1153,12 @@
 								<description>Menu Item Prev Button</description>
 								<posx>0</posx>
 								<posy>0</posy>
-								<include>IPXScrollDownButtonCommonValues</include>
+								<width>33</width>
+								<height>22</height>
+								<label>-</label>
+								<font>-</font>
+								<texturenofocus>IPX-scroll-down-2.png</texturenofocus>
+								<texturefocus>IPX-scroll-down-focus-2.png</texturefocus>
 								<onclick>Control.Move(9505,-1)</onclick>
 								<onleft>9000</onleft>
 								<onright>9552</onright>
@@ -1049,7 +1169,12 @@
 								<description>Menu Item Next Button</description>
 								<posx>33</posx>
 								<posy>0</posy>
-								<include>IPXScrollUpButtonCommonValues</include>
+								<width>33</width>
+								<height>22</height>
+								<label>-</label>
+								<font>-</font>
+								<texturenofocus>IPX-scroll-up-2.png</texturenofocus>
+								<texturefocus>IPX-scroll-up-focus-2.png</texturefocus>
 								<onclick>Control.Move(9505,1)</onclick>
 								<onleft>9551</onleft>
 								<onright>9000</onright>
@@ -1073,7 +1198,7 @@
 						<height>45</height>
 						<font>font13_title</font>
 						<label>Topics</label>
-						<include>IPXLabelColor</include>
+						<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 						<shadowcolor>FF000000</shadowcolor>
 						<disabledcolor>$INFO[Skin.String(PassionLabelHexColour)]</disabledcolor>
 						<textoffsetx>0</textoffsetx>
@@ -1090,7 +1215,8 @@
 							<hitrect x="0" y="0" w="750" h="40" />
 							<posx>0</posx>
 							<posy>0</posy>
-							<include>IPXSettingsWidthHeightCommonValues</include>
+							<width>750</width>
+							<height>40</height>
 							<onleft>9220</onleft>
 							<onright>9220</onright>
 							<onup>9202</onup>
@@ -1102,14 +1228,16 @@
 								<control type="image">
 									<posx>0</posx>
 									<posy>0</posy>
-									<include>IPXSettingsWidthHeightCommonValues</include>
+									<width>750</width>
+									<height>40</height>
 									<texture>IPX-MenuItemNF.png</texture>
 									<visible>![Control.HasFocus(9202) | Controlgroup(9220).HasFocus]</visible>
 								</control>
 								<control type="image">
 									<posx>0</posx>
 									<posy>0</posy>
-									<include>IPXSettingsWidthHeightCommonValues</include>
+									<width>750</width>
+									<height>40</height>
 									<texture>IPX-MenuItemFO.png</texture>
 									<visible>[Control.HasFocus(9202) | Controlgroup(9220).HasFocus]</visible>
 								</control>
@@ -1170,7 +1298,12 @@
 								<description>Menu Item Prev Button</description>
 								<posx>0</posx>
 								<posy>0</posy>
-								<include>IPXScrollDownButtonCommonValues</include>
+								<width>33</width>
+								<height>22</height>
+								<label>-</label>
+								<font>-</font>
+								<texturenofocus>IPX-scroll-down-2.png</texturenofocus>
+								<texturefocus>IPX-scroll-down-focus-2.png</texturefocus>
 								<onclick>Control.Move(9202,-1)</onclick>
 								<onleft>9000</onleft>
 								<onright>9222</onright>
@@ -1181,7 +1314,12 @@
 								<description>Menu Item Next Button</description>
 								<posx>33</posx>
 								<posy>0</posy>
-								<include>IPXScrollUpButtonCommonValues</include>
+								<width>33</width>
+								<height>22</height>
+								<label>-</label>
+								<font>-</font>
+								<texturenofocus>IPX-scroll-up-2.png</texturenofocus>
+								<texturefocus>IPX-scroll-up-focus-2.png</texturefocus>
 								<onclick>Control.Move(9202,1)</onclick>
 								<onleft>9221</onleft>
 								<onright>9000</onright>
@@ -1210,7 +1348,7 @@
 							<height>45</height>
 							<font>font13_title</font>
 							<label>Web</label>
-							<include>IPXLabelColor</include>
+							<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 							<shadowcolor>FF000000</shadowcolor>
 							<align>left</align>
 							<aligny>center</aligny>
@@ -1218,15 +1356,30 @@
 						<control type="button" id="9204">
 							<posx>0</posx>
 							<posy>0</posy>
-							<include>IPXSettingsButtonCommonValues</include>
+							<width>750</width>
+							<height>40</height>
+							<font>font13</font>
+							<textcolor>88FFFFFF</textcolor>
+							<focusedcolor>FFFFFFFF</focusedcolor>
+							<texturefocus>IPX-MenuItemFO.png</texturefocus>
+							<texturenofocus>IPX-MenuItemNF.png</texturenofocus>
 							<label>SCRIPT518</label>
 							<label2>SCRIPT506</label2>
 						</control>
 						<control type="radiobutton" id="9205">
 							<posx>0</posx>
 							<posy>0</posy>
-							<include>IPXRadioButtonCommonValues</include>
-							<include>IPXSettingsButtonCommonValues</include>
+							<radiowidth>24</radiowidth>
+							<radioheight>24</radioheight>
+							<textureradioon>IPX-radiobutton-focus.png</textureradioon>
+							<textureradiooff>IPX-radiobutton-nofocus.png</textureradiooff>
+							<width>750</width>
+							<height>40</height>
+							<font>font13</font>
+							<textcolor>88FFFFFF</textcolor>
+							<focusedcolor>FFFFFFFF</focusedcolor>
+							<texturefocus>IPX-MenuItemFO.png</texturefocus>
+							<texturenofocus>IPX-MenuItemNF.png</texturenofocus>
 							<label>SCRIPT519</label>
 							<onclick>-</onclick>
 							<selected>-</selected>
@@ -1285,7 +1438,7 @@
 						<height>45</height>
 						<font>font13_title</font>
 						<label>Cliquer pour obtenir de l'aide!</label>
-						<include>IPXLabelColor</include>
+						<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 						<shadowcolor>FF000000</shadowcolor>
 						<align>center</align>
 						<aligny>center</aligny>
@@ -1316,7 +1469,7 @@
 						<height>45</height>
 						<font>font13_title</font>
 						<label>Cliquer pour obtenir de l'aide!</label>
-						<include>IPXLabelColor</include>
+						<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 						<shadowcolor>FF000000</shadowcolor>
 						<align>center</align>
 						<aligny>center</aligny>
@@ -1337,7 +1490,7 @@
 				<width>250</width>
 				<height>35</height>
 				<texture border="0,0,32,0">IPX-header.png</texture>
-				<include>IPXSkinColor</include>
+				<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 			</control>
 			<control type="label">
 				<posx>220</posx>
@@ -1353,8 +1506,58 @@
 			</control>
 		</control>
 
-		<include>IPXWindowTitleHomeButton</include>
-		<include>IPXClock</include>
+		<control type="group">
+			<posx>20</posx>
+			<posy>0</posy>
+			<animation effect="slide" end="-270,0" time="400" tween="quadratic" easing="out">WindowClose</animation>
+			<animation effect="slide" start="-270,0" time="400" tween="quadratic" easing="out">WindowOpen</animation>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>80</width>
+				<height>35</height>
+				<texture border="0,0,32,0">IPX-header.png</texture>
+				<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+			</control>
+			<control type="button" id="320">
+				<hitrect x="0" y="0" w="60" h="30" />
+				<posx>20</posx>
+				<posy>5</posy>
+				<width>25</width>
+				<height>20</height>
+				<texturenofocus>IPX-HomeIcon.png</texturenofocus>
+				<texturefocus>IPX-HomeIcon-Focus.png</texturefocus>
+				<label>-</label>
+			</control>
+		</control>
+		<control type="group">
+			<posx>160r</posx>
+			<posy>0</posy>
+			<animation effect="slide" start="0,0" end="-60,0" delay="0" time="300" condition="Window.IsVisible(MuteBug)">conditional</animation>
+			<animation effect="slide" start="0,0" end="210,0" delay="0" time="300" condition="Window.Next(IPX-Home.xml) | Window.IsVisible(FullscreenVideo) | Window.IsVisible(Visualisation)">WindowClose</animation>
+			<animation effect="slide" start="210,0" end="0,0" delay="0" time="300" condition="Window.Previous(IPX-Home.xml) | Window.IsVisible(FullscreenVideo) | Window.IsVisible(Visualisation)">WindowOpen</animation>
+			<control type="image">
+				<description>time background</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>150</width>
+				<height>35</height>
+				<texture flipx="true" border="32,0,0,0">IPX-header.png</texture>
+				<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+			</control>
+			<control type="label">
+				<description>time label</description>
+				<posx>30</posx>
+				<posy>0</posy>
+				<width>400</width>
+				<height>28</height>
+				<align>left</align>
+				<aligny>center</aligny>
+				<font>font12</font>
+				<textcolor>FFFFFFFF</textcolor>
+				<label>$INFO[System.Time]</label>
+			</control>
+		</control>
 
 		<control type="image">
 			<posx>-820</posx>
@@ -1362,7 +1565,7 @@
 			<width>846</width>
 			<height>720</height>
 			<texture>IPX-HomeBlade.png</texture>
-			<include>IPXSkinColor</include>
+			<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 		</control>
 		<control type="image">
 			<posx>26r</posx>
@@ -1370,7 +1573,7 @@
 			<width>846</width>
 			<height>720</height>
 			<texture flipx="true">IPX-HomeBlade.png</texture>
-			<include>IPXSkinColor</include>
+			<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 		</control>
 
 	</controls>

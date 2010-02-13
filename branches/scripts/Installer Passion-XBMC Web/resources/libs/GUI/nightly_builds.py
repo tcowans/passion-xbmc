@@ -30,7 +30,22 @@ NIGHTLY_BUILDS_DATA = os.path.join( SPECIAL_SCRIPT_DATA, "nightly_builds.svn" )
 PLATFORM_DIR = os.path.join( os.getcwd(), "resources", "platform_updater", os.environ.get( "OS", "xbox" ) )
 EXCLUDE_TXT = os.path.join( PLATFORM_DIR, "exclude.txt" )
 
-__script__ = "IPX"#sys.modules[ "__main__" ].__script__
+__script__ = "IPX"
+
+CURRENT_REV = xbmc.getInfoLabel( "System.BuildVersion" ).split( " r" )[ -1 ].strip( " r" )
+
+
+def get_fresh_userdata():
+    try:
+        tarball = "http://xbmc.svn.sourceforge.net/viewvc/xbmc/branches/xbox/userdata.tar.gz?view=tar"
+        targz = os.path.join( PLATFORM_DIR, "userdata.tar.gz" )
+        fp, h = urllib.urlretrieve( tarball, targz )
+        from extractor import extract
+        OK = extract( fp, PLATFORM_DIR )[ 1 ]
+        os.remove( targz )
+        del extract
+    except:
+        print_exc()
 
 
 def _samefile( src, dst ):
@@ -194,11 +209,13 @@ class Nightly( xbmcgui.WindowXMLDialog ):
         xbmcgui.WindowXMLDialog.__init__( self, *args, **kwargs )
         xbmc.executebuiltin( "Skin.Reset(AnimeWindowXMLDialogClose)" )
         xbmc.executebuiltin( "Skin.SetBool(AnimeWindowXMLDialogClose)" )
+        self._close_script = kwargs[ "close_script" ]
         self._get_nightly_builds()
 
     def onInit( self ):
         try:
             self._set_containers()
+            get_fresh_userdata()
         except:
             print_exc()
 
@@ -207,7 +224,7 @@ class Nightly( xbmcgui.WindowXMLDialog ):
         try:
             nightly_builds = self._load_nightly_data( refresh )
             if nightly_builds is None:
-                nightly_builds = get_nightly_builds( xbmc.getInfoLabel( "System.BuildVersion" ).split( " r" )[ -1 ] )
+                nightly_builds = get_nightly_builds( CURRENT_REV )
                 try: file( NIGHTLY_BUILDS_DATA, "w" ).write( repr( nightly_builds ) )
                 except: print_exc()
             # types : str, str, str, str, list returned by get_nightly_builds
@@ -278,7 +295,7 @@ class Nightly( xbmcgui.WindowXMLDialog ):
                         InfoPaths.write( 'xbmc_install_path="%s"\n' % xbmc.translatePath( "special://xbmc/" ) )
                         InfoPaths.write( 'xbmc_build="%s"\n' % new_build )
                         InfoPaths.write( 'exclude_txt="%s"\n' % exclude_txt )
-                        InfoPaths.write( 'backup_revision=r%s\n' % xbmc.getInfoLabel( "System.BuildVersion" ).split( " r" )[ -1 ] )
+                        InfoPaths.write( 'backup_revision=r%s\n' % CURRENT_REV )
                         # add info xbmc run on portable mode true or false
                         InfoPaths.write( 'xbmc_is_portable="%s"\n' % repr( _samefile( xbmc.translatePath( "special://xbmc/" ), xbmc.translatePath( "special://home/" ) ) ).lower() )
                         InfoPaths.close()
@@ -295,9 +312,19 @@ class Nightly( xbmcgui.WindowXMLDialog ):
                     copy( os.path.join( PLATFORM_DIR, "paths.txt" ), os.path.join( xbmc.translatePath( "special://xbmc/" ), "paths.txt" ) )
                     build_path = re.findall( 'xbmc_build="(.*?)"', file( os.path.join( xbmc.translatePath( "special://xbmc/" ), "paths.txt" ), "r" ).read() )[ 0 ]
                     build_name = os.path.basename( build_path )
-                    if xbmcgui.Dialog().yesno( "XBMC %s Updater" % os.environ.get( "OS", "XBox" ), "Confirmer le lancement de la mise à jour.", "Votre version: " + xbmc.getInfoLabel( "System.BuildVersion" ), "MAJ vers: " + build_name ):
-                        command = '"%s"' % platform_updater
-                        os.system( command )
+                    info_compiled = xbmc.getInfoLabel( "System.BuildVersion" )
+                    if not CURRENT_REV.isdigit():
+                        info_compiled += ", " + xbmc.getInfoLabel( "System.BuildDate" )
+                    if xbmcgui.Dialog().yesno( "XBMC %s Updater" % os.environ.get( "OS", "XBox" ), "Confirmer le lancement de la mise à jour.", "Votre version: " + info_compiled, "MAJ vers: " + build_name ):
+                        if os.environ.get( "OS", "XBox" ).lower() == "xbox":
+                            sys.path.append( PLATFORM_DIR )
+                            import updater
+                            self._close_dialog()
+                            self._close_script()
+                            updater.Main()
+                        else:
+                            command = '"%s"' % platform_updater
+                            os.system( command )
                 else:
                     xbmcgui.Dialog().ok( "XBMC %s Updater" % os.environ.get( "OS", "XBox" ), "Il y a pas d'Updater pour vôtre Platform!", "Soyez patient cela serait tardé!" )
             elif controlID == 6:
@@ -310,17 +337,20 @@ class Nightly( xbmcgui.WindowXMLDialog ):
 
     def onAction( self, action ):
         if action in ( 9, 10, ):
+            self._close_dialog()
+
+    def _close_dialog( self ):
             xbmc.executebuiltin( "Skin.Reset(AnimeWindowXMLDialogClose)" )
             time.sleep( .4 )
             self.close()
 
 
 
-def show_nightly():
-    file_xml = "IPX-Nightly.xml"
+def show_nightly( close_script ):
+    file_xml = "IPX-Nightly.xml"#"IPX-Updater.xml"
     dir_path = os.getcwd().replace( ";", "" )
     current_skin, force_fallback = getUserSkin()
 
-    w = Nightly( file_xml, dir_path, current_skin, force_fallback )
+    w = Nightly( file_xml, dir_path, current_skin, force_fallback, close_script=close_script )
     w.doModal()
     del w

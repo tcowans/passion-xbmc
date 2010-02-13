@@ -273,4 +273,44 @@
   <string id="32660">Effacement des Caches</string>
   <string id="32661">Vider les Caches</string>
   <string id="32662">Vider tous les Caches de l'Installer Passion-XBMC</string>
+
+  <!-- XBMC SVN Updater for XBox -->
+  <string id="32700">Attention !</string>
+  <string id="32701">Dans ce menu, vous pourrez supprimer, renommer, copier... des fichiers de votre XBox et même formater une partition. Une mauvaise manipulation peut aboutir à une erreur système. N'utilisez ce menu que si vous savez exactement ce que vous faites.</string>
+  <string id="32702">Attention! À lire...</string>
+  <string id="32709">Avant de commencer l'Updater va faire un test de vérification. Il va vérifier l'existence de la Build et de votre dossier d'installation d'XBMC. S'il n'y a pas d'erreur pendant cette vérification, une demande de confirmation de mise à jour vous sera demandé.</string>
+  <string id="32749">MAJ</string>
+  <string id="32750">Exécuter la mise à jour maintenant</string>
+  <string id="32751">Appuyez sur "OUI" pour exécuter la mise à jour pour votre XBMC. Et ne toucher à rien qui pourrait faire aboutir à une erreur système. Soyez patient et attendez la confirmation du succès de la mise à jour.</string>
+  <string id="32752">Mise à jour effectuée avec succès.\nVoulez-vous retourner sur XBMC ?</string>
+  <string id="32753">Redémarrage d'XBMC...</string>
+  <string id="32760">Retourner sur XBMC</string>
+  <string id="32761">Redémarrer l'Updater</string>
+  <string id="32770">Redémarrer la XBox</string>
+  <string id="32780">Éteindre la XBox</string>
+  <string id="32789">Répertoire d'installation d'XBMC</string>
+  <string id="32790">Gestionnaire de fichiers</string>
+  <string id="32791">Éditeur de texte</string>
+  <string id="32795">Paramètres</string>
+
+  <string id="32799">Succès</string>
+  <string id="32800">Cleaner</string>
+  <string id="32801">À Propos de cette Section</string>
+  <string id="32802">Le Cleaner a pour but de remettre XBMC   à Zéro. Il va supprimer les dossiers et/ou les fichiers qui ont été créés lors de la première utilisation d'XBMC ou de simplement effacer les paramètres. Il permet aussi de vider les caches E, X, Y, Z.</string>
+  <string id="32810">Remettre XBMC à Zéro</string>
+  <string id="32811">Confirmer la remise à zéro d'XBMC.\nAttention, cette action va remettre le dossier "UserData" à l'état original et vous perdrez tous: [Database, thumbnails, guisettings, Advancedsettings, ...]. Voulez-vous continuer ?</string>
+  <string id="32812">Entrer un nom pour créer un backup, juste au cas!</string>
+  <string id="32813">Remise à zéro d'XBMC terminée.</string>
+  <string id="32820">Effacer les paramètres d'XBMC</string>
+  <string id="32821">Confirmer l'effacer des paramètres d'XBMC.\nAttention, cette action va supprimer le fichier guisettings.xml. Voulez-vous continuer ?</string>
+  <string id="32822">Effacement des paramètres d'XBMC terminée.</string>
+  <string id="32830">Effacer la sauvegarde d'XBMC</string>
+  <string id="32831">Confirmer effacement de la sauvegarde d'XBMC.\nUtile seulement pour effacer les traces d'une vielle version d'XBMC. Voulez-vous continuer ?</string>
+  <string id="32832">Effacement de la sauvegarde terminée.</string>
+  <string id="32840">Vider les Caches X, Y &amp; Z</string>
+  <string id="32841">Confirmer la vidange des Caches X:\, Y:\, Z:\. Voulez-vous continuer ?</string>
+  <string id="32842">Vidange des Caches terminés.</string>
+  <string id="32850">Vider le Cache E</string>
+  <string id="32851">Confirmer la vidange du Cache E:\CACHE\nVoulez-vous continuer ?</string>
+  <string id="32852">Vidange du Cache E terminé.</string>
 </strings>

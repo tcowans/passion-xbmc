@@ -103,7 +103,7 @@
 					<width>1280</width>
 					<height>100</height>
 					<font>font35_title</font>
-					<include>IPXLabelColor</include>
+					<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 					<shadowcolor>FFb4b4b4</shadowcolor>
 					<scroll>false</scroll>
 					<align>center</align>
@@ -223,7 +223,7 @@
 				<width>1280</width>
 				<height>100</height>
 				<font>font35_title</font>
-				<include>IPXLabelColor</include>
+				<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 				<shadowcolor>FFb4b4b4</shadowcolor>
 				<scroll>false</scroll>
 				<align>center</align>
@@ -266,7 +266,7 @@
 					<width>630</width>
 					<height>56</height>
 					<font>font30_title</font>
-					<include>IPXLabelColor</include>
+					<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 					<shadowcolor>FFb4b4b4</shadowcolor>
 					<scroll>false</scroll>
 					<align>right</align>
@@ -320,7 +320,7 @@ Administrator
 					<width>250</width>
 					<height>56</height>
 					<font>font30_title</font>
-					<include>IPXLabelColor</include>
+					<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 					<shadowcolor>FFb4b4b4</shadowcolor>
 					<scroll>false</scroll>
 					<align>left</align>
@@ -389,7 +389,7 @@ $LOCALIZE[SCRIPT709]
 					<width>630</width>
 					<height>56</height>
 					<font>font30_title</font>
-					<include>IPXLabelColor</include>
+					<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 					<shadowcolor>FFb4b4b4</shadowcolor>
 					<scroll>false</scroll>
 					<align>right</align>
@@ -444,7 +444,7 @@ $LOCALIZE[SCRIPT709]
 					<width>630</width>
 					<height>56</height>
 					<font>font30_title</font>
-					<include>IPXLabelColor</include>
+					<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 					<shadowcolor>FFb4b4b4</shadowcolor>
 					<scroll>false</scroll>
 					<align>left</align>
@@ -482,7 +482,7 @@ $LOCALIZE[SCRIPT709]
 				<width>1280</width>
 				<height>100</height>
 				<font>font35_title</font>
-				<include>IPXLabelColor</include>
+				<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 				<shadowcolor>FFb4b4b4</shadowcolor>
 				<scroll>false</scroll>
 				<align>center</align>
@@ -535,7 +535,7 @@ ppic [COLOR=88FFFFFF]- CDT[/COLOR]
 				<width>1280</width>
 				<height>100</height>
 				<font>font35_title</font>
-				<include>IPXLabelColor</include>
+				<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 				<shadowcolor>FFb4b4b4</shadowcolor>
 				<scroll>false</scroll>
 				<align>center</align>
@@ -660,7 +660,7 @@ Installer Passion-XBMC [COLOR=88FFFFFF](French support): http://passion-xbmc.org
 			<width>1280</width>
 			<height>720</height>
 			<texture>ToBeContinued.jpg</texture>
-			<include>IPXSkinColor</include>
+			<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 			<animation type="WindowOpen" reversible="false">
 				<effect type="fade" start="0" end="100" delay="195000" time="10000" />
 				<effect type="zoom" center="auto" start="10" end="100" delay="195000" time="10000" tween="linear" easing="out" />
@@ -677,11 +677,13 @@ Installer Passion-XBMC [COLOR=88FFFFFF](French support): http://passion-xbmc.org
 				<width>1280</width>
 				<height>64</height>
 				<texture>IPX-floor.png</texture>
-				<include>IPXSkinColor</include>
-				<include>IPXVisibleFadeEffect</include>
+				<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+				<animation effect="fade" time="300">Visible</animation>
+				<animation effect="fade" time="300">Hidden</animation>
 			</control>
 			<control type="grouplist" id="9001">
-				<include>IPXVisibleFadeEffect</include>
+				<animation effect="fade" time="300">Visible</animation>
+				<animation effect="fade" time="300">Hidden</animation>
 				<description>option buttons</description>
 				<posx>0</posx>
 				<posy>57r</posy>
@@ -758,7 +760,7 @@ Installer Passion-XBMC [COLOR=88FFFFFF](French support): http://passion-xbmc.org
 				<width>846</width>
 				<height>720</height>
 				<texture>IPX-HomeBlade.png</texture>
-				<include>IPXSkinColor</include>
+				<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 			</control>
 			<control type="image">
 				<posx>26r</posx>
@@ -766,7 +768,7 @@ Installer Passion-XBMC [COLOR=88FFFFFF](French support): http://passion-xbmc.org
 				<width>846</width>
 				<height>720</height>
 				<texture flipx="true">IPX-HomeBlade.png</texture>
-				<include>IPXSkinColor</include>
+				<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 			</control>
 		</control>
 
@@ -782,7 +784,7 @@ Installer Passion-XBMC [COLOR=88FFFFFF](French support): http://passion-xbmc.org
 				<width>250</width>
 				<height>35</height>
 				<texture border="0,0,32,0">IPX-header.png</texture>
-				<include>IPXSkinColor</include>
+				<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 			</control>
 			<control type="label">
 				<posx>220</posx>
@@ -798,7 +800,57 @@ Installer Passion-XBMC [COLOR=88FFFFFF](French support): http://passion-xbmc.org
 			</control>
 		</control>
 
-		<include>IPXWindowTitleHomeButton</include>
-		<include>IPXClock</include>
+		<control type="group">
+			<posx>20</posx>
+			<posy>0</posy>
+			<animation effect="slide" end="-270,0" time="400" tween="quadratic" easing="out">WindowClose</animation>
+			<animation effect="slide" start="-270,0" time="400" tween="quadratic" easing="out">WindowOpen</animation>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>80</width>
+				<height>35</height>
+				<texture border="0,0,32,0">IPX-header.png</texture>
+				<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+			</control>
+			<control type="button" id="320">
+				<hitrect x="0" y="0" w="60" h="30" />
+				<posx>20</posx>
+				<posy>5</posy>
+				<width>25</width>
+				<height>20</height>
+				<texturenofocus>IPX-HomeIcon.png</texturenofocus>
+				<texturefocus>IPX-HomeIcon-Focus.png</texturefocus>
+				<label>-</label>
+			</control>
+		</control>
+		<control type="group">
+			<posx>160r</posx>
+			<posy>0</posy>
+			<animation effect="slide" start="0,0" end="-60,0" delay="0" time="300" condition="Window.IsVisible(MuteBug)">conditional</animation>
+			<animation effect="slide" start="0,0" end="210,0" delay="0" time="300" condition="Window.Next(IPX-Home.xml) | Window.IsVisible(FullscreenVideo) | Window.IsVisible(Visualisation)">WindowClose</animation>
+			<animation effect="slide" start="210,0" end="0,0" delay="0" time="300" condition="Window.Previous(IPX-Home.xml) | Window.IsVisible(FullscreenVideo) | Window.IsVisible(Visualisation)">WindowOpen</animation>
+			<control type="image">
+				<description>time background</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>150</width>
+				<height>35</height>
+				<texture flipx="true" border="32,0,0,0">IPX-header.png</texture>
+				<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+			</control>
+			<control type="label">
+				<description>time label</description>
+				<posx>30</posx>
+				<posy>0</posy>
+				<width>400</width>
+				<height>28</height>
+				<align>left</align>
+				<aligny>center</aligny>
+				<font>font12</font>
+				<textcolor>FFFFFFFF</textcolor>
+				<label>$INFO[System.Time]</label>
+			</control>
+		</control>
 	</controls>
 </window>

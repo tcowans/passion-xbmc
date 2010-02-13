@@ -202,7 +202,7 @@ class Home( xbmcgui.WindowXML ):
         self.last_pos_container_9000 = xbmc.getInfoLabel( "Container(9000).Position" )
         try:
             import nightly_builds
-            nightly_builds.show_nightly()
+            nightly_builds.show_nightly( self._close_script )
             del nightly_builds
         except:
             print_exc()

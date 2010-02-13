@@ -17,7 +17,7 @@ __author__       = "Team Passion-XBMC"
 __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/Installer%20Passion-XBMC/"
 __credits__      = "Team XBMC, http://xbmc.org/"
-__platform__     = "xbmc media center"
+__platform__     = "xbmc media center, [ALL]"
 
 __version__      = "pre-2.0"
 __statut__       = "DevHD; Beta 2" #(dev,svn,release,etc)
@@ -109,12 +109,12 @@ def MAIN():
         pass
 
     #setup skins utilities and reload xbmc skin if necessary
-    import skins_utilities
-    if skins_utilities.setupUtilities():
-        print "Reloaded Skin: %s" % xbmc.getSkinDir()
-        xbmc.executebuiltin( "XBMC.Notification(%s,Reloaded Skin...,3000,%s)" % ( xbmc.getSkinDir(), os.path.join( os.getcwd(), "default.tbn" ), ) )
-        xbmc.executebuiltin( "XBMC.ReloadSkin()" )
-        xbmc.sleep( 2000 )
+    #import skins_utilities
+    #if skins_utilities.setupUtilities():
+    #    print "Reloaded Skin: %s" % xbmc.getSkinDir()
+    #    xbmc.executebuiltin( "XBMC.Notification(%s,Reloaded Skin...,3000,%s)" % ( xbmc.getSkinDir(), os.path.join( os.getcwd(), "default.tbn" ), ) )
+    #    xbmc.executebuiltin( "XBMC.ReloadSkin()" )
+    #    xbmc.sleep( 2000 )
 
     try:
         # INITIALISATION CHEMINS DE FICHIER LOCAUX
