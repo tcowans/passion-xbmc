@@ -3,7 +3,21 @@
 	<allowoverlay>no</allowoverlay>
 
 	<controls>
-		<include>IPXContainerSettings</include>
+		<control type="list" id="99999">
+			<description>Dummy Container Script Settings</description>
+			<hitrect x="0" y="0" w="0" h="0" />
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>0</width>
+			<height>0</height>
+			<onleft>9000</onleft>
+			<onright>9000</onright>
+			<onup>9000</onup>
+			<ondown>9000</ondown>
+			<pagecontrol>-</pagecontrol>
+			<itemlayout height="30" />
+			<focusedlayout height="30" />
+		</control>
 		<control type="image">
 			<posx>0</posx>
 			<posy>0</posy>
@@ -23,13 +37,20 @@
 				<width>1100</width>
 				<height>720</height>
 				<texture border="15,0,0,0" flipx="true">IPX-MediaBladeSub.png</texture>
-				<include>IPXSkinColor</include>
+				<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 			</control>
 			<control type="button">
 				<description>Close Window button</description>
 				<posx>230</posx>
 				<posy>0</posy>
-				<include>IPXCloseWindowDialogButton</include>
+				<width>64</width>
+				<height>32</height>
+				<label>-</label>
+				<font>-</font>
+				<onclick>PreviousMenu</onclick>
+				<texturefocus>IPX-DialogCloseButton-focus.png</texturefocus>
+				<texturenofocus>IPX-DialogCloseButton.png</texturenofocus>
+				<visible>system.getbool(input.enablemouse)</visible>
 				<onleft>9000</onleft>
 				<onright>9000</onright>
 				<onup>9000</onup>
@@ -74,7 +95,8 @@
 				</control>
 
 				<control type="group">
-					<include>IPXVisibleFadeEffect</include>
+					<animation effect="fade" time="300">Visible</animation>
+					<animation effect="fade" time="300">Hidden</animation>
 					<posx>210</posx>
 					<posy>90</posy>
 
@@ -130,7 +152,7 @@
 								<height>30</height>
 								<font>font13_title</font>
 								<aligny>center</aligny>
-								<include>IPXLabelColor</include>
+								<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 								<selectedcolor>FFEB9E17</selectedcolor>
 								<shadowcolor>FF000000</shadowcolor>
 								<info>ListItem.Label</info>
@@ -209,7 +231,7 @@
 						<width>400</width>
 						<height>30</height>
 						<font>font13_title</font>
-						<include>IPXLabelColor</include>
+						<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 						<shadowcolor>FF000000</shadowcolor>
 						<scroll>true</scroll>
 						<align>right</align>
@@ -237,7 +259,7 @@
 						<width>400</width>
 						<height>30</height>
 						<font>font13_title</font>
-						<include>IPXLabelColor</include>
+						<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 						<shadowcolor>FF000000</shadowcolor>
 						<label>Changelog</label>
 					</control>
@@ -261,7 +283,7 @@
 						<width>400</width>
 						<height>30</height>
 						<font>font13_title</font>
-						<include>IPXLabelColor</include>
+						<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 						<shadowcolor>FF000000</shadowcolor>
 						<label>Build Availability</label>
 					</control>
@@ -294,28 +316,68 @@
 					<ondown>49</ondown>
 					<control type="button" id="5">
 						<description>install button</description>
-						<include>IPXButtonDialogsCommonValues</include>
+						<height>40</height>
+						<width>170</width>
+						<textoffsetx>20</textoffsetx>
+						<align>center</align>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
 						<label>SCRIPT607</label>
 					</control>
 					<control type="button" id="7">
 						<description>Update button</description>
-						<include>IPXButtonDialogsCommonValues</include>
+						<height>40</height>
+						<width>170</width>
+						<textoffsetx>20</textoffsetx>
+						<align>center</align>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
 						<label>Update XBMC</label>
 					</control>
 					<control type="button" id="8">
 						<description>manage exclude button</description>
-						<include>IPXButtonDialogsCommonValues</include>
+						<height>40</height>
+						<width>170</width>
+						<textoffsetx>20</textoffsetx>
+						<align>center</align>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
 						<label>Manage Exclude</label>
-						<visible>Control.isVisible(7)</visible>
+						<visible>Control.isVisible(7) + !System.Platform.Xbox</visible>
 					</control>
 					<control type="button" id="6">
 						<description>Refresh</description>
-						<include>IPXButtonDialogsCommonValues</include>
+						<height>40</height>
+						<width>170</width>
+						<textoffsetx>20</textoffsetx>
+						<align>center</align>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
 						<label>184</label>
 					</control>
 					<control type="button" id="12">
 						<description>close</description>
-						<include>IPXButtonDialogsCommonValues</include>
+						<height>40</height>
+						<width>170</width>
+						<textoffsetx>20</textoffsetx>
+						<align>center</align>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
 						<label>SCRIPT605</label>
 						<onclick>PreviousMenu</onclick>
 					</control>
@@ -328,8 +390,35 @@
 			<width>846</width>
 			<height>720</height>
 			<texture flipx="true">IPX-HomeBlade.png</texture>
-			<include>IPXSkinColor</include>
+			<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 		</control>
-		<include>IPXClock</include>
+		<control type="group">
+			<posx>160r</posx>
+			<posy>0</posy>
+			<animation effect="slide" start="0,0" end="-60,0" delay="0" time="300" condition="Window.IsVisible(MuteBug)">conditional</animation>
+			<animation effect="slide" start="0,0" end="210,0" delay="0" time="300" condition="Window.Next(IPX-Home.xml) | Window.IsVisible(FullscreenVideo) | Window.IsVisible(Visualisation)">WindowClose</animation>
+			<animation effect="slide" start="210,0" end="0,0" delay="0" time="300" condition="Window.Previous(IPX-Home.xml) | Window.IsVisible(FullscreenVideo) | Window.IsVisible(Visualisation)">WindowOpen</animation>
+			<control type="image">
+				<description>time background</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>150</width>
+				<height>35</height>
+				<texture flipx="true" border="32,0,0,0">IPX-header.png</texture>
+				<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+			</control>
+			<control type="label">
+				<description>time label</description>
+				<posx>30</posx>
+				<posy>0</posy>
+				<width>400</width>
+				<height>28</height>
+				<align>left</align>
+				<aligny>center</aligny>
+				<font>font12</font>
+				<textcolor>FFFFFFFF</textcolor>
+				<label>$INFO[System.Time]</label>
+			</control>
+		</control>
 	</controls>
 </window>

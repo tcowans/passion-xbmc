@@ -274,4 +274,44 @@
   <string id="32660">Caches Cleaner</string>
   <string id="32661">Clear Caches</string>
   <string id="32662">Clear All Caches of Installer Passion-XBMC</string>
+
+  <!-- XBMC SVN Updater for XBox -->
+  <string id="32700">Warning!</string>
+  <string id="32701">In this menu, you can delete, rename, copy ... files from your Xbox or even format a partition. Improper handling can lead to a system error. Use this menu if you know exactly what you do.</string>
+  <string id="32702">Warning! Read ...</string>
+  <string id="32709">Before starting the Updater will do a verification test. It will check the existence of the Build and your installation folder of XBMC. If no error during this check, a confirmation of update will be requested.</string>
+  <string id="32749">Update</string>
+  <string id="32750">Run the update now</string>
+  <string id="32751">Press "YES" to proceed update your XBMC.\nAnd do nothing that could make a system error.\nBe patient and wait until the execution...</string>
+  <string id="32752">Update completed successfully.\nWill you return to XBMC?</string>
+  <string id="32753">Rebooting XBMC...</string>
+  <string id="32760">Return to XBMC</string>
+  <string id="32761">Reload Updater</string>
+  <string id="32770">Restart XBox</string>
+  <string id="32780">Shotdown XBox</string>
+  <string id="32789">Installation directory of XBMC</string>
+  <string id="32790">Files Manager</string>
+  <string id="32791">Text Editor</string>
+  <string id="32795">Settings</string>
+
+  <string id="32799">Success</string>
+  <string id="32800">Cleaner</string>
+  <string id="32801">About This Section</string>
+  <string id="32802">The Cleaner is designed to reset XBMC. It will delete folders and/or files that were created during the first use of XBMC or just delete the settings. It also allows clean caches E, X, Y, Z.</string>
+  <string id="32810">Reset XBMC</string>
+  <string id="32811">Confirm the reset of XBMC.\nWarning, this action will reset the folder "UserData" to the original state and you lose all: [Database, thumbnails, guisettings, Advancedsettings, ...]. Are you sure?</string>
+  <string id="32812">Enter name to create a backup, just in case!</string>
+  <string id="32813">Reseting XBMC done.</string>
+  <string id="32820">Clear XBMC Settings</string>
+  <string id="32821">Confirm delete XBMC settings.\nWarning, this action will remove the file guisettings.xml. Are you sure?</string>
+  <string id="32822">Cleaning settings XBMC done.</string>
+  <string id="32830">Clear XBMC Save</string>
+  <string id="32831">Confirm delete the backup of XBMC.\nOnly useful to erase the traces of an old version of XBMC. Are you sure?</string>
+  <string id="32832">Cleaning save XBMC done.</string>
+  <string id="32840">Clear Caches X, Y &amp; Z</string>
+  <string id="32841">Confirm emptying Caches X:\, Y:\, Z:\. Are you sure?</string>
+  <string id="32842">Emptying the Caches finished.</string>
+  <string id="32850">Clear Cache E</string>
+  <string id="32851">Confirm emptying Cache E:\CACHE\nAre you sure?</string>
+  <string id="32852">Emptying the Cache E finished.</string>
 </strings>

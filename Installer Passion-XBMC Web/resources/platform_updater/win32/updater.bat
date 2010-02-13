@@ -166,7 +166,7 @@ GOTO UnrarBuild
 
   ECHO ------------------------------------------------------------------------
   ECHO.
-  SET /P testbuild=Voulez-vous tester la build avant toute chose? [Y/N]:
+  SET /P testbuild=Want to test the build before anything? [Y/N]:
   IF "%testbuild:~0,1%"=="y" (
     ECHO Testing build: %xbmc_build%
     ECHO Please wait...

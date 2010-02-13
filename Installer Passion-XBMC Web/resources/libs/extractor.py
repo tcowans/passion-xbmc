@@ -110,7 +110,7 @@ def unrar( filename, destination=None, report=False ):
         return base_dir, list_size == total_items
     except:
         print_exc()
-        return "", False
+    return "", False
 
 
 def unzip( filename, destination=None, report=False ):
@@ -162,7 +162,34 @@ def unzip( filename, destination=None, report=False ):
         return base_dir, True
     except:
         print_exc()
-        return "", False
+    return "", False
+
+
+def extract_tarfile( filename, destination=None ):
+    import tarfile
+    base_dir = ""
+    try:
+        # is_tarfile, Return True if name is a tar archive file, that the tarfile module can read. 
+        if tarfile.is_tarfile( filename ):
+            # if not destination, set destination to current filename
+            if destination is None:
+                destination = os.path.dirname( filename )
+            # open tarfile
+            tar = tarfile.open( filename )#, 'r:gz' )
+            # extractall, New in version 2.5 or greater
+            if hasattr( tar, 'extractall' ):
+                tar.extractall( destination )
+            else:
+                # if not extractall use standard extract
+                [ tar.extract( tarinfo , destination ) for tarinfo in tar ]
+            root_dir = tar.getnames()[ 0 ].strip( "/" )
+            base_dir = os.path.join( destination, root_dir )
+            # close tarfile
+            tar.close()
+            return base_dir, True
+    except:
+        print_exc()
+    return "", False
 
 
 def extract( filename, destination=None, report=False ):
@@ -178,6 +205,9 @@ def extract( filename, destination=None, report=False ):
         # Note faut compiler cette lib avec python 2.4, sinon elle sera pas compatible avec xbmc, pas certain a 100 pour 100.
         #ok = executebuiltin( 'XBMC.Extract(%s)' % ( filename, ) )
         print "L'archive '%s' n'est pas pris en charge..." % os.path.basename( filename )
+    else:
+        # test for tarfile
+        return extract_tarfile( filename, destination )
     return "", False
 
 

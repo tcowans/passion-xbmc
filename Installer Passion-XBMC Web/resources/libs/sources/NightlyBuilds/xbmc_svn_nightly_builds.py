@@ -40,7 +40,7 @@ def get_changelog( new_rev, current_rev="0" ):
     try:
         bullet_list = "[B]\x95 [/B]" #unichar( 8226 )
 
-        sock = urllib.urlopen( "http://xbmc.org/trac/timeline?changeset=on&max=300&daysback=90&format=rss" )
+        sock = urllib.urlopen( "http://trac.xbmc.org/timeline?changeset=on&max=300&daysback=90&format=rss" )
         html = sock.read()
         sock.close()
 
@@ -85,13 +85,16 @@ def get_nightly_builds( current_rev="0" ):
         #('PCDX', 'PC', 'Windows DirectX')
         for ID, mode, title in re.findall( '<div class="(.*?)"><a href=".*?P=(.*?)\&.*?" title="(.*?)" ></a></div>', box ):
             #print ID, mode, title
-            build_url = dl_url + "XBMC_%s_%s.%s" % ( mode, rev, ( "rar", "tgz" )[ ID == "OSX" ] )
+            ID = ID.strip( "b" )
+            ext = ( ( "rar", "tgz" )[ ID == "OSX" ], "zip" )[ ID == "XBOX" ]
+            build_url = dl_url + "XBMC_%s_%s.%s" % ( mode, rev, ext )
             name, desc, icon = build_text.get( ID )
             builds.append( [ title, desc, icon, name, build_url ] )
             available_builds.append( bullet_list + name )
 
         available_builds = "[CR]".join( available_builds )
 
+        if not current_rev.isdigit(): current_rev = "0"
         changelog = get_changelog( rev, current_rev )
 
         # types returned: str, str, str, str, list
