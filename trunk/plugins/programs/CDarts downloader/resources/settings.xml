@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+<setting type="lsep" label="30000" />
+   <setting id="folder" type="enum" label="30002" lvalues="30003|30004" default="1"/>
+</settings> 

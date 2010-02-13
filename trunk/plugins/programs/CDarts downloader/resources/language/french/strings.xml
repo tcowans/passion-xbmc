@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!-- Les strings de 30000 à 30999 sont réservées aux paramètres plug-in -->
+  <!--GENERAL STRINGS -->
+  <string id="30000"></string>
+  <string id="30001"></string>
+  <string id="30002">Répertoire CDarts</string>
+  <string id="30003">Skin/.../artiste-album.png</string>
+  <string id="30004">Répertoire de l'album/cdart.png</string>
+  <string id="30005">Artistes Reconnus</string>
+  <string id="30006">Tout les artistes</string>
+  <string id="30007">Choisir un CDart disponible</string>
+  <string id="30010">Téléchargement réussi</string>
+  <string id="30011">CDart téléchargé !</string>
+  <string id="30012"></string>
+  <string id="30013">Erreur de téléchargement</string>
+  <string id="30014">CDart non téléchargé !</string>
+  <string id="30015">Téléchargement annulé !</string>
+  <string id="30016">Pas de CDarts trouvé ?</string>
+  <string id="30017">Contribuez ! Partagez les votres</string>
+  <string id="30018">Sur www.xbmcstuff.com</string>
+  <string id="30020">Choisir un artiste</string>
+  <string id="30021">Non trouvé sur XBMCSTUFF.com</string>
+  <string id="30022">Pas de CDarts trouvé pour</string>
+  <string id="30023"></string>
+</strings>
