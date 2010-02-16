@@ -129,29 +129,29 @@
 				</focusedlayout>
 				<content>
 					<item id="1">
-						<label>128</label>
-						<label2>5</label2>
+						<label>128</label><!-- label localized in XBMC language -->
+						<label2>5</label2><!-- label localized in XBMC language -->
 						<onclick>-</onclick>
 					</item>
 					<item id="5">
-						<label>480</label>
-						<label2>20077</label2>
+						<label>480</label><!-- label localized in XBMC language -->
+						<label2>20077</label2><!-- label localized in XBMC language -->
 						<onclick>-</onclick>
 					</item>
 					<item id="2">
-						<label>Forum</label>
+						<label>SCRIPT1</label>
 						<label2>passion-xbmc.org</label2>
 						<onclick>-</onclick>
 					</item>
 					<item id="3">
-						<label>31102</label>
-						<label2>31115</label2>
+						<label>-</label>
+						<label2>-</label2>
 						<onclick>-</onclick>
 						<visible>false</visible>
 					</item>
 					<item id="4">
 						<label>SCRIPT3</label>
-						<label2>Support</label2>
+						<label2>SCRIPT540</label2>
 						<onclick>-</onclick>
 					</item>
 					<item id="6">
@@ -174,7 +174,7 @@
 					<width>260</width>
 					<height>60</height>
 					<font>font13_title</font>
-					<label>$LOCALIZE[SCRIPT500][CR]Par défaut</label>
+					<label>SCRIPT541</label>
 					<textcolor>FF719c00</textcolor>
 					<shadowcolor>FF000000</shadowcolor>
 					<align>center</align>
@@ -187,7 +187,7 @@
 					<width>260</width>
 					<height>45</height>
 					<font>font13_title</font>
-					<label>Sauvegarder</label>
+					<label>190</label><!-- label localized in XBMC language -->
 					<textcolor>FFc11fee</textcolor>
 					<shadowcolor>FF000000</shadowcolor>
 					<align>center</align>
@@ -200,7 +200,7 @@
 					<width>260</width>
 					<height>45</height>
 					<font>font13_title</font>
-					<label>Annuler</label>
+					<label>222</label><!-- label localized in XBMC language -->
 					<textcolor>ffe23312</textcolor>
 					<shadowcolor>FF000000</shadowcolor>
 					<align>center</align>
@@ -291,7 +291,7 @@
 						<width>750</width>
 						<height>45</height>
 						<font>font13_title</font>
-						<label>10000</label>
+						<label>10000</label><!-- label localized in XBMC language -->
 						<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 						<shadowcolor>FF000000</shadowcolor>
 						<textoffsetx>0</textoffsetx>
@@ -575,7 +575,7 @@
 							<width>750</width>
 							<height>45</height>
 							<font>font13_title</font>
-							<label>SCRIPT1026</label>
+							<label>SCRIPT52</label>
 							<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 							<shadowcolor>FF000000</shadowcolor>
 							<align>left</align>
@@ -611,7 +611,7 @@
 							<focusedcolor>FFFFFFFF</focusedcolor>
 							<texturefocus>IPX-MenuItemFO.png</texturefocus>
 							<texturenofocus>IPX-MenuItemNF.png</texturenofocus>
-							<label>$LOCALIZE[SCRIPT514] [COLOR=88FFFFFF](Manager only)[/COLOR]</label>
+							<label>$LOCALIZE[SCRIPT514] [COLOR=88FFFFFF]$LOCALIZE[SCRIPT542][/COLOR]</label>
 						</control>
 					</control>
 				</control>
@@ -628,7 +628,7 @@
 						<width>750</width>
 						<height>45</height>
 						<font>font13_title</font>
-						<label>166</label>
+						<label>166</label><!-- label localized in XBMC language -->
 						<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 						<shadowcolor>FF000000</shadowcolor>
 						<disabledcolor>$INFO[Skin.String(PassionLabelHexColour)]</disabledcolor>
@@ -1057,7 +1057,7 @@
 						<width>750</width>
 						<height>45</height>
 						<font>font13_title</font>
-						<label>SCRIPT1026</label>
+						<label>SCRIPT52</label>
 						<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 						<shadowcolor>FF000000</shadowcolor>
 						<align>left</align>
@@ -1347,7 +1347,7 @@
 							<width>750</width>
 							<height>45</height>
 							<font>font13_title</font>
-							<label>Web</label>
+							<label>443</label><!-- label localized in XBMC language -->
 							<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 							<shadowcolor>FF000000</shadowcolor>
 							<align>left</align>
@@ -1425,7 +1425,7 @@
 						<width>750</width>
 						<height>60</height>
 						<font>font14caps</font>
-						<label>[B]French support[/B][CR]http://passion-xbmc.org/releases-scripts-et-plugins/...</label>
+						<label>[B]$LOCALIZE[SCRIPT550][/B][CR]http://passion-xbmc.org/releases-scripts-et-plugins/...</label>
 						<textcolor>88FFFFFF</textcolor>
 						<focusedcolor>FFFFFFFF</focusedcolor>
 						<align>center</align>
@@ -1437,7 +1437,7 @@
 						<width>750</width>
 						<height>45</height>
 						<font>font13_title</font>
-						<label>Cliquer pour obtenir de l'aide!</label>
+						<label>SCRIPT552</label>
 						<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 						<shadowcolor>FF000000</shadowcolor>
 						<align>center</align>
@@ -1456,7 +1456,7 @@
 						<width>750</width>
 						<height>60</height>
 						<font>font14caps</font>
-						<label>[B]English support[/B][CR]http://xbmc.org/forum/showthread.php?t=42612</label>
+						<label>[B]$LOCALIZE[SCRIPT551][/B][CR]http://xbmc.org/forum/showthread.php?t=42612</label>
 						<textcolor>88FFFFFF</textcolor>
 						<focusedcolor>FFFFFFFF</focusedcolor>
 						<align>center</align>
@@ -1468,7 +1468,7 @@
 						<width>750</width>
 						<height>45</height>
 						<font>font13_title</font>
-						<label>Cliquer pour obtenir de l'aide!</label>
+						<label>SCRIPT552</label>
 						<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 						<shadowcolor>FF000000</shadowcolor>
 						<align>center</align>

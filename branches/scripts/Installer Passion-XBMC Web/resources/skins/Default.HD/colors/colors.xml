@@ -8,7 +8,7 @@
 	<!-- and"$INFO[Skin.String(PassionSkinHexColour)]"in .xml file -->
 	<!-- END NOTE -->
 	<color name="Default">FFFFFFFF</color>
-	<color name="Blue Confluence">FF0055be</color>
+	<color name="Blue Confluence">FF0084ff</color>
 
 	<color name="Alice Blue">FFF0F8FF</color>
 	<color name="Antique White">FFFAEBD7</color>

@@ -36,7 +36,7 @@
 				<width>297</width>
 				<height>30</height>
 				<font>font28_title</font>
-				<label>[UPPERCASE]$LOCALIZE[31302][/UPPERCASE]</label>
+				<label>[UPPERCASE]$LOCALIZE[SCRIPT999][/UPPERCASE]</label>
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>88FFFFFF</textcolor>

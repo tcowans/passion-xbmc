@@ -114,7 +114,7 @@
 							<shadowcolor>FF000000</shadowcolor>
 							<align>center</align>
 							<aligny>center</aligny>
-							<label>Click For Zoom Image</label>
+							<label>SCRIPT622</label>
 							<visible>!Skin.HasSetting(IPX_item_dialog_fanart_fullscreen)</visible>
 							<animation effect="fade" time="300">Visible</animation>
 							<animation effect="fade" time="300">Hidden</animation>
@@ -144,7 +144,7 @@
 							<shadowcolor>FF000000</shadowcolor>
 							<align>center</align>
 							<aligny>center</aligny>
-							<label>IMAGE[CR][CR]UNAVAILABLE</label>
+							<label>SCRIPT623</label>
 							<visible>false</visible>
 						</control>
 					</control>
@@ -257,25 +257,25 @@
 								<visible>!IsEmpty(Container(48).ListItem.Property(itemId))</visible>
 							</item>
 							<item>
-								<label>$LOCALIZE[SCRIPT620]:</label>
+								<label>$LOCALIZE[21863]:</label><!-- label localized in XBMC language -->
 								<label2>$INFO[Container(48).ListItem.Property(author)]</label2>
 								<onclick>-</onclick>
 								<visible>!IsEmpty(Container(48).ListItem.Property(author))</visible>
 							</item>
 							<item>
-								<label>$LOCALIZE[572]:</label>
+								<label>$LOCALIZE[572]:</label><!-- label localized in XBMC language -->
 								<label2>$INFO[Container(48).ListItem.Property(DLSource)]</label2>
 								<onclick>-</onclick>
 								<visible>!IsEmpty(Container(48).ListItem.Property(DLSource))</visible>
 							</item>
 							<item>
-								<label>$LOCALIZE[SCRIPT601]:</label>
+								<label>$LOCALIZE[21866]:</label><!-- label localized in XBMC language -->
 								<label2>$INFO[Container(48).ListItem.Property(type)]</label2>
 								<onclick>-</onclick>
 								<visible>!IsEmpty(Container(48).ListItem.Property(type))</visible>
 							</item>
 							<item>
-								<label>$LOCALIZE[SCRIPT608]:</label>
+								<label>$LOCALIZE[248]:</label><!-- label localized in XBMC language -->
 								<label2>$INFO[Container(48).ListItem.Property(language)]</label2>
 								<onclick>-</onclick>
 								<visible>!IsEmpty(Container(48).ListItem.Property(language))</visible>
@@ -287,7 +287,7 @@
 								<visible>!IsEmpty(Container(48).ListItem.Property(version))</visible>
 							</item>
 							<item>
-								<label>$LOCALIZE[SCRIPT603]:</label>
+								<label>$LOCALIZE[552]:</label><!-- label localized in XBMC language -->
 								<label2>$INFO[Container(48).ListItem.Property(date)]</label2>
 								<onclick>-</onclick>
 								<visible>!IsEmpty(Container(48).ListItem.Property(date))</visible>
@@ -299,19 +299,19 @@
 								<visible>!IsEmpty(Container(48).ListItem.Property(added))</visible>
 							</item>
 							<item>
-								<label>$LOCALIZE[203]:</label>
+								<label>$LOCALIZE[203]:</label><!-- label localized in XBMC language -->
 								<label2>$INFO[Container(48).ListItem.Property(outline)]</label2>
 								<onclick>-</onclick>
 								<visible>!IsEmpty(Container(48).ListItem.Property(outline))</visible>
 							</item>
 							<item>
-								<label>$LOCALIZE[20074]:</label>
+								<label>$LOCALIZE[563]:</label><!-- label localized in XBMC language -->
 								<label2>$INFO[Container(48).ListItem.Property(rating)]</label2>
 								<onclick>-</onclick>
 								<visible>!IsEmpty(Container(48).ListItem.Property(rating))</visible>
 							</item>
 							<item>
-								<label>$LOCALIZE[SCRIPT621]:</label>
+								<label>$LOCALIZE[21800]:</label><!-- label localized in XBMC language -->
 								<label2>$INFO[Container(48).ListItem.Property(fileName)]</label2>
 								<onclick>-</onclick>
 								<visible>!IsEmpty(Container(48).ListItem.Property(fileName))</visible>
@@ -341,7 +341,7 @@
 						<scroll>true</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>207</label>
+						<label>SCRIPT600</label>
 					</control>
 					<control type="label">
 						<posx>130r</posx>
@@ -354,7 +354,7 @@
 						<scroll>true</scroll>
 						<align>right</align>
 						<aligny>center</aligny>
-						<label>$LOCALIZE[31024] [COLOR=88FFFFFF]([/COLOR]$INFO[Container(400).CurrentPage][COLOR=88FFFFFF]/[/COLOR]$INFO[Container(400).NumPages][COLOR=88FFFFFF])[/COLOR]</label>
+						<label>$LOCALIZE[SCRIPT24] [COLOR=88FFFFFF]([/COLOR]$INFO[Container(400).CurrentPage][COLOR=88FFFFFF]/[/COLOR]$INFO[Container(400).NumPages][COLOR=88FFFFFF])[/COLOR]</label>
 					</control>
 					<control type="spincontrol" id="61">
 						<description>Next page button</description>
@@ -409,7 +409,7 @@
 						<texturefocus border="5">IPX-button-focus.png</texturefocus>
 						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
-						<label>SCRIPT607</label>
+						<label>33003</label><!-- label localized in XBMC language -->
 						<onfocus>Skin.Reset(IPX_item_dialog_fanart_fullscreen)</onfocus>
 					</control>
 					<control type="button" id="8">
@@ -438,7 +438,7 @@
 						<texturefocus border="5">IPX-button-focus.png</texturefocus>
 						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
-						<label>Image</label>
+						<label>SCRIPT624</label>
 						<onfocus>Skin.Reset(IPX_item_dialog_fanart_fullscreen)</onfocus>
 						<visible>IsEmpty(Container(48).ListItem.Property(fanartpicture))</visible>
 					</control>
@@ -453,7 +453,7 @@
 						<texturefocus border="5">IPX-button-focus.png</texturefocus>
 						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
-						<label>Flip Image</label>
+						<label>SCRIPT625</label>
 						<visible>Skin.HasSetting(IPX_item_dialog_fanart_fullscreen)</visible>
 					</control>
 					<control type="button" id="6">
@@ -467,7 +467,7 @@
 						<texturefocus border="5">IPX-button-focus.png</texturefocus>
 						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
-						<label>184</label>
+						<label>184</label><!-- label localized in XBMC language -->
 						<onfocus>Skin.Reset(IPX_item_dialog_fanart_fullscreen)</onfocus>
 					</control>
 					<control type="button" id="10">
@@ -481,7 +481,7 @@
 						<texturefocus border="5">IPX-button-focus.png</texturefocus>
 						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
-						<label>13405</label>
+						<label>13405</label><!-- label localized in XBMC language -->
 						<enable>false</enable>
 						<visible>false</visible>
 						<onfocus>Skin.Reset(IPX_item_dialog_fanart_fullscreen)</onfocus>
@@ -497,7 +497,7 @@
 						<texturefocus border="5">IPX-button-focus.png</texturefocus>
 						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
-						<label>20410</label>
+						<label>20410</label><!-- label localized in XBMC language -->
 						<enable>!IsEmpty(Container(48).ListItem.Property(previewVideoURL))</enable>
 						<visible>!IsEmpty(Container(48).ListItem.Property(previewVideoURL))</visible>
 						<onfocus>Skin.Reset(IPX_item_dialog_fanart_fullscreen)</onfocus>
@@ -513,7 +513,7 @@
 						<texturefocus border="5">IPX-button-focus.png</texturefocus>
 						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
-						<label>SCRIPT605</label>
+						<label>13009</label><!-- label localized in XBMC language -->
 						<onfocus>Skin.Reset(IPX_item_dialog_fanart_fullscreen)</onfocus>
 					</control>
 				</control>

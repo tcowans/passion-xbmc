@@ -236,7 +236,7 @@
 						<scroll>true</scroll>
 						<align>right</align>
 						<aligny>center</aligny>
-						<label>$LOCALIZE[31024] [COLOR=88FFFFFF]([/COLOR]$INFO[Container(400).CurrentPage][COLOR=88FFFFFF]/[/COLOR]$INFO[Container(400).NumPages][COLOR=88FFFFFF])[/COLOR]</label>
+						<label>$LOCALIZE[SCRIPT24] [COLOR=88FFFFFF]([/COLOR]$INFO[Container(400).CurrentPage][COLOR=88FFFFFF]/[/COLOR]$INFO[Container(400).NumPages][COLOR=88FFFFFF])[/COLOR]</label>
 					</control>
 					<control type="spincontrol" id="61">
 						<description>Next page button</description>
@@ -261,7 +261,7 @@
 						<font>font13_title</font>
 						<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 						<shadowcolor>FF000000</shadowcolor>
-						<label>Changelog</label>
+						<label>SCRIPT53</label>
 					</control>
 					<control type="textbox" id="400">
 						<description>Description Value for Changelog</description>
@@ -285,7 +285,7 @@
 						<font>font13_title</font>
 						<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 						<shadowcolor>FF000000</shadowcolor>
-						<label>Build Availability</label>
+						<label>SCRIPT54</label>
 					</control>
 					<control type="textbox">
 						<description>Description Value for available_builds</description>
@@ -325,7 +325,7 @@
 						<texturefocus border="5">IPX-button-focus.png</texturefocus>
 						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
-						<label>SCRIPT607</label>
+						<label>33003</label><!-- label localized in XBMC language -->
 					</control>
 					<control type="button" id="7">
 						<description>Update button</description>
@@ -338,7 +338,7 @@
 						<texturefocus border="5">IPX-button-focus.png</texturefocus>
 						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
-						<label>Update XBMC</label>
+						<label>SCRIPT55</label>
 					</control>
 					<control type="button" id="8">
 						<description>manage exclude button</description>
@@ -351,7 +351,7 @@
 						<texturefocus border="5">IPX-button-focus.png</texturefocus>
 						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
-						<label>Manage Exclude</label>
+						<label>SCRIPT56</label>
 						<visible>Control.isVisible(7) + !System.Platform.Xbox</visible>
 					</control>
 					<control type="button" id="6">
@@ -365,7 +365,7 @@
 						<texturefocus border="5">IPX-button-focus.png</texturefocus>
 						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
-						<label>184</label>
+						<label>184</label><!-- label localized in XBMC language -->
 					</control>
 					<control type="button" id="12">
 						<description>close</description>
@@ -378,7 +378,7 @@
 						<texturefocus border="5">IPX-button-focus.png</texturefocus>
 						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
-						<label>SCRIPT605</label>
+						<label>13009</label><!-- label localized in XBMC language -->
 						<onclick>PreviousMenu</onclick>
 					</control>
 				</control>

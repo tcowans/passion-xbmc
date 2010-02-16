@@ -149,7 +149,7 @@
 						<scroll>false</scroll>
 						<align>right</align>
 						<aligny>center</aligny>
-						<label>$INFO[Container.Property(IPX_Statut),[B]Statut:[/B] ]</label>
+						<label>$INFO[Container.Property(IPX_Statut),[B]$LOCALIZE[SCRIPT698]:[/B] ]</label>
 					</control>
 					<control type="label">
 						<description>info version</description>
@@ -177,7 +177,7 @@
 						<scroll>false</scroll>
 						<align>right</align>
 						<aligny>center</aligny>
-						<label>$INFO[Container.Property(IPX_Revision),[B]Revision:[/B] ]</label>
+						<label>$INFO[Container.Property(IPX_Revision),[B]$LOCALIZE[SCRIPT699]:[/B] ]</label>
 					</control>
 					<control type="label">
 						<description>info date</description>
@@ -355,7 +355,6 @@ Administrator
 					<aligny>top</aligny>
 					<label>$LOCALIZE[SCRIPT702]
 $LOCALIZE[SCRIPT703]
-$LOCALIZE[SCRIPT709]
 [B]Site Web:[/B] passion-xbmc.org
 [B]Contact:[/B] frostbox360@gmail.com</label>
 				</control>
@@ -410,7 +409,6 @@ $LOCALIZE[SCRIPT709]
 					<aligny>top</aligny>
 					<label>$LOCALIZE[SCRIPT702]
 $LOCALIZE[SCRIPT703]
-$LOCALIZE[SCRIPT709]
 [B]Site Web:[/B] passion-xbmc.org
 [B]Contact:[/B] temhil@gmail.com</label>
 				</control>
@@ -463,7 +461,8 @@ $LOCALIZE[SCRIPT709]
 					<scroll>false</scroll>
 					<align>left</align>
 					<aligny>top</aligny>
-					<label>$LOCALIZE[SCRIPT702] Web
+					<label>$LOCALIZE[SCRIPT702] PHP
+$LOCALIZE[SCRIPT702] DB
 [B]Site Web:[/B] passion-xbmc.org
 [B]Contact:[/B] seb@passionxbmc.org</label>
 				</control>
@@ -487,7 +486,7 @@ $LOCALIZE[SCRIPT709]
 				<scroll>false</scroll>
 				<align>center</align>
 				<aligny>center</aligny>
-				<label>Others Devs &#38; Helper:</label>
+				<label>SCRIPT720</label>
 				<animation type="WindowOpen" reversible="false">
 					<effect type="fade" start="0" end="100" time="0" />
 					<effect type="slide" start="0,720" end="0,310" delay="88000" time="10000" tween="linear" easing="out" />
@@ -509,8 +508,8 @@ $LOCALIZE[SCRIPT709]
 				<align>center</align>
 				<aligny>center</aligny>
 				<label>alexsolex [COLOR=88FFFFFF]- Councillor[/COLOR]
-Tolriq [COLOR=88FFFFFF]- PHP/Web[/COLOR]
-ppic [COLOR=88FFFFFF]- CDT[/COLOR]
+ppic [COLOR=88FFFFFF]- PYTHON[/COLOR]
+Tolriq [COLOR=88FFFFFF]- Retired[/COLOR]
 
 
 ...</label>
@@ -540,7 +539,7 @@ ppic [COLOR=88FFFFFF]- CDT[/COLOR]
 				<scroll>false</scroll>
 				<align>center</align>
 				<aligny>center</aligny>
-				<label>Special Thanks to:</label>
+				<label>SCRIPT730</label>
 				<animation type="WindowOpen" reversible="false">
 					<effect type="fade" start="0" end="100" time="0" />
 					<effect type="slide" start="0,720" end="0,310" delay="104000" time="10000" tween="linear" easing="out" />

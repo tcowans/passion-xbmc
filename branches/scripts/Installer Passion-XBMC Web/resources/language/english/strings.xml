@@ -25,10 +25,38 @@
   <string id="21">System Admin Password</string>
   <string id="22">Latest Add-ons</string>
 
+  <string id="23">Message(s)</string>
   <string id="24">Page</string>
   <string id="25">Item(s)</string>
   <string id="26">Item</string>
   <string id="27">of</string>
+
+  <string id="28">Nightly</string>
+  <string id="29">Nightly Builds</string>
+  <string id="30">Debug Info</string>
+  <string id="31">Caches Cleaner</string>
+  <string id="32">Servers</string>
+
+  <string id="41">Reset</string>
+  <string id="42">Hide Infos</string>
+  <string id="43">Hide CUBE³</string>
+  <string id="44">Rotate Icon</string>
+  <string id="45">Hide Compass</string>
+  <string id="46">Compass Icon</string>
+  <string id="47">Compass Fanart</string>
+
+  <string id="51">Hide Fanart</string>
+  <string id="52">Misc Options</string>
+  <string id="53">Changelog</string>
+  <string id="54">Build Availability</string>
+  <string id="55">Update XBMC</string>
+  <string id="56">Manage Exclude</string>
+  <string id="57">-</string>
+  <string id="58">-</string>
+  <string id="59">-</string>
+  <string id="60">-</string>
+  <string id="61">-</string>
+  <string id="62">-</string>
 
   <!--MISC STRINGS -->
   <string id="100">Please select XBMC install directory</string>
@@ -104,7 +132,7 @@
   <string id="170">Copy failed</string>
   <string id="171">Failed to copy atleast one file</string>
   <string id="172">Move failed</string>
-  <string id="173">Failed to move atleast one file</string>  
+  <string id="173">Failed to move atleast one file</string>
   <string id="174">Delete failed</string>
   <string id="175">Failed to delete atleast one file</string>
   <string id="176">Copy...</string>
@@ -119,41 +147,11 @@
   <string id="186">Calculating folder size</string>
 
   <!--FORUM DIRECT INFOS STRINGS -->
-  <string id="199">News</string>
-  <string id="200">General</string>
-  <string id="201">Releases and News</string>
-  <string id="202">XBMC</string>
-  <string id="203">Allociné Scraper</string>
-  <string id="204">XBMC control - Remote control</string>
-  <string id="205">Skins</string>
-  <string id="206">Import service</string>
-  <string id="207">Skins files</string>
-  <string id="208">Skins Projects and Cancelled Skins</string>
-  <string id="209">Users corner</string>
-  <string id="210">Developers corner</string>
-  <string id="211">Xbmc Live</string>
-  <string id="212">Ubuntu</string>
-  <string id="213">Ubuntu and Xbmc tutorials</string>
-  <string id="214">USB Creator for Ubuntu</string>
-  <string id="215">Windows</string>
-  <string id="216">USB Creator for Windows</string>
-  <string id="217">Xbox</string>
-  <string id="218">XBOX moding support</string>
-  <string id="219">Mac OSX (Leopard and Tiger)</string>
-  <string id="220">USB Creator for Mac Intel</string>
-  <string id="221">USB Creator for Apple TV</string>
-  <string id="222">Forks</string>
-  <string id="223">(Fork) Plex for Mac</string>
-  <string id="224">(Alternative) Boxeetv</string>
-  <string id="225">The website</string>
-  <string id="226">Charter - Mandatory to read, don't say you haven't been warned :)</string>
-  <string id="227">Coffee with southbox on the ceiling</string>
-  <string id="228">Members</string>
-  <string id="229">Your Configurations</string>
-  <string id="230">Movies and Music</string>
-  <string id="231">Books and Comics books</string>
-  <string id="232">Trash</string>
-  <string id="233">Passion-Xbmc Trac</string>
+  <string id="199">Topics</string>
+  <string id="200">Profile</string>
+  <string id="201">Connect</string>
+  <string id="202">Forum Liste</string>
+  <string id="203">Forum Passion-XBMC</string>
 
   <string id="236">Please confirm topic launch:</string>
   <string id="237">Pass</string>
@@ -166,26 +164,28 @@
   <string id="350">List</string>
   <string id="351">Media Info</string>
   <string id="352">Icons</string>
-  <string id="353"></string>
-  <string id="354"></string>
-  <string id="355"></string>
+  <string id="353">Cube³</string>
+  <string id="354">-</string>
+  <string id="355">-</string>
   <string id="356">Media 1</string>
-  <string id="357"></string>
-  <string id="358"></string>
+  <string id="357">-</string>
+  <string id="358">-</string>
   <string id="359">Carousel</string>
   <string id="360">Path:</string>
   <string id="361">Size:</string>
   <string id="362">Created:</string>
   <string id="363">Last modified:</string>
   <string id="364">Last accessed:</string>
+  <string id="365">Contains</string>
+  <string id="366">Item(s)</string>
 
   <!--SETTINGS STRINGS -->
   <string id="499">Version: %s</string>
   <string id="500">Settings</string>
   <string id="501">Enable modifying the file sources.xml</string>
   <string id="502">Topics per page limit</string>
-  <string id="503">[B]&#126;&#126;[/B]</string><!--illimited symbol -->
-  <string id="504">00|5|10|25|50|100</string><!--LIST LIMIT FOR TOPICS IN DIRECT INFOS: 00=illimited -->
+  <string id="503">[B]&#126;&#126;[/B]</string>-<!--illimited symbol -->
+  <string id="504">00|5|10|25|50|100</string>-<!--LIST LIMIT FOR TOPICS IN DIRECT INFOS: 00=illimited -->
   <string id="505">Skin color</string>
   <string id="506">None</string>
   <string id="507">Enable personal background</string>
@@ -211,7 +211,16 @@
   <string id="533">IPX requires to restart to change your</string>
   <string id="534">skin setup.  Would you like to restart now?</string>
 
+  <string id="540">Support</string>
+  <string id="541">Default[CR]Settings</string>
+  <string id="542">(Manager only)</string>
+
+  <string id="550">French support</string>
+  <string id="551">English support</string>
+  <string id="552">Click to get help!</string>
+
   <!--DESCRIPTION STRINGS -->
+  <string id="599">Add-ons Infos</string>
   <string id="600">Description</string>
   <string id="601">Type</string>
   <string id="602">Version</string>
@@ -234,31 +243,34 @@
   <string id="619">Swedish</string>
   <string id="620">Author</string>
   <string id="621">File name</string>
+  <string id="622">CLICK FOR ZOOM IMAGE</string>
+  <string id="623">IMAGE[CR][CR]UNAVAILABLE</string>
+  <string id="624">Image</string>
+  <string id="625">Flip Image</string>
   
   <!--ABOUT STRINGS -->
+  <string id="698">Statut</string>
+  <string id="699">Revision</string>
   <string id="700">Version</string>
   <string id="701">Team Credits</string>
   <string id="702">Developer</string>
   <string id="703">Graphic design</string>
   <string id="704">Created on an idea of %s</string>
-  <string id="705">Special thanks to %s</string>  
-  <string id="706">Advices and support</string>  
-  <string id="707">Date</string>  
-  <string id="708">SVN</string>  
-  <string id="709">Languages</string>  
+  <string id="705">Special thanks to %s</string>
+  <string id="706">Advices and support</string>
+  <string id="707">Date</string>
+  <string id="708">SVN</string>
+  <string id="709">Languages</string>
   <string id="710">This script allows direct install of skins, scripts, plugins and scrapers available on Passion-XBMC (passion-xbmc.org) FTP server maintained by our team.</string>
 
+  <string id="720">Others Devs &#38; Helper</string>
+  <string id="730">Special Thanks to:</string>
+
   <!--CONTEXT MENU STRINGS -->
+  <string id="999">Menu</string>
   <string id="1000">Install</string>
   <string id="1001">Information</string>
   <string id="1002">Switch Media</string>
-  <string id="1003"></string>
-  <string id="1004"></string>
-  <string id="1005"></string>
-  <string id="1006"></string>
-  <string id="1007"></string> 
-  
-  <string id="1026">Misc Options</string>
 
   <!-- Caches Cleaner -->
   <string id="32650">Cleaning: %s</string>

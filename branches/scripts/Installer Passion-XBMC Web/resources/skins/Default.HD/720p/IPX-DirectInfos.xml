@@ -90,7 +90,7 @@
 			<scroll>false</scroll>
 			<align>right</align>
 			<aligny>center</aligny>
-			<label>[COLOR=88FFFFFF]([/COLOR]$INFO[Container(191).NumItems][COLOR=88FFFFFF]) $LOCALIZE[31025] - $LOCALIZE[31024] ([/COLOR]$INFO[Container(191).CurrentPage][COLOR=88FFFFFF]/[/COLOR]$INFO[Container(191).NumPages][COLOR=88FFFFFF])[/COLOR]</label>
+			<label>[COLOR=88FFFFFF]([/COLOR]$INFO[Container(191).NumItems][COLOR=88FFFFFF]) $LOCALIZE[SCRIPT23] - $LOCALIZE[SCRIPT24] ([/COLOR]$INFO[Container(191).CurrentPage][COLOR=88FFFFFF]/[/COLOR]$INFO[Container(191).NumPages][COLOR=88FFFFFF])[/COLOR]</label>
 			<animation effect="fade" time="250">WindowOpen</animation>
 			<animation effect="fade" time="250">WindowClose</animation>
 		</control>
@@ -142,7 +142,7 @@
 					<scroll>true</scroll>
 					<align>center</align>
 					<aligny>center</aligny>
-					<label>$INFO[Container.Property(Category)][COLOR=grey2]$INFO[Container(191).ListItem.Property(general_category), - ][/COLOR]</label>
+					<label>$INFO[Container.Property(Category)][COLOR=88FFFFFF]$INFO[Container(191).ListItem.Property(general_category), - ][/COLOR]</label>
 				</control>
 				<control type="textbox" id="400">
 					<description>Text of topic</description>
@@ -380,7 +380,7 @@
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>[COLOR=88FFFFFF]([/COLOR]$INFO[Container(150).NumItems][COLOR=88FFFFFF]) $LOCALIZE[31025] - $LOCALIZE[31024] ([/COLOR]$INFO[Container(150).CurrentPage][COLOR=88FFFFFF]/[/COLOR]$INFO[Container(150).NumPages][COLOR=88FFFFFF])[/COLOR]</label>
+				<label>[COLOR=88FFFFFF]([/COLOR]$INFO[Container(150).NumItems][COLOR=88FFFFFF]) $LOCALIZE[SCRIPT25] - $LOCALIZE[SCRIPT24] ([/COLOR]$INFO[Container(150).CurrentPage][COLOR=88FFFFFF]/[/COLOR]$INFO[Container(150).NumPages][COLOR=88FFFFFF])[/COLOR]</label>
 				<animation effect="fade" time="250">WindowOpen</animation>
 				<animation effect="fade" time="250">WindowClose</animation>
 			</control>
@@ -643,7 +643,7 @@
 						<width>220</width>
 						<height>45</height>
 						<font>font12caps</font>
-						<label>Topics</label>
+						<label>SCRIPT199</label>
 						<textcolor>DDced8da</textcolor>
 						<align>center</align>
 						<aligny>center</aligny>
@@ -777,7 +777,7 @@
 						<width>220</width>
 						<height>45</height>
 						<font>font12caps</font>
-						<label>Profil</label>
+						<label>SCRIPT200</label>
 						<textcolor>DDced8da</textcolor>
 						<align>center</align>
 						<aligny>center</aligny>
@@ -797,7 +797,7 @@
 						<radioheight>24</radioheight>
 						<textureradioon>IPX-radiobutton-focus.png</textureradioon>
 						<textureradiooff>IPX-radiobutton-nofocus.png</textureradiooff>
-						<label>Connect</label>
+						<label>SCRIPT201</label>
 					</control>
 					<control type="button" id="201">
 						<description>MP</description>
@@ -810,7 +810,7 @@
 						<texturefocus border="5">IPX-button-focus.png</texturefocus>
 						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
-						<label>Message(s)</label>
+						<label>SCRIPT23</label>
 					</control>
 				</control>
 			</control>
@@ -859,7 +859,7 @@
 					<texturefocus border="5">IPX-button-focus.png</texturefocus>
 					<texturenofocus>-</texturenofocus>
 					<pulseonselect>false</pulseonselect>
-					<label>Forum Liste</label>
+					<label>SCRIPT202</label>
 					<onleft>191</onleft>
 					<onright>191</onright>
 					<onup>98</onup>
@@ -905,7 +905,7 @@
 					<radioheight>18</radioheight>
 					<textureradioon>IPX-HomeHasSub.png</textureradioon>
 					<textureradiooff>IPX-HomeHasSub.png</textureradiooff>
-					<label>31026</label>
+					<label>SCRIPT52</label>
 					<onleft>191</onleft>
 					<onright>9030</onright>
 					<onup>5</onup>
@@ -945,7 +945,7 @@
 				<align>right</align>
 				<aligny>center</aligny>
 				<posx>220</posx>
-				<label>Forum Passion-XBMC</label>
+				<label>SCRIPT203</label>
 			</control>
 		</control>
 
