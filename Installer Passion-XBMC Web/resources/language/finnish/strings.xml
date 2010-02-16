@@ -117,43 +117,6 @@
   <string id="185">Laske koko</string>
   <string id="186">Lasketaan kansion kokoa</string>
 
-  <!--FORUM DIRECT INFOS STRINGS -->
-  <string id="199">Uudet</string>
-  <string id="200">Yleistä</string>
-  <string id="201">Julkaisut ja uutiset</string>
-  <string id="202">XBMC</string>
-  <string id="203">Määritä tietojen hakupaikka</string>
-  <string id="204">XBMC ohjaus - Kauko-ohjain</string>
-  <string id="205">Ulkoasut</string>
-  <string id="206">Tuontipalvelu</string>
-  <string id="207">Ulkoasutiedostot</string>
-  <string id="208">Ulkoasu projektit ja keskeneräiset ulkoasut</string>
-  <string id="209">Käyttäjien nurkka</string>
-  <string id="210">Kehittäjien nurkka</string>
-  <string id="211">Xbmc Live</string>
-  <string id="212">Ubuntu</string>
-  <string id="213">Ubuntu ja Xbmc ohjeet</string>
-  <string id="214">USB-imagen luonti Ubuntulle</string>
-  <string id="215">Windows</string>
-  <string id="216">USB-imagen luonti Windowsille</string>
-  <string id="217">Xbox</string>
-  <string id="218">XBOX modaustuki</string>
-  <string id="219">Mac OSX (Leopard ja Tiger)</string>
-  <string id="220">USB-imagen luonti Mac Intelille</string>
-  <string id="221">USB-imagen luonti Apple-TV:lle</string>
-  <string id="222">Haarat</string>
-  <string id="223">(Haara) Plex for Mac</string>
-  <string id="224">(Vaihtoehtoinen) Boxeetv</string>
-  <string id="225">Verkkosivu</string>
-  <string id="226">Säännöt - Pakollinen luettava, älä väitä ettei sinua ole varoitettu :)</string>
-  <string id="227">Kahvia keskustelutaululla</string>
-  <string id="228">Jäsenet</string>
-  <string id="229">Omat asetukset</string>
-  <string id="230">Elokuvat ja musiikki</string>
-  <string id="231">Kirjat ja sarjakuvat</string>
-  <string id="232">Roskat</string>
-  <string id="233">Passion-Xbmc Trac</string>
-
   <string id="236">Vahvista uuden aiheen lisäys:</string>
   <string id="237">Ohita</string>
   <string id="238">Käynnistä</string>

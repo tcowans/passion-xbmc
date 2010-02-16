@@ -269,12 +269,20 @@ GOTO UnrarBuild
   ECHO Updating XBMC from %BuildName%...
   ECHO Please wait...
 
+  SET copy_tempdir=
+  IF EXIST %XBMCTemp%\%BuildName%\xbmc\XBMC.exe (
+    SET copy_tempdir=%XBMCTemp%\%BuildName%\xbmc
+  )
+  IF EXIST %XBMCTemp%\%BuildName%\XBMC.exe (
+    SET copy_tempdir=%XBMCTemp%\%BuildName%
+  )
+
   IF EXIST %exclude_txt% (
-      XCOPY %XBMCTemp%\%BuildName%\xbmc %xbmc_install_path% /E /I /Y /F /V /EXCLUDE:%exclude_txt% > "%CD%\LOGS\update.log"
-      rem XCOPY %XBMCTemp%\%BuildName%\xbmc xbmc /E /I /Y /F /V /EXCLUDE:%exclude_txt% > "%CD%\LOGS\update.log"
+      XCOPY %copy_tempdir% %xbmc_install_path% /E /I /Y /F /V /EXCLUDE:%exclude_txt% > "%CD%\LOGS\update.log"
+      rem XCOPY %copy_tempdir% xbmc /E /I /Y /F /V /EXCLUDE:%exclude_txt% > "%CD%\LOGS\update.log"
   ) ELSE (
-      XCOPY %XBMCTemp%\%BuildName%\xbmc %xbmc_install_path% /E /I /Y /F /V > "%CD%\LOGS\update.log"
-      rem XCOPY %XBMCTemp%\%BuildName%\xbmc xbmc /E /I /Y /F /V > "%CD%\LOGS\update.log"
+      XCOPY %copy_tempdir% %xbmc_install_path% /E /I /Y /F /V > "%CD%\LOGS\update.log"
+      rem XCOPY %copy_tempdir% xbmc /E /I /Y /F /V > "%CD%\LOGS\update.log"
   )
   IF NOT "%ErrorLevel:~0,1%"=="0" (
     ECHO He seems to have been an unexpected error!
@@ -283,6 +291,7 @@ GOTO UnrarBuild
       NOTEPAD "%CD%\LOGS\update.log"
     )
     SET showlog=
+    GOTO NoUpdate
   )
   ECHO.
   ECHO Update Done!

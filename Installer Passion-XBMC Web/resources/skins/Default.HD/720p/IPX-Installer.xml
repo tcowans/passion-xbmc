@@ -126,7 +126,7 @@
 					<onright>2050</onright>
 					<onup>50</onup>
 					<ondown>50</ondown>
-					<viewtype label="Cube³">list</viewtype>
+					<viewtype label="SCRIPT353">list</viewtype>
 					<pagecontrol>2050</pagecontrol>
 					<scrolltime>200</scrolltime>
 					<itemlayout height="40" width="580">
@@ -159,7 +159,7 @@
 							<selectedcolor>FFEB9E17</selectedcolor>
 							<align>right</align>
 							<aligny>center</aligny>
-							<label>$INFO[ListItem.Property(added),$LOCALIZE[570]: ]$INFO[ListItem.Property(size),$LOCALIZE[553]: ]</label>
+							<label>$INFO[ListItem.Property(added),$LOCALIZE[570]: ]$INFO[ListItem.Property(size),$LOCALIZE[553]: ]</label><!-- labels 553-570 localized in XBMC language -->
 							<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="IsEmpty(ListItem.Property(Downloaded))">conditional</animation>
 						</control>
 						<control type="image">
@@ -223,7 +223,7 @@
 							<selectedcolor>FFEB9E17</selectedcolor>
 							<align>right</align>
 							<aligny>center</aligny>
-							<label>$INFO[ListItem.Property(added),$LOCALIZE[570]: ]$INFO[ListItem.Property(size),$LOCALIZE[553]: ]</label>
+							<label>$INFO[ListItem.Property(added),$LOCALIZE[570]: ]$INFO[ListItem.Property(size),$LOCALIZE[553]: ]</label><!-- labels 553-570 localized in XBMC language -->
 							<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="IsEmpty(ListItem.Property(Downloaded))">conditional</animation>
 						</control>
 						<control type="image">
@@ -581,7 +581,7 @@
 					<onright>60</onright>
 					<onup>51</onup>
 					<ondown>51</ondown>
-					<viewtype label="537">list</viewtype>
+					<viewtype label="537">list</viewtype><!-- label localized in XBMC language -->
 					<pagecontrol>60</pagecontrol>
 					<scrolltime>200</scrolltime>
 					<itemlayout height="40" width="1080">
@@ -621,7 +621,7 @@
 							<selectedcolor>FFEB9E17</selectedcolor>
 							<align>right</align>
 							<aligny>center</aligny>
-							<label>$INFO[ListItem.Property(added),$LOCALIZE[570]: ]$INFO[ListItem.Property(size),$LOCALIZE[553]: ]</label>
+							<label>$INFO[ListItem.Property(added),$LOCALIZE[570]: ]$INFO[ListItem.Property(size),$LOCALIZE[553]: ]</label><!-- labels 553-570 localized in XBMC language -->
 							<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="IsEmpty(ListItem.Property(Downloaded))">conditional</animation>
 						</control>
 						<control type="image">
@@ -692,7 +692,7 @@
 							<selectedcolor>FFEB9E17</selectedcolor>
 							<align>right</align>
 							<aligny>center</aligny>
-							<label>$INFO[ListItem.Property(added),$LOCALIZE[570]: ]$INFO[ListItem.Property(size),$LOCALIZE[553]: ]</label>
+							<label>$INFO[ListItem.Property(added),$LOCALIZE[570]: ]$INFO[ListItem.Property(size),$LOCALIZE[553]: ]</label><!-- labels 553-570 localized in XBMC language -->
 							<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="IsEmpty(ListItem.Property(Downloaded))">conditional</animation>
 						</control>
 						<control type="image">
@@ -738,7 +738,7 @@
 					<onright>60</onright>
 					<onup>52</onup>
 					<ondown>52</ondown>
-					<viewtype label="21371">list</viewtype>
+					<viewtype label="21371">list</viewtype><!-- label localized in XBMC language -->
 					<pagecontrol>60</pagecontrol>
 					<scrolltime>200</scrolltime>
 					<preloaditems>0</preloaditems>
@@ -2948,7 +2948,7 @@
 						<scroll>true</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>Détails Add-ons</label>
+						<label>SCRIPT599</label>
 					</control>
 					<control type="fadelabel">
 						<posx>0</posx>
@@ -3166,7 +3166,7 @@
 						<font>font12_title</font>
 						<textcolor>00FFFFFF</textcolor>
 						<focusedcolor>FFFFFFFF</focusedcolor>
-						<label>Reset</label>
+						<label>SCRIPT41</label>
 						<onclick>Skin.Reset(IPX_HideInfo)</onclick>
 						<onclick>Skin.Reset(IPX_HideCube)</onclick>
 						<onclick>Skin.Reset(IPX_HideRotateCompass)</onclick>
@@ -3183,7 +3183,7 @@
 						<width>220</width>
 						<height>45</height>
 						<font>font12caps</font>
-						<label>21866</label>
+						<label>SCRIPT32</label>
 						<textcolor>DDced8da</textcolor>
 						<align>center</align>
 						<aligny>center</aligny>
@@ -3237,7 +3237,7 @@
 						<width>220</width>
 						<height>45</height>
 						<font>font12caps</font>
-						<label>14018</label>
+						<label>14018</label><!-- label localized in XBMC language -->
 						<textcolor>DDced8da</textcolor>
 						<align>center</align>
 						<aligny>center</aligny>
@@ -3257,7 +3257,7 @@
 						<radioheight>24</radioheight>
 						<textureradioon>IPX-radiobutton-focus.png</textureradioon>
 						<textureradiooff>IPX-radiobutton-nofocus.png</textureradiooff>
-						<label>Hide INFO</label>
+						<label>SCRIPT42</label>
 						<onclick>Skin.ToggleSetting(IPX_HideInfo)</onclick>
 						<selected>Skin.HasSetting(IPX_HideInfo)</selected>
 						<enable>Control.IsVisible(50) | Control.IsVisible(59)</enable>
@@ -3277,7 +3277,7 @@
 						<radioheight>24</radioheight>
 						<textureradioon>IPX-radiobutton-focus.png</textureradioon>
 						<textureradiooff>IPX-radiobutton-nofocus.png</textureradiooff>
-						<label>Hide CUBE³</label>
+						<label>SCRIPT43</label>
 						<onclick>Skin.ToggleSetting(IPX_HideCube)</onclick>
 						<selected>Skin.HasSetting(IPX_HideCube)</selected>
 						<visible>Control.IsVisible(50)</visible>
@@ -3307,7 +3307,7 @@
 						<radioheight>24</radioheight>
 						<textureradioon>IPX-radiobutton-focus.png</textureradioon>
 						<textureradiooff>IPX-radiobutton-nofocus.png</textureradiooff>
-						<label>Rotate Icon</label>
+						<label>SCRIPT44</label>
 						<onclick>Skin.ToggleSetting(IPX_HideRotateCompass)</onclick>
 						<selected>!Skin.HasSetting(IPX_HideRotateCompass)</selected>
 						<visible>Control.IsVisible(59)</visible>
@@ -3327,7 +3327,7 @@
 						<radioheight>24</radioheight>
 						<textureradioon>IPX-radiobutton-focus.png</textureradioon>
 						<textureradiooff>IPX-radiobutton-nofocus.png</textureradiooff>
-						<label>Hide Compass</label>
+						<label>SCRIPT45</label>
 						<onclick>Skin.Reset(IPX_Compass_Fanart)</onclick>
 						<onclick>Skin.ToggleSetting(IPX_HideCompass)</onclick>
 						<selected>!Skin.HasSetting(IPX_HideCompass)</selected>
@@ -3348,7 +3348,7 @@
 						<radioheight>24</radioheight>
 						<textureradioon>IPX-radiobutton-focus.png</textureradioon>
 						<textureradiooff>IPX-radiobutton-nofocus.png</textureradiooff>
-						<label>Compass Fanart</label>
+						<label>SCRIPT47</label>
 						<onclick>Skin.Reset(IPX_FanartFull)</onclick>
 						<onclick>Skin.ToggleSetting(IPX_Compass_Fanart)</onclick>
 						<selected>Skin.HasSetting(IPX_Compass_Fanart)</selected>
@@ -3370,7 +3370,7 @@
 						<radioheight>24</radioheight>
 						<textureradioon>IPX-radiobutton-focus.png</textureradioon>
 						<textureradiooff>IPX-radiobutton-nofocus.png</textureradiooff>
-						<label>Hide Fanart</label>
+						<label>SCRIPT51</label>
 						<onclick>Skin.Reset(IPX_Compass_Fanart)</onclick>
 						<onclick>Skin.ToggleSetting(IPX_FanartFull)</onclick>
 						<selected>Skin.HasSetting(IPX_FanartFull)</selected>
@@ -3424,7 +3424,7 @@
 					<texturefocus border="5">IPX-button-focus.png</texturefocus>
 					<texturenofocus>-</texturenofocus>
 					<pulseonselect>false</pulseonselect>
-					<label>101</label>
+					<label>101</label><!-- label localized in XBMC language -->
 					<onleft>50</onleft>
 					<onright>50</onright>
 					<onup>98</onup>
@@ -3443,7 +3443,7 @@
 					<texturefocus border="5">IPX-button-focus.png</texturefocus>
 					<texturenofocus>-</texturenofocus>
 					<pulseonselect>false</pulseonselect>
-					<label>103</label>
+					<label>103</label><!-- label localized in XBMC language -->
 					<onleft>50</onleft>
 					<onright>4</onright>
 					<onup>2</onup>
@@ -3481,7 +3481,7 @@
 					<radioheight>18</radioheight>
 					<textureradioon>IPX-HomeHasSub.png</textureradioon>
 					<textureradiooff>IPX-HomeHasSub.png</textureradiooff>
-					<label>SCRIPT1026</label>
+					<label>SCRIPT52</label>
 					<onleft>50</onleft>
 					<onright>9010</onright>
 					<onup>3</onup>
@@ -3585,7 +3585,7 @@
 				<align>right</align>
 				<aligny>center</aligny>
 				<posx>220</posx>
-				<label>Installer</label>
+				<label>SCRIPT7</label>
 			</control>
 		</control>
 

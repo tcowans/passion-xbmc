@@ -25,10 +25,38 @@
   <string id="21">Mot de passe Administrateur</string>
   <string id="22">Derniers Ajouts</string>
 
+  <string id="23">Message(s)</string>
   <string id="24">Page</string>
   <string id="25">Objet(s)</string>
   <string id="26">Objet</string>
   <string id="27">de</string>
+
+  <string id="28">Nightly</string>
+  <string id="29">Nightly Builds</string>
+  <string id="30">Infos Débogue</string>
+  <string id="31">Caches Cleaner</string>
+  <string id="32">Serveurs</string>
+
+  <string id="41">Remettre à zéro</string>
+  <string id="42">Masquer les infos</string>
+  <string id="43">Masquer le CUBE³</string>
+  <string id="44">Pivoter les icônes</string>
+  <string id="45">Masquer le Compass</string>
+  <string id="46">Compass Icône</string>
+  <string id="47">Compass Fanart</string>
+
+  <string id="51">Sans Fanart</string>
+  <string id="52">Options diverses</string>
+  <string id="53">Changelog</string>
+  <string id="54">Build Disponibilité</string>
+  <string id="55">MAJ XBMC</string>
+  <string id="56">MAJ Exclude</string>
+  <string id="57">-</string>
+  <string id="58">-</string>
+  <string id="59">-</string>
+  <string id="60">-</string>
+  <string id="61">-</string>
+  <string id="62">-</string>
 
   <!--DIVERS STRINGS -->
   <string id="100">Choisissez le dossier d'installation d'XBMC</string>
@@ -119,41 +147,11 @@
   <string id="186">Calcule de la taille du répertoire</string>
 
   <!--FORUM DIRECT INFOS STRINGS -->
-  <string id="199">Informations en direct</string>
-  <string id="200">Général</string>
-  <string id="201">Releases et Nouvelles</string>
-  <string id="202">XBMC</string>
-  <string id="203">Scraper Allociné</string>
-  <string id="204">Pilotage - Telecommande </string>
-  <string id="205">Skins</string>
-  <string id="206">Service Importation</string>
-  <string id="207">Fiches des Skins</string>
-  <string id="208">Skins en Projets et Skins Abandonnés</string>
-  <string id="209">Le coin des utilisateurs</string>
-  <string id="210">Le coin des développeurs</string>
-  <string id="211">Xbmc Live</string>
-  <string id="212">Ubuntu</string>
-  <string id="213">Tutos Ubuntu et Xbmc</string>
-  <string id="214">USB Creator pour Ubuntu</string>
-  <string id="215">Windows</string>
-  <string id="216">USB Creator pour Windows</string>
-  <string id="217">Xbox</string>
-  <string id="218">Support Modifications des Consoles</string>
-  <string id="219">Mac OSX (Leopard et Tiger)</string>
-  <string id="220">USB Creator pour Mac Intel</string>
-  <string id="221">USB Creator pour Apple TV</string>
-  <string id="222">Forks</string>
-  <string id="223">(Fork) Plex pour Mac</string>
-  <string id="224">(Alternative) Boxeetv</string>
-  <string id="225">Le site</string>
-  <string id="226">Charte - A lire obligatoirement, ne dites pas qu'on ne vous avait pas prévenu :)</string>
-  <string id="227">Café avec southbox au plafond</string>
-  <string id="228">Membres</string>
-  <string id="229">Vos Configs</string>
-  <string id="230">Films et Musique</string>
-  <string id="231">Livres et BD</string>
-  <string id="232">Corbeille</string>
-  <string id="233">Trac Passion-Xbmc</string>
+  <string id="199">Topics</string>
+  <string id="200">Profil</string>
+  <string id="201">Se connecter</string>
+  <string id="202">Forum Liste</string>
+  <string id="203">Forum Passion-XBMC</string>
 
   <string id="236">Confirmer le lancement du topic:</string>
   <string id="237">Passer</string>
@@ -166,7 +164,7 @@
   <string id="350">Liste</string>
   <string id="351">Infos Média</string>
   <string id="352">Icônes</string>
-  <string id="353"></string>
+  <string id="353">Cube³</string>
   <string id="354"></string>
   <string id="355"></string>
   <string id="356">Média 1</string>
@@ -178,6 +176,8 @@
   <string id="362">Créé le :</string>
   <string id="363">Modifié le :</string>
   <string id="364">Dernier accès le :</string>
+  <string id="365">Contient(s)</string>
+  <string id="366">Objet(s)</string>
 
   <!--SETTINGS STRINGS -->
   <string id="499">Version: %s</string>
@@ -211,7 +211,16 @@
   <string id="533">IPX nécessite un redémarrage pour changer le thème.</string>
   <string id="534">Voulez-vous redémarrer maintenant?</string>
 
+  <string id="540">Support</string>
+  <string id="541">Paramètres[CR]par défaut</string>
+  <string id="542">(Manager seulement)</string>
+
+  <string id="550">Support Français</string>
+  <string id="551">Support Anglais</string>
+  <string id="552">Cliquez pour obtenir de l'aide!</string>
+
   <!--DESCRIPTION STRINGS -->
+  <string id="599">Infos Add-ons</string>
   <string id="600">Description</string>
   <string id="601">Genre</string>
   <string id="602">Version</string>
@@ -234,8 +243,14 @@
   <string id="619">Suédois</string>
   <string id="620">Auteur</string>
   <string id="621">Nom du fichier</string>
+  <string id="622">CLIQUEZ POUR AGRANDIR L'IMAGE</string>
+  <string id="623">IMAGE[CR][CR]INDISPONIBLE</string>
+  <string id="624">Image</string>
+  <string id="625">Retourner l'image</string>
   
   <!--ABOUT STRINGS -->
+  <string id="698">Statut</string>
+  <string id="699">Révision</string>
   <string id="700">Version</string>
   <string id="701">Equipe des créateurs</string>
   <string id="702">Développeur</string>
@@ -247,17 +262,15 @@
   <string id="708">SVN</string>  
   <string id="709">Langues</string>  
   <string id="710">Ce script permet d'installer directement depuis XBMC les thèmes, scripts, plugins et scrapers disponibles sur les serveurs WEB et FTP de passion XBMC (passion-xbmc.org) maintenu par la Team Passion-XBMC et de sources diverses.</string>
+
+  <string id="720">Autres Devs &#38; Assistant</string>
+  <string id="730">Remerciement spécial à:</string>
+
   <!--CONTEXT MENU STRINGS -->
+  <string id="999">Menu</string>
   <string id="1000">Installer</string>
   <string id="1001">Information</string>
   <string id="1002">Changer de médias</string>
-  <string id="1003"></string>
-  <string id="1004"></string>
-  <string id="1005"></string>
-  <string id="1006"></string>
-  <string id="1007"></string>
-  
-  <string id="1026">Options diverses</string>
 
   <!-- Effacement des Caches -->
   <string id="32650">Effacement: %s</string>

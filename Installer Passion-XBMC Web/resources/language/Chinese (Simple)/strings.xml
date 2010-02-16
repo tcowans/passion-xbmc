@@ -117,43 +117,6 @@
   <string id="185">计算大小</string>
   <string id="186">计算文件夹大小</string>
 
-  <!--FORUM DIRECT INFOS STRINGS -->
-  <string id="199">新闻内容</string>
-  <string id="200">常规</string>
-  <string id="201">发布与新闻</string>
-  <string id="202">XBMC媒体中心</string>
-  <string id="203">其他类别</string>
-  <string id="204">XBMC 控制 - 远程控制</string>
-  <string id="205">皮肤主题</string>
-  <string id="206">导入服务</string>
-  <string id="207">皮肤主题文件</string>
-  <string id="208">皮肤主题开发项目和取消的皮肤主题</string>
-  <string id="209">用户部落</string>
-  <string id="210">开发者部落</string>
-  <string id="211">Xbmc Live</string>
-  <string id="212">Ubuntu</string>
-  <string id="213">Ubuntu and Xbmc tutorials</string>
-  <string id="214">USB Creator for Ubuntu</string>
-  <string id="215">Windows</string>
-  <string id="216">USB Creator for Windows</string>
-  <string id="217">Xbox</string>
-  <string id="218">XBOX moding support</string>
-  <string id="219">Mac OSX (Leopard and Tiger)</string>
-  <string id="220">USB Creator for Mac Intel</string>
-  <string id="221">USB Creator for Apple TV</string>
-  <string id="222">Forks</string>
-  <string id="223">(Fork) Plex for Mac</string>
-  <string id="224">(Alternative) Boxeetv</string>
-  <string id="225">关于网站</string>
-  <string id="226">宪章 - 强制性阅读，不要说你没有得到警告 哈~!</string>
-  <string id="227">Coffee with southbox on the ceiling</string>
-  <string id="228">注册会员</string>
-  <string id="229">您的配置</string>
-  <string id="230">电影和音乐</string>
-  <string id="231">图书和漫画书</string>
-  <string id="232">回收站</string>
-  <string id="233">Passion-Xbmc Trac</string>
-
   <string id="236">请确认主题打开:</string>
   <string id="237">跳过</string>
   <string id="238">打开</string>

@@ -243,7 +243,7 @@ class DirectInfos( xbmcgui.WindowXML ):
                                 slideshow = "true"
                         #print message.encode( "ISO-8859-1" )
                         #print
-                        #message = re.sub( "(?s)<[^>]*>", "", message )
+                        message = re.sub( "(?s)<[^>]*>", "", message )
                     except:
                         print_exc()
                     else:
