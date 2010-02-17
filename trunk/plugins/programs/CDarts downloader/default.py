@@ -46,6 +46,10 @@ except:
     xbmcplugin.openSettings(sys.argv[0])
     storage=( "skin", "albumfolder" )[ int( xbmcplugin.getSetting("folder") ) ]
 print "storage = %s" % storage
+if storage == "skin":
+    cdart_path = os.path.join(xbmc.translatePath("special://skin\media"),"backdrops","artist_fanart","cd")
+    if not os.path.exists(cdart_path): os.makedirs(cdart_path)
+    print cdart_path
 
 def addLink(name,url,iconimage):
         ok=True
@@ -53,7 +57,6 @@ def addLink(name,url,iconimage):
         liz.setInfo( type="Video", infoLabels={ "Title": name } )
         ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=url,listitem=liz)
         return ok
-
 
 def addDir(name,url,mode,iconimage):
         u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)
@@ -319,7 +322,7 @@ if mode == 2:
                 #print "title: %s" % album["title"]
             
             elif len(thumb) == 0:
-                name = "choose for %s (%s)" % (album["title"] , len(thumb) )
+                name = "choose for %s-%s (%s)" % (album["local_name"] , album["title"] , len(thumb) )
                 url = album["path"]
                 for elem in artist_album_list:
                     print elem["title"]
@@ -337,7 +340,7 @@ if mode == 2:
                     print elem["title"]
                     print elem["picture"]
                     url = url + "&&&&" + elem["title"] + "&&" + elem["picture"]
-                name = "choose for %s (%s)" % (album["title"] , len(thumb) )
+                name = "choose for %s-%s (%s)" % (album["local_name"] , album["title"] , len(thumb) )
                 img = ""
                 addDir( name ,url,4,img)
             
@@ -349,8 +352,10 @@ if mode == 4:
     else: name = name.replace("[COLOR=ff00FF00]"  , "").replace("[/COLOR]"  , "").replace("(.*)"  , "").replace("choose for "  , "")
     print len(url.split("&&")) , len(url.split("&&&&"))
     
-    if len(url.split("&&")) == 2: 
-        path =  os.path.join(url.split("&&")[0],"%s.png" % name ).encode("utf8")
+    if len(url.split("&&")) == 2:
+        if storage == "albumfolder" : path =  os.path.join(url.split("&&")[0],"%s.png" % name ).encode("utf8")
+        if storage == "skin" : path =  os.path.join( cdart_path , "%s.png" % name ).encode("utf8")
+        else : path =  os.path.join(url.split("&&")[0],"%s.png" % name ).encode("utf8")
         cdart = url.split("&&")[1]
         select = 0
         
@@ -359,7 +364,9 @@ if mode == 4:
         album_choice = []
         for unit in url.split("&&&&"):
             print unit.split("&&")
-            if len(unit.split("&&")) == 1: path = os.path.join(unit,"%s.png" % name ).encode("utf8")
+            if len(unit.split("&&")) == 1:
+                if storage == "albumfolder" :path = os.path.join(unit,"%s.png" % name ).encode("utf8")
+                if storage == "skin" : os.path.join( cdart_path , "%s.png" % name ).encode("utf8")
             else:
                 if not unit.split("&&") == ['']:
                     print unit.split("&&")[0] , unit.split("&&")[1]
