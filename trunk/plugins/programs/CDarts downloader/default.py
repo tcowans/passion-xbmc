@@ -6,8 +6,8 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 #__svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/video/XbmcStuff downloader/"
 __credits__      = "Team XBMC, http://passion-xbmc.org/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "14-02-2010"
-__version__      = "1.0"
+__date__         = "17-02-2010"
+__version__      = "1.0.1"
 __svn_revision__  = "$Revision$"
 __XBMC_Revision__ = "20000" #XBMC Babylon
 __useragent__    = "Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.0.1) Gecko/2008070208 Firefox/3.0.1"
@@ -161,7 +161,7 @@ def get_recognized( distant_artist , local_artist ):
     true = 0
     recognized = []
     for artist in local_artist:
-        match = re.search('<artist id="(.*?)">%s</artist>' % str.lower( artist["name"] ), distant_artist )
+        match = re.search('<artist id="(.*?)">%s</artist>' % str.lower( re.escape(artist["name"]) ), distant_artist )
         if match: 
             true = true + 1
             artist["distant_id"] = match.group(1)
