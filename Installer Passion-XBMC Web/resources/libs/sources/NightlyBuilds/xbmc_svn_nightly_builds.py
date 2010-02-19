@@ -1,6 +1,7 @@
 
 import os
 import re
+import sys
 import urllib
 import urllib2
 from traceback import print_exc
@@ -10,14 +11,25 @@ base_url = "http://www.sshcs.com/xbmc/"
 builds_url = base_url + "?mode=Builds"
 dl_url = base_url + "/binaries/builds/"
 
+try:
+    #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
+    _ = sys.modules[ "__main__" ].__language__
+except:
+    lang = { 32900: "Use this package to over-write your current installed application.",
+        32901: "Use this package to install a fresh copy using the latest SVN release.",
+        32902: "Use this package to install a full version on your deb based Linux.",
+        32903: "Use this package for a clean install or upgrade on your XBMC.",
+        32904: "Use this package to install a full version on your OS X Bases Systems." }
+    def _( id ): return lang[ id ]
+
 # temporaire les labels vont dans le strings.xml
 build_text = {
-    "PCDX":  ( "Windows DirectX", "Use this package to over-write your current installed application.", "windows.png" ),
-    "PCI":   ( "Windows Installer", "Use this package to install a fresh copy using the latest SVN release.", "windows.png" ),
-    "Linux": ( "Linux Debian File", "Use this package to install a full version on your deb based Linux.", "ubuntu.png" ),
-    "XBOX":  ( "XBOX", "Use this package for a clean install or upgrade on your XBMC.", "xbox.png" ),
-    "PCO":   ( "Windows OpenGL", "Use this package to over-write your current installed application.", "windows.png" ),
-    "OSX":   ( "OSX 10.5/10.4/ATV", "Use this package to install a full version on your OS X Bases Systems.", "mac.png" ),
+    "PCDX":  ( "Windows DirectX", _( 32900 ), "windows.png" ),
+    "PCI":   ( "Windows Installer", _( 32901 ), "windows.png" ),
+    "Linux": ( "Linux Debian File", _( 32902 ), "ubuntu.png" ),
+    "XBOX":  ( "XBOX", _( 32903 ), "xbox.png" ),
+    "PCO":   ( "Windows OpenGL", _( 32900 ), "windows.png" ),
+    "OSX":   ( "OSX 10.5/10.4/ATV", _( 32904 ), "mac.png" ),
     }
 
 

@@ -45,7 +45,8 @@ HEADERS = {
 # CHEMINS
 CWD = os.getcwd()#.replace( ';', '' )
 
-CACHEDIR = os.path.join( CWD, "~" )
+try: CACHEDIR = os.path.join( sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA, "~" )
+except: CACHEDIR = os.path.join( CWD, "~" )
 if not os.path.isdir( CACHEDIR ): os.makedirs( CACHEDIR )
 COOKIEFILE = os.path.join( CACHEDIR, "passion-xbmc.lwp" )
 
@@ -295,6 +296,14 @@ def Disconnect():
     return IsAuthenticated()
 
 
+try:
+    #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
+    _ = sys.modules[ "__main__" ].__language__
+except:
+    lang = { 205: "Veuillez saisir votre login Passion-XBMC", 206: "Veuillez saisir maintenant le mot de passe",
+        207: "Identification incomplète", 208: "Identification annulée" }
+    def _( id ): return lang[ id ]
+
 def Connect( force=False ):
     if force: Disconnect()
     pseudo, connexion, avatar, mp = IsAuthenticated()
@@ -303,19 +312,19 @@ def Connect( force=False ):
             login = raw_input( "Login Passion-XBMC ? ( vide si pas de login )" )
             psw = raw_input( "Password ? ( vide si pas de login )" )
         else:
-            kb = xbmc.Keyboard( '', 'Veuillez saisir votre login Passion-XBMC', False )
+            kb = xbmc.Keyboard( '', _( 205 ), False )
             kb.doModal()
             if kb.isConfirmed():
                 login = kb.getText()
-                kb.setHeading( 'Veuillez saisir maintenant le mot de passe' )
+                kb.setHeading( _( 206 ) )
                 kb.setHiddenInput( True ) # optional
                 kb.doModal()
                 if kb.isConfirmed():
                     psw = kb.getText()
                 else:
-                    xbmc.executebuiltin( "XBMC.Notification(Passion-XBMC,Identification incomplète,4000,)" )
+                    xbmc.executebuiltin( u"XBMC.Notification(Passion-XBMC,%s,4000,)" % _( 207 ).encode( "utf-8" ) )
             else:
-                xbmc.executebuiltin( "XBMC.Notification(Passion-XBMC,Identification annulée,4000,)" )
+                xbmc.executebuiltin( u"XBMC.Notification(Passion-XBMC,%s,4000,)" % _( 208 ).encode( "utf-8" ) )
 
         pseudo, connexion, avatar, mp = authentification( login, psw, True )
 

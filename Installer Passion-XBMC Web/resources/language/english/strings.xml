@@ -51,7 +51,7 @@
   <string id="54">Build Availability</string>
   <string id="55">Update XBMC</string>
   <string id="56">Manage Exclude</string>
-  <string id="57">-</string>
+  <string id="57">Limit:</string>
   <string id="58">-</string>
   <string id="59">-</string>
   <string id="60">-</string>
@@ -141,17 +141,35 @@
   <string id="179">To:&#32;</string>
   <string id="180">Confirm item install</string>
   <string id="181">Do you really want to install this item?</string>
+  <string id="182">End of the extraction</string>
 
   <string id="184">Refresh</string>
   <string id="185">Calculate Size</string>
   <string id="186">Calculating folder size</string>
+  <string id="187">UnRar: %i of %i items</string>
+  <string id="188">UnZip: %i of %i items</string>
+  <string id="189">Size: %.2f / %.2f Mb</string>
+  <string id="190">Size: %.2f / ? Mb</string>
+  <string id="191">kb/s</string>
 
   <!--FORUM DIRECT INFOS STRINGS -->
   <string id="199">Topics</string>
   <string id="200">Profile</string>
   <string id="201">Connect</string>
-  <string id="202">Forum Liste</string>
+  <string id="202">Forum List</string>
   <string id="203">Forum Passion-XBMC</string>
+  <string id="205">Please enter your login Passion-XBMC</string>
+  <string id="206">Please now enter the password</string>
+  <string id="207">Incomplete identification</string>
+  <string id="208">Identification canceled</string>
+  <string id="209">Welcome</string>
+  <string id="210">You are connected!</string>
+  <string id="211">You have %i message!</string>
+  <string id="212">Personal messages</string>
+  <string id="213">%i Personal messages of recovery!</string>
+  <string id="214">Breathe deeply and repeat testing</string>
+  <string id="215">Goodbye</string>
+  <string id="216">Personal messages...</string>
 
   <string id="236">Please confirm topic launch:</string>
   <string id="237">Pass</string>
@@ -184,8 +202,8 @@
   <string id="500">Settings</string>
   <string id="501">Enable modifying the file sources.xml</string>
   <string id="502">Topics per page limit</string>
-  <string id="503">[B]&#126;&#126;[/B]</string>-<!--illimited symbol -->
-  <string id="504">00|5|10|25|50|100</string>-<!--LIST LIMIT FOR TOPICS IN DIRECT INFOS: 00=illimited -->
+  <string id="503">[B]&#126;&#126;[/B]</string><!--illimited symbol -->
+  <string id="504">00|5|10|25|50|100</string><!--LIST LIMIT FOR TOPICS IN DIRECT INFOS: 00=illimited -->
   <string id="505">Skin color</string>
   <string id="506">None</string>
   <string id="507">Enable personal background</string>
@@ -204,6 +222,8 @@
   <string id="519">Block XBMC until Web Browser is closed</string>
   <string id="520">Select Web Browser</string>
   <string id="521">Enter Web Browser Name</string>
+  <string id="522">Shortcut of "Installer" button</string>
+  <string id="523">Color Labels</string>
 
   <string id="530">Disable Splash</string>
   <string id="531">Skin</string>
@@ -326,4 +346,31 @@
   <string id="32850">Clear Cache E</string>
   <string id="32851">Confirm emptying Cache E:\CACHE\nAre you sure?</string>
   <string id="32852">Emptying the Cache E finished.</string>
+
+  <string id="32860">XBMC Nightly Builds</string>
+  <string id="32861">Fetching Unofficial Nightly Builds...</string>
+  <string id="32862">Confirm the download!</string>
+  <string id="32863">Are you sure you want to download this build?</string>
+  <string id="32864">Confirm Launching Update</string>
+  <string id="32865">Your version: %s</string>
+  <string id="32866">Shift to: %s</string>
+  <string id="32867">There have not updated for your Platform!</string>
+  <string id="32868">Be patient it would soon!</string>
+
+  <string id="32900">Use this package to over-write your current installed application.</string>
+  <string id="32901">Use this package to install a fresh copy using the latest SVN release.</string>
+  <string id="32902">Use this package to install a full version on your deb based Linux.</string>
+  <string id="32903">Use this package for a clean install or upgrade on your XBMC.</string>
+  <string id="32904">Use this package to install a full version on your OS X Bases Systems.</string>
+
+  <string id="32910">Add/Remove file or folder on update</string>
+  <string id="32911">Add file</string>
+  <string id="32912">Add folder</string>
+  <string id="32913">Remove all</string>
+  <string id="32914">Browse for exclude file on update</string>
+  <string id="32915">Browse for exclude folder on update</string>
+  <string id="32916">Confirm remove</string>
+  <string id="32917">Are you sure you want to remove everything?</string>
+  <string id="32918">Are you sure you want to remove:</string>
+  <string id="32919">Excluded: %s</string>
 </strings>

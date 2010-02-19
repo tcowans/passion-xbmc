@@ -261,7 +261,7 @@ class ScriptSettings( eval( XBMCGUI_WINDOW_XML ) ):
         try:
             self.getControl( self.CONTROL_SERVERS_LIST ).reset()
             for server in self.SERVERS:
-                self.getControl( self.CONTROL_SERVERS_LIST ).addItem( xbmcgui.ListItem( 'Raccourci du bouton "Installer"', server ) )
+                self.getControl( self.CONTROL_SERVERS_LIST ).addItem( xbmcgui.ListItem( _( 522 ), server ) )
             pos = self.SERVERS.index( self.settings.get( "server_shortcut_button", self.SERVERS[ 0 ] ) )
             self.getControl( self.CONTROL_SERVERS_LIST ).selectItem( int( pos ) )
         except:
@@ -321,7 +321,7 @@ class ScriptSettings( eval( XBMCGUI_WINDOW_XML ) ):
                     listitems1.append( listitem )
 
                     label = "[COLOR=%s]%s[/COLOR]" % ( color[ 1 ], color[ 0 ] )
-                    listitem = xbmcgui.ListItem( label, "Couleur des étiquettes" )
+                    listitem = xbmcgui.ListItem( label, _( 523 ) )
                     listitem.setProperty( "color", color[ 1 ] )
                     listitem.setProperty( "colorname", color[ 0 ] )
                     listitem.setProperty( "position", "(%i/%i)" % ( count+1, total_colors ) )
@@ -474,11 +474,11 @@ class ScriptSettings( eval( XBMCGUI_WINDOW_XML ) ):
 
             elif controlID == self.CONTROL_EN_SUPPORT_BUTTON:
                 # english support
-                self._url_launcher( "English support...", "http://passion-xbmc.org/supportIPX.html?lang=en" )
+                self._url_launcher( "%s..." % _( 551 ), "http://passion-xbmc.org/supportIPX.html?lang=en" )
 
             elif controlID == self.CONTROL_FR_SUPPORT_BUTTON:
                 # french support
-                self._url_launcher( "French support...", "http://passion-xbmc.org/supportIPX.html?lang=fr" )
+                self._url_launcher( "%s..." % _( 550 ), "http://passion-xbmc.org/supportIPX.html?lang=fr" )
 
             elif controlID == self.CONTROL_RESET_BUTTON:
                 #bouton reset settings, ont recup les settings par default
@@ -765,7 +765,7 @@ class ScriptSettings( eval( XBMCGUI_WINDOW_XML ) ):
                 command = '%s %s' % ( self.settings[ "web_navigator" ], url, )
 
             if command is not None:
-                if xbmcgui.Dialog().yesno( "Installer Passion-XBMC", lang, "", "", _( 237 ), "Help" ):
+                if xbmcgui.Dialog().yesno( "Installer Passion-XBMC", lang, "", "", _( 237 ), _( 3 ) ):
                     os.system( command )
         except:
             print_exc()
