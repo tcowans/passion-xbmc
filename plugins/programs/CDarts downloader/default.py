@@ -6,8 +6,8 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 #__svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/video/XbmcStuff downloader/"
 __credits__      = "Team XBMC, http://passion-xbmc.org/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "18-02-2010"
-__version__      = "1.0.2"
+__date__         = "17-02-2010"
+__version__      = "1.0.3"
 __svn_revision__  = "$Revision$"
 __XBMC_Revision__ = "20000" #XBMC Babylon
 __useragent__    = "Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.0.1) Gecko/2008070208 Firefox/3.0.1"
@@ -322,7 +322,7 @@ if mode == 2:
                 #print "title: %s" % album["title"]
             
             elif len(thumb) == 0:
-                name = "choose for %s-%s (%s)" % (album["local_name"] , album["title"] , len(thumb) )
+                name = "choose for %s-%s" % (artist_album_list[0]["local_name"] , album["title"])
                 url = album["path"]
                 for elem in artist_album_list:
                     print elem["title"]
@@ -340,7 +340,7 @@ if mode == 2:
                     print elem["title"]
                     print elem["picture"]
                     url = url + "&&&&" + elem["title"] + "&&" + elem["picture"]
-                name = "choose for %s-%s (%s)" % (album["local_name"] , album["title"] , len(thumb) )
+                name = "choose for %s-%s" % (artist_album_list[0]["local_name"] , album["title"] )
                 img = ""
                 addDir( name ,url,4,img)
             
