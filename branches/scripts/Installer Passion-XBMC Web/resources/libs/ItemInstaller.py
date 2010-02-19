@@ -279,7 +279,7 @@ class ArchItemInstaller(ItemInstaller):
                 #print self.extractedDirPath
             percent = 100
             if progressBar != None:
-                progressBar.update( percent, "Fin Extraction", ( self.name ) )
+                progressBar.update( percent, _( 182 ), self.name )
         else:
             print "extractItem - Archive does not exist - extraction impossible"
             status = "ERROR"
@@ -321,7 +321,7 @@ class ArchItemInstaller(ItemInstaller):
         process_error = False
         percent = 0
         if progressBar != None:
-            progressBar.update( percent, "Copy:", ( self.extractedDirPath ) )
+            progressBar.update( percent, _( 176 ), self.extractedDirPath )
         if ( ( self.extractedDirPath != None ) and ( self.destinationPath != None ) ):
             if self.type == Item.TYPE_SCRAPER:
                 # cas des Scrapers
@@ -360,7 +360,7 @@ class ArchItemInstaller(ItemInstaller):
         del extractor
         percent = 100
         if progressBar != None:
-            progressBar.update( percent, "Copy:", ( self.extractedDirPath ) )
+            progressBar.update( percent, _( 176 ), ( self.extractedDirPath ) )
         return OK
 
     def installItem( self, msgFunc=None,progressBar=None ):
@@ -454,7 +454,7 @@ class DirItemInstaller(ItemInstaller):
         process_error = False
         percent = 0
         if progressBar != None:
-            progressBar.update( percent, "Copy:", ( self.downloadDirPath ) )
+            progressBar.update( percent, _( 176 ), ( self.downloadDirPath ) )
         if ( ( self.downloadDirPath != None ) and ( self.destinationPath != None ) ):
             if self.type == Item.TYPE_SCRAPER:
                 # cas des Scrapers
@@ -493,7 +493,7 @@ class DirItemInstaller(ItemInstaller):
         del extractor
         percent = 100
         if progressBar != None:
-            progressBar.update( percent, "Copy:", ( self.downloadDirPath ) )
+            progressBar.update( percent, _( 176 ), ( self.downloadDirPath ) )
         return OK
 
     def installItem( self, msgFunc=None,progressBar=None ):

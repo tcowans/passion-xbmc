@@ -76,7 +76,7 @@ class DirectInfos( xbmcgui.WindowXML ):
 
         try:
             for limit in self.TOPIC_LIMIT:
-                self.getControl( 9003 ).addItem( xbmcgui.ListItem( "Limite:", limit ) )
+                self.getControl( 9003 ).addItem( xbmcgui.ListItem( _( 57 ), limit ) )
             pos = self.TOPIC_LIMIT.index( self.topics_limit )
             self.getControl( 9003 ).selectItem( pos )
         except:
@@ -98,18 +98,18 @@ class DirectInfos( xbmcgui.WindowXML ):
     def set_user_authentification( self, connect=False ):
         self.connexion = None
         try:
-            self.getControl( 200 ).setLabel( "Connect" )
+            self.getControl( 200 ).setLabel( _( 201 ) )
             self.getControl( 200 ).setSelected( False )
-            self.getControl( 201 ).setLabel( "Message(s)" )
+            self.getControl( 201 ).setLabel( _( 23 ) )
             self.getControl( 201 ).setVisible( False )
         except:
             pass
         if connect: self.pseudo, self.connexion, self.avatar, self.mp = PassionXBMC.Connect()
         else: self.pseudo, self.connexion, self.avatar, self.mp = PassionXBMC.IsAuthenticated()
         if self.connexion:
-            if self.mp == 0: notif = "Bonjour %s,Vous êtes connecté !,5000,%s" % ( self.pseudo, self.avatar, )
-            else: notif = "Bonjour %s,Vous avez %i message !,5000,%s"  % ( self.pseudo, self.mp, self.avatar, )
-            xbmc.executebuiltin( "XBMC.Notification(%s)" % notif )
+            if self.mp == 0: notif = "%s %s,%s,5000,%s" % ( _( 209 ), self.pseudo, _( 210 ),self.avatar, )
+            else: notif = "%s %s,%s,5000,%s"  % ( _( 209 ), self.pseudo, ( _( 211 ) % self.mp ), self.avatar, )
+            xbmc.executebuiltin( "XBMC.Notification(%s)" % notif.encode( "utf-8" ) )
             try:
                 self.getControl( 200 ).setLabel( self.pseudo )
                 self.getControl( 200 ).setSelected( bool( self.connexion ) )
@@ -118,7 +118,7 @@ class DirectInfos( xbmcgui.WindowXML ):
             try:
                 self.getControl( 201 ).setVisible( True )
                 if ( self.mp > 0 ):
-                    self.getControl( 201 ).setLabel( "Message(s) [%i]" % self.mp )
+                    self.getControl( 201 ).setLabel( "%s [%i]" % ( _( 23 ), self.mp ) )
             except:
                 pass
 
@@ -222,7 +222,7 @@ class DirectInfos( xbmcgui.WindowXML ):
             #[( auteur_avatar, auteur, title, date, isread, message )]
             MP = PassionXBMC.getMP()
             if bool( MP ):
-                self.category = "Messages personnels"
+                self.category = _( 212 )
                 self.setProperty( "Category", self.category )
 
                 self.list_infos = list()
@@ -257,10 +257,10 @@ class DirectInfos( xbmcgui.WindowXML ):
 
                 self.setFocusId( self.CONTROL_FEEDS_LIST )
             else:
-                xbmcgui.Dialog().ok( "Passion-XBMC", "%i Messages personnels de récuéper!" % len( MP ), "Respirez à fond et refaites un essai [B]:)[/B]" )
+                xbmcgui.Dialog().ok( "Passion-XBMC", _( 213 ) % len( MP ), "%s [B]:)[/B]" % _( 214 ) )
         except:
             print_exc()
-            xbmcgui.Dialog().ok( "Passion-XBMC", "Respirez à fond et refaites un essai [B]:)[/B]" )
+            xbmcgui.Dialog().ok( "Passion-XBMC", "%s [B]:)[/B]" % _( 214 ) )
         DIALOG_PROGRESS.close()
 
     def onFocus( self, controlID ):
@@ -280,12 +280,12 @@ class DirectInfos( xbmcgui.WindowXML ):
                     self._url_launcher( self.list_infos[ pos ][ 0 ] )
             elif controlID == 200:
                 if self.connexion:
-                    notif = "Passion-XBMC,Au Revoir %s,5000,%s" % ( self.pseudo, self.avatar, )
+                    notif = "Passion-XBMC,%s %s,5000,%s" % ( _( 215 ), self.pseudo, self.avatar, )
                     self.pseudo, self.connexion, self.avatar, self.mp = PassionXBMC.Disconnect()
                     if not self.connexion:
-                        self.getControl( 200 ).setLabel( "Connect" )
+                        self.getControl( 200 ).setLabel( _( 201 ) )
                         self.getControl( 200 ).setSelected( False )
-                        self.getControl( 201 ).setLabel( "Message(s)" )
+                        self.getControl( 201 ).setLabel( _( 23 ) )
                         self.getControl( 201 ).setVisible( False )
                         xbmc.executebuiltin( "XBMC.Notification(%s)" % notif )
                 else:
@@ -295,7 +295,7 @@ class DirectInfos( xbmcgui.WindowXML ):
                 self.set_list_container_150()
                 self.set_list_container_191()
             elif controlID == 201:
-                DIALOG_PROGRESS.create( "Passion-XBMC", "Messages personnels...", _( 110 ) )
+                DIALOG_PROGRESS.create( "Passion-XBMC", _( 216 ), _( 110 ) )
                 self.set_list_container_191_for_pm()
             elif controlID == 5:
                 self.set_list_container_191()

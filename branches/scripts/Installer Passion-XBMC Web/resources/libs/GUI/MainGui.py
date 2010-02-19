@@ -1145,7 +1145,7 @@ class MainWindow( xbmcgui.WindowXML ):
                         xbmcgui.Dialog().ok( _( 155 ), inputText  )
                         exit = True
                     else:
-                        xbmcgui.Dialog().ok( _(148), _( 117) )
+                        xbmcgui.Dialog().ok( _( 148 ), _( 117 ) )
                         
                 del keyboard
             elif chosenIndex == 2: # Ecraser

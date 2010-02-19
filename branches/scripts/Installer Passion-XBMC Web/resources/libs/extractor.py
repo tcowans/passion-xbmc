@@ -19,6 +19,13 @@ import shutil2
 
 DIALOG_PROGRESS = DialogProgress()
 
+try:
+    #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
+    _ = sys.modules[ "__main__" ].__language__
+except:
+    lang = { 110: "Please wait...", 187: "UnRar: %i of %i items", 188: "UnZip: %i of %i items" }
+    def _( id ): return lang[ id ]
+
 
 def get_time_sleep( filename ):
     # faut vraiment laisser xbmc le temps d'extraire l'archive environ 1 seconde pour 1 mo
@@ -95,7 +102,7 @@ def unrar( filename, destination=None, report=False ):
                     if report:
                         if DIALOG_PROGRESS.iscanceled():
                             break
-                        DIALOG_PROGRESS.update( int( percent ), "Unrar %i of %i items" % ( list_size, total_items ), file, "Please wait..." )
+                        DIALOG_PROGRESS.update( int( percent ), _( 187 ) % ( list_size, total_items ), file, _( 110 ) )
                         #print round( percent, 2 ), file
                     if file in namelist:
                         size += os.path.getsize( os.path.join( root, file ) )
@@ -150,7 +157,7 @@ def unzip( filename, destination=None, report=False ):
             if report:
                 if DIALOG_PROGRESS.iscanceled():
                     break
-                DIALOG_PROGRESS.update( int( percent ), "Unzipping %i of %i items" % ( count + 1, total_items ), item, "Please wait..." )
+                DIALOG_PROGRESS.update( int( percent ), _( 188 ) % ( count + 1, total_items ), item, _( 110 ) )
                 #print round( percent, 2 ), item
             if not item.endswith( "/" ):
                 root, name = os.path.split( item )

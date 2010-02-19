@@ -51,7 +51,7 @@
   <string id="54">Build Disponibilité</string>
   <string id="55">MAJ XBMC</string>
   <string id="56">MAJ Exclude</string>
-  <string id="57">-</string>
+  <string id="57">Limite:</string>
   <string id="58">-</string>
   <string id="59">-</string>
   <string id="60">-</string>
@@ -141,10 +141,16 @@
   <string id="179">Vers :&#32;</string>
   <string id="180">Confirmer l'installation de l'élément</string>
   <string id="181">Êtes-vous sûr de vouloir installer cet élément?</string>
+  <string id="182">Fin de l'extraction</string>
 
   <string id="184">Rafraîchir</string>
   <string id="185">Calculer la Taille</string>
   <string id="186">Calcule de la taille du répertoire</string>
+  <string id="187">UnRar: %i de %i objets</string>
+  <string id="188">UnZip: %i de %i objets</string>
+  <string id="189">Taille: %.2f / %.2f Mo</string>
+  <string id="190">Taille: %.2f / ? Mo</string>
+  <string id="191">ko/s</string>
 
   <!--FORUM DIRECT INFOS STRINGS -->
   <string id="199">Topics</string>
@@ -152,6 +158,18 @@
   <string id="201">Se connecter</string>
   <string id="202">Forum Liste</string>
   <string id="203">Forum Passion-XBMC</string>
+  <string id="205">Veuillez saisir votre login Passion-XBMC</string>
+  <string id="206">Veuillez saisir maintenant le mot de passe</string>
+  <string id="207">Identification incomplète</string>
+  <string id="208">Identification annulée</string>
+  <string id="209">Bonjour</string>
+  <string id="210">Vous êtes connecté !</string>
+  <string id="211">Vous avez %i message !</string>
+  <string id="212">Messages personnels</string>
+  <string id="213">%i Messages personnels de récupérer!</string>
+  <string id="214">Respirez à fond et refaites un essai</string>
+  <string id="215">Au Revoir</string>
+  <string id="216">Messages personnels...</string>
 
   <string id="236">Confirmer le lancement du topic:</string>
   <string id="237">Passer</string>
@@ -165,11 +183,11 @@
   <string id="351">Infos Média</string>
   <string id="352">Icônes</string>
   <string id="353">Cube³</string>
-  <string id="354"></string>
-  <string id="355"></string>
+  <string id="354">-</string>
+  <string id="355">-</string>
   <string id="356">Média 1</string>
-  <string id="357"></string>
-  <string id="358"></string>
+  <string id="357">-</string>
+  <string id="358">-</string>
   <string id="359">Carrousel</string>
   <string id="360">Emplacement :</string>
   <string id="361">Taille :</string>
@@ -204,6 +222,8 @@
   <string id="519">Bloquer XBMC jusqu'à ce que le navigateur Web soit fermé</string>
   <string id="520">Sélectionnez le navigateur Web</string>
   <string id="521">Entrer le nom du navigateur Web</string>
+  <string id="522">Raccourci du bouton "Installer"</string>
+  <string id="523">Couleur des étiquettes</string>
 
   <string id="530">Désactiver le Splash</string>
   <string id="531">Thème</string>
@@ -326,4 +346,31 @@
   <string id="32850">Vider le Cache E</string>
   <string id="32851">Confirmer la vidange du Cache E:\CACHE\nVoulez-vous continuer ?</string>
   <string id="32852">Vidange du Cache E terminé.</string>
+
+  <string id="32860">XBMC Nightly Builds</string>
+  <string id="32861">Récupération des builds Nightly...</string>
+  <string id="32862">Confirmer le téléchargement!</string>
+  <string id="32863">Êtes-vous sûr de vouloir télécharger cette build?</string>
+  <string id="32864">Confirmer le lancement de la mise à jour.</string>
+  <string id="32865">Votre version: %s</string>
+  <string id="32866">MAJ vers: %s</string>
+  <string id="32867">Il y a pas d'Updater pour vôtre Platform!</string>
+  <string id="32868">Soyez patient cela serait tardé!</string>
+
+  <string id="32900">Utiliser ce pack pour remplacer votre application actuelle.</string>
+  <string id="32901">Utilisez ce pack pour installer une nouvelle copie en utilisant la dernière version SVN.</string>
+  <string id="32902">Utilisez ce pack pour une installation complet pour Linux (deb).</string>
+  <string id="32903">Utilisez ce pack pour une nouvelle installation ou mise à niveau de votre XBMC.</string>
+  <string id="32904">Utilisez ce pack pour une installation complet pour OS X.</string>
+
+  <string id="32910">Ajouter/Supprimer un fichier ou un dossier de la MAJ</string>
+  <string id="32911">Ajouter un fichier</string>
+  <string id="32912">Ajouter un dossier</string>
+  <string id="32913">Retirez tous</string>
+  <string id="32914">Parcourir pour exclure un fichier de la MAJ</string>
+  <string id="32915">Parcourir pour exclure un dossier de la MAJ</string>
+  <string id="32916">Confirmer le retrait</string>
+  <string id="32917">Êtes-vous sûr de vouloir de tout les retirés?</string>
+  <string id="32918">Êtes-vous sûr de vouloir retirer:</string>
+  <string id="32919">Exclu: %s</string>
 </strings>

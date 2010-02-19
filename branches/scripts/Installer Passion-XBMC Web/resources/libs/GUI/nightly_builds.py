@@ -88,13 +88,13 @@ def manage_exclude_txt():
             print_exc()
 
         excludes = sorted( list( set( excludes ) ) )
-        excludes_list = [ "Add file", "Add folder", "Remove all", "Cancel" ] + [ "Excluded: %s" % exclude for exclude in excludes ]
+        excludes_list = [ _( 32911 ), _( 32912 ), _( 32913 ), _( 153 ) ] + [ _( 32919 ) % exclude for exclude in excludes ]
         
-        selected = xbmcgui.Dialog().select( "Add/Remove file or folder on update", excludes_list )
+        selected = xbmcgui.Dialog().select( _( 32910 ), excludes_list )
         if selected != -1:
             if selected == 0:
                 # Add file
-                add_file = get_browse_dialog( "special://xbmc/", "Browse for exclude file on update", 1 )
+                add_file = get_browse_dialog( "special://xbmc/", _( 32914 ), 1 )
                 if not add_file.lower() == "special://xbmc/xbmc.exe":
                     add_file = os.path.basename( add_file )
                     excludes.append( add_file )
@@ -103,7 +103,7 @@ def manage_exclude_txt():
                 manage_exclude_txt()
             elif selected == 1:
                 # Add folder
-                add_folder = get_browse_dialog( "special://xbmc/", "Browse for exclude folder on update" )
+                add_folder = get_browse_dialog( "special://xbmc/", _( 32915 ) )
                 if not add_folder.lower() == "special://xbmc/":
                     add_folder = os.path.basename( add_folder.strip( "/" ) )
                     excludes.append( add_folder )
@@ -112,7 +112,7 @@ def manage_exclude_txt():
                 manage_exclude_txt()
             elif selected == 2:
                 # Remove all
-                if xbmcgui.Dialog().yesno( "Confirmer le retrait", "Êtes-vous sûr de vouloir de tout les retirés?" ):
+                if xbmcgui.Dialog().yesno( _( 32916 ), _( 32917 ) ):
                     try: os.remove( EXCLUDE_TXT )
                     except IOError: pass
                     except: print_exc()
@@ -122,7 +122,7 @@ def manage_exclude_txt():
                 return
             else:
                 # demande pour retirer un item
-                if xbmcgui.Dialog().yesno( "Confirmer le retrait", "Êtes-vous sûr de vouloir retirer:", excludes[ selected-4 ] ):
+                if xbmcgui.Dialog().yesno( _( 32916 ), _( 32918 ), excludes[ selected-4 ] ):
                     del excludes[ selected-4 ]
                     str_excludes = "\n".join( excludes ) + "\n"
                     file( EXCLUDE_TXT, "w" ).write( str_excludes )
@@ -139,7 +139,7 @@ class pDialogCanceled( Exception ):
 
 def downloader( heading, url, destination="", onBackground=False ):
     # onBackground : pas implanter doit deplacer le downloader et utiliser runscript avec des parametres et tester sans thread
-    if not onBackground: DIALOG_PROGRESS.create( heading, "Veuillez patienter..." )
+    if not onBackground: DIALOG_PROGRESS.create( heading, _( 110 ) )
     xbmc.log( "[SCRIPT: %s] Downloading started: %s" % ( __script__, heading ), xbmc.LOGNOTICE )
     filepath = ""
     try:
@@ -160,9 +160,9 @@ def downloader( heading, url, destination="", onBackground=False ):
         def _report_hook( count, blocksize, totalsize ):
             _line3_ = ""
             if totalsize > 0:
-                _line3_ += "Taille: %.2f / %.2f Mo" % ( ( ( count * blocksize ) / 1024.0 / 1024.0 ), ( totalsize / 1024.0 / 1024.0  ), )
+                _line3_ += _( 189 ) % ( ( ( count * blocksize ) / 1024.0 / 1024.0 ), ( totalsize / 1024.0 / 1024.0  ), )
             else:
-                _line3_ += "Taille: %.2f / ? Mo" % ( ( ( count * blocksize ) / 1024.0 / 1024.0 ), )
+                _line3_ += _( 190 ) % ( ( ( count * blocksize ) / 1024.0 / 1024.0 ), )
             percent = int( float( count * blocksize * 100 ) / totalsize )
             strProgressBar = str( percent )
             if ( percent <= 0 ) or not strProgressBar: strPercent = "0%"
@@ -170,10 +170,10 @@ def downloader( heading, url, destination="", onBackground=False ):
             try:
                 duree = time.time() - tinit
                 vitesse =  count * blocksize / duree
-                _line3_ += " | (%.01f ko/s)" %  float( vitesse / 1024 )
+                _line3_ += " | (%.01f %s)" % ( float( vitesse / 1024 ), _( 191 ) )
             except: pass
             _line3_ += " | %s" % ( strPercent, )
-            if not onBackground: DIALOG_PROGRESS.update( percent, _line3_, destination, "Veuillez patienter..." )
+            if not onBackground: DIALOG_PROGRESS.update( percent, _line3_, destination, _( 110 ) )
             else:
                 if percent in [ 0, 25, 50, 75, 100 ]:
                     notif = "XBMC Nightly Builds,Download Report [B]%i%%[/B],4000,"  % ( percent )
@@ -220,7 +220,7 @@ class Nightly( xbmcgui.WindowXMLDialog ):
             print_exc()
 
     def _get_nightly_builds( self, refresh=False ):
-        DIALOG_PROGRESS.create( "XBMC Nightly Builds from SVN", "Fetching Unofficial Nightly Builds...", _( 110 ) )
+        DIALOG_PROGRESS.create( _( 32860 ), _( 32861 ), _( 110 ) )
         try:
             nightly_builds = self._load_nightly_data( refresh )
             if nightly_builds is None:
@@ -282,7 +282,7 @@ class Nightly( xbmcgui.WindowXMLDialog ):
                 build_url = item.getProperty( "build_url" )
                 heading = item.getLabel()
 
-                if xbmcgui.Dialog().yesno( "XBMC Nightly Builds", "Confirmer le téléchargement!", "%s: %s" % ( heading, os.path.basename( build_url ) ), "Êtes-vous sûr de vouloir télécharger cette build?"  ):
+                if xbmcgui.Dialog().yesno( _( 32860 ), _( 32862 ), "%s: %s" % ( heading, os.path.basename( build_url ) ), _( 32863 ) ):
                     # onBackground : pas implanter doit deplacer le downloader et utiliser runscript avec des parametres et tester sans thread
                     new_build = downloader( heading, build_url )#, destination="", onBackground=False )
                     #new_build = "F:\\XBMC_PC_26532.rar"
@@ -315,7 +315,7 @@ class Nightly( xbmcgui.WindowXMLDialog ):
                     info_compiled = xbmc.getInfoLabel( "System.BuildVersion" )
                     if not CURRENT_REV.isdigit():
                         info_compiled += ", " + xbmc.getInfoLabel( "System.BuildDate" )
-                    if xbmcgui.Dialog().yesno( "XBMC %s Updater" % os.environ.get( "OS", "XBox" ), "Confirmer le lancement de la mise à jour.", "Votre version: " + info_compiled, "MAJ vers: " + build_name ):
+                    if xbmcgui.Dialog().yesno( "XBMC %s Updater" % os.environ.get( "OS", "XBox" ), _( 32864 ), _( 32865 ) % info_compiled, _( 32866 ) % build_name ):
                         if os.environ.get( "OS", "XBox" ).lower() == "xbox":
                             sys.path.append( PLATFORM_DIR )
                             import updater
@@ -326,7 +326,7 @@ class Nightly( xbmcgui.WindowXMLDialog ):
                             command = '"%s"' % platform_updater
                             os.system( command )
                 else:
-                    xbmcgui.Dialog().ok( "XBMC %s Updater" % os.environ.get( "OS", "XBox" ), "Il y a pas d'Updater pour vôtre Platform!", "Soyez patient cela serait tardé!" )
+                    xbmcgui.Dialog().ok( "XBMC %s Updater" % os.environ.get( "OS", "XBox" ), _( 32867 ), _( 32868 ) )
             elif controlID == 6:
                 self._get_nightly_builds( True )
                 self._set_containers()

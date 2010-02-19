@@ -111,6 +111,7 @@ def SetConfiguration():
     """ Definit les repertoires locaux de l'utilisateur """
     from utilities import SYSTEM_PLATFORM
     XBMC_ROOT = sys.modules[ "__main__" ].SPECIAL_XBMC_HOME
+    DIR_CACHE = sys.modules[ "__main__" ].DIR_CACHE
 
     print "*" * 85
     print "Setting Configuration".center( 85 )
@@ -158,7 +159,7 @@ def SetConfiguration():
     config.set( "InstallPath", "PluginVidDir", os.path.join( PluginDir, "video" ) )
 
     #Set CacheDir
-    config.set( "InstallPath", "CacheDir", os.path.join( ROOTDIR, "cache" ) )
+    config.set( "InstallPath", "CacheDir", DIR_CACHE )
 
     #Set UserDataDir
     config.set( "InstallPath", "UserDataDir", os.path.join( XBMC_ROOT, "userdata" ) )
@@ -173,6 +174,7 @@ def GetInstallPaths():
     from utilities import SYSTEM_PLATFORM
 
     XBMC_ROOT = sys.modules[ "__main__" ].SPECIAL_XBMC_HOME
+    DIR_CACHE = sys.modules[ "__main__" ].DIR_CACHE
     ROOTDIR = os.getcwd().replace( ";", "" )
 
     #config = ReadConfig()
@@ -185,7 +187,7 @@ def GetInstallPaths():
     Paths["title"] = Path_name
     
     if not os.path.isdir( XBMC_ROOT ):
-        XBMC_ROOT = Dialog().browse( 0, "Dossier d'installation de XBMC", "files" )
+        XBMC_ROOT = Dialog().browse( 0, sys.modules[ "__main__" ].__language__( 100 ), "files" )
         #print "Other case, XBMC = %s" % XBMC_ROOT
     Path_list.append(XBMC_ROOT)
     Path_name.append("path") 
@@ -229,11 +231,11 @@ def GetInstallPaths():
     Path_name.append("PluginVidDir") 
 
     #Set CacheDir
-    Path_list.append(os.path.join( ROOTDIR, "cache" ) )
+    Path_list.append( DIR_CACHE )
     Path_name.append("CacheDir") 
 
     #Set UserDataDir
-    Path_list.append(os.path.join( XBMC_ROOT, "userdata" ) )
+    Path_list.append( os.path.join( XBMC_ROOT, "userdata" ) )
     Path_name.append("UserDataDir")
     
     #Set Other Dir
@@ -280,6 +282,11 @@ class configCtrl:
             self.config = ReadConfig()
 
             self.CACHEDIR      = self.config.get( 'InstallPath', 'CacheDir' )
+            # force change cache path to userdata
+            if sys.modules[ "__main__" ].DIR_CACHE != self.CACHEDIR:
+                SetConfiguration()
+                self.config = ReadConfig()
+                self.CACHEDIR  = self.config.get( 'InstallPath', 'CacheDir' )
             self.themesDir     = self.config.get( 'InstallPath', 'ThemesDir' )
             self.scriptDir     = self.config.get( 'InstallPath', 'ScriptsDir' )
             self.scraperDir    = self.config.get( 'InstallPath', 'ScraperDir' )

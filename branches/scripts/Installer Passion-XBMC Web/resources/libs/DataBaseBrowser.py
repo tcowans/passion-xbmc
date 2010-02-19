@@ -2,7 +2,7 @@
 
 # Modules general
 import os
-#import sys
+import sys
     
 # append the proper platforms folder to our path, xbox is the same as win32
 #env = ( os.environ.get( "OS", "win32" ), "win32", )[ os.environ.get( "OS", "win32" ) == "xbox" ]
@@ -10,7 +10,7 @@ import os
 from pysqlite2 import dbapi2 as sqlite
 
 RootDir  = os.getcwd().replace( ";", "" ) # Create a path with valid format
-cacheDir = os.path.join(RootDir, "cache")
+cacheDir = sys.modules[ "__main__" ].DIR_CACHE#os.path.join(RootDir, "cache")
 DB = os.path.join(cacheDir, 'Passion_XBMC_Installer.sqlite')
 
 

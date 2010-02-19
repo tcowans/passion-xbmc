@@ -20,14 +20,14 @@ __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center, [ALL]"
 
 __version__      = "pre-2.0"
-__statut__       = "DevHD; Beta 2" #(dev,svn,release,etc)
+__statut__       = "Beta 3" #(dev,svn,release,etc)
 
 if DEV_TEST:
     __script__  += " Web"
     __svn_url__  = "http://passion-xbmc.googlecode.com/svn/branches/scripts/Installer%20Passion-XBMC%20Web/"
 
 # don't edit __date__ and __svn_revision__
-# use svn:keywords http://svnbook.red-bean.com/en/1.4/svn.advanced.props.special.keywords.html
+# use svn:keywords http://svnbook.red-bean.com/nightly/fr/svn.advanced.props.special.keywords.html
 __svn_revision__ = "$Revision$".replace( "Revision", "" ).strip( "$: " ) or __statut__
 __date__         = "$Date$"[ 7:17 ]
 if not __date__:
@@ -164,7 +164,7 @@ def MAIN():
                 scriptmaj = config.get( 'Version', 'SCRIPTMAJ' )
                 xbmc.executescript( scriptmaj )
             except:
-                print "bypass_debug: default : Exception pendant le chargement et/ou La mise a jour"
+                print "bypass_debug: MAIN: Exception pendant le chargement et/ou La mise a jour"
                 print_exc()
                 dialog_error = True
 

@@ -91,7 +91,7 @@ DIR_PLUGIN_PROGRAMS = os.path.join( DIR_PLUGIN, "programs" )
 DIR_PLUGIN_VIDEO    = os.path.join( DIR_PLUGIN, "video" )
 
 DIR_ROOT            = os.getcwd().replace( ";", "" )
-DIR_CACHE           = os.path.join( DIR_ROOT, "cache" )
+DIR_CACHE           = os.path.join( SPECIAL_SCRIPT_DATA, "cache" )
 
 if SYSTEM_PLATFORM == "linux":
     #Set Linux dir

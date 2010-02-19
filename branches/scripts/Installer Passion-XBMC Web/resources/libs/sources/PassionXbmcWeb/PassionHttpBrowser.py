@@ -26,7 +26,6 @@ LANGUAGE_IS_FRENCH = sys.modules[ "__main__" ].LANGUAGE_IS_FRENCH
 
 SPECIAL_SCRIPT_DATA = sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA
 DIR_CACHE = sys.modules[ "__main__" ].DIR_CACHE
-#CACHEDIR = os.path.join( ROOTDIR, "cache" )
 
 
 class PassionHttpBrowser(Browser):
