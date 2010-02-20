@@ -18,6 +18,7 @@ class ScriptCredits( xbmcgui.WindowXML ):
     def __init__( self, *args, **kwargs ):
         xbmcgui.WindowXML.__init__( self, *args, **kwargs )
         self.player = xbmc.Player()
+        self.homeLastPosition = kwargs.get( "homeLastPosition" )
 
     def onInit( self ):
         self.set_properties()
@@ -71,15 +72,21 @@ class ScriptCredits( xbmcgui.WindowXML ):
         try: self.auto_close.cancel()
         except: print_exc()
         self.close()
+        if self.homeLastPosition is not None:
+            try:
+                import Home
+                Home.show_home( self.homeLastPosition )
+            except:
+                print_exc()
 
 
 
-def show_credits():
+def show_credits( homeLastPosition=None ):
     file_xml = "IPX-Credits.xml"
     dir_path = os.getcwd().replace( ";", "" )
     #NB: the credits window is reserved for the default.hd only
     current_skin, force_fallback = "Default.HD", True
 
-    w = ScriptCredits( file_xml, dir_path, current_skin, force_fallback )
+    w = ScriptCredits( file_xml, dir_path, current_skin, force_fallback, homeLastPosition=homeLastPosition )
     w.doModal()
     del w

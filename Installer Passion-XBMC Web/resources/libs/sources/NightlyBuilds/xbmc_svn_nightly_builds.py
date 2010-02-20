@@ -24,12 +24,12 @@ except:
 
 # temporaire les labels vont dans le strings.xml
 build_text = {
-    "PCDX":  ( "Windows DirectX", _( 32900 ), "windows.png" ),
-    "PCI":   ( "Windows Installer", _( 32901 ), "windows.png" ),
-    "Linux": ( "Linux Debian File", _( 32902 ), "ubuntu.png" ),
-    "XBOX":  ( "XBOX", _( 32903 ), "xbox.png" ),
-    "PCO":   ( "Windows OpenGL", _( 32900 ), "windows.png" ),
-    "OSX":   ( "OSX 10.5/10.4/ATV", _( 32904 ), "mac.png" ),
+    "PCDX":  ( "Windows DirectX", _( 32900 ), "nightlyDX.png" ),
+    "PCI":   ( "Windows Installer", _( 32901 ), "nightlyWin.png" ),
+    "Linux": ( "Linux Debian File", _( 32902 ), "nightlyLinux.png" ),
+    "XBOX":  ( "XBOX", _( 32903 ), "nightlyXBox.png" ),
+    "PCO":   ( "Windows OpenGL", _( 32900 ), "nightlyGL.png" ),
+    "OSX":   ( "OSX 10.5/10.4/ATV", _( 32904 ), "nightlyOSX.png" ),
     }
 
 

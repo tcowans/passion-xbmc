@@ -216,7 +216,7 @@ class Browser:
             thumbnail, previewPicture = self._downloadImage( imageElt.filename )
             if ( thumbnail == "" ):
                 # Impossible to download picture and/or create thumb
-                thumbnail = "IPX-NotAvailable2.png" # Item.THUMB_NOT_AVAILABLE
+                thumbnail = Item.THUMB_NOT_AVAILABLE
 
             # Notifie la callback de mettre a jour l'image
             if imageElt.updateImage_cb:

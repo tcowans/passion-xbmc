@@ -30,7 +30,7 @@ class Home( xbmcgui.WindowXML ):
         self._get_settings()
         self.action = None
         self.is_started = True
-        self.last_pos_container_9000 = None
+        self.last_pos_container_9000 = kwargs.get( "lastPosition" )#None
 
     def onInit( self ):
         try:
@@ -183,7 +183,8 @@ class Home( xbmcgui.WindowXML ):
         self.action = None
         try:
             import Credits
-            Credits.show_credits()
+            self._close_script()
+            Credits.show_credits( self.last_pos_container_9000 )
             del Credits
         except:
             print_exc()
@@ -192,7 +193,8 @@ class Home( xbmcgui.WindowXML ):
         self.last_pos_container_9000 = xbmc.getInfoLabel( "Container(9000).Position" )
         try:
             import MainGui
-            MainGui.show_main( self.action )
+            self._close_script()
+            MainGui.show_main( self.action, self.last_pos_container_9000 )
             del MainGui
         except:
             print_exc()
@@ -212,7 +214,8 @@ class Home( xbmcgui.WindowXML ):
         self.last_pos_container_9000 = xbmc.getInfoLabel( "Container(9000).Position" )
         try:
             import DialogSettings
-            DialogSettings.show_settings( self )
+            self._close_script()
+            DialogSettings.show_settings( self, self.last_pos_container_9000 )
             #on a plus besoin du settings, on le delete
             del DialogSettings
         except:
@@ -223,7 +226,8 @@ class Home( xbmcgui.WindowXML ):
         self.last_pos_container_9000 = xbmc.getInfoLabel( "Container(9000).Position" )
         try:
             import ForumDirectInfos
-            ForumDirectInfos.show_direct_infos()
+            self._close_script()
+            ForumDirectInfos.show_direct_infos( self.last_pos_container_9000 )
             #on a plus besoin, on le delete
             del ForumDirectInfos
         except:
@@ -234,8 +238,9 @@ class Home( xbmcgui.WindowXML ):
         self.last_pos_container_9000 = xbmc.getInfoLabel( "Container(9000).Position" )
         try:
             import FileManagerGui
+            self._close_script()
             mainfunctions = [ self._show_settings, self._close_script ]
-            FileManagerGui.show_file_manager( mainfunctions, "", self.action )
+            FileManagerGui.show_file_manager( mainfunctions, "", self.action, self.last_pos_container_9000 )
             #on a plus besoin du manager, on le delete
             del FileManagerGui
         except:
@@ -253,13 +258,13 @@ class Home( xbmcgui.WindowXML ):
 
 
 
-def show_home():
+def show_home( lastPosition=None ):
     file_xml = "IPX-Home.xml"
     dir_path = os.getcwd().replace( ";", "" )
     #myfont = os.path.join( dir_path, "resources", "skins", current_skin, "fonts", "MyFont.py" )
     #if os.path.exists( myfont ): xbmc.executescript( myfont )
     try:
-        h = Home( file_xml, dir_path, current_skin, force_fallback )
+        h = Home( file_xml, dir_path, current_skin, force_fallback, lastPosition=lastPosition )
         h.doModal()
         HomeAction = h.action
         del h

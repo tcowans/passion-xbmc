@@ -152,7 +152,7 @@ class InfoWarehouseEltTreeXMLFTP:
                 if os.path.exists( cached_thumbs[ 1 ] ):
                     previewPicture = cached_thumbs[ 1 ]
                 else:
-                    previewPicture = set_cache_thumb_name( "IPX-NotAvailable2.png" )[ 1 ]
+                    previewPicture = set_cache_thumb_name( Item.THUMB_NOT_AVAILABLE )[ 1 ]
 
                 # Notifie la callback de mettre a jour l'image
                 if imageElt.updateImage_cb:
@@ -190,7 +190,7 @@ class InfoWarehouseEltTreeXMLFTP:
 #        if os.path.exists( cached_thumbs[ 1 ] ):
 #            previewPicture = cached_thumbs[ 1 ]
 #        else:
-#            previewPicture = set_cache_thumb_name( "IPX-NotAvailable2.png" )[ 1 ]
+#            previewPicture = set_cache_thumb_name( Item.THUMB_NOT_AVAILABLE )[ 1 ]
 #
 #        # Notifie la callback de mettre a jour l'image
 #        if updateImage_cb:
@@ -275,7 +275,7 @@ class InfoWarehouseEltTreeXMLFTP:
                             print "getInfo: previewPictureURL"
                             print previewPictureURL
                             if not previewPictureURL and hasattr( listitem, "setThumbnailImage" ):
-                                listitem.setThumbnailImage( "IPX-NotAvailable2.png" )
+                                listitem.setThumbnailImage( Item.THUMB_NOT_AVAILABLE )
                                 #TODO: clean
                                 previewPictureURL = 'None'
                             elif previewPictureURL:
@@ -295,7 +295,7 @@ class InfoWarehouseEltTreeXMLFTP:
                             break
 
             if notfound and hasattr( listitem, "setThumbnailImage" ):
-                listitem.setThumbnailImage( "IPX-NotAvailable2.png" )
+                listitem.setThumbnailImage( Item.THUMB_NOT_AVAILABLE )
 
             #i = updateIWH( locals() )
             #print i.fileName, i.description
@@ -343,6 +343,8 @@ class InfoWarehouseEltTreeXMLFTP:
 
             if thumbnail and os.path.isfile( thumbnail ) and hasattr( listitem, "setThumbnailImage" ):
                 listitem.setThumbnailImage( thumbnail )
+                listitem.setProperty( "fanartpicture", "" )
+                listitem.setProperty( "fanartpicture", thumbnail )
         except:
             print "_downloaddossier: Exception - Impossible de telecharger le fichier: %s" % remoteFilePath
             print_exc()

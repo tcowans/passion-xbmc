@@ -163,6 +163,7 @@ class MainWindow( xbmcgui.WindowXML ):
         """
         xbmcgui.WindowXML.__init__( self, *args, **kwargs )
         self.HomeAction = kwargs.get( "HomeAction" )
+        self.homeLastPosition = kwargs.get( "homeLastPosition" )
         self.main_list_last_pos = []
 
         # Display Loading Window while we are loading the information from the website
@@ -662,6 +663,12 @@ class MainWindow( xbmcgui.WindowXML ):
                 pass
         #on ferme le script
         self.close()
+        if self.homeLastPosition is not None:
+            try:
+                import Home
+                Home.show_home( self.homeLastPosition )
+            except:
+                print_exc()
 
     def onFocus( self, controlID ):
         #self.controlID = controlID
@@ -982,6 +989,8 @@ class MainWindow( xbmcgui.WindowXML ):
         if imagePath and hasattr( listitem, "setThumbnailImage" ):
             listitem.setThumbnailImage( imagePath )
             listitem.setIconImage( imagePath ) # TODO" do we keep the same resoltuin between thumb and image???
+            #listitem.setProperty( "fanartpicture", "" )
+            #listitem.setProperty( "fanartpicture", thumbnail )
 
     def set_list_images( self ):
         """
@@ -1184,7 +1193,7 @@ class MainWindow( xbmcgui.WindowXML ):
 
 
 
-def show_main( HomeAction=None ):
+def show_main( HomeAction=None, homeLastPosition=None ):
     #Fonction de demarrage
     #depuis la revision 14811 on a plus besoin de mettre le chemin complet, la racine suffit
     dir_path = os.getcwd().replace( ";", "" )
@@ -1192,6 +1201,6 @@ def show_main( HomeAction=None ):
     current_skin, force_fallback = getUserSkin()
     file_xml = ( "IPX-Installer.xml", "passion-main.xml" )[ current_skin != "Default.HD" ]
 
-    w = MainWindow( file_xml, dir_path, current_skin, force_fallback, HomeAction=HomeAction )
+    w = MainWindow( file_xml, dir_path, current_skin, force_fallback, HomeAction=HomeAction, homeLastPosition=homeLastPosition )
     w.doModal()
     del w
