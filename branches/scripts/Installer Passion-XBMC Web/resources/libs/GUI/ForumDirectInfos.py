@@ -50,6 +50,7 @@ class DirectInfos( xbmcgui.WindowXML ):
 
     def __init__( self, *args, **kwargs ):
         xbmcgui.WindowXML.__init__( self, *args, **kwargs )
+        self.homeLastPosition = kwargs.get( "homeLastPosition" )
         self.is_started = True
         self.rss_id = 0
 
@@ -395,14 +396,20 @@ class DirectInfos( xbmcgui.WindowXML ):
     def _close_dialog( self ):
         #xbmc.sleep( 100 )
         self.close()
+        if self.homeLastPosition is not None:
+            try:
+                import Home
+                Home.show_home( self.homeLastPosition )
+            except:
+                print_exc()
 
 
-def show_direct_infos():
+def show_direct_infos( homeLastPosition=None ):
     dir_path = os.getcwd().rstrip( ";" )
     #recupere le nom du skin et si force_fallback est vrai, il va chercher les images du defaultSkin.
     current_skin, force_fallback = getUserSkin()
     file_xml = ( "IPX-DirectInfos.xml", "passion-DirectInfos.xml" )[ current_skin != "Default.HD" ]
 
-    w = DirectInfos( file_xml, dir_path, current_skin, force_fallback )
+    w = DirectInfos( file_xml, dir_path, current_skin, force_fallback, homeLastPosition=homeLastPosition )
     w.doModal()
     del w

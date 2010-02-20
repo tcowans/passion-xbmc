@@ -18,7 +18,7 @@
 			<itemlayout height="30" />
 			<focusedlayout height="30" />
 		</control>
-		<control type="image">
+		<control type="largeimage">
 			<posx>0</posx>
 			<posy>0</posy>
 			<width>1280</width>
@@ -28,7 +28,7 @@
 			<animation effect="fade" time="300">Visible</animation>
 			<animation effect="fade" time="300">Hidden</animation>
 		</control>
-		<control type="image">
+		<control type="largeimage">
 			<posx>0</posx>
 			<posy>0</posy>
 			<width>1280</width>

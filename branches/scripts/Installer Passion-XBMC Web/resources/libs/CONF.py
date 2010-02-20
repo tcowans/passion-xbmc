@@ -80,14 +80,20 @@ SRV_DIR_PLUGIN_PICTURES = "/.passionxbmc/Plugins/Pictures/"
 SRV_DIR_PLUGIN_PROGRAMS = "/.passionxbmc/Plugins/Programs/"
 SRV_DIR_PLUGIN_VIDEO    = "/.passionxbmc/Plugins/Videos/"
 
+THUMB_NOT_AVAILABLE     = "IPX-NotAvailable2.png"
 THUMB_SKIN              = "IPX-defaultSkin.png"
+THUMB_SKIN_NIGHTLY      = "IPX-defaultSkinNightly.png"
 THUMB_SCRAPER           = "IPX-defaultScraper.png"
-THUMB_SCRIPT            = "IPX-defaultScript_Plugin.png"
-THUMB_PLUGIN            = THUMB_SCRIPT
+THUMB_SCRAPER_MUSIC     = "IPX-defaultScraperMusic.png"
+THUMB_SCRAPER_VIDEO     = "IPX-defaultScraperVideo.png"
+THUMB_SCRIPT            = "IPX-defaultScript.png"
+THUMB_PLUGIN            = "IPX-defaultPlugin.png"
 THUMB_PLUGIN_MUSIC      = "IPX-defaultPluginMusic.png"
 THUMB_PLUGIN_PICTURES   = "IPX-defaultPluginPicture.png"
 THUMB_PLUGIN_PROGRAMS   = "IPX-defaultPluginProgram.png"
-THUMB_PLUGIN_VIDEO      = "IPX-defaultPluginVideo.png"  
+THUMB_PLUGIN_VIDEO      = "IPX-defaultPluginVideo.png"
+THUMB_PLUGIN_WEATHER    = "IPX-defaultPluginWeather.png"
+THUMB_NEW               = "IPX-defaultNew.png"
 
 INDEX_SRV_ITEM_FORMAT_DIR      = 0
 INDEX_SRV_ITEM_FORMAT_FILE_ZIP = 1

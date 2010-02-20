@@ -322,9 +322,9 @@ def Connect( force=False ):
                 if kb.isConfirmed():
                     psw = kb.getText()
                 else:
-                    xbmc.executebuiltin( u"XBMC.Notification(Passion-XBMC,%s,4000,)" % _( 207 ).encode( "utf-8" ) )
+                    xbmc.executebuiltin( u"XBMC.Notification(Passion-XBMC,%s,4000,)" % _( 207 ) )
             else:
-                xbmc.executebuiltin( u"XBMC.Notification(Passion-XBMC,%s,4000,)" % _( 208 ).encode( "utf-8" ) )
+                xbmc.executebuiltin( u"XBMC.Notification(Passion-XBMC,%s,4000,)" % _( 208 ) )
 
         pseudo, connexion, avatar, mp = authentification( login, psw, True )
 

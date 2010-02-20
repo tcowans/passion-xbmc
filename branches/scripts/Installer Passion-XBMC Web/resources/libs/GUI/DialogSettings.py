@@ -101,6 +101,7 @@ class ScriptSettings( eval( XBMCGUI_WINDOW_XML ) ):
         # __init__ normal de python
         # On recupere le "self" de le fenetre principal pour benificier de ces variables.
         self.mainwin       = kwargs[ "mainwin" ]
+        self.homeLastPosition = kwargs.get( "homeLastPosition" )
         self.reload_script = False
         self.last_control_colors_focused = 0
 
@@ -823,6 +824,12 @@ class ScriptSettings( eval( XBMCGUI_WINDOW_XML ) ):
         else:
             xbmc.sleep( 100 )
         self.close()
+        if self.homeLastPosition is not None:
+            try:
+                import Home
+                Home.show_home( self.homeLastPosition )
+            except:
+                print_exc()
         if self.reload_script:
             self.mainwin._close_script()
             sys.modules[ "__main__" ].MAIN()
@@ -858,10 +865,10 @@ class ScriptSettings( eval( XBMCGUI_WINDOW_XML ) ):
 
 
 
-def show_settings( mainwin ):
+def show_settings( mainwin, homeLastPosition=None ):
     dir_path = os.getcwd().rstrip( ";" )
     file_xml = ( "IPX-Settings.xml", "passion-DialogScriptSettings.xml" )[ current_skin != "Default.HD" ]
 
-    w = ScriptSettings( file_xml, dir_path, current_skin, force_fallback, mainwin=mainwin )
+    w = ScriptSettings( file_xml, dir_path, current_skin, force_fallback, mainwin=mainwin, homeLastPosition=homeLastPosition )
     w.doModal()
     del w

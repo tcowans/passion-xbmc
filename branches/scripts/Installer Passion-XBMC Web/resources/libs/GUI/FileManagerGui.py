@@ -78,6 +78,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         Initialisation de l'interface
         """
         xbmcgui.WindowXML.__init__( self, *args, **kwargs )
+        self.homeLastPosition = kwargs.get( "homeLastPosition" )
         #from CONF import configCtrl
         self.configManager = configCtrl()
         if not self.configManager.is_conf_valid: raise
@@ -609,6 +610,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
             else:
                 label1 = item.name
                 disable = ""
+            #print "item.thumb", item.thumb
             displayListItem = xbmcgui.ListItem( label1, "", iconImage=item.thumb, thumbnailImage=item.thumb )
             DIALOG_PROGRESS.update( -1, _( 104 ), label1, _( 110 ) )
             displayListItem.setProperty( "Running", disable )
@@ -694,15 +696,21 @@ class FileMgrWindow( xbmcgui.WindowXML ):
             except:
                 pass
         self.close()
+        if self.homeLastPosition is not None:
+            try:
+                import Home
+                Home.show_home( self.homeLastPosition )
+            except:
+                print_exc()
 
 
-def show_file_manager( mainfunctions, rightstest="", args=None ):
+def show_file_manager( mainfunctions, rightstest="", args=None, homeLastPosition=None ):
     dir_path = os.getcwd().rstrip( ";" )
     #recupere le nom du skin et si force_fallback est vrai, il va chercher les images du defaultSkin.
     current_skin, force_fallback = getUserSkin() # Appel fonction dans Utilities
     file_xml = ( "IPX-FileMgr.xml", "passion-FileMgr.xml" )[ current_skin != "Default.HD" ]
 
     w = FileMgrWindow( file_xml, dir_path, current_skin, force_fallback,
-        mainfunctions=mainfunctions, rightstest=rightstest, HomeAction=args )
+        mainfunctions=mainfunctions, rightstest=rightstest, HomeAction=args, homeLastPosition=homeLastPosition )
     w.doModal()
     del w
