@@ -109,12 +109,14 @@ def MAIN():
         pass
 
     #setup skins utilities and reload xbmc skin if necessary
-    #import skins_utilities
-    #if skins_utilities.setupUtilities():
-    #    print "Reloaded Skin: %s" % xbmc.getSkinDir()
-    #    xbmc.executebuiltin( "XBMC.Notification(%s,Reloaded Skin...,3000,%s)" % ( xbmc.getSkinDir(), os.path.join( os.getcwd(), "default.tbn" ), ) )
-    #    xbmc.executebuiltin( "XBMC.ReloadSkin()" )
-    #    xbmc.sleep( 2000 )
+    import skins_utilities
+    if skins_utilities.setupUtilities():
+        print "Reloaded Skin: %s" % xbmc.getSkinDir()
+        import MyFont
+        xbmc.executebuiltin( "XBMC.Notification(%s,Reloaded Skin...,3000,%s)" % ( xbmc.getSkinDir(), os.path.join( os.getcwd(), "default.tbn" ), ) )
+    
+        xbmc.executebuiltin( "XBMC.ReloadSkin()" )
+        xbmc.sleep( 2000 )
 
     try:
         # INITIALISATION CHEMINS DE FICHIER LOCAUX

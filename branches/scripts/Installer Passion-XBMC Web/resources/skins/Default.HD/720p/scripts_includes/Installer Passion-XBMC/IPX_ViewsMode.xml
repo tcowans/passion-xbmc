@@ -1,0 +1,284 @@
+<includes>
+	<include name="IPXViewFullWidthList">
+		<!-- Big List view id = 51 -->
+		<control type="group">
+			<visible>Control.IsVisible(51) + !stringcompare(Container.NumItems,)</visible>
+			<include>IPXVisibleFadeEffect</include>
+			<control type="list" id="51">
+				<posx>95</posx>
+				<posy>78</posy>
+				<width>1080</width>
+				<height>561</height>
+				<onleft>2</onleft>
+				<onright>60</onright>
+				<onup>51</onup>
+				<ondown>51</ondown>
+				<viewtype label="537">list</viewtype>
+				<pagecontrol>60</pagecontrol>
+				<scrolltime>200</scrolltime>
+				<itemlayout height="40" width="1080">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>1080</width>
+						<height>41</height>
+						<texture border="0,2,0,2">IPX-MenuItemNF.png</texture>
+					</control>
+					<control type="image">
+						<posx>10</posx>
+						<posy>4</posy>
+						<width>40</width>
+						<height>32</height>
+						<texture>$INFO[ListItem.Icon]</texture>
+					</control>
+					<control type="label">
+						<posx>60</posx>
+						<posy>0</posy>
+						<width>950</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>88FFFFFF</textcolor>
+						<selectedcolor>FFEB9E17</selectedcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+					<control type="label">
+						<posx>1045</posx>
+						<posy>0</posy>
+						<width>1000</width>
+						<height>40</height>
+						<font>font12</font>
+						<textcolor>88FFFFFF</textcolor>
+						<selectedcolor>FFEB9E17</selectedcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Property(added),$LOCALIZE[570]: ]$INFO[ListItem.Property(size),$LOCALIZE[553]: ]</label>
+						<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="IsEmpty(ListItem.Property(Downloaded))">conditional</animation>
+					</control>
+					<control type="image">
+						<posx>1050</posx>
+						<posy>14</posy>
+						<width>20</width>
+						<height>16</height>
+						<texture>IPX-OverlayWatched.png</texture>
+						<visible>!IsEmpty(ListItem.Property(Downloaded))</visible>
+						<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+					</control>
+				</itemlayout>
+				<focusedlayout height="40" width="1080">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>1080</width>
+						<height>41</height>
+						<texture border="0,2,0,2">IPX-MenuItemNF.png</texture>
+						<visible>!Control.HasFocus(51)</visible>
+						<include>IPXVisibleFadeEffect</include>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>1080</width>
+						<height>41</height>
+						<texture border="0,2,0,2">IPX-MenuItemFO.png</texture>
+						<visible>Control.HasFocus(51)</visible>
+						<include>IPXVisibleFadeEffect</include>
+					</control>
+					<control type="image">
+						<posx>875</posx>
+						<posy>5</posy>
+						<width>200</width>
+						<height>31</height>
+						<texture border="0,0,14,0">IPX-MediaItemDetailBG.png</texture>
+						<visible>Control.HasFocus(51) + [!IsEmpty(ListItem.Property(added)) | !IsEmpty(ListItem.Property(size))]</visible>
+					</control>
+					<control type="image">
+						<posx>10</posx>
+						<posy>4</posy>
+						<width>40</width>
+						<height>32</height>
+						<texture>$INFO[ListItem.Icon]</texture>
+					</control>
+					<control type="label">
+						<posx>60</posx>
+						<posy>0</posy>
+						<width>950</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>FFFFFFFF</textcolor>
+						<selectedcolor>FFEB9E17</selectedcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+					<control type="label">
+						<posx>1045</posx>
+						<posy>0</posy>
+						<width>1000</width>
+						<height>40</height>
+						<font>font12</font>
+						<textcolor>FFFFFFFF</textcolor>
+						<selectedcolor>FFEB9E17</selectedcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Property(added),$LOCALIZE[570]: ]$INFO[ListItem.Property(size),$LOCALIZE[553]: ]</label>
+						<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="IsEmpty(ListItem.Property(Downloaded))">conditional</animation>
+					</control>
+					<control type="image">
+						<posx>1050</posx>
+						<posy>14</posy>
+						<width>20</width>
+						<height>16</height>
+						<texture>IPX-OverlayWatched.png</texture>
+						<visible>!IsEmpty(ListItem.Property(Downloaded))</visible>
+						<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="scrollbar" id="60">
+				<posx>1170</posx>
+				<posy>80</posy>
+				<width>25</width>
+				<height>550</height>
+				<texturesliderbackground border="0,14,0,14">IPX-ScrollBarV.png</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">IPX-ScrollBarV_bar.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">IPX-ScrollBarV_bar_focus.png</texturesliderbarfocus>
+				<textureslidernib>IPX-ScrollBarNib.png</textureslidernib>
+				<textureslidernibfocus>IPX-ScrollBarNib.png</textureslidernibfocus>
+				<onleft>50</onleft>
+				<onright>2</onright>
+				<showonepage>false</showonepage>
+				<orientation>vertical</orientation>
+				<visible>Control.IsVisible(51)</visible>
+			</control>
+		</control>
+	</include>
+
+	<include name="IPXViewThumbnail">
+		<!-- Icon List view id = 52 -->
+		<control type="group">
+			<visible>Control.IsVisible(52) + !stringcompare(Container.NumItems,)</visible>
+			<include>IPXVisibleFadeEffect</include>
+			<control type="panel" id="52">
+				<posx>90</posx>
+				<posy>80</posy>
+				<width>1080</width>
+				<height>550</height>
+				<onleft>2</onleft>
+				<onright>60</onright>
+				<onup>52</onup>
+				<ondown>52</ondown>
+				<viewtype label="21371">list</viewtype>
+				<pagecontrol>60</pagecontrol>
+				<scrolltime>200</scrolltime>
+				<preloaditems>0</preloaditems>
+				<itemlayout height="275" width="270">
+					<control type="image">
+						<posx>1</posx>
+						<posy>0</posy>
+						<width>268</width>
+						<height>240</height>
+						<bordertexture border="5">IPX-button-nofocus.png</bordertexture>
+						<bordersize>5</bordersize>
+						<fadetime>100</fadetime>
+						<texture background="true">$INFO[Listitem.Icon]</texture>
+					</control>
+					<control type="label">
+						<posx>135</posx>
+						<posy>240</posy>
+						<width>260</width>
+						<height>25</height>
+						<font>font12</font>
+						<textcolor>88FFFFFF</textcolor>
+						<selectedcolor>FFEB9E17</selectedcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+						<info>ListItem.Label</info>
+					</control>
+					<control type="image">
+						<posx>230</posx>
+						<posy>200</posy>
+						<width>35</width>
+						<height>35</height>
+						<aspectratio>keep</aspectratio>
+						<texture>IPX-OverlayWatched.png</texture>
+						<visible>!IsEmpty(ListItem.Property(Downloaded))</visible>
+						<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+					</control>
+				</itemlayout>
+				<focusedlayout height="275" width="270">
+					<control type="image">
+						<camera x="134" y="120" />
+						<posx>1</posx>
+						<posy>0</posy>
+						<width>268</width>
+						<height>240</height>
+						<bordertexture border="5">IPX-folder-focus.png</bordertexture>
+						<bordersize>5</bordersize>
+						<fadetime>100</fadetime>
+						<texture background="true">$INFO[Listitem.Icon]</texture>
+						<animation type="Focus" reversible="false">
+							<effect type="zoom" center="auto" start="100" end="50" time="600"/>
+							<effect type="rotatey" center="134,0" start="0" end="360,0" delay="400" time="1000"/>
+							<effect type="zoom" center="auto" start="100" end="250" delay="1200" time="600"/>
+						</animation>
+						<animation effect="fade" time="0">UnFocus</animation>
+					</control>
+					<control type="image">
+						<posx>1</posx>
+						<posy>0</posy>
+						<width>268</width>
+						<height>240</height>
+						<bordertexture border="5">IPX-button-nofocus.png</bordertexture>
+						<bordersize>5</bordersize>
+						<fadetime>100</fadetime>
+						<texture background="true">$INFO[Listitem.Icon]</texture>
+						<animation effect="fade" end="0" time="0">Focus</animation>
+						<animation effect="zoom" center="auto" start="125" end="100" time="400">UnFocus</animation>
+					</control>
+					<control type="label">
+						<posx>135</posx>
+						<posy>240</posy>
+						<width>260</width>
+						<height>25</height>
+						<font>font12</font>
+						<textcolor>FFFFFFFF</textcolor>
+						<selectedcolor>FFEB9E17</selectedcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+						<info>ListItem.Label</info>
+						<animation effect="slide" start="0,10" end="0,0" delay="300" time="400" tween="quadratic" easing="out">UnFocus</animation>
+						<animation effect="slide" start="0,0" end="0,10" delay="1500" time="400" tween="quadratic" easing="out">Focus</animation>
+					</control>
+					<control type="image">
+						<posx>230</posx>
+						<posy>200</posy>
+						<width>35</width>
+						<height>35</height>
+						<aspectratio>keep</aspectratio>
+						<texture>IPX-OverlayWatched.png</texture>
+						<visible>!IsEmpty(ListItem.Property(Downloaded))</visible>
+						<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="scrollbar" id="60">
+				<posx>1170</posx>
+				<posy>80</posy>
+				<width>25</width>
+				<height>550</height>
+				<texturesliderbackground border="0,14,0,14">IPX-ScrollBarV.png</texturesliderbackground>
+				<texturesliderbar border="2,16,2,16">IPX-ScrollBarV_bar.png</texturesliderbar>
+				<texturesliderbarfocus border="2,16,2,16">IPX-ScrollBarV_bar_focus.png</texturesliderbarfocus>
+				<textureslidernib>IPX-ScrollBarNib.png</textureslidernib>
+				<textureslidernibfocus>IPX-ScrollBarNib.png</textureslidernibfocus>
+				<onleft>52</onleft>
+				<onright>2</onright>
+				<showonepage>false</showonepage>
+				<orientation>vertical</orientation>
+				<visible>Control.IsVisible(52)</visible>
+			</control>
+		</control>
+	</include>
+</includes>
