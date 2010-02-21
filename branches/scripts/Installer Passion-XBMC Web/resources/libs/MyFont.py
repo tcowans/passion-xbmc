@@ -16,6 +16,7 @@ __version__      = "1.0"
 import os
 import sys
 import shutil
+import xbmc
 from traceback import print_exc
 
 par_dir = "../../../"
@@ -25,11 +26,11 @@ sys.path.append( os.path.join( home_dir, "libs", "elementtree" ) )
 try: import ElementTree as ET
 except: import elementtree.ElementTree as ET
 
-import xbmc
+
 
 
 skin_font_path = xbmc.translatePath("special://skin/fonts/")
-script_font_path = os.path.join( os.getcwd() )#, "resources", "fonts") # Default.HD/fonts/
+script_font_path = os.path.join( os.getcwd() , "resources", "fonts") # Default.HD/fonts/
 skin_dir = xbmc.translatePath("special://skin/")
 list_dir = os.listdir( skin_dir )
 
@@ -110,29 +111,26 @@ def addFont( fontname, filename, size, style="", aspect="" ):
             if not os.path.exists( os.path.join( skin_font_path, filename ) ) and os.path.exists( os.path.join( script_font_path, filename ) ):
                 shutil.copyfile( os.path.join( script_font_path, filename ), os.path.join( skin_font_path, filename ) )
 
-            xbmc.executebuiltin( "XBMC.ReloadSkin()" )
+            #xbmc.executebuiltin( "XBMC.ReloadSkin()" )
             return True
     except:
         print_exc()
 
     return False
 
-
-
-if __name__ == "__main__":
-    print "update font: %s" % addFont( "font28_title", "DejaVuSans-Bold.ttf", "28" )
-    print "update font: %s" % addFont( "fontContextMenu", "DejaVuSans.ttf", "18" )
-    print "update font: %s" % addFont( "font50caps_title", "DejaVuSans-Bold.ttf", "50" )
-    print "update font: %s" % addFont( "font35_title", "DejaVuSans-Bold.ttf", "35" )
-    print "update font: %s" % addFont( "font16caps", "DejaVuSans.ttf", "25" )
-    print "update font: %s" % addFont( "font30_title", "DejaVuSans-Bold.ttf", "30" )
-    print "update font: %s" % addFont( "font12caps", "DefaultCaps.ttf", "16" )
-    print "update font: %s" % addFont( "font14caps", "DefaultCaps.ttf", "22" )
-    print "update font: %s" % addFont( "font12_title", "DejaVuSans-Bold.ttf", "16" )
-    print "update font: %s" % addFont( "font13_title", "DejaVuSans-Bold.ttf", "20" )
-    print "update font: %s" % addFont( "font13", "DejaVuSans.ttf", "20" )
-    print "update font: %s" % addFont( "font13caps", "DefaultCaps.ttf", "20" )
-    print "update font: %s" % addFont( "font24_title", "DejaVuSans-Bold.ttf", "24" )
+print "update font: %s" % addFont( "font28_title", "DejaVuSans-Bold.ttf", "28" )
+print "update font: %s" % addFont( "fontContextMenu", "DejaVuSans.ttf", "18" )
+print "update font: %s" % addFont( "font50caps_title", "DejaVuSans-Bold.ttf", "50" )
+print "update font: %s" % addFont( "font35_title", "DejaVuSans-Bold.ttf", "35" )
+print "update font: %s" % addFont( "font16caps", "DejaVuSans.ttf", "25" )
+print "update font: %s" % addFont( "font30_title", "DejaVuSans-Bold.ttf", "30" )
+print "update font: %s" % addFont( "font12caps", "DefaultCaps.ttf", "16" )
+print "update font: %s" % addFont( "font14caps", "DefaultCaps.ttf", "22" )
+print "update font: %s" % addFont( "font12_title", "DejaVuSans-Bold.ttf", "16" )
+print "update font: %s" % addFont( "font13_title", "DejaVuSans-Bold.ttf", "20" )
+print "update font: %s" % addFont( "font13", "DejaVuSans.ttf", "20" )
+print "update font: %s" % addFont( "font13caps", "DefaultCaps.ttf", "20" )
+print "update font: %s" % addFont( "font24_title", "DejaVuSans-Bold.ttf", "24" )
         
     #print "update font: %s" % addFont( font_constant+"24", "sportlive.ttf", "24" )
     #print "update font: %s" % addFont( font_constant+"45", "sportlive.ttf", "45" )
