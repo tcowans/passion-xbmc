@@ -1,0 +1,17 @@
+<skin>
+  <defaultresolution>720p</defaultresolution>
+  <defaultresolutionwide>720p</defaultresolutionwide>
+  <version>2.1</version>
+  <skinversion>391</skinversion>
+ 
+  <!-- amount to zoom skin to remove overscan compensation -->
+  <zoom>0</zoom>
+ 
+  <credits>
+    <!-- description of skin creator only -->
+    <skinname>Default</skinname>
+    <name>By Team Passion-XBMC</name>
+    <name>Auteurs: Ppic</name>
+    <name>Graphic by Ppic + Frost + CinPoU</name>
+  </credits>
+</skin>
