@@ -7,8 +7,8 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/"
 __credits__      = "Team XBMC passion, http://passion-xbmc.org/developpement-python/%28script%29-sporlive-display/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "26-01-2011"
-__version__      = "1.2"
+__date__         = "22-02-2011"
+__version__      = "1.3"
 __svn_revision__  = "$Revision$".replace( "Revision", "" ).strip( "$: " )
 __XBMC_Revision__ = "20000" #XBMC Babylon
 __useragent__    = "Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.0.1) Gecko/2008070208 Firefox/3.0.1"
@@ -36,6 +36,7 @@ except:
     xbmcplugin.openSettings(sys.argv[0])
     quality=( "ld", "md", "hd" )[ int( xbmcplugin.getSetting("quality") ) ]
 print xbmcplugin.getSetting("mon_cine")
+
 def addLink(name,url,iconimage):
         ok=True
         liz=xbmcgui.ListItem(name, iconImage="DefaultVideo.png", thumbnailImage=iconimage)
@@ -60,6 +61,9 @@ def addFilm(name,url,mode,iconimage,genre,director,cast,plot,duration,year):
         ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=True)
         return ok
 
+def end_of_directory( OK ):
+    xbmcplugin.endOfDirectory( handle=int( sys.argv[ 1 ] ), succeeded=OK )
+    
 def get_params():
         param=[]
         paramstring=sys.argv[2]
@@ -238,7 +242,7 @@ def get_media_link(id_media):
     return media
 
 def get_film_in_cinema( id_cine ):
-    data = get_html_source( "http://www.allocine.fr/seance/salle_gen_csalle=%s.html" % id_cine )
+    data = get_html_source( id_cine )
     #save_data(data)
     #data = load_data(tempfile)
     try:
@@ -259,7 +263,7 @@ def get_film_in_cinema( id_cine ):
             film["cast"] = re.findall( "title='(.*?)'", raw )
         except: print_exc()
         
-        match = re.search('<p>\r\n                        \r\n                                (.*?)\r\n                            \r\n                        \((.*?)\)\r\n                        \r\n                                - Date de sortie :  <b>(.*?)</b>', unit )
+        match = re.search('class="titlebar"  -->\r\n                    <p>\r\n                        \r\n                                (.*?)\r\n                            \r\n                        \((.*?)\)\r\n                        \r\n                                - Date de sortie : <b>(.*?)</b>\r\n                            \r\n                    </p>\r\n                    \r\n                            <p>', unit )
         if match:
             film["sortie"]= match.group(3)
             film["genre"]= match.group(1)
@@ -268,6 +272,7 @@ def get_film_in_cinema( id_cine ):
             film["sortie"]= None
             film["genre"]= None
             film["duree"]= None
+
         
         match = re.search('<!-- /notationbar -->\r\n                    <p>\r\n(.*?)\r\n                    </p>\r\n                    <!-- !! Existing template -->', unit )
         if match: film["syno"] = match.group(1).strip(" ")
@@ -317,8 +322,40 @@ def load_DB(dbname):
             data=""
     else: data=""
     return data
-    
 
+def search_cinema():
+    kb = xbmc.Keyboard( "", "Entrez le nom pour la recherche" )
+    kb.doModal()
+    if kb.isConfirmed(): 
+        kw = kb.getText()
+        progress = xbmcgui.DialogProgress()
+        progress.create( "récupérations des informations" , "interrogation Allociné ...")
+        data = get_html_source( "http://www.allocine.fr/salle/recherche/?q=%s" % kw)
+        save_data(data)
+        try:
+            liste_cine = re.findall( '<a class="bold" href="/seance/salle_gen_csalle=(.*?).html">(.*?)</a>', data )
+            liste_dialog_choix = []
+            for i in liste_cine :
+                progress.update( 0 , i[1])
+                liste_dialog_choix.append(i[1])
+            print liste_cine
+            select = xbmcgui.Dialog().select("Choisissez votre cinéma", liste_dialog_choix)
+            if select == -1: OK = False
+            else: 
+                mes_cines = []
+                if os.path.exists(os.path.join(cache_dir , "cine.list")): mes_cines = load_data(os.path.join(cache_dir , "cine.list"))
+                mes_cines.append(liste_cine[select])
+                save_data( mes_cines ,os.path.join(cache_dir , "cine.list"))
+                xbmc.executebuiltin("Container.Refresh")
+        except:
+            print "echec récupération liste ciné"
+            print_exc()
+        
+        
+        if progress.iscanceled(): OK = False
+        progress.close()
+    else : OK = False       
+    
 
 #menu principal:
 
@@ -344,13 +381,18 @@ print "Mode: "+str(mode)
 print "URL: "+str(url)
 print "Name: "+str(name)
 
-
+OK = True
 
 if mode==None or url==None or len(url)<1:
     addDir("A ne pas manquer","http://www.allocine.fr/video/bandes-annonces/",1,"")
     addDir("films au cinema","http://www.allocine.fr/video/bandes-annonces/films-au-cinema/",1,"")
     addDir("prochainement","http://www.allocine.fr/video/bandes-annonces/films-prochainement/",1,"")
-    #if xbmcplugin.getSetting("mon_cine"): addDir("Mon Cinéma",xbmcplugin.getSetting("mon_cine"),3,"")
+    if xbmcplugin.getSetting("mon_cine") == "true" :
+        if os.path.exists(os.path.join(cache_dir , "cine.list")): 
+            mes_cines = load_data(os.path.join(cache_dir , "cine.list"))
+            for cine in mes_cines:
+                addDir( cine[1],"http://www.allocine.fr/seance/salle_gen_csalle=%s.html" % cine[0],4,"")
+        addDir("Ajouter Un Cinéma...","",3,"")
 
 if mode == 1:
     xbmcplugin.setPluginCategory(int(sys.argv[1]), name)
@@ -368,16 +410,25 @@ if mode == 2:
         addLink(set_entity_or_charref(ba["name"].split(" - ")[1]),ba["%s" % quality ],poster)
 
 if mode == 3:
-    mon_cine = get_film_in_cinema( url )
+    search_cinema()
+    OK= False
     
-    for cine_film in mon_cine:
-        director = ""
-        try:
-            for i in cine_film["director"]:
-                director = ("%s | %s" % (director , i)).strip(" |")
-        except: print_exc()
-        
-        addFilm(cine_film["name"],"%s##%s" % (cine_film["poster"] , cine_film["id_allo"]),2,cine_film["poster"],cine_film["genre"],director.strip(" |"),cine_film["cast"],cine_film["syno"],cine_film["duree"],int(cine_film["sortie"].split("/")[2]))
-
-xbmcplugin.endOfDirectory(int(sys.argv[1]))
+if mode == 4:
+    mon_cine = get_film_in_cinema( url )
+    #print mon_cine
+    for film_in_cine in mon_cine:
+        print "#######################film###################################"
+        print film_in_cine["name"]
+        print film_in_cine["poster"]
+        print film_in_cine["syno"]
+        print film_in_cine["id_allo"]
+        print film_in_cine["genre"]
+        print film_in_cine["director"]
+        print film_in_cine["cast"]
+        print film_in_cine["duree"]
+        print int(film_in_cine["sortie"].split("/")[2])
+        print "################################################################"
+        try: addFilm(film_in_cine["name"],"%s##%s" % (film_in_cine["poster"] , film_in_cine["id_allo"]),2,film_in_cine["poster"],film_in_cine["genre"] ,film_in_cine["director"][0] ,film_in_cine["cast"] ,film_in_cine["syno"] ,film_in_cine["duree"] ,int(film_in_cine["sortie"].split("/")[2]) )
+        except : print_exc()
+end_of_directory( OK )
 
