@@ -71,14 +71,14 @@ INDEX_PLUGIN_PICTURES   = 5
 INDEX_PLUGIN_PROGRAMS   = 6
 INDEX_PLUGIN_VIDEO      = 7
 
-SRV_DIR_SKIN            = "/.passionxbmc/Themes/"
-SRV_DIR_SCRAPER         = "/.passionxbmc/Scraper/"
-SRV_DIR_SCRIPT          = "/.passionxbmc/Scripts/"
-SRV_DIR_PLUGIN          = "/.passionxbmc/Plugins/"
-SRV_DIR_PLUGIN_MUSIC    = "/.passionxbmc/Plugins/Music/"
-SRV_DIR_PLUGIN_PICTURES = "/.passionxbmc/Plugins/Pictures/"
-SRV_DIR_PLUGIN_PROGRAMS = "/.passionxbmc/Plugins/Programs/"
-SRV_DIR_PLUGIN_VIDEO    = "/.passionxbmc/Plugins/Videos/"
+SRV_DIR_SKIN            = "/Themes/"
+SRV_DIR_SCRAPER         = "/Scraper/"
+SRV_DIR_SCRIPT          = "/Scripts/"
+SRV_DIR_PLUGIN          = "/Plugins/"
+SRV_DIR_PLUGIN_MUSIC    = "/Plugins/Music/"
+SRV_DIR_PLUGIN_PICTURES = "/Plugins/Pictures/"
+SRV_DIR_PLUGIN_PROGRAMS = "/Plugins/Programs/"
+SRV_DIR_PLUGIN_VIDEO    = "/Plugins/Videos/"
 
 THUMB_NOT_AVAILABLE     = "IPX-NotAvailable2.png"
 THUMB_SKIN              = "IPX-defaultSkin.png"
@@ -315,8 +315,8 @@ class configCtrl:
             self.itemDescripDir  = self.config.get( 'ServeurID', 'contentdescriptorDir' )
             self.itemDescripFile = self.config.get( 'ServeurID', 'contentdescriptor' )
 
-#            self.remotedirList   = [ "/.passionxbmc/Themes/", "/.passionxbmc/Scraper/", "/.passionxbmc/Scripts/", "/.passionxbmc/Plugins/",
-#                "/.passionxbmc/Plugins/Music/", "/.passionxbmc/Plugins/Pictures/", "/.passionxbmc/Plugins/Programs/", "/.passionxbmc/Plugins/Videos/" ]
+#            self.remotedirList   = [ "/Themes/", "/Scraper/", "/Scripts/", "/Plugins/",
+#                "/Plugins/Music/", "/Plugins/Pictures/", "/Plugins/Programs/", "/Plugins/Videos/" ]
 
             # Repertoire sur le serveur FTP
             # ATTENTION: Ne pas changer l'ordre de ce tableau, il correspond aux index (INDEX_SKIN ...)

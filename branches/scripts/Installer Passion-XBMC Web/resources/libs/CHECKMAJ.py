@@ -114,11 +114,12 @@ class CheckMAJ:
             for file in self.remoteDirLst:
                 #On isole les fichiers qu'il faudra telecharger
                 if file.endswith('zip'):
-                    self.newscript = file
+                    self.newscript = self.remoteversionDir + file
                 elif file.endswith('py'):
-                    self.installmaj = file
+                    self.installmaj = self.remoteversionDir + file
                 elif file.endswith('cfg'):
-                    self.versiontodl = file
+                    self.versiontodl = self.remoteversionDir + file
+                #print self.remoteversionDir + file
 
             #Telechargement du nouveau fichier de version
             self.filetodl = self.versiontodl

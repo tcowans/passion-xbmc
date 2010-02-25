@@ -111,6 +111,7 @@ class InfoWarehouseEltTreeXMLFTP:
         self.image_queue = []
 
         # On recupere le fichier de description des items
+        print "self._downloadFile", self.srvItemDescripDir + self.srvItemDescripFile
         self._downloadFile( self.srvItemDescripDir + self.srvItemDescripFile, isTBN=False )
 
         self.parse_xml_sections()

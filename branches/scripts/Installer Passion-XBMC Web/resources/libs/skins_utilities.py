@@ -16,8 +16,8 @@ CURRENT_SKIN, FORCE_FALLBACK = getUserSkin()
 
 
 def addMyFontsToSkin():
-    reload_skin = False
-    return reload_skin
+    import MyFont
+    return MyFont.addFonts()
 
 
 def addIncludesXmlToSkin():
@@ -77,8 +77,8 @@ def addBackgroundsToSkin():
 
 
 def setupUtilities():
-    ok = addBackgroundsToSkin()
+    #ok = addBackgroundsToSkin()
     reload_skin1 = addMyFontsToSkin()
-    reload_skin2 = addIncludesXmlToSkin()
-    reload_skin = ( reload_skin1 or reload_skin2 )
-    return reload_skin
+    #reload_skin2 = addIncludesXmlToSkin()
+    #reload_skin = ( reload_skin1 or reload_skin2 )
+    return reload_skin1

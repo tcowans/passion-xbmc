@@ -275,7 +275,7 @@
 
 					<posx>615</posx>
 					<posy>310</posy>
-					<camera x="1005" y="238" />
+					<camera x="1005" y="230" />
 					<animation effect="zoom" start="100" end="130,100" time="0" condition="true">Conditional</animation>
 					<control type="image">
 						<description>cube fixe bottom shadow</description>

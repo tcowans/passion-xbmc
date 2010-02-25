@@ -292,7 +292,7 @@ class Settings:
             "labels_colours": "",
             "thumb_size": ( "512", "192" )[ ( SYSTEM_PLATFORM == "xbox" ) ],
             # SERVEUR FTP
-            "host": "stock.passionxbmc.org",
+            "host": "xbmc.funtube.fr",
             "user": "anonymous",
             "password": "xxxx",
             # FORUM
