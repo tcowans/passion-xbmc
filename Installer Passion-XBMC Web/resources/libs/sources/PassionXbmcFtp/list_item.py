@@ -66,14 +66,14 @@ if USRPath == True:
     PMIIIDir = config.get( 'InstallPath', 'PMIIIDir' )
 RACINE = True
 
-SRV_DIR_SKIN            = "/.passionxbmc/Themes/"
-SRV_DIR_SCRAPER         = "/.passionxbmc/Scraper/"
-SRV_DIR_SCRIPT          = "/.passionxbmc/Scripts/"
-SRV_DIR_PLUGIN          = "/.passionxbmc/Plugins/"
-SRV_DIR_PLUGIN_MUSIC    = "/.passionxbmc/Plugins/Music/"
-SRV_DIR_PLUGIN_PICTURES = "/.passionxbmc/Plugins/Pictures/"
-SRV_DIR_PLUGIN_PROGRAMS = "/.passionxbmc/Plugins/Programs/"
-SRV_DIR_PLUGIN_VIDEO    = "/.passionxbmc/Plugins/Videos/"
+SRV_DIR_SKIN            = "/Themes/"
+SRV_DIR_SCRAPER         = "/Scraper/"
+SRV_DIR_SCRIPT          = "/Scripts/"
+SRV_DIR_PLUGIN          = "/Plugins/"
+SRV_DIR_PLUGIN_MUSIC    = "/Plugins/Music/"
+SRV_DIR_PLUGIN_PICTURES = "/Plugins/Pictures/"
+SRV_DIR_PLUGIN_PROGRAMS = "/Plugins/Programs/"
+SRV_DIR_PLUGIN_VIDEO    = "/Plugins/Videos/"
 
 INDEX_SRV_ITEM_FORMAT_DIR      = 0
 INDEX_SRV_ITEM_FORMAT_FILE_ZIP = 1

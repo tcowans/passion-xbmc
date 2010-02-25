@@ -1,17 +1,23 @@
-"""
-    not implanted is for the  futur
-"""
+
+#python librairy to add font to the current skin. need to have font_filename.ttf in /resources/fonts/,
+# this script will automatically add it to current skin when called.
 
 
-# script constantes
-__script__       = "MyFont.py"
-__author__       = "Ppic, Frost"
-__credits__      = "Team XBMC-Passion, http://passion-xbmc.org/"
-__platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "29-12-2009"
-__version__      = "1.0"
+FONTS = [
+    ( "font28_title", "DejaVuSans-Bold.ttf", "28" ),
+    ( "fontContextMenu", "DejaVuSans.ttf", "18" ),
+    ( "font50caps_title", "DejaVuSans-Bold.ttf", "50" ),
+    ( "font35_title", "DejaVuSans-Bold.ttf", "35" ),
+    ( "font16caps", "DejaVuSans.ttf", "25" ),
+    ( "font30_title", "DejaVuSans-Bold.ttf", "30" ),
+    ( "font12caps", "DefaultCaps.ttf", "16" ),
+    ( "font14caps", "DefaultCaps.ttf", "22" ),
+    ( "font12_title", "DejaVuSans-Bold.ttf", "16" ),
+    ( "font13_title", "DejaVuSans-Bold.ttf", "20" ),
+    ( "font13", "DejaVuSans.ttf", "20" ),
+    ( "font13caps", "DefaultCaps.ttf", "20" ),
+    ]
 
-#python librairy to add font to the current skin. need to have font_filename.ttf in /resources/fonts/, this script will automatically add it to current skin when called.
 
 import os
 import sys
@@ -19,18 +25,11 @@ import shutil
 import xbmc
 from traceback import print_exc
 
-par_dir = "../../../"
-home_dir = os.sep.join( os.getcwd().split( os.sep )[ :-par_dir.count( "../" ) ] )
-sys.path.append( os.path.join( home_dir, "libs", "elementtree" ) )
-
-try: import ElementTree as ET
-except: import elementtree.ElementTree as ET
-
-
+import elementtree.ElementTree as ET
 
 
 skin_font_path = xbmc.translatePath("special://skin/fonts/")
-script_font_path = os.path.join( os.getcwd() , "resources", "fonts") # Default.HD/fonts/
+script_font_path = os.path.join( os.getcwd(), "resources", "fonts") # Default.HD/fonts/
 skin_dir = xbmc.translatePath("special://skin/")
 list_dir = os.listdir( skin_dir )
 
@@ -118,19 +117,14 @@ def addFont( fontname, filename, size, style="", aspect="" ):
 
     return False
 
-print "update font: %s" % addFont( "font28_title", "DejaVuSans-Bold.ttf", "28" )
-print "update font: %s" % addFont( "fontContextMenu", "DejaVuSans.ttf", "18" )
-print "update font: %s" % addFont( "font50caps_title", "DejaVuSans-Bold.ttf", "50" )
-print "update font: %s" % addFont( "font35_title", "DejaVuSans-Bold.ttf", "35" )
-print "update font: %s" % addFont( "font16caps", "DejaVuSans.ttf", "25" )
-print "update font: %s" % addFont( "font30_title", "DejaVuSans-Bold.ttf", "30" )
-print "update font: %s" % addFont( "font12caps", "DefaultCaps.ttf", "16" )
-print "update font: %s" % addFont( "font14caps", "DefaultCaps.ttf", "22" )
-print "update font: %s" % addFont( "font12_title", "DejaVuSans-Bold.ttf", "16" )
-print "update font: %s" % addFont( "font13_title", "DejaVuSans-Bold.ttf", "20" )
-print "update font: %s" % addFont( "font13", "DejaVuSans.ttf", "20" )
-print "update font: %s" % addFont( "font13caps", "DefaultCaps.ttf", "20" )
-print "update font: %s" % addFont( "font24_title", "DejaVuSans-Bold.ttf", "24" )
-        
-    #print "update font: %s" % addFont( font_constant+"24", "sportlive.ttf", "24" )
-    #print "update font: %s" % addFont( font_constant+"45", "sportlive.ttf", "45" )
+
+def addFonts():
+    reload_skin = False
+    try:
+        for font, ttf, size in FONTS:
+            updated = addFont( font, ttf, size )
+            print "update font: %s" % repr( updated )
+            reload_skin = reload_skin or updated
+    except:
+        print_exc()
+    return reload_skin

@@ -398,6 +398,7 @@ class PassionFtpBrowser(Browser):
                 name        = self.curList[index]['name']
                 downloadurl = self.curList[index]['downloadurl']
                 type        = self.curList[index]['xbmc_type']
+                print type, self.remotedirList
                 print "getInstaller - name" 
                 print name
                 print "getInstaller - downloadurl" 

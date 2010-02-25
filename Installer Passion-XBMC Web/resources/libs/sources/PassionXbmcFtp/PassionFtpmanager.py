@@ -58,7 +58,8 @@ class GDDFTP( ftplib.FTP ):
         """
         #on se deconnecte du serveur pour etre plus propre
         try:
-            self.quit()
+            #self.quit()
+            self.close()
         except:
             print "Exception durant la fermeture de la connection FTP"
             print_exc()
@@ -143,6 +144,7 @@ class FtpDownloadCtrl:
         # Recuperation de la liste
         try:
             #curDirList = self.ftp.nlst( remotedir )
+            print "remotedir = %s" % remotedir
             curDirList = self.ftp.command( self.ftp.nlst, remotedir )
         except:
             print "Exception durant la recuperation de la liste des fichiers du repertoire: %s" % remotedir
@@ -183,7 +185,7 @@ class FtpDownloadCtrl:
         #TODO: couvrir le cas d'une archive?
 
         # Cree le chemin du repertorie local
-        # Extrait le chemin relatif: soustrait au chemin remote le chemin de base: par exemple on veut retirer du chemin; /.passionxbmc/Themes
+        # Extrait le chemin relatif: soustrait au chemin remote le chemin de base: par exemple on veut retirer du chemin; /Themes
         remoteRelDirPath = pathsrc.replace( curRemoteDirRoot, '' )
 
         # On remplace dans le chemin sur le serveur FTP les '/' par le separateur de l'OS sur lequel on est
@@ -207,7 +209,7 @@ class FtpDownloadCtrl:
         Telecharge les elements a un chemin specifie ( repertoires, sous repertoires et fichiers )
         a dans un repertorie local dependant du type de telechargement ( theme, scraper, script ... )
         pathsrc     : chemin sur le serveur de l'element a telecharger
-        rootdirsrc  : Repertoire root sur le server ( correspondant a un type de download ) - Exemple : "/.passionxbmc/Scraper/" pour les scrapers
+        rootdirsrc  : Repertoire root sur le server ( correspondant a un type de download ) - Exemple : "/Scraper/" pour les scrapers
         typeIndex   : Index correspondant au type de telechargement, permet notamment de definir le repertorie local de telechargement
         Renvoi le status du download:
             - ( -1 ) pour telechargement annule
@@ -227,7 +229,7 @@ class FtpDownloadCtrl:
             isSingleFile = True
 
         # Appel de la fonction privee en charge du download - on passe en parametre l'index correspondant au type
-        status = self._download( pathsrc, isSingleFile, progressbar_cb, dialogProgressWin, 0, 1 )
+        status = self._download( self.curRemoteDirRoot+pathsrc, isSingleFile, progressbar_cb, dialogProgressWin, 0, 1 )
 
         #TODO: disconenct form server once big downlaod is done
         #self.closeConnection()
@@ -330,7 +332,7 @@ class FtpDownloadCtrl:
             emptydir = True
 
         # Cree le chemin du repertorie local
-        # Extrait le chemin relatif: soustrait au chemin remote le chemin de base: par exemple on veut retirer du chemin; /.passionxbmc/Themes
+        # Extrait le chemin relatif: soustrait au chemin remote le chemin de base: par exemple on veut retirer du chemin; /Themes
         remoteRelDirPath = dirsrc.replace( self.curRemoteDirRoot, '' )
 
         # On remplace dans le chemin sur le serveur FTP les '/' par le separateur de l'OS sur lequel on est
@@ -375,7 +377,7 @@ class FtpDownloadCtrl:
             print_exc()
 
         # Cree le chemin du repertorie local
-        # Extraction du chemin relatif: soustrait au chemin remote le chemin de base: par exemple on veut retirer du chemin; /.passionxbmc/Themes
+        # Extraction du chemin relatif: soustrait au chemin remote le chemin de base: par exemple on veut retirer du chemin; /Themes
         remoteRelFilePath = filesrc.replace( self.curRemoteDirRoot, '' )
 
         # On remplace dans le chemin sur le serveur FTP les '/' par le separateur de l'OS sur lequel on est
@@ -431,33 +433,6 @@ class FtpDownloadCtrl:
         #return self.ftp.voidresp()
         return self.ftp.command( self.ftp.voidresp )
 
-#    def downloadImage( self, cmd, callback, blocksize=8192, rest=None ):
-#        """
-#        """
-#        abort = False
-#        #self.ftp.voidcmd( 'TYPE I' )
-#        self.ftp.command( self.ftp.voidcmd, 'TYPE I' )
-#        #conn = self.ftp.transfercmd( cmd, rest )
-#        conn = self.ftp.command( self.ftp.transfercmd, 'RETR ' , rest )
-#        fp = conn.makefile( 'rb' )
-#        while 1:
-#            data = fp.read( blocksize )
-#            if not data:
-#                break
-#            try:
-#                callback( data )
-#            except cancelRequest:
-#                abort = True
-#                print "retrbinary: Download ARRETE par l'utilisateur"
-#                print_exc()
-#                break
-#        fp.close()
-#        conn.close()
-#        if abort:
-#            self.ftp.command( self.ftp.abort ) # Afin d'eviter un blockage dans le cas d'un cancel et puis d'un self.ftp.voidresp
-#        #return self.ftp.voidresp()
-#        return self.ftp.command( self.ftp.voidresp )
-        pass
     def downloadImage( self, source, dest ):
         """
         Download picture from the server, save it, create the thumbnail and return path of it
