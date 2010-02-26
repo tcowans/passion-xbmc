@@ -7,8 +7,8 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/"
 __credits__      = "Team XBMC passion, http://passion-xbmc.org/developpement-python/%28script%29-sporlive-display/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "22-02-2011"
-__version__      = "1.3"
+__date__         = "26-02-2011"
+__version__      = "1.4"
 __svn_revision__  = "$Revision$".replace( "Revision", "" ).strip( "$: " )
 __XBMC_Revision__ = "20000" #XBMC Babylon
 __useragent__    = "Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.0.1) Gecko/2008070208 Firefox/3.0.1"
@@ -25,6 +25,10 @@ from traceback import print_exc
 BASE_RESOURCE_PATH = os.path.join( os.getcwd(), "resources" )
 sys.path.append( os.path.join( BASE_RESOURCE_PATH, "lib" ) )
 cache_dir = os.path.join ( BASE_RESOURCE_PATH , "Cache" )
+trailer_dir = xbmcplugin.getSetting("trailer_path")
+trailer_dir = xbmc.translatePath(trailer_dir)
+print "trailer dir: %s" % trailer_dir
+
 tempfile= os.path.join ( cache_dir , "data.html" )
 if not os.path.isdir(cache_dir):
     os.makedirs(cache_dir)
@@ -37,9 +41,10 @@ except:
     quality=( "ld", "md", "hd" )[ int( xbmcplugin.getSetting("quality") ) ]
 print xbmcplugin.getSetting("mon_cine")
 
-def addLink(name,url,iconimage):
+def addLink(name,url,iconimage, c_items = None ):
         ok=True
         liz=xbmcgui.ListItem(name, iconImage="DefaultVideo.png", thumbnailImage=iconimage)
+        if c_items : liz.addContextMenuItems( c_items, replaceItems=True )
         liz.setInfo( type="Video", infoLabels={ "Title": name } )
         ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=url,listitem=liz)
         return ok
@@ -149,7 +154,7 @@ def get_film_list( url , database = False):
         try:        
             MEDIA=re.compile( '<div class="mainzone">(.*?)<div class="spacer">', re.DOTALL ).findall(page_data)
             for i in  MEDIA:
-                print i
+                #print i
                 count = count+1
                 ratio= int(100*float(count)/float(total_item))
                 
@@ -216,12 +221,13 @@ def get_film_info(id_allo):
 def get_media_link(id_media):
     media_url = "http://www.allocine.fr/skin/video/AcVisionData_xml.asp?media=%s" % id_media
     media_data = get_html_source( media_url )
+    #save_data(media_data)
     media = {}
     try:media_data=re.compile( '<AcVisionVideo(.*?)/>', re.DOTALL ).findall(media_data)[0]
     except:
         print "problème de récupération info média"
         print_exc()
-    try:media["name"] = re.findall( 'title="(.*?)"', media_data )[0]
+    try:media["name"] = set_entity_or_charref(re.findall( 'title="(.*?)"', media_data )[0])
     except:
         media["name"] = ""
         print_exc()
@@ -331,7 +337,7 @@ def search_cinema():
         progress = xbmcgui.DialogProgress()
         progress.create( "récupérations des informations" , "interrogation Allociné ...")
         data = get_html_source( "http://www.allocine.fr/salle/recherche/?q=%s" % kw)
-        save_data(data)
+        #save_data(data)
         try:
             liste_cine = re.findall( '<a class="bold" href="/seance/salle_gen_csalle=(.*?).html">(.*?)</a>', data )
             liste_dialog_choix = []
@@ -405,10 +411,23 @@ if mode == 2:
     poster = url.split("##")[0]
     url = url.split("##")[1]
     film = get_film_info(url)
+
     for ba in film["Bande-annonces"]:
         print ba
-        addLink(set_entity_or_charref(ba["name"].split(" - ")[1]),ba["%s" % quality ],poster)
-
+        c_items = []
+        # ajout d'un bouton dans le contextmenu pour rafraichir l'image
+        local_trailer = os.path.join( trailer_dir, "%s.flv" % ba["name"] )
+        script = "special://home/plugins/video/Bande-Annonce Allocine/resources/lib/downloader.py"
+        args = "%s&%s" % ( urllib.quote_plus( ba["%s" % quality ] ), urllib.quote_plus( local_trailer ) )
+        if not os.path.exists(local_trailer):c_items += [ ( "Télécharger", "XBMC.RunScript(%s,%s)" % ( script, args ) ) ]
+        else : c_items += [ ( "jouer en local", "xbmc.PlayMedia(%s)" % local_trailer) ]
+        c_items += [ ( "Rafraichir", "xbmc.Container.Update") ]
+#         DLLabelButton = "Télécharger"
+#         DLActionButton = 'XBMC.RunPlugin(%s?mode=10&name=%s&url=%s)' % ( sys.argv[ 0 ], urllib.quote_plus( set_entity_or_charref(ba["name"] )), urllib.quote_plus( ba["%s" % quality ] ), )
+#         c_items.append(( DLLabelButton, DLActionButton ))
+        addLink(ba["name"].split(" - ")[1],ba["%s" % quality ],poster , c_items )
+    
+    #########################################################
 if mode == 3:
     search_cinema()
     OK= False
@@ -432,3 +451,6 @@ if mode == 4:
         except : print_exc()
 end_of_directory( OK )
 
+
+    
+    
