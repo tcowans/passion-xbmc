@@ -4,7 +4,7 @@
   <!--GENERAL STRINGS -->
   <string id="32000">Elige los eventos que quieres ver</string>
   <string id="32100">No hay partidos disponibles</string>
-  <string id="32002">Select display</string>
-  <string id="32003">Notifications</string>
+  <string id="32002">Tipo de vista</string>
+  <string id="32003">Notificaciones</string>
   <string id="32004">Banner</string>
 </strings>
