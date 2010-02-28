@@ -203,7 +203,8 @@ def get_film_list( url , database = False):
                 film["id_allo"] = id_allo
                 film["id_media"] = id_media
                 film["name"] = name
-                film["poster"] = img.replace( "c_120_160/b_1_x/o_play.png_5_se" , "r_760_x" )
+                film["poster"] = img.replace( "c_120_160/b_1_x/o_play.png_5_se" , "r_760_x" ).replace("cx_120_96/b_1_x/o_play.png_5_se", "r_760_x" ).replace("c_120_120/b_1_x/o_play.png_5_se", "r_760_x" )
+                film["poster"] = film["poster"].replace("cx_120_113/o_overlayEmissions-P2C-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-MerciQui-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-LaMinute-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-D2DVD-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-TES-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-FauxR-120.png_1_c", "r_760_x" )
                 catalogue.append(film)
         
                 
@@ -447,6 +448,7 @@ if mode == 1:
     for film in data:
         if film["type"] == "film": addDir(film["name"],"%s##%s" % (film["poster"] , film["id_allo"]),2,film["poster"])
         else :
+            print "image:%s " % film["poster"]
             c_items = []
             local_trailer = os.path.join( trailer_dir, "%s.flv" % translate_string(film["name"] ) )
             script = "special://home/plugins/video/Bande-Annonce Allocine/resources/lib/downloader.py"
