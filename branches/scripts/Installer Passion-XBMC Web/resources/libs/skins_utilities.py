@@ -1,4 +1,4 @@
-
+ï»¿
 # Modules general
 import os
 import sys
@@ -51,7 +51,7 @@ def addIncludesXmlToSkin():
 
 def addBackgroundsToSkin():
     # fonction pour une meilleur prise en change des images par XBMC
-    # ça prend un chemin complet dans l'attribut fallback pour etre afficher plus vite !!!
+    # ca prend un chemin complet dans l'attribut fallback pour etre affiche plus vite
     # <imagepath fallback="special://profile/script_data/skin_backgrounds/IPX/pictures.jpg" background="true">
     # copy all BG in skin if not exists :P
     OK = False
