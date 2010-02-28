@@ -1,0 +1,457 @@
+<window>
+	<defaultcontrol>191</defaultcontrol>
+	<allowoverlays>no</allowoverlays>
+
+	<controls>
+		<!-- BACKGROUNDS -->
+		<control type="image">
+			<description>background image</description>
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>720</width>
+			<height>576</height>
+			<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-background-plain.png]</texture>
+		</control>
+		<control type="image">
+			<description>passion logo image</description>
+			<posx>20</posx>
+			<posy>11</posy>
+			<width>250</width>
+			<height>74</height>
+			<aspectratio>keep</aspectratio>
+			<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-logo.png]</texture>
+		</control>
+		<control type="multiimage">
+			<description>animation plasma</description>
+			<posx>580</posx>
+			<posy>11</posy>
+			<width>150</width>
+			<height>74</height>
+			<aspectratio>keep</aspectratio>
+			<imagepath>passion-plasma</imagepath>
+			<timeperimage>4000</timeperimage>
+			<fadetime>2000</fadetime>
+			<visible>!Skin.String(PassionSkinColourPath,style_PMIII.HD)</visible>
+		</control>
+
+		<!-- CONTENT PANEL -->
+		<control type="group">
+			<animation effect="slide" time="200" start="720,0" end="0,0" acceleration="-1">WindowOpen</animation>
+			<animation effect="slide" time="200" start="0,0" end="720,0" acceleration="1.1">WindowClose</animation>
+			<control type="image">
+				<description>contentpanel slice</description>
+				<posx>19</posx>
+				<posy>150</posy>
+				<width>681</width>
+				<height>416</height>
+				<texture>IPX-list-border2.png</texture>
+				<visible>false</visible>
+			</control>
+			<control type="image">
+				<description>contentpanel slice</description>
+				<posx>20</posx>
+				<posy>193</posy>
+				<width>679</width>
+				<height>372</height>
+				<texture>IPX-list-white.png</texture>
+				<bordertexture border="5">IPX-list-border.png</bordertexture>
+				<bordersize>2</bordersize>
+			</control>
+			<control type="image">
+				<description>contentpanel slice Custom background</description>
+				<posx>20</posx>
+				<posy>193</posy>
+				<width>679</width>
+				<height>372</height>
+				<!--<aspectratio scalediffuse="false">scale</aspectratio>-->
+				<texture diffuse="IPX-diffuse.png" />
+				<info>Skin.String(passion_custom_background)</info>
+				<visible>Skin.HasSetting(use_passion_custom_background)</visible>
+				<bordersize>2</bordersize>
+			</control>
+			<control type="image">
+				<description>contentpanel slice</description>
+				<posx>20</posx>
+				<posy>151</posy>
+				<width>679</width>
+				<height>41</height>
+				<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
+				<bordertexture border="5">IPX-list-border.png</bordertexture>
+				<bordersize>2</bordersize>
+			</control>
+			<control type="image">
+				<description>separator image for list of feeds and text of topic</description>
+				<posx>20</posx>
+				<posy>345</posy>
+				<width>679</width>
+				<height>5</height>
+				<texture>IPX-separator.png</texture>
+				<aspectratio align="center" />
+				<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+			</control>
+		</control>
+
+		<control type="group">
+			<animation effect="fade" start="0" end="100" delay="200" time="100">WindowOpen</animation>
+			<animation effect="fade" start="100" end="0" delay="0" time="100">WindowClose</animation>
+
+			<!-- LABELS -->
+			<control type="label">
+				<description>date | time label</description>
+				<posx>680</posx>
+				<posy>86</posy>
+				<label>$INFO[System.Date] [COLOR=60ffffff] |  $INFO[System.Time][/COLOR]</label>
+				<align>right</align>
+				<aligy>center</aligy>
+				<font>special12</font>
+				<animation effect="slide" start="0,0" end="0,-50" time="0" condition="Skin.String(PassionSkinColourPath,style_PMIII.HD)">conditional</animation>
+			</control>
+			<control type="label">
+				<description>tilte - category label</description>
+				<posx>27</posx>
+				<posy>160</posy>
+				<width>679</width>
+				<height>30</height>
+				<align>left</align>
+				<label>[B]$LOCALIZE[SCRIPT199][/B]</label>
+				<font>special13</font>
+			</control>
+
+			<control type="image">
+				<description>icon rss section</description>
+				<posx>566</posx>
+				<posy>220</posy>
+				<width>100</width>
+				<height>100</height>
+				<aspectratio align="center" aligny="center">keep</aspectratio>
+				<texture>$INFO[Container(150).ListItem.ActualIcon,icones\]</texture>
+				<visible>Control.HasFocus(150)</visible>
+				<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
+			</control>
+			<control type="image">
+				<posx>566</posx>
+				<posy>320</posy>
+				<width>100</width>
+				<height>50</height>
+				<texture flipy="true" diffuse="IPX-diffuse_mirror.png">$INFO[Container(150).ListItem.ActualIcon,icones\]</texture>
+				<aspectratio align="center" aligny="top">stretch</aspectratio>
+				<visible>Control.HasFocus(150)</visible>
+				<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
+			</control>
+			<control type="group">
+				<visible>!IsEmpty(Container(191).ListItem.Property(Slideshow))</visible>
+				<control type="image">
+					<description>icon rss section</description>
+					<posx>543</posx>
+					<posy>299</posy>
+					<width>21</width>
+					<height>21</height>
+					<texture>IPX-infoicon.png</texture>
+					<aspectratio aligny="bottom">keep</aspectratio>
+					<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+					<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
+				</control>
+				<control type="image">
+					<description>icon rss section</description>
+					<posx>543</posx>
+					<posy>319</posy>
+					<width>21</width>
+					<height>21</height>
+					<texture flipy="true" diffuse="IPX-diffuse_mirror.png">IPX-infoicon.png</texture>
+					<aspectratio aligny="top">keep</aspectratio>
+					<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+					<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
+				</control>
+			</control>
+
+			<!-- LIST OF FEEDS AND TEXTBOX FOR DESCRIPTION OF TOPIC AND ICON-->
+			<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+			<!-- ** Required ** Do not change id's or type's -->
+			<control type="list" id="191">
+				<description>list of feeds</description>
+				<posx>27</posx>
+				<posy>198</posy>
+				<width>480</width>
+				<height>145</height>
+				<onleft>9000</onleft>
+				<onright>193</onright>
+				<onup>191</onup>
+				<ondown>191</ondown>
+				<orientation>vertical</orientation>
+				<pagecontrol>193</pagecontrol>
+				<scrolltime>200</scrolltime>
+				<itemlayout width="250" height="29">
+					<control type="image">
+						<width>480</width>
+						<height>26</height>
+						<posx>0</posx>
+						<posy>0</posy>
+						<texture>IPX-list-nofocus.png</texture>
+						<visible>false</visible>
+					</control>
+					<control type="label">
+						<posx>5</posx>
+						<posy>2</posy>
+						<width>400</width>
+						<height>22</height>
+						<font>font13</font>
+						<aligny>center</aligny>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<textcolor>FF000000</textcolor>
+						<align>left</align>
+						<info>ListItem.Label</info>
+					</control>
+					<control type="label">
+						<posx>475</posx>
+						<posy>2</posy>
+						<width>320</width>
+						<height>22</height>
+						<font>font13</font>
+						<aligny>center</aligny>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<textcolor>60000000</textcolor>
+						<align>right</align>
+						<info>ListItem.Label2</info>
+					</control>
+				</itemlayout>
+				<focusedlayout height="29" width="250">
+					<control type="image">
+						<width>480</width>
+						<height>26</height>
+						<posx>0</posx>
+						<posy>0</posy>
+						<texture>IPX-list-focus.png</texture>
+						<visible>Control.HasFocus(191)</visible>
+					</control>
+					<control type="label">
+						<posx>5</posx>
+						<posy>2</posy>
+						<width>400</width>
+						<height>22</height>
+						<font>special13</font>
+						<aligny>center</aligny>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<textcolor>FF000000</textcolor>
+						<align>left</align>
+						<!--<info>ListItem.Label</info>-->
+						<label>$INFO[ListItem.Label,[B],[/B]]</label>
+					</control>
+					<control type="label">
+						<posx>475</posx>
+						<posy>2</posy>
+						<width>320</width>
+						<height>22</height>
+						<font>font13</font>
+						<aligny>center</aligny>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<textcolor>60000000</textcolor>
+						<align>right</align>
+						<!--<info>ListItem.Label2</info>-->
+						<label>$INFO[ListItem.Label2,[B],[/B]]</label>
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="group">
+				<posx>512</posx>
+				<posy>198</posy>
+				<control type="scrollbar" id="193">
+					<description>Scroll Bar for list of feeds</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>20</width>
+					<height>145</height>
+					<texturesliderbackground border="2,2,2,2">IPX-scrollbar_bar_back.png</texturesliderbackground>
+					<texturesliderbar border="2,16,2,16">IPX-scrollbar_bar.png</texturesliderbar>
+					<texturesliderbarfocus border="2,16,2,16">IPX-scrollbar_bar_focus.png</texturesliderbarfocus>
+					<textureslidernib>IPX-scrollbar_nib.png</textureslidernib>
+					<textureslidernibfocus>IPX-scrollbar_nib.png</textureslidernibfocus>
+					<onleft>191</onleft>
+					<onright>194</onright>
+					<showonepage>true</showonepage>
+					<orientation>vertical</orientation>
+				</control>
+			</control>
+			<control type="image">
+				<description>icon forum section</description>
+				<posx>566</posx>
+				<posy>220</posy>
+				<width>100</width>
+				<height>100</height>
+				<aspectratio align="center" aligny="center">keep</aspectratio>
+				<texture>$INFO[Container(191).ListItem.ActualIcon,icones\]</texture>
+				<visible>!Control.HasFocus(150)</visible>
+				<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
+			</control>
+			<control type="image">
+				<posx>566</posx>
+				<posy>320</posy>
+				<width>100</width>
+				<height>50</height>
+				<texture flipy="true" diffuse="IPX-diffuse_mirror.png">$INFO[Container(191).ListItem.ActualIcon,icones\]</texture>
+				<aspectratio align="center" aligny="top">stretch</aspectratio>
+				<visible>!Control.HasFocus(150)</visible>
+				<animation effect="fade" reversible="true" time="400">VisibleChange</animation>
+			</control>
+			<control type="textbox">
+				<description>Text of topic small</description>
+				<posx>27</posx>
+				<posy>352</posy>
+				<width>640</width>
+				<height>209</height>
+				<pagecontrol>194</pagecontrol>
+				<textcolor>FF000000</textcolor>
+				<font>font13</font>
+				<align>justify</align>
+				<label>[B]$INFO[Container(191).ListItem.Property(general_category),,[CR]][/B]$INFO[Container(191).ListItem.Property(Topic)]</label>
+				<autoscroll time="2000" delay="3000">Skin.HasSetting(AutoScroll)</autoscroll>
+				<visible>Control.IsVisible(194)</visible>
+			</control>
+			<control type="textbox">
+				<description>Text of topic large</description>
+				<posx>27</posx>
+				<posy>352</posy>
+				<width>666</width>
+				<height>209</height>
+				<pagecontrol>194</pagecontrol>
+				<textcolor>FF000000</textcolor>
+				<font>font13</font>
+				<align>justify</align>
+				<label>[B]$INFO[Container(191).ListItem.Property(general_category),,[CR]][/B]$INFO[Container(191).ListItem.Property(Topic)]</label>
+				<autoscroll time="2000" delay="3000">Skin.HasSetting(AutoScroll)</autoscroll>
+				<visible>!Control.IsVisible(194)</visible>
+			</control>
+			<control type="group">
+				<posx>672</posx>
+				<posy>353</posy>
+				<control type="scrollbar" id="194">
+					<description>Scroll Bar for text of topic</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>20</width>
+					<height>205</height>
+					<texturesliderbackground border="2,2,2,2">IPX-scrollbar_bar_back.png</texturesliderbackground>
+					<texturesliderbar border="2,16,2,16">IPX-scrollbar_bar.png</texturesliderbar>
+					<texturesliderbarfocus border="2,16,2,16">IPX-scrollbar_bar_focus.png</texturesliderbarfocus>
+					<textureslidernib>IPX-scrollbar_nib.png</textureslidernib>
+					<textureslidernibfocus>IPX-scrollbar_nib.png</textureslidernibfocus>
+					<onleft>193</onleft>
+					<onright>191</onright>
+					<showonepage>false</showonepage>
+					<orientation>vertical</orientation>
+					<visible>!IsEmpty(Container(191).ListItem.Property(Topic))</visible>
+				</control>
+			</control>
+		</control>
+
+		<control type="group" id="9000">
+			<animation effect="slide" time="200" start="720,0" end="0,0" acceleration="-1">WindowOpen</animation>
+			<animation effect="slide" time="200" start="0,0" end="720,0" acceleration="1.1">WindowClose</animation>
+			<control type="image">
+				<description>contentpanel slice</description>
+				<posx>190</posx>
+				<posy>120</posy>
+				<width>340</width>
+				<height>372</height>
+				<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
+				<bordertexture border="5">IPX-list-border.png</bordertexture>
+				<bordersize>2</bordersize>
+				<onfocus>SetFocus(150)</onfocus>
+				<animation effect="zoom" start="0,120,340,20" end="0,142,340,372" time="800" condition="ControlGroup(9000).HasFocus">Conditional</animation>
+				<animation effect="zoom" start="0,142,340,372" end="0,120,340,20" time="400" condition="!ControlGroup(9000).HasFocus">Conditional</animation>
+			</control>
+			<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+			<!-- ** Required ** Do not change id's or type's -->
+			<control type="list" id="150">
+				<visible>ControlGroup(9000).HasFocus</visible>
+				<animation effect="zoom" start="0,142,330,15" end="0,142,330,347" time="800" condition="ControlGroup(9000).HasFocus">Conditional</animation>
+				<animation effect="zoom" start="0,142,330,347" end="0,142,330,15" time="400" condition="!ControlGroup(9000).HasFocus">Conditional</animation>
+				<description>List for all RSS feeds</description>
+				<posx>195</posx>
+				<posy>142</posy>
+				<width>330</width>
+				<height>347</height>
+				<onleft>191</onleft>
+				<onright>191</onright>
+				<onup>150</onup>
+				<ondown>150</ondown>
+				<orientation>vertical</orientation>
+				<pagecontrol>250</pagecontrol>
+				<scrolltime>200</scrolltime>
+				<itemlayout width="340" height="25">
+					<control type="label">
+						<posx>165</posx>
+						<posy>0</posy>
+						<width>325</width>
+						<height>22</height>
+						<font>font11</font>
+						<aligny>center</aligny>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<textcolor>ffffffff</textcolor>
+						<align>center</align>
+						<info>ListItem.Label</info>
+					</control>
+				</itemlayout>
+				<focusedlayout height="25" width="340">
+					<control type="image">
+						<width>330</width>
+						<height>25</height>
+						<posx>0</posx>
+						<posy>0</posy>
+						<visible>Control.HasFocus(150)</visible>
+						<texture border="5">IPX-button-focus3.png</texture>
+					</control>
+					<control type="label">
+						<posx>165</posx>
+						<posy>0</posy>
+						<width>325</width>
+						<height>22</height>
+						<font>font11</font>
+						<aligny>center</aligny>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<textcolor>ffffffff</textcolor>
+						<align>center</align>
+						<info>ListItem.Label</info>
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="image">
+				<posx>190</posx>
+				<posy>117</posy>
+				<width>340</width>
+				<height>25</height>
+				<texture>$INFO[Skin.String(PassionSkinColourPath),,\passion-list-header.png]</texture>
+				<bordertexture border="5">IPX-list-border.png</bordertexture>
+				<bordersize>2</bordersize>
+				<onfocus>SetFocus(150)</onfocus>
+			</control>
+			<control type="button">
+				<description>tilte - category label</description>
+				<posx>195</posx>
+				<posy>117</posy>
+				<width>330</width>
+				<height>25</height>
+				<align>center</align>
+				<label>$INFO[Container.Property(Category)]</label>
+				<texturenofocus>-</texturenofocus>
+				<texturefocus>-</texturefocus>
+				<textcolor>ffffffff</textcolor>
+				<onfocus>SetFocus(150)</onfocus>
+				<visible>!IsEmpty(Container.Property(Category))</visible>
+			</control>
+			<control type="button">
+				<description>tilte - category label</description>
+				<posx>195</posx>
+				<posy>117</posy>
+				<width>330</width>
+				<height>25</height>
+				<align>center</align>
+				<label>SCRIPT200</label>
+				<texturenofocus>-</texturenofocus>
+				<texturefocus>-</texturefocus>
+				<textcolor>ffffffff</textcolor>
+				<onfocus>SetFocus(150)</onfocus>
+				<visible>IsEmpty(Container.Property(Category))</visible>
+			</control>
+		</control>
+	</controls>
+</window>

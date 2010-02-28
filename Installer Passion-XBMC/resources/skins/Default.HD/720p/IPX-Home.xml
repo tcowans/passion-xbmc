@@ -1,0 +1,724 @@
+<window id="3000">
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+
+	<controls>
+		<control type="list" id="99999">
+			<description>Dummy Container Script Settings</description>
+			<hitrect x="0" y="0" w="0" h="0" />
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>0</width>
+			<height>0</height>
+			<onleft>9000</onleft>
+			<onright>9000</onright>
+			<onup>9000</onup>
+			<ondown>9000</ondown>
+			<pagecontrol>-</pagecontrol>
+			<itemlayout height="30" />
+			<focusedlayout height="30" />
+		</control>
+		<!-- backgrounds -->
+		<control type="largeimage">
+			<description>control list 9000 backgrounds</description>
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1280</width>
+			<height>720</height>
+			<texture fallback="installer.jpg" background="true">$INFO[Container(9000).ListItem.Icon]</texture>
+			<fadetime>500</fadetime>
+		</control>
+		<control type="largeimage">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1280</width>
+			<height>720</height>
+			<texture flipx="true" flipy="true">background-credits.gif</texture>
+			<visible>Control.HasFocus(90145)</visible>
+			<animation effect="fade" time="300">Visible</animation>
+			<animation effect="fade" time="300">Hidden</animation>
+		</control>
+
+		<!-- weather Info -->
+		<control type="group">
+			<description>Weather group</description>
+			<posx>510r</posx>
+			<posy>0</posy>
+			<animation effect="slide" start="0,0" end="-60,0" delay="0" time="300" condition="Window.IsVisible(MuteBug)">conditional</animation>
+			<animation effect="slide" start="0,0" end="510,0" delay="0" time="300">WindowClose</animation>
+			<animation effect="slide" start="510,0" end="0,0" delay="0" time="300">WindowOpen</animation>
+			<visible>!Skin.HasSetting(homepageWeatherinfo) + Weather.IsFetched</visible>
+			<control type="image">
+				<description>Weather background</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>180</width>
+				<height>35</height>
+				<texture flipx="true" border="32,0,0,0">IPX-header.png</texture>
+				<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+			</control>
+			<control type="image">
+				<description>Weather image</description>
+				<posx>30</posx>
+				<posy>1</posy>
+				<width>25</width>
+				<height>25</height>
+				<aspectratio>keep</aspectratio>
+				<texture>$INFO[Weather.Conditions]</texture>
+			</control>
+			<control type="label">
+				<description>Weather label</description>
+				<posx>60</posx>
+				<posy>0</posy>
+				<width>100</width>
+				<height>28</height>
+				<align>left</align>
+				<aligny>center</aligny>
+				<font>font12</font>
+				<textcolor>FFFFFFFF</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<label>[B]$INFO[Weather.Temperature][/B]</label>
+			</control>
+		</control>
+
+		<control type="group">
+			<description>Main menu and submenu group</description>
+			<animation effect="slide" end="-370,0" time="500" tween="quadratic" easing="out">WindowClose</animation>
+			<animation effect="slide" start="-370,0" time="500" tween="quadratic" easing="out">WindowOpen</animation>
+			<control type="group">
+				<animation effect="slide" end="-228,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
+				<control type="image">
+					<posx>379</posx>
+					<posy>0</posy>
+					<width>1</width>
+					<height>720</height>
+					<texture>IPX-HomeBladeSub_Part1.png</texture>
+					<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+					<animation effect="zoom" start="379,0,1,720" end="379,0,249,720" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation>
+				</control>
+				<control type="image">
+					<posx>380</posx>
+					<posy>0</posy>
+					<width>12</width>
+					<height>720</height>
+					<texture>IPX-HomeBladeSub_Part2.png</texture>
+					<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+					<animation effect="slide" end="248,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation>
+				</control>
+			</control>
+
+			<control type="group" id="9001">
+				<description>Submenu group</description>
+				<posx>170</posx>
+				<posy>240</posy>
+				<animation effect="fade" start="100" end="0" time="0" condition="Window.IsVisible(progressdialog) | !ControlGroup(9001).HasFocus">conditional</animation>
+				<animation effect="fade" start="0" end="100" delay="300" time="200" condition="ControlGroup(9001).HasFocus">conditional</animation>
+				<animation effect="fade" start="100" end="0" time="0" condition="ControlGroup(9001).HasFocus">WindowClose</animation>
+				<animation effect="slide" end="210,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">conditional</animation>
+				<animation effect="slide" end="0,-204" time="300" condition="Container(9000).Row(1)">conditional</animation>
+				<animation effect="slide" end="0,-102" time="300" condition="Container(9000).Row(2)">conditional</animation>
+				<animation effect="slide" end="0,102" time="300" condition="Container(9000).Row(4)">conditional</animation>
+				<animation effect="slide" end="0,204" time="300" condition="Container(9000).Row(5)">conditional</animation>
+
+				<control type="grouplist" id="9010">
+					<description>manager sub buttons</description>
+					<posx>10</posx>
+					<posy>0</posy>
+					<width>260</width>
+					<height>360</height>
+					<align>center</align>
+					<onleft>9000</onleft>
+					<onright>9000</onright>
+					<onup>9010</onup>
+					<ondown>9010</ondown>
+					<itemgap>0</itemgap>
+					<visible>Container(9000).HasFocus(2)</visible>
+					<control type="button" id="90104">
+						<description>manager plugins button</description>
+						<height>40</height>
+						<width>241</width>
+						<textoffsetx>20</textoffsetx>
+						<textwidth>215</textwidth>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
+						<label>SCRIPT14</label>
+						<onclick>-</onclick>
+					</control>
+					<control type="button" id="90103">
+						<description>manager scripts button</description>
+						<height>40</height>
+						<width>241</width>
+						<textoffsetx>20</textoffsetx>
+						<textwidth>215</textwidth>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
+						<label>247</label><!-- label localized in XBMC language -->
+						<onclick>-</onclick>
+					</control>
+					<control type="button" id="90101">
+						<description>manager skin button</description>
+						<height>40</height>
+						<width>241</width>
+						<textoffsetx>20</textoffsetx>
+						<textwidth>215</textwidth>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
+						<label>21895</label><!-- label localized in XBMC language -->
+						<onclick>-</onclick>
+					</control>
+					<control type="button" id="90102">
+						<description>manager scrapers button</description>
+						<height>40</height>
+						<width>241</width>
+						<textoffsetx>20</textoffsetx>
+						<textwidth>215</textwidth>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
+						<label>21412</label><!-- label localized in XBMC language -->
+						<onclick>-</onclick>
+					</control>
+					<control type="button" id="90109">
+						<description>manager plugins weather button</description>
+						<height>40</height>
+						<width>241</width>
+						<textoffsetx>20</textoffsetx>
+						<textwidth>215</textwidth>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
+						<label>23000</label><!-- label localized in XBMC language -->
+						<onclick>-</onclick>
+						<visible>false</visible>
+					</control>
+					<control type="button" id="90106">
+						<description>manager plugins pictures button</description>
+						<height>40</height>
+						<width>241</width>
+						<textoffsetx>20</textoffsetx>
+						<textwidth>215</textwidth>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
+						<label>1039</label><!-- label localized in XBMC language -->
+						<onclick>-</onclick>
+					</control>
+					<control type="button" id="90108">
+						<description>manager plugins programs button</description>
+						<height>40</height>
+						<width>241</width>
+						<textoffsetx>20</textoffsetx>
+						<textwidth>215</textwidth>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
+						<label>1043</label><!-- label localized in XBMC language -->
+						<onclick>-</onclick>
+					</control>
+					<control type="button" id="90107">
+						<description>manager plugins music button</description>
+						<height>40</height>
+						<width>241</width>
+						<textoffsetx>20</textoffsetx>
+						<textwidth>215</textwidth>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
+						<label>1038</label><!-- label localized in XBMC language -->
+						<onclick>-</onclick>
+					</control>
+					<control type="button" id="90105">
+						<description>manager plugins video button</description>
+						<height>40</height>
+						<width>241</width>
+						<textoffsetx>20</textoffsetx>
+						<textwidth>215</textwidth>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
+						<label>1037</label><!-- label localized in XBMC language -->
+						<onclick>-</onclick>
+					</control>
+				</control>
+
+				<control type="grouplist" id="9014">
+					<description>system sub buttons</description>
+					<posx>10</posx>
+					<posy>0</posy>
+					<width>240</width>
+					<height>240</height>
+					<align>center</align>
+					<onleft>9000</onleft>
+					<onright>9000</onright>
+					<onup>9014</onup>
+					<ondown>9014</ondown>
+					<itemgap>0</itemgap>
+					<visible>Container(9000).HasFocus(5)</visible>
+					<control type="button" id="90141">
+						<description>script params button</description>
+						<height>40</height>
+						<width>241</width>
+						<textoffsetx>20</textoffsetx>
+						<textwidth>215</textwidth>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
+						<label>5</label><!-- label localized in XBMC language -->
+						<onclick>-</onclick>
+					</control>
+					<control type="button" id="90144">
+						<description>caches cleaner button</description>
+						<height>40</height>
+						<width>241</width>
+						<textoffsetx>20</textoffsetx>
+						<textwidth>215</textwidth>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
+						<label>SCRIPT31</label>
+					</control>
+					<control type="button" id="90143">
+						<description>script output button</description>
+						<height>40</height>
+						<width>241</width>
+						<textoffsetx>20</textoffsetx>
+						<textwidth>215</textwidth>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
+						<label>SCRIPT30</label>
+						<onclick>ActivateWindow(ScriptsDebugInfo)</onclick>
+					</control>
+					<control type="button" id="90142">
+						<description>system filenamager button</description>
+						<height>40</height>
+						<width>241</width>
+						<textoffsetx>20</textoffsetx>
+						<textwidth>215</textwidth>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
+						<label>7</label><!-- label localized in XBMC language -->
+						<onclick>ActivateWindow(FileManager)</onclick>
+					</control>
+					<control type="button" id="90145">
+						<description>script credits button</description>
+						<height>40</height>
+						<width>241</width>
+						<textoffsetx>20</textoffsetx>
+						<textwidth>215</textwidth>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
+						<label>SCRIPT4</label>
+						<onclick>-</onclick>
+					</control>
+				</control>
+
+				<control type="grouplist" id="9016">
+					<description>Installer sub buttons</description>
+					<posx>10</posx>
+					<posy>0</posy>
+					<width>240</width>
+					<height>300</height>
+					<align>center</align>
+					<onleft>9000</onleft>
+					<onright>9000</onright>
+					<onup>9016</onup>
+					<ondown>9016</ondown>
+					<itemgap>0</itemgap>
+					<visible>Container(9000).HasFocus(10)</visible>
+					<control type="label" id="90160">
+						<width>240</width>
+						<height>45</height>
+						<font>font12caps</font>
+						<label>SCRIPT32</label>
+						<textcolor>DDced8da</textcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+						<visible>false</visible>
+					</control>
+					<control type="button" id="90161">
+						<description>source passion web button</description>
+						<height>40</height>
+						<width>241</width>
+						<textoffsetx>20</textoffsetx>
+						<textwidth>215</textwidth>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
+						<label>Passion-XBMC Web</label>
+						<onclick>-</onclick>
+					</control>
+					<control type="button" id="90162">
+						<description>source passion ftp button</description>
+						<height>40</height>
+						<width>241</width>
+						<textoffsetx>20</textoffsetx>
+						<textwidth>215</textwidth>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
+						<label>Passion-XBMC FTP</label>
+						<onclick>-</onclick>
+					</control>
+					<control type="button" id="90163">
+						<description>source xbmc zone button</description>
+						<height>40</height>
+						<width>241</width>
+						<textoffsetx>20</textoffsetx>
+						<textwidth>215</textwidth>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
+						<label>XBMC Zone</label>
+						<onclick>-</onclick>
+					</control>
+					<control type="button" id="90164">
+						<description>run plugin "SVN Repo Installer" button</description>
+						<height>40</height>
+						<width>241</width>
+						<textoffsetx>20</textoffsetx>
+						<textwidth>215</textwidth>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
+						<label>SVN Repo Installer</label>
+						<onclick>ActivateWindow(10001,plugin://programs/SVN Repo Installer/)</onclick>
+						<visible>false</visible>
+					</control>
+					<control type="label" id="91165">
+						<width>240</width>
+						<height>45</height>
+						<font>font12caps</font>
+						<label>6</label><!-- label localized in XBMC language -->
+						<textcolor>DDced8da</textcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+						<visible>false</visible>
+					</control>
+					<control type="button" id="90165">
+						<description>nightly builds button</description>
+						<height>40</height>
+						<width>241</width>
+						<textoffsetx>20</textoffsetx>
+						<textwidth>215</textwidth>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">IPX-button-focus.png</texturefocus>
+						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
+						<label>SCRIPT29</label>
+						<onclick>Control.SetFocus(9014)</onclick>
+						<visible>false</visible>
+					</control>
+					<!--<visible>stringcompare(lookandfeel.skin,Confluence)</visible>
+					<visible>stringcompare(Skin.String(xbmc.currentskin),Confluence)</visible>-->
+				</control>
+			</control>
+
+			<control type="image">
+				<posx>-450</posx>
+				<posy>0</posy>
+				<width>846</width>
+				<height>720</height>
+				<colordiffuse>DAFFFFFF</colordiffuse>
+				<texture>IPX-HomeBlade_bottom.png</texture>
+				<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+			</control>
+			<control type="fixedlist" id="9000">
+				<description>Main menu buttons</description>
+				<hitrect x="50" y="50" w="330" h="620" />
+				<posx>-20</posx>
+				<posy>0</posy>
+				<width>400</width>
+				<height>720</height>
+				<onleft>10</onleft>
+				<onright>9001</onright>
+				<onup>9000</onup>
+				<ondown>9000</ondown>
+				<pagecontrol>-</pagecontrol>
+				<scrolltime>300</scrolltime>
+				<focusposition>3</focusposition>
+				<movement>2</movement>
+				<animation effect="fade" start="0" end="100" time="200">Visible</animation>
+				<animation effect="fade" start="100" end="30" time="200" condition="Window.IsVisible(1113) | ControlGroup(9001).HasFocus | ControlGroup(10).HasFocus | Control.HasFocus(8000) | Control.HasFocus(8001)">conditional</animation>
+				<itemlayout height="102" width="380">
+					<control type="label">
+						<posx>380</posx>
+						<posy>21</posy>
+						<width>380</width>
+						<height>40</height>
+						<font>font50caps_title</font>
+						<textcolor>33FFFFFF</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<animation effect="zoom" start="65" end="65" center="380,51" time="0" condition="true">Conditional</animation>
+						<animation effect="fade" start="100" end="30" time="200" condition="Window.IsVisible(1113) | ControlGroup(9001).HasFocus | ControlGroup(10).HasFocus">conditional</animation>
+					</control>
+				</itemlayout>
+				<focusedlayout height="102" width="380">
+					<control type="label">
+						<posx>380</posx>
+						<posy>21</posy>
+						<width>380</width>
+						<height>40</height>
+						<font>font50caps_title</font>
+						<textcolor>FFFFFFFF</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<animation effect="zoom" start="65" end="100" center="380,51" time="200">Focus</animation>
+						<animation effect="zoom" start="100" end="65" center="380,51" time="200">UnFocus</animation>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+					<control type="image">
+						<posx>370</posx>
+						<posy>63</posy>
+						<width>18</width>
+						<height>18</height>
+						<texture>IPX-HomeHasSub.png</texture>
+						<visible>Container(9000).HasFocus(2) | Container(9000).HasFocus(5) | Container(9000).HasFocus(10)</visible>
+						<animation effect="fade" start="0" end="100" time="200">Focus</animation>
+						<animation effect="fade" start="100" end="0" time="200">UnFocus</animation>
+					</control>
+				</focusedlayout>
+				<!-- content item not work in onClick( self, controlID ) -->
+				<!-- but use <onclick>SetProperty(Container_9000_item_id,int)</onclick> and in onAction( self, action ) -->
+				<!-- use if self.getFocusId() == 9000: print self.getProperty( "Container_9000_item_id" ) -->
+				<content>
+					<item id="4">
+						<onclick>SetProperty(Container_9000_item_id,4)</onclick>
+						<label>SCRIPT1</label>
+						<icon>pictures.jpg</icon>
+						<thumb>pictures.jpg</thumb>
+						<visible>IsEmpty(Container(99999).ListItem.Property(script.setting.hideforum))</visible>
+					</item>
+					<item id="2">
+						<onclick>SetProperty(Container_9000_item_id,2)</onclick>
+						<label>SCRIPT5</label>
+						<icon>scripts.jpg</icon>
+						<thumb>scripts.jpg</thumb>
+					</item>
+					<item id="12">
+						<onclick>SetProperty(Container_9000_item_id,12)</onclick>
+						<label>SCRIPT28</label>
+						<icon>nightly2.jpg</icon>
+						<thumb>nightly2.jpg</thumb>
+						<visible>!IsEmpty(Container(99999).ListItem.Property(script.setting.hideforum))</visible>
+					</item>
+					<item id="10">
+						<onclick>SetProperty(Container_9000_item_id,10)</onclick>
+						<label>SCRIPT7</label>
+						<icon>installer.jpg</icon>
+						<thumb>installer.jpg</thumb>
+					</item>
+					<item id="12">
+						<onclick>SetProperty(Container_9000_item_id,12)</onclick>
+						<label>SCRIPT28</label>
+						<icon>nightly2.jpg</icon>
+						<thumb>nightly2.jpg</thumb>
+						<visible>IsEmpty(Container(99999).ListItem.Property(script.setting.hideforum))</visible>
+					</item>
+					<item id="5">
+						<onclick>SetProperty(Container_9000_item_id,5)</onclick>
+						<label>13000</label><!-- label localized in XBMC language -->
+						<icon>settings.jpg</icon>
+						<thumb>settings.jpg</thumb>
+					</item>
+					<item id="11">
+						<onclick>SetProperty(Container_9000_item_id,11)</onclick>
+						<label>SCRIPT8</label>
+						<icon>exit.jpg</icon>
+						<thumb>exit.jpg</thumb>
+						<visible>!IsEmpty(Container(99999).ListItem.Property(script.setting.hideforum))</visible>
+					</item>
+				</content>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>-205</posy>
+				<width>385</width>
+				<height>1130</height>
+				<texture>IPX-HomeBlade_middle.png</texture>
+				<animation effect="slide" end="0,-204" time="300" condition="Container(9000).Row(1)">conditional</animation>
+				<animation effect="slide" end="0,-102" time="300" condition="Container(9000).Row(2)">conditional</animation>
+				<animation effect="slide" end="0,102" time="300" condition="Container(9000).Row(4)">conditional</animation>
+				<animation effect="slide" end="0,204" time="300" condition="Container(9000).Row(5)">conditional</animation>
+			</control>
+
+			<control type="image">
+				<posx>-450</posx>
+				<posy>0</posy>
+				<width>846</width>
+				<height>720</height>
+				<texture>IPX-HomeBlade_top.png</texture>
+				<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+			</control>
+			<control type="image">
+				<description>LOGO</description>
+				<posx>10</posx>
+				<posy>10</posy>
+				<width>220</width>
+				<height>80</height>
+				<aspectratio>keep</aspectratio>
+				<texture>IPX-logo.png</texture>
+			</control>
+			<control type="image">
+				<description>LOGO Mirror</description>
+				<posx>10</posx>
+				<posy>52</posy>
+				<width>150</width>
+				<height>50</height>
+				<texture diffuse="IPX-diffuse_mirror.png" flipy="true">IPX-logo.png</texture>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>100r</posy>
+				<width>256</width>
+				<height>100</height>
+				<texture>IPX-HomeButtonsBack.png</texture>
+			</control>
+
+			<control type="group" id="10">
+				<posx>15</posx>
+				<posy>55r</posy>
+				<control type="button" id="20">
+					<description>Power push button</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>43</width>
+					<height>43</height>
+					<label>-</label>
+					<font>-</font>
+					<aligny>-</aligny>
+					<onclick>-</onclick>
+					<texturefocus>IPX-home-power-FO.png</texturefocus>
+					<texturenofocus>IPX-home-power.png</texturenofocus>
+					<onleft>9000</onleft>
+					<onright>9000</onright>
+					<onup>9000</onup>
+					<ondown>9000</ondown>
+				</control>
+			</control>
+		</control>
+
+		<control type="group" id="1000">
+			<animation effect="slide" end="0,35" time="300" tween="quadratic" easing="out">WindowClose</animation>
+			<animation effect="slide" start="0,35" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+			<visible>system.getbool(lookandfeel.enablerssfeeds)</visible>
+			<posx>420</posx>
+			<posy>35r</posy>
+			<control type="image">
+				<description>RSS background</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>860</width>
+				<height>35</height>
+				<texture border="32,0,0,0">IPX-Rss_Back.png</texture>
+				<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+			</control>
+			<control type="rss">
+				<description>RSS feed</description>
+				<posx>35</posx>
+				<posy>6</posy>
+				<height>35</height>
+				<width>825</width>
+				<font>font12</font>
+				<urlset>100</urlset><!-- if not exists, auto created/updated on start script -->
+				<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
+				<titlecolor>$INFO[Skin.String(PassionLabelHexColour)]</titlecolor>
+				<headlinecolor>ffffffff</headlinecolor>
+			</control>
+			<control type="image">
+				<description>RSS background</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>100</width>
+				<height>35</height>
+				<texture border="32,0,0,0">IPX-Rss_Back_Overlay.png</texture>
+				<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+			</control>
+		</control>
+
+		<control type="group">
+			<posx>380r</posx>
+			<posy>0</posy>
+			<animation effect="slide" start="0,0" end="-60,0" delay="0" time="300" condition="Window.IsVisible(MuteBug)">conditional</animation>
+			<animation effect="slide" start="0,0" end="380,0" delay="0" time="300">WindowClose</animation>
+			<animation effect="slide" start="380,0" end="0,0" delay="0" time="300">WindowOpen</animation>
+			<control type="image">
+				<description>time background</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>440</width>
+				<height>35</height>
+				<texture flipx="true" border="32,0,0,0">IPX-header.png</texture>
+				<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+			</control>
+			<control type="label">
+				<description>time label</description>
+				<posx>30</posx>
+				<posy>0</posy>
+				<width>400</width>
+				<height>28</height>
+				<align>left</align>
+				<aligny>center</aligny>
+				<font>font12</font>
+				<textcolor>FFFFFFFF</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<label>[COLOR=FFb4b4b4]$INFO[System.Date][/COLOR] | $INFO[System.Time]</label>
+			</control>
+		</control>
+
+		<control type="image">
+			<posx>1289</posx>
+			<posy>0</posy>
+			<width>846</width>
+			<height>720</height>
+			<texture flipx="true">IPX-HomeBlade.png</texture>
+			<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+			<animation effect="slide" end="-35,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
+			<animation effect="slide" start="-35,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+		</control>
+	</controls>
+</window>
