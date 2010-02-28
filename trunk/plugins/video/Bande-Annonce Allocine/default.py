@@ -148,7 +148,7 @@ def get_film_list( url , database = False):
     dp.create("Update Database")
     
     
-    while pager <= nbpage and nbpage != "error":
+    while pager <= nbpage and nbpage != "error" and pager <= [5,10,20,30,999][int(xbmcplugin.getSetting("page_limit"))]:
         if not pager == 1:
             current_url= "%s?page=%s" % (url , pager)
             print "page %s: %s" % ( pager , current_url )
@@ -203,8 +203,11 @@ def get_film_list( url , database = False):
                 film["id_allo"] = id_allo
                 film["id_media"] = id_media
                 film["name"] = name
-                film["poster"] = img.replace( "c_120_160/b_1_x/o_play.png_5_se" , "r_760_x" ).replace("cx_120_96/b_1_x/o_play.png_5_se", "r_760_x" ).replace("c_120_120/b_1_x/o_play.png_5_se", "r_760_x" )
-                film["poster"] = film["poster"].replace("cx_120_113/o_overlayEmissions-P2C-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-MerciQui-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-LaMinute-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-D2DVD-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-TES-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-FauxR-120.png_1_c", "r_760_x" )
+                film["poster"] = img
+                print "hd image: %s" % xbmcplugin.getSetting("hdimage")
+                if xbmcplugin.getSetting("hdimage") == "true":
+                    film["poster"] = film["poster"].replace( "c_120_160/b_1_x/o_play.png_5_se" , "r_760_x" ).replace("cx_120_96/b_1_x/o_play.png_5_se", "r_760_x" ).replace("c_120_120/b_1_x/o_play.png_5_se", "r_760_x" )
+                    film["poster"] = film["poster"].replace("cx_120_113/o_overlayEmissions-P2C-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-MerciQui-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-LaMinute-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-D2DVD-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-TES-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-FauxR-120.png_1_c", "r_760_x" )
                 catalogue.append(film)
         
                 
@@ -331,13 +334,14 @@ def get_film_in_cinema( id_cine ):
     return film_cinema
  
 def create_DB( url , dbname ):
-    DB_file= os.path.join( cache_dir , "%s.txt" % dbname )
+    DB_file= os.path.join( cache_dir , translate_string("%s.txt" % dbname) )
     try: save_data( get_film_list( url ) , DB_file )
     except:
         print "impossible de créer la base %s" % DB_file
         print_exc()
 def load_DB(dbname):
-    DB_file= os.path.join( cache_dir , "%s.txt" % dbname )
+    
+    DB_file= os.path.join( cache_dir , translate_string("%s.txt" % dbname) )
 ##    print "last modifications: %s" % os.path.getmtime(DB_file)
 ##    print "actual %s" % time.time()
 ##    print time.time() - os.path.getmtime(DB_file)
@@ -448,7 +452,7 @@ if mode == 1:
     for film in data:
         if film["type"] == "film": addDir(film["name"],"%s##%s" % (film["poster"] , film["id_allo"]),2,film["poster"])
         else :
-            print "image:%s " % film["poster"]
+            #print "image:%s " % film["poster"]
             c_items = []
             local_trailer = os.path.join( trailer_dir, "%s.flv" % translate_string(film["name"] ) )
             script = "special://home/plugins/video/Bande-Annonce Allocine/resources/lib/downloader.py"
@@ -524,7 +528,11 @@ if mode == 6:
     picture["Faux Raccord"] = "http://images.allocine.fr/r_120_x/commons/logos/Logos_FauxR_160x128.jpg"
     picture["Plein 2 CinÃ©"] = "http://images.allocine.fr/r_120_x/commons/logos/Logos_p2c_160x128.jpg"
     for emission in emission_list:
-        try: image = picture["%s" % emission[1]]
+        try: 
+            if xbmcplugin.getSetting("hdimage") == "true":
+                image = picture["%s" % emission[1]].replace("r_760_x","")
+            else: image = picture["%s" % emission[1]]
+            
         except : image = ""
         addDir(emission[1], "http://www.allocine.fr%s" % emission[0], 1 , image )
 end_of_directory( OK )
