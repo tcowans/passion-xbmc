@@ -7,8 +7,8 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/"
 __credits__      = "Team XBMC passion, http://passion-xbmc.org/developpement-python/%28script%29-sporlive-display/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "26-02-2011"
-__version__      = "1.4"
+__date__         = "28-02-2011"
+__version__      = "1.5"
 __svn_revision__  = "$Revision$".replace( "Revision", "" ).strip( "$: " )
 __XBMC_Revision__ = "20000" #XBMC Babylon
 __useragent__    = "Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.0.1) Gecko/2008070208 Firefox/3.0.1"
@@ -34,6 +34,7 @@ if not os.path.isdir(cache_dir):
     os.makedirs(cache_dir)
 
 from convert import set_entity_or_charref
+from convert import translate_string
 
 try: quality=( "ld", "md", "hd" )[ int( xbmcplugin.getSetting("quality") ) ]
 except:
@@ -50,10 +51,11 @@ def addLink(name,url,iconimage, c_items = None ):
         return ok
 
 
-def addDir(name,url,mode,iconimage):
+def addDir(name,url,mode,iconimage, c_items = None ):
         u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)
         ok=True
         liz=xbmcgui.ListItem(name, iconImage="DefaultFolder.png", thumbnailImage=iconimage)
+        if c_items : liz.addContextMenuItems( c_items, replaceItems=True )
         liz.setInfo( type="Video", infoLabels={ "Title": name } )
         ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=True)
         return ok
@@ -154,29 +156,50 @@ def get_film_list( url , database = False):
         try:        
             MEDIA=re.compile( '<div class="mainzone">(.*?)<div class="spacer">', re.DOTALL ).findall(page_data)
             for i in  MEDIA:
+                if database: film = get_film_info(id_allo)
+                else: film = {}
                 #print i
+                film["type"] = url.split("/")[4]
+                if film["type"] == "bandes-annonces": film["type"] = "film"
+                elif film["type"] == "series": film["type"] = "serie"
+                
+                print "###################type#############################"
+                print film["type"]
                 count = count+1
                 ratio= int(100*float(count)/float(total_item))
+                #save_data(i)
                 
-                match = re.search( "<span class='bold'>(.*?)</span>", i )
-                if match : name = match.group(1)
+                
+                if film["type"] == "serie": match = re.search( "<span class='bold'>(.*?)<br />", i )
+                else : match = re.search( "<span class='bold'>(.*?)</span>", i )
+                if match :
+                    if film["type"] == "serie": name = match.group(1).replace("</span>"," ")
+                    else : match = name = match.group(1)
+                    
                 else: name = ""
                 
-                print "récupération info film (%s/%s): %s" % ( count , total_item , name )
-                dp.update(ratio , "récupération info film (%s/%s)" % ( count , total_item ), name)
+                print "récupération info %s (%s/%s): %s" % ( film["type"] , count , total_item , name )
+                dp.update(ratio , "récupération info %s (%s/%s)" % ( film["type"], count , total_item ), name)
                 if dp.iscanceled() :
                     break
-                
-                try:id_allo = re.findall( "<a href='/video/player_gen_cmedia=.*&cfilm=(.*?).html'", i )[0]
-                except: id_allo = ""
+                match = re.search( "<a href='/video/player_gen_cmedia=(.*?)&c%s=(.*?).html'" % film["type"] , i )
+                if match: 
+                    id_allo = match.group(2)
+                    id_media = match.group(1)
+                    #print "############TEST###############" + "test id:%s %s" % (match.group(1) , match.group(2))
+                else : 
+                    match = re.search( "cmedia=(.*?)'" , i )
+                    if match:
+                        id_allo = id_media = match.group(1)
+                    
                 try: img = re.findall( "<img src='(.*?)'", i )[0]
                 except: img = ""
                 #try: ba_type = re.findall( '</b> (.*?)" />', i )[0]
                 #except: ba_type = ""                
                 #print "%s: %s id=%s img=%s" % ( count , name , id_allo , img )
-                if database: film = get_film_info(id_allo)
-                else: film = {}
+                
                 film["id_allo"] = id_allo
+                film["id_media"] = id_media
                 film["name"] = name
                 film["poster"] = img.replace( "c_120_160/b_1_x/o_play.png_5_se" , "r_760_x" )
                 catalogue.append(film)
@@ -362,6 +385,18 @@ def search_cinema():
         progress.close()
     else : OK = False       
     
+def get_emission_list(url):
+    data = get_html_source( url )
+    #save_data(data)
+    match = re.compile('<div class="clmmastertopic"><a href="/video/emissions/">(.*?)<div class="clmmastertopic">',re.DOTALL ).findall( data )
+    if match: menu_emission = match[0]
+    else: menu_emission = ""
+
+    match = re.compile('<a href="(.*?)/">(.*?)</a>',re.DOTALL ).findall( menu_emission )
+    if match: emission_list = match
+    else: emission_list = ""    
+    return emission_list
+    
 
 #menu principal:
 
@@ -393,6 +428,8 @@ if mode==None or url==None or len(url)<1:
     addDir("A ne pas manquer","http://www.allocine.fr/video/bandes-annonces/",1,"")
     addDir("films au cinema","http://www.allocine.fr/video/bandes-annonces/films-au-cinema/",1,"")
     addDir("prochainement","http://www.allocine.fr/video/bandes-annonces/films-prochainement/",1,"")
+    addDir("séries Tv","http://www.allocine.fr/video/series/",1,"")
+    addDir("émissions","http://www.allocine.fr/video/",6,"")
     if xbmcplugin.getSetting("mon_cine") == "true" :
         if os.path.exists(os.path.join(cache_dir , "cine.list")): 
             mes_cines = load_data(os.path.join(cache_dir , "cine.list"))
@@ -405,7 +442,16 @@ if mode == 1:
     if load_DB( name ) == "": create_DB( url , name)
     data=load_DB( name )
     for film in data:
-        addDir(film["name"],"%s##%s" % (film["poster"] , film["id_allo"]),2,film["poster"])
+        if film["type"] == "film": addDir(film["name"],"%s##%s" % (film["poster"] , film["id_allo"]),2,film["poster"])
+        else :
+            c_items = []
+            local_trailer = os.path.join( trailer_dir, "%s.flv" % translate_string(film["name"] ) )
+            script = "special://home/plugins/video/Bande-Annonce Allocine/resources/lib/downloader.py"
+            args = "%s&%s&%s" % ( urllib.quote_plus( "cmedia=%s" % film["id_media"] ), urllib.quote_plus( local_trailer ) , quality)
+            if not os.path.exists(local_trailer):c_items += [ ( "Télécharger", "XBMC.RunScript(%s,%s)" % ( script, args ) ) ]
+            else : c_items += [ ( "jouer en local", "xbmc.PlayMedia(%s)" % local_trailer) ]
+            addDir(film["name"], film["id_media"],5,film["poster"], c_items )
+        
 
 if mode == 2:
     poster = url.split("##")[0]
@@ -413,15 +459,15 @@ if mode == 2:
     film = get_film_info(url)
 
     for ba in film["Bande-annonces"]:
-        print ba
+        #print ba
+        # ajout d'un bouton dans le contextmenu pour télécharger / jouer le trailer
         c_items = []
-        # ajout d'un bouton dans le contextmenu pour rafraichir l'image
-        local_trailer = os.path.join( trailer_dir, "%s.flv" % ba["name"] )
+        local_trailer = os.path.join( trailer_dir, "%s.flv" % translate_string(ba["name"] ) )
         script = "special://home/plugins/video/Bande-Annonce Allocine/resources/lib/downloader.py"
         args = "%s&%s" % ( urllib.quote_plus( ba["%s" % quality ] ), urllib.quote_plus( local_trailer ) )
         if not os.path.exists(local_trailer):c_items += [ ( "Télécharger", "XBMC.RunScript(%s,%s)" % ( script, args ) ) ]
         else : c_items += [ ( "jouer en local", "xbmc.PlayMedia(%s)" % local_trailer) ]
-        c_items += [ ( "Rafraichir", "xbmc.Container.Update") ]
+        
 #         DLLabelButton = "Télécharger"
 #         DLActionButton = 'XBMC.RunPlugin(%s?mode=10&name=%s&url=%s)' % ( sys.argv[ 0 ], urllib.quote_plus( set_entity_or_charref(ba["name"] )), urllib.quote_plus( ba["%s" % quality ] ), )
 #         c_items.append(( DLLabelButton, DLActionButton ))
@@ -449,8 +495,31 @@ if mode == 4:
         print "################################################################"
         try: addFilm(film_in_cine["name"],"%s##%s" % (film_in_cine["poster"] , film_in_cine["id_allo"]),2,film_in_cine["poster"],film_in_cine["genre"] ,film_in_cine["director"][0] ,film_in_cine["cast"] ,film_in_cine["syno"] ,film_in_cine["duree"] ,int(film_in_cine["sortie"].split("/")[2]) )
         except : print_exc()
+
+
+if mode == 5:
+    
+    ba = get_media_link( url )
+    trailer = ba["%s" % quality ]
+    
+    print "name: %s" % name
+    print "trailer: %s" % trailer
+    playableVideoItem = xbmcgui.ListItem( name , path = trailer) 
+    xbmc.Player().play(trailer, playableVideoItem, False)
+    OK = False
+
+if mode == 6:
+    emission_list = get_emission_list(url)
+    print emission_list
+    picture = {}
+    picture["La Minute"] = "http://images.allocine.fr/r_120_x/commons/logos/Logos_minute_160x128.jpg"
+    picture["Tueurs en SÃ©ries"] = "http://images.allocine.fr/r_120_x/commons/logos/Logos_tes_160x128.jpg"
+    picture["Merci Qui?"] = "http://images.allocine.fr/r_120_x/commons/logos/Logos_merciqui_160x128.jpg"
+    picture["Direct 2 DVD"] = "http://images.allocine.fr/r_120_x/commons/logos/Logos_D2D_160x128.jpg"
+    picture["Faux Raccord"] = "http://images.allocine.fr/r_120_x/commons/logos/Logos_FauxR_160x128.jpg"
+    picture["Plein 2 CinÃ©"] = "http://images.allocine.fr/r_120_x/commons/logos/Logos_p2c_160x128.jpg"
+    for emission in emission_list:
+        try: image = picture["%s" % emission[1]]
+        except : image = ""
+        addDir(emission[1], "http://www.allocine.fr%s" % emission[0], 1 , image )
 end_of_directory( OK )
-
-
-    
-    
