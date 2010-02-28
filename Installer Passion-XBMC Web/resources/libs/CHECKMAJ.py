@@ -18,10 +18,9 @@ _ = sys.modules[ "__main__" ].__language__
 # CHECKMAJ.UPDATE_STARTUP = False
 # CHECKMAJ.go()
 UPDATE_STARTUP = True
-
 # print depend of output.PRINT_DEBUG is True or False
 print "*" * 85
-print "Script de mise a jour auto".center( 85 )
+print "Automatic Update script".center( 85 )
 print "*" * 85
 
 
@@ -33,6 +32,7 @@ class CheckMAJ:
         ##############################################################################
         #                   Initialisation conf.cfg                                  #
         ##############################################################################
+        global UPDATE_STARTUP
 
         self.fichier = os.path.join( sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA, "conf.cfg" )
         #self.fichier = os.path.join(self.rootdir, "resources", "conf.cfg")
@@ -73,8 +73,13 @@ class CheckMAJ:
         # DEMARRAGE DE LA CONNEXION                             #
         #########################################################
         if UPDATE_STARTUP:
-            self.ftp = ftplib.FTP(self.host,self.user,self.password)
-            self.remoteDirLst = self.ftp.nlst(self.remoteversionDir)
+            try:
+                self.ftp = ftplib.FTP(self.host,self.user,self.password)
+                self.remoteDirLst = self.ftp.nlst(self.remoteversionDir)
+            except:
+                print "bypass_debug: CheckMAJ - init - Exception creating CheckMAJ - cancelling update ..."
+                UPDATE_STARTUP = False
+                print_exc()
         else:
             self.ftp = UPDATE_STARTUP
             self.remoteDirLst = list()
@@ -187,7 +192,7 @@ class CheckMAJ:
                 except:
                     print_exc()
 
-#TODO: QUESTIOn : ne devrait t'on pas faire "self.localConfParser.write(open(self.fichier,'w'))" qu'une seule fois a la fin plutot que plusieurs fois dans le code?
+#TODO: QUESTION : ne devrait t'on pas faire "self.localConfParser.write(open(self.fichier,'w'))" qu'une seule fois a la fin plutot que plusieurs fois dans le code?
 
 def go():
     CkMAJ = CheckMAJ()

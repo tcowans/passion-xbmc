@@ -99,6 +99,8 @@ def MAIN():
     print "bypass_debug: Starting %s %s, %s, SVN r%s. Built on %s" % ( __script__, __version__, __statut__, __svn_revision__, __date__ )
     print "bypass_debug: The executable script running is: %s" % os.path.join( os.getcwd(), "default.py" )
     print "bypass_debug: %s" % str( "-" * 100 )
+    dialog_error = False
+    updating = False
     try:
         from utilities import getUserSkin
         current_skin, force_fallback = getUserSkin()
@@ -116,8 +118,8 @@ def MAIN():
         xbmc.executebuiltin( "XBMC.ReloadSkin()" )
         xbmc.sleep( 2000 )
 
+    # INITIALISATION CHEMINS DE FICHIER LOCAUX
     try:
-        # INITIALISATION CHEMINS DE FICHIER LOCAUX
         import CONF
         config = CONF.ReadConfig()
 
@@ -125,23 +127,47 @@ def MAIN():
         if not config.getboolean( 'InstallPath', 'pathok' ):
             # GENERATION DES INFORMATIONS LOCALES
             CONF.SetConfiguration()
+    except:
+        dialog_error = True
+        print "Error while setting the configuration"
+        print_exc()
 
-        # VERIFICATION DE LA MISE A JOUR
+    # CHECK SCRIPT UPDATE AVAILABILITY AND UPDATE CONFIGUARTION FILE
+    try:
         import CHECKMAJ
         try:
             CHECKMAJ.UPDATE_STARTUP = ( XBMC_SETTINGS.getSetting( "update_startup" ) == "true" )
         except:
+            CHECKMAJ.UPDATE_STARTUP = False
             print_exc()
+        print "CHECKMAJ.UPDATE_STARTUP = %s"%str(CHECKMAJ.UPDATE_STARTUP)
         if CHECKMAJ.UPDATE_STARTUP:
             DIALOG_PROGRESS.update( -1, __language__( 102 ), __language__( 110 ) )
-        CHECKMAJ.go()
+            CHECKMAJ.go()
         del CHECKMAJ
+    except:
+        # In case of an Exception here we still load the script
+        print "Error while checking availability of an update for the installer"
+        print "We still going to start the script ..."
+        print_exc()
 
+    # RETRIEVING CONFIGURATION FROM CONF FILE
+    try:
         config = CONF.ReadConfig()
         del CONF
+    except:
+        print "Error while reading the configuration"
+        dialog_error = True
+        print_exc()
 
-        dialog_error = False
-        if not config.getboolean( 'Version', 'UPDATING' ):
+    try:
+        updating = config.getboolean( 'Version', 'UPDATING' )
+    except:
+        # Issue with conf file, stopping update
+        dialog_error = True
+        print_exc()
+    try:
+        if not updating:
             try:
                 # LANCEMENT DU SCRIPT
                 try:
@@ -156,15 +182,16 @@ def MAIN():
                     import MainGui
                     MainGui.show_main()
             except:
+                print "bypass_debug: MAIN: Exception while loading the script"
                 print_exc()
                 dialog_error = True
         else:
-            # LANCEMENT DE LA MISE A JOUR
+            # UPDATING THE SCRIPT
             try:
                 scriptmaj = config.get( 'Version', 'SCRIPTMAJ' )
                 xbmc.executescript( scriptmaj )
             except:
-                print "bypass_debug: MAIN: Exception pendant le chargement et/ou La mise a jour"
+                print "bypass_debug: MAIN: Exception while updating of the script"
                 print_exc()
                 dialog_error = True
 
