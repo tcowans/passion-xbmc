@@ -171,10 +171,12 @@ def get_film_list( url , database = False):
                 
                 
                 if film["type"] == "serie": match = re.search( "<span class='bold'>(.*?)<br />", i )
+                elif film["type"] == "interviews": match = re.search( """<span class=\'bold\'>\r\n                                        (.*?)\r\n                                    </span>(.*?)\r\n                                </a>""", i )
                 else : match = re.search( "<span class='bold'>(.*?)</span>", i )
                 if match :
-                    if film["type"] == "serie": name = match.group(1).replace("</span>"," ")
-                    else : match = name = match.group(1)
+                    if film["type"] == "serie" : name = match.group(1).replace("</span>"," ")
+                    elif film["type"] == "interviews": name = match.group(1) + match.group(2)
+                    else : name = match.group(1)
                     
                 else: name = ""
                 
@@ -430,6 +432,7 @@ if mode==None or url==None or len(url)<1:
     addDir("prochainement","http://www.allocine.fr/video/bandes-annonces/films-prochainement/",1,"")
     addDir("séries Tv","http://www.allocine.fr/video/series/",1,"")
     addDir("émissions","http://www.allocine.fr/video/",6,"")
+    addDir("interviews","http://www.allocine.fr/video/interviews/",1,"")
     if xbmcplugin.getSetting("mon_cine") == "true" :
         if os.path.exists(os.path.join(cache_dir , "cine.list")): 
             mes_cines = load_data(os.path.join(cache_dir , "cine.list"))
