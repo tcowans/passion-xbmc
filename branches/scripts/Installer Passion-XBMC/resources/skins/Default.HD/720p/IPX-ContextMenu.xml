@@ -1,0 +1,152 @@
+<window id="3006">
+	<defaultcontrol>10000</defaultcontrol>
+	<animation effect="fade" time="250">WindowOpen</animation>
+
+	<coordinates>
+		<system>1</system>
+		<posx>455</posx>
+		<posy>230</posy>
+		<origin x="230" y="230">stringcompare(Container(10000).ListItem(0).Property(main_view_mode),50)</origin>
+	</coordinates>
+
+	<controls>
+		<control type="group">
+			<animation effect="fade" time="250" condition="!Skin.HasSetting(AnimeWindowXMLDialogClose)">conditional</animation>
+			<animation effect="slide" start="0,0" end="0,19" condition="stringcompare(Container(10000).NumItems,7)">Conditional</animation>
+			<animation effect="slide" start="0,0" end="0,38" condition="stringcompare(Container(10000).NumItems,6)">Conditional</animation>
+			<animation effect="slide" start="0,0" end="0,57" condition="stringcompare(Container(10000).NumItems,5)">Conditional</animation>
+			<animation effect="slide" start="0,0" end="0,76" condition="stringcompare(Container(10000).NumItems,4)">Conditional</animation>
+			<animation effect="slide" start="0,0" end="0,95" condition="stringcompare(Container(10000).NumItems,3)">Conditional</animation>
+			<animation effect="slide" start="0,0" end="0,114" condition="stringcompare(Container(10000).NumItems,2)">Conditional</animation>
+			<animation effect="slide" start="0,0" end="0,133" condition="stringcompare(Container(10000).NumItems,1)">Conditional</animation>
+
+			<control type="image">
+				<description>background top image</description>
+				<posx>0</posx>
+				<posy>-74</posy>
+				<width>370</width>
+				<height>74</height>
+				<texture border="45,45,45,0">IPX-DialogContextTop.png</texture>
+				<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
+			</control>
+			<control type="label">
+				<description>header label</description>
+				<posx>34</posx>
+				<posy>-40</posy>
+				<width>297</width>
+				<height>30</height>
+				<font>font28_title</font>
+				<label>[UPPERCASE]$LOCALIZE[SCRIPT999][/UPPERCASE]</label>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>88FFFFFF</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+			</control>
+			<control type="button">
+				<description>Close Window button</description>
+				<posx>260</posx>
+				<posy>-44</posy>
+				<width>64</width>
+				<height>32</height>
+				<label>-</label>
+				<font>-</font>
+				<onclick>PreviousMenu</onclick>
+				<texturefocus>IPX-DialogCloseButton-focus.png</texturefocus>
+				<texturenofocus>IPX-DialogCloseButton.png</texturenofocus>
+				<visible>system.getbool(input.enablemouse)</visible>
+				<onleft>1000</onleft>
+				<onright>1000</onright>
+				<onup>1000</onup>
+				<ondown>1000</ondown>
+			</control>
+			<control type="image">
+				<posx>34</posx>
+				<posy>-6</posy>
+				<width>297</width>
+				<height>4</height>
+				<texture>IPX-separator.png</texture>
+			</control>
+			<control type="image">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>370</width>
+				<height>300</height>
+				<texture border="45,0,45,0">IPX-DialogContextMiddle.png</texture>
+				<animation effect="zoom" start="100" end="0,0,370,34" condition="stringcompare(Container(10000).NumItems,1)">Conditional</animation>
+				<animation effect="zoom" start="100" end="0,0,370,72" condition="stringcompare(Container(10000).NumItems,2)">Conditional</animation>
+				<animation effect="zoom" start="100" end="0,0,370,110" condition="stringcompare(Container(10000).NumItems,3)">Conditional</animation>
+				<animation effect="zoom" start="100" end="0,0,370,148" condition="stringcompare(Container(10000).NumItems,4)">Conditional</animation>
+				<animation effect="zoom" start="100" end="0,0,370,186" condition="stringcompare(Container(10000).NumItems,5)">Conditional</animation>
+				<animation effect="zoom" start="100" end="0,0,370,224" condition="stringcompare(Container(10000).NumItems,6)">Conditional</animation>
+				<animation effect="zoom" start="100" end="0,0,370,262" condition="stringcompare(Container(10000).NumItems,7)">Conditional</animation>
+			</control>
+			<control type="image">
+				<description>background bottom image</description>
+				<posx>0</posx>
+				<posy>300</posy>
+				<width>370</width>
+				<height>50</height>
+				<texture border="45,0,45,49">IPX-DialogContextBottom.png</texture>
+				<animation effect="slide" start="0,0" end="0,-266" condition="stringcompare(Container(10000).NumItems,1)">Conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-228" condition="stringcompare(Container(10000).NumItems,2)">Conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-190" condition="stringcompare(Container(10000).NumItems,3)">Conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-152" condition="stringcompare(Container(10000).NumItems,4)">Conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-114" condition="stringcompare(Container(10000).NumItems,5)">Conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-76" condition="stringcompare(Container(10000).NumItems,6)">Conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-38" condition="stringcompare(Container(10000).NumItems,7)">Conditional</animation>
+			</control>
+
+			<control type="list" id="10000">
+				<posx>34</posx>
+				<posy>0</posy>
+				<width>297</width>
+				<height>304</height>
+				<onleft>10000</onleft>
+				<onright>10000</onright>
+				<onup>10000</onup>
+				<ondown>10000</ondown>
+				<pagecontrol>-</pagecontrol>
+				<scrolltime>200</scrolltime>
+				<itemlayout height="38" width="297">
+					<control type="label">
+						<posx>150</posx>
+						<posy>0</posy>
+						<width>297</width>
+						<height>38</height>
+						<font>fontContextMenu</font>
+						<textcolor>88FFFFFF</textcolor>
+						<selectedcolor>FFFFFFFF</selectedcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+				</itemlayout>
+				<focusedlayout height="38" width="297">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>297</width>
+						<height>38</height>
+						<texture  border="5">IPX-button-focus.png</texture>
+						<visible>Control.HasFocus(10000)</visible>
+						<animation effect="fade" time="300">Visible</animation>
+						<animation effect="fade" time="300">Hidden</animation>
+					</control>
+					<control type="label">
+						<posx>150</posx>
+						<posy>0</posy>
+						<width>297</width>
+						<height>38</height>
+						<font>fontContextMenu</font>
+						<textcolor>FFFFFFFF</textcolor>
+						<selectedcolor>FFFFFFFF</selectedcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+				</focusedlayout>
+			</control>
+		</control>
+	</controls>
+</window>
