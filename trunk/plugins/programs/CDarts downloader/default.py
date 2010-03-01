@@ -6,8 +6,8 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 #__svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/video/XbmcStuff downloader/"
 __credits__      = "Team XBMC, http://passion-xbmc.org/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "17-02-2010"
-__version__      = "1.0.3"
+__date__         = "01-03-2010"
+__version__      = "1.0.4"
 __svn_revision__  = "$Revision$"
 __XBMC_Revision__ = "20000" #XBMC Babylon
 __useragent__    = "Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.0.1) Gecko/2008070208 Firefox/3.0.1"
@@ -31,6 +31,8 @@ sys.path.append( os.path.join( BASE_RESOURCE_PATH, "platform_libraries", env ) )
 
 #import platform's librairies
 from pysqlite2 import dbapi2 as sqlite3
+from convert import set_entity_or_charref
+from convert import translate_string
 
 Language = xbmc.Language(os.getcwd())
 #variables
@@ -182,7 +184,7 @@ def search(name):
     search_dialog = []
     search_name = str.lower(name)
     for part in search_name.split(" "):
-        search_xml = str.lower(get_html_source( cross_url + "&artist=%s" % part) )
+        search_xml = str.lower(get_html_source( cross_url + "&artist=%s" % urllib.quote_plus(part)) )
         print cross_url + cross_url + "&artist=%s" % part 
         #print search_xml
         save_xml(search_xml)
@@ -197,7 +199,7 @@ def search(name):
                 album = {}
                 album["local_name"] = name
                 match = re.search( "<artist>(.*?)</artist>", i )
-                if match: album["artist"] = (match.group(1))
+                if match: album["artist"] = set_entity_or_charref(match.group(1))
                 else: album["artist"] = ""
                 if not album["artist"] in search_dialog: search_dialog.append(album["artist"]) 
                 match = re.search( "<album>(.*?)</album>", i )
@@ -227,10 +229,15 @@ def search(name):
     return artist_album_list
     
 def find_cdart(album):
-    xml = get_html_source( cross_url + "&album=%s&artist=%s" % (album["title"].replace(" " , "%").replace("," , "").replace("'" , "%") , artist_album_list[0]["artist"].replace(" " , "%" )))
+    xml = get_html_source( cross_url + "&album=%s&artist=%s" % (urllib.quote_plus(album["title"]) , urllib.quote_plus(artist_album_list[0]["artist"])))
+    #xml = get_html_source( cross_url + "&album=%s&artist=%s" % (album["title"].replace(" " , "%").replace("," , "").replace("'" , "%") , artist_album_list[0]["artist"].replace(" " , "%" )))
     #print cross_url + "&album=%s&artist=%s" % (album["title"].replace(" " , "%").replace("," , "").replace("'" , "%"), artist_album_list[0]["artist"].replace(" " , "%" ))
     match = re.findall( "<picture>(.*?)</picture>", xml )
     print xml
+    try: print urllib.quote_plus(album["title"])
+    except: print_exc()
+    try: print urllib.quote_plus(artist_album_list[0]["artist"])
+    except: print_exc()
     return match
     
     
