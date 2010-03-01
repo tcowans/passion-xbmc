@@ -165,41 +165,6 @@ class InfoWarehouseEltTreeXMLFTP:
         if ( self.stopUpdateImageThread == True):
             print "_thread_getImagesQueue CANCELLED"
 
-
-#    def _getImage( self, pictureURL, updateImage_cb=None, listitem=None ):
-#        """
-#        Lance le telechargement une image dans un thread
-#        TODO: abandonner cette fonction dans le futur
-#        """
-#        cached_thumbs = set_cache_thumb_name( pictureURL )
-#        if not os.path.exists( cached_thumbs[ 0 ] ) or not os.path.exists( cached_thumbs[ 1 ] ):
-#            try: self.getImage_thread.cancel()
-#            except: pass
-#            self.getImage_thread = Thread( target=self._thread_getImage, args=( pictureURL, updateImage_cb, listitem ) )
-#            self.getImage_thread.start()
-#
-#    def _thread_getImage( self, pictureURL, updateImage_cb=None, listitem=None ):
-#        """
-#        Recupere l'image dans un thread separe
-#        TODO: abandonner cette fonction dans le futur
-#        """
-#        # Telechargement de l'image
-#        self._downloadFile( pictureURL, listitem=listitem )
-#
-#        cached_thumbs = set_cache_thumb_name( pictureURL )
-#
-#        if os.path.exists( cached_thumbs[ 1 ] ):
-#            previewPicture = cached_thumbs[ 1 ]
-#        else:
-#            previewPicture = set_cache_thumb_name( Item.THUMB_NOT_AVAILABLE )[ 1 ]
-#
-#        # Notifie la callback de mettre a jour l'image
-#        if updateImage_cb:
-#            try:
-#                updateImage_cb( previewPicture, listitem )
-#            except TypeError:
-#                print_exc()
-
     def check_thumb_size( self ):
         if self.thumb_size_on_load != self.mainwin.settings[ "thumb_size" ]:
             self.thumb_size_on_load = self.mainwin.settings[ "thumb_size" ]
@@ -209,19 +174,37 @@ class InfoWarehouseEltTreeXMLFTP:
                 print_exc()
 
     def parse_xml_sections( self ):
-        elems = ET.parse( open( os.path.join( self.configManager.CACHEDIR, self.srvItemDescripFile ), "r" ) ).getroot()
+        try:
+            elems = ET.parse( open( os.path.join( self.configManager.CACHEDIR, self.srvItemDescripFile ), "r" ) ).getroot()
+    
+            self.cat_skins         = elems.find( "skins" ).findall( "entry" )
+            self.cat_scripts       = elems.find( "scripts" ).findall( "entry" )
+            #self.cat_scrapers      = elems.find( "scrapers" ).findall( "entry" )
+    
+            elemsplugins = elems.find( "plugins" )
+            self.cat_videoplugin   = elemsplugins.find( "videoplugin" ).findall( "entry" )
+            self.cat_musicplugin   = elemsplugins.find( "musicplugin" ).findall( "entry" )
+            self.cat_pictureplugin = elemsplugins.find( "pictureplugin" ).findall( "entry" )
+            self.cat_programplugin = elemsplugins.find( "programplugin" ).findall( "entry" )
+            
+            elemsscrapers = elems.find( "scrapers" )
+            self.cat_musicscraper  = elemsscrapers.find( "musicscraper" ).findall( "entry" )
+            self.cat_videoscraper  = elemsscrapers.find( "videoscraper" ).findall( "entry" )
 
-        self.cat_skins         = elems.find( "skins" ).findall( "entry" )
-        self.cat_scripts       = elems.find( "scripts" ).findall( "entry" )
-        self.cat_scrapers      = elems.find( "scrapers" ).findall( "entry" )
-
-        elems = elems.find( "plugins" )
-        self.cat_videoplugin   = elems.find( "videoplugin" ).findall( "entry" )
-        self.cat_musicplugin   = elems.find( "musicplugin" ).findall( "entry" )
-        self.cat_pictureplugin = elems.find( "pictureplugin" ).findall( "entry" )
-        self.cat_programplugin = elems.find( "programplugin" ).findall( "entry" )
-
-        del elems
+            del elemsplugins
+            del elemsscrapers
+            del elems
+        except:
+            self.cat_skins         = None
+            self.cat_scripts       = None
+            self.cat_videoplugin   = None
+            self.cat_musicplugin   = None
+            self.cat_pictureplugin = None
+            self.cat_programplugin = None
+            self.cat_musicscraper  = None
+            self.cat_videoscraper  = None
+            print "Error while parsing installeur_content.xml"
+            print_exc()
 
     def getInfo( self, itemName=None, itemType=None, itemId=None, updateImage_cb=None, listitem=None ):
         #self.check_thumb_size()
@@ -249,7 +232,9 @@ class InfoWarehouseEltTreeXMLFTP:
             #Item.TYPE_SCRAPER
             if   itemType == Item.TYPE_SKIN:            category = self.cat_skins
             elif itemType == Item.TYPE_SCRIPT:          category = self.cat_scripts
-            elif itemType == Item.TYPE_SCRAPER:         category = self.cat_scrapers
+            #elif itemType == Item.TYPE_SCRAPER:         category = self.cat_scrapers
+            elif itemType == Item.TYPE_SCRAPER_MUSIC:   category = self.cat_musicscraper
+            elif itemType == Item.TYPE_SCRAPER_VIDEO:   category = self.cat_videoscraper
             elif itemType == Item.TYPE_PLUGIN_VIDEO:    category = self.cat_videoplugin
             elif itemType == Item.TYPE_PLUGIN_MUSIC:    category = self.cat_musicplugin
             elif itemType == Item.TYPE_PLUGIN_PICTURES: category = self.cat_pictureplugin

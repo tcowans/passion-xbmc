@@ -73,7 +73,8 @@ class FtpDownloadCtrl:
     Controleur de download via FTP
     Cette classe gere les download via FTP de fichiers et repertoire
     """
-    def __init__( self, host, user, password, remotedirList, localdirList, typeList, cacheDir ):
+    #def __init__( self, host, user, password, remotedirList, localdirList, typeList, cacheDir ):
+    def __init__( self, host, user, password, remotedirList, cacheDir ):
         """
         Fonction d'init de la classe FtpDownloadCtrl
         Initialise toutes les variables et lance la connection au serveur FTP
@@ -85,8 +86,8 @@ class FtpDownloadCtrl:
         self.port             = 21
         self.password         = password
         self.remotedirList    = remotedirList
-        self.localdirList     = localdirList
-        self.downloadTypeList = typeList
+        #self.localdirList     = localdirList
+        #self.downloadTypeList = typeList
         self.CACHEDIR         = cacheDir
 
         self.connected = False # status de la connection ( inutile pour le moment )
@@ -170,38 +171,38 @@ class FtpDownloadCtrl:
             isDir = False
         return isDir
 
-    def isAlreadyDownloaded( self, pathsrc, rootdirsrc, typeIndex ):
-        """
-        Verifie si un repertoire local correspondanf au rootdirsrc existe dans dans pathsrc
-        Pour le moment on verifie la meme chose pour un fichier ais cela ne couvre pas encore le cas
-        d'un archive extraite localement
-        retourne True si c'est le cas, False sinon
-        """
-        isDownloaded = False
-        curLocalDirRoot = self.localdirList[ typeIndex ]
-        curRemoteDirRoot = rootdirsrc
-        localAbsDirPath = None
-
-        #TODO: couvrir le cas d'une archive?
-
-        # Cree le chemin du repertorie local
-        # Extrait le chemin relatif: soustrait au chemin remote le chemin de base: par exemple on veut retirer du chemin; /Themes
-        remoteRelDirPath = pathsrc.replace( curRemoteDirRoot, '' )
-
-        # On remplace dans le chemin sur le serveur FTP les '/' par le separateur de l'OS sur lequel on est
-        localRelDirPath = remoteRelDirPath.replace( '/', os.sep )
-
-        # Cree le chemin local ( ou on va sauver )
-        localAbsDirPath = os.path.join( curLocalDirRoot, localRelDirPath )
-
-        # Verifie se on telecharge un repertoire ou d'un fichier
-        if self.isDir( pathsrc ):
-            # cas d'un repertoire
-            isDownloaded = os.path.isdir( localAbsDirPath )
-        else:
-            # Cas d'un fichier
-            isDownloaded = os.path.exists( localAbsDirPath )
-        return isDownloaded, localAbsDirPath
+#    def isAlreadyDownloaded( self, pathsrc, rootdirsrc, typeIndex ):
+#        """
+#        Verifie si un repertoire local correspondanf au rootdirsrc existe dans dans pathsrc
+#        Pour le moment on verifie la meme chose pour un fichier ais cela ne couvre pas encore le cas
+#        d'un archive extraite localement
+#        retourne True si c'est le cas, False sinon
+#        """
+#        isDownloaded = False
+#        curLocalDirRoot = self.localdirList[ typeIndex ]
+#        curRemoteDirRoot = rootdirsrc
+#        localAbsDirPath = None
+#
+#        #TODO: couvrir le cas d'une archive?
+#
+#        # Cree le chemin du repertorie local
+#        # Extrait le chemin relatif: soustrait au chemin remote le chemin de base: par exemple on veut retirer du chemin; /Themes
+#        remoteRelDirPath = pathsrc.replace( curRemoteDirRoot, '' )
+#
+#        # On remplace dans le chemin sur le serveur FTP les '/' par le separateur de l'OS sur lequel on est
+#        localRelDirPath = remoteRelDirPath.replace( '/', os.sep )
+#
+#        # Cree le chemin local ( ou on va sauver )
+#        localAbsDirPath = os.path.join( curLocalDirRoot, localRelDirPath )
+#
+#        # Verifie se on telecharge un repertoire ou d'un fichier
+#        if self.isDir( pathsrc ):
+#            # cas d'un repertoire
+#            isDownloaded = os.path.isdir( localAbsDirPath )
+#        else:
+#            # Cas d'un fichier
+#            isDownloaded = os.path.exists( localAbsDirPath )
+#        return isDownloaded, localAbsDirPath
 
     #def download( self, pathsrc, rootdirsrc, typeIndex, progressbar_cb=None, dialogProgressWin=None ):
     def download( self, pathsrc, type, progressbar_cb=None, dialogProgressWin=None ):

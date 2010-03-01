@@ -228,7 +228,14 @@ class PassionHttpBrowser(Browser):
                         #item['previewpicture'] = "IPX-defaultScraper.png"
                         item['thumbnail']      = Item.get_thumb( Item.TYPE_SCRAPER )
                         item['previewpicture'] = ""#Item.get_thumb( Item.TYPE_SCRAPER )
-                        
+                    elif catType == Item.TYPE_SCRAPER_MUSIC: 
+                        # Theme
+                        item['thumbnail']      = Item.get_thumb( Item.TYPE_SCRAPER_MUSIC )
+                        item['previewpicture'] = ""#Item.get_thumb( TYPE_SCRAPER_MUSIC )
+                    elif catType == Item.TYPE_SCRAPER_VIDEO: 
+                        # Theme
+                        item['thumbnail']      = Item.get_thumb( Item.TYPE_SCRAPER_VIDEO )
+                        item['previewpicture'] = ""#Item.get_thumb( TYPE_SCRAPER_VIDEO )
                     elif catType == Item.TYPE_SKIN: #TODO replace by TYPE_SKIN form CONF
                         # Theme
                         item['thumbnail']      = Item.get_thumb( Item.TYPE_SKIN )

@@ -12,6 +12,8 @@ __all__ = [
     "SPECIAL_SCRIPT_DATA",
     "DIR_XBMC_ROOT",
     "DIR_SCRAPER",
+    "DIR_SCRAPER_MUSIC",
+    "DIR_SCRAPER_VIDEO",
     "DIR_SKIN",
     "DIR_SCRIPT",
     "DIR_PLUGIN",
@@ -95,11 +97,17 @@ DIR_CACHE           = os.path.join( SPECIAL_SCRIPT_DATA, "cache" )
 
 if SYSTEM_PLATFORM == "linux":
     #Set Linux dir
-    DIR_SCRAPER         = os.path.join( os.sep+"usr", "share", "xbmc", "system", "scrapers", "video" )
+    DIR_SCRAPER       = os.path.join( os.sep+"usr", "share", "xbmc", "system", "scrapers" )
+    DIR_SCRAPER_MUSIC = os.path.join( os.sep+"usr", "share", "xbmc", "system", "scrapers", "music" )
+    DIR_SCRAPER_VIDEO = os.path.join( os.sep+"usr", "share", "xbmc", "system", "scrapers", "video" )
 elif SYSTEM_PLATFORM == "osx":
     #Set OSX dir
-    DIR_SCRAPER = os.path.join( SPECIAL_XBMC_HOME, "system", "scrapers", "video" )
+    DIR_SCRAPER       = os.path.join( SPECIAL_XBMC_HOME, "system", "scrapers", "video" )
+    DIR_SCRAPER_MUSIC = os.path.join( SPECIAL_XBMC_HOME, "system", "scrapers", "music" )
+    DIR_SCRAPER_VIDEO = os.path.join( SPECIAL_XBMC_HOME, "system", "scrapers", "video" )
 else:
     #Set Win ScraperDir
     DIR_SCRAPER = os.path.join( DIR_XBMC_ROOT, "system", "scrapers", "video" )
+    DIR_SCRAPER_MUSIC = os.path.join( DIR_XBMC_ROOT, "system", "scrapers", "music" )
+    DIR_SCRAPER_VIDEO = os.path.join( DIR_XBMC_ROOT, "system", "scrapers", "video" )
 

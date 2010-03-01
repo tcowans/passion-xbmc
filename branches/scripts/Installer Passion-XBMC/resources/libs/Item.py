@@ -6,6 +6,8 @@ __all__ = [
     "TYPE_ROOT",
     "TYPE_SKIN",
     "TYPE_SCRAPER",
+    "TYPE_SCRAPER_MUSIC",
+    "TYPE_SCRAPER_VIDEO",
     "TYPE_SCRIPT",
     "TYPE_PLUGIN",
     "TYPE_PLUGIN_MUSIC",
@@ -15,6 +17,8 @@ __all__ = [
     "TYPE_NEW",
     "INDEX_SKIN",
     "INDEX_SCRAPER",
+    "INDEX_SCRAPER_MUSIC",
+    "INDEX_SCRAPER_VIDEO",
     "INDEX_SCRIPT",
     "INDEX_PLUGIN",
     "INDEX_PLUGIN_MUSIC",
@@ -24,6 +28,8 @@ __all__ = [
     "THUMB_NOT_AVAILABLE",
     "THUMB_SKIN",
     "THUMB_SCRAPER",
+    "THUMB_SCRAPER_MUSIC",
+    "THUMB_SCRAPER_VIDEO",
     "THUMB_SCRIPT",
     "THUMB_PLUGIN",
     "THUMB_PLUGIN_MUSIC",
@@ -33,6 +39,8 @@ __all__ = [
     "TITLE_ROOT",
     "TITLE_SKIN",
     "TITLE_SCRAPER",
+    "TITLE_SCRAPER_MUSIC",
+    "TITLE_SCRAPER_VIDEO",
     "TITLE_SCRIPT",
     "TITLE_PLUGIN",
     "TITLE_PLUGIN_MUSIC",
@@ -63,6 +71,8 @@ _ = sys.modules[ "__main__" ].__language__
 TYPE_ROOT               = "ROOT"
 TYPE_SKIN               = "SKIN"
 TYPE_SCRAPER            = "SCRAPER"
+TYPE_SCRAPER_MUSIC      = "SCRAPER_MUSIC"
+TYPE_SCRAPER_VIDEO      = "SCRAPER_VIDEO"
 TYPE_SCRIPT             = "SCRIPT"
 TYPE_PLUGIN             = "PLUGIN"
 TYPE_PLUGIN_MUSIC       = "PLUGIN_MUSIC"
@@ -75,6 +85,8 @@ TYPE_NEW                = "NEW"
 TITLE_ROOT               = _( 10 )
 TITLE_SKIN               = _( 11 )
 TITLE_SCRAPER            = _( 12 )
+TITLE_SCRAPER_MUSIC      = _( 1201 )
+TITLE_SCRAPER_VIDEO      = _( 1202 )
 TITLE_SCRIPT             = _( 13 )
 TITLE_PLUGIN             = _( 14 )
 TITLE_PLUGIN_MUSIC       = _( 15 )
@@ -86,14 +98,16 @@ TITLE_NEW                = _( 22 )
 #INDEX_ROOT              = None
 INDEX_SKIN              = 0
 INDEX_SCRAPER           = 1
-INDEX_SCRIPT            = 2
-INDEX_PLUGIN            = 3
-INDEX_PLUGIN_MUSIC      = 4
-INDEX_PLUGIN_PICTURES   = 5
-INDEX_PLUGIN_PROGRAMS   = 6
-INDEX_PLUGIN_VIDEO      = 7
-INDEX_SCRIPT_CAT        = 8
-INDEX_NEW               = 9
+INDEX_SCRAPER_MUSIC     = 2
+INDEX_SCRAPER_VIDEO     = 3
+INDEX_SCRIPT            = 4
+INDEX_PLUGIN            = 5
+INDEX_PLUGIN_MUSIC      = 6
+INDEX_PLUGIN_PICTURES   = 7
+INDEX_PLUGIN_PROGRAMS   = 8
+INDEX_PLUGIN_VIDEO      = 9
+INDEX_SCRIPT_CAT        = 10
+INDEX_NEW               = 11
 
 THUMB_NOT_AVAILABLE     = "IPX-NotAvailable2.png"
 THUMB_SKIN              = "IPX-defaultSkin.png"
@@ -109,6 +123,8 @@ THUMB_PLUGIN_PROGRAMS   = "IPX-defaultPluginProgram.png"
 THUMB_PLUGIN_VIDEO      = "IPX-defaultPluginVideo.png"
 THUMB_PLUGIN_WEATHER    = "IPX-defaultPluginWeather.png"
 THUMB_NEW               = "IPX-defaultNew.png"
+THUMB_SKIN_NIGHTLY      = "IPX-defaultSkinNightly.png"
+THUMB_PLUGIN_WEATHER    = "IPX-defaultPluginWeather.png"
 
 INDEX_SRV_ITEM_FORMAT_DIR      = 0
 INDEX_SRV_ITEM_FORMAT_FILE_ZIP = 1
@@ -116,7 +132,9 @@ INDEX_SRV_ITEM_FORMAT_FILE_RAR = 1
 INDEX_SRV_ITEM_FORMAT_INVALID  = 2
 
 
-item_path = { TYPE_SCRAPER         : DIR_SCRAPER, 
+item_path = { TYPE_SCRAPER         : DIR_SCRAPER,
+              TYPE_SCRAPER_MUSIC   : DIR_SCRAPER_MUSIC, 
+              TYPE_SCRAPER_VIDEO   : DIR_SCRAPER_VIDEO, 
               TYPE_SKIN            : DIR_SKIN, 
               TYPE_SCRIPT          : DIR_SCRIPT, 
               TYPE_PLUGIN          : DIR_PLUGIN, 
@@ -128,6 +146,8 @@ item_path = { TYPE_SCRAPER         : DIR_SCRAPER,
               TYPE_NEW             : None }
 
 item_thumb = { TYPE_SCRAPER         : THUMB_SCRAPER, 
+               TYPE_SCRAPER_MUSIC   : THUMB_SCRAPER_MUSIC,
+               TYPE_SCRAPER_VIDEO   : THUMB_SCRAPER_VIDEO,
                TYPE_SKIN            : THUMB_SKIN, 
                TYPE_SCRIPT          : THUMB_SCRIPT, 
                TYPE_PLUGIN          : THUMB_PLUGIN, 
@@ -139,6 +159,8 @@ item_thumb = { TYPE_SCRAPER         : THUMB_SCRAPER,
                TYPE_NEW             : THUMB_NEW }
 
 item_title = { TYPE_SCRAPER         : TITLE_SCRAPER, 
+               TYPE_SCRAPER_MUSIC   : TITLE_SCRAPER_MUSIC,
+               TYPE_SCRAPER_VIDEO   : TITLE_SCRAPER_VIDEO,
                TYPE_SKIN            : TITLE_SKIN, 
                TYPE_SCRIPT          : TITLE_SCRIPT, 
                TYPE_PLUGIN          : TITLE_PLUGIN, 
@@ -150,6 +172,8 @@ item_title = { TYPE_SCRAPER         : TITLE_SCRAPER,
                TYPE_NEW             : TITLE_NEW}
 
 item_index = { TYPE_SCRAPER         : INDEX_SCRAPER, 
+               TYPE_SCRAPER_MUSIC   : INDEX_SCRAPER_MUSIC,
+               TYPE_SCRAPER_VIDEO   : INDEX_SCRAPER_VIDEO,
                TYPE_SKIN            : INDEX_SKIN, 
                TYPE_SCRIPT          : INDEX_SCRIPT, 
                TYPE_PLUGIN          : INDEX_PLUGIN, 

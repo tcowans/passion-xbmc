@@ -71,7 +71,8 @@ class ItemInstaller:
         ==> self.destinationPath need to be set (in a subclass) before calling this method
         """
         result = False
-        if self.type != Item.TYPE_SCRAPER:
+        #if self.type != Item.TYPE_SCRAPER:
+        if not( Item.TYPE_SCRAPER + "_" in self.type ):
             if os.path.exists( self.destinationPath ):
                 result = True
                 
@@ -130,7 +131,8 @@ class ItemInstaller:
         #TODO: return path or name in both scenario
         
         paths = []
-        if self.type == Item.TYPE_SCRAPER:
+        #if self.type == Item.TYPE_SCRAPER:
+        if Item.TYPE_SCRAPER + "_" in self.type:
             # Files case
             #if self.scraperName != None:
             if len( self.scraperFileList ) > 0:
@@ -227,7 +229,8 @@ class ArchItemInstaller(ItemInstaller):
                 # Extraction in cache directory (if OK copy later on to the correct location)
                 file_path, OK = extractor.extract( self.downloadArchivePath, report=True )
 
-                if self.type == Item.TYPE_SCRAPER:
+                #if self.type == Item.TYPE_SCRAPER:
+                if Item.TYPE_SCRAPER + "_" in self.type:
                     # Scrapers
                     # ----------------
                     #self.extracter.extract( archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
@@ -323,10 +326,11 @@ class ArchItemInstaller(ItemInstaller):
         if progressBar != None:
             progressBar.update( percent, _( 176 ), self.extractedDirPath )
         if ( ( self.extractedDirPath != None ) and ( self.destinationPath != None ) ):
-            if self.type == Item.TYPE_SCRAPER:
+            #if self.type == Item.TYPE_SCRAPER:
+            if Item.TYPE_SCRAPER + "_" in self.type:
                 # cas des Scrapers
                 # ----------------
-                print "ItemInstaller::installItem - Starting item copy"
+                print "ItemInstaller::installItem - Starting SCRAPER copy"
                 try:
                     #if ( OK == bool( self.extractedDirPath ) ) and os.path.exists( self.extractedDirPath ):
                     if os.path.exists( self.extractedDirPath ):
@@ -456,7 +460,8 @@ class DirItemInstaller(ItemInstaller):
         if progressBar != None:
             progressBar.update( percent, _( 176 ), ( self.downloadDirPath ) )
         if ( ( self.downloadDirPath != None ) and ( self.destinationPath != None ) ):
-            if self.type == Item.TYPE_SCRAPER:
+            #if self.type == Item.TYPE_SCRAPER:
+            if Item.TYPE_SCRAPER + "_" in self.type:
                 # cas des Scrapers
                 # ----------------
                 print "ItemInstaller::installItem - Starting item copy" 
