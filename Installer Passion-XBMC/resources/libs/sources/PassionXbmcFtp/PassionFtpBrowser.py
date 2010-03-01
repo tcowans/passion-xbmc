@@ -43,37 +43,23 @@ class PassionFtpBrowser(Browser):
         self.password           = self.configManager.password
         self.remotedirList      = self.configManager.remotedirList
 
-        self.localdirList       = self.configManager.localdirList
-        self.downloadTypeList   = self.configManager.downloadTypeLst
+        #self.localdirList       = self.configManager.localdirList
+        #self.downloadTypeList   = self.configManager.downloadTypeLst
 
         self.racineDisplayList  = [ Item.TYPE_SKIN, Item.TYPE_SCRAPER, Item.TYPE_SCRIPT, Item.TYPE_PLUGIN ]
         self.pluginDisplayList  = [ Item.TYPE_PLUGIN_MUSIC, Item.TYPE_PLUGIN_PICTURES, Item.TYPE_PLUGIN_PROGRAMS, Item.TYPE_PLUGIN_VIDEO ]
+        self.scraperDisplayList = [ Item.TYPE_SCRAPER_MUSIC, Item.TYPE_SCRAPER_VIDEO ]
 
-#        self.curDirList         = []
         self.connected          = False # status de la connection ( inutile pour le moment )
         self.index              = ""
-#        self.scraperDir         = self.configManager.scraperDir
-#        self.type               = "racine"
-#        self.USRPath            = self.configManager.USRPath
         self.rightstest         = ""
-#        self.scriptDir          = self.configManager.scriptDir
         self.CACHEDIR           = self.configManager.CACHEDIR
-#        self.userDataDir        = self.configManager.userdatadir # userdata directory
-#        self.targetDir          = ""
-
-#        # utiliser pour remettre la liste courante a jour lorsqu'on reviens sur cette fenetre depuis le forum ou le manager
-#        self.listitems = []
-#        self.type = Item.TYPE_ROOT
-#        self.curCategory = Item.get_type_title( self.type )
-        
-        
-
-        #self.currentItemId = 0
 
         # Connection au serveur FTP
         try:
 
-            self.passionFTPCtrl = FtpDownloadCtrl( self.host, self.user, self.password, self.remotedirList, self.localdirList, self.downloadTypeList, self.CACHEDIR )
+            #self.passionFTPCtrl = FtpDownloadCtrl( self.host, self.user, self.password, self.remotedirList, self.localdirList, self.downloadTypeList, self.CACHEDIR )
+            self.passionFTPCtrl = FtpDownloadCtrl( self.host, self.user, self.password, self.remotedirList, self.CACHEDIR )
             self.connected = True
 
             #self.updateList()
@@ -160,6 +146,37 @@ class PassionFtpBrowser(Browser):
             
         return listTitle, list
     
+    def _createScraperList(self):
+        """
+        Create and return the list of scraper types
+        Returns list and name of the list
+        """
+        list = []
+        listTitle = Item.get_type_title( Item.TYPE_SCRAPER )
+        
+        # List all the type of plugins
+        for cat in self.scraperDisplayList:   
+            item = {}
+            item['name']              = Item.get_type_title( cat )
+            item['downloadurl']       = None
+            item['type']              = 'CAT'
+            item['xbmc_type']         = cat
+            item['previewpictureurl'] = None
+            item['description']       = Item.get_type_title( cat )
+            item['language']          = ""
+            item['version']           = ""
+            item['author']            = ""
+            item['date']              = ""
+            item['added']             = ""
+            item['thumbnail']         = Item.get_thumb( cat )
+            item['previewpicture']    = ""#Item.get_thumb( cat )
+            item['image2retrieve']    = False # Temporary patch for reseting the flag after download (would be better in the thread in charge of the download)
+
+            list.append(item)
+            print item
+            
+        return listTitle, list
+
     def _setDefaultImages(self, item):
         """
         Set the images with default value depending on the type of the item
@@ -209,21 +226,6 @@ class PassionFtpBrowser(Browser):
             if not self.passionFTPCtrl.downloadImage( filetodlUrl, localFilePath):
                 print "ERROR while retrieving image via FTP"
                 thumbnail, localFilePath = "", ""
-
-#            ftp = ftplib.FTP( self.host, self.user, self.password )
-#            #self.passionFTPCtrl.openConnection()
-#            localFile = open( localFilePath, "wb" )
-#            try:
-#                ftp.retrbinary( 'RETR ' + filetodlUrl, localFile.write )
-#                #self.passionFTPCtrl.retrbinary( self, 'RETR ' + filetodlUrl, callback, blocksize=8192, rest=None )
-#            except:
-#                print_exc()
-#                print "_downloaddossier: Exception - Impossible de telecharger le fichier: %s" % remoteFilePath
-#                thumbnail, localFilePath = "", ""
-#            localFile.close()
-#            ftp.quit()
-
-            #self.passionFTPCtrl.downloadImage(pathsrc, isSingleFile=True)
             
             # remove file if size is 0 bytes and report error if exists error
             if localFilePath and os.path.isfile( localFilePath ):
@@ -268,6 +270,12 @@ class PassionFtpBrowser(Browser):
                         # root plugin case
                         self.type = Item.TYPE_PLUGIN
                         self.curCategory, list = self._createPluginList()
+                        
+                    elif self.curList[index]['xbmc_type'] == Item.TYPE_SCRAPER:
+                        # root scraper case
+                        self.type = Item.TYPE_SCRAPER
+                        self.curCategory, list = self._createScraperList()
+                        
                     else:
                         # List of item to download case                  
                         #list = self.incat(itemId) # Get content of the category
@@ -333,6 +341,11 @@ class PassionFtpBrowser(Browser):
             if Item.TYPE_PLUGIN + "_" in self.type:
                 self.type = Item.TYPE_PLUGIN
                 self.curCategory, list = self._createPluginList()
+                
+            elif Item.TYPE_SCRAPER + "_" in self.type:
+                self.type = Item.TYPE_SCRAPER
+                self.curCategory, list = self._createScraperList()
+                
             else:
                 # We display root
                 self.type = Item.TYPE_ROOT
@@ -403,14 +416,14 @@ class PassionFtpBrowser(Browser):
                 print name
                 print "getInstaller - downloadurl" 
                 print downloadurl
-                if self.curList[index]['xbmc_type'] == Item.TYPE_SKIN:
-                    print "Installing skin case"
-                    # Use installer for Skin (file per file download)
-                    itemInstaller = PassionFtpItemInstaller.PassionSkinFTPInstaller( name, type, downloadurl, self.passionFTPCtrl )
-                    #TODO
-                else:
-                    # Create the right type of Installer Object
-                    itemInstaller = PassionFtpItemInstaller.PassionFTPInstaller( name, type, downloadurl, self.passionFTPCtrl )
+#                if self.curList[index]['xbmc_type'] == Item.TYPE_SKIN:
+#                    print "Installing skin case"
+#                    # Use installer for Skin (file per file download)
+#                    itemInstaller = PassionFtpItemInstaller.PassionSkinFTPInstaller( name, type, downloadurl, self.passionFTPCtrl )
+#                    #TODO
+#                else:
+                # Create the right type of Installer Object
+                itemInstaller = PassionFtpItemInstaller.PassionFTPInstaller( name, type, downloadurl, self.passionFTPCtrl )
             else:
                 print "getInstaller: error impossible to install a category, it has to be an item "
 

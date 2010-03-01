@@ -5,6 +5,8 @@ __all__ = [
     "TYPE_ROOT",
     "TYPE_SKIN",
     "TYPE_SCRAPER",
+#    "TYPE_SCRAPER_MUSIC",
+#    "TYPE_SCRAPER_VIDEO",
     "TYPE_SCRIPT",
     "TYPE_PLUGIN",
     "TYPE_PLUGIN_MUSIC",
@@ -13,6 +15,8 @@ __all__ = [
     "TYPE_PLUGIN_VIDEO",
     "INDEX_SKIN",
     "INDEX_SCRAPER",
+#    "INDEX_SCRAPER_MUSIC",
+#    "INDEX_SCRAPER_VIDEO",
     "INDEX_SCRIPT",
     "INDEX_PLUGIN",
     "INDEX_PLUGIN_MUSIC",
@@ -21,6 +25,8 @@ __all__ = [
     "INDEX_PLUGIN_VIDEO",
     "THUMB_SKIN",
     "THUMB_SCRAPER",
+#    "THUMB_SCRAPER_MUSIC",
+#    "THUMB_SCRAPER_VIDEO",
     "THUMB_SCRIPT",
     "THUMB_PLUGIN",
     "THUMB_PLUGIN_MUSIC",
@@ -64,15 +70,20 @@ TYPE_PLUGIN_VIDEO       = _( 18 )
 #INDEX_ROOT              = None
 INDEX_SKIN              = 0
 INDEX_SCRAPER           = 1
-INDEX_SCRIPT            = 2
-INDEX_PLUGIN            = 3
-INDEX_PLUGIN_MUSIC      = 4
-INDEX_PLUGIN_PICTURES   = 5
-INDEX_PLUGIN_PROGRAMS   = 6
-INDEX_PLUGIN_VIDEO      = 7
+INDEX_SCRAPER_MUSIC     = 2
+INDEX_SCRAPER_VIDEO     = 3
+INDEX_SCRIPT            = 4
+INDEX_PLUGIN            = 5
+INDEX_PLUGIN_MUSIC      = 6
+INDEX_PLUGIN_PICTURES   = 7
+INDEX_PLUGIN_PROGRAMS   = 8
+INDEX_PLUGIN_VIDEO      = 9
+
 
 SRV_DIR_SKIN            = "/Themes/"
 SRV_DIR_SCRAPER         = "/Scraper/"
+SRV_DIR_SCRAPER_MUSIC   = "/Scraper/Music/"
+SRV_DIR_SCRAPER_VIDEO   = "/Scraper/Video/"
 SRV_DIR_SCRIPT          = "/Scripts/"
 SRV_DIR_PLUGIN          = "/Plugins/"
 SRV_DIR_PLUGIN_MUSIC    = "/Plugins/Music/"
@@ -157,6 +168,7 @@ def SetConfiguration():
     config.set( "InstallPath", "ScriptsDir", os.path.join( XBMC_ROOT, "scripts" ) )
 
     #Set PluginDir
+    # DEPRECATED (need to be cleaned)
     PluginDir = os.path.join( XBMC_ROOT, "plugins" )
     config.set( "InstallPath", "PluginDir", PluginDir )
     config.set( "InstallPath", "PluginMusDir", os.path.join( PluginDir, "music" ) )
@@ -250,6 +262,14 @@ def GetInstallPaths():
 
     return Paths
 
+def getBaseURLDbCrossway():
+    """
+    Return the base URL of the baseurldbcrossway PHP page (json)
+    """
+    print "getBaseURLDbCrossway"
+    config = ReadConfig()
+    return config.get( 'ServeurID', 'baseurldbcrossway' )
+
 
 def getBaseURLDownloadManager():
     """
@@ -320,8 +340,10 @@ class configCtrl:
 
             # Repertoire sur le serveur FTP
             # ATTENTION: Ne pas changer l'ordre de ce tableau, il correspond aux index (INDEX_SKIN ...)
-            self.remotedirList   = [ SRV_DIR_SKIN, SRV_DIR_SCRAPER, SRV_DIR_SCRIPT, SRV_DIR_PLUGIN, SRV_DIR_PLUGIN_MUSIC, 
-                                     SRV_DIR_PLUGIN_PICTURES, SRV_DIR_PLUGIN_PROGRAMS, SRV_DIR_PLUGIN_VIDEO ]
+#            self.remotedirList   = [ SRV_DIR_SKIN, SRV_DIR_SCRAPER, SRV_DIR_SCRIPT, SRV_DIR_PLUGIN, SRV_DIR_PLUGIN_MUSIC, 
+#                                     SRV_DIR_PLUGIN_PICTURES, SRV_DIR_PLUGIN_PROGRAMS, SRV_DIR_PLUGIN_VIDEO ]
+            self.remotedirList   = [ SRV_DIR_SKIN, SRV_DIR_SCRAPER, SRV_DIR_SCRAPER_MUSIC, SRV_DIR_SCRAPER_VIDEO, SRV_DIR_SCRIPT, 
+                                     SRV_DIR_PLUGIN, SRV_DIR_PLUGIN_MUSIC, SRV_DIR_PLUGIN_PICTURES, SRV_DIR_PLUGIN_PROGRAMS, SRV_DIR_PLUGIN_VIDEO ]
             
             # Repertoire locaux
             # ATTENTION: Ne pas changer l'ordre de ce tableau, il correspond aux index (INDEX_SKIN ...)
