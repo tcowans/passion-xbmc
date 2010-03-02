@@ -6,6 +6,6 @@
 <setting id="page_limit" type="enum" label="Limiter aux vidéos les plus récentes" values="5 pages|10 pages|20 pages|30 pages|Tout(lent)" default="1" />
 <setting type="sep" label="Réglages qualité"/>
 <setting id="quality" type="enum" label="qualité Vidéos" values="Basse définition|Moyenne définition|Haute définition" default="2" />
-<setting id="hdimage" type="bool" label="Utiliser des image haute qualité" default="True"/>
+<setting id="hdimage" type="bool" label="Utiliser des image haute qualité" default="true"/>
 
 </settings>
