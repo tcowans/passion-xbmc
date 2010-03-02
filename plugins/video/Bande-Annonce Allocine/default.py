@@ -217,7 +217,7 @@ def get_film_list( url , database = False):
             print_exc()
             
         pager = pager + 1
-    dp.close()
+    
     print "total movies = %s" % count
     return catalogue
 
@@ -391,18 +391,6 @@ def search_cinema():
         if progress.iscanceled(): OK = False
         progress.close()
     else : OK = False       
-
-def delete_cinema(cine_to_del):
-    print cine_to_del
-    cine_list = load_data( os.path.join(cache_dir , "cine.list"))
-    print cine_list
-    if cine_to_del in cine_list: 
-        print "oui il y est !!!!!!!!!"
-        print cine_to_del
-        cine_list.remove(cine_to_del)
-        print cine_list
-    if cine_list == []: os.remove( os.path.join(cache_dir , "cine.list"))
-    else: save_data( cine_list ,os.path.join(cache_dir , "cine.list"))
     
 def get_emission_list(url):
     data = get_html_source( url )
@@ -454,9 +442,7 @@ if mode==None or url==None or len(url)<1:
         if os.path.exists(os.path.join(cache_dir , "cine.list")): 
             mes_cines = load_data(os.path.join(cache_dir , "cine.list"))
             for cine in mes_cines:
-                c_items = []
-                c_items += [ ( "Effacer ce cin�ma", 'XBMC.RunPlugin(%s?mode=7&name=%s&url=%s)' % ( sys.argv[ 0 ], urllib.quote_plus( cine[1] ), urllib.quote_plus( cine[0] ), ) ) ]
-                addDir( cine[1],"http://www.allocine.fr/seance/salle_gen_csalle=%s.html" % cine[0],4,"", c_items )
+                addDir( cine[1],"http://www.allocine.fr/seance/salle_gen_csalle=%s.html" % cine[0],4,"")
         addDir("Ajouter Un Cin�ma...","",3,"")
 
 if mode == 1:
@@ -535,12 +521,12 @@ if mode == 6:
     emission_list = get_emission_list(url)
     print emission_list
     picture = {}
-    picture["La Minute"] = "http://images.allocine.fr/r_120_x/commons/logos/Logos_minute_160x128.jpg"
-    picture["Tueurs en Séries"] = "http://images.allocine.fr/r_120_x/commons/logos/Logos_tes_160x128.jpg"
-    picture["Merci Qui?"] = "http://images.allocine.fr/r_120_x/commons/logos/Logos_merciqui_160x128.jpg"
-    picture["Direct 2 DVD"] = "http://images.allocine.fr/r_120_x/commons/logos/Logos_D2D_160x128.jpg"
-    picture["Faux Raccord"] = "http://images.allocine.fr/r_120_x/commons/logos/Logos_FauxR_160x128.jpg"
-    picture["Plein 2 Ciné"] = "http://images.allocine.fr/r_120_x/commons/logos/Logos_p2c_160x128.jpg"
+    picture["La Minute"] = "http://images.allocine.fr/r_720_x/commons/logos/Logos_minute_160x128.jpg"
+    picture["Tueurs en Séries"] = "http://images.allocine.fr/r_720_x/commons/logos/Logos_tes_160x128.jpg"
+    picture["Merci Qui?"] = "http://images.allocine.fr/r_720_x/commons/logos/Logos_merciqui_160x128.jpg"
+    picture["Direct 2 DVD"] = "http://images.allocine.fr/r_720_x/commons/logos/Logos_D2D_160x128.jpg"
+    picture["Faux Raccord"] = "http://images.allocine.fr/r_720_x/commons/logos/Logos_FauxR_160x128.jpg"
+    picture["Plein 2 Ciné"] = "http://images.allocine.fr/r_720_x/commons/logos/Logos_p2c_160x128.jpg"
     for emission in emission_list:
         try: 
             if xbmcplugin.getSetting("hdimage") == "true":
@@ -549,9 +535,4 @@ if mode == 6:
             
         except : image = ""
         addDir(emission[1], "http://www.allocine.fr%s" % emission[0], 1 , image )
-        
-if mode == 7:
-    delete_cinema( (url, name ))
-    xbmc.executebuiltin("Container.Refresh")
-    OK=False
 end_of_directory( OK )
