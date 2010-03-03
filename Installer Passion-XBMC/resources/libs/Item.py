@@ -50,6 +50,7 @@ __all__ = [
     "get_install_path",
     "get_thumb",
     "get_type_title",
+    "isSupported",
     ]
 
 
@@ -70,6 +71,7 @@ _ = sys.modules[ "__main__" ].__language__
 
 TYPE_ROOT               = "ROOT"
 TYPE_SKIN               = "SKIN"
+TYPE_SKIN_NIGHTLY       = "SKIN_NIGHTLY"
 TYPE_SCRAPER            = "SCRAPER"
 TYPE_SCRAPER_MUSIC      = "SCRAPER_MUSIC"
 TYPE_SCRAPER_VIDEO      = "SCRAPER_VIDEO"
@@ -84,6 +86,7 @@ TYPE_NEW                = "NEW"
 
 TITLE_ROOT               = _( 10 )
 TITLE_SKIN               = _( 11 )
+TITLE_SKIN_NIGHTLY       = _( 1101 )
 TITLE_SCRAPER            = _( 12 )
 TITLE_SCRAPER_MUSIC      = _( 1201 )
 TITLE_SCRAPER_VIDEO      = _( 1202 )
@@ -108,6 +111,7 @@ INDEX_PLUGIN_PROGRAMS   = 8
 INDEX_PLUGIN_VIDEO      = 9
 INDEX_SCRIPT_CAT        = 10
 INDEX_NEW               = 11
+INDEX_SKIN_NIGHTLY      = 12
 
 THUMB_NOT_AVAILABLE     = "IPX-NotAvailable2.png"
 THUMB_SKIN              = "IPX-defaultSkin.png"
@@ -123,19 +127,31 @@ THUMB_PLUGIN_PROGRAMS   = "IPX-defaultPluginProgram.png"
 THUMB_PLUGIN_VIDEO      = "IPX-defaultPluginVideo.png"
 THUMB_PLUGIN_WEATHER    = "IPX-defaultPluginWeather.png"
 THUMB_NEW               = "IPX-defaultNew.png"
-THUMB_SKIN_NIGHTLY      = "IPX-defaultSkinNightly.png"
-THUMB_PLUGIN_WEATHER    = "IPX-defaultPluginWeather.png"
 
 INDEX_SRV_ITEM_FORMAT_DIR      = 0
 INDEX_SRV_ITEM_FORMAT_FILE_ZIP = 1
 INDEX_SRV_ITEM_FORMAT_FILE_RAR = 1
 INDEX_SRV_ITEM_FORMAT_INVALID  = 2
 
+supportedAddonList = [ TYPE_SCRAPER, 
+                       TYPE_SCRAPER_MUSIC, 
+                       TYPE_SCRAPER_VIDEO, 
+                       TYPE_SKIN, 
+                       TYPE_SKIN_NIGHTLY, 
+                       TYPE_SCRIPT,
+                       TYPE_PLUGIN,
+                       TYPE_PLUGIN_MUSIC,
+                       TYPE_PLUGIN_PICTURES,
+                       TYPE_PLUGIN_PROGRAMS,
+                       TYPE_PLUGIN_VIDEO,
+                       TYPE_SCRIPT_CAT,
+                       TYPE_NEW ]
 
 item_path = { TYPE_SCRAPER         : DIR_SCRAPER,
               TYPE_SCRAPER_MUSIC   : DIR_SCRAPER_MUSIC, 
               TYPE_SCRAPER_VIDEO   : DIR_SCRAPER_VIDEO, 
               TYPE_SKIN            : DIR_SKIN, 
+              TYPE_SKIN_NIGHTLY    : DIR_SKIN, 
               TYPE_SCRIPT          : DIR_SCRIPT, 
               TYPE_PLUGIN          : DIR_PLUGIN, 
               TYPE_PLUGIN_MUSIC    : DIR_PLUGIN_MUSIC, 
@@ -149,6 +165,7 @@ item_thumb = { TYPE_SCRAPER         : THUMB_SCRAPER,
                TYPE_SCRAPER_MUSIC   : THUMB_SCRAPER_MUSIC,
                TYPE_SCRAPER_VIDEO   : THUMB_SCRAPER_VIDEO,
                TYPE_SKIN            : THUMB_SKIN, 
+               TYPE_SKIN_NIGHTLY    : THUMB_SKIN_NIGHTLY, 
                TYPE_SCRIPT          : THUMB_SCRIPT, 
                TYPE_PLUGIN          : THUMB_PLUGIN, 
                TYPE_PLUGIN_MUSIC    : THUMB_PLUGIN_MUSIC, 
@@ -162,6 +179,7 @@ item_title = { TYPE_SCRAPER         : TITLE_SCRAPER,
                TYPE_SCRAPER_MUSIC   : TITLE_SCRAPER_MUSIC,
                TYPE_SCRAPER_VIDEO   : TITLE_SCRAPER_VIDEO,
                TYPE_SKIN            : TITLE_SKIN, 
+               TYPE_SKIN_NIGHTLY    : TITLE_SKIN_NIGHTLY, 
                TYPE_SCRIPT          : TITLE_SCRIPT, 
                TYPE_PLUGIN          : TITLE_PLUGIN, 
                TYPE_PLUGIN_MUSIC    : TITLE_PLUGIN_MUSIC, 
@@ -175,6 +193,7 @@ item_index = { TYPE_SCRAPER         : INDEX_SCRAPER,
                TYPE_SCRAPER_MUSIC   : INDEX_SCRAPER_MUSIC,
                TYPE_SCRAPER_VIDEO   : INDEX_SCRAPER_VIDEO,
                TYPE_SKIN            : INDEX_SKIN, 
+               TYPE_SKIN_NIGHTLY    : INDEX_SKIN_NIGHTLY, 
                TYPE_SCRIPT          : INDEX_SCRIPT, 
                TYPE_PLUGIN          : INDEX_PLUGIN, 
                TYPE_PLUGIN_MUSIC    : INDEX_PLUGIN_MUSIC, 
@@ -183,6 +202,16 @@ item_index = { TYPE_SCRAPER         : INDEX_SCRAPER,
                TYPE_PLUGIN_VIDEO    : INDEX_PLUGIN_VIDEO,
                TYPE_SCRIPT_CAT      : INDEX_SCRIPT_CAT,
                TYPE_NEW             : INDEX_NEW }
+
+def isSupported( type ):
+    """
+    Returns if type of this addon is supported by the installer
+    """
+    if type in supportedAddonList:
+        result = True
+    else:
+        result = False
+    return result
 
 def get_install_path( type ):
     """

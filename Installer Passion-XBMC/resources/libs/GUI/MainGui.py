@@ -17,7 +17,8 @@ from utilities import *
 from info_item import ItemInfosManager
 from XbmcZoneBrowser import XbmcZoneBrowser
 from PassionFtpBrowser import PassionFtpBrowser
-from PassionHttpBrowser import PassionHttpBrowser
+#from PassionHttpBrowser import PassionHttpBrowser
+from PassionXbmcBrowser import PassionXbmcBrowser
 
 
 SPECIAL_SCRIPT_DATA = sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA
@@ -72,7 +73,8 @@ class Context:
         self.listOfSrCName = [] #Temporary #TODO use dict
         try:
             # Creating sources (not instanciating Browsers here)
-            srcPassionHttp = Source( "Passion XBMC Web", PassionHttpBrowser )
+            #srcPassionHttp = Source( "Passion XBMC Web", PassionHttpBrowser )
+            srcPassionHttp = Source( "Passion XBMC Web", PassionXbmcBrowser )
             srcPassionFtp  = Source( "Passion XBMC FTP", PassionFtpBrowser )
             srcXbmcZone    = Source( "XBMC Zone", XbmcZoneBrowser )
             self.addSource(srcPassionHttp)

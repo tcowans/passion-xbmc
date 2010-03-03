@@ -277,9 +277,7 @@ class PassionFtpBrowser(Browser):
                         self.curCategory, list = self._createScraperList()
                         
                     else:
-                        # List of item to download case                  
-                        #list = self.incat(itemId) # Get content of the category
-                        #self.currentItemId = itemId
+                        # List of item to download                  
                         self.type = self.curList[index]['xbmc_type']
                         self.curCategory = Item.get_type_title( self.type )
                         listOfItem = self.passionFTPCtrl.getDirList( self.remotedirList[ Item.get_type_index( self.type ) ] )

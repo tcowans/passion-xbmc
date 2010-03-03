@@ -80,6 +80,21 @@ INDEX_PLUGIN_PROGRAMS   = 8
 INDEX_PLUGIN_VIDEO      = 9
 
 
+INDEX_SKIN              = 0
+INDEX_SKIN_NIGHTLY      = 1
+INDEX_SCRAPER           = 2
+INDEX_SCRAPER_MUSIC     = 3
+INDEX_SCRAPER_VIDEO     = 4
+INDEX_SCRIPT            = 5
+INDEX_PLUGIN            = 6
+INDEX_PLUGIN_MUSIC      = 7
+INDEX_PLUGIN_PICTURES   = 8
+INDEX_PLUGIN_PROGRAMS   = 9
+INDEX_PLUGIN_VIDEO      = 10
+INDEX_SCRIPT_CAT        = 11
+INDEX_NEW               = 12
+
+
 SRV_DIR_SKIN            = "/Themes/"
 SRV_DIR_SCRAPER         = "/Scraper/"
 SRV_DIR_SCRAPER_MUSIC   = "/Scraper/Music/"

@@ -13,6 +13,7 @@
 
   <string id="10">Selection</string>
   <string id="11">Skins</string>
+  <string id="1101">Skins Nightly Builds Passion</string>
   <string id="12">Scrapers</string>
   <string id="1201">Music Scrapers</string>
   <string id="1202">Video Scrapers</string>
@@ -26,6 +27,7 @@
   <string id="20">Please enter your System Admin Password</string>
   <string id="21">System Admin Password</string>
   <string id="22">Latest Add-ons</string>
+  <string id="2201">All</string>
 
   <string id="23">Message(s)</string>
   <string id="24">Page</string>
