@@ -139,7 +139,7 @@ class XbmcZoneBrowser(Browser):
         # Add 'All' category
         item = {}
         item['cattype']   = self._mapType_Local2Server( typeList )
-        item['name']      = "All"
+        item['name']      = _(2201)
         if self._mapType_Local2Server( typeList ) == "Script":
             item['xbmc_type'] = Item.TYPE_SCRIPT
         else: # Plugins

@@ -13,6 +13,7 @@
 
   <string id="10">Sélection</string>
   <string id="11">Thèmes</string>
+  <string id="1101">Skins Nightly Builds Passion</string>
   <string id="12">Scrapers</string>
   <string id="1201">Scrapers Musique</string>
   <string id="1202">Scrapers Vidéos</string>
@@ -26,6 +27,7 @@
   <string id="20">Vous devez saisir votre mot de passe administrateur[CR]système</string>
   <string id="21">Mot de passe Administrateur</string>
   <string id="22">Derniers Ajouts</string>
+  <string id="2201">Tous</string>
 
   <string id="23">Message(s)</string>
   <string id="24">Page</string>

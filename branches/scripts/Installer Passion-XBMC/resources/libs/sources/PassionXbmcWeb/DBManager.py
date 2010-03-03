@@ -16,10 +16,12 @@ from pysqlite2 import dbapi2 as sqlite
 import Item
 from utilities import *
 
+import simplejson as json
 
 SPECIAL_SCRIPT_DATA = sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA
 
-categories = {'None': 'None', 'Other': 'None', 'ThemesDir': Item.TYPE_SKIN, 'Scraper': Item.TYPE_SCRAPER, 'ThemesDir': Item.TYPE_SKIN, 'ScriptsDir': Item.TYPE_SCRIPT, 'PluginDir': Item.TYPE_PLUGIN, 'PluginMusDir': Item.TYPE_PLUGIN_MUSIC, 'PluginPictDir': Item.TYPE_PLUGIN_PICTURES, 'PluginProgDir': Item.TYPE_PLUGIN_PROGRAMS,  'PluginVidDir': Item.TYPE_PLUGIN_VIDEO }
+#categories = {'None': 'None', 'Other': 'None', 'ThemesDir': Item.TYPE_SKIN, 'Scraper': Item.TYPE_SCRAPER, 'ThemesDir': Item.TYPE_SKIN, 'ScriptsDir': Item.TYPE_SCRIPT, 'PluginDir': Item.TYPE_PLUGIN, 'PluginMusDir': Item.TYPE_PLUGIN_MUSIC, 'PluginPictDir': Item.TYPE_PLUGIN_PICTURES, 'PluginProgDir': Item.TYPE_PLUGIN_PROGRAMS,  'PluginVidDir': Item.TYPE_PLUGIN_VIDEO }
+categories = {'None': 'None', 'Other': 'None', 'ThemesDir': Item.TYPE_SKIN, 'ThemesNight': Item.TYPE_SKIN, 'Scraper': Item.TYPE_SCRAPER_VIDEO, 'ThemesDir': Item.TYPE_SKIN, 'ScriptsDir': Item.TYPE_SCRIPT, 'PluginDir': Item.TYPE_PLUGIN, 'PluginMusDir': Item.TYPE_PLUGIN_MUSIC, 'PluginPictDir': Item.TYPE_PLUGIN_PICTURES, 'PluginProgDir': Item.TYPE_PLUGIN_PROGRAMS,  'PluginVidDir': Item.TYPE_PLUGIN_VIDEO }
 
 
 class DBMgr:
@@ -180,6 +182,286 @@ class DBMgr:
             print "DBMgr - Exception in exit"
             print_exc()
         
+
+
+
+
+
+class JsonDB(DBMgr):
+    """
+    Populate the DB from an json file (HTTP server)
+    """
+    def __init__( self, db, datafile=None ):
+        print "JsonDB - Init starts"
+        DBMgr.__init__( self, db, datafile )
+        print "JsonDB - importing CONF"
+        import CONF
+        self.baseurl = CONF.getBaseURLDbCrossway() # http://passion-xbmc.org/dbcrossway/
+        del CONF
+        print "JsonDB - Init done"
+        
+        
+    def download_json( self, args ):
+        """
+        Retrieve the json file form the HTTP server
+        """
+        
+        #TODO: add the URL below in conf file instead of hardcoding it     
+        # baseurl: http://passion-xbmc.org/dbcrossway/
+        url = self.baseurl + args
+        print "JsonDB - retrieving " + url
+        loc = urllib.URLopener()
+        loc.retrieve(url, self.datafile)   
+        return self.datafile  
+        
+     
+#    def fetch_downloads(type, id):
+#        """
+#        A appeler avec le type d'item dont on veut les infos (cat ou file) + l'id de l'item (0 pour la racine)
+#        Renvoie une liste de dictionnaires du type : [{type:folder,id:5,title:Scripts,...},{type:item,id:6,..}] 
+#        """
+#        url = "http://passion-xbmc.org/database_crossway.php?%s=%s"%(type,str(id))   
+#        file = urllib.urlopen(url).read()
+#        dico = json.loads(str(file))
+#        return dico 
+#     
+#    print fetch_downloads('cat',6)
+
+    def updateServerItems( self ):
+        """
+        """
+        print "JsonDB - CSV updateServerItems"
+#        conn = sqlite.connect(self.db)
+#        #Initialisation de la base de donnee
+#        c = conn.cursor()
+        args = 'all/downloads/type=file'
+        
+        #c = conn.cursor()
+        try:
+            print "JsonDB - reading json file"
+            #reader = CsvUnicodeReader(open(self.download_csv(args)), delimiter = '|', encoding="cp1252")    
+            #reader = csv.reader(open(self.download_csv(args)),delimiter = '|') 
+            file = open(self.download_json(args))
+            dico = json.loads(str(file))
+            print "######################################################################"
+            print json
+            print "######################################################################"
+            for entry in dico:
+                print entry
+#                try:
+#                    #on retranche l'occurs de fin de ligne
+#                    cols = {}
+#                    cols['$id_file']=row[0]
+#                    cols['$date']=row[1]
+#                    #cols['$title']=row[2]
+#                    #cols['$title']=unicode(row[2],"cp1252")
+#                    #cols['$title']=unicode(unescape( strip_off(row[2])),"cp1252")
+#                    #cols['$title']=adapt_str(unescape( row[2].decode("cp1252")))
+#                    cols['$title'] = urllib.quote( unescape( row[2] ) ) #TODO: clean THAT!!!
+#                    
+#                    print "Title"
+#                    print "from CSV"
+#                    print repr(row[2])
+#                    print "for DB"
+#                    print repr(cols['$title'])
+#                    #cols['$description']=row[3]
+#                    cols['$description'] = urllib.quote( unescape( strip_off_CSV( row[3] ) ) )
+#                    print repr(cols['$description'])
+#                    #cols['$description']=unicode(row[3],"cp1252")
+#                    #print "description"
+#                    #print cols['$description']
+#                    #print cols['$description'].encode("cp1252")
+#                    cols['$totaldownloads']=row[4]
+#                    cols['$filesize']=  row[5]
+#                    cols['$filename']=  row[6]
+#                    cols['$fileurl']=   row[7]
+#                    cols['$commenttotal']=  row[8]
+#                    cols['$id_cat']=row[9]
+#                    cols['$totalratings']=  row[10]
+#                    cols['$rating']=row[11]
+#                    cols['$type']=row[12]
+#                    cols['$sendemail']=row[13]
+#                    cols['$id_topic']=row[14]
+#                    cols['$keywords']=row[15]
+#                    cols['$createdate']=row[16]
+#                    cols['$previewpictureurl']=row[17]
+#                    cols['$version']=row[18]
+#                    cols['$author']=row[19]
+#                    cols['$descript_en']=row[20]
+#                    cols['$script_language']=row[21]
+#                    cols['$id_new']=row[22]
+#                    cols['$source_type']="http_passion"
+#        
+#                    self._insertServerItems(self.cursor,cols)
+#                except Exception, e:
+#                    print_exc()
+        except Exception, e:
+            print_exc()
+                
+        #Sauvegarde des modifications
+        #self.conn.commit()   
+#        # On ferme l'instance du curseur
+#        c.close()
+
+    def _insertServerItems( self, c,cols ):
+        try:
+            #Chaque ligne trouvee dans le table.csv est inseree dans la table
+            #c.text_factory = lambda x: unicode(x, "utf-8", "ignore")
+            c.execute(self.nicequery('''INSERT INTO Server_Items 
+                                        (id_file,
+                                        date,
+                                        title,
+                                        description,
+                                        totaldownloads,
+                                        filesize, 
+                                        filename, 
+                                        fileurl, 
+                                        commenttotal, 
+                                        id_cat, 
+                                        totalratings, 
+                                        rating, 
+                                        id_topic, 
+                                        keywords, 
+                                        createdate, 
+                                        previewpictureurl, 
+                                        version, 
+                                        author, 
+                                        descript_en, 
+                                        script_language,
+                                        id_new,
+                                        source_type)
+                                    VALUES
+                                        (
+                                        $id_file ,
+                                        $date ,
+                                        $title ,
+                                        $description ,
+                                        $totaldownloads ,
+                                        $filesize , 
+                                        $filename , 
+                                        $fileurl , 
+                                        $commenttotal , 
+                                        $id_cat , 
+                                        $totalratings , 
+                                        $rating , 
+                                        $id_topic , 
+                                        $keywords , 
+                                        $createdate , 
+                                        $previewpictureurl , 
+                                        $version , 
+                                        $author , 
+                                        $descript_en , 
+                                        $script_language ,
+                                        $id_new ,
+                                        $source_type
+                                        )
+                               ''',cols))
+        except Exception, e:
+            print "CsvDB - Exception in _insertServerItems"
+            print_exc()
+
+
+    def update_categories( self ):
+#        conn = sqlite.connect(self.db)
+#        #Initialisation de la base de donnee
+#        print "update_categories"
+#        c = conn.cursor()
+        try:
+            self.cursor.execute('''DELETE FROM Categories''')
+        except Exception, e:
+            print "CsvDB - update_categories: delete failed"
+            print e
+            print sys.exc_info()
+            print_exc()
+            self.make_Categories()
+        args = '?action=getcat'
+        try:
+            #reader = CsvUnicodeReader(open(self.download_csv(args)), delimiter = '|', encoding="cp1252")    
+            reader = csv.reader(open(self.download_csv(args)),delimiter = '|')    
+            #self.cursor = conn.cursor()
+        
+            print "CsvDB - CSV content"
+            print reader
+            for row in reader:
+                print row
+                try:
+                    cols = {}
+                    cols['$id_cat']=row[0]
+                    cols['$title']=unescape( row[1] )
+                    cols['$description']=unescape( strip_off_CSV( row[2] ) )
+                    cols['$image']=row[3]
+                    cols['$id_parent']= row[4]
+#                    c.execute('''SELECT id_path FROM install_paths WHERE title LIKE ?''',(row[5],))
+#                    cols['$id_path'] = str(c.fetchone()[0])
+                    cols['$xbmc_type'] = categories[ row[5] ]
+                    print "categories[ row[5] ]"
+                    print categories[ row[5] ]
+                    
+                    self._insertCategories(self.cursor,cols)
+                except Exception, e:
+                    print 'erreur categorie'
+                    print_exc()
+        except Exception, e:
+            print_exc()
+            
+        #Sauvegarde des modifications
+        self.conn.commit()    
+#        # On ferme l'instance du curseur
+#        c.close()
+        
+    def _insertCategories( self, c, cols ):
+        print "CsvDB - _insertCategories"
+        print c
+        print cols
+        try:
+            #c.text_factory = lambda x: unicode(x, "utf-8", "ignore")
+#            c.execute(self.nicequery('''INSERT into Categories
+#                                (                    
+#                                id_cat, 
+#                                title, 
+#                                description, 
+#                                image, 
+#                                id_parent,
+#                                id_path
+#                                )
+#                            VALUES 
+#                                (
+#                                $id_cat ,
+#                                $title ,
+#                                $description ,
+#                                $image ,
+#                                $id_parent ,
+#                                $id_path
+#                                )''',cols))
+            c.execute(self.nicequery('''INSERT into Categories
+                                (                    
+                                id_cat, 
+                                title, 
+                                description, 
+                                image, 
+                                id_parent,
+                                xbmc_type
+                                )
+                            VALUES 
+                                (
+                                $id_cat ,
+                                $title ,
+                                $description ,
+                                $image ,
+                                $id_parent ,
+                                $xbmc_type
+                                )''',cols))
+        except Exception, e:
+            print 'CsvDB - erreur insert'
+            print_exc()
+
+
+
+
+
+
+
+
         
 class CsvDB(DBMgr):
     """
@@ -232,8 +514,10 @@ class CsvDB(DBMgr):
         try:
             print "CsvDB - reading CSV"
             #reader = CsvUnicodeReader(open(self.download_csv(args)), delimiter = '|', encoding="cp1252")    
-            reader = csv.reader(open(self.download_csv(args)),delimiter = '|')    
-            
+            reader = csv.reader(open(self.download_csv(args)),delimiter = '|') 
+            print "######################################################################"
+            print reader
+            print "######################################################################"
             for row in reader:
                 print row
                 try:

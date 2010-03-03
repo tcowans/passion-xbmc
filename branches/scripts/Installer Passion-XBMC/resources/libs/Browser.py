@@ -159,8 +159,8 @@ class Browser:
         """
         Recupere toutes les image dans la FIFO et met a jour l'appelant via la callBack
         """
-        #print "update_Images"
-        #print self.image_queue
+        print "update_Images"
+        print self.image_queue
         if ( len(self.image_queue) > 0 ):
             self.getImagesQueue_thread = Thread( target=self._thread_getImagesQueue )
             self.getImagesQueue_thread.start()
@@ -176,36 +176,18 @@ class Browser:
          # on vide la liste vide la Queue
         del self.image_queue[ : ]
         
-#    def getImage( self, index, updateImage_cb=None, obj2update=None  ):
     def imageUpdateRegister( self, item, updateImage_cb=None, obj2update=None ):
         """
         Register an external graphic object needing to update the picture (listitem, image ...)
+        Function called by the GUI
         """
-#        pass
-#        item = self.curList[ index ]
         previewPictureURL   = item['previewpictureurl']
-#        previewPictureLocal = item['previewpicture']
-#        previewThumbLocal   = item['thumbnail']
         
         if item['image2retrieve'] == True:
             # Telechargement et mise a jour de l'image (thread de separe)
             # Ajout a de l'image a la queue de telechargement
-            #self.image_queue.append( ImageQueueElement( previewPictureURL, updateImage_cb, listitem ) )
             self.image_queue.append( ImageQueueElement( previewPictureURL, updateImage_cb=updateImage_cb, item=obj2update  ) )
             #TODO: dynamic update of image (right now image is not updatd in the GUI after download)
-
-#        return previewThumbLocal, previewPictureLocal
-       
-#    def imageUpdateRegister( self, listItemId, updateImage_cb=None, obj2update=None ):
-#        """
-#        Register an external graphic object needing to update the picture (listitem, image ...)
-#        """
-#        previewPictureURL   = self.curList[listItemId]['previewpictureurl']
-#        previewPictureLocal = self.curList[listItemId]['previewpicture']
-#        previewThumbLocal   = self.curList[listItemId]['thumbnail']
-#        if  ( previewPictureURL != 'None' and ( ( previewPictureLocal=="IPX-NotAvailable2.png"  ) or ( previewThumbLocal=="IPX-NotAvailable2.png" ) ) ):
-#            # We will download the picture only we we have the url and we currently have a default picture displayed
-#            self.image_queue.append( ImageQueueElement(previewPictureURL, updateImage_cb, obj2update ) )
     
     def _thread_getImagesQueue( self ):
         self.stopUpdateImageThread = False
