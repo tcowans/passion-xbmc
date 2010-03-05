@@ -151,7 +151,12 @@ class PassionXbmcItemInstaller(ArchItemInstaller):
                     headers = connection.info()# Get Headers
                     print "_downloadFile: headers:"
                     print headers
-                    file_name   = headers['Content-Disposition'].split('"')[1]
+                    print "---"
+                    content_disposition =  headers['Content-Disposition']
+                    if "\"" in content_disposition:
+                        file_name = headers['Content-Disposition'].split('"')[1]
+                    else:
+                        file_name = headers['Content-Disposition'].split('=')[1]
                 except Exception, e:
                     file_name = "unknownfilename.rar"
                     print("_downloadFile - Exception retrieving header")

@@ -234,6 +234,7 @@ def set_xbmc_carriage_return( text ):
     text = text.replace( "\n",   "[CR]" )
     text = text.replace( "\r\r", "[CR]" )
     text = text.replace( "\r",   "[CR]" )
+    text = text.replace( "</br>",   "[CR]" )
     return text
 
 
