@@ -8,6 +8,7 @@ import sys
 import urllib
 from threading import Thread
 from traceback import print_exc
+import time
 
 import simplejson as json
 
@@ -81,22 +82,34 @@ class PassionXbmcBrowser(Browser):
         Browser.reset()
         self.currentItemId = 0
 
-    def retrieve_json( self, url, save=True ):
+    def _retrieve_json( self, url, skipdescript=False, save=True ):
         """
         Retrieve the json file form the HTTP server and save it as a file
         """
-        
+        jsondata = ""
         print "JsonDB - retrieving " + url
-
-        jsondata = urllib.urlopen(url).read()#.replace("}{","},{") # Substitution is a Temporary patch for fixing issue on teh server
+        try:
+            if skipdescript:
+                print "_retrieve_json: skipping description field"
+                import re
+                rawdata = urllib.urlopen(url).read()
+                jsondata = re.sub("""\"description\":\".*?\",\"image""","""\"description\":\"\",\"image""",rawdata)
+                #jsondata2 = re.sub("\[spoiler\].*?\[/spoiler\]","",jsondata)
+                #jsondata2 = re.sub('\"description\":\"((.*?))\",\"image\"',"\1".replace ('"', 'TEST'),jsondata)
+            else:
+                jsondata = urllib.urlopen(url).read()#.replace("\\","")#.replace("}{","},{") # Substitution is a Temporary patch for fixing issue on teh server
+            jsondata = jsondata.replace( "\\", "\\\\" )
+            if save:
+                filename = 'passionjson.txt'
+                open(os.path.join(DIR_CACHE,filename).encode('utf8'),"w").write(jsondata)
+        except Exception, e:
+            print "Exception during retrieve_json"
+            print e
+            print_exc()
         
-        if save:
-            filename = 'passionjson.txt'
-            open(os.path.join(DIR_CACHE,filename).encode('utf8'),"w").write(jsondata)
-        
-        return jsondata  
+        return jsondata 
 
-    def _createListFromJson( self, requestURL ):
+    def _createListFromJson( self, requestURL, skipdescript=False ):
         """
         Create and return the list from json data
         Returns list and name of the list
@@ -130,7 +143,7 @@ class PassionXbmcBrowser(Browser):
 
         
         # Retrieve json data
-        jsondata = self.retrieve_json( requestURL )
+        jsondata = self._retrieve_json( requestURL, skipdescript )
         
         dicdata = json.loads( jsondata )
         
@@ -156,11 +169,14 @@ class PassionXbmcBrowser(Browser):
                 item['version']           = entry['version']
                 item['author']            = entry['author']
                 item['date']              = entry['createdate']
-                item['added']             = entry['date']
-                if entry['filesize'] != '':
-                    item['filesize']          = int( entry['filesize'] )
+                if entry['date'] != '':
+                    item['added'] = time.strftime( '%d-%m-%Y', time.localtime( int (entry['date'] ) ) )
                 else:
-                    item['filesize']          = entry['filesize']
+                    item['added'] = entry['date']
+                if entry['filesize'] != '':
+                    item['filesize'] = int( entry['filesize'] )
+                else:
+                    item['filesize'] = entry['filesize']
                 item['thumbnail']         = Item.get_thumb( item['xbmc_type'] )
                 item['previewpictureurl'] = entry['image']
                 item['previewpicture']    = ""#Item.get_thumb( entry )
@@ -177,7 +193,7 @@ class PassionXbmcBrowser(Browser):
             
         return list
     
-    def _createCatList( self, id ):
+    def _createCatList( self, id, skipdescript=False ):
         """
         Create and return the list for a category(all type available)
         Returns list and name of the list
@@ -186,11 +202,11 @@ class PassionXbmcBrowser(Browser):
         requestURL = self.baseURL + self.catcontentURL%id
         
         # Retrieve date from json file
-        list = self._createListFromJson( requestURL )
+        list = self._createListFromJson( requestURL, skipdescript )
         
         return list
 
-    def _createXbmcTypeList( self, xbmcType ):
+    def _createXbmcTypeList( self, xbmcType, skipdescript=False ):
         """
         Create and return the list for a specific type of Addon (xbmc_type)
         Returns list and name of the list
@@ -202,12 +218,12 @@ class PassionXbmcBrowser(Browser):
         requestURL = self.baseURL + self.xbmctypecontentURL%xbmctypes[xbmcType]
         
         # Retrieve date from json file
-        list = self._createListFromJson( requestURL )
+        list = self._createListFromJson( requestURL, skipdescript )
         
         #return listTitle, list
         return list
     
-    def _createNewItemList( self, xbmcType, sincedate ):
+    def _createNewItemList( self, xbmcType, sincedate, skipdescript ):
         """
         Create and return the list since date
         Returns list and name of the list
@@ -219,7 +235,7 @@ class PassionXbmcBrowser(Browser):
         requestURL = self.baseURL + self.xbmctypecontentURL%xbmctypes[xbmcType] + ";date>%d"%sincedate
         
         # Retrieve date from json file
-        list = self._createListFromJson( requestURL )
+        list = self._createListFromJson( requestURL, skipdescript )
         
         return listTitle, list
     
@@ -243,7 +259,7 @@ class PassionXbmcBrowser(Browser):
         try:            
             if listItem != None:
                 listItemName = listItem['name']
-                listItemID = listItem['id']
+                listItemID   = listItem['id']
                 if listItem['type'] == 'cat':
                     
                     listTitle = listItem['name']
@@ -252,6 +268,10 @@ class PassionXbmcBrowser(Browser):
                         curCategory = listItemName
                         #TODO: to implement
                         #list = _createNewItemList( self, xbmcType, sincedate )
+                        #TODO: remove, this is temporary while fixing server
+                    elif listItem['xbmc_type'] == Item.TYPE_SKIN_NIGHTLY:
+                        curCategory = listItemName
+                        list = self._createCatList( listItemID, skipdescript=True )
                     else:
                         # List of item to download case                  
                         curCategory = listItemName
@@ -269,8 +289,6 @@ class PassionXbmcBrowser(Browser):
         except Exception, e:
             print "Exception during getNextList"
             print e
-            print sys.exc_info()
-            print_exc()
             print_exc()
             
         return curCategory, list
