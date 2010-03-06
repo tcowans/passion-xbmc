@@ -7,8 +7,8 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/"
 __credits__      = "Team XBMC passion, http://passion-xbmc.org/developpement-python/%28script%29-sporlive-display/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "22-02-2009"
-__version__      = "1.5"
+__date__         = "06-03-2009"
+__version__      = "1.5.1"
 __svn_revision__  = "$Revision$".replace( "Revision", "" ).strip( "$: " )
 __XBMC_Revision__ = "20000" #XBMC Babylon
 __useragent__    = "Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.0.1) Gecko/2008070208 Firefox/3.6"
@@ -127,14 +127,16 @@ class Sportsfr:
                     try:live['part']=re.findall( "<i class='i1'>(.*?)</i>", balise )[0].strip( " " )
                     except:print_exc()
                     try:live['A_name']=re.findall( "<i class='i3'>(.*?)</i>", balise )[0].strip( " " )
-                    except:print_exc()
+                    except:
+                        multiplex = True
+                        print_exc()
                     try:live['A_score']=re.findall( "<i class='i4'>(.*?)</i>", balise )[0].strip( " " )
                     except:print_exc()
                     try:live['B_name']=re.findall( "<i class='i3'>(.*?)</i>", balise )[1].strip( " " )
                     except:print_exc()
                     try:live['B_score']=re.findall( "<i class='i4'>(.*?)</i>", balise )[1].strip( " " )
                     except:print_exc()
-                    all_live.append(live)
+                    if not multiplex : all_live.append(live)
                     
 
                 elif live['sport'] in ( "f1" , "moto"):
@@ -246,8 +248,8 @@ def print_all_stats(txt):
         try:
             if affich["diff"]: affich['sport']= "*%s" % affich['sport']
         except:pass
-        print "%s %s | %s %s - %s %s  -  %s" % ( affich['sport'] , affich['country'] , affich['A_name'] , affich['A_score'] , affich['B_score'] , affich['B_name'] , affich['part'] )
-
+        try : print "%s %s | %s %s - %s %s  -  %s" % ( affich['sport'] , affich['country'] , affich['A_name'] , affich['A_score'] , affich['B_score'] , affich['B_name'] , affich['part'] )
+        except : print "error - multiplex?"
 def check_filter(update):
     user_filter = eval( file( filterfile , "r" ).read() )
     #print "update:%s" % update
@@ -278,7 +280,8 @@ def watcher():
                     #print update
                     all_update.append(update)
                     if int(XBMC_SETTINGS.getSetting( "visualisation" )) == 0:
-                        print "%s %s | %s  %s - %s  %s" % ( update['sport'] , update['country'] , update['A_name'] , update['A_score'] , update['B_score'] , update['B_name'] )
+                        try: print "%s %s | %s  %s - %s  %s" % ( update['sport'] , update['country'] , update['A_name'] , update['A_score'] , update['B_score'] , update['B_name'] )
+                        except: print_exc()
                         if "A" in update and "B" in update or update['sport'] == "tennis":
                             print "both scored or tennis"
                             try:img = os.path.join ( img_path , update['sport'] , "default.png" )
