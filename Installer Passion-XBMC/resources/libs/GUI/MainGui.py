@@ -814,7 +814,9 @@ class MainWindow( xbmcgui.WindowXML ):
             DIALOG_PROGRESS.create( _( 0 ), _( 104 ), _( 110 ) )
         try:
             #print "Getting list of items got from the browser"
-            self.curDirList = self.contextSrc.getBrowser().getPrevList()
+            #self.curDirList = self.contextSrc.getBrowser().getPrevList()
+            self.contextSrc.getBrowser().getPrevList()
+            self.curDirList = self.contextSrc.getBrowser().sortByName()
         except Exception, e:
             #print "Excpetion during updateData_Prev"
             #print e
@@ -833,7 +835,9 @@ class MainWindow( xbmcgui.WindowXML ):
         try:
             #print "Getting list of items from the browser for current item ID:"
             #print self.index
-            self.curDirList = self.contextSrc.getBrowser().getNextList(self.index)
+            #self.curDirList = self.contextSrc.getBrowser().getNextList(self.index)
+            self.contextSrc.getBrowser().getNextList(self.index)
+            self.curDirList = self.contextSrc.getBrowser().sortByName()
         except Exception, e:
             #print "Exception during updateData_Next"
             #print e

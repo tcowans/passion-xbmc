@@ -98,38 +98,57 @@ class Browser:
         Load the data for the current page
         """
     
+    def sortByName( self ):
+        """
+        Returns current list sorted by name/title
+        """
+        try:
+            sortedList = sorted(self.curList, key=lambda k:( k['type'], k['name'].lower() ) )
+        except:
+            print"sortByName - failed sorting current by name"
+            sortedList = self.curList
+            print_exc()
+        self.curList = sortedList
+        return self.curList
+
     def sortByDate( self ):
         """
         Returns current list sorted by date
         """
         try:
-            sortedList = sorted(self.curList, key=lambda k: k['date'])
+            sortedList = sorted(self.curList, key=lambda k:( k['type'],  k['date'] ) )
         except:
             print"sortByDate - failed sorting current by date"
             sortedList = self.curList
             print_exc()
+        self.curList = sortedList
+        return self.curList
 
     def sortByLang( self ):
         """
         Returns current list sorted by language
         """
         try:
-            sortedList = sorted(self.curList, key=lambda k: k['language'])
+            sortedList = sorted(self.curList, key=lambda k: ( k['type'], k['language'].lower() ) )
         except:
             print"sortByDate - failed sorting current by date"
             sortedList = self.curList
             print_exc()
+        self.curList = sortedList
+        return self.curList
     
     def sortByAuthor( self ):
         """
         Returns current list sorted by author
         """
         try:
-            sortedList = sorted(self.curList, key=lambda k: k['author'])
+            sortedList = sorted(self.curList, key=lambda k: ( k['type'], k['author'].lower() ) )
         except:
             print"sortByDate - failed sorting current by date"
             sortedList = self.curList
             print_exc()
+        self.curList = sortedList
+        return self.curList
     
     def isCat( self, index ):
         """
