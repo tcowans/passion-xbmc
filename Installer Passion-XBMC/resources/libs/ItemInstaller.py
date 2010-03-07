@@ -223,6 +223,11 @@ class ArchItemInstaller(ItemInstaller):
         if os.path.exists( self.downloadArchivePath ):
             if progressBar != None:
                 progressBar.update( percent, "Extraction:", ( self.name ) )
+#            if not self.downloadArchivePath.endswith( 'zip' ) and not self.downloadArchivePath.endswith( 'rar' ):
+#                # Unknow extention, let's try few well known types:
+#                # zip
+#                self.downloadArchivePath =  self.downloadArchivePath + ".zip"
+ 
             if self.downloadArchivePath.endswith( 'zip' ) or self.downloadArchivePath.endswith( 'rar' ):
                 import extractor
                 process_error = False
@@ -386,7 +391,7 @@ class ArchItemInstaller(ItemInstaller):
             print statusDownload
             print self.downloadArchivePath
             print 
-            if statusDownload == "OK":
+            if statusDownload in ["OK", "ERRORFILENAME"]:
                 if self.extractItem( msgFunc=msgFunc, progressBar=progressBar ) == "OK":
                     if not self.isAlreadyInstalled():
                         if not self.isInUse():
@@ -407,6 +412,8 @@ class ArchItemInstaller(ItemInstaller):
                         print "installItem - Item is already installed - stopping install"
                         result = "ALREADYINSTALLED"
                         self.status = "EXTRACTED"
+#            elif statusDownload == "ERRORFILENAME":
+#                pass
             elif statusDownload == "CANCELED":
                 result      = "CANCELED"
                 self.status = "CANCELED"
