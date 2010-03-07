@@ -33,7 +33,6 @@ DIR_CACHE = sys.modules[ "__main__" ].DIR_CACHE
 categories = {'ThemesDir'    : Item.TYPE_SKIN, 
               'ThemesNight'  : Item.TYPE_SKIN_NIGHTLY, 
               'Scraper'      : Item.TYPE_SCRAPER_VIDEO, 
-              'ThemesDir'    : Item.TYPE_SKIN, 
               'ScriptsDir'   : Item.TYPE_SCRIPT, 
               'PluginDir'    : Item.TYPE_PLUGIN, 
               'PluginMusDir' : Item.TYPE_PLUGIN_MUSIC, 
@@ -44,7 +43,16 @@ categories = {'ThemesDir'    : Item.TYPE_SKIN,
               ''             : 'None',
               'None'         : 'None'}
 
-xbmctypes  = {Item.TYPE_SKIN: 'ThemesDir'}
+xbmctypes  = {Item.TYPE_SKIN            : 'ThemesDir', 
+              Item.TYPE_SKIN_NIGHTLY    : 'ThemesNight', 
+              Item.TYPE_SCRAPER_VIDEO   : 'Scraper',
+              Item.TYPE_SCRIPT          : 'ScriptsDir',
+              Item.TYPE_PLUGIN          : 'PluginDir',
+              Item.TYPE_PLUGIN_MUSIC    : 'PluginMusDir',
+              Item.TYPE_PLUGIN_PICTURES : 'PluginPictDir',
+              Item.TYPE_PLUGIN_PROGRAMS : 'PluginProgDir',
+              Item.TYPE_PLUGIN_VIDEO    : 'PluginVidDir' }
+
 validCatList = [ 'ThemesDir', 'ThemesNight', 'Scraper', 'ThemesDir', 'ScriptsDir', 'PluginDir', 'PluginMusDir', 'PluginPictDir', 'PluginProgDir', 'PluginVidDir']
 class PassionXbmcBrowser(Browser):
     """
@@ -59,7 +67,7 @@ class PassionXbmcBrowser(Browser):
         #TODO: check if we still need those vars
         self.baseURL = CONF.getBaseURLDbCrossway() # http://passion-xbmc.org/dbcrossway/
         self.catcontentURL = "all/downloads/idparent=%d"
-        self.xbmctypecontentURL = "type=file;xbmc_type=%s"
+        self.xbmctypecontentURL = "all/downloads/type=file;xbmc_type=%s"
         
         self.baseURLDownloadFile   = CONF.getBaseURLDownloadFile()
         self.baseURLPreviewPicture = CONF.getBaseURLPreviewPicture()
@@ -159,7 +167,6 @@ class PassionXbmcBrowser(Browser):
         """
         list = []
 
-        
         # Retrieve json data
         jsondata = self._retrieve_json( requestURL, skipdescript )
         
@@ -171,7 +178,7 @@ class PassionXbmcBrowser(Browser):
                 item = {}
                 item['id']                = int( entry['id'] )
                 item['name']              = entry['title']#.encode( "utf8" )
-                item['parent']            = entry['idparent']
+                item['parent']            = int( entry['idparent'] )
                 item['downloadurl']       = entry['fileurl']
                 item['type']              = entry['type']#'CAT'
                 item['totaldownloads']    = entry['totaldownloads']
@@ -222,7 +229,7 @@ class PassionXbmcBrowser(Browser):
         
         # Retrieve date from json file
         list = self._createListFromJson( requestURL, skipdescript )
-        
+
         return list
 
     def _createXbmcTypeList( self, xbmcType, skipdescript=False ):
@@ -232,9 +239,12 @@ class PassionXbmcBrowser(Browser):
         """
         
         #http://passion-xbmc.org/dbcrossway/all/downloads/type=file;xbmc_type=ScriptsDir
-
+        
+        print "_createXbmcTypeList"
+        
         # Create URL in order to retrieve root list (idparent=id)
         requestURL = self.baseURL + self.xbmctypecontentURL%xbmctypes[xbmcType]
+        print requestURL
         
         # Retrieve date from json file
         list = self._createListFromJson( requestURL, skipdescript )
@@ -259,7 +269,26 @@ class PassionXbmcBrowser(Browser):
         return listTitle, list
     
     
-    
+    def _createALLListItem ( self, xbmcType):
+        # Create ALL category
+        item = {}
+        item['name']              = _( 2201 )
+        item['parent']            = 0
+        item['type']              = 'addon_type'
+        item['description']       = ""
+        item['xbmc_type']         = xbmcType
+        item['thumbnail']         = Item.get_thumb( item['xbmc_type'] )
+        item['previewpictureurl'] = ""
+        item['previewpicture']    = ""#Item.get_thumb( entry )
+        item['image2retrieve']    = False # Temporary patch for reseting the flag after downlaad (would be better in the thread in charge of the download)
+        item['language']          = ""
+        item['version']           = ""
+        item['author']            = ""
+        item['added']             = ""
+        item['date']              = ""
+        self._setDefaultImages( item )
+        print item
+        return item
     
     
     
@@ -278,10 +307,9 @@ class PassionXbmcBrowser(Browser):
         try:            
             if listItem != None:
                 listItemName = listItem['name']
-                listItemID   = listItem['id']
                 if listItem['type'] == 'cat':
-                    
-                    listTitle = listItem['name']
+                    listItemID = listItem['id']
+                    listTitle  = listItem['name']
                     if listItem['xbmc_type'] == Item.TYPE_NEW:
                         # Lastest/new items case
                         curCategory = listItemName
@@ -291,10 +319,16 @@ class PassionXbmcBrowser(Browser):
                     elif listItem['xbmc_type'] == Item.TYPE_SKIN_NIGHTLY:
                         curCategory = listItemName
                         list = self._createCatList( listItemID, skipdescript=True )
+                        list.append( self._createALLListItem( listItem['xbmc_type'] ) )
                     else:
                         # List of item to download case                  
                         curCategory = listItemName
                         list = self._createCatList( listItemID )
+                        list.append( self._createALLListItem( listItem['xbmc_type'] ) )
+                elif listItem['type'] == 'addon_type':
+                        curCategory = Item.get_type_title( listItem['xbmc_type'] )
+                        list = self._createXbmcTypeList( listItem['xbmc_type'] )
+                    
                 else:
                     # Return the current list
                     #TODO: start download here?
@@ -444,7 +478,7 @@ class PassionXbmcBrowser(Browser):
         """
         Returns True when selected item is a category
         """
-        if ( ( len(self.curList)> 0 ) and ( self.curList[index]['type'] == 'cat' ) ):
+        if ( ( len(self.curList)> 0 ) and ( self.curList[index]['type'] in ['cat', 'addon_type'] ) ):
             # Convert index to id
             return True
         else:

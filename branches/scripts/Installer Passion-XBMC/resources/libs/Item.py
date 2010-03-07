@@ -97,6 +97,7 @@ TITLE_PLUGIN_PICTURES    = _( 16 )
 TITLE_PLUGIN_PROGRAMS    = _( 17 )
 TITLE_PLUGIN_VIDEO       = _( 18 )
 TITLE_NEW                = _( 22 )
+#TITLE_ALL                = _( 2201 )
 
 #INDEX_ROOT              = None
 INDEX_SKIN              = 0
