@@ -34,16 +34,18 @@ class PassionXbmcItemInstaller(ArchItemInstaller):
 
     #def __init__( self , itemId, type, installPath, filesize, externalURL=None ):
     #def __init__( self , itemId, type, filesize, externalURL=None ):
-    def __init__( self , name, itemId, type, filesize, externalURL=None ):
-        ArchItemInstaller.__init__( self, name, type )
+    #def __init__( self , name, itemId, type, filesize, externalURL=None ):
+    def __init__( self , item ):
+        ArchItemInstaller.__init__( self, item['name'], item['xbmc_type'] )
         
-        #get base url for download
-        self.itemId   = itemId       # Id of the server item 
-        self.filesize = filesize     # Size of the file to download
-        self.baseurl  = CONF.getBaseURLDownloadFile()
+        self.itemId   = item['id']       # Id of the server item 
+        self.filesize = item['filesize'] # Note could be 0
+        self.filename = item['orginalfilename'] # Note could be ''
+        self.url      = item['downloadurl']
+        #self.baseurl  = CONF.getBaseURLDownloadFile()
         
         #TODO: support progress bar display
-        self.externalURL         = externalURL # External URL for download (hosted on another server)
+        #self.externalURL         = externalURL # External URL for download (hosted on another server)
 
     def downloadItem( self, msgFunc=None,progressBar=None ):
         """
@@ -61,11 +63,11 @@ class PassionXbmcItemInstaller(ArchItemInstaller):
             print "HTTPInstaller::downloadItem - itemId = %d" % self.itemId
             
             # Get download link
-                               
-            fileURL  = self.baseurl + str(self.itemId)
+            #fileURL  = self.baseurl + str(self.itemId)
+            fileURL  = self.url
             
             # Download file (to cache dir) and get destination directory
-            status, self.downloadArchivePath = self._downloadFile( fileURL, self.CACHEDIR, progressBar=progressBar )
+            status, self.downloadArchivePath = self._downloadFile( progressBar=progressBar )
         
         except Exception, e:
             #print "Exception during downlaodItem"
@@ -118,17 +120,18 @@ class PassionXbmcItemInstaller(ArchItemInstaller):
 
 
 #    def _downloadFile(self, url, destinationDir,msgFunc=None,progressBar=None):
-    def _downloadFile(self, url, destinationDir, progressBar=None):
+    def _downloadFile(self, progressBar=None):
         """
         Download a file at a specific URL and send event to registerd UI if requested
         Returns the status of the download attempt : OK | ERROR
         """
-        print("_downloadFile with url = " + url)
+        destinationDir = self.CACHEDIR
+        print("_downloadFile with url = " + self.url)
         print("_downloadFile with destination directory = " + destinationDir)
         destination = None
         #destination = os.path.join( destinationDir, filename )
         #noErrorOK  = True # When noErrorOK == True -> no error/Exception occured
-        status     = "OK" # Status of download :[OK | ERROR | CANCELED]
+        status     = "OK" # Status of download :[OK | ERROR | CANCELED | ERRORFILENAME]
         
         try:
             # -- Downloading
@@ -138,46 +141,55 @@ class PassionXbmcItemInstaller(ArchItemInstaller):
             num_blocks          = 0
             file_size           = None
             
-            req = urllib2.Request(url) # Note: downloading item with passion XBMC URL (for download count) even when there is an external URL
+            req = urllib2.Request(self.url) # Note: downloading item with passion XBMC URL (for download count) even when there is an external URL
             req.add_header('User-Agent','Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.3) Gecko/20070309 Firefox/2.0.0.3')
             connection  = urllib2.urlopen(req)           # Open connection
-            print '_downloadFile: self.externalURL'
-            print self.externalURL
-            if self.externalURL != 'None':
-                #TODO: cover length max of file name (otherwise crash xbmc at writing)
-                file_name = os.path.basename( self.externalURL ).replace(";","").replace("?","")
-            else:
+            if self.filename == '' or self.filesize <= 0:
+                # Try to retrieve file name / file size
                 try:
                     headers = connection.info()# Get Headers
                     print "_downloadFile: headers:"
                     print headers
                     print "---"
-                    content_disposition =  headers['Content-Disposition']
-                    if "\"" in content_disposition:
-                        file_name = headers['Content-Disposition'].split('"')[1]
-                    else:
-                        file_name = headers['Content-Disposition'].split('=')[1]
+                    if self.filename == '':
+                        try:
+                            realURL = connection.geturl() # Get URL (possible redirection)
+                            if self.url != realURL:
+                                # Redirection
+                                print "redirect url = %s"%realURL
+                                self.filename = os.path.basename(realURL)
+                                if "=" in self.filename:
+                                    self.filename = "unknownfilename"
+                                    status = "ERRORFILENAME"
+                            else:
+                                content_disposition =  headers['Content-Disposition']
+                                if "\"" in content_disposition:
+                                    self.filename = headers['Content-Disposition'].split('"')[1]
+                                else:
+                                    self.filename = headers['Content-Disposition'].split('=')[1]
+                        except:
+                            self.filename = "unknownfilename"
+                            status = "ERRORFILENAME"
+                    if self.filesize <= 0:
+                        try:
+                            self.filesize = int( headers['Content-Length'] )
+                        except:
+                            self.filesize = 0
+
                 except Exception, e:
-                    file_name = "unknownfilename.rar"
+                    self.filename = "unknownfilename"
+                    status = "ERRORFILENAME"
+                    self.filesize = 0
                     print("_downloadFile - Exception retrieving header")
                     print(str(e))
 
             
-            print "_downloadFile - file name : %s "%file_name
-            destination = xbmc.translatePath( os.path.join( destinationDir, file_name ) )
-            print '_downloadFile: destination'
-            print destination
+            destination = xbmc.translatePath( os.path.join( destinationDir, self.filename ) )
+            print "_downloadFile - file name : %s "%self.filename
+            print "_downloadFile - file size : %d Octet(s)"%self.filesize
+            print "_downloadFile: destination %s"%destination
             
-            # Check File Size
-            if self.filesize > 0:
-                file_size = file_size = self.filesize
-            elif self.externalURL != 'None':
-                # Try to get file size from the external URL header
-                file_size = self.getFileSize(self.externalURL)
-            else:
-                file_size = 0
 
-            print "_downloadFile - file size : %d Octet(s)"%file_size
 
             file = open(destination,'w+b')        # Get ready for writing file
             print "_downloadFile: File opened"
@@ -220,14 +232,14 @@ class PassionXbmcItemInstaller(ArchItemInstaller):
                     #raise e
                 try:
                     # Compute percent of download in progress
-                    New_percent_downloaded = min((num_blocks*block_size*100)/file_size, 100)
+                    New_percent_downloaded = min((num_blocks*block_size*100)/self.filesize, 100)
                     #print "_downloadFile - Percent = %d"%New_percent_downloaded
                 except Exception, e:        
                     print("_downloadFile - Exception computing percentage downloaded")
                     print(str(e))
                     #noErrorOK  = False
                     New_percent_downloaded = 0
-                    status = "ERROR"
+                    #status = "ERROR"
                     # End of writing: Closing the connection and the file
                     #connection.close()
                     #file.close()

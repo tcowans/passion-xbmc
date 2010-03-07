@@ -1,5 +1,6 @@
 ﻿"""
-PassionHttpBrowser: this module allows browsing of server content on the web server of Passion-XBMC.org
+PassionXbmcBrowser: this module allows browsing of server content on the web server of Passion-XBMC.org using DB Crossway API
+NOTE: a lot of is code has been done as temporary patch in order to solve issue on the server side
 """
 
 # Modules general
@@ -8,7 +9,8 @@ import sys
 import urllib
 from threading import Thread
 from traceback import print_exc
-import time
+from  time import strftime, localtime
+import re
 
 import simplejson as json
 
@@ -82,6 +84,22 @@ class PassionXbmcBrowser(Browser):
         Browser.reset()
         self.currentItemId = 0
 
+    def strip_off_passionCDT( self, text, by="", xbmc_labels_formatting=False  ):
+        """ FONCTION POUR RECUPERER UN TEXTE D'UN TAG Passion-XBMC """
+        text = re.sub( "\[img\](.*?)\[/img\]", by, text )
+        result = set_xbmc_carriage_return ( re.sub( "(?s)\[[^\]]*\]", by, text ).replace("[/code]","</br>").replace("[code]","</br>").replace("[/spoiler]","</br>").replace("[spoiler]","</br>"))
+        print "strip_off_passionCDT - result"
+        return result
+
+    def _removeInvalidChar ( self, match ):
+        """
+        Remove invalid char for json decoding 
+        We use a trick here replacing the string by its quote version
+        """
+        #return match.group().replace('"',"").replace('description:', '"description":"').replace(',image:', '","image')
+        return urllib.quote( match.group() ).replace('%22description%22%3A%22', '"description":"').replace('%22%2C%22image', '","image')
+    
+
     def _retrieve_json( self, url, skipdescript=False, save=True ):
         """
         Retrieve the json file form the HTTP server and save it as a file
@@ -90,12 +108,12 @@ class PassionXbmcBrowser(Browser):
         print "JsonDB - retrieving " + url
         try:
             if skipdescript:
+                # it make everything slower to use skipdescript (regex + replace ...)
                 print "_retrieve_json: skipping description field"
-                import re
                 rawdata = urllib.urlopen(url).read()
-                jsondata = re.sub("""\"description\":\".*?\",\"image""","""\"description\":\"\",\"image""",rawdata)
-                #jsondata2 = re.sub("\[spoiler\].*?\[/spoiler\]","",jsondata)
-                #jsondata2 = re.sub('\"description\":\"((.*?))\",\"image\"',"\1".replace ('"', 'TEST'),jsondata)
+                #jsondata = re.sub("""\"description\":\".*?\",\"image""","""\"description\":\"\",\"image""",rawdata)
+                jsondata = re.sub("""\"description\":\".*?\",\"image""",self._removeInvalidChar,rawdata)
+                
             else:
                 jsondata = urllib.urlopen(url).read()#.replace("\\","")#.replace("}{","},{") # Substitution is a Temporary patch for fixing issue on teh server
             jsondata = jsondata.replace( "\\", "\\\\" )
@@ -160,9 +178,9 @@ class PassionXbmcBrowser(Browser):
                 item['xbmc_type']         = categories[ entry['xbmc_type'] ]
                 #item['cattype']           = entry
                 if LANGUAGE_IS_FRENCH:
-                    item['description']       = entry['description']#.encode("cp1252").
+                    item['description']       = self.strip_off_passionCDT( unescape( urllib.unquote( entry['description'] ) ) )#.encode("cp1252").
                 else:
-                    item['description']       = entry['description']#.encode("cp1252").decode('string_escape')
+                    item['description']       = self.strip_off_passionCDT( unescape( urllib.unquote( entry['description_en'] ) ) )#.encode("cp1252").decode('string_escape')
                 if item['description'] == 'None':
                     item['description'] = _( 604 ) 
                 item['language']          = entry['script_language']
@@ -170,18 +188,19 @@ class PassionXbmcBrowser(Browser):
                 item['author']            = entry['author']
                 item['date']              = entry['createdate']
                 if entry['date'] != '':
-                    item['added'] = time.strftime( '%d-%m-%Y', time.localtime( int (entry['date'] ) ) )
+                    item['added'] = strftime( '%d-%m-%Y', localtime( int (entry['date'] ) ) )
                 else:
                     item['added'] = entry['date']
                 if entry['filesize'] != '':
                     item['filesize'] = int( entry['filesize'] )
                 else:
-                    item['filesize'] = entry['filesize']
+                    item['filesize'] = 0 # ''
                 item['thumbnail']         = Item.get_thumb( item['xbmc_type'] )
                 item['previewpictureurl'] = entry['image']
                 item['previewpicture']    = ""#Item.get_thumb( entry )
                 item['image2retrieve']    = False # Temporary patch for reseting the flag after downlaad (would be better in the thread in charge of the download)
                 
+                item['orginalfilename']     = entry['orginalfilename']
                 #TODO: deprecated??? Check server side
                 item['fileexternurl']     = "None"
                 self._setDefaultImages( item )
@@ -454,13 +473,14 @@ class PassionXbmcBrowser(Browser):
 
                 print "getInstaller - name" 
                 print name
-                print "getInstaller - externalURL" 
-                print externalURL
+                #print "getInstaller - externalURL" 
+                #print externalURL
                 print "getInstaller - filesize"
                 print filesize
 
                 # Create the right type of Installer Object
-                itemInstaller = PassionXbmcItemInstaller.PassionXbmcItemInstaller( name, itemId, xbmc_type, filesize, externalURL )
+                #itemInstaller = PassionXbmcItemInstaller.PassionXbmcItemInstaller( name, itemId, xbmc_type, filesize, externalURL )
+                itemInstaller = PassionXbmcItemInstaller.PassionXbmcItemInstaller( itemInfos )
             else:
                 print "getInstaller: error impossible to install a category, it has to be an item "
 
@@ -552,8 +572,7 @@ class PassionXbmcBrowser(Browser):
         """
         Close browser: i.e close connection, free memory ...
         """
-        self.databaseMgr.exit()
         try: self.cancel_update_Images()
-        except: print "PassionHttpBrowser: error on close (cancel image)"
+        except: print "PassionXbmcBrowser: error on close (cancel image)"
 
     
