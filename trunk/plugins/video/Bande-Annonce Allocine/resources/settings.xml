@@ -7,5 +7,5 @@
 <setting type="sep" label="Réglages qualité"/>
 <setting id="quality" type="enum" label="qualité Vidéos" values="Basse définition|Moyenne définition|Haute définition" default="2" />
 <setting id="hdimage" type="bool" label="Utiliser des image haute qualité" default="true"/>
-
+<setting id="date_sortie" type="bool" label="Afficher la date de sortie sur la liste des films" default="true"/>
 </settings>
