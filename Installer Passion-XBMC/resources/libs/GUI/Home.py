@@ -119,7 +119,7 @@ class Home( xbmcgui.WindowXML ):
                 self._show_file_manager()
             elif 90161 <= controlID <= 90163:
                 # for 90164 on click used in xml "run plugin "SVN Repo Installer" button" <onclick>ActivateWindow(10001,plugin://programs/SVN Repo Installer/)</onclick>
-                act = { 90161: "default_content=Passion XBMC Web", 90162: "default_content=Passion XBMC FTP",
+                act = { 90161: "default_content=Passion XBMC", 90162: "default_content=Passion XBMC FTP",
                     90163: "default_content=XBMC Zone", 90164: "exit" }
                 self.action = act.get( controlID )
                 self._show_main()
@@ -167,7 +167,7 @@ class Home( xbmcgui.WindowXML ):
                         print "script_debug = %s" % debug_mode
                         sys.modules[ "__main__" ].output.PRINT_DEBUG = ( debug_mode == "true" )
                     elif item_id == "10":
-                        self.action = "default_content=%s" % self.settings.get( "server_shortcut_button", "Passion XBMC Web" )
+                        self.action = "default_content=%s" % self.settings.get( "server_shortcut_button", "Passion XBMC" )
                         self._show_main()
                     elif item_id == "11":
                         self.action = "exit"

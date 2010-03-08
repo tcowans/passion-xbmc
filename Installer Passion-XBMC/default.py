@@ -18,7 +18,7 @@ __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center, [ALL]"
 
 __version__      = "pre-2.0"
-__statut__       = "RC" #(dev,svn,release,etc)
+__statut__       = "RC2" #(dev,svn,release,etc)
 
 
 # don't edit __date__ and __svn_revision__

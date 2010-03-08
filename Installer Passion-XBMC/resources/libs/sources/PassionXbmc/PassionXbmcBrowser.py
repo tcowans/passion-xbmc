@@ -9,7 +9,8 @@ import sys
 import urllib
 from threading import Thread
 from traceback import print_exc
-from  time import strftime, localtime
+from  time import strftime, localtime, mktime
+from datetime import date, timedelta
 import re
 
 import simplejson as json
@@ -53,7 +54,16 @@ xbmctypes  = {Item.TYPE_SKIN            : 'ThemesDir',
               Item.TYPE_PLUGIN_PROGRAMS : 'PluginProgDir',
               Item.TYPE_PLUGIN_VIDEO    : 'PluginVidDir' }
 
-validCatList = [ 'ThemesDir', 'ThemesNight', 'Scraper', 'ThemesDir', 'ScriptsDir', 'PluginDir', 'PluginMusDir', 'PluginPictDir', 'PluginProgDir', 'PluginVidDir']
+validCatList = [ Item.TYPE_SKIN, 
+                 Item.TYPE_SKIN_NIGHTLY, 
+                 Item.TYPE_SCRAPER_VIDEO, 
+                 Item.TYPE_SCRIPT, 
+                 Item.TYPE_PLUGIN, 
+                 Item.TYPE_PLUGIN_MUSIC, 
+                 Item.TYPE_PLUGIN_PICTURES, 
+                 Item.TYPE_PLUGIN_PROGRAMS, 
+                 Item.TYPE_PLUGIN_VIDEO ]
+
 class PassionXbmcBrowser(Browser):
     """
     Browse the item on the HTTP server using dbcrossway api
@@ -68,16 +78,11 @@ class PassionXbmcBrowser(Browser):
         self.baseURL = CONF.getBaseURLDbCrossway() # http://passion-xbmc.org/dbcrossway/
         self.catcontentURL = "all/downloads/idparent=%d"
         self.xbmctypecontentURL = "all/downloads/type=file;xbmc_type=%s"
+        self.newcontentURL = "all/downloads/type=file"
         
         self.baseURLDownloadFile   = CONF.getBaseURLDownloadFile()
         self.baseURLPreviewPicture = CONF.getBaseURLPreviewPicture()
         del CONF
-
-        #csvFile = os.path.join(DIR_CACHE, 'table.csv')
-        
-
-        print "update_datas"
-        
 
         self.currentItemId = 0
         
@@ -236,12 +241,8 @@ class PassionXbmcBrowser(Browser):
         """
         Create and return the list for a specific type of Addon (xbmc_type)
         Returns list and name of the list
+        Example: http://passion-xbmc.org/dbcrossway/all/downloads/type=file;xbmc_type=ScriptsDir
         """
-        
-        #http://passion-xbmc.org/dbcrossway/all/downloads/type=file;xbmc_type=ScriptsDir
-        
-        print "_createXbmcTypeList"
-        
         # Create URL in order to retrieve root list (idparent=id)
         requestURL = self.baseURL + self.xbmctypecontentURL%xbmctypes[xbmcType]
         print requestURL
@@ -249,24 +250,24 @@ class PassionXbmcBrowser(Browser):
         # Retrieve date from json file
         list = self._createListFromJson( requestURL, skipdescript )
         
-        #return listTitle, list
         return list
     
-    def _createNewItemList( self, xbmcType, sincedate, skipdescript ):
+    def _createNewItemList( self, sincedate, xbmcType=None, skipdescript=False ):
         """
         Create and return the list since date
         Returns list and name of the list
+        Example: http://passion-xbmc.org/dbcrossway/all/downloads/type=file;date>1266642000.0
         """
-        
-        #http://passion-xbmc.org/dbcrossway/all/downloads/type=file;date%3E1248278091
-
         # Create URL in order to retrieve root list (idparent=id)
-        requestURL = self.baseURL + self.xbmctypecontentURL%xbmctypes[xbmcType] + ";date>%d"%sincedate
+        if xbmcType == None:
+            requestURL = self.baseURL + self.newcontentURL + ";date>%d"%sincedate
+        else:
+            requestURL = self.baseURL + self.xbmctypecontentURL%xbmctypes[xbmcType] + ";date>%d"%sincedate
         
         # Retrieve date from json file
         list = self._createListFromJson( requestURL, skipdescript )
         
-        return listTitle, list
+        return list
     
     
     def _createALLListItem ( self, xbmcType):
@@ -290,10 +291,41 @@ class PassionXbmcBrowser(Browser):
         print item
         return item
     
-    
-    
-    
-    
+    def _createNEWListItem ( self ):
+        # Create ALL category
+        item = {}
+        item['name']              = _( 22 )
+        item['parent']            = 0
+        item['type']              = Item.TYPE_NEW
+        item['description']       = ""
+        item['xbmc_type']         = Item.TYPE_NEW
+        item['thumbnail']         = Item.get_thumb( Item.TYPE_NEW )
+        item['previewpictureurl'] = ""
+        item['previewpicture']    = ""#Item.get_thumb( entry )
+        item['image2retrieve']    = False # Temporary patch for reseting the flag after downlaad (would be better in the thread in charge of the download)
+        item['language']          = ""
+        item['version']           = ""
+        item['author']            = ""
+        item['added']             = ""
+        item['date']              = ""
+        self._setDefaultImages( item )
+        print item
+        return item
+
+    def _convertFr2EnRootTitle( self, list ):
+        """
+        Replace in the root list french title by english one
+        This will disappear when the server will return en and fr (now only french is returned for cat) 
+        """
+        if not LANGUAGE_IS_FRENCH:
+            try:
+                for item in list:
+                    item['name'] = Item.get_type_title( item['xbmc_type'] )
+            except Exception, e:
+                print "Exception during _convertFr2EnRootTitle"
+                print e
+                print_exc()
+            
     
     def _getList( self, listItem=None ):
         """
@@ -310,13 +342,8 @@ class PassionXbmcBrowser(Browser):
                 if listItem['type'] == 'cat':
                     listItemID = listItem['id']
                     listTitle  = listItem['name']
-                    if listItem['xbmc_type'] == Item.TYPE_NEW:
-                        # Lastest/new items case
-                        curCategory = listItemName
-                        #TODO: to implement
-                        #list = _createNewItemList( self, xbmcType, sincedate )
-                        #TODO: remove, this is temporary while fixing server
-                    elif listItem['xbmc_type'] == Item.TYPE_SKIN_NIGHTLY:
+                    #if listItem['xbmc_type'] == Item.TYPE_NEW:
+                    if listItem['xbmc_type'] == Item.TYPE_SKIN_NIGHTLY:
                         curCategory = listItemName
                         list = self._createCatList( listItemID, skipdescript=True )
                         list.append( self._createALLListItem( listItem['xbmc_type'] ) )
@@ -325,9 +352,22 @@ class PassionXbmcBrowser(Browser):
                         curCategory = listItemName
                         list = self._createCatList( listItemID )
                         list.append( self._createALLListItem( listItem['xbmc_type'] ) )
+                elif listItem['type'] == Item.TYPE_NEW:
+                    # Lastest/new items case
+                    # We look for 30 days back
+                    # TODO: set the duration in settings
+                    curCategory = listItemName
+
+                    # Create epoch date
+                    sincedate = mktime((date.today() - timedelta(days=30)).timetuple())
+                    list = self._createNewItemList( sincedate, skipdescript=True )
+#                    list = []
+#                    # Merge list (could be optimized)
+#                    for xbmcType in validCatList:
+#                        list = list + self._createNewItemList( sincedate, xbmcType, skipdescript=True )
                 elif listItem['type'] == 'addon_type':
-                        curCategory = Item.get_type_title( listItem['xbmc_type'] )
-                        list = self._createXbmcTypeList( listItem['xbmc_type'] )
+                    curCategory = Item.get_type_title( listItem['xbmc_type'] )
+                    list = self._createXbmcTypeList( listItem['xbmc_type'] )
                     
                 else:
                     # Return the current list
@@ -339,6 +379,9 @@ class PassionXbmcBrowser(Browser):
                 # List the main categorie at the root level
                 curCategory = _( 10 )
                 list = self._createCatList( 0 )
+                # Convert Fr title to En if necessary
+                self._convertFr2EnRootTitle(list)
+                list.append( self._createNEWListItem() )
         except Exception, e:
             print "Exception during getNextList"
             print e
@@ -478,7 +521,7 @@ class PassionXbmcBrowser(Browser):
         """
         Returns True when selected item is a category
         """
-        if ( ( len(self.curList)> 0 ) and ( self.curList[index]['type'] in ['cat', 'addon_type'] ) ):
+        if ( ( len(self.curList)> 0 ) and ( self.curList[index]['type'] in ['cat', 'addon_type', Item.TYPE_NEW] ) ):
             # Convert index to id
             return True
         else:

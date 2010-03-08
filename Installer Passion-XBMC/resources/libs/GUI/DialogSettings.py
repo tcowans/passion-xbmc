@@ -23,7 +23,7 @@ XBMCGUI_WINDOW_XML = ( "xbmcgui.WindowXMLDialog", "xbmcgui.WindowXML" )[ current
 
 
 class ScriptSettings( eval( XBMCGUI_WINDOW_XML ) ):
-    SERVERS     = [ "Passion XBMC Web", "Passion XBMC FTP", "XBMC Zone" ]
+    SERVERS     = [ "Passion XBMC", "Passion XBMC FTP", "XBMC Zone" ]
     TOPIC_LIMIT = [ "5", "10", "15", "20", "25", "50", "100" ]
     TSIZE_LIMIT = [ "192", "256", "384", "512", "1024" ]
 

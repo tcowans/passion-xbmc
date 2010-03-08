@@ -380,7 +380,7 @@
 						<texturefocus border="5">IPX-button-focus.png</texturefocus>
 						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
-						<label>Passion-XBMC Web</label>
+						<label>Passion-XBMC</label>
 						<onclick>-</onclick>
 					</control>
 					<control type="button" id="90162">

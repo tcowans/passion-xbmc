@@ -222,7 +222,7 @@ class Browser:
             # Notifie la callback de mettre a jour l'image
             if imageElt.updateImage_cb:
                 try:
-                    imageElt.updateImage_cb( thumbnail, imageElt.item )
+                    imageElt.updateImage_cb( thumbnail, previewPicture, imageElt.item )
                 except TypeError:
                     print_exc()
                         

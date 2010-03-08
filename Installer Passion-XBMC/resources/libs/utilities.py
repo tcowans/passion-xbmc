@@ -279,7 +279,7 @@ class Settings:
             "script_debug": False,
             "manager_view_mode": 50,
             "main_view_mode": 50,
-            "server_shortcut_button": "Passion XBMC Web",
+            "server_shortcut_button": "Passion XBMC",
             # SKINS
             "show_plash": False,
             "current_skin": "Default.HD",

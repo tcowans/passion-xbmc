@@ -17,7 +17,6 @@ from utilities import *
 from info_item import ItemInfosManager
 from XbmcZoneBrowser import XbmcZoneBrowser
 from PassionFtpBrowser import PassionFtpBrowser
-#from PassionHttpBrowser import PassionHttpBrowser
 from PassionXbmcBrowser import PassionXbmcBrowser
 
 
@@ -73,8 +72,7 @@ class Context:
         self.listOfSrCName = [] #Temporary #TODO use dict
         try:
             # Creating sources (not instanciating Browsers here)
-            #srcPassionHttp = Source( "Passion XBMC Web", PassionHttpBrowser )
-            srcPassionHttp = Source( "Passion XBMC Web", PassionXbmcBrowser )
+            srcPassionHttp = Source( "Passion XBMC", PassionXbmcBrowser )
             srcPassionFtp  = Source( "Passion XBMC FTP", PassionFtpBrowser )
             srcXbmcZone    = Source( "XBMC Zone", XbmcZoneBrowser )
             self.addSource(srcPassionHttp)
@@ -240,19 +238,13 @@ class MainWindow( xbmcgui.WindowXML ):
                     if self.HomeAction and "default_content" in self.HomeAction:
                         self.default_content = self.HomeAction.split( "=" )[ 1 ]
                     else:
-                        self.default_content = self.settings.get( "server_shortcut_button", "Passion XBMC Web" )
+                        self.default_content = self.settings.get( "server_shortcut_button", "Passion XBMC" )
                     # Loading context
                     self.contextSrc = Context()
                     self.contextSrc.selectSource( self.default_content )#"XBMC Zone" )
-                    #self.browser = self.contextSrc.getBrowser()
-
                     self.set_list_container_150()
-
-
-                    #print "Updating displayed list"
                     self.updateData_Next()
                     self.updateList()
-                    #print "End of update for the displayed list
 
                 except:
                     xbmcgui.Dialog().ok( _( 111 ), _( 112 ) )
@@ -276,9 +268,6 @@ class MainWindow( xbmcgui.WindowXML ):
                 if xbmc.getCondVisibility( "Window.IsActive(IPX-Installer.xml)" ) or xbmc.getCondVisibility( "Window.IsActive(passion-main.xml)" ):
                     if self.listitems: self.re_updateList()
                     else: self.updateList()
-                # .addItems( items=listitems )
-                # print "self.addItems( items= )", hasattr( self, 'addItems' )
-                # for ControlList only :(
 
             # desactive le splash
             try: self.getControl( self.CONTROL_SHOW_SPLASH_IMG ).setVisible( 0 )
@@ -583,8 +572,6 @@ class MainWindow( xbmcgui.WindowXML ):
                 del dp
     
                 #Check if install went well
-                #print itemName
-                #print repr(itemName)
                 if status == "OK":
                     self._save_downloaded_property()
                     title = _( 141 )
@@ -602,7 +589,6 @@ class MainWindow( xbmcgui.WindowXML ):
                     #msg1  = _( 149 )%(unicode(itemName,'cp1252'))
                     msg1  = _( 149 )%itemName
                     msg2  = ""
-                    #if self.processOldDownload( destination ):
                     if self.processOldDownload( itemInstaller ):
                         # Continue install
                         dp = xbmcgui.DialogProgress()
@@ -612,14 +598,14 @@ class MainWindow( xbmcgui.WindowXML ):
                         del dp
                         self._save_downloaded_property()
                         title = _( 141 )
-                        msg1  = _( 142 )%(unicode(itemName,'cp1252')) # should we manage only unicode instead of string?
+                        msg1  = _( 142 )%itemName # should we manage only unicode instead of string?
                         #msg1  = _( 142 )%"" + itemName
                         msg2  = _( 143 )
                     else:
                         #installCancelled = True
                         print "bypass: %s install has been cancelled by the user" % itemName
                         title = _( 146 )
-                        msg1  = _( 147 )%(unicode(itemName,'cp1252'))
+                        msg1  = _( 147 )%itemName
                         msg2  = ""
                 elif status == "ALREADYINUSE":
                     print "%s currently used by XBMC, install impossible" % itemName
@@ -628,7 +614,7 @@ class MainWindow( xbmcgui.WindowXML ):
                     msg2  = _( 119 )
                 else:
                     title = _( 144 )
-                    msg1  = _( 136 )%(unicode(itemName,'cp1252'))
+                    msg1  = _( 136 )%itemName
                     msg2  = ""
                 del itemInstaller
                 
@@ -638,7 +624,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 print "No installer available for %s - Install impossible" % itemName
                 #TODO: create string for this particular case i.e: Install not supported for this type of item
                 title = _( 144 )
-                msg1  = _( 136 )%(unicode(itemName,'cp1252'))
+                msg1  = _( 136 )%itemName
                 msg2  = ""
             
         except:
@@ -651,10 +637,6 @@ class MainWindow( xbmcgui.WindowXML ):
         #NB: le meme scenario va ce produire si vous fermer ou redemarrer xbmc avec le script en marche
         #on annule les thread
         self._stop_rss_timer()
-#        try: self.infoswarehouse.getImage_thread.cancel()
-#        except: pass
-#        try: self.infoswarehouse.cancel_update_Images()
-#        except: pass
         for id in range( self.CONTROL_MAIN_LIST_START, self.CONTROL_MAIN_LIST_END + 1 ):
             try:
                 if xbmc.getCondVisibility( "Control.IsVisible(%i)" % id ):
@@ -701,11 +683,9 @@ class MainWindow( xbmcgui.WindowXML ):
             elif controlID in [ 201, 202, 203, self.CONTROL_SOURCE_LIST ]:
                 new_content = None
                 if controlID == self.CONTROL_SOURCE_LIST:
-                    #index = self.getControl( self.CONTROL_SOURCE_LIST ).getCurrentListPosition()
-                    #sourceName = self.listOfSourceName[index]
                     new_contentt = self.getControl( self.CONTROL_SOURCE_LIST ).getSelectedItem().getLabel()
                 elif controlID == 201:
-                    new_content = "Passion XBMC Web"
+                    new_content = "Passion XBMC"
                 elif controlID == 202:
                     new_content = "Passion XBMC FTP"
                 elif controlID == 203:
@@ -713,8 +693,6 @@ class MainWindow( xbmcgui.WindowXML ):
                 if new_content is not None:
                     self.default_content = new_content
                     self.contextSrc.selectSource( self.default_content )
-                    #self.browser = self.contextSrc.getBrowser()
-                    #print "Updating displayed list on NEW SOURCE: %s"%sourceName
                     self.updateData_Next()
                     self.updateList()
 
@@ -881,7 +859,11 @@ class MainWindow( xbmcgui.WindowXML ):
                 #print elt
 
                 if self.settings.get( "hide_extention", True ):
-                    itemName = os.path.splitext( urllib.unquote( elt['name'] ) )[ 0 ]
+                    name = urllib.unquote( elt['name'] )
+                    if name.endswith( 'zip' ) or name.endswith( 'rar' ):
+                        itemName = os.path.splitext( urllib.unquote( elt['name'] ) )[ 0 ]
+                    else:
+                        itemName = name
                 else:
                     itemName = urllib.unquote( elt['name'] )
 
@@ -948,9 +930,7 @@ class MainWindow( xbmcgui.WindowXML ):
 
     def set_item_infos( self, listItem, dataItem ):
         try:
-            #print "MainGUI - set_item_infos"
-            #print dataItem['name']
-            #infos = self.infoswarehouse.getInfo( itemName=os.path.basename( ipath ), itemType=self.type, listitem=listitem )
+            print "MainGUI - set_item_infos"
 
             listItem.setProperty( "itemId",           "" )
 
@@ -987,16 +967,16 @@ class MainWindow( xbmcgui.WindowXML ):
             print_exc()
             print_exc()
 
-    def _updateListThumb_cb( self, imagePath, listitem ):
+    def _updateListThumb_cb( self, thumbnail, previewPicture, listitem ):
         """
         Callback updating one specific image in the displayed list
         Need to use imageUpdateRegister() on Browser in order to be called
         """
-        if imagePath and hasattr( listitem, "setThumbnailImage" ):
-            listitem.setThumbnailImage( imagePath )
-            listitem.setIconImage( imagePath ) # TODO" do we keep the same resoltuin between thumb and image???
+        if thumbnail and previewPicture and hasattr( listitem, "setThumbnailImage" ):
+            listitem.setThumbnailImage( thumbnail )
+            listitem.setIconImage( previewPicture ) # TODO" do we keep the same resoltuin between thumb and image???
             #listitem.setProperty( "fanartpicture", "" )
-            #listitem.setProperty( "fanartpicture", thumbnail )
+            listitem.setProperty( "fanartpicture", previewPicture )
 
     def set_list_images( self ):
         """
@@ -1169,11 +1149,6 @@ class MainWindow( xbmcgui.WindowXML ):
                 # EXIT
                 exit = True
                 continueDownload = False
-#        else:
-#            # Fichier
-#            print "bypass: processOldDownload: Fichier : %s - ce cas n'est pas encore traite" % localAbsDirPath
-#            #TODO: cas a implementer
-
         return continueDownload
         
     def message_cb(self, msgType, title, message1, message2="", message3=""):
