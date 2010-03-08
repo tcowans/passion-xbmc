@@ -1,5 +1,5 @@
 """
-ItemInstaller: this module allows download and install an item
+ItemInstaller: this module allows download and install an item from Passion XBMC download center
 """
 
 # Modules general
@@ -32,9 +32,6 @@ class PassionXbmcItemInstaller(ArchItemInstaller):
     Download an item on Passion XBMC http server and install it
     """
 
-    #def __init__( self , itemId, type, installPath, filesize, externalURL=None ):
-    #def __init__( self , itemId, type, filesize, externalURL=None ):
-    #def __init__( self , name, itemId, type, filesize, externalURL=None ):
     def __init__( self , item ):
         ArchItemInstaller.__init__( self, item['name'], item['xbmc_type'] )
         
@@ -42,10 +39,8 @@ class PassionXbmcItemInstaller(ArchItemInstaller):
         self.filesize = item['filesize'] # Note could be 0
         self.filename = item['orginalfilename'] # Note could be ''
         self.url      = item['downloadurl']
-        #self.baseurl  = CONF.getBaseURLDownloadFile()
         
         #TODO: support progress bar display
-        #self.externalURL         = externalURL # External URL for download (hosted on another server)
 
     def downloadItem( self, msgFunc=None,progressBar=None ):
         """
@@ -63,16 +58,14 @@ class PassionXbmcItemInstaller(ArchItemInstaller):
             print "HTTPInstaller::downloadItem - itemId = %d" % self.itemId
             
             # Get download link
-            #fileURL  = self.baseurl + str(self.itemId)
             fileURL  = self.url
             
             # Download file (to cache dir) and get destination directory
             status, self.downloadArchivePath = self._downloadFile( progressBar=progressBar )
         
         except Exception, e:
-            #print "Exception during downlaodItem"
-            #print e
-            #print sys.exc_info()
+            print "Exception during downlaodItem"
+            print e
             print_exc()
             self.downloadArchivePath = None
         if progressBar != None:
@@ -99,27 +92,7 @@ class PassionXbmcItemInstaller(ArchItemInstaller):
             print sys.exc_info()
             print_exc()
         return file_size
-#
-#    def getFileName(self, sourceurl):
-#        """
-#        get the size of the file name
-#        """
-#        file_name = ""
-#        try:
-#            connection  = urllib2.urlopen(sourceurl)
-#            headers     = connection.info()
-#            file_name   = headers['Content-Disposition'].split('"')[1]
-#            connection.close()
-#        except Exception, e:
-#            print "Exception during getFileName"
-#            print e
-#            print sys.exc_info()
-#            print_exc()
-#        return file_name
-    
 
-
-#    def _downloadFile(self, url, destinationDir,msgFunc=None,progressBar=None):
     def _downloadFile(self, progressBar=None):
         """
         Download a file at a specific URL and send event to registerd UI if requested
@@ -129,8 +102,6 @@ class PassionXbmcItemInstaller(ArchItemInstaller):
         print("_downloadFile with url = " + self.url)
         print("_downloadFile with destination directory = " + destinationDir)
         destination = None
-        #destination = os.path.join( destinationDir, filename )
-        #noErrorOK  = True # When noErrorOK == True -> no error/Exception occured
         status     = "OK" # Status of download :[OK | ERROR | CANCELED | ERRORFILENAME]
         
         try:
@@ -224,12 +195,7 @@ class PassionXbmcItemInstaller(ArchItemInstaller):
                     print(str(e))
                     print ("_downloadFile: error during reading of the remote file and writing it locally: " + str(sys.exc_info()[0]))
                     print_exc()
-                    #noErrorOK  = False
                     status = "ERROR"
-                    # End of writing: Closing the connection and the file
-                    #connection.close()
-                    #file.close()
-                    #raise e
                 try:
                     # Compute percent of download in progress
                     New_percent_downloaded = min((num_blocks*block_size*100)/self.filesize, 100)
@@ -237,17 +203,10 @@ class PassionXbmcItemInstaller(ArchItemInstaller):
                 except Exception, e:        
                     print("_downloadFile - Exception computing percentage downloaded")
                     print(str(e))
-                    #noErrorOK  = False
                     New_percent_downloaded = 0
-                    #status = "ERROR"
-                    # End of writing: Closing the connection and the file
-                    #connection.close()
-                    #file.close()
-                    #raise e
                 # We send an update only when percent number increases
                 if (New_percent_downloaded > percent_downloaded):
                     percent_downloaded = New_percent_downloaded
-                    #print ("_downloadFile - Downloaded %d %%"%percent_downloaded)
                     # Call UI callback in order to update download progress info
                     if (progressBar != None):
                         progressBar.update(percent_downloaded)

@@ -59,27 +59,20 @@ _ = sys.modules[ "__main__" ].__language__
 
 TYPE_ROOT               = _( 10 )
 TYPE_SKIN               = _( 11 )
+TYPE_SKIN_NIGHTLY       = _( 1101 )
 TYPE_SCRAPER            = _( 12 )
+TYPE_SCRAPER_MUSIC      = _( 1201 )
+TYPE_SCRAPER_VIDEO      = _( 1202 )
 TYPE_SCRIPT             = _( 13 )
 TYPE_PLUGIN             = _( 14 )
 TYPE_PLUGIN_MUSIC       = _( 15 )
 TYPE_PLUGIN_PICTURES    = _( 16 )
 TYPE_PLUGIN_PROGRAMS    = _( 17 )
 TYPE_PLUGIN_VIDEO       = _( 18 )
+TYPE_NEW                = _( 22 )
+
 
 #INDEX_ROOT              = None
-INDEX_SKIN              = 0
-INDEX_SCRAPER           = 1
-INDEX_SCRAPER_MUSIC     = 2
-INDEX_SCRAPER_VIDEO     = 3
-INDEX_SCRIPT            = 4
-INDEX_PLUGIN            = 5
-INDEX_PLUGIN_MUSIC      = 6
-INDEX_PLUGIN_PICTURES   = 7
-INDEX_PLUGIN_PROGRAMS   = 8
-INDEX_PLUGIN_VIDEO      = 9
-
-
 INDEX_SKIN              = 0
 INDEX_SKIN_NIGHTLY      = 1
 INDEX_SCRAPER           = 2
@@ -357,13 +350,31 @@ class configCtrl:
             # ATTENTION: Ne pas changer l'ordre de ce tableau, il correspond aux index (INDEX_SKIN ...)
 #            self.remotedirList   = [ SRV_DIR_SKIN, SRV_DIR_SCRAPER, SRV_DIR_SCRIPT, SRV_DIR_PLUGIN, SRV_DIR_PLUGIN_MUSIC, 
 #                                     SRV_DIR_PLUGIN_PICTURES, SRV_DIR_PLUGIN_PROGRAMS, SRV_DIR_PLUGIN_VIDEO ]
-            self.remotedirList   = [ SRV_DIR_SKIN, SRV_DIR_SCRAPER, SRV_DIR_SCRAPER_MUSIC, SRV_DIR_SCRAPER_VIDEO, SRV_DIR_SCRIPT, 
-                                     SRV_DIR_PLUGIN, SRV_DIR_PLUGIN_MUSIC, SRV_DIR_PLUGIN_PICTURES, SRV_DIR_PLUGIN_PROGRAMS, SRV_DIR_PLUGIN_VIDEO ]
+            self.remotedirList   = [ SRV_DIR_SKIN, 
+                                     SRV_DIR_SKIN, 
+                                     SRV_DIR_SCRAPER, 
+                                     SRV_DIR_SCRAPER_MUSIC, 
+                                     SRV_DIR_SCRAPER_VIDEO, 
+                                     SRV_DIR_SCRIPT, 
+                                     SRV_DIR_PLUGIN, 
+                                     SRV_DIR_PLUGIN_MUSIC, 
+                                     SRV_DIR_PLUGIN_PICTURES, 
+                                     SRV_DIR_PLUGIN_PROGRAMS, 
+                                     SRV_DIR_PLUGIN_VIDEO ]
             
             # Repertoire locaux
             # ATTENTION: Ne pas changer l'ordre de ce tableau, il correspond aux index (INDEX_SKIN ...)
-            self.localdirList    = [ self.themesDir, self.scraperDir, self.scriptDir, self.pluginDir,
-                self.pluginMusDir, self.pluginPictDir, self.pluginProgDir, self.pluginVidDir ]
+            self.localdirList    = [ self.themesDir,
+                                     self.themesDir,
+                                     self.scraperDir, 
+                                     self.scraperDir, 
+                                     self.scraperDir, 
+                                     self.scriptDir, 
+                                     self.pluginDir,
+                                     self.pluginMusDir, 
+                                     self.pluginPictDir, 
+                                     self.pluginProgDir, 
+                                     self.pluginVidDir ]
 
             #TODO: A supprimer et remplacer par self.typeList une fois le code mias a jour dans les fichiers utilisant CONF
             self.downloadTypeLst = [ "Themes", "Scrapers", "Scripts", "Plugins",
@@ -371,13 +382,31 @@ class configCtrl:
             
             # Type d'elements
             # ATTENTION: Ne pas changer l'ordre de ce tableau, il correspond aux index (INDEX_SKIN ...)
-            self.typeList = [ TYPE_SKIN, TYPE_SCRAPER, TYPE_SCRIPT, TYPE_PLUGIN, TYPE_PLUGIN_MUSIC,    
-                              TYPE_PLUGIN_PICTURES, TYPE_PLUGIN_PROGRAMS, TYPE_PLUGIN_VIDEO    ] # Note: TYPE_ROOT est en dehors de la liste
+            self.typeList = [ TYPE_SKIN,
+                              TYPE_SKIN_NIGHTLY,
+                              TYPE_SCRAPER,
+                              TYPE_SCRAPER_MUSIC,
+                              TYPE_SCRAPER_VIDEO,
+                              TYPE_SCRIPT, 
+                              TYPE_PLUGIN, 
+                              TYPE_PLUGIN_MUSIC,    
+                              TYPE_PLUGIN_PICTURES, 
+                              TYPE_PLUGIN_PROGRAMS, 
+                              TYPE_PLUGIN_VIDEO ] # Note: TYPE_ROOT est en dehors de la liste
 
             # Thumbs des elements selon le type
             # ATTENTION: Ne pas changer l'ordre de ce tableau, il correspond aux index (INDEX_SKIN ...)
-            self.thumbList    = [ THUMB_SKIN, THUMB_SCRAPER, THUMB_SCRIPT, THUMB_PLUGIN, THUMB_PLUGIN_MUSIC, 
-                                  THUMB_PLUGIN_PICTURES, THUMB_PLUGIN_PROGRAMS,THUMB_PLUGIN_VIDEO   ] # Note: TYPE_ROOT est en dehors de la liste
+            self.thumbList    = [ THUMB_SKIN,
+                                  THUMB_SKIN_NIGHTLY,
+                                  THUMB_SCRAPER, 
+                                  THUMB_SCRAPER_MUSIC,
+                                  THUMB_SCRAPER_VIDEO,
+                                  THUMB_SCRIPT, 
+                                  THUMB_PLUGIN, 
+                                  THUMB_PLUGIN_MUSIC, 
+                                  THUMB_PLUGIN_PICTURES, 
+                                  THUMB_PLUGIN_PROGRAMS,
+                                  THUMB_PLUGIN_VIDEO ] # Note: TYPE_ROOT est en dehors de la liste
             
             # Filtre sur les elemens a affciher selon le cas (racine ou plugin)
             self.rootDisplayList   = [ INDEX_SKIN, INDEX_SCRAPER, INDEX_SCRIPT, INDEX_PLUGIN ]                                # Liste de la racine: Cette liste est un filtre ( utilisant l'index ) sur les listes ci-dessus

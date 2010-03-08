@@ -29,10 +29,38 @@
   <string id="22">Latest Add-ons</string>
   <string id="2201">All</string>
 
+  <string id="23">Message(s)</string>
   <string id="24">Sivu</string>
   <string id="25">Kohdetta</string>
   <string id="26">Kohde</string>
   <string id="27">/</string>
+
+  <string id="28">Nightly</string>
+  <string id="29">Nightly Builds</string>
+  <string id="30">Debug Info</string>
+  <string id="31">Caches Cleaner</string>
+  <string id="32">Servers</string>
+
+  <string id="41">Reset</string>
+  <string id="42">Hide Infos</string>
+  <string id="43">Hide CUBE³</string>
+  <string id="44">Rotate Icon</string>
+  <string id="45">Hide Compass</string>
+  <string id="46">Compass Icon</string>
+  <string id="47">Compass Fanart</string>
+
+  <string id="51">Hide Fanart</string>
+  <string id="52">Misc Options</string>
+  <string id="53">Changelog</string>
+  <string id="54">Build Availability</string>
+  <string id="55">Update XBMC</string>
+  <string id="56">Manage Exclude</string>
+  <string id="57">Limit:</string>
+  <string id="58">-</string>
+  <string id="59">-</string>
+  <string id="60">-</string>
+  <string id="61">-</string>
+  <string id="62">-</string>
 
   <!--MISC STRINGS -->
   <string id="100">Valitse XBMC:n asennuskansio</string>
@@ -118,9 +146,35 @@
   <string id="180">Valitun tiedoston lataus</string>
   <string id="181">Haluatko ladata valitun tiedoston?</string>
 
+  <string id="182">End of the extraction</string>
+
   <string id="184">Päivitä</string>
   <string id="185">Laske koko</string>
   <string id="186">Lasketaan kansion kokoa</string>
+  <string id="187">UnRar: %i of %i items</string>
+  <string id="188">UnZip: %i of %i items</string>
+  <string id="189">Size: %.2f / %.2f Mb</string>
+  <string id="190">Size: %.2f / ? Mb</string>
+  <string id="191">kb/s</string>
+
+  <!--FORUM DIRECT INFOS STRINGS -->
+  <string id="199">Topics</string>
+  <string id="200">Profile</string>
+  <string id="201">Connect</string>
+  <string id="202">Forum List</string>
+  <string id="203">Forum Passion-XBMC</string>
+  <string id="205">Please enter your login Passion-XBMC</string>
+  <string id="206">Please now enter the password</string>
+  <string id="207">Incomplete identification</string>
+  <string id="208">Identification canceled</string>
+  <string id="209">Welcome</string>
+  <string id="210">You are connected!</string>
+  <string id="211">You have %i message!</string>
+  <string id="212">Personal messages</string>
+  <string id="213">%i Personal messages of recovery!</string>
+  <string id="214">Breathe deeply and repeat testing</string>
+  <string id="215">Goodbye</string>
+  <string id="216">Personal messages...</string>
 
   <string id="236">Vahvista uuden aiheen lisäys:</string>
   <string id="237">Ohita</string>
@@ -145,6 +199,8 @@
   <string id="362">Luotu:</string>
   <string id="363">Viimeksi muokattu:</string>
   <string id="364">Viimeksi käytetty:</string>
+  <string id="365">Contains</string>
+  <string id="366">Item(s)</string>
 
   <!--SETTINGS STRINGS -->
   <string id="499">Versio: %s</string>
@@ -171,6 +227,8 @@
   <string id="519">Estä XBMC:n sammutus kunnes nettiselain on suljettu</string>
   <string id="520">Valitse nettiselain</string>
   <string id="521">Anna nettiselaimen nimi</string>
+  <string id="522">Shortcut of "Installer" button</string>
+  <string id="523">Color Labels</string>
 
   <string id="530">Älä näytä käynnistystunnusta</string>
   <string id="531">Ulkoasu</string>
@@ -178,8 +236,16 @@
   <string id="533">Koska olet muuttanut IPX-ulkoasun asetuksia täytyy</string>
   <string id="534">ohjelma käynnistää uudelleen. Haluatko käynnistää nyt?</string>
 
+  <string id="540">Support</string>
+  <string id="541">Default[CR]Settings</string>
+  <string id="542">(Manager only)</string>
+
+  <string id="550">French support</string>
+  <string id="551">English support</string>
+  <string id="552">Click to get help!</string>
+
   <!--DESCRIPTION STRINGS -->
-  <string id="600">Selite</string>
+  <string id="599">Add-ons Infos</string>
   <string id="601">Tyyppi</string>
   <string id="602">Versio</string>
   <string id="603">Päiväys</string>
@@ -201,8 +267,14 @@
   <string id="619">Ruotsi</string>
   <string id="620">Tekijä</string>
   <string id="621">Tiedostonimi</string>
+  <string id="622">CLICK FOR ZOOM IMAGE</string>
+  <string id="623">IMAGE[CR][CR]UNAVAILABLE</string>
+  <string id="624">Image</string>
+  <string id="625">Flip Image</string>
 
   <!--ABOUT STRINGS -->
+  <string id="698">Statut</string>
+  <string id="699">Revision</string>
   <string id="700">Versio</string>
   <string id="701">Tekijät</string>
   <string id="702">Kehittäjät</string>
@@ -214,14 +286,95 @@
   <string id="708">SVN</string>  
   <string id="709">Kielet</string>  
   <string id="710">Asennusohjelman päivitykset XBMC:n teemoihin, skripteihin, lisäosiin ja skripteihin sekä hakupaikkoihin tapahtuvat FTP-yhteydellä Passion-XBMC (passion-xbmc.org) Team Passion-XBMC:n ylläpitämältä sivustolta.</string>  
-    
+
+  <string id="720">Others Devs &#38; Helper</string>
+  <string id="730">Special Thanks to:</string>
+  
   <!--CONTEXT MENU STRINGS -->
+  <string id="999">Menu</string>
   <string id="1000">Asenna</string>
   <string id="1001">Tietoja</string>
   <string id="1002">Vaihda media-valikkoa</string>
-  <string id="1003"></string>
-  <string id="1004"></string>
-  <string id="1005"></string>
-  <string id="1006"></string>
-  <string id="1007"></string> 
+
+  <!-- Caches Cleaner -->
+  <string id="32650">Cleaning: %s</string>
+  <string id="32651">%i files and %i folders cleaned</string>
+  <string id="32652">Dir: %s</string>
+  <string id="32653">File: %s</string>
+  <string id="32654">Clear All Caches</string>
+  <string id="32655">Clear All Caches of XBMC</string>
+  <string id="32656">Clear XBMC Cache [COLOR=88FFFFFF][%s][/COLOR]</string>
+  <string id="32657">Clear MS Cache [COLOR=88FFFFFF][E:\CACHE\][/COLOR]</string>
+  <string id="32658">Clear XBox Caches [COLOR=88FFFFFF][X:\, Y:\, Z:\][/COLOR]</string>
+  <string id="32659">Caches Cleaner...</string>
+  <string id="32660">Caches Cleaner</string>
+  <string id="32661">Clear Caches</string>
+  <string id="32662">Clear All Caches of Installer Passion-XBMC</string>
+
+  <!-- XBMC SVN Updater for XBox -->
+  <string id="32700">Warning!</string>
+  <string id="32701">In this menu, you can delete, rename, copy ... files from your Xbox or even format a partition. Improper handling can lead to a system error. Use this menu if you know exactly what you do.</string>
+  <string id="32702">Warning! Read ...</string>
+  <string id="32709">Before starting the Updater will do a verification test. It will check the existence of the Build and your installation folder of XBMC. If no error during this check, a confirmation of update will be requested.</string>
+  <string id="32749">Update</string>
+  <string id="32750">Run the update now</string>
+  <string id="32751">Press "YES" to proceed update your XBMC.\nAnd do nothing that could make a system error.\nBe patient and wait until the execution...</string>
+  <string id="32752">Update completed successfully.\nWill you return to XBMC?</string>
+  <string id="32753">Rebooting XBMC...</string>
+  <string id="32760">Return to XBMC</string>
+  <string id="32761">Reload Updater</string>
+  <string id="32770">Restart XBox</string>
+  <string id="32780">Shotdown XBox</string>
+  <string id="32789">Installation directory of XBMC</string>
+  <string id="32790">Files Manager</string>
+  <string id="32791">Text Editor</string>
+  <string id="32795">Settings</string>
+
+  <string id="32799">Success</string>
+  <string id="32800">Cleaner</string>
+  <string id="32801">About This Section</string>
+  <string id="32802">The Cleaner is designed to reset XBMC. It will delete folders and/or files that were created during the first use of XBMC or just delete the settings. It also allows clean caches E, X, Y, Z.</string>
+  <string id="32810">Reset XBMC</string>
+  <string id="32811">Confirm the reset of XBMC.\nWarning, this action will reset the folder "UserData" to the original state and you lose all: [Database, thumbnails, guisettings, Advancedsettings, ...]. Are you sure?</string>
+  <string id="32812">Enter name to create a backup, just in case!</string>
+  <string id="32813">Reseting XBMC done.</string>
+  <string id="32820">Clear XBMC Settings</string>
+  <string id="32821">Confirm delete XBMC settings.\nWarning, this action will remove the file guisettings.xml. Are you sure?</string>
+  <string id="32822">Cleaning settings XBMC done.</string>
+  <string id="32830">Clear XBMC Save</string>
+  <string id="32831">Confirm delete the backup of XBMC.\nOnly useful to erase the traces of an old version of XBMC. Are you sure?</string>
+  <string id="32832">Cleaning save XBMC done.</string>
+  <string id="32840">Clear Caches X, Y &amp; Z</string>
+  <string id="32841">Confirm emptying Caches X:\, Y:\, Z:\. Are you sure?</string>
+  <string id="32842">Emptying the Caches finished.</string>
+  <string id="32850">Clear Cache E</string>
+  <string id="32851">Confirm emptying Cache E:\CACHE\nAre you sure?</string>
+  <string id="32852">Emptying the Cache E finished.</string>
+
+  <string id="32860">XBMC Nightly Builds</string>
+  <string id="32861">Fetching Unofficial Nightly Builds...</string>
+  <string id="32862">Confirm the download!</string>
+  <string id="32863">Are you sure you want to download this build?</string>
+  <string id="32864">Confirm Launching Update</string>
+  <string id="32865">Your version: %s</string>
+  <string id="32866">Shift to: %s</string>
+  <string id="32867">There have not updated for your Platform!</string>
+  <string id="32868">Be patient it would soon!</string>
+
+  <string id="32900">Use this package to over-write your current installed application.</string>
+  <string id="32901">Use this package to install a fresh copy using the latest SVN release.</string>
+  <string id="32902">Use this package to install a full version on your deb based Linux.</string>
+  <string id="32903">Use this package for a clean install or upgrade on your XBMC.</string>
+  <string id="32904">Use this package to install a full version on your OS X Bases Systems.</string>
+
+  <string id="32910">Add/Remove file or folder on update</string>
+  <string id="32911">Add file</string>
+  <string id="32912">Add folder</string>
+  <string id="32913">Remove all</string>
+  <string id="32914">Browse for exclude file on update</string>
+  <string id="32915">Browse for exclude folder on update</string>
+  <string id="32916">Confirm remove</string>
+  <string id="32917">Are you sure you want to remove everything?</string>
+  <string id="32918">Are you sure you want to remove:</string>
+  <string id="32919">Excluded: %s</string>
 </strings>

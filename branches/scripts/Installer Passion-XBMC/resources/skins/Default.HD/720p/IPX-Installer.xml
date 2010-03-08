@@ -3189,7 +3189,7 @@
 						<aligny>center</aligny>
 					</control>
 					<control type="button" id="201">
-						<description>content Passion-XBMC Web</description>
+						<description>content Passion-XBMC</description>
 						<height>40</height>
 						<width>221</width>
 						<textoffsetx>20</textoffsetx>
@@ -3199,8 +3199,8 @@
 						<texturefocus border="5">IPX-button-focus.png</texturefocus>
 						<texturenofocus border="5">IPX-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
-						<label>Passion-XBMC Web</label>
-						<enable>!stringcompare(Container.Property(DlSource),Passion XBMC Web)</enable>
+						<label>Passion-XBMC</label>
+						<enable>!stringcompare(Container.Property(DlSource),Passion XBMC)</enable>
 						<onclick>SetFocus(50)</onclick>
 					</control>
 					<control type="button" id="202">
