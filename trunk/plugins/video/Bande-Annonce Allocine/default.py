@@ -7,8 +7,8 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/"
 __credits__      = "Team XBMC passion, http://passion-xbmc.org/developpement-python/%28script%29-sporlive-display/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "07-03-2010"
-__version__      = "1.5.1"
+__date__         = "10-03-2010"
+__version__      = "1.5.2"
 __svn_revision__  = "$Revision$".replace( "Revision", "" ).strip( "$: " )
 __XBMC_Revision__ = "20000" #XBMC Babylon
 __useragent__    = "Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.0.1) Gecko/2008070208 Firefox/3.0.1"
@@ -245,6 +245,7 @@ def get_film_info(id_allo , BA = False):
     film_url = "http://www.allocine.fr/film/fichefilm_gen_cfilm=%s.html" % id_allo
     film_data = get_html_source( film_url )
     #save_data(film_data)
+    
     try: media_list = re.findall( '<a href="/video/player_gen_cmedia=(.*?)&cfilm=.*.html"><b>', film_data )
     except:
         print_exc()
@@ -254,6 +255,28 @@ def get_film_info(id_allo , BA = False):
         if media_list:
             for id_media in media_list: BA_list.append(get_media_link(id_media))
         film["Bande-annonces"] = BA_list
+        
+#     match = re.search( '<a href="/video/player_gen_cmedia=(.*?)&cfilm=.*.html"><b>', film_data )
+#     if match :
+#         url_media = "http://www.allocine.fr/video/player_gen_cmedia=%s&cfilm=%s.html" % (match.group(1) , id_allo)
+#         print "url page média: %s" % "http://www.allocine.fr/video/player_gen_cmedia=%s&cfilm=%s.html" % (match.group(1) , id_allo)
+#         media_data = get_html_source( url_media )
+#         #save_data(media_data)
+#     else: media_data = None     
+#     
+#     if media_data:
+#         debut = media_data.find("carouselcontainer_BA\" class=") # renvoi 1
+#         print "début: %s" % debut
+#         fin = media_data.find("Autres bandes-annonces") #renvoi 5
+#         print "fin: %s" % fin
+#         media_data[debut:fin] #renvoi "lexs"
+#         save_data(media_data)
+#         match = re.search( '<!-- CONSTRAINT RIGHT COLUMN -->(.*)<div id="VideoEnplus"  class="">' , media_data )
+#         print match
+#     if match :
+#         print "colonne trouvée"
+#         print (match.group(1))
+    
     return film
 
 def get_media_link(id_media):
@@ -434,18 +457,12 @@ url=None
 name=None
 mode=None
 
-try:
-        url=urllib.unquote_plus(params["url"])
-except:
-        pass
-try:
-        name=urllib.unquote_plus(params["name"])
-except:
-        pass
-try:
-        mode=int(params["mode"])
-except:
-        pass
+try: url=urllib.unquote_plus(params["url"])
+except: pass
+try: name=urllib.unquote_plus(params["name"])
+except: pass
+try: mode=int(params["mode"])
+except: pass
 
 print "Mode: "+str(mode)
 print "URL: "+str(url)
@@ -530,7 +547,7 @@ if mode == 4:
         print film_in_cine["director"]
         print film_in_cine["cast"]
         print film_in_cine["duree"]
-        print int(film_in_cine["sortie"].split("/")[2])
+        if not film_in_cine["sortie"] == None: print int(film_in_cine["sortie"].split("/")[2])
         print "################################################################"
         save_data( film_in_cine , os.path.join ( cache_dir , "film-%s.txt" % film_in_cine["id_allo"]))
         try: addFilm(film_in_cine["name"],"%s##%s" % (film_in_cine["poster"] , film_in_cine["id_allo"]),2,film_in_cine["poster"],film_in_cine["genre"] ,film_in_cine["director"][0] ,film_in_cine["cast"] ,film_in_cine["syno"] ,film_in_cine["duree"] ,int(film_in_cine["sortie"].split("/")[2]) )
@@ -553,11 +570,11 @@ if mode == 6:
     print emission_list
     picture = {}
     picture["La Minute"] = "http://images.allocine.fr/r_720_x/commons/logos/Logos_minute_160x128.jpg"
-    picture["Tueurs en SÃ©ries"] = "http://images.allocine.fr/r_720_x/commons/logos/Logos_tes_160x128.jpg"
+    picture["Tueurs en Séries"] = "http://images.allocine.fr/r_720_x/commons/logos/Logos_tes_160x128.jpg"
     picture["Merci Qui?"] = "http://images.allocine.fr/r_720_x/commons/logos/Logos_merciqui_160x128.jpg"
     picture["Direct 2 DVD"] = "http://images.allocine.fr/r_720_x/commons/logos/Logos_D2D_160x128.jpg"
     picture["Faux Raccord"] = "http://images.allocine.fr/r_720_x/commons/logos/Logos_FauxR_160x128.jpg"
-    picture["Plein 2 CinÃ©"] = "http://images.allocine.fr/r_720_x/commons/logos/Logos_p2c_160x128.jpg"
+    picture["Plein 2 Ciné"] = "http://images.allocine.fr/r_720_x/commons/logos/Logos_p2c_160x128.jpg"
     for emission in emission_list:
         try: 
             if xbmcplugin.getSetting("hdimage") == "true":
