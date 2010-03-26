@@ -574,18 +574,20 @@ if mode == 6:
     print emission_list
     picture = {}
     picture["La Minute"] = "http://images.allocine.fr/r_720_x/commons/logos/Logos_minute_160x128.jpg"
-    picture["Tueurs en Séries"] = "http://images.allocine.fr/r_720_x/commons/logos/Logos_tes_160x128.jpg"
+    picture["Tueurs en S\xc3\xa9ries"] = "http://images.allocine.fr/r_720_x/commons/logos/Logos_tes_160x128.jpg"
     picture["Merci Qui?"] = "http://images.allocine.fr/r_720_x/commons/logos/Logos_merciqui_160x128.jpg"
     picture["Direct 2 DVD"] = "http://images.allocine.fr/r_720_x/commons/logos/Logos_D2D_160x128.jpg"
     picture["Faux Raccord"] = "http://images.allocine.fr/r_720_x/commons/logos/Logos_FauxR_160x128.jpg"
-    picture["Plein 2 Ciné"] = "http://images.allocine.fr/r_720_x/commons/logos/Logos_p2c_160x128.jpg"
+    picture["Plein 2 Cin\xc3\xa9"] = "http://images.allocine.fr/r_720_x/commons/logos/Logos_p2c_160x128.jpg"
     for emission in emission_list:
         try: 
             if xbmcplugin.getSetting("hdimage") == "true":
                 image = picture["%s" % emission[1]].replace("r_760_x","")
             else: image = picture["%s" % emission[1]]
             
-        except : image = ""
+        except : 
+            print_exc()
+            image = ""
         addDir(emission[1], "http://www.allocine.fr%s" % emission[0], 1 , image )
         
 
