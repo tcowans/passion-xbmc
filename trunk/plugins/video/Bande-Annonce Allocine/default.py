@@ -7,8 +7,8 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/"
 __credits__      = "Team XBMC passion, http://passion-xbmc.org/developpement-python/%28script%29-sporlive-display/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "10-03-2010"
-__version__      = "1.5.2"
+__date__         = "26-03-2010"
+__version__      = "1.5.3"
 __svn_revision__  = "$Revision$".replace( "Revision", "" ).strip( "$: " )
 __XBMC_Revision__ = "20000" #XBMC Babylon
 __useragent__    = "Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.0.1) Gecko/2008070208 Firefox/3.0.1"
@@ -284,28 +284,21 @@ def get_media_link(id_media):
     media_data = get_html_source( media_url )
     #save_data(media_data)
     media = {}
-    try: media_data=re.compile( '<AcVisionVideo(.*?)/>', re.DOTALL ).findall(media_data)[0]
-    except:
-        print "problème de récupération info média"
-        print_exc()
-    try:media["name"] = set_entity_or_charref(re.findall( 'title="(.*?)"', media_data )[0])
-    except:
-        media["name"] = ""
-        print_exc()
+    
+    match = re.search( '<AcVisionVideo(.*?)/>', media_data , re.DOTALL )
+    if match: media_data = match.group(1)
+    else : print "problème de récupération info média"
+    
+    match = re.search( 'title="(.*?)"', media_data )
+    if match: media["name"] = set_entity_or_charref(match.group(1))
+    else: media["name"] = ""
     print "récupération info média: %s" % media["name"]
-    try:media["ld"] = re.findall( 'ld_path="(.*?)"', media_data )[0]
-    except:
-        media["ld"] = ""
-        print_exc()
-    try:media["md"] =re.findall( 'md_path="(.*?)"', media_data )[0]
-    except:
-        media["md"] = ""
-        print_exc()
-    try:media["hd"] = re.findall( 'hd_path="(.*?)"', media_data )[0]
-    except:
-        media["hd"] = ""
-        print_exc()
-        
+    
+    for video_quality in [ "ld" , "md" , "hd"]:
+        match = re.search( '%s_path="(.*?)"' % video_quality , media_data )
+        if match: media[video_quality] = match.group(1)
+        else: media[video_quality] = ""
+    print media    
     return media
 
 def get_film_in_cinema( id_cine ):
@@ -321,29 +314,34 @@ def get_film_in_cinema( id_cine ):
     film_cinema = []    
     for unit in MEDIA:
         film = {}
+        #save_data(unit)
         try:
-            raw = re.compile( "De(.*?)                          </p>", re.DOTALL ).findall(unit)[0]
-            film["director"] = re.findall( "title='(.*?)'", raw )
+             raw = re.compile( "De(.*?)\s+</p>", re.DOTALL ).search(unit)
+             film["director"] = ""
+             for i in re.findall( "title='(.*?)'", raw.group() ):
+                film["director"] = film["director"] + " , " + i
+             film["director"] = film["director"].strip(" ,")
+             
         except: print_exc()
         try:
-            raw = re.compile( "Avec(.*?)                          </p>", re.DOTALL ).findall(unit)[0]
+            raw = re.compile( "Avec(.*?)\s+</p>", re.DOTALL ).findall(unit)[0]
             film["cast"] = re.findall( "title='(.*?)'", raw )
         except: print_exc()
         
-        match = re.search('class="titlebar"  -->\r\n                    <p>\r\n                        \r\n                                (.*?)\r\n                            \r\n                        \((.*?)\)\r\n                        \r\n                                - Date de sortie : <b>(.*?)</b>\r\n                            \r\n                    </p>\r\n                    \r\n                            <p>', unit )
+        match = re.search('class="titlebar"  -->\s+<p>\s+(.*?)\s+\((.*?)\)\s+- Date de sortie : <b>(.*?)</b>\s+</p>\s+<p>', unit )
         if match:
             film["sortie"]= match.group(3)
             film["genre"]= match.group(1)
             film["duree"]= match.group(2)
         else:
-            film["sortie"]= None
-            film["genre"]= None
-            film["duree"]= None
+            film["sortie"]= ""
+            film["genre"]= ""
+            film["duree"]= ""
 
         
-        match = re.search('<!-- /notationbar -->\r\n                    <p>\r\n(.*?)\r\n                    </p>\r\n                    <!-- !! Existing template -->', unit )
+        match = re.search('<!-- /notationbar -->\s+<p>\s+(.*?)\s+</p>\s+<!-- !! Existing template -->', unit )
         if match: film["syno"] = match.group(1).strip(" ")
-        else: film["syno"] = None
+        else: film["syno"] = ""
             
         match = re.search('<a href=\'/film/fichefilm_gen_cfilm=(.*?).html\'>(.*?)</a></h2>', unit )
         if match:
@@ -427,9 +425,10 @@ def search_cinema():
 def get_emission_list(url):
     data = get_html_source( url )
     #save_data(data)
-    match = re.compile('<div class="clmmastertopic"><a href="/video/emissions/">(.*?)<div class="clmmastertopic">',re.DOTALL ).findall( data )
+    match = re.compile('<li class="clmmastertopic"><a href="/video/emissions/">(.*?)<li class="clmmastertopic"><a href="/video/series/">',re.DOTALL ).findall( data )
     if match: menu_emission = match[0]
     else: menu_emission = ""
+    #print "menu emission" + menu_emission
 
     match = re.compile('<a href="(.*?)/">(.*?)</a>',re.DOTALL ).findall( menu_emission )
     if match: emission_list = match
@@ -547,10 +546,12 @@ if mode == 4:
         print film_in_cine["director"]
         print film_in_cine["cast"]
         print film_in_cine["duree"]
-        if not film_in_cine["sortie"] == None: print int(film_in_cine["sortie"].split("/")[2])
+        try : film_in_cine["sortie"] = int(film_in_cine["sortie"].split("/")[2])
+        except : film_in_cine["sortie"] = 0
+        print film_in_cine["sortie"]
         print "################################################################"
         save_data( film_in_cine , os.path.join ( cache_dir , "film-%s.txt" % film_in_cine["id_allo"]))
-        try: addFilm(film_in_cine["name"],"%s##%s" % (film_in_cine["poster"] , film_in_cine["id_allo"]),2,film_in_cine["poster"],film_in_cine["genre"] ,film_in_cine["director"][0] ,film_in_cine["cast"] ,film_in_cine["syno"] ,film_in_cine["duree"] ,int(film_in_cine["sortie"].split("/")[2]) )
+        try: addFilm(film_in_cine["name"],"%s##%s" % (film_in_cine["poster"] , film_in_cine["id_allo"]),2,film_in_cine["poster"],film_in_cine["genre"] ,film_in_cine["director"] ,film_in_cine["cast"] ,film_in_cine["syno"] ,film_in_cine["duree"] ,int(film_in_cine["sortie"]) )
         except : print_exc()
 
 
@@ -558,7 +559,10 @@ if mode == 5:
     
     ba = get_media_link( url )
     trailer = ba["%s" % quality ]
-    
+    while trailer == "":
+        select = xbmcgui.Dialog().select("Média indisponible, choisir une autre qualité", [ "ld" , "md" , "hd"])
+        if select == -1: break
+        else: trailer = ba["%s" % [ "ld" , "md" , "hd"][select] ]
     print "name: %s" % name
     print "trailer: %s" % trailer
     playableVideoItem = xbmcgui.ListItem( name , path = trailer) 
