@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+<setting type="lsep"/>
+   <setting id="skin_type" type="enum" label="30001" lvalues="30002|30003" default="1"/>
+   <setting type="action" label="30004" default="RunScript(special://home/plugins/programs/Skins Nightly Builds Passion/resources/del_cache.py)"/>
+</settings>

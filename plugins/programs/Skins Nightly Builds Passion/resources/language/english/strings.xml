@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!-- strings 32000 thru 32999 reserved for scripts -->
+  <!--SETTINGS STRINGS -->
+  <string id="30001">Skin type</string>
+  <string id="30002">Stable</string>
+  <string id="30003">Nightlies</string>
+  <string id="30004">Empty cache</string>
+  <string id="30005"></string>
+  <string id="30006"></string>
+  <string id="30007"></string>
+  
+  <!--GENERAL STRINGS -->
+  <string id="30031">Download</string>
+  <string id="30032">Do you want to download this skin:</string>
+  <string id="30033">Initialisation...</string>
+  <string id="30034">Progress</string>
+  <string id="30035">Cancel</string>
+  <string id="30036">Download canceled</string>
+  <string id="30037">Extraction</string>
+  <string id="30038">Do you want to install this skin:</string>
+  <string id="30039">VPlease wait!</string>
+  <string id="30040">Extraction in progress...</string>
+  <string id="30041">Install aborded</string>
+  <string id="30042">Skin in use</string>
+  <string id="30043">Success !!!</string>
+  <string id="30044">skin %s installed</string>
+</strings>
