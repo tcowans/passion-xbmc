@@ -36,6 +36,7 @@ print SKIN_DIR
 
 import unzip
 
+
 #variables:
 OK = True
 skin_unziped = False
@@ -189,7 +190,7 @@ if mode==1:
     print cur_skin
     if name == cur_skin: dialog.ok( Language.getLocalizedString(30041) , Language.getLocalizedString(30042) )
     elif temp_zip: skin_unziped = unzip_skin( temp_zip , name )
-    if skin_unziped : xbmc.executebuiltin("XBMC.Notification(%s,%s,5000,%s)"%(Language.getLocalizedString(30043),Language.getLocalizedString(30044) % name, ""))
+    if skin_unziped : xbmc.executebuiltin("XBMC.Notification(%s,%s,5000,%s)"%( Language.getLocalizedString(30043), "%s %s" % (Language.getLocalizedString(30044) , name) , ""))
     OK = False
 
 end_of_directory( OK )
