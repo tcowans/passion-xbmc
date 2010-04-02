@@ -12,7 +12,7 @@
 				<posy>0</posy>
 				<width>1100</width>
 				<height>720</height>
-				<texture border="15,0,0,0" flipx="true">MediaBladeSub.png</texture>
+				<texture border="15,0,0,0" flipx="true">arkanoid-MediaBladeSub.png</texture>
 			</control>
 			<control type="button">
 				<description>Close Window button</description>
@@ -23,8 +23,8 @@
 				<label>-</label>
 				<font>-</font>
 				<onclick>PreviousMenu</onclick>
-				<texturefocus>DialogCloseButton-focus.png</texturefocus>
-				<texturenofocus>DialogCloseButton.png</texturenofocus>
+				<texturefocus>arkanoid-DialogCloseButton-focus.png</texturefocus>
+				<texturenofocus>arkanoid-DialogCloseButton.png</texturenofocus>
 				<visible>system.getbool(input.enablemouse)</visible>
 				<onleft>9000</onleft>
 				<onright>9000</onright>
@@ -91,7 +91,7 @@
 								<width>200</width>
 								<height>115</height>
 								<aspectratio>stretch</aspectratio>
-								<texture>GlassOverlay.png</texture>
+								<texture>arkanoid-GlassOverlay.png</texture>
 								<colordiffuse>AAFFFFFF</colordiffuse>
 							</control>
 						</control>
@@ -114,7 +114,7 @@
 								<width>200</width>
 								<height>115</height>
 								<aspectratio>stretch</aspectratio>
-								<texture>GlassOverlay.png</texture>
+								<texture>arkanoid-GlassOverlay.png</texture>
 								<colordiffuse>AAFFFFFF</colordiffuse>
 							</control>
 						</control>
@@ -163,7 +163,7 @@
 								<width>740</width>
 								<height>30</height>
 								<visible>Control.HasFocus(49)</visible>
-								<texture>MenuItemFO.png</texture>
+								<texture>arkanoid-MenuItemFO.png</texture>
 								<animation effect="fade" time="300">Visible</animation>
 								<animation effect="fade" time="300">Hidden</animation>
 							</control>
@@ -273,7 +273,7 @@
 						<width>740</width>
 						<height>4</height>
 						<aspectratio>stretch</aspectratio>
-						<texture>separator.png</texture>
+						<texture>arkanoid-separator.png</texture>
 					</control>
 				</control>
 
@@ -355,8 +355,8 @@
 						<align>center</align>
 						<aligny>center</aligny>
 						<font>font12_title</font>
-						<texturefocus border="5">button-focus.png</texturefocus>
-						<texturenofocus border="5">button-nofocus.png</texturenofocus>
+						<texturefocus border="5">arkanoid-button-focus.png</texturefocus>
+						<texturenofocus border="5">arkanoid-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
 						<label>184</label><!-- label localized in XBMC language -->
 						<visible>false</visible>
@@ -369,8 +369,8 @@
 						<align>center</align>
 						<aligny>center</aligny>
 						<font>font12_title</font>
-						<texturefocus border="5">button-focus.png</texturefocus>
-						<texturenofocus border="5">button-nofocus.png</texturenofocus>
+						<texturefocus border="5">arkanoid-button-focus.png</texturefocus>
+						<texturenofocus border="5">arkanoid-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
 						<label>13009</label><!-- label localized in XBMC language -->
 					</control>
@@ -383,7 +383,7 @@
 			<posy>0</posy>
 			<width>846</width>
 			<height>720</height>
-			<texture flipx="true">HomeBlade.png</texture>
+			<texture flipx="true">arkanoid-HomeBlade.png</texture>
 		</control>
 		<control type="group">
 			<posx>160r</posx>
@@ -397,7 +397,7 @@
 				<posy>0</posy>
 				<width>150</width>
 				<height>35</height>
-				<texture flipx="true" border="32,0,0,0">header.png</texture>
+				<texture flipx="true" border="32,0,0,0">arkanoid-header.png</texture>
 			</control>
 			<control type="label">
 				<description>time label</description>
