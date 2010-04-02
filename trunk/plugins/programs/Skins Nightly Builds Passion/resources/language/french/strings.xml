@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <strings>
   <!-- strings 32000 thru 32999 reserved for scripts -->
   <!--SETTINGS STRINGS -->
@@ -6,7 +6,7 @@
   <string id="30002">Stable</string>
   <string id="30003">SVN</string>
   <string id="30004">Vider le cache</string>
-  <string id="30005">Installer</string>
+  <string id="30005">Installé</string>
   <string id="30006"></string>
   <string id="30007"></string>
   
@@ -25,4 +25,5 @@
   <string id="30042">Skin en cours d'utilisation</string>
   <string id="30043">Succès !</string>
   <string id="30044">skin installée</string>
+  <string id="30045">Supprimer ce skin</string>
 </strings>
