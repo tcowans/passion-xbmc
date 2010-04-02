@@ -52,12 +52,10 @@ def addLink(name,url,iconimage):
 def addDir(name,url,mode,iconimage):
         u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)
         ok=True
-
+    
         already_exists = os.path.exists( os.path.join( SKIN_DIR, name ) )
-        label2 = ( "", Language.getLocalizedString( 30005 ) )[ already_exists ]
-
+        label2 = ( "", Language.getLocalizedString( 30005 ) )[ already_exists ]        
         liz=xbmcgui.ListItem( name, label2, iconImage="DefaultFolder.png", thumbnailImage=iconimage )
-
         infolabels = { "Title": name, "Genre": label2 }
         # Ajout d'un overlay pour dire qu'il est installer
         # ICON_OVERLAY_HD, ICON_OVERLAY_LOCKED, ICON_OVERLAY_NONE, ICON_OVERLAY_RAR, ICON_OVERLAY_HAS_TRAINER
@@ -67,6 +65,13 @@ def addDir(name,url,mode,iconimage):
         overlay = ( overlay, xbmcgui.ICON_OVERLAY_LOCKED )[ ( name.lower() == xbmc.getSkinDir().lower() ) ]
         infolabels.update( { "watched": already_exists, "overlay": overlay } )
         liz.setInfo( type="Video", infoLabels=infolabels )
+        #ajout au menu pour supprimer la skin si elle existe
+        print "overlay %s" % overlay
+        if already_exists and not overlay == 3:
+            script = "special://home/plugins/programs/Skins Nightly Builds Passion/resources/del_cache.py"
+            c_items = []
+            c_items += [ ( Language.getLocalizedString( 30045 ), "XBMC.RunScript(%s,%s,%s)" % ( script, "skin" , os.path.join( SKIN_DIR, name ) ) ) ]
+            liz.addContextMenuItems( c_items, replaceItems=False )
 
         ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=False)
         return ok
