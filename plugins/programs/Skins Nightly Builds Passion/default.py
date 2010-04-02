@@ -5,9 +5,9 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/program/Skins Nightly Builds Passion/"
 __credits__      = "Team XBMC, http://passion-xbmc.org/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "01-04-2010"
+__date__         = "02-04-2010"
 __version__      = "1.0"
-__svn_revision__  = "$Revision: 697 $"
+__svn_revision__  = "$Revision$"
 __XBMC_Revision__ = "20000" #XBMC Babylon
 __useragent__    = "Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.0.1) Gecko/2008070208 Firefox/3.0.1"
 
@@ -31,7 +31,7 @@ CACHE_DIR = os.path.join( BASE_RESOURCE_PATH , "cache" )
 Language = xbmc.Language(os.getcwd())
 DIALOG_PROGRESS = xbmcgui.DialogProgress()
 dialog = xbmcgui.Dialog()
-SKIN_DIR = xbmc.translatePath("special://home\skin")
+SKIN_DIR = xbmc.translatePath("special://home/skin/")
 print SKIN_DIR
 
 import unzip
@@ -52,9 +52,23 @@ def addLink(name,url,iconimage):
 def addDir(name,url,mode,iconimage):
         u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)
         ok=True
-        liz=xbmcgui.ListItem(name, iconImage="DefaultFolder.png", thumbnailImage=iconimage)
-        liz.setInfo( type="file", infoLabels={ "Title": name } )
-        ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=True)
+
+        already_exists = os.path.exists( os.path.join( SKIN_DIR, name ) )
+        label2 = ( "", Language.getLocalizedString( 30005 ) )[ already_exists ]
+
+        liz=xbmcgui.ListItem( name, label2, iconImage="DefaultFolder.png", thumbnailImage=iconimage )
+
+        infolabels = { "Title": name, "Genre": label2 }
+        # Ajout d'un overlay pour dire qu'il est installer
+        # ICON_OVERLAY_HD, ICON_OVERLAY_LOCKED, ICON_OVERLAY_NONE, ICON_OVERLAY_RAR, ICON_OVERLAY_HAS_TRAINER
+        # ICON_OVERLAY_TRAINED, ICON_OVERLAY_UNWATCHED, ICON_OVERLAY_WATCHED, ICON_OVERLAY_ZIP
+        overlay = ( xbmcgui.ICON_OVERLAY_UNWATCHED, xbmcgui.ICON_OVERLAY_WATCHED )[ already_exists ]
+        # verifie si c'est pas le skin courant est change l'overlay pour un lock
+        overlay = ( overlay, xbmcgui.ICON_OVERLAY_LOCKED )[ ( name.lower() == xbmc.getSkinDir().lower() ) ]
+        infolabels.update( { "watched": already_exists, "overlay": overlay } )
+        liz.setInfo( type="Video", infoLabels=infolabels )
+
+        ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=False)
         return ok
 
 def get_params():
@@ -76,6 +90,9 @@ def get_params():
         return param
 
 def end_of_directory( OK ):
+    if ( OK ):
+        # sort by genre so all installed status
+        xbmcplugin.addSortMethod( handle=int( sys.argv[ 1 ] ), sortMethod=xbmcplugin.SORT_METHOD_GENRE )
     xbmcplugin.endOfDirectory( handle=int( sys.argv[ 1 ] ), succeeded=OK )
 
 def get_html_source( url ):
