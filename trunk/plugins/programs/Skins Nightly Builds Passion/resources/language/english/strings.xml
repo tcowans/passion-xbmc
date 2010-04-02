@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
 <strings>
   <!-- strings 32000 thru 32999 reserved for scripts -->
   <!--SETTINGS STRINGS -->
@@ -6,7 +6,7 @@
   <string id="30002">Stable</string>
   <string id="30003">Nightlies</string>
   <string id="30004">Empty cache</string>
-  <string id="30005"></string>
+  <string id="30005">Installed</string>
   <string id="30006"></string>
   <string id="30007"></string>
   
