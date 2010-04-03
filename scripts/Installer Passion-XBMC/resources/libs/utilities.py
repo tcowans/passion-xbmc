@@ -25,10 +25,13 @@ __all__ = [
     "bold_text",
     "italic_text",
     "set_xbmc_carriage_return",
+    "unescape",
     "strip_off",
+#    "strip_off_CSV",
     "Settings",
     "get_infos_path",
     "replaceStrs",
+    "set_cache_thumb_name",
     ]
 
 #Modules general
@@ -36,19 +39,14 @@ import os
 import re
 import sys
 import time
-import urllib
-import urllib2
+import htmllib
+from traceback import print_exc
+
 import elementtree.ElementTree as ET
 
 #modules XBMC
 import xbmc
 import xbmcgui
-
-#module logger
-try:
-    logger = sys.modules[ "__main__" ].logger
-except:
-    import script_log as logger
 
 
 #REPERTOIRE RACINE ( default.py )
@@ -57,6 +55,25 @@ CWD = os.getcwd().rstrip( ";" )
 BASE_SETTINGS_PATH = os.path.join( sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA, "settings.txt" )
 RSS_FEEDS_XML = os.path.join( CWD, "resources", "RssFeeds.xml" )
 
+BASE_THUMBS_PATH = os.path.join( sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA, "Thumbnails" )
+
+
+def set_cache_thumb_name( path ):
+    try:
+        fpath = path
+        # make the proper cache filename and path so duplicate caching is unnecessary
+        filename = xbmc.getCacheThumbName( fpath )
+        thumbnail = os.path.join( BASE_THUMBS_PATH, filename[ 0 ], filename )
+        preview_pic = os.path.join( BASE_THUMBS_PATH, "originals", filename[ 0 ], filename )
+        # if the cached thumbnail does not exist check for dir does not exist create dir
+        if not os.path.isdir( os.path.dirname( preview_pic ) ):
+            os.makedirs( os.path.dirname( preview_pic ) )
+        if not os.path.isdir( os.path.dirname( thumbnail ) ):
+            os.makedirs( os.path.dirname( thumbnail ) )
+        return thumbnail, preview_pic
+    except:
+        print_exc()
+        return "", ""
 
 def get_system_platform():
     """ fonction: pour recuperer la platform que xbmc tourne """
@@ -92,10 +109,10 @@ def parse_rss_xml( xml_path=RSS_FEEDS_XML ):
                         "feed": feed.text,
                         }
             except:
-                logger.EXC_INFO( logger.LOG_DEBUG, sys.exc_info() )
+                print_exc()
         del tree
     except:
-        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+        print_exc()
     return feeds
 
 
@@ -127,21 +144,21 @@ def is_playable_media( filename, media="picture" ):
     try:
         return os.path.splitext( filename )[ 1 ].lower() in media_types
     except:
-        logger.EXC_INFO( logger.LOG_DEBUG, sys.exc_info() )
+        print_exc()
         # si on arrive ici le retour est automatiquement None
 
 
 def getUserSkin():
     """ FONCTION POUR RECUPERER LE THEME UTILISE PAR L'UTILISATEUR """
     # get user preference skin settings
-    try: skin_setting = Settings().get_settings().get( "current_skin", "Default" )
-    except: skin_setting = "Default"
+    try: skin_setting = Settings().get_settings().get( "current_skin", "Default.HD" )
+    except: skin_setting = "Default.HD"
     current_skin = xbmc.getSkinDir()
-    if skin_setting != "Default" and os.path.exists( os.path.join( CWD, "resources", "skins", skin_setting ) ):
+    if skin_setting != "Default.HD" and os.path.exists( os.path.join( CWD, "resources", "skins", skin_setting ) ):
         current_skin = skin_setting
     #if not current_skin: current_skin = xbmc.getSkinDir()
     force_fallback = os.path.exists( os.path.join( CWD, "resources", "skins", current_skin ) )
-    if not force_fallback: current_skin = "Default"
+    if not force_fallback: current_skin = "Default.HD"
     return current_skin, force_fallback
 
 
@@ -155,22 +172,26 @@ def getSkinColors():
             colors = re.compile( '<color name="(.*?)">(.*?)</color>' ).findall( file( colors_file, "r" ).read() )
             return colors
     except:
-        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+        print_exc()
 
 
-def get_default_hex_color():
+def get_default_hex_color( default="Default" ):
+    default_hex_color = "FFFFFFFF"
     try:
-        default_hex_color = dict( getSkinColors() ).get( "default", "FFFFFFFF" )
+        default_hex_color = dict( getSkinColors() ).get( default, "FFFFFFFF" )
+        #print default, default_hex_color
+    except TypeError:
+        pass
     except:
-        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
-        default_hex_color = "FFFFFFFF"
+        print_exc()
     return default_hex_color
 
 
 def getSkinsListing():
     skins_dir = os.path.join( CWD, "resources", "skins" )
     skins = [ skin for skin in os.listdir( skins_dir ) if ".svn" not in skin and os.path.isdir( os.path.join( skins_dir, skin ) ) ]
-    return skins
+    del skins[ skins.index( "Default.HD" ) ]
+    return [ "Default.HD" ] + sorted( skins, key=lambda l: l.lower() )
 
 
 #NOTE: CE CODE PEUT ETRE REMPLACER PAR UN CODE MIEUX FAIT
@@ -192,7 +213,7 @@ def add_pretty_color( word, start="all", end=None, color=None ):
             pretty_word = "".join( pretty_word )
         return pretty_word
     except:
-        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+        print_exc()
         return word
 
 
@@ -213,14 +234,25 @@ def set_xbmc_carriage_return( text ):
     text = text.replace( "\n",   "[CR]" )
     text = text.replace( "\r\r", "[CR]" )
     text = text.replace( "\r",   "[CR]" )
+    text = text.replace( "</br>",   "[CR]" )
     return text
 
 
 def strip_off( text, by="", xbmc_labels_formatting=False ):
     """ FONCTION POUR RECUPERER UN TEXTE D'UN TAG """
     if xbmc_labels_formatting:
+        #text = re.sub( "\[url[^>]*?\]|\[/url\]", by, text )
         text = text.replace( "[", "<" ).replace( "]", ">" )
     return re.sub( "(?s)<[^>]*>", by, text )
+
+def unescape(s):
+    """
+    remplace les sequences d'echappement par leurs caracteres equivalent
+    """
+    p = htmllib.HTMLParser(None)
+    p.save_bgn()
+    p.feed(s)
+    return p.save_end()
 
 def replaceStrs( s, *args ): 
     """
@@ -247,14 +279,16 @@ class Settings:
             "script_debug": False,
             "manager_view_mode": 50,
             "main_view_mode": 50,
+            "server_shortcut_button": "Passion XBMC",
             # SKINS
             "show_plash": False,
-            "current_skin": "Default",
+            "current_skin": "Default.HD",
             "skin_colours_path": "default",
             "skin_colours": "",
+            "labels_colours": "",
             "thumb_size": ( "512", "192" )[ ( SYSTEM_PLATFORM == "xbox" ) ],
             # SERVEUR FTP
-            "host": "stock.passionxbmc.org",
+            "host": "xbmc.funtube.fr",
             "user": "anonymous",
             "password": "xxxx",
             # FORUM
@@ -283,16 +317,16 @@ class Settings:
     def _check_compatibility( self, current_settings={} ):
         try:
             if sorted( current_settings.keys() ) != sorted( self._settings_defaults_values().keys() ):
-                logger.LOG( logger.LOG_WARNING, "Settings: [added default values for missing settings]" )
+                print "Settings: [added default values for missing settings]"
                 return self._use_defaults( current_settings )
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+            print_exc()
         return current_settings
 
     def _use_defaults( self, current_settings=None, save=True ):
         """ setup default values if none obtained """
         #TODO: verifier pourquoi la ligne suivante fait planter XBMC sous Mac
-        #logger.LOG( logger.LOG_DEBUG, "Settings: [used default settings]" )
+        #print "Settings: [used default settings]"
         settings = {}
         defaults = self._settings_defaults_values()
         for key, value in defaults.items():
@@ -310,7 +344,7 @@ class Settings:
             settings_file.close()
             return True
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
             return False
 
 
@@ -353,7 +387,7 @@ def get_infos_path( path, get_size=False, report_progress=None ):
                 try:
                     size += os.path.getsize( path )
                     if report_progress:
-                        #logger.LOG( logger.LOG_INFO, "Size: %s", path )
+                        #print "Size: %s", path
                         report_progress.update( -1, sys.modules[ "__main__" ].__language__( 186 ), path, sys.modules[ "__main__" ].__language__( 361 ) + " %00s KB" % round( size / 1024.0, 2 ) )
                 except: pass
             elif get_size:
@@ -364,13 +398,12 @@ def get_infos_path( path, get_size=False, report_progress=None ):
                             if os.access( fpath, os.R_OK ):
                                 size += os.path.getsize( fpath )
                                 if report_progress:
-                                    #logger.LOG( logger.LOG_INFO, "Size: %s", fpath )
+                                    #print "Size: %s", fpath
                                     report_progress.update( -1, sys.modules[ "__main__" ].__language__( 186 ), fpath, sys.modules[ "__main__" ].__language__( 361 ) + " %00s KB" % round( size / 1024.0, 2 ) )
                         except:
-                            logger.LOG( logger.LOG_ERROR, "Size: %s", fpath )
-                            pass
+                            print "Size: %s" % fpath
         if size <= 0:
-            size = "0.0 KB"
+            size = ""#"0.0 KB"
         elif size <= ( 1024.0 * 1024.0 ):
             size = "%00s KB" % round( size / 1024.0, 2 )
         elif size >= ( 1024.0 * 1024.0 ):
@@ -378,7 +411,7 @@ def get_infos_path( path, get_size=False, report_progress=None ):
         else:
             size = "%00s Bytes" % size
     except:
-        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+        print_exc()
         size = "0.0 KB"
 
     return size, c_time, last_access, last_modification

@@ -5,7 +5,7 @@
   <string id="1">Forum</string>
   <string id="2">Options</string>
   <string id="3">Aide</string>
-  <string id="4">À propos</string>
+  <string id="4">À Propos</string>
   <string id="5">Gestionnaire</string>
   <string id="6">Gestionnaire des add-ons</string>
   <string id="7">Installer</string>
@@ -13,7 +13,10 @@
 
   <string id="10">Sélection</string>
   <string id="11">Thèmes</string>
+  <string id="1101">Skins Nightly Builds Passion</string>
   <string id="12">Scrapers</string>
+  <string id="1201">Scrapers Musique</string>
+  <string id="1202">Scrapers Vidéos</string>
   <string id="13">Scripts</string>
   <string id="14">Plugins</string>
   <string id="15">Plugins Musique</string>
@@ -23,11 +26,41 @@
   <string id="19">Demande de mot de passe</string>
   <string id="20">Vous devez saisir votre mot de passe administrateur[CR]système</string>
   <string id="21">Mot de passe Administrateur</string>
+  <string id="22">Nouveaux Ajouts</string>
+  <string id="2201">Tous</string>
 
+  <string id="23">Message(s)</string>
   <string id="24">Page</string>
   <string id="25">Objet(s)</string>
   <string id="26">Objet</string>
   <string id="27">de</string>
+
+  <string id="28">Nightly</string>
+  <string id="29">Nightly Builds</string>
+  <string id="30">Infos Débogue</string>
+  <string id="31">Caches Cleaner</string>
+  <string id="32">Serveurs</string>
+
+  <string id="41">Remettre à zéro</string>
+  <string id="42">Masquer les infos</string>
+  <string id="43">Masquer le CUBE³</string>
+  <string id="44">Pivoter les icônes</string>
+  <string id="45">Masquer le Compass</string>
+  <string id="46">Compass Icône</string>
+  <string id="47">Compass Fanart</string>
+
+  <string id="51">Sans Fanart</string>
+  <string id="52">Options diverses</string>
+  <string id="53">Changelog</string>
+  <string id="54">Build Disponibilité</string>
+  <string id="55">MAJ XBMC</string>
+  <string id="56">MAJ Exclude</string>
+  <string id="57">Limite:</string>
+  <string id="58">-</string>
+  <string id="59">-</string>
+  <string id="60">-</string>
+  <string id="61">-</string>
+  <string id="62">-</string>
 
   <!--DIVERS STRINGS -->
   <string id="100">Choisissez le dossier d'installation d'XBMC</string>
@@ -110,49 +143,37 @@
   <string id="177">Déplacement...</string>
   <string id="178">De :&#32;</string>
   <string id="179">Vers :&#32;</string>
-  <string id="180">Confirmer téléchargement du fichier</string>
-  <string id="181">Êtes-vous sûr de télécharger ce(s) fichier(s)?</string>
+  <string id="180">Confirmer l'installation de l'élément</string>
+  <string id="181">Êtes-vous sûr de vouloir installer cet élément?</string>
+  <string id="182">Fin de l'extraction</string>
 
   <string id="184">Rafraîchir</string>
   <string id="185">Calculer la Taille</string>
   <string id="186">Calcule de la taille du répertoire</string>
+  <string id="187">UnRar: %i de %i objets</string>
+  <string id="188">UnZip: %i de %i objets</string>
+  <string id="189">Taille: %.2f / %.2f Mo</string>
+  <string id="190">Taille: %.2f / ? Mo</string>
+  <string id="191">ko/s</string>
 
   <!--FORUM DIRECT INFOS STRINGS -->
-  <string id="199">Informations en direct</string>
-  <string id="200">Général</string>
-  <string id="201">Releases et Nouvelles</string>
-  <string id="202">XBMC</string>
-  <string id="203">Scraper Allociné</string>
-  <string id="204">Pilotage - Telecommande </string>
-  <string id="205">Skins</string>
-  <string id="206">Service Importation</string>
-  <string id="207">Fiches des Skins</string>
-  <string id="208">Skins en Projets et Skins Abandonnés</string>
-  <string id="209">Le coin des utilisateurs</string>
-  <string id="210">Le coin des développeurs</string>
-  <string id="211">Xbmc Live</string>
-  <string id="212">Ubuntu</string>
-  <string id="213">Tutos Ubuntu et Xbmc</string>
-  <string id="214">USB Creator pour Ubuntu</string>
-  <string id="215">Windows</string>
-  <string id="216">USB Creator pour Windows</string>
-  <string id="217">Xbox</string>
-  <string id="218">Support Modifications des Consoles</string>
-  <string id="219">Mac OSX (Leopard et Tiger)</string>
-  <string id="220">USB Creator pour Mac Intel</string>
-  <string id="221">USB Creator pour Apple TV</string>
-  <string id="222">Forks</string>
-  <string id="223">(Fork) Plex pour Mac</string>
-  <string id="224">(Alternative) Boxeetv</string>
-  <string id="225">Le site</string>
-  <string id="226">Charte - A lire obligatoirement, ne dites pas qu'on ne vous avait pas prévenu :)</string>
-  <string id="227">Café avec southbox au plafond</string>
-  <string id="228">Membres</string>
-  <string id="229">Vos Configs</string>
-  <string id="230">Films et Musique</string>
-  <string id="231">Livres et BD</string>
-  <string id="232">Corbeille</string>
-  <string id="233">Trac Passion-Xbmc</string>
+  <string id="199">Topics</string>
+  <string id="200">Profil</string>
+  <string id="201">Se connecter</string>
+  <string id="202">Forum Liste</string>
+  <string id="203">Forum Passion-XBMC</string>
+  <string id="205">Veuillez saisir votre login Passion-XBMC</string>
+  <string id="206">Veuillez saisir maintenant le mot de passe</string>
+  <string id="207">Identification incomplète</string>
+  <string id="208">Identification annulée</string>
+  <string id="209">Bonjour</string>
+  <string id="210">Vous êtes connecté !</string>
+  <string id="211">Vous avez %i message !</string>
+  <string id="212">Messages personnels</string>
+  <string id="213">%i Messages personnels de récupérer!</string>
+  <string id="214">Respirez à fond et refaites un essai</string>
+  <string id="215">Au Revoir</string>
+  <string id="216">Messages personnels...</string>
 
   <string id="236">Confirmer le lancement du topic:</string>
   <string id="237">Passer</string>
@@ -165,24 +186,26 @@
   <string id="350">Liste</string>
   <string id="351">Infos Média</string>
   <string id="352">Icônes</string>
-  <string id="353"></string>
-  <string id="354"></string>
-  <string id="355"></string>
+  <string id="353">Cube³</string>
+  <string id="354">-</string>
+  <string id="355">-</string>
   <string id="356">Média 1</string>
-  <string id="357"></string>
-  <string id="358"></string>
+  <string id="357">-</string>
+  <string id="358">-</string>
   <string id="359">Carrousel</string>
   <string id="360">Emplacement :</string>
   <string id="361">Taille :</string>
   <string id="362">Créé le :</string>
   <string id="363">Modifié le :</string>
   <string id="364">Dernier accès le :</string>
+  <string id="365">Contient(s)</string>
+  <string id="366">Objet(s)</string>
 
   <!--SETTINGS STRINGS -->
   <string id="499">Version: %s</string>
   <string id="500">Paramètres</string>
   <string id="501">Activer la modification du fichier sources.xml</string>
-  <string id="502">Limite des topics par page</string>
+  <string id="502">Limite des messages par page</string>
   <string id="503">[B]&#126;&#126;[/B]</string><!--illimited symbol -->
   <string id="504">00|5|10|25|50|100</string><!--LIST LIMIT FOR TOPICS IN DIRECT INFOS: 00=illimited -->
   <string id="505">Couleur du thème</string>
@@ -193,7 +216,7 @@
   <string id="510">Activer la vérification de la mise à jour au démarrage</string>
   <string id="511">Flux RSS</string>
   <string id="512">Activer le mode débogue du [B]*script*[/B]</string>
-  <string id="513">Masquer le bouton forum dans le menu principal</string>
+  <string id="513">Masquer le bouton "Forum"</string>
   <string id="514">Masquer l'accès au répertoire parent</string>
   <string id="515">Masquer les extensions des fichiers</string>
   <string id="516">Activer l'image des add-ons comme fanart</string>
@@ -203,6 +226,8 @@
   <string id="519">Bloquer XBMC jusqu'à ce que le navigateur Web soit fermé</string>
   <string id="520">Sélectionnez le navigateur Web</string>
   <string id="521">Entrer le nom du navigateur Web</string>
+  <string id="522">Raccourci du bouton "Installer"</string>
+  <string id="523">Couleur des étiquettes</string>
 
   <string id="530">Désactiver le Splash</string>
   <string id="531">Thème</string>
@@ -210,7 +235,16 @@
   <string id="533">IPX nécessite un redémarrage pour changer le thème.</string>
   <string id="534">Voulez-vous redémarrer maintenant?</string>
 
+  <string id="540">Support</string>
+  <string id="541">Paramètres[CR]par défaut</string>
+  <string id="542">(Manager seulement)</string>
+
+  <string id="550">Support Français</string>
+  <string id="551">Support Anglais</string>
+  <string id="552">Cliquez pour obtenir de l'aide!</string>
+
   <!--DESCRIPTION STRINGS -->
+  <string id="599">Infos Add-ons</string>
   <string id="600">Description</string>
   <string id="601">Genre</string>
   <string id="602">Version</string>
@@ -233,11 +267,17 @@
   <string id="619">Suédois</string>
   <string id="620">Auteur</string>
   <string id="621">Nom du fichier</string>
+  <string id="622">CLIQUEZ POUR AGRANDIR L'IMAGE</string>
+  <string id="623">IMAGE[CR][CR]INDISPONIBLE</string>
+  <string id="624">Image</string>
+  <string id="625">Retourner l'image</string>
   
   <!--ABOUT STRINGS -->
+  <string id="698">Statut</string>
+  <string id="699">Révision</string>
   <string id="700">Version</string>
   <string id="701">Equipe des créateurs</string>
-  <string id="702">Développeurs</string>
+  <string id="702">Développeur</string>
   <string id="703">Conception Graphique</string>
   <string id="704">Crée sur une idée de %s</string>
   <string id="705">Un grand merci à %s</string>  
@@ -245,15 +285,96 @@
   <string id="707">Date</string>  
   <string id="708">SVN</string>  
   <string id="709">Langues</string>  
-  <string id="710">Ce script permet d'installer directement depuis XBMC les thèmes, scripts, plugins et scrapers disponibles sur le serveur FTP de Passion-XBMC (passion-xbmc.org) maintenu par la Team Passion-XBMC.</string>
+  <string id="710">Ce script permet d'installer directement depuis XBMC les thèmes, scripts, plugins et scrapers disponibles sur les serveurs WEB et FTP de passion XBMC (passion-xbmc.org) maintenu par la Team Passion-XBMC et de sources diverses.</string>
+
+  <string id="720">Autres Devs &#38; Assistant</string>
+  <string id="730">Remerciement spécial à:</string>
 
   <!--CONTEXT MENU STRINGS -->
+  <string id="999">Menu</string>
   <string id="1000">Installer</string>
   <string id="1001">Information</string>
   <string id="1002">Changer de médias</string>
-  <string id="1003"></string>
-  <string id="1004"></string>
-  <string id="1005"></string>
-  <string id="1006"></string>
-  <string id="1007"></string>
+
+  <!-- Effacement des Caches -->
+  <string id="32650">Effacement: %s</string>
+  <string id="32651">%i fichiers et %i répertoires supprimés</string>
+  <string id="32652">Répertoire: %s</string>
+  <string id="32653">Fichier: %s</string>
+  <string id="32654">Vider tous les Caches</string>
+  <string id="32655">Vider tous les Caches de XBMC</string>
+  <string id="32656">Vider le Cache de XBMC [COLOR=88FFFFFF][%s][/COLOR]</string>
+  <string id="32657">Vider le Cache de MS [COLOR=88FFFFFF][E:\CACHE\][/COLOR]</string>
+  <string id="32658">Vider tous les Caches de la XBox [COLOR=88FFFFFF][X:\, Y:\, Z:\][/COLOR]</string>
+  <string id="32659">Effacement des Caches...</string>
+  <string id="32660">Effacement des Caches</string>
+  <string id="32661">Vider les Caches</string>
+  <string id="32662">Vider tous les Caches de l'Installer Passion-XBMC</string>
+
+  <!-- XBMC SVN Updater for XBox -->
+  <string id="32700">Attention !</string>
+  <string id="32701">Dans ce menu, vous pourrez supprimer, renommer, copier... des fichiers de votre XBox et même formater une partition. Une mauvaise manipulation peut aboutir à une erreur système. N'utilisez ce menu que si vous savez exactement ce que vous faites.</string>
+  <string id="32702">Attention! À lire...</string>
+  <string id="32709">Avant de commencer l'Updater va faire un test de vérification. Il va vérifier l'existence de la Build et de votre dossier d'installation d'XBMC. S'il n'y a pas d'erreur pendant cette vérification, une demande de confirmation de mise à jour vous sera demandé.</string>
+  <string id="32749">MAJ</string>
+  <string id="32750">Exécuter la mise à jour maintenant</string>
+  <string id="32751">Appuyez sur "OUI" pour exécuter la mise à jour pour votre XBMC. Et ne toucher à rien qui pourrait faire aboutir à une erreur système. Soyez patient et attendez la confirmation du succès de la mise à jour.</string>
+  <string id="32752">Mise à jour effectuée avec succès.\nVoulez-vous retourner sur XBMC ?</string>
+  <string id="32753">Redémarrage d'XBMC...</string>
+  <string id="32760">Retourner sur XBMC</string>
+  <string id="32761">Redémarrer l'Updater</string>
+  <string id="32770">Redémarrer la XBox</string>
+  <string id="32780">Éteindre la XBox</string>
+  <string id="32789">Répertoire d'installation d'XBMC</string>
+  <string id="32790">Gestionnaire de fichiers</string>
+  <string id="32791">Éditeur de texte</string>
+  <string id="32795">Paramètres</string>
+
+  <string id="32799">Succès</string>
+  <string id="32800">Cleaner</string>
+  <string id="32801">À Propos de cette Section</string>
+  <string id="32802">Le Cleaner a pour but de remettre XBMC   à Zéro. Il va supprimer les dossiers et/ou les fichiers qui ont été créés lors de la première utilisation d'XBMC ou de simplement effacer les paramètres. Il permet aussi de vider les caches E, X, Y, Z.</string>
+  <string id="32810">Remettre XBMC à Zéro</string>
+  <string id="32811">Confirmer la remise à zéro d'XBMC.\nAttention, cette action va remettre le dossier "UserData" à l'état original et vous perdrez tous: [Database, thumbnails, guisettings, Advancedsettings, ...]. Voulez-vous continuer ?</string>
+  <string id="32812">Entrer un nom pour créer un backup, juste au cas!</string>
+  <string id="32813">Remise à zéro d'XBMC terminée.</string>
+  <string id="32820">Effacer les paramètres d'XBMC</string>
+  <string id="32821">Confirmer l'effacer des paramètres d'XBMC.\nAttention, cette action va supprimer le fichier guisettings.xml. Voulez-vous continuer ?</string>
+  <string id="32822">Effacement des paramètres d'XBMC terminée.</string>
+  <string id="32830">Effacer la sauvegarde d'XBMC</string>
+  <string id="32831">Confirmer effacement de la sauvegarde d'XBMC.\nUtile seulement pour effacer les traces d'une vielle version d'XBMC. Voulez-vous continuer ?</string>
+  <string id="32832">Effacement de la sauvegarde terminée.</string>
+  <string id="32840">Vider les Caches X, Y &amp; Z</string>
+  <string id="32841">Confirmer la vidange des Caches X:\, Y:\, Z:\. Voulez-vous continuer ?</string>
+  <string id="32842">Vidange des Caches terminés.</string>
+  <string id="32850">Vider le Cache E</string>
+  <string id="32851">Confirmer la vidange du Cache E:\CACHE\nVoulez-vous continuer ?</string>
+  <string id="32852">Vidange du Cache E terminé.</string>
+
+  <string id="32860">XBMC Nightly Builds</string>
+  <string id="32861">Récupération des builds Nightly...</string>
+  <string id="32862">Confirmer le téléchargement!</string>
+  <string id="32863">Êtes-vous sûr de vouloir télécharger cette build?</string>
+  <string id="32864">Confirmer le lancement de la mise à jour.</string>
+  <string id="32865">Votre version: %s</string>
+  <string id="32866">MAJ vers: %s</string>
+  <string id="32867">Il y a pas d'Updater pour vôtre Platform!</string>
+  <string id="32868">Soyez patient cela serait tardé!</string>
+
+  <string id="32900">Utiliser ce pack pour remplacer votre application actuelle.</string>
+  <string id="32901">Utilisez ce pack pour installer une nouvelle copie en utilisant la dernière version SVN.</string>
+  <string id="32902">Utilisez ce pack pour une installation complet pour Linux (deb).</string>
+  <string id="32903">Utilisez ce pack pour une nouvelle installation ou mise à niveau de votre XBMC.</string>
+  <string id="32904">Utilisez ce pack pour une installation complet pour OS X.</string>
+
+  <string id="32910">Ajouter/Supprimer un fichier ou un dossier de la MAJ</string>
+  <string id="32911">Ajouter un fichier</string>
+  <string id="32912">Ajouter un dossier</string>
+  <string id="32913">Retirez tous</string>
+  <string id="32914">Parcourir pour exclure un fichier de la MAJ</string>
+  <string id="32915">Parcourir pour exclure un dossier de la MAJ</string>
+  <string id="32916">Confirmer le retrait</string>
+  <string id="32917">Êtes-vous sûr de vouloir de tout les retirés?</string>
+  <string id="32918">Êtes-vous sûr de vouloir retirer:</string>
+  <string id="32919">Exclu: %s</string>
 </strings>

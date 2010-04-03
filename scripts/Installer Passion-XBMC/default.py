@@ -1,6 +1,13 @@
+﻿
+# warning: use update_svn_keywords if you want auto update svn:keywords
+# just add or remove space value ( "" or " " )
+update_svn_keywords = ""
 
 # GET AND PRINT ALL STATS OF SCRIPT
 TEST_PERFORMANCE = False
+UNIT_TEST        = False
+REMOTE_DBG       = False 
+
 
 # script constants
 __script__       = "Installer Passion-XBMC"
@@ -9,138 +16,223 @@ __author__       = "Team Passion-XBMC"
 __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/Installer%20Passion-XBMC/"
 __credits__      = "Team XBMC, http://xbmc.org/"
-__platform__     = "xbmc media center"
-__date__         = "25-10-2009"
-__version__      = "1.0.0"
-__svn_revision__ = 0
+__platform__     = "xbmc media center, [ALL]"
+
+__version__      = "pre-2.0"
+__statut__       = "RC3" #(dev,svn,release,etc)
+
+
+# don't edit __date__ and __svn_revision__
+# use svn:keywords http://svnbook.red-bean.com/nightly/fr/svn.advanced.props.special.keywords.html
+__svn_revision__ = "$Revision: 718 $".replace( "Revision", "" ).strip( "$: " ) or __statut__
+__date__         = "$Date: 2010-04-02 20:37:19 -0400 (Fri, 02 Apr 2010) $"[ 7:17 ]
+if not __date__:
+    try:
+        from urllib import urlopen
+        __date__ = urlopen( __svn_url__ + "default.py" ).info()[ "Last-Modified" ]
+    except: pass
+__date__         = __date__ or "Unknown"
 
 
 #Modules general
 import os
 import sys
+from traceback import print_exc
 
-#modules XBMC
+# Modules XBMC
 import xbmc
 import xbmcgui
+
+# set our xbmc.settings path for xbmc get '/resources/settings.xml'
+XBMC_SETTINGS = xbmc.Settings( os.getcwd() )
+
 
 # INITIALISATION CHEMIN RACINE
 ROOTDIR = os.getcwd().replace( ";", "" )
 
 # Shared resources
 BASE_RESOURCE_PATH = os.path.join( ROOTDIR, "resources" )
+PLATFORM_LIBRARIES = os.path.join( BASE_RESOURCE_PATH, "platform_libraries" )
+LIBS               = os.path.join( BASE_RESOURCE_PATH, "libs" )
+GUI_LIBS           = os.path.join( LIBS, "GUI" )
+CONTENTS_LIBS      = os.path.join( LIBS, "sources" )
+
+
+# Remote debugger using Eclipse and Pydev
+if REMOTE_DBG:
+    # Note pydevd module need to be copied in XBMC\system\python\Lib\pysrc
+    try:
+        import pysrc.pydevd as pydevd
+        pydevd.settrace('localhost', stdoutToServer=True, stderrToServer=True)
+    except ImportError:
+        sys.stderr.write("Error: " +
+            "You must add org.python.pydev.debug.pysrc to XBMC\system\python\Lib\pysrc")
+        sys.exit(1)
+
 # append the proper platforms folder to our path, xbox is the same as win32
-env = ( os.environ.get( "OS", "win32" ), "win32", )[ os.environ.get( "OS", "win32" ) == "xbox" ]
-sys.path.append( os.path.join( BASE_RESOURCE_PATH, "platform_libraries", env ) )
+sys.path.append( os.path.join( PLATFORM_LIBRARIES, ( os.environ.get( "OS", "win32" ), "win32", )[ os.environ.get( "OS", "win32" ) == "xbox" ] ) )
 # append the proper libs folder to our path
-sys.path.append( os.path.join( BASE_RESOURCE_PATH, "libs" ) )
+sys.path.append( LIBS )
 # append the proper GUI folder to our path
-sys.path.append( os.path.join( BASE_RESOURCE_PATH, "libs", "GUI" ) )
-# recompile all modules, but script start slowly
-#from compileall import compile_dir
-#compile_dir( os.path.join( BASE_RESOURCE_PATH, "libs" ), force=True, quiet=True )
+sys.path.append( GUI_LIBS )
+# append the proper sources contents ("PassionXbmcWeb","PassionXbmcFtp","XbmcZone",etc...) folder to our path
+for content in os.listdir( CONTENTS_LIBS ):
+    try: sys.path.append( os.path.join( CONTENTS_LIBS, content ) )
+    except: print_exc()
 
 
 #modules custom
 from specialpath import *
-import script_log as logger
+# custom_sys_stdout_stderr is new module for xbmc output
+# for active print debug in output, set "PRINT_DEBUG = True", but use options in settings window.
+# if you want force print. start print with "bypass: |bypass_debug: |bypass_comment: "
+# NB: the variables bypass not printed, look example at end module custom_sys_stdout_stderr
+default_sys_std = sys.stdout, sys.stderr
+import custom_sys_stdout_stderr as output
 
 
-#frost: changer la langue par default pour l'anglais, car de cette maniere on ai pas obliger de rejouter le strings manquant dans les autres language
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE. ( ex: __language__( 0 ) = id="0" du fichier strings.xml )
-#__language__ = xbmc.Language( ROOTDIR, "french" ).getLocalizedString
 __language__ = xbmc.Language( ROOTDIR ).getLocalizedString
+LANGUAGE_IS_FRENCH = ( xbmc.getLanguage().lower() == "french" )
 
 DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
-# Info version
-__version_l1__ = __language__( 700 )#"version"
-__version_r1__ = __version__
-__version_l2__ = __language__( 707 )#"date"
-__version_r2__ = __date__
-__version_l3__ = __language__( 708 )#"SVN"
-__version_r3__ = str( __svn_revision__ )
-
-# team credits
-__credits_l1__ = __language__( 702 )#"Developpeurs"
-__credits_r1__ = "Frost & Seb & Temhil"
-__credits_l2__ = __language__( 703 )#"Conception Graphique"
-__credits_r2__ = "Frost & Jahnrik & Temhil"
-__credits_l3__ = __language__( 709 )#"Langues"
-__credits_r3__ = "Frost & Kottis & Temhil"
-__credits_l4__ = __language__( 706 )#"Conseils et soutien"
-__credits_r4__ = "Alexsolex & Shaitan"
-
 
 def MAIN():
-    logger.LOG( logger.LOG_DEBUG, str( "*" * 85 ) )
-    logger.LOG( logger.LOG_DEBUG, "Lanceur".center( 85 ) )
-    logger.LOG( logger.LOG_DEBUG, str( "*" * 85 ) )
+    try: output.PRINT_DEBUG = ( XBMC_SETTINGS.getSetting( "script_debug" ) == "true" )
+    except: print_exc()
 
+    # print depend of output.PRINT_DEBUG is True or False
+    print "bypass_debug: %s" % str( "-" * 100 )
+    print "bypass_debug: Starting %s %s, %s, SVN r%s. Built on %s" % ( __script__, __version__, __statut__, __svn_revision__, __date__ )
+    print "bypass_debug: The executable script running is: %s" % os.path.join( os.getcwd(), "default.py" )
+    print "bypass_debug: %s" % str( "-" * 100 )
+    dialog_error = False
+    updating = False
     try:
-        # INITIALISATION CHEMINS DE FICHIER LOCAUX
+        from utilities import getUserSkin
+        current_skin, force_fallback = getUserSkin()
+        print "bypass_debug: load default skin:[%s]" % current_skin
+        print "bypass_debug: default skin use force fallback: %s" % repr( force_fallback )
+        del getUserSkin
+    except:
+        pass
+
+    #setup skins utilities and reload xbmc skin if necessary
+    import skins_utilities
+    if skins_utilities.setupUtilities():
+        print "Reloaded Skin: %s" % xbmc.getSkinDir()
+        xbmc.executebuiltin( "XBMC.Notification(%s,Reloaded Skin...,3000,%s)" % ( xbmc.getSkinDir(), os.path.join( os.getcwd(), "default.tbn" ), ) )
+        xbmc.executebuiltin( "XBMC.ReloadSkin()" )
+        xbmc.sleep( 2000 )
+
+    # INITIALISATION CHEMINS DE FICHIER LOCAUX
+    try:
         import CONF
+        setconf = False
         config = CONF.ReadConfig()
 
         DIALOG_PROGRESS.update( -1, __language__( 101 ), __language__( 110 ) )
+        curversion =  config.get('Version','version')
+        if "1." in curversion:
+            setconf = True
+            
         if not config.getboolean( 'InstallPath', 'pathok' ):
+            setconf = True
+
+        if setconf:
             # GENERATION DES INFORMATIONS LOCALES
             CONF.SetConfiguration()
+    except:
+        dialog_error = True
+        print "Error while setting the configuration"
+        print_exc()
 
-        # VERIFICATION DE LA MISE A JOUR
+    # CHECK SCRIPT UPDATE AVAILABILITY AND UPDATE CONFIGUARTION FILE
+    try:
         import CHECKMAJ
         try:
-            from utilities import Settings
-            CHECKMAJ.UPDATE_STARTUP = Settings().get_settings().get( "update_startup", True )
-            del Settings
+            CHECKMAJ.UPDATE_STARTUP = ( XBMC_SETTINGS.getSetting( "update_startup" ) == "true" )
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+            CHECKMAJ.UPDATE_STARTUP = False
+            print_exc()
+        print "CHECKMAJ.UPDATE_STARTUP = %s"%str(CHECKMAJ.UPDATE_STARTUP)
         if CHECKMAJ.UPDATE_STARTUP:
             DIALOG_PROGRESS.update( -1, __language__( 102 ), __language__( 110 ) )
-        CHECKMAJ.go()
+            CHECKMAJ.go()
         del CHECKMAJ
+    except:
+        # In case of an Exception here we still load the script
+        print "Error while checking availability of an update for the installer"
+        print "We still going to start the script ..."
+        print_exc()
 
+    # RETRIEVING CONFIGURATION FROM CONF FILE
+    try:
         config = CONF.ReadConfig()
         del CONF
+    except:
+        print "Error while reading the configuration"
+        dialog_error = True
+        print_exc()
 
-        dialog_error = False
-        if not config.getboolean( 'Version', 'UPDATING' ):
+    try:
+        updating = config.getboolean( 'Version', 'UPDATING' )
+    except:
+        # Issue with conf file, stopping update
+        dialog_error = True
+        print_exc()
+    try:
+        if not updating:
             try:
                 # LANCEMENT DU SCRIPT
-                import MainGui
-                MainGui.show_main()
+                try:
+                    import Home
+                    DIALOG_PROGRESS.close()
+                    HomeAction = Home.show_home()
+                except:
+                    print_exc()
+                    HomeAction = "error"
+
+                if HomeAction == "error":
+                    import MainGui
+                    MainGui.show_main()
             except:
-                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+                print "bypass_debug: MAIN: Exception while loading the script"
+                print_exc()
                 dialog_error = True
         else:
-            # LANCEMENT DE LA MISE A JOUR
+            # UPDATING THE SCRIPT
             try:
                 scriptmaj = config.get( 'Version', 'SCRIPTMAJ' )
                 xbmc.executescript( scriptmaj )
-
-                #import MainGui
-                #MainGui.show_main()
             except:
-                logger.LOG( logger.LOG_DEBUG, "default : Exception pendant le chargement et/ou La mise a jour" )
-                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+                print "bypass_debug: MAIN: Exception while updating of the script"
+                print_exc()
                 dialog_error = True
 
         if dialog_error: xbmcgui.Dialog().ok( __language__( 111 ), __language__( 112 ) )
     except:
-        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+        print_exc()
     DIALOG_PROGRESS.close()
+
 
 
 if __name__ == "__main__":
     try:
         DIALOG_PROGRESS.create( __language__( 0 ), "", "" )
         if TEST_PERFORMANCE:
-            import profile, pstats
-            report_file = os.path.join( ROOTDIR, "MainPerform.profile.log" )
-            profile.run( "MAIN()", report_file )
-            pstats.Stats( report_file ).sort_stats( "time", "name" ).print_stats()
+            import misc
+            misc.RUN_PERFORMANCE()
+        elif UNIT_TEST:
+            import misc
+            misc.RUN_UNIT_TEST()
         else:
             MAIN()
     except:
-        #import traceback; traceback.print_exc()
-        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+        print_exc()
         DIALOG_PROGRESS.close()
+
+    if not TEST_PERFORMANCE:
+        # replace standard stdout and stderr, modified by import custom_sys_stdout_stderr
+        sys.stdout, sys.stderr = default_sys_std

@@ -1,18 +1,13 @@
 
+# Modules general
 import os
 import sys
 import ftplib
+from traceback import print_exc
 from ConfigParser import ConfigParser
 
-import xbmc
+# Modules XBMC
 import xbmcgui
-
-
-#module logger
-try:
-    logger = sys.modules[ "__main__" ].logger
-except:
-    import script_log as logger
 
 
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
@@ -23,10 +18,10 @@ _ = sys.modules[ "__main__" ].__language__
 # CHECKMAJ.UPDATE_STARTUP = False
 # CHECKMAJ.go()
 UPDATE_STARTUP = True
-
-logger.LOG( logger.LOG_DEBUG, str( "*" * 85 ) )
-logger.LOG( logger.LOG_DEBUG, "Script de mise a jour auto".center( 85 ) )
-logger.LOG( logger.LOG_DEBUG, str( "*" * 85 ) )
+# print depend of output.PRINT_DEBUG is True or False
+print "*" * 85
+print "Automatic Update script".center( 85 )
+print "*" * 85
 
 
 class CheckMAJ:
@@ -37,6 +32,7 @@ class CheckMAJ:
         ##############################################################################
         #                   Initialisation conf.cfg                                  #
         ##############################################################################
+        global UPDATE_STARTUP
 
         self.fichier = os.path.join( sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA, "conf.cfg" )
         #self.fichier = os.path.join(self.rootdir, "resources", "conf.cfg")
@@ -77,8 +73,13 @@ class CheckMAJ:
         # DEMARRAGE DE LA CONNEXION                             #
         #########################################################
         if UPDATE_STARTUP:
-            self.ftp = ftplib.FTP(self.host,self.user,self.password)
-            self.remoteDirLst = self.ftp.nlst(self.remoteversionDir)
+            try:
+                self.ftp = ftplib.FTP(self.host,self.user,self.password)
+                self.remoteDirLst = self.ftp.nlst(self.remoteversionDir)
+            except:
+                print "bypass_debug: CheckMAJ - init - Exception creating CheckMAJ - cancelling update ..."
+                UPDATE_STARTUP = False
+                print_exc()
         else:
             self.ftp = UPDATE_STARTUP
             self.remoteDirLst = list()
@@ -93,8 +94,8 @@ class CheckMAJ:
                 os.makedirs(folder)
 
         except:
-            logger.LOG( logger.LOG_DEBUG, "verifrep - Exception while creating folder %s", folder )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+            print "verifrep - Exception while creating folder %s" % folder
+            print_exc()
 
     def download(self):
         """
@@ -118,11 +119,12 @@ class CheckMAJ:
             for file in self.remoteDirLst:
                 #On isole les fichiers qu'il faudra telecharger
                 if file.endswith('zip'):
-                    self.newscript = file
+                    self.newscript = self.remoteversionDir + file
                 elif file.endswith('py'):
-                    self.installmaj = file
+                    self.installmaj = self.remoteversionDir + file
                 elif file.endswith('cfg'):
-                    self.versiontodl = file
+                    self.versiontodl = self.remoteversionDir + file
+                #print self.remoteversionDir + file
 
             #Telechargement du nouveau fichier de version
             self.filetodl = self.versiontodl
@@ -184,13 +186,13 @@ class CheckMAJ:
     def delFiles(self,folder):
         for root, dirs, files in os.walk(folder , topdown=False):
             for name in files:
-                logger.LOG( logger.LOG_WARNING, "Effaccement de %s en cours ...", name )
+                print "bypass_debug: Effaccement de %s en cours ..." % name
                 try:
                     os.remove(os.path.join(root, name))
                 except:
-                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+                    print_exc()
 
-#TODO: QUESTIOn : ne devrait t'on pas faire "self.localConfParser.write(open(self.fichier,'w'))" qu'une seule fois a la fin plutot que plusieurs fois dans le code?
+#TODO: QUESTION : ne devrait t'on pas faire "self.localConfParser.write(open(self.fichier,'w'))" qu'une seule fois a la fin plutot que plusieurs fois dans le code?
 
 def go():
     CkMAJ = CheckMAJ()

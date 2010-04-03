@@ -1,12 +1,12 @@
 
+# Modules general
 import os
 import sys
-import traceback
 from StringIO import StringIO
+from traceback import print_exc
 from urllib import urlopen, urlretrieve
-from PIL import Image, ImageEnhance
 
-import xbmc
+from PIL import Image, ImageEnhance
 
 
 #set temp file path
@@ -92,35 +92,38 @@ def makeThumbnails( source, destination=None, watched=False, w_h=None, prefix="t
                 size = set_resizing_is_necessary( im.size, w_h )
             else:
                 size = w_h
-            #if w_h is None: size = im.size # GET DEFAULT IMAGE SIZE
-            #else: size = w_h #( 128, 128, )
             # CREATE THUMBNAIL
             if not _samefile( source, thumbnail ):
                 im.thumbnail( size, Image.ANTIALIAS )
-                im = im.convert( "RGBA" )
-                im.save( thumbnail, "PNG" )
+                # actuel format support by PIL sources on Installer only. for more add new PIL plugin
+                # format: {'.png': 'PNG', '.gif': 'GIF', '.jpe': 'JPEG', '.jfif': 'JPEG', '.jpg': 'JPEG', '.jpeg': 'JPEG'})
+                format = im.format
+                #print format
+                #print Image.EXTENSION
+                #print Image.SAVE # is PIL plugin used for save_handler
+                if format.upper() == "JPEG":
+                    im.save( thumbnail, format, quality=90, dpi=im.info.get( "dpi", ( 0, 0 ) ) )
+                else:
+                    im = im.convert( "RGBA" )
+                    im.save( thumbnail, format )
             if watched:
                 # CREATE WATCHED THUMBNAIL
                 if not _samefile( source, watched_thumbnail ):
+                    im = im.convert( "RGBA" )
                     alpha = im.split()[ 3 ]
                     alpha = ImageEnhance.Brightness( alpha ).enhance( 0.2 )
                     im.putalpha( alpha )
                     im.save( watched_thumbnail, "PNG" )
             return thumbnail
-        #else:
-        #    try: 
-        #        urlretrieve(source, thumbnail)
-        #        if os.path.isfile(thumbnail): return thumbnail
-        #    except: traceback.print_exc()
     except:
-        traceback.print_exc()
+        print_exc()
     return ""
 
 
 if __name__ == "__main__":
     #source = "http://dahlieka.files.wordpress.com/2008/01/zack-solitude-4.jpg" # 2432px * 1737px
-    source = r"C:\Program Files\XBMC\userdata\script_data\Installer Passion-XBMC\Thumbnails\1\136835ec.tbn"
+    source = r"C:\Program Files\XBMC\userdata\script_data\Installer Passion-XBMC\Thumbnails\originals\6\616cee37.tbn"
     destination = os.path.join( os.getcwd().rstrip(";"), os.path.basename( source ) )
     #print makeThumbnails( source, destination, w_h=( 256, 256, ), prefix="png" )
-    print makeThumbnails( source, destination, watched=True, prefix="png" )
+    print makeThumbnails( source, destination )
 

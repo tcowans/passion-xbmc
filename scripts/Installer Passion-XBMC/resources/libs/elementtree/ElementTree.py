@@ -648,15 +648,19 @@ class ElementTree:
     #
     # @param file A file name, or a file object opened for writing.
     # @param encoding Optional output encoding (default is US-ASCII).
+    # @param standalone Optional output standalone="yes". default value = False. added by Frost 28-12-09
 
-    def write(self, file, encoding="us-ascii"):
+    def write(self, file, encoding="us-ascii", standalone=False):
         assert self._root is not None
         if not hasattr(file, "write"):
             file = open(file, "wb")
         if not encoding:
             encoding = "us-ascii"
         elif encoding != "utf-8" and encoding != "us-ascii":
-            file.write("<?xml version='1.0' encoding='%s'?>\n" % encoding)
+            if not standalone:
+                file.write('<?xml version="1.0" encoding="%s"?>\n' % encoding)
+            else:
+                file.write('<?xml version="1.0" encoding="%s" standalone="yes"?>\n' % encoding)
         self._write(file, self._root, encoding, {})
 
     def _write(self, file, node, encoding, namespaces):
