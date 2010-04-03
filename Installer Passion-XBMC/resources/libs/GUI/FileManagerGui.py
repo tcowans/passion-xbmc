@@ -465,9 +465,13 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                  self.parentDir()
 
             elif ( action == ACTION_SHOW_INFO ):
-                # Affiche la description de l'item selectionner
-                pass
-
+                # Affiche le description.xml de l'item selectionner si il existe
+                self.index = self.getCurrentListPosition()
+                item_path = self.currentItemList[ self.index-self.pardir_not_hidden ].local_path
+                if os.path.exists( os.path.join( item_path, "description.xml" ) ):
+                    import infos
+                    infos.show_info( item_path )
+                    del infos
         except:
             print "FileMgrWindow::onAction: Exception"
             print_exc()
@@ -708,7 +712,7 @@ def show_file_manager( mainfunctions, rightstest="", args=None, homeLastPosition
     dir_path = os.getcwd().rstrip( ";" )
     #recupere le nom du skin et si force_fallback est vrai, il va chercher les images du defaultSkin.
     current_skin, force_fallback = getUserSkin() # Appel fonction dans Utilities
-    file_xml = ( "IPX-FileMgr.xml", "passion-FileMgr.xml" )[ current_skin != "Default.HD" ]
+    file_xml = "IPX-FileMgr.xml"
 
     w = FileMgrWindow( file_xml, dir_path, current_skin, force_fallback,
         mainfunctions=mainfunctions, rightstest=rightstest, HomeAction=args, homeLastPosition=homeLastPosition )

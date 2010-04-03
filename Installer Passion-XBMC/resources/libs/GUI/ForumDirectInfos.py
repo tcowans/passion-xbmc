@@ -408,7 +408,7 @@ def show_direct_infos( homeLastPosition=None ):
     dir_path = os.getcwd().rstrip( ";" )
     #recupere le nom du skin et si force_fallback est vrai, il va chercher les images du defaultSkin.
     current_skin, force_fallback = getUserSkin()
-    file_xml = ( "IPX-DirectInfos.xml", "passion-DirectInfos.xml" )[ current_skin != "Default.HD" ]
+    file_xml = "IPX-DirectInfos.xml"
 
     w = DirectInfos( file_xml, dir_path, current_skin, force_fallback, homeLastPosition=homeLastPosition )
     w.doModal()

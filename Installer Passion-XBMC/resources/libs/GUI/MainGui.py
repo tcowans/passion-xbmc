@@ -265,7 +265,7 @@ class MainWindow( xbmcgui.WindowXML ):
                     exec self.HomeAction
             else:
                 # pas le choix avec les nouvelles vue, mais on lui joue un tour avec une listitems deja ready :P
-                if xbmc.getCondVisibility( "Window.IsActive(IPX-Installer.xml)" ) or xbmc.getCondVisibility( "Window.IsActive(passion-main.xml)" ):
+                if xbmc.getCondVisibility( "Window.IsActive(IPX-Installer.xml)" ):
                     if self.listitems: self.re_updateList()
                     else: self.updateList()
 
@@ -1180,7 +1180,7 @@ def show_main( HomeAction=None, homeLastPosition=None ):
     dir_path = os.getcwd().replace( ";", "" )
     #recupere le nom du skin et si force_fallback est vrai, il va chercher les images du defaultSkin.
     current_skin, force_fallback = getUserSkin()
-    file_xml = ( "IPX-Installer.xml", "passion-main.xml" )[ current_skin != "Default.HD" ]
+    file_xml = "IPX-Installer.xml"
 
     w = MainWindow( file_xml, dir_path, current_skin, force_fallback, HomeAction=HomeAction, homeLastPosition=homeLastPosition )
     w.doModal()

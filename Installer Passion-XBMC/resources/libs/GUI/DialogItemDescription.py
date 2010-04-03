@@ -104,35 +104,6 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
             self.getControl( 48 ).addItem( listitem )
         except:
             print_exc()
-        try:
-            self.getControl( 49 ).reset()
-
-            listitem = xbmcgui.ListItem( "ID", self.i_itemId or _( 612 ) )
-            self.getControl( 49 ).addItem( listitem )
-
-            listitem = xbmcgui.ListItem( _( 601 ), self.i_type or _( 612 ) )
-            self.getControl( 49 ).addItem( listitem )
-
-            listitem = xbmcgui.ListItem( _( 608 ), self.i_language or _( 612 ) )
-            self.getControl( 49 ).addItem( listitem )
-
-            listitem = xbmcgui.ListItem( _( 602 ), self.i_version or _( 612 ) )
-            self.getControl( 49 ).addItem( listitem )
-
-            listitem = xbmcgui.ListItem( _( 603 ), self.i_date or _( 612 ) )
-            self.getControl( 49 ).addItem( listitem )
-
-            listitem = xbmcgui.ListItem( _( 620 ), self.i_author or _( 612 ) )
-            self.getControl( 49 ).addItem( listitem )
-
-            listitem = xbmcgui.ListItem( _( 613 ), self.i_added or _( 612 ) )
-            self.getControl( 49 ).addItem( listitem )
-
-            listitem = xbmcgui.ListItem( _( 621 ), self.i_fileName or _( 612 ) )
-            self.getControl( 49 ).addItem( listitem )
-
-        except:
-            print_exc()
         xbmcgui.unlock()
 
     def get_item_infos( self, main_listitem ):
@@ -168,7 +139,6 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
             elif controlID == self.CONTROL_REFRESH_BUTTON:
                 #bouton pour rafraichir l'item en temps reel ds le dialog et l'item de la liste en court
                 self.getControl( 48 ).reset()
-                self.getControl( 49 ).reset()
                 main_listitem = self.mainwin.refresh_item()
                 self.get_item_infos( main_listitem )
                 self._set_controls_labels()
@@ -204,7 +174,7 @@ def show_description( mainwin ):
 
     dir_path = os.getcwd().rstrip( ";" )
     current_skin, force_fallback = getUserSkin()
-    file_xml = ( "IPX-ItemDescript.xml", "passion-ItemDescript.xml" )[ current_skin != "Default.HD" ]
+    file_xml = "IPX-ItemDescript.xml"
 
     w = ItemDescription( file_xml, dir_path, current_skin, force_fallback, mainwin=mainwin )
     w.doModal()
