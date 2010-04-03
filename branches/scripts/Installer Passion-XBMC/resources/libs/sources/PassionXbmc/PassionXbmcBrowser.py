@@ -539,24 +539,13 @@ class PassionXbmcBrowser(Browser):
                 name        = self.curList[index]['name']
                 catId       = self.curList[index]['parent']
                 externalURL = self.curList[index]['fileexternurl'].encode('utf8')
-                #type        = self.curList[index]['xbmc_type']
 
                 # Get file size
                 itemInfos = self.getInfo(index)
                 filesize  = itemInfos['filesize']
                 xbmc_type = itemInfos['xbmc_type']
-                
-                print itemInfos
-
-                print "getInstaller - name" 
-                print name
-                #print "getInstaller - externalURL" 
-                #print externalURL
-                print "getInstaller - filesize"
-                print filesize
 
                 # Create the right type of Installer Object
-                #itemInstaller = PassionXbmcItemInstaller.PassionXbmcItemInstaller( name, itemId, xbmc_type, filesize, externalURL )
                 itemInstaller = PassionXbmcItemInstaller.PassionXbmcItemInstaller( itemInfos )
             else:
                 print "getInstaller: error impossible to install a category, it has to be an item "

@@ -119,7 +119,19 @@ def unrar( filename, destination=None, report=False ):
         print_exc()
     return "", False
 
-
+def is_rarfile( filename ):
+    """
+    Check if file is rar archive
+    """
+    result = False
+    from rarfile import RarFile
+    try: 
+        rar = RarFile( filename, "r" )
+        result = True
+    except: 
+        print "%s is not rar"%filename
+    return result
+ 
 def unzip( filename, destination=None, report=False ):
     from zipfile import ZipFile
     base_dir = ""
@@ -212,9 +224,16 @@ def extract( filename, destination=None, report=False ):
         # Note faut compiler cette lib avec python 2.4, sinon elle sera pas compatible avec xbmc, pas certain a 100 pour 100.
         #ok = executebuiltin( 'XBMC.Extract(%s)' % ( filename, ) )
         print "L'archive '%s' n'est pas pris en charge..." % os.path.basename( filename )
-    else:
+    elif ext == ".tar":
         # test for tarfile
         return extract_tarfile( filename, destination )
+    else:
+        # No extension, let's try rar first then zip (otherwise we will give up)
+        if is_rarfile(filename):
+            return unrar( filename, destination, report )
+        else:
+            return unzip( filename, destination, report )
+            
     return "", False
 
 

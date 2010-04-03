@@ -6,6 +6,7 @@ update_svn_keywords = ""
 # GET AND PRINT ALL STATS OF SCRIPT
 TEST_PERFORMANCE = False
 UNIT_TEST        = False
+REMOTE_DBG       = False 
 
 
 # script constants
@@ -18,7 +19,7 @@ __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center, [ALL]"
 
 __version__      = "pre-2.0"
-__statut__       = "RC2" #(dev,svn,release,etc)
+__statut__       = "RC3" #(dev,svn,release,etc)
 
 
 # don't edit __date__ and __svn_revision__
@@ -55,6 +56,18 @@ PLATFORM_LIBRARIES = os.path.join( BASE_RESOURCE_PATH, "platform_libraries" )
 LIBS               = os.path.join( BASE_RESOURCE_PATH, "libs" )
 GUI_LIBS           = os.path.join( LIBS, "GUI" )
 CONTENTS_LIBS      = os.path.join( LIBS, "sources" )
+
+
+# Remote debugger using Eclipse and Pydev
+if REMOTE_DBG:
+    # Note pydevd module need to be copied in XBMC\system\python\Lib\pysrc
+    try:
+        import pysrc.pydevd as pydevd
+        pydevd.settrace('localhost', stdoutToServer=True, stderrToServer=True)
+    except ImportError:
+        sys.stderr.write("Error: " +
+            "You must add org.python.pydev.debug.pysrc to XBMC\system\python\Lib\pysrc")
+        sys.exit(1)
 
 # append the proper platforms folder to our path, xbox is the same as win32
 sys.path.append( os.path.join( PLATFORM_LIBRARIES, ( os.environ.get( "OS", "win32" ), "win32", )[ os.environ.get( "OS", "win32" ) == "xbox" ] ) )
@@ -116,10 +129,18 @@ def MAIN():
     # INITIALISATION CHEMINS DE FICHIER LOCAUX
     try:
         import CONF
+        setconf = False
         config = CONF.ReadConfig()
 
         DIALOG_PROGRESS.update( -1, __language__( 101 ), __language__( 110 ) )
+        curversion =  config.get('Version','version')
+        if "1." in curversion:
+            setconf = True
+            
         if not config.getboolean( 'InstallPath', 'pathok' ):
+            setconf = True
+
+        if setconf:
             # GENERATION DES INFORMATIONS LOCALES
             CONF.SetConfiguration()
     except:

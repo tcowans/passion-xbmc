@@ -131,6 +131,11 @@ def ReadConfig():
     config.read( profile_conf )
     return config
 
+def ReadDefaultConfig():
+    config = ConfigParser()
+    config.read( default_conf )
+    return config
+
 
 def SetConfiguration():
     """ Definit les repertoires locaux de l'utilisateur """
@@ -145,6 +150,8 @@ def SetConfiguration():
 
     ROOTDIR = os.getcwd().replace( ";", "" )
 
+    if os.path.exists( profile_conf ):
+        os.remove( profile_conf )
     config = ReadConfig()
     USRPath = False
 
@@ -409,7 +416,8 @@ class configCtrl:
                                   THUMB_PLUGIN_VIDEO ] # Note: TYPE_ROOT est en dehors de la liste
             
             # Filtre sur les elemens a affciher selon le cas (racine ou plugin)
-            self.rootDisplayList   = [ INDEX_SKIN, INDEX_SCRAPER, INDEX_SCRIPT, INDEX_PLUGIN ]                                # Liste de la racine: Cette liste est un filtre ( utilisant l'index ) sur les listes ci-dessus
+            #self.rootDisplayList   = [ INDEX_SKIN, INDEX_SCRAPER, INDEX_SCRIPT, INDEX_PLUGIN ]     # Liste de la racine: Cette liste est un filtre ( utilisant l'index ) sur les listes ci-dessus
+            self.rootDisplayList   = [ INDEX_SKIN, INDEX_SCRAPER_MUSIC, INDEX_SCRAPER_VIDEO, INDEX_SCRIPT, INDEX_PLUGIN ]     # Liste de la racine: Cette liste est un filtre ( utilisant l'index ) sur les listes ci-dessus
             self.pluginDisplayList = [ INDEX_PLUGIN_MUSIC, INDEX_PLUGIN_PICTURES, INDEX_PLUGIN_PROGRAMS, INDEX_PLUGIN_VIDEO ] # Liste des plugins : Cette liste est un filtre ( utilisant l'index ) sur les listes ci-dessus
 
             self.is_conf_valid = True
