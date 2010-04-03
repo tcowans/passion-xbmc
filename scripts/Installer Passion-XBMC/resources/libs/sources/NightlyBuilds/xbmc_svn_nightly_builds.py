@@ -26,7 +26,8 @@ except:
 build_text = {
     "PCDX":  ( "Windows DirectX", _( 32900 ), "nightlyDX.png" ),
     "PCI":   ( "Windows Installer", _( 32901 ), "nightlyWin.png" ),
-    "Linux": ( "Linux Debian File", _( 32902 ), "nightlyLinux.png" ),
+    "Linux": ( "Linux x86 Debian File", _( 32902 ), "nightlyLinux.png" ),
+    "Linux64": ( "Linux x64 Debian File", _( 32902 ), "nightlyLinux.png" ),
     "XBOX":  ( "XBOX", _( 32903 ), "nightlyXBox.png" ),
     "PCO":   ( "Windows OpenGL", _( 32900 ), "nightlyGL.png" ),
     "OSX":   ( "OSX 10.5/10.4/ATV", _( 32904 ), "nightlyOSX.png" ),
@@ -121,5 +122,7 @@ def get_nightly_builds( current_rev="0" ):
 if ( __name__ == "__main__" ):
     import time
     t1 = time.time()
-    print get_nightly_builds()
+    for object in get_nightly_builds():
+        print object
+        print
     print time.time()-t1
