@@ -34,7 +34,7 @@
   <summary>Addons Installer of various servers</summary>
 
   <!-- Longer description of addon. Usage instructions should go here if required. -->
-  <description>This script can install directly from XBMC themes, scripts, plugins and scrapers available on servers XBMC passion (passion-xbmc.org) maintained by Team-XBMC Passion and various sources.</description>
+  <description>This script can install directly from XBMC themes, scripts, plugins and scrapers available on servers Passion-XBMC (passion-xbmc.org) maintained by Team Passion-XBMC and various sources.</description>
 
   <!-- user defined tags e.g. <tags><tag>Example</tag></tags> -->
   <tags>
