@@ -1,0 +1,380 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>  <!--Finnish 4.8.2009-->
+  <!--GENERAL STRINGS -->
+  <string id="0">Installer Passion-XBMC</string>
+  <string id="1">Keskustelut</string>
+  <string id="2">Asetukset</string>
+  <string id="3">Ohje</string>
+  <string id="4">Tietoja</string>
+  <string id="5">Hallinta</string>
+  <string id="6">Lisäosien hallinta</string>
+  <string id="7">Asennus</string>
+  <string id="8">Lopeta</string>
+
+  <string id="10">Valinta</string>
+  <string id="11">Ulkoasut</string>
+  <string id="1101">Skins Nightly Builds Passion</string>
+  <string id="12">Hakupaikat</string>
+  <string id="1201">Music Scrapers</string>
+  <string id="1202">Video Scrapers</string>
+  <string id="13">Skriptit</string>
+  <string id="14">Lisäosat</string>
+  <string id="15">Musiikki lisäosat</string>
+  <string id="16">Kuva lisäosat</string>
+  <string id="17">Ohjelma lisäosat</string>
+  <string id="18">Video lisäosat</string>
+  <string id="19">Salasana vaaditaan</string>
+  <string id="20">Anna järjestelmänvalvojan salasana</string>
+  <string id="21">Järjestelmänvalvojan salasana</string>
+  <string id="22">Latest Add-ons</string>
+  <string id="2201">All</string>
+
+  <string id="23">Message(s)</string>
+  <string id="24">Sivu</string>
+  <string id="25">Kohdetta</string>
+  <string id="26">Kohde</string>
+  <string id="27">/</string>
+
+  <string id="28">Nightly</string>
+  <string id="29">Nightly Builds</string>
+  <string id="30">Debug Info</string>
+  <string id="31">Caches Cleaner</string>
+  <string id="32">Servers</string>
+
+  <string id="41">Reset</string>
+  <string id="42">Hide Infos</string>
+  <string id="43">Hide CUBE³</string>
+  <string id="44">Rotate Icon</string>
+  <string id="45">Hide Compass</string>
+  <string id="46">Compass Icon</string>
+  <string id="47">Compass Fanart</string>
+
+  <string id="51">Hide Fanart</string>
+  <string id="52">Misc Options</string>
+  <string id="53">Changelog</string>
+  <string id="54">Build Availability</string>
+  <string id="55">Update XBMC</string>
+  <string id="56">Manage Exclude</string>
+  <string id="57">Limit:</string>
+  <string id="58">-</string>
+  <string id="59">-</string>
+  <string id="60">-</string>
+  <string id="61">-</string>
+  <string id="62">-</string>
+
+  <!--MISC STRINGS -->
+  <string id="100">Valitse XBMC:n asennuskansio</string>
+  <string id="101">Järjestelmän kokoonpano</string>
+  <string id="102">Tarkistetaan päivityksiä</string>
+  <string id="103">Luodaan käyttöliittymää</string>
+  <string id="104">Ladataan tietoja</string>
+  <string id="105">Uusi ohjelmaversio on saatavilla</string>
+  <string id="106">Haluatko päivittää ohjelman?</string>
+  <string id="107">RSS-syöte:</string>
+  <string id="108">&#32;Ei ole saatavilla!</string>
+
+  <string id="110">Odota hetki...</string>
+  <string id="111">Virhe</string>
+  <string id="112">Ilmeni odottamaton poikkeus</string>
+  <string id="113">Päivitä asetukset ja lopeta</string>
+  <string id="114">Päivitä asetukset ja käynnistä uudelleen</string>
+  <string id="115">Poistu tallentamatta</string>
+  <string id="116">Muutetaan sources.xml-tiedostoa, haluatko tehdä tämän?</string>
+  <string id="117">Toiminto ei onnistu</string>
+  <string id="118">Et voi korvata käytössä olevaa ulkoasua</string>
+  <string id="119">Vaihda käytössä oleva ulkoasu[CR]toiseen ennen lataamista</string>
+  <string id="120">Et voi asentaa ulkoasua ilman[CR]järjestelmänvalvojan oikeuksia</string>
+  <string id="121">Et voi asentaa tietojen hakupaikkaa ilman[CR]järjestelmänvalvojan oikeuksia</string>
+  <string id="122">Ladataan: %s</string>
+  <string id="123">Ladattu yhteensä: %d%%</string>
+  <string id="124">Lataus keskeytetty</string>
+  <string id="125">Lataus keskeytyi suorituksen aikana</string>
+  <string id="126">Haluatko poistaa ladatut tiedostot?</string>
+  <string id="127">Hakemisto poistettu</string>
+  <string id="128">Hakemisto:</string>
+  <string id="129">Poistettu</string>
+  <string id="130">Hakemistoa ei voida poistaa</string>
+  <string id="131">Tiedosto poistettu</string>
+  <string id="132">Tiedosto:</string>
+  <string id="133">Tiedostoa ei voida poistaa</string>
+  <string id="134">Lataus valmis</string>
+  <string id="135">Tiedosto ladattiin kansioon:</string>
+  <string id="136">Asenna: %s</string>
+  <string id="137">Asennus käynnissä ...</string>
+  <string id="138">Asennetaan %s</string>
+  <string id="139">%s:n purun aikana tapahtui virhe</string>
+  <string id="140">Odottamaton poikkeus tapahtui %s:n purun aikana</string>
+  <string id="141">Asennus on nyt valmis</string>
+  <string id="142">%s:n asennus</string>
+  <string id="143">on suoritettu onnistuneesti</string>
+  <string id="144">Virhe - Asennus ei onnistunut</string>
+  <string id="145">Katso lisätietoja lokitiedostosta</string>
+  <string id="146">Asennus peruutettu</string>
+  <string id="147">%s:n asennus peruutettiin</string>
+  <string id="148">Tuntematon virhe</string>
+  <string id="149">%s on jo olemassa, mitä haluat tehdä?</string>
+  <string id="150">Poista hakemisto</string>
+  <string id="151">Nimeä hakemisto uudelleen</string>
+  <string id="152">Päällekirjoita hakemisto</string>
+  <string id="153">Peruuta</string>
+  <string id="154">Anna uusi nimi:</string>
+  <string id="155">Nimettiin uudelleen:</string>
+  <string id="156">Poista</string>
+  <string id="157">Nimeä uudelleen</string>
+  <string id="158">%s:n poisto</string>
+  <string id="159">Oletko varma, että haluat poistaa %s:n ?</string>
+  <string id="160">Käynnistä</string>
+  <string id="161">Kopioi</string>
+  <string id="162">Siirrä</string>
+  <string id="163">Varmista tiedoston kopiointi</string>
+  <string id="164">Varmista tiedoston siirto</string>
+  <string id="165">Kopioidaanko valitut tiedostot?</string>
+  <string id="166">Siirretäänkö valitut tiedostot?</string>
+  <string id="167">Valitse kopiointi: %s</string>
+  <string id="168">Valitse siirto: %s</string>
+  <string id="169">Toiminto keskeytettiin</string>
+  <string id="170">Kopiointi epäonnistui</string>
+  <string id="171">Vähintään yhden tiedoston kopiointi epäonnistui</string>
+  <string id="172">Siirto epäonnistui</string>
+  <string id="173">Vähintään yhden tiedoston siirto epäonnistui</string>  
+  <string id="174">Poisto epäonnistui</string>
+  <string id="175">Vähintään yhden tiedoston poisto epäonnistui</string>
+  <string id="176">Kopioidaan...</string>
+  <string id="177">Siirretään...</string>
+  <string id="178">Sijainnista:&#32;</string>
+  <string id="179">Kohteeseen:&#32;</string>
+  <string id="180">Valitun tiedoston lataus</string>
+  <string id="181">Haluatko ladata valitun tiedoston?</string>
+
+  <string id="182">End of the extraction</string>
+
+  <string id="184">Päivitä</string>
+  <string id="185">Laske koko</string>
+  <string id="186">Lasketaan kansion kokoa</string>
+  <string id="187">UnRar: %i of %i items</string>
+  <string id="188">UnZip: %i of %i items</string>
+  <string id="189">Size: %.2f / %.2f Mb</string>
+  <string id="190">Size: %.2f / ? Mb</string>
+  <string id="191">kb/s</string>
+
+  <!--FORUM DIRECT INFOS STRINGS -->
+  <string id="199">Topics</string>
+  <string id="200">Profile</string>
+  <string id="201">Connect</string>
+  <string id="202">Forum List</string>
+  <string id="203">Forum Passion-XBMC</string>
+  <string id="205">Please enter your login Passion-XBMC</string>
+  <string id="206">Please now enter the password</string>
+  <string id="207">Incomplete identification</string>
+  <string id="208">Identification canceled</string>
+  <string id="209">Welcome</string>
+  <string id="210">You are connected!</string>
+  <string id="211">You have %i message!</string>
+  <string id="212">Personal messages</string>
+  <string id="213">%i Personal messages of recovery!</string>
+  <string id="214">Breathe deeply and repeat testing</string>
+  <string id="215">Goodbye</string>
+  <string id="216">Personal messages...</string>
+
+  <string id="236">Vahvista uuden aiheen lisäys:</string>
+  <string id="237">Ohita</string>
+  <string id="238">Käynnistä</string>
+  <string id="239">Haetaan aiheita...</string>
+  <string id="240">Tietoja ei löydy!</string>
+  <string id="241">Tietoja ei voida hakea!</string>
+
+  <!-- STRINGS FOR LIST VIEW MODE -->
+  <string id="350">Lista</string>
+  <string id="351">Tiedot</string>
+  <string id="352">Kuvakkeet</string>
+  <string id="353"></string>
+  <string id="354"></string>
+  <string id="355"></string>
+  <string id="356">Media</string>
+  <string id="357"></string>
+  <string id="358"></string>
+  <string id="359">Karuselli</string>
+  <string id="360">Polku:</string>
+  <string id="361">Koko:</string>
+  <string id="362">Luotu:</string>
+  <string id="363">Viimeksi muokattu:</string>
+  <string id="364">Viimeksi käytetty:</string>
+  <string id="365">Contains</string>
+  <string id="366">Item(s)</string>
+
+  <!--SETTINGS STRINGS -->
+  <string id="499">Versio: %s</string>
+  <string id="500">Asetukset</string>
+  <string id="501">Salli sources.xml-tiedoston muokkaus</string>
+  <string id="502">Aiheita sivua kohti</string>
+  <string id="503">[B]&#126;&#126;[/B]</string><!--illimited symbol -->
+  <string id="504">00|5|10|25|50|100</string><!--LIST LIMIT FOR TOPICS IN DIRECT INFOS: 00=illimited -->
+  <string id="505">Ulkoasun väri</string>
+  <string id="506">Ei käytössä</string>
+  <string id="507">Oma taustakuva käytössä</string>
+  <string id="508">Polku:</string>
+  <string id="509">Haluatko poistaa oman taustakuvan polun?</string>
+  <string id="510">Tarkista päivitykset käynnistyessä</string>
+  <string id="511">RSS-syöte</string>
+  <string id="512">Käynnistä [B]*skripti*[/B] ja suorituslokin kirjaus</string>
+  <string id="513">Piilota keskustelupaikka painike päävalikosta</string>
+  <string id="514">Piilota alihakemiston kohteet</string>
+  <string id="515">Piilota median tiedostopäätteet</string>
+  <string id="516">Käytä kuva lisäosia kuten fanitaidetta</string>
+  <string id="517">Pienoiskuvakkeen koko</string>
+
+  <string id="518">Nettiselain</string>
+  <string id="519">Estä XBMC:n sammutus kunnes nettiselain on suljettu</string>
+  <string id="520">Valitse nettiselain</string>
+  <string id="521">Anna nettiselaimen nimi</string>
+  <string id="522">Shortcut of "Installer" button</string>
+  <string id="523">Color Labels</string>
+
+  <string id="530">Älä näytä käynnistystunnusta</string>
+  <string id="531">Ulkoasu</string>
+  <string id="532">Ulkoasun asetuksia on muutettu</string>
+  <string id="533">Koska olet muuttanut IPX-ulkoasun asetuksia täytyy</string>
+  <string id="534">ohjelma käynnistää uudelleen. Haluatko käynnistää nyt?</string>
+
+  <string id="540">Support</string>
+  <string id="541">Default[CR]Settings</string>
+  <string id="542">(Manager only)</string>
+
+  <string id="550">French support</string>
+  <string id="551">English support</string>
+  <string id="552">Click to get help!</string>
+
+  <!--DESCRIPTION STRINGS -->
+  <string id="599">Add-ons Infos</string>
+  <string id="601">Tyyppi</string>
+  <string id="602">Versio</string>
+  <string id="603">Päiväys</string>
+  <string id="604">Selitettä ei ole saatavilla</string>
+  <string id="605">Poistu</string>
+  <string id="606">Zoomaus</string>
+  <string id="607">Lataa</string>
+  <string id="608">Kieli</string>
+  <string id="609">Ranska</string>
+  <string id="610">Englanti</string>
+  <string id="611">Monikielinen</string>
+  <string id="612">Tuntematon</string>
+  <string id="613">Lisätty</string>
+  <string id="614">Selite: Ei saatavilla</string>
+  <string id="615">Saksa</string>
+  <string id="616">Espanja</string>
+  <string id="617">Hollanti</string>
+  <string id="618">Suomi</string>
+  <string id="619">Ruotsi</string>
+  <string id="620">Tekijä</string>
+  <string id="621">Tiedostonimi</string>
+  <string id="622">CLICK FOR ZOOM IMAGE</string>
+  <string id="623">IMAGE[CR][CR]UNAVAILABLE</string>
+  <string id="624">Image</string>
+  <string id="625">Flip Image</string>
+
+  <!--ABOUT STRINGS -->
+  <string id="698">Statut</string>
+  <string id="699">Revision</string>
+  <string id="700">Versio</string>
+  <string id="701">Tekijät</string>
+  <string id="702">Kehittäjät</string>
+  <string id="703">Ulkoasu</string>
+  <string id="704">Pohjautuu %sn ideaan</string>
+  <string id="705">Erikoiskiitokset %s</string>  
+  <string id="706">Tuki ja avustajat</string>  
+  <string id="707">Päiväys</string>   
+  <string id="708">SVN</string>  
+  <string id="709">Kielet</string>  
+  <string id="710">Asennusohjelman päivitykset XBMC:n teemoihin, skripteihin, lisäosiin ja skripteihin sekä hakupaikkoihin tapahtuvat FTP-yhteydellä Passion-XBMC (passion-xbmc.org) Team Passion-XBMC:n ylläpitämältä sivustolta.</string>  
+
+  <string id="720">Others Devs &#38; Helper</string>
+  <string id="730">Special Thanks to:</string>
+  
+  <!--CONTEXT MENU STRINGS -->
+  <string id="999">Menu</string>
+  <string id="1000">Asenna</string>
+  <string id="1001">Tietoja</string>
+  <string id="1002">Vaihda media-valikkoa</string>
+
+  <!-- Caches Cleaner -->
+  <string id="32650">Cleaning: %s</string>
+  <string id="32651">%i files and %i folders cleaned</string>
+  <string id="32652">Dir: %s</string>
+  <string id="32653">File: %s</string>
+  <string id="32654">Clear All Caches</string>
+  <string id="32655">Clear All Caches of XBMC</string>
+  <string id="32656">Clear XBMC Cache [COLOR=88FFFFFF][%s][/COLOR]</string>
+  <string id="32657">Clear MS Cache [COLOR=88FFFFFF][E:\CACHE\][/COLOR]</string>
+  <string id="32658">Clear XBox Caches [COLOR=88FFFFFF][X:\, Y:\, Z:\][/COLOR]</string>
+  <string id="32659">Caches Cleaner...</string>
+  <string id="32660">Caches Cleaner</string>
+  <string id="32661">Clear Caches</string>
+  <string id="32662">Clear All Caches of Installer Passion-XBMC</string>
+
+  <!-- XBMC SVN Updater for XBox -->
+  <string id="32700">Warning!</string>
+  <string id="32701">In this menu, you can delete, rename, copy ... files from your Xbox or even format a partition. Improper handling can lead to a system error. Use this menu if you know exactly what you do.</string>
+  <string id="32702">Warning! Read ...</string>
+  <string id="32709">Before starting the Updater will do a verification test. It will check the existence of the Build and your installation folder of XBMC. If no error during this check, a confirmation of update will be requested.</string>
+  <string id="32749">Update</string>
+  <string id="32750">Run the update now</string>
+  <string id="32751">Press "YES" to proceed update your XBMC.\nAnd do nothing that could make a system error.\nBe patient and wait until the execution...</string>
+  <string id="32752">Update completed successfully.\nWill you return to XBMC?</string>
+  <string id="32753">Rebooting XBMC...</string>
+  <string id="32760">Return to XBMC</string>
+  <string id="32761">Reload Updater</string>
+  <string id="32770">Restart XBox</string>
+  <string id="32780">Shotdown XBox</string>
+  <string id="32789">Installation directory of XBMC</string>
+  <string id="32790">Files Manager</string>
+  <string id="32791">Text Editor</string>
+  <string id="32795">Settings</string>
+
+  <string id="32799">Success</string>
+  <string id="32800">Cleaner</string>
+  <string id="32801">About This Section</string>
+  <string id="32802">The Cleaner is designed to reset XBMC. It will delete folders and/or files that were created during the first use of XBMC or just delete the settings. It also allows clean caches E, X, Y, Z.</string>
+  <string id="32810">Reset XBMC</string>
+  <string id="32811">Confirm the reset of XBMC.\nWarning, this action will reset the folder "UserData" to the original state and you lose all: [Database, thumbnails, guisettings, Advancedsettings, ...]. Are you sure?</string>
+  <string id="32812">Enter name to create a backup, just in case!</string>
+  <string id="32813">Reseting XBMC done.</string>
+  <string id="32820">Clear XBMC Settings</string>
+  <string id="32821">Confirm delete XBMC settings.\nWarning, this action will remove the file guisettings.xml. Are you sure?</string>
+  <string id="32822">Cleaning settings XBMC done.</string>
+  <string id="32830">Clear XBMC Save</string>
+  <string id="32831">Confirm delete the backup of XBMC.\nOnly useful to erase the traces of an old version of XBMC. Are you sure?</string>
+  <string id="32832">Cleaning save XBMC done.</string>
+  <string id="32840">Clear Caches X, Y &amp; Z</string>
+  <string id="32841">Confirm emptying Caches X:\, Y:\, Z:\. Are you sure?</string>
+  <string id="32842">Emptying the Caches finished.</string>
+  <string id="32850">Clear Cache E</string>
+  <string id="32851">Confirm emptying Cache E:\CACHE\nAre you sure?</string>
+  <string id="32852">Emptying the Cache E finished.</string>
+
+  <string id="32860">XBMC Nightly Builds</string>
+  <string id="32861">Fetching Unofficial Nightly Builds...</string>
+  <string id="32862">Confirm the download!</string>
+  <string id="32863">Are you sure you want to download this build?</string>
+  <string id="32864">Confirm Launching Update</string>
+  <string id="32865">Your version: %s</string>
+  <string id="32866">Shift to: %s</string>
+  <string id="32867">There have not updated for your Platform!</string>
+  <string id="32868">Be patient it would soon!</string>
+
+  <string id="32900">Use this package to over-write your current installed application.</string>
+  <string id="32901">Use this package to install a fresh copy using the latest SVN release.</string>
+  <string id="32902">Use this package to install a full version on your deb based Linux.</string>
+  <string id="32903">Use this package for a clean install or upgrade on your XBMC.</string>
+  <string id="32904">Use this package to install a full version on your OS X Bases Systems.</string>
+
+  <string id="32910">Add/Remove file or folder on update</string>
+  <string id="32911">Add file</string>
+  <string id="32912">Add folder</string>
+  <string id="32913">Remove all</string>
+  <string id="32914">Browse for exclude file on update</string>
+  <string id="32915">Browse for exclude folder on update</string>
+  <string id="32916">Confirm remove</string>
+  <string id="32917">Are you sure you want to remove everything?</string>
+  <string id="32918">Are you sure you want to remove:</string>
+  <string id="32919">Excluded: %s</string>
+</strings>
