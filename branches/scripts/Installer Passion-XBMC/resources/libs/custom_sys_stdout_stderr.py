@@ -1,7 +1,11 @@
 
+import os
 import re
 import sys
 from traceback import print_exc
+
+try: import xbmc
+except: xbmc = None
 
 
 __script__ = "IPX"
@@ -11,6 +15,17 @@ PRINT_ERROR = True
 
 LOGS_REGEXP  = "bypass: |bypass_debug: |bypass_comment: "
 bypass_debug = re.compile( LOGS_REGEXP ).search
+
+
+def notif( msg="" ):
+    try:
+        msg = msg or str( sys.exc_info()[ 1 ] )
+        if xbmc is not None:
+            if ( xbmc.Settings( os.getcwd() ).getSetting( "notif_error" ) == "true" ) and not xbmc.getCondVisibility( "Window.IsVisible(infodialog)" ):
+                notif = "%s!,%s,4000,DefaultIconError.png" % ( xbmc.getLocalizedString( 257 ), msg )
+                xbmc.executebuiltin( "XBMC.Notification(%s)" % notif )
+    except:
+        pass
 
 
 class Logger( object ):
@@ -34,6 +49,7 @@ class Logerr( object ):
         if PRINT_ERROR:
             if not message.strip( "\r\n " ): self.terminal.write( message )
             else: self.terminal.write( "[SCRIPT %s] ERROR: %s" % ( __script__, message ) )
+        notif()
 
 
 try:

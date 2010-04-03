@@ -1,6 +1,4 @@
 
-#context menu du plugin "All Game" de frost
-
 # Modules general
 import os
 import sys
@@ -25,7 +23,6 @@ class ContextMenu( xbmcgui.WindowXMLDialog ):
         xbmc.executebuiltin( "Skin.Reset(AnimeWindowXMLDialogClose)" )
         xbmc.executebuiltin( "Skin.SetBool(AnimeWindowXMLDialogClose)" )
 
-        self.control_enabled_buttons = range( self.CONTROL_CM_BUTTON_START, ( self.CONTROL_CM_BUTTON_END + 1 ) )
         self.buttons = kwargs.get( "buttons", {} )
         self.view_mode = kwargs.get( "view_mode", "0" )
         xbmc.executebuiltin( "Skin.SetString(totals_cm_buttons,%i)" % ( len( self.buttons ), ) )
@@ -35,41 +32,18 @@ class ContextMenu( xbmcgui.WindowXMLDialog ):
         try:
             xbmcgui.lock()
             if self.buttons == {}: raise
-            first_cm_button = sorted( self.buttons.keys() )[ 0 ]
             for key in self.CONTROL_CM_BUTTONS:
                 label = self.buttons.get( key )
                 if label is not None:
                     if isinstance( label, tuple ):
-                        self.getControl( key ).setLabel( label[ 0 ] )
-                        if label[ 1 ] == "disabled":
-                            self.getControl( key ).setEnabled( 0 )
-                            try: del self.control_enabled_buttons[ self.control_enabled_buttons.index( key ) ]
-                            except: pass
-                            if self.control_enabled_buttons: self.setFocusId( self.control_enabled_buttons[ 0 ] )
-                    else:#if isinstance( label, str ):
-                        self.getControl( key ).setLabel( label )
-                else:
-                    self.getControl( key ).setVisible( 0 )
-            if first_cm_button in self.control_enabled_buttons:
-                self.setFocusId( first_cm_button )
-            xbmcgui.unlock()
+                        label = label[ 0 ]
+                    context_item = xbmcgui.ListItem( label )
+                    context_item.setProperty( "controlID", str( key ) )
+                    context_item.setProperty( "main_view_mode", self.view_mode )
+                    self.getControl( 10000 ).addItem( context_item )
         except:
             print_exc()
-            try:
-                #new methode for default.hd
-                for key in self.CONTROL_CM_BUTTONS:
-                    label = self.buttons.get( key )
-                    if label is not None:
-                        if isinstance( label, tuple ):
-                            label = label[ 0 ]
-                        context_item = xbmcgui.ListItem( label )
-                        context_item.setProperty( "controlID", str( key ) )
-                        context_item.setProperty( "main_view_mode", self.view_mode )
-                        self.getControl( 10000 ).addItem( context_item )
-            except:
-                print_exc()
-            xbmcgui.unlock()
-            #self.close_dialog()
+        xbmcgui.unlock()
 
     def onFocus( self, controlID ):
         pass
@@ -82,20 +56,6 @@ class ContextMenu( xbmcgui.WindowXMLDialog ):
             except:
                 pass
             self.close_dialog()
-
-        elif controlID in self.CONTROL_CM_BUTTONS:
-            try:
-                self.selected = controlID
-                try:
-                    # verification du cas de la souris qui peut avoir presser un boutons desactiver
-                    if isinstance( self.buttons.get( self.selected ), tuple ):
-                        if self.buttons.get( self.selected )[ 1 ] == "disabled":
-                            self.selected = 0 #"disabled"
-                except:
-                    pass
-                self.close_dialog()
-            except:
-                pass
 
     def onAction( self, action ):
         if action in ( 9, 10, 117 ):
@@ -111,7 +71,7 @@ class ContextMenu( xbmcgui.WindowXMLDialog ):
 def show_context_menu( buttons={}, view_mode="0" ):
     dir_path = os.getcwd().rstrip( ";" )
     current_skin, force_fallback = getUserSkin()
-    file_xml = ( "IPX-ContextMenu.xml", "passion-ContextMenu.xml" )[ current_skin != "Default.HD" ]
+    file_xml = "IPX-ContextMenu.xml"
 
     w = ContextMenu( file_xml, dir_path, current_skin, force_fallback, buttons=buttons, view_mode=view_mode )
     w.doModal()
