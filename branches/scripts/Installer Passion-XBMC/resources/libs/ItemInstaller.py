@@ -9,10 +9,10 @@ import httplib
 from traceback import print_exc
 
 # Modules custom
-#from utilities import *
 import CONF
 import Item
 from FileManager import fileMgr
+from utilities import copy_dir, copy_inside_dir
 
 httplib.HTTPConnection.debuglevel = 1
 
@@ -339,7 +339,7 @@ class ArchItemInstaller(ItemInstaller):
                 try:
                     #if ( OK == bool( self.extractedDirPath ) ) and os.path.exists( self.extractedDirPath ):
                     if os.path.exists( self.extractedDirPath ):
-                        extractor.copy_inside_dir( self.extractedDirPath, self.destinationPath )
+                        copy_inside_dir( self.extractedDirPath, self.destinationPath )
                         OK = True
                     else:
                         print "ItemInstaller::installItem - self.extractedDirPath does not exist"
@@ -356,7 +356,7 @@ class ArchItemInstaller(ItemInstaller):
                 try:
                     #if ( OK == bool( self.extractedDirPath ) ) and os.path.exists( self.extractedDirPath ):
                     if os.path.exists( self.extractedDirPath ):
-                        extractor.copy_dir( self.extractedDirPath, self.destinationPath )
+                        copy_dir( self.extractedDirPath, self.destinationPath )
                         OK = True
                     else:
                         print "ItemInstaller::installItem - self.extractedDirPath does not exist"
@@ -475,7 +475,7 @@ class DirItemInstaller(ItemInstaller):
                 try:
                     #if ( OK == bool( self.downloadDirPath ) ) and os.path.exists( self.downloadDirPath ):
                     if os.path.exists( self.downloadDirPath ):
-                        extractor.copy_inside_dir( self.downloadDirPath, self.destinationPath )
+                        copy_inside_dir( self.downloadDirPath, self.destinationPath )
                         OK = True
                     else:
                         print "ItemInstaller::installItem - self.downloadDirPath does not exist"
@@ -492,7 +492,7 @@ class DirItemInstaller(ItemInstaller):
                 try:
                     #if ( OK == bool( self.downloadDirPath ) ) and os.path.exists( self.downloadDirPath ):
                     if os.path.exists( self.downloadDirPath ):
-                        extractor.copy_dir( self.downloadDirPath, self.destinationPath )
+                        copy_dir( self.downloadDirPath, self.destinationPath )
                         OK = True
                     else:
                         print "ItemInstaller::installItem - self.downloadDirPath does not exist"

@@ -7,13 +7,16 @@ frost
 # Modules general
 import os
 import sys
+from tarfile import is_tarfile
+from zipfile import is_zipfile
 from traceback import print_exc
+
 
 # Modules XBMC
 from xbmcgui import DialogProgress
 from xbmc import executebuiltin, sleep
 
-# Modules custom
+# Modules Custom
 import shutil2
 
 
@@ -26,6 +29,12 @@ except:
     lang = { 110: "Please wait...", 187: "UnRar: %i of %i items", 188: "UnZip: %i of %i items" }
     def _( id ): return lang[ id ]
 
+
+def is_rarfile( filename ):
+    RAR_ID = "Rar!\x1a\x07\x00"
+    buf = open( filename, "rb" ).read( len( RAR_ID ) )
+    return buf == RAR_ID
+ 
 
 def get_time_sleep( filename ):
     # faut vraiment laisser xbmc le temps d'extraire l'archive environ 1 seconde pour 1 mo
@@ -119,19 +128,7 @@ def unrar( filename, destination=None, report=False ):
         print_exc()
     return "", False
 
-def is_rarfile( filename ):
-    """
-    Check if file is rar archive
-    """
-    result = False
-    from rarfile import RarFile
-    try: 
-        rar = RarFile( filename, "r" )
-        result = True
-    except: 
-        print "%s is not rar"%filename
-    return result
- 
+
 def unzip( filename, destination=None, report=False ):
     from zipfile import ZipFile
     base_dir = ""
@@ -211,50 +208,35 @@ def extract_tarfile( filename, destination=None ):
     return "", False
 
 
+def filetype( filename ):
+    try:
+        #Check quickly whether file is rar archive.
+        if is_rarfile( filename ): return "is_rar"
+        #Quickly see if file is a ZIP file by checking the magic number.
+        if is_zipfile( filename ): return "is_zip"
+        #Return True if name points to a tar archive that we are able to handle, else return False.
+        if is_tarfile( filename ): return "is_tar"
+    except:
+        print_exc()
+    return "Inconnue"
+
+
 def extract( filename, destination=None, report=False ):
-    ext = os.path.splitext( filename )[ -1 ]
-    if ext == ".zip":
+    type = filetype( filename )
+    if type == "is_zip":
         return unzip( filename, destination, report )
-    elif ext == ".rar":
+    elif type == "is_rar":
         return unrar( filename, destination, report )
-    elif ext == ".7z":
-        # test for future support 7-zip archive, not supported for a moment
-        # mais il semblerais que le librairie "pylzma" marche bien, http://www.joachim-bauch.de/projects/python/pylzma/
-        # reste a compiler cette lib pour xbmc linux, win32/xbox et osx semble pas etre supporter
-        # Note faut compiler cette lib avec python 2.4, sinon elle sera pas compatible avec xbmc, pas certain a 100 pour 100.
-        #ok = executebuiltin( 'XBMC.Extract(%s)' % ( filename, ) )
-        print "L'archive '%s' n'est pas pris en charge..." % os.path.basename( filename )
-    elif ext == ".tar":
-        # test for tarfile
+    elif type == "is_tar":
         return extract_tarfile( filename, destination )
+    #elif type == "is_7z":
+    #    # test for future support 7-zip archive, not supported for a moment
+    #    # mais il semblerais que le librairie "pylzma" marche bien, http://www.joachim-bauch.de/projects/python/pylzma/
+    #    # reste a compiler cette lib pour xbmc linux, win32/xbox et osx semble pas etre supporter
+    #    # Note faut compiler cette lib avec python 2.4, sinon elle sera pas compatible avec xbmc, pas certain a 100 pour 100.
+    #    #ok = executebuiltin( 'XBMC.Extract(%s)' % ( filename, ) )
+    #    print "L'archive '%s' n'est pas pris en charge..." % os.path.basename( filename )
     else:
-        # No extension, let's try rar first then zip (otherwise we will give up)
-        if is_rarfile(filename):
-            return unrar( filename, destination, report )
-        else:
-            return unzip( filename, destination, report )
-            
+        print "L'archive '%s' n'est pas pris en charge..." % os.path.basename( filename )
+
     return "", False
-
-
-def copy_dir( dirname, destination, overwrite=True ):
-    if not overwrite and os.path.isdir( destination ):
-        shutil2.rmtree( destination )
-    shutil2.copytree( dirname, destination, overwrite=overwrite )
-
-
-def copy_inside_dir( dirname, destination, overwrite=True ):
-    list_dir = os.listdir( dirname )
-    for file in list_dir:
-        src = os.path.join( dirname, file )
-        dst = os.path.join( destination, file )
-        if os.path.isfile( src ):
-            if not os.path.isdir( os.path.dirname( dst ) ):
-                os.makedirs( os.path.dirname( dst ) )
-            if not overwrite and os.path.isfile( dst ):
-                os.unlink( dst )
-            shutil2.copyfile( src, dst, overwrite=overwrite )
-        elif os.path.isdir( src ):
-            if not overwrite and os.path.isdir( dst ):
-                shutil2.rmtree( dst )
-            shutil2.copytree( src, dst, overwrite=overwrite )
