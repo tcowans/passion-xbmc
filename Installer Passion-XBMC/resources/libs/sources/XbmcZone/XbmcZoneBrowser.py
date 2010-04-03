@@ -140,6 +140,7 @@ class XbmcZoneBrowser(Browser):
         item = {}
         item['cattype']   = self._mapType_Local2Server( typeList )
         item['name']      = _(2201)
+        item['catname']      = "All"
         if self._mapType_Local2Server( typeList ) == "Script":
             item['xbmc_type'] = Item.TYPE_SCRIPT
         else: # Plugins
@@ -171,14 +172,21 @@ class XbmcZoneBrowser(Browser):
                         item['xbmc_type'] = Item.TYPE_SCRIPT
                     
                 elif child.localName == "Name" :
-                    #category = child.childNodes[0].data
-                    item['name'] = child.childNodes[0].data
-                    #item['xbmc_type'] = self._mapType_Server2Local( child.childNodes[0].data.decode("utf8") )
-                    #TODO: find cleaner solution for defining xbmc_type
-                    if "Plugin" in item['name']:
-                        item['xbmc_type'] = self._mapType_Server2Local( child.childNodes[0].data )
+                    try:
+                        item['name']    = child.childNodes[0].data
+                        item['catname'] = child.childNodes[0].data
+                        #item['xbmc_type'] = self._mapType_Server2Local( child.childNodes[0].data.decode("utf8") )
+                        #TODO: find cleaner solution for defining xbmc_type
+                        if "Plugin" in item['name']:
+                            item['xbmc_type'] = self._mapType_Server2Local( child.childNodes[0].data )
+                    except:
+                        item['name']    = ""
+                        item['catname'] = ""
                 elif child.localName == "Description" :
-                    item['description'] = child.childNodes[0].data
+                    try:
+                        item['description'] = child.childNodes[0].data
+                    except:
+                        item['description'] = ""
             # Add entry...
 #            listitem = xbmcgui.ListItem( category.replace("Plugin", ""), iconImage="DefaultFolder.png" )
 #            xbmcplugin.addDirectoryItem( handle = int(sys.argv[ 1 ]), url = sys.argv[ 0 ] + '?action=plugin-list&category=%s' % urllib.quote( category ), listitem=listitem, isFolder=True)
@@ -231,7 +239,7 @@ class XbmcZoneBrowser(Browser):
 #        script_icon      = "DefaultScript.png"
 
         # Get XML data...
-        usock = urllib.urlopen( "http://www.xbmczone.com/installer/addon_list.asp?type=%s&category=%s" %  ( urllib.quote( categoryItem['cattype'] ) , urllib.quote( categoryItem['name'] ) ) )
+        usock = urllib.urlopen( "http://www.xbmczone.com/installer/addon_list.asp?type=%s&category=%s" %  ( urllib.quote( categoryItem['cattype'] ) , urllib.quote( categoryItem['catname'] ) ) )
         dom   = minidom.parse( usock )
         usock.close()
         
@@ -259,22 +267,33 @@ class XbmcZoneBrowser(Browser):
                         item['xbmc_type'] = self._mapType_Server2Local( type )
                 # Category
                 elif child.localName == "Category" :
-                    category = child.firstChild.data
+                    try:
+                        category = child.firstChild.data
+                    except:
+                        category = None
                     item['cattype'] = category
                     #TODO: find cleaner solution for defining xbmc_type
                     if "Plugin" in category:
                         item['xbmc_type'] = self._mapType_Server2Local( category )
                 # ID
                 elif child.localName == "ID" :
-                    id = child.firstChild.data
+                    try:
+                        id = child.firstChild.data
+                    except:
+                        id = 0
                     item['downloadurl'] = "http://xbmczone.com/download.asp?id=%s" % ( id )
                 # Name
                 elif child.localName == "Name" :
-                    #name = child.firstChild.data
-                    item['name'] = child.firstChild.data
+                    try:
+                        item['name'] = child.firstChild.data
+                    except:
+                        item['name'] = ""
                 # File Name
                 elif child.localName == "FileName" :
-                    item['filename'] = child.firstChild.data
+                    try:
+                        item['filename'] = child.firstChild.data
+                    except:
+                        item['filename'] = ""
                 # Version
                 elif child.localName == "Version" :
                     #version = child.firstChild.data
@@ -284,18 +303,25 @@ class XbmcZoneBrowser(Browser):
                         item['version'] = ""
                 # Author
                 elif child.localName == "Author" :
-                    #author = child.firstChild.data
-                    item['author'] = child.firstChild.data
+                    try:
+                        item['author'] = child.firstChild.data
+                    except:
+                        item['author'] = ""
                 # Date
                 elif child.localName == "Date" :
-                    date          = child.firstChild.data
-                    date_elements = date.split("/")
-                    #item_date     = "%s-%s-%s" % ( date_elements[1].zfill(2), date_elements[0].zfill(2), date_elements[2] )                    
-                    item['date']  = "%s-%s-%s" % ( date_elements[1].zfill(2), date_elements[0].zfill(2), date_elements[2] )                    
+                    try:
+                        date          = child.firstChild.data
+                        date_elements = date.split("/")
+                        #item_date     = "%s-%s-%s" % ( date_elements[1].zfill(2), date_elements[0].zfill(2), date_elements[2] )                    
+                        item['date']  = "%s-%s-%s" % ( date_elements[1].zfill(2), date_elements[0].zfill(2), date_elements[2] )                    
+                    except:
+                        item['date']  = ""
                 # Description
                 elif child.localName == "Description" :
-                    #description = child.firstChild.data
-                    item['description'] = child.firstChild.data
+                    try:
+                        item['description'] = child.firstChild.data
+                    except:
+                        item['description'] = ""
                 # Instructions
 #                elif child.localName == "Instructions" :
 #                    if child.firstChild != None :
@@ -304,13 +330,6 @@ class XbmcZoneBrowser(Browser):
 #                        instructions = ""
                 
             # Add entry...
-            #label  = name + " " + version
-            
-#            url    = '%s?action=script-info&type=%s&category=%s&id=%s&name=%s&version=%s&author=%s&date=%s&description=%s&instructions=%s&install-path=%s' % \
-#                   ( sys.argv[ 0 ], type, category, id, urllib.quote( name ), version, urllib.quote( author ), urllib.quote( date ), urllib.quote( description ), urllib.quote( instructions ), urllib.quote( where_to_install ) )
-#            listitem = xbmcgui.ListItem( label, iconImage = script_icon )
-#            listitem.setInfo( type="Video", infoLabels={ "Date" : item_date } )
-            #item['parent']            = Item.TYPE_PLUGIN
             item['type']              = 'FIC'
             item['previewpictureurl'] = None
             item['language']          = ""

@@ -10,7 +10,6 @@ __all__ = [
     "SPECIAL_MASTERPROFILE_DIR",
     "SPECIAL_XBMC_HOME",
     "SPECIAL_SCRIPT_DATA",
-    "DIR_XBMC_ROOT",
     "DIR_SCRAPER",
     "DIR_SCRAPER_MUSIC",
     "DIR_SCRAPER_VIDEO",
@@ -83,10 +82,10 @@ SYSTEM_PLATFORM = get_system_platform()
 
 
 # Calculate directories needed by the installer
-DIR_XBMC_ROOT = SPECIAL_XBMC_HOME
-DIR_SKIN            = os.path.join( DIR_XBMC_ROOT, "skin" )
-DIR_SCRIPT          = os.path.join( DIR_XBMC_ROOT, "scripts" )
-DIR_PLUGIN          = os.path.join( DIR_XBMC_ROOT, "plugins" )
+#DIR_XBMC_ROOT       = SPECIAL_XBMC_HOME
+DIR_SKIN            = os.path.join( SPECIAL_HOME_DIR, "skin" )
+DIR_SCRIPT          = os.path.join( SPECIAL_HOME_DIR, "scripts" )
+DIR_PLUGIN          = os.path.join( SPECIAL_HOME_DIR, "plugins" )
 DIR_PLUGIN_MUSIC    = os.path.join( DIR_PLUGIN, "music" )
 DIR_PLUGIN_PICTURES = os.path.join( DIR_PLUGIN, "pictures" )
 DIR_PLUGIN_PROGRAMS = os.path.join( DIR_PLUGIN, "programs" )
@@ -102,12 +101,12 @@ if SYSTEM_PLATFORM == "linux":
     DIR_SCRAPER_VIDEO = os.path.join( os.sep+"usr", "share", "xbmc", "system", "scrapers", "video" )
 elif SYSTEM_PLATFORM == "osx":
     #Set OSX dir
-    DIR_SCRAPER       = os.path.join( SPECIAL_XBMC_HOME, "system", "scrapers", "video" )
-    DIR_SCRAPER_MUSIC = os.path.join( SPECIAL_XBMC_HOME, "system", "scrapers", "music" )
-    DIR_SCRAPER_VIDEO = os.path.join( SPECIAL_XBMC_HOME, "system", "scrapers", "video" )
+    DIR_SCRAPER       = os.path.join( SPECIAL_XBMC_DIR, "system", "scrapers", "video" )
+    DIR_SCRAPER_MUSIC = os.path.join( SPECIAL_XBMC_DIR, "system", "scrapers", "music" )
+    DIR_SCRAPER_VIDEO = os.path.join( SPECIAL_XBMC_DIR, "system", "scrapers", "video" )
 else:
     #Set Win ScraperDir
-    DIR_SCRAPER = os.path.join( DIR_XBMC_ROOT, "system", "scrapers", "video" )
-    DIR_SCRAPER_MUSIC = os.path.join( DIR_XBMC_ROOT, "system", "scrapers", "music" )
-    DIR_SCRAPER_VIDEO = os.path.join( DIR_XBMC_ROOT, "system", "scrapers", "video" )
+    DIR_SCRAPER = os.path.join( SPECIAL_XBMC_DIR, "system", "scrapers", "video" )
+    DIR_SCRAPER_MUSIC = os.path.join( SPECIAL_XBMC_DIR, "system", "scrapers", "music" )
+    DIR_SCRAPER_VIDEO = os.path.join( SPECIAL_XBMC_DIR, "system", "scrapers", "video" )
 

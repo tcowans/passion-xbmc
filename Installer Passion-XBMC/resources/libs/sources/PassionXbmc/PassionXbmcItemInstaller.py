@@ -40,25 +40,22 @@ class PassionXbmcItemInstaller(ArchItemInstaller):
         self.filename = item['orginalfilename'] # Note could be ''
         self.url      = item['downloadurl']
         
+        print item
         #TODO: support progress bar display
 
     def downloadItem( self, msgFunc=None,progressBar=None ):
         """
         Download an item form the server
-        Returns the status of the download attemos : OK | ERROR
+        Returns the status of the download attempts : OK | ERROR
         """
         # Get ItemId
         cols = {}
         cols['$id_item'] = str(self.itemId)
         percent = 0
-        totalpercent = 0
         if progressBar != None:
-            progressBar.update( percent, _( 122 ) % ( self.name ), _( 123 ) % totalpercent )
+            progressBar.update( percent, _( 122 ) % ( self.name ), _( 123 ) % percent )
         try:            
             print "HTTPInstaller::downloadItem - itemId = %d" % self.itemId
-            
-            # Get download link
-            fileURL  = self.url
             
             # Download file (to cache dir) and get destination directory
             status, self.downloadArchivePath = self._downloadFile( progressBar=progressBar )
@@ -110,7 +107,6 @@ class PassionXbmcItemInstaller(ArchItemInstaller):
             block_size          = 4096
             percent_downloaded  = 0
             num_blocks          = 0
-            file_size           = None
             
             req = urllib2.Request(self.url) # Note: downloading item with passion XBMC URL (for download count) even when there is an external URL
             req.add_header('User-Agent','Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.3) Gecko/20070309 Firefox/2.0.0.3')
@@ -124,23 +120,36 @@ class PassionXbmcItemInstaller(ArchItemInstaller):
                     print "---"
                     if self.filename == '':
                         try:
-                            realURL = connection.geturl() # Get URL (possible redirection)
-                            if self.url != realURL:
-                                # Redirection
-                                print "redirect url = %s"%realURL
-                                self.filename = os.path.basename(realURL)
-                                if "=" in self.filename:
-                                    self.filename = "unknownfilename"
-                                    status = "ERRORFILENAME"
-                            else:
+                            if 'Content-Disposition' in headers:
                                 content_disposition =  headers['Content-Disposition']
                                 if "\"" in content_disposition:
                                     self.filename = headers['Content-Disposition'].split('"')[1]
                                 else:
                                     self.filename = headers['Content-Disposition'].split('=')[1]
+                                    
+                            if self.filename == '':
+                                # It wasn't possible to read filename within the headers
+                                realURL = connection.geturl().encode('utf-8') # Get URL (possible redirection)
+                                print realURL
+                                if self.url != realURL:
+                                    # Redirection
+                                    print "redirect url = %s"%realURL
+                                    self.filename = os.path.basename(realURL)
+                                    if not self.filename.lower().endswith('zip') and not self.filename.lower().endswith('rar'):
+                                        self.filename = "unknownfilename"
+                                        status = "ERRORFILENAME"
+                                else:
+                                    self.filename = "unknownfilename"
+                                    status = "ERRORFILENAME"
                         except:
                             self.filename = "unknownfilename"
                             status = "ERRORFILENAME"
+                            print_exc()
+                    else:
+                        self.filename = "unknownfilename"
+                        status = "ERRORFILENAME"
+                        print_exc()
+                    
                     if self.filesize <= 0:
                         try:
                             self.filesize = int( headers['Content-Length'] )
@@ -153,6 +162,7 @@ class PassionXbmcItemInstaller(ArchItemInstaller):
                     self.filesize = 0
                     print("_downloadFile - Exception retrieving header")
                     print(str(e))
+                    print_exc()
 
             
             destination = xbmc.translatePath( os.path.join( destinationDir, self.filename ) )
@@ -167,7 +177,8 @@ class PassionXbmcItemInstaller(ArchItemInstaller):
             # Ask for display of progress bar
             try:
                 if (progressBar != None):
-                    progressBar.update(percent_downloaded)
+                    #progressBar.update(percent_downloaded)
+                    progressBar.update( percent_downloaded, _( 122 ) % ( self.name ), _( 123 ) % percent_downloaded )
             except Exception, e:        
                 print("_downloadFile - Exception calling UI callback for download")
                 print(str(e))
@@ -209,7 +220,8 @@ class PassionXbmcItemInstaller(ArchItemInstaller):
                     percent_downloaded = New_percent_downloaded
                     # Call UI callback in order to update download progress info
                     if (progressBar != None):
-                        progressBar.update(percent_downloaded)
+                        #progressBar.update(percent_downloaded)
+                        progressBar.update( percent_downloaded, _( 122 ) % ( self.name ), _( 123 ) % percent_downloaded )
 
 
             # Closing the file
