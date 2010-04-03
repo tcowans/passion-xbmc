@@ -1,19 +1,16 @@
 
+# Modules General
 import re
 import sys
 import urllib
+from StringIO import StringIO
+from traceback import print_exc
 
 import elementtree.HTMLTreeBuilder as HTB
-from StringIO import StringIO
 
 #modules custom
 from utilities import add_pretty_color, set_xbmc_carriage_return, strip_off
 
-#module logger
-try:
-    logger = sys.modules[ "__main__" ].logger
-except:
-    import script_log as logger
 
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
 _ = sys.modules[ "__main__" ].__language__
@@ -43,7 +40,7 @@ class rssReader:
             html.close()
             return parsed
         except:
-            logger.EXC_INFO( logger.LOG_DEBUG, sys.exc_info() )
+            print_exc()
             # si on arrive ici le retour est automatiquement None
 
     def GetRssInfo( self ):
@@ -59,7 +56,7 @@ class rssReader:
                 try:
                     items += item.findtext( self.tags[ 2 ] ).replace( u'\xa0', " " )
                 except:
-                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                    print_exc()
                     continue
                 if ( ( count + 1 ) < item_end ):
                     items += item_sep
@@ -68,6 +65,6 @@ class rssReader:
                 items = strip_off( set_xbmc_carriage_return( items ).replace( "[CR]", " " ) )
             return maintitle, items.replace( "&quot;", '"' ).replace( "&#39;", "'" )
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
             return "", ( add_pretty_color( _( 107 ), color=self.titlecolor ) + _( 108 ) )
 

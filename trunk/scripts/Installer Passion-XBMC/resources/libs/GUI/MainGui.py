@@ -1,27 +1,23 @@
 
-#Modules general
+# Modules general
 import os
-import re
 import md5
 import sys
-import time
+import urllib
 
+from traceback import print_exc
 from threading import Thread, Timer
 
-#modules XBMC
+# Modules XBMC
 import xbmc
 import xbmcgui
 
-#modules custom
+# Modules custom
 from utilities import *
 from info_item import ItemInfosManager
-from INSTALLEUR import ftpDownloadCtrl, directorySpy, userDataXML
-
-#module logger
-try:
-    logger = sys.modules[ "__main__" ].logger
-except:
-    import script_log as logger
+from XbmcZoneBrowser import XbmcZoneBrowser
+from PassionFtpBrowser import PassionFtpBrowser
+from PassionXbmcBrowser import PassionXbmcBrowser
 
 
 SPECIAL_SCRIPT_DATA = sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA
@@ -51,10 +47,110 @@ ACTION_CONTEXT_MENU    = 117
 CLOSE_CONTEXT_MENU     = ( ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, ACTION_CONTEXT_MENU, )
 
 
+class Source:
+    """
+    Defines a source (Browser) used by the installer
+    """
+    def __init__( self, sourceName, className, instanceName=None, created=False ):
+        self.sourceName   = sourceName    # Name of the source
+        self.className    = className     # Browser class name for this source
+        self.instanceName = instanceName  # Browser instance name
+        self.created      = created       # flag set to True when a Browser instance has been created otherwise set to False
+
+    def __repr__( self ):
+        return "Source ( sourceName: %s, className: %s, instanceName: %s, created: %s )" % ( self.sourceName, self.className, self.instanceName, self.created )
+
+
+class Context:
+    """
+    Context class, allows to retrieve browsers
+    """
+    def __init__( self ):
+        self.curSource = None # Current selected Browser
+        #self.listOfSources = []
+        self.listOfSources = {}
+        self.listOfSrCName = [] #Temporary #TODO use dict
+        try:
+            # Creating sources (not instanciating Browsers here)
+            srcPassionHttp = Source( "Passion XBMC", PassionXbmcBrowser )
+            srcPassionFtp  = Source( "Passion XBMC FTP", PassionFtpBrowser )
+            srcXbmcZone    = Source( "XBMC Zone", XbmcZoneBrowser )
+            self.addSource(srcPassionHttp)
+            self.addSource(srcPassionFtp)
+            self.addSource(srcXbmcZone)
+        except Exception, e:
+            print_exc()
+
+    def selectSource( self, sourceName ):
+        """
+        Set a source as the current one
+        """
+        #TODO use string as param
+        self.curSource = self.listOfSources[sourceName]
+        
+    def getBrowser( self ):
+        """
+        Returns Browser instance for the current source
+        """
+        if self.curSource.created == False:
+            # Create Browser instance for the 1st time
+            self.createBrowser( self.curSource )
+        return self.curSource.instanceName
+
+    def getSourceName( self ):
+        """
+        Returns current source's name
+        """
+        return self.curSource.sourceName
+    
+    def addSource(self, sourceItem):
+        """
+        Adds a new source
+        """
+        #self.listOfSources.append(sourceItem)
+        self.listOfSources[sourceItem.sourceName] = sourceItem
+        self.listOfSrCName.append(sourceItem.sourceName)
+        
+    def createBrowser( self, source ):
+        """
+        Instanciates the browser for a specific source
+        """
+        # Create instance name form class name
+        instance = "browser_" + source.className.__name__
+        
+        # Create instance and update source information
+        #exec("%s = %s"%( source.instanceName, source.className()))
+        exec("%s = %s"%( instance, "source.className()"))
+        exec("source.instanceName  = %s"%( instance ))
+        source.created = True
+        
+    def getSourceNameList( self ):
+        """
+        Returns the list of the source's name
+        """
+        return self.listOfSrCName
+    
+    def freeSources(self):
+        """
+        Free all the source (close the browser: closing connection ...) in order to exit properly 
+        """
+        print "Context: freeing sources"
+        for srcName in self.listOfSrCName:
+            print "freing %s ..."%(srcName)
+            try:
+                print self.listOfSources[srcName]
+                if self.listOfSources[srcName].created:
+                    self.listOfSources[srcName].instanceName.close()
+            except Exception, e:
+                print "Exception during freeSources in Context"
+                print_exc()
+
+
 class MainWindow( xbmcgui.WindowXML ):
     # control id's
     CONTROL_MAIN_LIST_START = 50
     CONTROL_MAIN_LIST_END   = 59
+    CONTROL_SOURCE_LIST     = 150
     CONTROL_FORUM_BUTTON    = 305
     CONTROL_FILE_MGR_BUTTON = 300
     CONTROL_OPTIONS_BUTTON  = 310
@@ -66,6 +162,8 @@ class MainWindow( xbmcgui.WindowXML ):
         Initialisation de l'interface
         """
         xbmcgui.WindowXML.__init__( self, *args, **kwargs )
+        self.HomeAction = kwargs.get( "HomeAction" )
+        self.homeLastPosition = kwargs.get( "homeLastPosition" )
         self.main_list_last_pos = []
 
         # Display Loading Window while we are loading the information from the website
@@ -75,6 +173,7 @@ class MainWindow( xbmcgui.WindowXML ):
         else:
             #si le dialog PROGRESS n'est pas visible affiche le dialog
             DIALOG_PROGRESS.create( _( 0 ), _( 103 ), _( 110 ) )
+        #DIALOG_PROGRESS.close()
 
         #TODO: TOUTES ces varibales devraient etre passees en parametre du constructeur de la classe ( __init__ si tu preferes )
         # On ne devraient pas utiliser de variables globale ou rarement en prog objet
@@ -84,27 +183,13 @@ class MainWindow( xbmcgui.WindowXML ):
         self.configManager = configCtrl()
         if not self.configManager.is_conf_valid: raise
 
-        self.host               = self.configManager.host
-        self.user               = self.configManager.user
         self.rssfeed            = self.configManager.rssfeed
-        self.password           = self.configManager.password
-        self.remotedirList      = self.configManager.remotedirList
-
-        self.localdirList       = self.configManager.localdirList
-        self.downloadTypeList   = self.configManager.downloadTypeLst
-
-        self.racineDisplayList  = [ 0, 1, 2, 3 ]
-        self.pluginDisplayList  = [ 4, 5, 6, 7 ]
-        self.pluginsDirSpyList  = []
-
         self.curDirList         = []
-        self.connected          = False # status de la connection ( inutile pour le moment )
-        self.index              = ""
+        self.index              = 0
         self.scraperDir         = self.configManager.scraperDir
         self.type               = "racine"
         self.USRPath            = self.configManager.USRPath
         self.rightstest         = ""
-        self.scriptDir          = self.configManager.scriptDir
         self.CacheDir           = self.configManager.CACHEDIR
         self.userDataDir        = self.configManager.userdatadir # userdata directory
         self.targetDir          = ""
@@ -117,9 +202,13 @@ class MainWindow( xbmcgui.WindowXML ):
             self.verifrep( self.CacheDir )
         self.verifrep( self.configManager.pluginProgDir )
 
-        #TODO: A nettoyer, ton PMIIIDir n'est pas defini pour XBOX sans le test si dessous
-        if self.USRPath == True:
-            self.PMIIIDir = self.configManager.PMIIIDir
+        # Change permission on Linux platform
+        if SYSTEM_PLATFORM == "linux":
+            self.linux_chmod( self.scraperDir )
+        
+#        #TODO: A nettoyer, ton PMIIIDir n'est pas defini pour XBOX sans le test si dessous
+#        if self.USRPath == True:
+#            self.PMIIIDir = self.configManager.PMIIIDir
 
         self.is_started = True
         # utiliser pour remettre la liste courante a jour lorsqu'on reviens sur cette fenetre depuis le forum ou le manager
@@ -127,78 +216,85 @@ class MainWindow( xbmcgui.WindowXML ):
         self.current_cat = ""
 
     def onInit( self ):
-        self._get_settings()
-        self._set_skin_colours()
+        try:
+            self._get_settings()
+            self._set_skin_colours()
 
-        if self.settings.get( "show_plash" ) == True:
-            # splash desactive par le user 
-            self.getControl( self.CONTROL_SHOW_SPLASH_IMG ).setVisible( 0 )
+            # desactive le splash
+            try: self.getControl( self.CONTROL_SHOW_SPLASH_IMG ).setVisible( 0 )
+            except: pass
+    #        if self.settings.get( "show_plash" ) == True:
+    #            # splash desactive par le user
+    #            self.getControl( self.CONTROL_SHOW_SPLASH_IMG ).setVisible( 0 )
 
-        if self.is_started:
-            self.is_started = False
+            if self.is_started:
+                self.is_started = False
 
-            self._start_rss_timer()
+                self._start_rss_timer()
 
-            # Connection au serveur FTP
-            try:
+                # Connection au serveur FTP
+                try:
+                    DIALOG_PROGRESS.update( -1, _( 104 ), _( 110 ) )
+                    if self.HomeAction and "default_content" in self.HomeAction:
+                        self.default_content = self.HomeAction.split( "=" )[ 1 ]
+                    else:
+                        self.default_content = self.settings.get( "server_shortcut_button", "Passion XBMC" )
+                    # Loading context
+                    self.contextSrc = Context()
+                    self.contextSrc.selectSource( self.default_content )#"XBMC Zone" )
+                    self.set_list_container_150()
+                    self.updateData_Next()
+                    self.updateList()
 
-                self.passionFTPCtrl = ftpDownloadCtrl( self.host, self.user, self.password, self.remotedirList, self.localdirList, self.downloadTypeList )
-                self.connected = True
+                except:
+                    xbmcgui.Dialog().ok( _( 111 ), _( 112 ) )
+                    print "Window::__init__: Exception durant la connection FTP"
+                    print "Impossible de se connecter au serveur FTP: %s" % self.host
+                    print_exc()
 
-                # Recuperation de la liste des elements
-                DIALOG_PROGRESS.update( -1, _( 104 ), _( 110 ) )
-                self.updateList()
+                # Title of the current pages
+                self.setProperty( "Category", _( 10 ) )
+                self.setProperty( "DlSource", self.default_content )
+                xbmc.executebuiltin( "Container.SetViewMode(%i)" % self.settings.get( "main_view_mode", self.CONTROL_MAIN_LIST_START ) )
 
-            except:
-                xbmcgui.Dialog().ok( _( 111 ), _( 112 ) )
-                logger.LOG( logger.LOG_DEBUG, "Window::__init__: Exception durant la connection FTP" )
-                logger.LOG( logger.LOG_DEBUG, "Impossible de se connecter au serveur FTP: %s", self.host )
-                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
 
-            # Title of the current pages
-            self.setProperty( "Category", _( 10 ) )
-            xbmc.executebuiltin( "Container.SetViewMode(%i)" % self.settings.get( "main_view_mode", self.CONTROL_MAIN_LIST_START ) )
 
-            # Capturons le contenu des sous-repertoires plugins
-            for type in self.downloadTypeList:
-                if type.find( "Plugins" ) != -1:
-                    #self.pluginsInitList.append( os.listdir( self.localdirList[ self.downloadTypeList.index( type ) ] ) )
-                    self.pluginsDirSpyList.append( directorySpy( self.localdirList[ self.downloadTypeList.index( type ) ] ) )
-                else:
-                    self.pluginsDirSpyList.append( None )
+                # Close the Loading Window
+                DIALOG_PROGRESS.close()
+                if self.HomeAction and self.HomeAction.startswith( "self." ):
+                    exec self.HomeAction
+            else:
+                # pas le choix avec les nouvelles vue, mais on lui joue un tour avec une listitems deja ready :P
+                if xbmc.getCondVisibility( "Window.IsActive(IPX-Installer.xml)" ) or xbmc.getCondVisibility( "Window.IsActive(passion-main.xml)" ):
+                    if self.listitems: self.re_updateList()
+                    else: self.updateList()
 
-            # Creons ItemInfosManager afin de recuperer les descriptions des items
-            self.itemInfosManager = ItemInfosManager( mainwin=self )
-            self.infoswarehouse = self.itemInfosManager.get_info_warehouse()
-
-            # Close the Loading Window
-            DIALOG_PROGRESS.close()
-        else:
-            # pas le choix avec les nouvelles vue, mais on lui joue un tour avec une listitems deja ready :P
-            if xbmc.getCondVisibility( "Window.IsActive(passion-main.xml)" ):
-                if self.listitems: self.re_updateList()
-                else: self.updateList()
-            # .addItems( items=listitems )
-            # print "self.addItems( items= )", hasattr( self, 'addItems' )
-            # for ControlList only :(
-
-        # desactive le splash
-        self.getControl( self.CONTROL_SHOW_SPLASH_IMG ).setVisible( 0 )
+            # desactive le splash
+            try: self.getControl( self.CONTROL_SHOW_SPLASH_IMG ).setVisible( 0 )
+            except: pass
+        except:
+            print_exc()
 
     def _get_settings( self, defaults=False ):
         """ reads settings """
         self.settings = Settings().get_settings( defaults=defaults )
-        self.getControl( self.CONTROL_FORUM_BUTTON ).setVisible( not self.settings.get( "hide_forum", False ) )
+        try:
+            self.getControl( self.CONTROL_FORUM_BUTTON ).setVisible( not self.settings.get( "hide_forum", False ) )
+        except Exception, e:
+            if not "Non-Existent Control" in str( e ):
+                print_exc()
 
     def _set_skin_colours( self ):
         #xbmcgui.lock()
         try:
             xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,%s)" % ( self.settings[ "skin_colours_path" ], ) )
             xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,%s)" % ( ( self.settings[ "skin_colours" ] or get_default_hex_color() ), ) )
+            xbmc.executebuiltin( "Skin.SetString(PassionLabelHexColour,%s)" % ( ( self.settings[ "labels_colours" ] or get_default_hex_color( "Blue Confluence" ) ), ) )
         except:
+            xbmc.executebuiltin( "Skin.SetString(PassionLabelHexColour,ffffffff)" )
             xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,ffffffff)" )
             xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,default)" )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
         #xbmcgui.unlock()
 
     def _start_rss_timer( self ):
@@ -213,7 +309,7 @@ class MainWindow( xbmcgui.WindowXML ):
                 self.rss_title = rss_feeds_xml.get( "title", self.rss_title )
                 self.rssfeed = rss_feeds_xml.get( "feed", self.rssfeed )
             except:
-                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                print_exc()
             self.rss_thread = Thread( target=self._set_control_rss_feed )
             self.rss_thread.start()
         else:
@@ -231,22 +327,24 @@ class MainWindow( xbmcgui.WindowXML ):
         import RSSParser
         try:
             title_color = repr( self.getControl( 101 ).getLabel() ).strip( "u'" )
-            text_color = repr( self.getControl( 101 ).getLabel2() ).strip( "u'" )
+            text_color  = repr( self.getControl( 101 ).getLabel2() ).strip( "u'" )
             #print repr( title_color ), repr( text_color )
             self.rss_feed = RSSParser.rssReader( self.rss_title, self.rssfeed, title_color, text_color ).GetRssInfo()[ 1 ]
-        except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+        except Exception, e:
+            if not "Non-Existent Control" in str( e ):
+                print_exc()
             try:
                 self.rss_feed = RSSParser.rssReader( self.rss_title, self.rssfeed ).GetRssInfo()[ 1 ]
             except:
-                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                print_exc()
         del RSSParser
         try:
             self.getControl( 100 ).reset()
             self.getControl( 100 ).addLabel( self.rss_feed )
             self.getControl( 100 ).setVisible( True )
-        except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+        except Exception, e:
+            if not "Non-Existent Control" in str( e ):
+                print_exc()
             try: self.getControl( 100 ).setVisible( False )
             except: pass
             self._stop_rss_timer()
@@ -255,23 +353,26 @@ class MainWindow( xbmcgui.WindowXML ):
                 self.rss_timer = Timer( self.rss_update_interval, self._set_control_rss_feed, () )
                 self.rss_timer.start()
             except:
-                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                print_exc()
 
     def _show_descript( self ):
         try:
+            #TODO: modify DialogItemDescription in order to use DB instead of XML
             # Affiche la description de l'item selectionner
-            if ( not self.type.lower() in ( "racine", "plugins", ) ) and ( self.CONTROL_MAIN_LIST_START <= self.getFocusId() <= self.CONTROL_MAIN_LIST_END ):
-                currentListIndex = self.getCurrentListPosition()
+            currentListIndex = self.getCurrentListPosition()
+            #if ( ( not self.browser.isCat( currentListIndex ) ) and ( self.CONTROL_MAIN_LIST_START <= self.getFocusId() <= self.CONTROL_MAIN_LIST_END ) ):
+            if ( self.CONTROL_MAIN_LIST_START <= self.getFocusId() <= self.CONTROL_MAIN_LIST_END ):
                 if currentListIndex >= 0:
                     import DialogItemDescription
                     reload( DialogItemDescription )
                     DialogItemDescription.show_description( self )
                     del DialogItemDescription
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
     def _show_settings( self ):
         try:
+            self.HomeAction = None
             thumb_size_on_load = self.settings[ "thumb_size" ]
             import DialogSettings
             DialogSettings.show_settings( self )
@@ -280,25 +381,52 @@ class MainWindow( xbmcgui.WindowXML ):
             if thumb_size_on_load != self.settings[ "thumb_size" ]:
                 self.updateList() #on raffraichit la page pour afficher la taille des vignettes
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
     def _show_direct_infos( self ):
         try:
+            self.HomeAction = None
             import ForumDirectInfos
             ForumDirectInfos.show_direct_infos()
             #on a plus besoin, on le delete
             del ForumDirectInfos
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
+
+    def _show_file_manager( self, args=None ):
+        try:
+            self.HomeAction = None
+            thumb_size_on_load = self.settings[ "thumb_size" ]
+            import FileManagerGui
+            mainfunctions = [ self._show_settings, self._close_script ]
+            FileManagerGui.show_file_manager( mainfunctions, self.rightstest, args )
+            #on a plus besoin du manager, on le delete
+            del FileManagerGui
+            if thumb_size_on_load != self.settings[ "thumb_size" ]:
+                self.updateList() #on raffraichit la page pour afficher la taille des vignettes
+        except:
+            print_exc()
+
+    def get_view_mode( self ):
+        view_mode = ""
+        for id in range( self.CONTROL_MAIN_LIST_START, self.CONTROL_MAIN_LIST_END + 1 ):
+            try:
+                if xbmc.getCondVisibility( "Control.IsVisible(%i)" % id ):
+                    view_mode = repr( id )
+                    return view_mode
+                    break
+            except:
+                pass
+        return view_mode
 
     def _show_context_menu( self ):
         try:
-            if ( not self.type.lower() in ( "racine", "plugins", ) ) and ( self.CONTROL_MAIN_LIST_START <= self.getFocusId() <= self.CONTROL_MAIN_LIST_END ):#( self.getFocusId() == self.CONTROL_MAIN_LIST ):
+            if ( not self.current_cat.lower() in [ "root", "racine", "plugins", _( 10 ).lower() ] ) and ( self.CONTROL_MAIN_LIST_START <= self.getFocusId() <= self.CONTROL_MAIN_LIST_END ):#( self.getFocusId() == self.CONTROL_MAIN_LIST ):
                 import DialogContextMenu
                 #buttons = { 1000 : ( "teste 1", "disabled" ), 1001 : "teste 2", 1002 : "teste 3",
                 #    1003 : "teste 4", 1004 : ( "teste 5", "disabled" ), 1005 : "teste 6", 1006 : "teste 7" }
                 buttons = { 1000: _( 1000 ), 1001: _( 1001 ), 1002: _( 184 ), 1003: _( 1002 ) }
-                selected = DialogContextMenu.show_context_menu( buttons )
+                selected = DialogContextMenu.show_context_menu( buttons, self.get_view_mode() )
                 del DialogContextMenu
                 if selected == 1000:
                     #installe add-ons
@@ -312,14 +440,16 @@ class MainWindow( xbmcgui.WindowXML ):
                 else:
                     pass
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
+            #print_exc()
 
     def _switch_media( self ):
+        #TODO: adpat implementation to multisources
         try:
             import DialogContextMenu
             buttons = { 1000: _( 11 ), 1001: _( 12 ), 1002: _( 13 ), 1003: _( 14 ),
                 1004: _( 18 ), 1005: _( 16 ), 1006: _( 15 ), 1007: _( 17 ) }
-            selected = DialogContextMenu.show_context_menu( buttons )
+            selected = DialogContextMenu.show_context_menu( buttons, self.get_view_mode() )
             del DialogContextMenu
             switch = None
             if selected == 1000:
@@ -351,7 +481,28 @@ class MainWindow( xbmcgui.WindowXML ):
                 self.index = self.index
                 self.updateList() #on raffraichit la page pour afficher le contenu
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
+
+    def set_list_container_150( self ):
+        #list_container = sorted( self.list_container_150.items(), key=lambda id: id[ 0 ] )
+        #self.rss_id = [ rss[ 0 ] for rss in list_container ]
+        try:
+            label2 = ""#not used
+            icone = "windows.png"
+            #for key, value in list_container:
+            self.listOfSourceName = self.contextSrc.getSourceNameList()
+            #print "set_list_container_150"
+            for source in self.listOfSourceName:
+                #label1 = source['title']
+                label1 = source
+                #print label1
+                #displayListItem = xbmcgui.ListItem( "test", "", iconImage=icone, thumbnailImage=icone )
+                #self.getControl( 150 ).addItem( displayListItem )
+                self.getControl( self.CONTROL_SOURCE_LIST ).addItem( xbmcgui.ListItem( label1, label1, icone, icone ) )
+            self.getControl( self.CONTROL_SOURCE_LIST ).setVisible( True )
+        except Exception, e:
+            if not "Non-Existent Control" in str( e ):
+                print_exc()
 
     def onAction( self, action ):
         """
@@ -360,100 +511,28 @@ class MainWindow( xbmcgui.WindowXML ):
         try:
             if action == ACTION_PREVIOUS_MENU:
                 # Sortie du script
-
-                # On se deconnecte du serveur pour etre plus propre
-                self.passionFTPCtrl.closeConnection()
-
-                # On efface le repertoire cache
-                self.deleteDir( self.CacheDir )
-
-                # Verifions si la mise a jour du XML a ete activee
-                if self.settings[ "xbmc_xml_update" ]:
-                    # Capturons le contenu des sous-repertoires plugins a la sortie du script
-                    xmlConfFile = userDataXML( os.path.join( self.userDataDir, "sources.xml" ), os.path.join( self.userDataDir, "sourcesNew.xml" ) )
-                    for type in self.downloadTypeList:
-                        if type.find( "Plugins" ) != -1:
-                            # Verifions si des plugins on ete ajoutes
-                            newPluginList = None
-                            try:
-                                #newPluginList = list( set( self.pluginsExitList[ self.downloadTypeList.index( type ) ] ).difference( set( self.pluginsInitList[ self.downloadTypeList.index( type ) ] ) ) )
-                                newPluginList = self.pluginsDirSpyList[ self.downloadTypeList.index( type ) ].getNewItemList()
-                            except:
-                                logger.LOG( logger.LOG_DEBUG, "Exception durant la comparaison des repertoires plugin avant et apres installation" )
-                                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-                            if len( newPluginList ) > 0:
-                                for newPluginName in newPluginList:
-                                    # Creation du chemin qui sera ajoute au XML, par ex : "plugin://video/Google video/"
-                                    # TODO: extraire des chemins local des plugins les strings, 'music', 'video' ... et n'avoir qu'une implementation
-                                    if type == "Plugins Musique":
-                                        categorieStr = "music"
-
-                                    elif type == "Plugins Images":
-                                        categorieStr = "pictures"
-
-                                    elif type == "Plugins Programmes":
-                                        categorieStr = "programs"
-
-                                    elif type == "Plugins Videos":
-                                        categorieStr = "video"
-                                    newPluginPath = "plugin://" + categorieStr + "/" + newPluginName + "/"
-
-                                    # Mise a jour de sources.xml
-                                    xmlConfFile.addPluginEntry( type, newPluginName, newPluginPath )
-                    # Validation et sauvegarde des modificatiobs du XML
-                    newConfFile = xmlConfFile.commit()
-                    del xmlConfFile
-
-                    # On verifie si on a cree un nouveau XML
-                    if newConfFile:
-                        currentTimeStr = str( time.time() )
-                        # on demande a l'utilisateur s'il veut remplacer l'ancien xml par le nouveau
-                        menuList = [ _( 113 ), _( 114 ), _( 115 ) ]
-                        dialog = xbmcgui.Dialog()
-                        chosenIndex = dialog.select( _( 116 ), menuList )
-                        if chosenIndex == 0:
-                            # Mettre a jour la configuation et sortir
-                            # On renomme sources.xml en ajoutant le timestamp
-                            os.rename( os.path.join( self.userDataDir, "sources.xml" ), os.path.join( self.userDataDir, "sources_%s.xml"%currentTimeStr ) )
-                            # On renomme sourcesNew.xml source.xml
-                            os.rename( os.path.join( self.userDataDir, "sourcesNew.xml" ), os.path.join( self.userDataDir, "sources.xml" ) )
-
-                        elif chosenIndex == 1:
-                            # Mettre a jour la configuation et redemarrer
-                            # On renomme source.xml en ajoutant le timestamp
-                            os.rename( os.path.join( self.userDataDir, "sources.xml" ), os.path.join( self.userDataDir, "sources_%s.xml"%currentTimeStr ) )
-                            # On renomme sourcesNew.xml source.xml
-                            os.rename( os.path.join( self.userDataDir, "sourcesNew.xml" ), os.path.join( self.userDataDir, "sources.xml" ) )
-                            # on redemarre
-                            xbmc.restart()
-                        else:
-                            # On supprime le xml que nous avons genere
-                            os.remove( os.path.join( self.userDataDir, "sourcesNew.xml" ) )
-                #on ferme tout
-                self._close_script()
+                print "exiting script"
+                self.onExit()
 
             elif action == ACTION_PARENT_DIR:
+                #print "ACTION_PARENT_DIR"
                 # remonte l'arborescence
-                # On verifie si on est a l'interieur d'un ses sous section plugin
-                #if ( self.type == "Plugins Musique" ) or ( self.type == "Plugins Images" ) or ( self.type == "Plugins Programmes" ) or ( self.type == "Plugins Videos" ):
                 if not self.main_list_last_pos:
                     try: self.main_list_last_pos.append( self.getCurrentListPosition() )
                     except: self.main_list_last_pos.append( 0 )
                 try:
-                    if "Plugins " in self.type:
-                        self.type = "Plugins"
-                    else:
-                        # cas standard
-                        self.type = "racine"
+                    # Get data and update display
+                    self.updateData_Prev()
                     self.updateList()
                 except:
-                    logger.LOG( logger.LOG_DEBUG, "Window::onAction::ACTION_PREVIOUS_MENU: Exception durant updateList()" )
-                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                    print "Window::onAction::ACTION_PREVIOUS_MENU: Exception durant updateList()"
+                    print_exc()
 
                 if self.main_list_last_pos:
                     self.setCurrentListPosition( self.main_list_last_pos.pop() )
 
             elif action == ACTION_SHOW_INFO:
+                 #print "_show_descript - ItemDescription"
                  self._show_descript()
 
             elif action == ACTION_CONTEXT_MENU:
@@ -463,229 +542,101 @@ class MainWindow( xbmcgui.WindowXML ):
                 pass
 
         except:
-            logger.LOG( logger.LOG_DEBUG, "Window::onAction: Exception" )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print "Window::onAction: Exception"
+            print_exc()
 
     def install_add_ons( self ):
         """
         installation de l'item selectionner
         """
+        # Default message: error
+        title = _( 144 )
+        msg1  = _( 144 )
+        msg2  = ""
+
         try:
-            downloadOK = True
-            correctionPM3bidon = False
-            self.index = self.getCurrentListPosition()
+            # Get the installer Object who now how to do the job (depending on the source)
+            itemName = self.curDirList[self.index]['name']
+            if not xbmcgui.Dialog().yesno( _( 180 ), _( 181 ), itemName ): return
+            
+            itemInstaller = self.contextSrc.getBrowser().getInstaller(self.index)
 
-            source = self.curDirList[ self.index ]
-
-            if not xbmcgui.Dialog().yesno( _( 180 ), _( 181 ), source ): return
-
-            if self.type == self.downloadTypeList[ 0 ]:   #Themes
-                # Verifions le themes en cours d'utilisation
-                mySkinInUse = xbmc.getSkinDir()
-                if mySkinInUse in source:
-                    # Impossible de telecharger une skin en cours d'utlisation
-                    dialog = xbmcgui.Dialog()
-                    dialog.ok( _( 117 ), _( 118 ), _( 119 ) )
-                    downloadOK = False
-                if 'Project Mayhem III' in source and self.USRPath == True:
-                    self.linux_chmod( self.PMIIIDir )
-                    if self.rightstest == True:
-                        self.localdirList[ 0 ]= self.PMIIIDir
-                        downloadOK = True
-                        correctionPM3bidon = True
-                    else:
-                        dialog = xbmcgui.Dialog()
-                        dialog.ok( _( 117 ), _( 120 ) )
-                        downloadOK = False
-            elif self.type == self.downloadTypeList[ 1 ] and self.USRPath == True:   #Linux Scrapers
-                self.linux_chmod( self.scraperDir )
-                if self.rightstest == True :
-                    downloadOK = True
-                else:
-                    dialog = xbmcgui.Dialog()
-                    dialog.ok( _( 117 ), _( 121 ) )
-                    downloadOK = False
-
-            if source.endswith( 'zip' ) or source.endswith( 'rar' ):
-                self.targetDir = self.localdirList[ self.downloadTypeList.index( self.type ) ]
-                self.localdirList[ self.downloadTypeList.index( self.type ) ]= self.CacheDir
-
-            if downloadOK == True:
-                continueDownload = True
-
-                # on verifie le si on a deja telecharge cet element ( ou une de ses version anterieures )
-                isDownloaded, localDirPath = self.passionFTPCtrl.isAlreadyDownloaded( source, self.remotedirList[ self.downloadTypeList.index( self.type ) ], self.downloadTypeList.index( self.type ) )
-
-                if ( isDownloaded ) and ( localDirPath != None ):
-                    logger.LOG( logger.LOG_NOTICE, "Repertoire deja present localement" )
-                    # On traite le repertorie deja present en demandant a l'utilisateur de choisir
-                    continueDownload = self.processOldDownload( localDirPath )
-                else:
-                    logger.LOG( logger.LOG_DEBUG, "localDirPath: %s", repr( localDirPath ) )
-                    logger.LOG( logger.LOG_DEBUG, "isDownloaded: %s", repr( isDownloaded ) )
-
-                if continueDownload == True:
-                    # Fenetre de telechargement
-
-                    dp = xbmcgui.DialogProgress()
-                    lenbasepath = len( self.remotedirList[ self.downloadTypeList.index( self.type ) ] )
-                    downloadItem = source[ lenbasepath: ]
-                    percent = 0
-                    dp.create( _( 122 ) % downloadItem, _( 123 ) % percent )
-
-                    # Type est desormais reellement le type de download, on utlise alors les liste pour recuperer le chemin que l'on doit toujours passer
-                    # on appel la classe passionFTPCtrl avec la source a telecharger
-                    downloadStatus = self.passionFTPCtrl.download( source, self.remotedirList[ self.downloadTypeList.index( self.type ) ], self.downloadTypeList.index( self.type ), progressbar_cb=self.updateProgress_cb, dialogProgressWin = dp )
-                    #dp.close()
-
-                    if downloadStatus == -1:
-                        # Telechargment annule par l'utilisateur
-                        title = _( 124 )
-                        message1 = "%s: %s" % ( self.type, downloadItem )
-                        message2 = _( 125 )
-                        message3 = _( 126 )
-                        if xbmcgui.Dialog().yesno( title, message1, message2, message3 ):
-                            logger.LOG( logger.LOG_WARNING, "Suppression du repertoire %s", localDirPath )
-                            if os.path.isdir( localDirPath ):
-                                if self.deleteDir( localDirPath ):
-                                    xbmcgui.Dialog().ok( _( 127 ), _( 128 ), localDirPath, _( 129 ) )
-                                else:
-                                    xbmcgui.Dialog().ok( _( 111 ), _( 130 ), localDirPath )
-                            else:
-                                try:
-                                    os.remove( localDirPath )
-                                    xbmcgui.Dialog().ok( _( 131 ), _( 132 ), localDirPath, _( 129 ) )
-                                except Exception, e:
-                                    xbmcgui.Dialog().ok( _( 111 ), _( 133 ), localDirPath )
-                    else:
-                        title = _( 134 )
-                        message1 = "%s: %s" % ( self.type, downloadItem )
-                        message2 = _( 135 )
-                        message3 = self.localdirList[ self.downloadTypeList.index( self.type ) ]
-
+            if itemInstaller != None:
+                #print "Download via itemInstaller"
+                dp = xbmcgui.DialogProgress()
+                dp.create(_( 137 ))
+                #status, destination = itemInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )
+                status, destination = itemInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )
+    
+                dp.close()
+                del dp
+    
+                #Check if install went well
+                if status == "OK":
+                    self._save_downloaded_property()
+                    title = _( 141 )
+                    #msg1  = _( 142 )%(unicode(itemName,'cp1252')) # should we manage only unicode instead of string?
+                    msg1  = _( 142 )%itemName # should we manage only unicode instead of string?
+                    #msg1  = _( 142 )%"" + itemName
+                    msg2  = _( 143 )
+                elif status == "CANCELED":
+                    title = _( 146 )
+                    #msg1  = _( 147 )%(unicode(itemName,'cp1252'))
+                    msg1  = _( 147 )%itemName
+                    msg2  = ""
+                elif status == "ALREADYINSTALLED":
+                    title = _( 144 )
+                    #msg1  = _( 149 )%(unicode(itemName,'cp1252'))
+                    msg1  = _( 149 )%itemName
+                    msg2  = ""
+                    if self.processOldDownload( itemInstaller ):
+                        # Continue install
+                        dp = xbmcgui.DialogProgress()
+                        dp.create(_( 137 ))
+                        status, destination = itemInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )
+                        dp.close()
+                        del dp
                         self._save_downloaded_property()
-                        xbmcgui.Dialog().ok( title, message1, message2, message3 )
-
-                    #TODO: Attention correctionPM3bidon n'est pa defini dans le cas d'un scraper ou script
-                    #      Je l'ai donc defini a False au debut
-                    # On remet a la bonne valeur initiale self.localdirList[ 0 ]
-                    if correctionPM3bidon == True:
-                        self.localdirList[ 0 ] = themesDir
-                        correctionPM3bidon = False
-                    # On se base sur l'extension pour determiner si on doit telecharger dans le cache.
-                    # Un tour de passe passe est fait plus haut pour echanger les chemins de destination avec le cache, le chemin de destination
-                    # est retabli ici 'il s'agit de targetDir'
-                    if downloadItem.endswith( 'zip' ) or downloadItem.endswith( 'rar' ):
-                        if downloadStatus != -1:
-                            installCancelled = False
-                            installError = None
-                            #dp = xbmcgui.DialogProgress()
-                            #dp.create( _( 136 ) % downloadItem, _( 123 ) % percent )
-                            #dialogUI = xbmcgui.DialogProgress()
-                            dp.create( _( 137 ), _( 138 ) % downloadItem, _( 110 ) )
-
-                            #Appel de la classe d'extraction des archives
-                            remoteDirPath = self.remotedirList[ self.downloadTypeList.index( self.type ) ]#chemin ou a ete telecharge le script
-                            localDirPath = self.localdirList[ self.downloadTypeList.index( self.type ) ]
-                            archive = source.replace( remoteDirPath, localDirPath + os.sep )#remplacement du chemin de l'archive distante par le chemin local temporaire
-                            self.localdirList[ self.downloadTypeList.index( self.type ) ] = self.targetDir
-                            #fichierfinal0 = archive.replace( localDirPath, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
-                            #if fichierfinal0.endswith( '.zip' ):
-                            #    fichierfinal = fichierfinal0.replace( '.zip', '' )
-                            #elif fichierfinal0.endswith( '.rar' ):
-                            #    fichierfinal = fichierfinal0.replace( '.rar', '' )
-
-                            import extractor
-                            process_error = False
-                            # on extrat tous dans le cache et si c'est OK on copy par la suite
-                            file_path, OK = extractor.extract( archive, report=True )
-                            #print OK, file_path
-                            if self.type == "Scrapers":
-                                # cas des Scrapers
-                                # ----------------
-                                #self.extracter.extract( archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
-                                destination = self.localdirList[ self.downloadTypeList.index( self.type ) ]
-                                if ( OK == bool( file_path ) ) and os.path.exists( file_path ):
-                                    extractor.copy_inside_dir( file_path, destination )
-                            else:
-                                # Cas des scripts et plugins
-                                # --------------------------
-                                # Recuperons le nom du repertorie a l'interieur de l'archive:
-                                dirName = ""
-                                if ( OK == bool( file_path ) ) and os.path.exists( file_path ):
-                                    dirName = os.path.basename( file_path )#self.extracter.getDirName( archive )
-                                    destination = os.path.join( self.localdirList[ self.downloadTypeList.index( self.type ) ], os.path.basename( file_path ) )
-
-                                if dirName == "":
-                                    installError = _( 139 ) % archive
-                                    logger.LOG( logger.LOG_ERROR, "Erreur durant l'extraction de %s - impossible d'extraire le nom du repertoire", archive )
-                                else:
-                                    #destination = os.path.join( self.localdirList[ self.downloadTypeList.index( self.type ) ], dirName )
-                                    logger.LOG( logger.LOG_NOTICE, destination )
-                                    if os.path.exists( destination ):
-                                        # Repertoire deja present
-                                        # On demande a l'utilisateur ce qu'il veut faire
-                                        if self.processOldDownload( destination ):
-                                            try:
-                                                #logger.LOG( logger.LOG_NOTICE, "Extraction de %s vers %s", archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
-                                                #self.extracter.extract( archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
-                                                if ( OK == bool( file_path ) ) and os.path.exists( file_path ):
-                                                    extractor.copy_dir( file_path, destination )
-                                            except:
-                                                process_error = True
-                                        else:
-                                            installCancelled = True
-                                            logger.LOG( logger.LOG_WARNING, "L'installation de %s a ete annulee par l'utilisateur", downloadItem  )
-                                    else:
-                                        # Le Repertoire n'est pas present localement -> on peut deplacer le repertoire depuis cache
-                                        try:
-                                            #logger.LOG( logger.LOG_NOTICE, "Extraction de %s vers %s", archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
-                                            #self.extracter.extract( archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
-                                            if ( OK == bool( file_path ) ) and os.path.exists( file_path ):
-                                                extractor.copy_dir( file_path, destination )
-                                        except:
-                                            process_error = True
-
-                            del extractor
-                            # Close the Loading Window
-                            #dialogUI.close()
-
-                            if process_error:
-                                installError = _( 140 ) % archive
-                                logger.LOG( logger.LOG_ERROR, "Exception durant l'extraction de %s", archive )
-                                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-
-                            if installCancelled == False and installError == None:
-                                self._save_downloaded_property()
-                                xbmcgui.Dialog().ok( _( 141 ), _( 142 ) % downloadItem, _( 143 ) )
-                            else:
-                                if installError != None:
-                                    # Erreur durant l'install ( meme si on a annule )
-                                    xbmcgui.Dialog().ok( _( 144 ), installError, _( 145 ) )
-                                elif installCancelled == True:
-                                    # Install annulee
-                                    xbmcgui.Dialog().ok( _( 146 ), _( 147 ) % downloadItem )
-                                else:
-                                    # Install annulee
-                                    xbmcgui.Dialog().ok( _( 144 ), _( 148 ), _( 145 ) )
-                        else:
-                            # On remet a la bonne valeur initiale self.localdirList
-                            self.localdirList[ self.downloadTypeList.index( self.type ) ] = self.targetDir
-
-                    # Close the Loading Window
-                    dp.close()
+                        title = _( 141 )
+                        msg1  = _( 142 )%itemName # should we manage only unicode instead of string?
+                        #msg1  = _( 142 )%"" + itemName
+                        msg2  = _( 143 )
+                    else:
+                        #installCancelled = True
+                        print "bypass: %s install has been cancelled by the user" % itemName
+                        title = _( 146 )
+                        msg1  = _( 147 )%itemName
+                        msg2  = ""
+                elif status == "ALREADYINUSE":
+                    print "%s currently used by XBMC, install impossible" % itemName
+                    title = _( 117 )
+                    msg1  = _( 117 )
+                    msg2  = _( 119 )
+                else:
+                    title = _( 144 )
+                    msg1  = _( 136 )%itemName
+                    msg2  = ""
+                del itemInstaller
+                
+                
+            else:
+                # No installer available
+                print "No installer available for %s - Install impossible" % itemName
+                #TODO: create string for this particular case i.e: Install not supported for this type of item
+                title = _( 144 )
+                msg1  = _( 136 )%itemName
+                msg2  = ""
+            
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
+
+        xbmcgui.Dialog().ok( title, msg1, msg2 )
 
     def _close_script( self ):
         #**IMPORTANT** faut annuler les thread avant de fermer le script, sinon xbmc risque de planter
         #NB: le meme scenario va ce produire si vous fermer ou redemarrer xbmc avec le script en marche
         #on annule les thread
         self._stop_rss_timer()
-#        try: self.infoswarehouse.getImage_thread.cancel()
-#        except: pass
-        try: self.infoswarehouse.cancel_update_Images()
-        except: pass
         for id in range( self.CONTROL_MAIN_LIST_START, self.CONTROL_MAIN_LIST_END + 1 ):
             try:
                 if xbmc.getCondVisibility( "Control.IsVisible(%i)" % id ):
@@ -696,6 +647,12 @@ class MainWindow( xbmcgui.WindowXML ):
                 pass
         #on ferme le script
         self.close()
+        if self.homeLastPosition is not None:
+            try:
+                import Home
+                Home.show_home( self.homeLastPosition )
+            except:
+                print_exc()
 
     def onFocus( self, controlID ):
         #self.controlID = controlID
@@ -709,45 +666,77 @@ class MainWindow( xbmcgui.WindowXML ):
         """
         try:
             if ( self.CONTROL_MAIN_LIST_START <= controlID <= self.CONTROL_MAIN_LIST_END ):
-                try: self.main_list_last_pos.append( self.getCurrentListPosition() )
-                except: self.main_list_last_pos.append( 0 )
-                if ( self.type == "racine" ):
-                    self.index = self.getCurrentListPosition()
-                    self.type = self.downloadTypeList[ self.racineDisplayList[ self.getCurrentListPosition() ] ] # On utilise le filtre
-                    self.updateList() #on raffraichit la page pour afficher le contenu
-
-                elif ( self.type == "Plugins" ):
-                    self.index = self.getCurrentListPosition()
-                    self.type = self.downloadTypeList[ self.pluginDisplayList[ self.getCurrentListPosition() ] ] # On utilise le filtre
-                    self.updateList() #on raffraichit la page pour afficher le contenu
-
+                self.index = self.getCurrentListPosition()
+                if self.contextSrc.getBrowser().isCat(self.getCurrentListPosition()):
+                    try: self.main_list_last_pos.append( self.getCurrentListPosition() )
+                    except: self.main_list_last_pos.append( 0 )
+                    
+                    # Get data and update display
+                    self.updateData_Next()
+                    self.updateList()
+    
+                    #TODO: case of install an item
                 else:
+                    #print "Download and install case"
                     self.install_add_ons()
+
+            elif controlID in [ 201, 202, 203, self.CONTROL_SOURCE_LIST ]:
+                new_content = None
+                if controlID == self.CONTROL_SOURCE_LIST:
+                    new_contentt = self.getControl( self.CONTROL_SOURCE_LIST ).getSelectedItem().getLabel()
+                elif controlID == 201:
+                    new_content = "Passion XBMC"
+                elif controlID == 202:
+                    new_content = "Passion XBMC FTP"
+                elif controlID == 203:
+                    new_content = "XBMC Zone"
+                if new_content is not None:
+                    self.default_content = new_content
+                    self.contextSrc.selectSource( self.default_content )
+                    self.updateData_Next()
+                    self.updateList()
 
             elif controlID == self.CONTROL_OPTIONS_BUTTON:
                 self._show_settings()
 
             elif controlID == self.CONTROL_FILE_MGR_BUTTON:
-                thumb_size_on_load = self.settings[ "thumb_size" ]
-                import FileManager
-                mainfunctions = [ self._show_settings, self._close_script ]
-                FileManager.show_file_manager( mainfunctions, self.rightstest )
-                #on a plus besoin du manager, on le delete
-                del FileManager
-                if thumb_size_on_load != self.settings[ "thumb_size" ]:
-                    self.updateList() #on raffraichit la page pour afficher la taille des vignettes
+                self._show_file_manager()
 
             elif controlID == self.CONTROL_FORUM_BUTTON:
                 self._show_direct_infos()
 
             elif controlID == self.CONTROL_EXIT_BUTTON:
-                self._close_script()
+                #self._close_script()
+                self.onExit()
 
             else:
                 pass
 
+        except Exception, e:
+            #print "Exception during onClick"
+            #print e
+            #print sys.exc_info()
+            print_exc()
+            print_exc()
+
+    def onExit( self ):
+        """
+        Action done on exit of the application
+        """
+        try:
+            # Free all the sources
+            # self.browser.close()
+            self.contextSrc.freeSources()
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
+        try:
+            # Delete cache directory
+            self.deleteDir( self.CacheDir )
+        except:
+            print_exc()
+
+        # Closing everything
+        self._close_script()
 
     def _load_downloaded_property( self ):
         self.downloaded_property = set()
@@ -756,7 +745,7 @@ class MainWindow( xbmcgui.WindowXML ):
             if os.path.exists( file_path ):
                 self.downloaded_property = eval( file( file_path, "r" ).read() )
         except:
-            logger.EXC_INFO( logger.LOG_DEBUG, sys.exc_info(), self )
+            print_exc()
 
     def _save_downloaded_property( self ):
         try:
@@ -766,7 +755,7 @@ class MainWindow( xbmcgui.WindowXML ):
             file_path = os.path.join( SPECIAL_SCRIPT_DATA, "downloaded.txt" )
             file( file_path, "w" ).write( repr( self.downloaded_property ) )
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
         else:
             self.getListItem( self.getCurrentListPosition() ).setProperty( "Downloaded", "isDownloaded" )
 
@@ -788,10 +777,53 @@ class MainWindow( xbmcgui.WindowXML ):
                 self.clearProperties()
             self.clearList()
             self.setProperty( "Category", self.current_cat )
+            self.setProperty( "DlSource", self.default_content )
             for item in self.listitems:
                 self.addItem( item )
         except:
             self.updateList()
+
+    def updateData_Prev( self ):
+        """
+        Retrieve previous data (parent)
+        """
+        #TODO: use correct string for update data (for time being we use the one of update list)
+        if not xbmc.getCondVisibility( "Window.IsActive(progressdialog)" ):
+            DIALOG_PROGRESS.create( _( 0 ), _( 104 ), _( 110 ) )
+        try:
+            #print "Getting list of items got from the browser"
+            #self.curDirList = self.contextSrc.getBrowser().getPrevList()
+            self.contextSrc.getBrowser().getPrevList()
+            self.curDirList = self.contextSrc.getBrowser().sortByName()
+        except Exception, e:
+            #print "Excpetion during updateData_Prev"
+            #print e
+            #print sys.exc_info()
+            print_exc()
+        if not xbmc.getCondVisibility( "Window.IsActive(progressdialog)" ):
+            DIALOG_PROGRESS.close()
+    
+    def updateData_Next( self ):
+        """
+        Retrieve next data for a specific item of the list
+        """
+        #TODO: use correct string for update data (for time being we use the one of update list)
+        if not xbmc.getCondVisibility( "Window.IsActive(progressdialog)" ):
+            DIALOG_PROGRESS.create( _( 0 ), _( 104 ), _( 110 ) )
+        try:
+            #print "Getting list of items from the browser for current item ID:"
+            #print self.index
+            #self.curDirList = self.contextSrc.getBrowser().getNextList(self.index)
+            self.contextSrc.getBrowser().getNextList(self.index)
+            self.curDirList = self.contextSrc.getBrowser().sortByName()
+        except Exception, e:
+            #print "Exception during updateData_Next"
+            #print e
+            #print sys.exc_info()
+            print_exc()
+        if not xbmc.getCondVisibility( "Window.IsActive(progressdialog)" ):
+            DIALOG_PROGRESS.close()
+
 
     def updateList( self ):
         """
@@ -800,201 +832,69 @@ class MainWindow( xbmcgui.WindowXML ):
         self._load_downloaded_property()
         if not xbmc.getCondVisibility( "Window.IsActive(progressdialog)" ):
             DIALOG_PROGRESS.create( _( 0 ), _( 104 ), _( 110 ) )
-        # On verifie self.type qui correspond au type de liste que l'on veut afficher
-        if ( self.type == "racine" ):
-            #liste virtuelle des sections
-            #del self.curDirList[ : ] # on vide la liste
-            self.curDirList = self.racineDisplayList
 
-        elif ( self.type == "Plugins" ):
-            #liste virtuelle des sections
-            self.curDirList = self.pluginDisplayList
-        #elif ( self.type == "Plugins Musique" ) or ( self.type == "Plugins Images" ) or ( self.type == "Plugins Programmes" ) or ( self.type == "Plugins Videos" ):
-        elif "Plugins " in self.type:
-            # Arret du theard de chargement des images
-            try: self.infoswarehouse.cancel_update_Images()
-            except: pass
+        try:
+            #xbmcgui.lock()
 
-            self.curDirList = self.passionFTPCtrl.getDirList( self.remotedirList[ self.pluginDisplayList[ self.index ] ] )
-        else:
-            #liste virtuelle des sections
-            #del self.curDirList[ : ] # on vide la liste
+            # Clear all ListItems in this control list
+            if hasattr( self, 'clearProperties' ):
+                self.clearProperties()
+            self.clearList()
+            self.listitems = []
 
-            # Arret du theard de chargement des images
-            try: self.infoswarehouse.cancel_update_Images()
-            except: pass
+            # Calcul du nombre d'elements de la liste
+            itemnumber = len( self.curDirList )
 
-            #liste physique d'une section sur le ftp
-            self.curDirList = self.passionFTPCtrl.getDirList( self.remotedirList[ self.index ] )
-            
+            self.current_cat = self.contextSrc.getBrowser().getCurrentCategory()
+            self.setProperty( "Category", self.current_cat )
+            self.setProperty( "DlSource", self.default_content )
+            #print "Current Category"
+            #print self.current_cat
 
-        #xbmcgui.lock()
+            #self.setProperty( "Category", self.contextSrc.getBrowser().getCurrentCategory() )
 
-        # Clear all ListItems in this control list
-        if hasattr( self, 'clearProperties' ):
-            self.clearProperties()
-        self.clearList()
-        self.listitems = []
+            #print "Starting loop on list of items got from the browser"
+            for elt in self.curDirList:
+                imagePath = ""
+                #print elt
 
-        # Calcul du nombre d'elements de la liste
-        itemnumber = len( self.curDirList )
-
-        # On utilise la fonction range pour faire l'iteration sur index
-        for j in range( itemnumber ):
-            imagePath = ""
-            if ( self.type == "racine" ):
-                # Nom de la section
-                sectionName = self.downloadTypeList[ self.racineDisplayList[ j ] ] # On utilise le filtre
-                # Met a jour le titre:
-                self.setProperty( "Category", _( 10 ) )
-
-                # Affichage de la liste des sections
-                # -> On compare avec la liste affichee dans l'interface
-                if sectionName == self.downloadTypeList[ 0 ]:
-                    # Theme
-                    imagePath = "IPX-defaultSkin.png"
-                    sectionLocTitle = _( 11 )
-                elif sectionName == self.downloadTypeList[ 1 ]:
-                    # Scraper
-                    imagePath = "IPX-defaultScraper.png"
-                    sectionLocTitle = _( 12 )
-                elif sectionName == self.downloadTypeList[ 2 ]:
-                    # Script
-                    imagePath = "IPX-defaultScript_Plugin.png"
-                    sectionLocTitle = _( 13 )
-                elif sectionName == self.downloadTypeList[ 3 ]:
-                    # Plugin
-                    imagePath = "IPX-defaultScript_Plugin.png"
-                    sectionLocTitle = _( 14 )
-
-                displayListItem = xbmcgui.ListItem( sectionLocTitle, "", iconImage=imagePath, thumbnailImage=imagePath )
-                displayListItem.setProperty( "title", sectionLocTitle )
-                displayListItem.setProperty( "description", " " )
-                displayListItem.setProperty( "Downloaded", "" )
-                self.addItem( displayListItem )
-
-            elif ( self.type == "Plugins" ):
-                # Nom de la section
-                sectionName = self.downloadTypeList[ self.pluginDisplayList[ j ] ] # On utilise le filtre
-                # Met a jour le titre:
-                self.setProperty( "Category", _( 14 ) )
-
-                if sectionName == self.downloadTypeList[ 4 ]:
-                    # Music
-                    imagePath = "IPX-defaultPluginMusic.png"
-                    sectionLocTitle = _( 15 )
-                elif sectionName == self.downloadTypeList[ 5 ]:
-                    # Pictures
-                    imagePath = "IPX-defaultPluginPicture.png"
-                    sectionLocTitle = _( 16 )
-                elif sectionName == self.downloadTypeList[ 6 ]:
-                    # Programs
-                    imagePath = "IPX-defaultPluginProgram.png"
-                    sectionLocTitle = _( 17 )
-                elif sectionName == self.downloadTypeList[ 7 ]:
-                    # Video
-                    imagePath = "IPX-defaultPluginVideo.png"
-                    sectionLocTitle = _( 18 )
-
-                displayListItem = xbmcgui.ListItem( sectionLocTitle, "", iconImage=imagePath, thumbnailImage=imagePath )
-                displayListItem.setProperty( "title", sectionLocTitle )
-                displayListItem.setProperty( "description", " " )
-                displayListItem.setProperty( "Downloaded", "" )
-                self.addItem( displayListItem )
-
-            elif "Plugins " in self.type:
-                # Element de la liste
-                ItemListPath = self.curDirList[ j ]
-
-                # on a tjrs besoin de connaitre la taille du chemin de base pour le soustraire/retirer du chemin global plus tard
-                lenindex = len( self.remotedirList[ self.pluginDisplayList[ self.index ] ] )
-
-                # Met a jour le titre et les icones:
-                if self.type == self.downloadTypeList[ 4 ]:
-                    # Music
-                    self.setProperty( "Category", _( 15 ) )
-                    imagePath = "IPX-defaultPluginMusic.png"
-                elif self.type == self.downloadTypeList[ 5 ]:
-                    # Pictures
-                    self.setProperty( "Category", _( 16 ) )
-                    imagePath = "IPX-defaultPluginPicture.png"
-                elif self.type == self.downloadTypeList[ 6 ]:
-                    # Programs
-                    self.setProperty( "Category", _( 17 ) )
-                    imagePath = "IPX-defaultPluginProgram.png"
-                elif self.type == self.downloadTypeList[ 7 ]:
-                    # Video
-                    self.setProperty( "Category", _( 18 ) )
-                    imagePath = "IPX-defaultPluginVideo.png"
-
-                # nettoyage du nom: replace les souligner pas un espace et enleve l'extension
-                try:
-                    item2download = ItemListPath[ lenindex: ].replace( "_", " " )
-                    if self.settings.get( "hide_extention", True ):
-                        item2download = os.path.splitext( item2download )[ 0 ]
-                except:
-                    item2download = ItemListPath[ lenindex: ]
-                DIALOG_PROGRESS.update( -1, _( 103 ), item2download, _( 110 ) )
-
-                if self.downloaded_property.__contains__( md5.new( item2download ).hexdigest() ):
-                    already_downloaded = "true"
+                if self.settings.get( "hide_extention", True ):
+                    name = urllib.unquote( elt['name'] )
+                    if name.endswith( 'zip' ) or name.endswith( 'rar' ):
+                        itemName = os.path.splitext( urllib.unquote( elt['name'] ) )[ 0 ]
+                    else:
+                        itemName = name
                 else:
-                    already_downloaded = ""
+                    itemName = urllib.unquote( elt['name'] )
 
-                displayListItem = xbmcgui.ListItem( item2download, "", iconImage=imagePath, thumbnailImage=imagePath )
-                displayListItem.setProperty( "Downloaded", already_downloaded )
-                self.set_item_infos( displayListItem, ItemListPath )
+                displayListItem = xbmcgui.ListItem( itemName, "", elt['thumbnail'], elt['thumbnail'] )
+
+                # Register in case image is not downloaded yet
+                self.contextSrc.getBrowser().imageUpdateRegister( elt, updateImage_cb=self._updateListThumb_cb, obj2update=displayListItem )
+
+                self.set_item_infos( displayListItem, elt )
+
+                #print "Item to display"
+                #print displayListItem
+
                 self.addItem( displayListItem )
-                DIALOG_PROGRESS.update( -1, _( 103 ), item2download, _( 110 ) )
+                # utiliser pour remettre la liste courante a jour lorsqu'on reviens sur cette fenetre depuis le forum ou le manager
+                self.listitems.append( displayListItem )
 
-            else:
-                # Element de la liste
-                ItemListPath = self.curDirList[ j ]
-
-                #affichage de l'interieur d'une section
-                #self.numindex = self.index
-                lenindex = len( self.remotedirList[ self.index ] ) # on a tjrs besoin de connaitre la taille du chemin de base pour le soustraire/retirer du chemin global plus tard
-
-                # Met a jour le titre et les icones:
-                if self.type == self.downloadTypeList[ 0 ]: #Themes
-                    self.setProperty( "Category", _( 11 ) )
-                    imagePath = "IPX-defaultSkin.png"
-                elif self.type == self.downloadTypeList[ 1 ]: #Scrapers
-                    self.setProperty( "Category", _( 12 ) )
-                    imagePath = "IPX-defaultScraper.png"
-                elif self.type == self.downloadTypeList[ 2 ]: #Scripts
-                    self.setProperty( "Category", _( 13 ) )
-                    imagePath = "IPX-defaultScript_Plugin.png"
-
-                # nettoyage du nom: replace les souligner pas un espace et enleve l'extension
-                try:
-                    item2download = ItemListPath[ lenindex: ].replace( "_", " " )
-                    if self.settings.get( "hide_extention", True ):
-                        item2download = os.path.splitext( item2download )[ 0 ]
-                except:
-                    item2download = ItemListPath[ lenindex: ]
-                DIALOG_PROGRESS.update( -1, _( 103 ), item2download, _( 110 ) )
-
-                if self.downloaded_property.__contains__( md5.new( item2download ).hexdigest() ):
-                    already_downloaded = "true"
-                else:
-                    already_downloaded = ""
-
-                displayListItem = xbmcgui.ListItem( item2download, "", iconImage=imagePath, thumbnailImage=imagePath )
-                displayListItem.setProperty( "Downloaded", already_downloaded )
-                self.set_item_infos( displayListItem, ItemListPath )
-                self.addItem( displayListItem )
-                DIALOG_PROGRESS.update( -1, _( 103 ), item2download, _( 110 ) )
-
-            # utiliser pour remettre la liste courante a jour lorsqu'on reviens sur cette fenetre depuis le forum ou le manager
-            self.listitems.append( displayListItem )
-        self.current_cat = unicode( xbmc.getInfoLabel( 'Container.Property(Category)' ), 'utf-8')
-
-        if ( self.type != "racine" ) and ( self.type != "Plugins" ):
+            #self.current_cat = unicode( xbmc.getInfoLabel( 'Container.Property(Category)' ), 'utf-8')
+            #print "Current Category"
+            #print self.current_cat
+    
             # Mise a jour des images
             self.set_list_images()
-        #xbmcgui.unlock()
-
+            
+            #xbmcgui.unlock()
+        except Exception, e:
+            #print "Excpetion during updateList"
+            #print e
+            #print sys.exc_info()
+            print_exc()
+            
         DIALOG_PROGRESS.close()
 
     def clear_item_infos( self, listitem ):
@@ -1007,11 +907,12 @@ class MainWindow( xbmcgui.WindowXML ):
             listitem.setProperty( "version",         "" )
             listitem.setProperty( "language",        "" )
             listitem.setProperty( "description",     "" )
+            listitem.setProperty( "outline",         "" )
             listitem.setProperty( "added",           "" )
             listitem.setProperty( "fanartpicture",   "" )
             listitem.setProperty( "previewVideoURL", "" )
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
     def refresh_item( self ):
         DIALOG_PROGRESS.create( _( 0 ), _( 104 ), _( 110 ) )
@@ -1019,34 +920,63 @@ class MainWindow( xbmcgui.WindowXML ):
             self.index = self.getCurrentListPosition()
             listitem = self.getListItem( self.index )
             self.clear_item_infos( listitem )
-            self.itemInfosManager = ItemInfosManager( mainwin=self )
-            self.infoswarehouse = self.itemInfosManager.get_info_warehouse()
+#            self.itemInfosManager = ItemInfosManager( mainwin=self )
+#            self.infoswarehouse = self.itemInfosManager.get_info_warehouse()
             self.set_item_infos( listitem, self.curDirList[ self.index ] )
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
         DIALOG_PROGRESS.close()
         return listitem
 
-    def set_item_infos( self, listitem, ipath ):
+    def set_item_infos( self, listItem, dataItem ):
         try:
-            infos = self.infoswarehouse.getInfo( itemName=os.path.basename( ipath ), itemType=self.type, listitem=listitem )
-            listitem.setProperty( "itemId",          infos.itemId )
-            listitem.setProperty( "fileName",        infos.fileName )
-            listitem.setProperty( "date",            infos.date )
-            listitem.setProperty( "title",           infos.title )
-            listitem.setProperty( "author",          infos.author )
-            listitem.setProperty( "version",         infos.version )
-            listitem.setProperty( "language",        infos.language )
-            listitem.setProperty( "description",     infos.description )
-            listitem.setProperty( "added",           infos.added or infos.date )
-            listitem.setProperty( "fanartpicture",   infos.previewPicture )
-            listitem.setProperty( "previewVideoURL", infos.previewVideoURL )
-        except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print "MainGUI - set_item_infos"
 
-    def _updateListThumb_cb( self, imagePath, listitem ):
-        if imagePath and hasattr( listitem, "setThumbnailImage" ):
-            listitem.setThumbnailImage( imagePath )
+            listItem.setProperty( "itemId",           "" )
+
+            listItem.setProperty( "fileName",         "" ) # Deprecated
+
+            listItem.setProperty( "date",             dataItem['date'].replace( "None", "" ) )
+
+            try: listItem.setProperty( "title",       urllib.unquote( dataItem['name'].decode('string_escape') ).replace( "None", "" ) )
+            except: listItem.setProperty( "title",    urllib.unquote( dataItem['name'] ).replace( "None", "" ) )
+
+            try: listItem.setProperty( "author",      dataItem['author'].decode('string_escape').replace( "None", "" ) )
+            except: listItem.setProperty( "author",   dataItem['author'].replace( "None", "" ) )
+
+            try: listItem.setProperty( "version",     dataItem['version'].decode('string_escape').replace( "None", "" ) )
+            except: listItem.setProperty( "version",  dataItem['version'].replace( "None", "" ) )
+
+            try: listItem.setProperty( "language",    dataItem['language'].decode('string_escape').replace( "None", "" ) )
+            except: listItem.setProperty( "language", dataItem['language'].replace( "None", "" ) )
+
+            listItem.setProperty( "added",            dataItem['added'].replace( "None", "" ) )
+
+            #listItem.setProperty( "fanartpicture",    dataItem['previewpictureurl'] )
+            listItem.setProperty( "fanartpicture",    dataItem['previewpicture'].replace( "None", "" ) )
+
+            listItem.setProperty( "previewVideoURL",  "" )
+
+            try: description = urllib.unquote( dataItem['description'].decode('string_escape') )
+            except: description = urllib.unquote( dataItem['description'] )
+            listItem.setProperty( "description", description.replace( "None", "" ) )
+            listItem.setProperty( "outline",     description.replace( "None", "" ).replace( "\r", "\n" ).replace( "\n\n", "  " ).replace( "\n", " " ).replace( "[CR]", " " ) )
+            #print "set_item_infos"
+            #print dataItem
+        except:
+            print_exc()
+            print_exc()
+
+    def _updateListThumb_cb( self, thumbnail, previewPicture, listitem ):
+        """
+        Callback updating one specific image in the displayed list
+        Need to use imageUpdateRegister() on Browser in order to be called
+        """
+        if thumbnail and previewPicture and hasattr( listitem, "setThumbnailImage" ):
+            listitem.setThumbnailImage( thumbnail )
+            listitem.setIconImage( previewPicture ) # TODO" do we keep the same resoltuin between thumb and image???
+            #listitem.setProperty( "fanartpicture", "" )
+            listitem.setProperty( "fanartpicture", previewPicture )
 
     def set_list_images( self ):
         """
@@ -1054,9 +984,9 @@ class MainWindow( xbmcgui.WindowXML ):
         """
         try:
             # Recuperation des images dans un thread separe via la fonction update_Images()
-            self.infoswarehouse.update_Images()
+            self.contextSrc.getBrowser().update_Images()
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
     def deleteDir( self, path ):
         """
@@ -1064,6 +994,8 @@ class MainWindow( xbmcgui.WindowXML ):
         retourne True si le repertoire est effece False sinon
         """
         result = True
+        #print "deleteDir"
+        #print path
         if os.path.isdir( path ):
             dirItems=os.listdir( path )
             for item in dirItems:
@@ -1077,17 +1009,17 @@ class MainWindow( xbmcgui.WindowXML ):
                         self.deleteDir( itemFullPath )
                 except:
                     result = False
-                    logger.LOG( logger.LOG_DEBUG, "deleteDir: Exception la suppression du reperoire: %s", path )
-                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                    print "deleteDir: Exception la suppression du reperoire: %s" % path
+                    print_exc()
             # Suppression du repertoire pere
             try:
                 os.rmdir( path )
             except:
                 result = False
-                logger.LOG( logger.LOG_DEBUG, "deleteDir: Exception la suppression du reperoire: %s", path )
-                logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                print "deleteDir: Exception la suppression du reperoire: %s" % path
+                print_exc()
         else:
-            logger.LOG( logger.LOG_DEBUG, "deleteDir: %s n'est pas un repertoire", path )
+            print "deleteDir: %s n'est pas un repertoire" % path
             result = False
 
         return result
@@ -1096,8 +1028,10 @@ class MainWindow( xbmcgui.WindowXML ):
         """
         Efface tous le contenu d'un repertoire ( fichiers  et sous-repertoires )
         mais pas le repertoire lui meme
-        folder: chemin du repertpoire local
+        folder: chemin du repertoire local
         """
+        #print "delDirContent"
+        #print path
         result = True
         if os.path.isdir( path ):
             dirItems=os.listdir( path )
@@ -1112,10 +1046,10 @@ class MainWindow( xbmcgui.WindowXML ):
                         self.deleteDir( itemFullPath )
                 except:
                     result = False
-                    logger.LOG( logger.LOG_DEBUG, "delDirContent: Exception la suppression du contenu du reperoire: %s", path )
-                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                    print "delDirContent: Exception la suppression du contenu du reperoire: %s" % path
+                    print_exc()
         else:
-            logger.LOG( logger.LOG_ERROR, "delDirContent: %s n'est pas un repertoire", path )
+            print "delDirContent: %s n'est pas un repertoire" % path
             result = False
 
         return result
@@ -1129,9 +1063,8 @@ class MainWindow( xbmcgui.WindowXML ):
             if not os.path.exists( folder ):
                 os.makedirs( folder )
         except:
-            logger.LOG( logger.LOG_DEBUG, "verifrep - Exception durant la creation du repertoire: %s", folder )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-            pass
+            print "verifrep - Exception durant la creation du repertoire: %s" % folder
+            print_exc()
 
     def linux_chmod( self, path ):
         """
@@ -1140,7 +1073,7 @@ class MainWindow( xbmcgui.WindowXML ):
         Wtest = os.access( path, os.W_OK )
         if Wtest == True:
             self.rightstest = True
-            logger.LOG( logger.LOG_NOTICE, "linux chmod rightest OK" )
+            print "linux chmod rightest OK"
         else:
             xbmcgui.Dialog().ok( _( 19 ), _( 20 ) )
             keyboard = xbmc.Keyboard( "", _( 21 ), True )
@@ -1154,57 +1087,101 @@ class MainWindow( xbmcgui.WindowXML ):
                     self.rightstest = True
                 except:
                     self.rightstest = False
-                    logger.LOG( logger.LOG_ERROR, "erreur CHMOD %s", path )
-                    logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+                    print "bypass: erreur CHMOD %s" % path
+                    print_exc()
             else:
                 self.rightstest = False
 
-    def processOldDownload( self, localAbsDirPath ):
+    def processOldDownload( self, itemInstaller ):
         """
         Traite les ancien download suivant les desirs de l'utilisateur
         retourne True si le download peut continuer.
         """
+
+#        from FileManager import fileMgr
+#        fileMgr = fileMgr()
+
         continueDownload = True
 
+        # Get Item install name
+        itemInstallName = itemInstaller.getItemInstallName()
+        
         # Verifie se on telecharge un repertoire ou d'un fichier
-        if os.path.isdir( localAbsDirPath ):
-            # Repertoire
+#        if os.path.isdir( localAbsDirPath ):
+#            # Repertoire
+        exit = False
+        while exit == False:
             menuList = [ _( 150 ), _( 151 ), _( 152 ), _( 153 ) ]
             dialog = xbmcgui.Dialog()
-            chosenIndex = dialog.select( _( 149 ) % os.path.basename( localAbsDirPath ), menuList )
+            #chosenIndex = dialog.select( _( 149 ) % os.path.basename( localAbsDirPath ), menuList )
+            chosenIndex = dialog.select( _( 149 ) % itemInstallName, menuList )
             if chosenIndex == 0:
-                # Supprimer
-                self.deleteDir( localAbsDirPath )
-            elif chosenIndex == 1: # Renommer
-                # Suppression du repertoire
-                keyboard = xbmc.Keyboard( os.path.basename( localAbsDirPath ), _( 154 ) )
+                # Delete
+                print "Deleting: %s"%itemInstallName
+                #OK = self.deleteDir( localAbsDirPath )
+                #OK = fileMgr.deleteItem( localAbsDirPath )
+                OK = itemInstaller.deleteInstalledItem()
+                if OK == True:
+                    exit = True
+                else:
+                    xbmcgui.Dialog().ok( _(148), _( 117) )
+            elif chosenIndex == 1: 
+                # Rename
+                #keyboard = xbmc.Keyboard( os.path.basename( localAbsDirPath ), _( 154 ) )
+                keyboard = xbmc.Keyboard( os.path.basename( itemInstallName ), _( 154 ) )
                 keyboard.doModal()
                 if ( keyboard.isConfirmed() ):
                     inputText = keyboard.getText()
-                    os.rename( localAbsDirPath, localAbsDirPath.replace( os.path.basename( localAbsDirPath ), inputText ) )
-                    xbmcgui.Dialog().ok( _( 155 ), localAbsDirPath.replace( os.path.basename( localAbsDirPath ), inputText ) )
+                    #os.rename( localAbsDirPath, localAbsDirPath.replace( os.path.basename( localAbsDirPath ), inputText ) )
+                    #OK = fileMgr.renameItem( base_path, old_name, new_name)
+                    OK = itemInstaller.renameInstalledItem( inputText )
+                    #xbmcgui.Dialog().ok( _( 155 ), localAbsDirPath.replace( os.path.basename( localAbsDirPath ), inputText ) )
+                    if OK == True:
+                        xbmcgui.Dialog().ok( _( 155 ), inputText  )
+                        exit = True
+                    else:
+                        xbmcgui.Dialog().ok( _( 148 ), _( 117 ) )
+                        
                 del keyboard
             elif chosenIndex == 2: # Ecraser
-                pass
+                exit = True
             else:
+                # EXIT
+                exit = True
                 continueDownload = False
-        else:
-            # Fichier
-            logger.LOG( logger.LOG_ERROR, "processOldDownload: Fichier : %s - ce cas n'est pas encore traite", localAbsDirPath )
-            #TODO: cas a implementer
-
         return continueDownload
+        
+    def message_cb(self, msgType, title, message1, message2="", message3=""):
+        """
+        Callback function for sending a message to the UI
+        @param msgType: Type of the message
+        @param title: Title of the message
+        @param message1: Message part 1
+        @param message2: Message part 2
+        @param message3: Message part 3
+        """
+        #print("message_cb with %s STARTS"%msgType)
+        result = None
+
+        # Display the correct dialogBox according the type
+        if msgType == "OK" or msgType == "Error":
+            dialogInfo = xbmcgui.Dialog()
+            result = dialogInfo.ok(title, message1, message2,message3)
+        elif msgType == "YESNO":
+            dialogYesNo = xbmcgui.Dialog()
+            result = dialogYesNo.yesno(title, message1, message2, message3)
+        return result
 
 
-def show_main():
+
+def show_main( HomeAction=None, homeLastPosition=None ):
     #Fonction de demarrage
-    file_xml = "passion-main.xml"
     #depuis la revision 14811 on a plus besoin de mettre le chemin complet, la racine suffit
     dir_path = os.getcwd().replace( ";", "" )
     #recupere le nom du skin et si force_fallback est vrai, il va chercher les images du defaultSkin.
     current_skin, force_fallback = getUserSkin()
+    file_xml = ( "IPX-Installer.xml", "passion-main.xml" )[ current_skin != "Default.HD" ]
 
-    w = MainWindow( file_xml, dir_path, current_skin, force_fallback )
-    #w = MainWindow()
+    w = MainWindow( file_xml, dir_path, current_skin, force_fallback, HomeAction=HomeAction, homeLastPosition=homeLastPosition )
     w.doModal()
     del w

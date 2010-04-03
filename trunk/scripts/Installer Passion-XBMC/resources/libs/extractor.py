@@ -4,25 +4,27 @@ extractor for zip and rar file and a future support file 7-zip.
 frost
 """
 
-#Modules general
+# Modules general
 import os
 import sys
+from traceback import print_exc
 
-#modules custom
-import shutil2
-
-#modules XBMC
+# Modules XBMC
 from xbmcgui import DialogProgress
 from xbmc import executebuiltin, sleep
 
-#module logger
-try:
-    logger = sys.modules[ "__main__" ].logger
-except:
-    import script_log as logger
+# Modules custom
+import shutil2
 
 
 DIALOG_PROGRESS = DialogProgress()
+
+try:
+    #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
+    _ = sys.modules[ "__main__" ].__language__
+except:
+    lang = { 110: "Please wait...", 187: "UnRar: %i of %i items", 188: "UnZip: %i of %i items" }
+    def _( id ): return lang[ id ]
 
 
 def get_time_sleep( filename ):
@@ -31,8 +33,7 @@ def get_time_sleep( filename ):
     try:
         slp = int( os.path.getsize( filename ) / 1000 )
     except:
-        #import traceback; traceback.print_exc()
-        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
+        print_exc()
         slp = 0
     if slp < 1000: slp = 1000
     return slp
@@ -101,32 +102,41 @@ def unrar( filename, destination=None, report=False ):
                     if report:
                         if DIALOG_PROGRESS.iscanceled():
                             break
-                        DIALOG_PROGRESS.update( int( percent ), "Unrar %i of %i items" % ( list_size, total_items ), file, "Please wait..." )
+                        DIALOG_PROGRESS.update( int( percent ), _( 187 ) % ( list_size, total_items ), file, _( 110 ) )
                         #print round( percent, 2 ), file
                     if file in namelist:
                         size += os.path.getsize( os.path.join( root, file ) )
                     else:
-                        logger.LOG( logger.LOG_ERROR, "Error %s est dans la liste de depart!", file )
-                        #print "Error %s est dans la liste de depart!" % file
+                        print "Error %s est dans la liste de depart!" % file
             #print size
             if not size:
-                logger.LOG( logger.LOG_ERROR, "Error for extracting rar: %s", filename )
-                #print "Error for extracting rar: %s" % filename
+                print "Error for extracting rar: %s" % filename
         rar.close()
         del rar
         # si list_size est pas declarer une erreur automatique est creer ;)
         return base_dir, list_size == total_items
     except:
-        #import traceback; traceback.print_exc()
-        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
-        return "", False
+        print_exc()
+    return "", False
 
-
+def is_rarfile( filename ):
+    """
+    Check if file is rar archive
+    """
+    result = False
+    from rarfile import RarFile
+    try: 
+        rar = RarFile( filename, "r" )
+        result = True
+    except: 
+        print "%s is not rar"%filename
+    return result
+ 
 def unzip( filename, destination=None, report=False ):
     from zipfile import ZipFile
     base_dir = ""
     if destination is None:
-        destination = os.path.dirname( filename )
+        destination = os.path.dirname( filename ) #=> extraction in current directory
     try:
         zip = ZipFile( filename, "r" )
         namelist = zip.namelist()
@@ -159,7 +169,7 @@ def unzip( filename, destination=None, report=False ):
             if report:
                 if DIALOG_PROGRESS.iscanceled():
                     break
-                DIALOG_PROGRESS.update( int( percent ), "Unzipping %i of %i items" % ( count + 1, total_items ), item, "Please wait..." )
+                DIALOG_PROGRESS.update( int( percent ), _( 188 ) % ( count + 1, total_items ), item, _( 110 ) )
                 #print round( percent, 2 ), item
             if not item.endswith( "/" ):
                 root, name = os.path.split( item )
@@ -170,9 +180,35 @@ def unzip( filename, destination=None, report=False ):
         del zip
         return base_dir, True
     except:
-        #import traceback; traceback.print_exc()
-        logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info() )
-        return "", False
+        print_exc()
+    return "", False
+
+
+def extract_tarfile( filename, destination=None ):
+    import tarfile
+    base_dir = ""
+    try:
+        # is_tarfile, Return True if name is a tar archive file, that the tarfile module can read. 
+        if tarfile.is_tarfile( filename ):
+            # if not destination, set destination to current filename
+            if destination is None:
+                destination = os.path.dirname( filename )
+            # open tarfile
+            tar = tarfile.open( filename )#, 'r:gz' )
+            # extractall, New in version 2.5 or greater
+            if hasattr( tar, 'extractall' ):
+                tar.extractall( destination )
+            else:
+                # if not extractall use standard extract
+                [ tar.extract( tarinfo , destination ) for tarinfo in tar ]
+            root_dir = tar.getnames()[ 0 ].strip( "/" )
+            base_dir = os.path.join( destination, root_dir )
+            # close tarfile
+            tar.close()
+            return base_dir, True
+    except:
+        print_exc()
+    return "", False
 
 
 def extract( filename, destination=None, report=False ):
@@ -187,8 +223,17 @@ def extract( filename, destination=None, report=False ):
         # reste a compiler cette lib pour xbmc linux, win32/xbox et osx semble pas etre supporter
         # Note faut compiler cette lib avec python 2.4, sinon elle sera pas compatible avec xbmc, pas certain a 100 pour 100.
         #ok = executebuiltin( 'XBMC.Extract(%s)' % ( filename, ) )
-        logger.LOG( logger.NOTICE, "L'archive '%s' n'est pas pris en charge...", os.path.basename( filename ) )
-        pass
+        print "L'archive '%s' n'est pas pris en charge..." % os.path.basename( filename )
+    elif ext == ".tar":
+        # test for tarfile
+        return extract_tarfile( filename, destination )
+    else:
+        # No extension, let's try rar first then zip (otherwise we will give up)
+        if is_rarfile(filename):
+            return unrar( filename, destination, report )
+        else:
+            return unzip( filename, destination, report )
+            
     return "", False
 
 

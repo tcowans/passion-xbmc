@@ -1,0 +1,301 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- This XML is for uddater.xbe "UnleashX" -->
+<Resource Name="Polish">
+
+<!-- T³umaczenie NaPeK(napek@poczta.fm) -->
+<!-- Wszelkie modyfikacje t³umaczenia powinny spe³niaæ nastêpuj¹ce warunki: -->
+<!-- Wprowadzaj¹cy modyfikacje nie mo¿e byæ anonimowy, nale¿y pozostawiæ informacje o pierwotnym autorze -->
+
+      <BROWSE_FOLDER>Przegladaj folder</BROWSE_FOLDER>
+	<NEW_FOLDER>Nowy folder</NEW_FOLDER>
+	<CREATE_FOLDER>Utwórz folder</CREATE_FOLDER>
+
+	<NONE>Brak</NONE>
+	<OK>OK</OK>
+	<CANCEL>Anuluj</CANCEL>
+	<ABORT>Przerwij</ABORT>
+	<RETRY>Powtórz</RETRY>
+	<IGNORE>Ignoruj</IGNORE>
+	<YES>Tak</YES>
+	<NO>Nie</NO>
+	<ACCEPT>Akceptuj</ACCEPT>
+
+	<CHECKING>Sprawdzam</CHECKING>
+
+	<SELECT>Zaznacz</SELECT>
+	<ROOT_FOLDER>Katalog glówny</ROOT_FOLDER>
+	<SELECT_ALL>Zaznacz wszystko</SELECT_ALL>
+	<CLEAR_SELECTION>Wyczyœæ zaznaczenie</CLEAR_SELECTION>
+	<INVERSE_SELECTION>Odwróæ zaznaczenie</INVERSE_SELECTION>
+	<COPY>Kopiuj...</COPY>
+	<COPY_RESUME>Kopiuj/Wznów</COPY_RESUME>
+	<MOVE>Przenieœ...</MOVE>
+	<DELETE>Skasuj...</DELETE>
+	<RENAME>Zmieñ nazwê...</RENAME>
+
+	<CALC_USED_SPACE>Przelicz zajête miejsce</CALC_USED_SPACE>
+	<COPY_DISC>Kopiuj p³ytê</COPY_DISC>
+	<QUICK_COPY_DISK>Szybkie kopiowanie p³yty</QUICK_COPY_DISK>
+	<ADD_TO_ZIP_FILE>Skompresuj do ZIP'a</ADD_TO_ZIP_FILE>
+	<PATCH_XBE_FILE>Patch'uj plik XBE</PATCH_XBE_FILE>
+	<RENAME_XBE_TITLE>Zmieñ nazwê pliku XBE</RENAME_XBE_TITLE>
+	<NEW_TEXT_DOCUMENT>Nowy dokument tekstowy</NEW_TEXT_DOCUMENT>
+	<OPEN_WITH_TEXT_EDITOR>Otwórz w edytorze tekstu</OPEN_WITH_TEXT_EDITOR>
+	<FORMAT_DRIVE>Formatuj dysk...</FORMAT_DRIVE>
+	<SWITCH_TO_FTP>Przelacz do klienta FTP...</SWITCH_TO_FTP>
+
+	<MSG_FORMAT_DRIVE_ASK>Czy napewno chcesz sformatowac dysk %s?\nWszystkie dane zostan¹ utracone.</MSG_FORMAT_DRIVE_ASK>
+
+      <ERROR>B³¹d</ERROR>
+	<CONFIRM>PotwierdŸ</CONFIRM>
+	<SUCCESS>Udane</SUCCESS>
+	<INFORMATION>Informacja</INFORMATION>
+      <WARNING>Ostrze¿enie</WARNING>
+	<MSG_INVALID_SELECTION>Niew³asciwy wybór. Proszê wybraæ conajmniej jeden plik do skopiowania.</MSG_INVALID_SELECTION>
+	<MSG_INSUFFICIENTSPACE>Niewystarczaj¹ca iloœæ wolnego miejsca.\nDostepne miejsce: %s\nWymagane miejsce: %s</MSG_INSUFFICIENTSPACE>
+	
+	<MSG_ABOUT_TO_COPY>Czy chcesz skopiowac %s plik(ów) i %s folder(ów) ?</MSG_ABOUT_TO_COPY>
+	<MSG_COPYING>Kopiowanie plików...\n\nProszê nie wy³¹czaæ/resetowaæ konsoli.</MSG_COPYING>
+	<MSG_COPY_SUCCESS>Skopiowano %s plik(ów) i %s folder(ów).</MSG_COPY_SUCCESS>
+	<MSG_COPY_ERROR>Wyst¹pi³ b³¹d podczas kopiowania pliku(ów).\nKod b³êdu: %d</MSG_COPY_ERROR>
+	<MSG_COPY_INVALID>Katalog Ÿród³owy i docelowy nie mog¹ byæ takie same.\nProszê wybraæ inny katalog docelowy.</MSG_COPY_INVALID>
+	<MSG_COPY_CHECK>Przygotowywanie plików do kopiowania...\n\nProszê nie wy³¹czaæ/resetowaæ konsoli.\n\nSprawdzam...</MSG_COPY_CHECK>
+
+	<MSG_NO_DESTINATION>Katalog docelowy jest niedostêpny.\nProszê wybraæ inny katalog.</MSG_NO_DESTINATION>
+
+	<MSG_ABOUT_TO_MOVE>Czy chcesz przenieœæ %s plik(ów) i %s folder(ów) ?</MSG_ABOUT_TO_MOVE>
+	<MSG_MOVING>Przenoszê wybrane pliki...\n\nProszê nie wy³¹czaæ/resetowaæ konsoli.</MSG_MOVING>
+	<MSG_MOVE_SUCCESS>Przeniesiono %s plik(ów) i %s folder(ów).</MSG_MOVE_SUCCESS>
+	<MSG_MOVE_ERROR>Wystapi³ b³¹d podczas przenoszenia plik(ów).\nKod b³êdu: %d</MSG_MOVE_ERROR>
+	<MSG_MOVE_CHECK>Przygotowywanie plików do przeniesienia...\n\nProszê nie wy³¹czaæ/resetowaæ konsoli.\n\nSprawdzam...</MSG_MOVE_CHECK>
+
+	<MSG_ABOUT_TO_DELETE>Czy chcesz usun¹æ %s plik(ów) i %s folder(ów) ?</MSG_ABOUT_TO_DELETE>
+	<MSG_DELETING>Usuwanie wybranych plików...\n\nProszê nie wy³¹czaæ/resetowaæ konsoli.</MSG_DELETING>
+	<MSG_DELETE_SUCCESS>Usuniêto %s plik(ów) i %s folder(ów).</MSG_DELETE_SUCCESS>
+	<MSG_DELETE_ERROR>Wyst¹pi³ b³¹d podczas kasowania plik(ów).\nKod b³êdu: %d</MSG_DELETE_ERROR>
+	<MSG_DELETE_CHECK>Przygotowywanie plików do usuniêcia...\n\nProszê nie wy³¹czaæ/resetowaæ konsoli.\n\nSprawdzam...</MSG_DELETE_CHECK>
+
+	<MSG_ZIPPING>Kompresujê wybrane pliki...\n\nProsze nie wy³¹czaæ/resetowaæ konsoli.</MSG_ZIPPING>
+	<MSG_ZIP_SUCCESS>Skompresowano %s plik(ów) i %s folder(ów).</MSG_ZIP_SUCCESS>
+	<MSG_ZIP_ERROR>Wystapi³ b³¹d podczas kompresji plik(ów).\nKod b³êdu: %d</MSG_ZIP_ERROR>
+	<MSG_ZIP_CHECK>Przygotowujê pliki do kompresji...\n\nProszê nie wy³¹czaæ/resetowaæ konsoli.\n\nSprawdzam...</MSG_ZIP_CHECK>
+
+	<MSG_CALC_SPACE>Folder zawiera %s plik(ów) w %s folder(ach): %s %s</MSG_CALC_SPACE>
+	<MSG_CALC_CHECK>Obliczam objêtoœæ plików...\n\nProszê nie wy³¹czaæ/resetowaæ konsoli.\n\nSprawdzam...</MSG_CALC_CHECK>
+
+	<MSG_DVD_COPYING>Kopiujê p³ytê DVD...\n\nProszê nie wy³¹czaæ/resetowaæ konsoli.</MSG_DVD_COPYING>
+	<MSG_DVD_COPY_SUCCESS>Skopiowano p³ytê DVD.</MSG_DVD_COPY_SUCCESS>
+
+	<MSG_XBEPATCH_SOURCE_ERR>Tylko pliki XBE na dysku twardym mog¹ zostaæ spaczowany.</MSG_XBEPATCH_SOURCE_ERR>
+	<MSG_XBEPATCH_ERROR>Nie mogê spaczowaæ pliku XBE. Zosta³ ju¿ spaczowany lub nie wymaga paczowania.</MSG_XBEPATCH_ERROR>
+	<MSG_XBEPATCH_SUCCESS>Plik XBE zosta³ spaczowany.</MSG_XBEPATCH_SUCCESS>
+
+	<MSG_XBERENAME_SUCCESS>Nazwa XBE zosta³a zmieniona.</MSG_XBERENAME_SUCCESS>
+	<MSG_XBERENAME_ERROR>Nie mo¿na zmieniæ nazwy XBE.</MSG_XBERENAME_ERROR>
+
+	<MSG_RENAME_ERROR>Wystapi³ b³¹d podczas zmieniania nazwy %s na %s.\nKod b³êdu: %d</MSG_RENAME_ERROR>
+	<MSG_CREATEFOLDER_ERROR>Wyst¹pi³ b³¹d podczas tworzenia nowego folderu.\nKod b³êdu: %d</MSG_CREATEFOLDER_ERROR>
+
+	<!-- Game Saves -->
+	<MSG_GAMESAVES_CAPTION>Save'y gier</MSG_GAMESAVES_CAPTION>
+	<MSG_GAMESAVES_SEARCH>Szukanie save'ów gier.\nProszê czekaæ...</MSG_GAMESAVES_SEARCH>
+	<MSG_GAMESAVES_DELETE_ERROR>Wystapi³ b³¹d podczas kasowania '%s'.\nKod b³êdu: %d</MSG_GAMESAVES_DELETE_ERROR>
+	<MSG_GAMESAVES_DELETE_SUCCESS>'%s' zosta³ skasowany.</MSG_GAMESAVES_DELETE_SUCCESS>
+	<MSG_GAMESAVES_CONTENT>Nie mo¿na skopiowaæ zawartoœci XBL tego modulu.\nProszê u¿yc menad¿era plików do skopiowania zawartosci  :\n'%s'</MSG_GAMESAVES_CONTENT>
+	<MSG_GAMESAVES_NO_DEST>Nie ma miejsca lub lokacja nie istnieje.</MSG_GAMESAVES_NO_DEST>
+	<MSG_GAMESSAVES_BAD_DEST>Nie wystarczaj¹ca iloœæ wolnego miejsca.</MSG_GAMESSAVES_BAD_DEST>
+	<MSG_GAMESAVES_INSERT_MU>Proszê wlo¿yæ kartê pamiêci.</MSG_GAMESAVES_INSERT_MU>
+	<MSG_GAMESAVES_DELETE>Czy chcesz skasowaæ nastêpujace save'y gier:\n%s\nLiczba bloków: %u\nZawiera %u save'ów\nCzy chcesz kontynuowaæ?</MSG_GAMESAVES_DELETE>
+	<MSG_GAMESAVES_DELETE_ITEM>Czy chcesz skasowaæ nastêpujace save'y gry:\n%s\nLiczba bloków: %u\nCzy chcesz kontynuowaæ?</MSG_GAMESAVES_DELETE_ITEM>
+	<MSG_GAMESAVES_COPY_ERROR>Wystapi³ b³¹d podczas kopiowania '%s'.\nKod b³êdu: %d</MSG_GAMESAVES_COPY_ERROR>
+	<MSG_GAMESAVES_NO_SAVES>Nie mo¿na znaleŸæ save'u gry '%s'</MSG_GAMESAVES_NO_SAVES>
+	<GAMESAVES_DOWNLOAD>Œci¹ganie save'ów</GAMESAVES_DOWNLOAD>
+	<GAMESAVES_RELOAD>Prze³adowywanie save'ów</GAMESAVES_RELOAD>
+	<GAMESAVES_INVALID_FORMAT>Œci¹gniêty plik ma nieprawid³owy format.</GAMESAVES_INVALID_FORMAT>
+
+	<HTTP_ERROR>B³¹d HTTP</HTTP_ERROR>
+	<HTTP_OPENING>Otwieranie...</HTTP_OPENING>
+	<HTTP_CONNECTING>£¹czenie...</HTTP_CONNECTING>
+	<HTTP_CONNECTED>Po³¹czony.</HTTP_CONNECTED>
+	<HTTP_RETRIEVING>Odzyskiwanie...</HTTP_RETRIEVING>
+	<HTTP_FINISHED>Zakoñczone.</HTTP_FINISHED>
+	<MSG_HTTP_FETCH_ERROR>Nie mo¿na odzyskaæ pliku: STATUS HTTP %d</MSG_HTTP_FETCH_ERROR>
+
+	<MSG_INVALID_FILE_FORMAT>Plik '%s' nie jest poprawnym %s plikiem.</MSG_INVALID_FILE_FORMAT>
+
+	<MSG_MENU_BATCH_ERROR>Proces grupowania nie powiód³ siê.\nOstatnim elementem by³: %s.\nAkcja: %s</MSG_MENU_BATCH_ERROR>
+	<MSG_MENU_DELETE_GAME>Nastepujacy tytu³ zostanie usuniêty z dysku?\nTytu³:\t%s\nCzy chcesz kontynuowaæ?</MSG_MENU_DELETE_GAME>
+	<MSG_MENU_FORMAT_SUCCESS>Zakoñczono formatowanie dysku %s</MSG_MENU_FORMAT_SUCCESS>
+	<MSG_MENU_FORMAT_ERROR>Nie mo¿na sformatowaæ dysku %s</MSG_MENU_FORMAT_ERROR>
+	<MSG_MENU_SEARCH>Szukam tytu³ów na XBox'ie.\nProszê czekaæ...</MSG_MENU_SEARCH>
+
+	<MSG_TEXTEDITOR_SAVE_ERROR>Wystapi³ b³¹d podczas zapisywania %s.\nKod b³êdu: %d</MSG_TEXTEDITOR_SAVE_ERROR>
+	<MSG_TEXTEDITOR_OPEN_ERROR>Wystapil b³¹d podczas próby otwarcia '%s'.\nKod b³êdu: %d</MSG_TEXTEDITOR_OPEN_ERROR>
+	<MSG_TEXTEDITOR_SAVE_ASK>Wprowadzono zmiany w tym dokumencie.\nCzy chcesz zapisac zmiany?</MSG_TEXTEDITOR_SAVE_ASK>
+	<MSG_TEXTEDITOR_DEST_EXIST>'%s' ju¿ istnieje.</MSG_TEXTEDITOR_DEST_EXIST>
+
+	<MSG_LOADING>WCZYTUJÊ...</MSG_LOADING>
+
+	<MSG_COPY_CANCELED>Operacja kopiowania zosta³a przerwana.</MSG_COPY_CANCELED>
+	<INVALID_PASSWORD>Niew³aœciwe has³o</INVALID_PASSWORD>
+	<MSG_INVALID_PASSWORD>Has³o, które podajesz jest niew³aœciwe!</MSG_INVALID_PASSWORD>
+	<MSG_MAX_INVALID_PASSWORD>Wyczerpaleœ maksymaln¹ liczbê dozwolonych prób podaj¹c niew³aœciwe has³o.\nXBox zostanie teraz wy³¹czony.</MSG_MAX_INVALID_PASSWORD>
+	<INVALID_PASSCODE>Niepoprawny kod</INVALID_PASSCODE>
+	<MSG_INVALID_PASSCODE>Kod, który poda³eœ jest niepoprawny!</MSG_INVALID_PASSCODE>
+	<MSG_MAX_INVALID_PASSCODE>Wyczerpaleœ maksymaln¹ liczbê dozwolonych prób podaj¹c niew³aœciwy kod.\nXBox zostanie teraz wy³aczony.</MSG_MAX_INVALID_PASSCODE>
+	<MSG_SHUTTING_DOWN>Przygotowujê XBox'a do wy³¹czenia.</MSG_SHUTTING_DOWN>
+
+	<MSG_DASHUPDATE_SUCCESS>Zaaktualizowano dashboard\n Nazwa starej wersji zosta³a zmieniona na:\n\t\"%s\".\nNaciœnij OK aby zrestartowaæ konsolê.</MSG_DASHUPDATE_SUCCESS>
+	<MSG_DASHUPDATE_FAILED>Aktualizacja nie powiod³a siê.\nNaciœnij OK aby zrestartowaæ konsolê.</MSG_DASHUPDATE_FAILED>
+	<MSG_DASHUPDATE_CHECK>Sprawdzam aktualizacjê.\nProszê nie wy³¹czaæ/resetowaæ konsoli.</MSG_DASHUPDATE_CHECK>
+	<MSG_DASHUPDATE_VALID>Aktualizacja poprawna.\nNaciœnij OK aby rozpocz¹æ aktualizacjê.</MSG_DASHUPDATE_VALID>
+
+	<MSG_BAD_CONFIGFILE>Plik Config.xml jest uszkodzony.\nProszê poprawiæ plik config.xml aby uniknaæ tego problemu.\nMo¿esz zignorowaæ ostrzezenie i zrestartowaæ konsolê aby zapisaæ zmiany.</MSG_BAD_CONFIGFILE>
+	<MSG_BAD_SKINFILE>Obecna skórka powoduje zawieszanie siê UnleashX przy starcie.\nProszê naprawic skórkê aby uniknaæ tego problemu.\nMo¿esz zignorowaæ to ostrze¿enie i zrestartowaæ konsolê aby zapisaæ zmiany..</MSG_BAD_SKINFILE>
+
+	<MSG_NEWHARDDISK>UnleashX wykry³ nowy dysk twardy.\nCzy chcesz sformatowaæ nowy dysk?\n\nNaciœnij jednoczeœnie oba spusty i przycisk Start aby kontynuowac...</MSG_NEWHARDDISK>
+	<MSG_NEWHD_WARNING>OSTRZE¯ENIE!!!\nWSZYSTKIE DANE NA DYSKU ZOSTAN¥ STRACONE.\n\nNacisnij jednoczeœnie oba spusty i przycisk Start aby kontynuowac...</MSG_NEWHD_WARNING>
+	<MSG_NEWHD_FINISHED>UnleashX zakoñczy³ przygotowywanie nowego dysku.\n\nNacisnij jednoczeœnie oba spusty i przycisk Start aby kontynuowac...</MSG_NEWHD_FINISHED>
+
+	<MSG_SETTING_SAVE_ERROR>Nie mo¿na zapisaæ zmian. Kod b³êdu: %d</MSG_SETTING_SAVE_ERROR>
+	<MSG_SETTING_FAILED>Nie mo¿na ustawiæ g³oœnoœci muzyki. Kod b³êdu: %d</MSG_SETTING_FAILED>
+	<MSG_SETTING_RESTART>Musisz zrestartowaæ konsolê aby zmiany przynios³y efekt.</MSG_SETTING_RESTART>
+	<MSG_SETTING_SUCCESS>Ustawienia zosta³y zapisane.</MSG_SETTING_SUCCESS>
+	<MSG_SETTING_NOCONFIG>B³¹d krytyczny. Nie mo¿na wczytac konfiguracji z pliku XML.</MSG_SETTING_NOCONFIG>
+	<MSG_ASK_SAVE>Twoje ustawienia zmieni³y siê.\nJeœli wyjdziesz, ustawienia zostan¹ utracone.\n\nCzy chcesz zapisaæ zmiany?</MSG_ASK_SAVE>
+
+	<!-- Control Panel-->
+	<AUTOLAUNCH>Automatyczne uruchamianie</AUTOLAUNCH>
+	<DATETIME>Data i godzina</DATETIME>
+	<SHORTCUT>Skróty Pad/Pilot</SHORTCUT>
+	<LIVEUPDATE>Aktualizacja dashbordu</LIVEUPDATE>
+	<NETWORK>Sieæ</NETWORK>
+	<SCRCALIBRATION>Kalibracja ekranu</SCRCALIBRATION>
+	<MUSIC>Muzyka i dŸwiek</MUSIC>
+	<STORAGE>Dyski</STORAGE>
+	<SYSTEM>System</SYSTEM>
+	<DISPLAY>Konfiguracja ekranu</DISPLAY>
+
+	<AUTOLAUNCH_GAME>Automatyczne uruchamianie Gier</AUTOLAUNCH_GAME>
+	<AUTOLAUNCH_DVD>Automatyczne odtwarzenie DVD</AUTOLAUNCH_DVD>
+	<DVD_PLAYER>Odtwarzacz DVD</DVD_PLAYER>
+	<AUTOLAUNCH_AUDIO>Automatyczne odtwarzanie Muzyki</AUTOLAUNCH_AUDIO>
+	<CDAUDIO_PLAYER>Odtwarzacz CDAudio</CDAUDIO_PLAYER>
+	<AUTOLAUNCH_DATA>Automatyczne uruchamianie Danych</AUTOLAUNCH_DATA>
+	<FILE_MANAGER>Menad¿er plików</FILE_MANAGER>
+
+	<GAMEPAD>Pad</GAMEPAD>
+	<INFRARED_RCONTROL>Pilot</INFRARED_RCONTROL>
+
+	<AUTO_CHECK>Automatyczne sprawdzanie</AUTO_CHECK>
+	<CHECK_UPDATE>SprawdŸ uaktualnienia</CHECK_UPDATE>
+	<SERVER>Serwer</SERVER>
+
+	<W³¹cz>W³¹cz</W³¹cz>
+	<CLOCK_SETTINGS>Ustawienia zegara</CLOCK_SETTINGS>
+	<AUTOSET_CLOCK>Automatyczne ustawianie zegara</AUTOSET_CLOCK>
+	<SNTP_SERVER>Serwer czasu (SNTP)</SNTP_SERVER>
+	<PORT>Port</PORT>
+	<ALLOW_HTTP>Dopuszczaj HTTP</ALLOW_HTTP>
+
+	<FORMAT>Format</FORMAT>
+	<W³¹cz_480P>W³¹cz 480p</W³¹cz_480P>
+	<W³¹cz_720P>W³¹cz 720p</W³¹cz_720P>
+	<W³¹cz_1080I>W³¹cz 1080i</W³¹cz_1080I>
+	<W³¹cz_PAL60>W³¹cz PAL-60</W³¹cz_PAL60>
+	<FASTER_REFRESH_RATE>Szybkie odœwierzanie</FASTER_REFRESH_RATE>
+	<TEST>Test</TEST>
+	<QUALITY>Jakoœæ</QUALITY>
+	<COLOR>Kolor</COLOR>
+	<SOFTEN>Wyg³adzanie</SOFTEN>
+	<FILTER_LEVEL>Poziom Filtra</FILTER_LEVEL>
+	<AUTO_SWITCH>Automatyczne prze³¹czanie</AUTO_SWITCH>
+	<MULTI_REGION_MODE>Tryb wieloregionowy</MULTI_REGION_MODE>
+	<FORCE_PAL60>Wymuszaj PAL60</FORCE_PAL60>
+
+	<W³¹cz_DRIVE_F>W³¹cz Drive F</W³¹cz_DRIVE_F>
+	<W³¹cz_DRIVE_G>W³¹cz Drive G</W³¹cz_DRIVE_G>
+	<HARD_DRIVE_INFO>Informacje o dysku</HARD_DRIVE_INFO>
+	<MODEL>Model</MODEL>
+	<SERIAL_NO>Numer seryjny.</SERIAL_NO>
+	<STATUS>Stan</STATUS>
+	<DVD_DRIVE_INFO>Informacje o napêdzie DVD</DVD_DRIVE_INFO>
+	<DVD_DRIVE>Napêd DVD</DVD_DRIVE>
+
+	<CURRENT_IP>Obecny IP</CURRENT_IP>
+	<MAC_ADDRESS>MAC Adres</MAC_ADDRESS>
+	<TYPE>Typ</TYPE>
+	<IP_ADDRESS>Adresy IP</IP_ADDRESS>
+	<SUBNET_MASK>Maska podsieci</SUBNET_MASK>
+	<GATEWAY>Bramka</GATEWAY>
+	<FTP_SERVER>Serwer FTP</FTP_SERVER>
+	<USER>U¿ytkownik</USER>
+	<PASSWORD>Has³o</PASSWORD>
+	<MAX_NO_USER>Max. liczba u¿ytkowników</MAX_NO_USER>
+	<ALLOW_ANON>Dopuszczaj anonimowych</ALLOW_ANON>
+	<MIN_PASV_PORT>Min. port dla PASV</MIN_PASV_PORT>
+	<MAX_PASV_PORT>Max. port dla PASV</MAX_PASV_PORT>
+	<SYST_NAME>Nazwa systemowa</SYST_NAME>
+	<BOOST_MODE>Tryb przyspieszenia</BOOST_MODE>
+	<AUTO_DETECT>Automatyczne wykrywanie</AUTO_DETECT>
+	<FTP_CLIENT>Klient FTP</FTP_CLIENT>
+	<MIN_PORT>Min. Port</MIN_PORT>
+	<MAX_PORT>Max. Port</MAX_PORT>
+	<DETECT_PEERS>Wykryj Peer'ów</DETECT_PEERS>
+	<HTTP_CONNECTION>Po³¹czenie HTTP</HTTP_CONNECTION>
+	<W³¹cz_PROXY>W³¹cz Proxy</W³¹cz_PROXY>
+	<PROXY>Proxy</PROXY>
+
+	<PLAY_MUSIC>Odtwarzj muzykê</PLAY_MUSIC>
+	<RANDOM_MUSIC>Losowa muzyka</RANDOM_MUSIC>
+	<GLOBAL>Globalny</GLOBAL>
+	<MUSIC_PATH>Œcie¿ka do muzyki</MUSIC_PATH>
+	<SURROUND>Przestrzenny 5.1</SURROUND>
+	<MUSIC_VOLUME>G³oœnoœæ muzyki</MUSIC_VOLUME>
+	<SOUND>DŸwiêk</SOUND>
+	<SOUND_VOLUME>G³oœnoœæ dŸwiêku</SOUND_VOLUME>
+	<SOUND_EFFECTS>Efekty dŸwiêkowe</SOUND_EFFECTS>
+
+	<XBOX_INFO>Informacje o XBox'ie</XBOX_INFO>
+	<DASH_VERSION>Wersja Dash'a</DASH_VERSION>
+	<XBOX_NAME>Nazwa XBox'a</XBOX_NAME>
+	<FILE_OPERATION>Operacje na plikach</FILE_OPERATION>
+	<AUTO_RENAME>Automatyczna zmiana nazyw</AUTO_RENAME>
+	<AUTO_PATCH_XBE>Automatyczne patchowanie XBE</AUTO_PATCH_XBE>
+	<ABORT_ON_ERROR>Przerwij gdy wyst¹pi b³¹d</ABORT_ON_ERROR>
+	<DEF_BACKUP_FOLDER>Chroñ folder Backup</DEF_BACKUP_FOLDER>
+	<CONTEXT_MENU>Menu kontekstowe</CONTEXT_MENU>
+	<ALLOW_UNINSTALL>Zezwól na odinstalowywanie</ALLOW_UNINSTALL>
+	<ALLOW_MENU_EDIT>Zezwól na edycjê menu</ALLOW_MENU_EDIT>
+	<ALLOW_RECENT_LIST>Dopuœæ listê najczêœciej u¿ywanych</ALLOW_RECENT_LIST>
+	<OPEN_GAME_FOLDER>Otwórz folder z gr¹</OPEN_GAME_FOLDER>
+	<OPEN_SAVES_FOLDER>Otwórz folder z save'ami</OPEN_SAVES_FOLDER>
+	<FONT>Czcionka</FONT>
+	<FONT_SCALE>Skalowanie</FONT_SCALE>
+	<SCROLL_SPEED>Prêdkoœæ przewijania</SCROLL_SPEED>
+	<TEMPERATURE>Temperatura</TEMPERATURE>
+	<MB_TEMP>M/B Temp</MB_TEMP>
+	<CPU_TEMP>CPU Temp</CPU_TEMP>
+	<USE_FAHRENHEIT>U¿ywaj Fahrenheit'ów</USE_FAHRENHEIT>
+	<TEMP_THRESHOLD>Temp. dopuszczalna</TEMP_THRESHOLD>
+	<FAN_SPEED>Prêdkoœæ wiatraka</FAN_SPEED>
+	<MISC>Ró¿ne</MISC>
+	<LANGUAGE_FILE>Plik jêzykowy</LANGUAGE_FILE>
+	<LED_COLOR>Kolor diody LED</LED_COLOR>
+	<AUTO_TURN_OFF>Automatyczne wy³¹czanie (Min.)</AUTO_TURN_OFF>
+	<SCREEN_SAVER>Wygaszacz ekranu</SCREEN_SAVER>
+	<SS_WAIT>Czekaj</SS_WAIT>
+	<SS_TEXT>Tekst wygaszacza ekranu</SS_TEXT>
+	<SS_VIDEO>Plik Video</SS_VIDEO>
+	<SS_PATH>Œcie¿ka do obrazów</SS_PATH>
+	<W³¹cz_BGM>W³¹cz muzykê w tle</W³¹cz_BGM>
+	<SKIN>Skóra</SKIN>
+	<SKINS_PATH>Œcie¿ka do skórek</SKINS_PATH>
+	<CURRENT_SKIN>Obecna skórka</CURRENT_SKIN>
+	<RSS_NEWSFEED>Wiadomoœci RSS</RSS_NEWSFEED>
+	<INTERVAL>Przerwa (sec.)</INTERVAL>
+
+	<SAVE>Zapisz</SAVE>
+	<RESET>Resetuj</RESET>
+	<EXIT>WyjdŸ</EXIT>
+</Resource>

@@ -5,6 +5,8 @@ __all__ = [
     "TYPE_ROOT",
     "TYPE_SKIN",
     "TYPE_SCRAPER",
+#    "TYPE_SCRAPER_MUSIC",
+#    "TYPE_SCRAPER_VIDEO",
     "TYPE_SCRIPT",
     "TYPE_PLUGIN",
     "TYPE_PLUGIN_MUSIC",
@@ -13,6 +15,8 @@ __all__ = [
     "TYPE_PLUGIN_VIDEO",
     "INDEX_SKIN",
     "INDEX_SCRAPER",
+#    "INDEX_SCRAPER_MUSIC",
+#    "INDEX_SCRAPER_VIDEO",
     "INDEX_SCRIPT",
     "INDEX_PLUGIN",
     "INDEX_PLUGIN_MUSIC",
@@ -21,6 +25,8 @@ __all__ = [
     "INDEX_PLUGIN_VIDEO",
     "THUMB_SKIN",
     "THUMB_SCRAPER",
+#    "THUMB_SCRAPER_MUSIC",
+#    "THUMB_SCRAPER_VIDEO",
     "THUMB_SCRIPT",
     "THUMB_PLUGIN",
     "THUMB_PLUGIN_MUSIC",
@@ -29,20 +35,15 @@ __all__ = [
     "THUMB_PLUGIN_VIDEO",
     ]
 
-#Modules general
+# Modules general
 import os
 import sys
+from traceback import print_exc
 from ConfigParser import ConfigParser
 
-#modules XBMC
-import xbmc
+# Modules XBMC
 from xbmcgui import Dialog
 
-#module logger
-try:
-    logger = sys.modules[ "__main__" ].logger
-except:
-    import script_log as logger
 
 # FICHIERS DE CONFIGURATION
 default_conf = os.path.join( os.getcwd().replace( ";", "" ), "resources", "conf.cfg" )
@@ -58,41 +59,60 @@ _ = sys.modules[ "__main__" ].__language__
 
 TYPE_ROOT               = _( 10 )
 TYPE_SKIN               = _( 11 )
+TYPE_SKIN_NIGHTLY       = _( 1101 )
 TYPE_SCRAPER            = _( 12 )
+TYPE_SCRAPER_MUSIC      = _( 1201 )
+TYPE_SCRAPER_VIDEO      = _( 1202 )
 TYPE_SCRIPT             = _( 13 )
 TYPE_PLUGIN             = _( 14 )
 TYPE_PLUGIN_MUSIC       = _( 15 )
 TYPE_PLUGIN_PICTURES    = _( 16 )
 TYPE_PLUGIN_PROGRAMS    = _( 17 )
 TYPE_PLUGIN_VIDEO       = _( 18 )
+TYPE_NEW                = _( 22 )
+
 
 #INDEX_ROOT              = None
 INDEX_SKIN              = 0
-INDEX_SCRAPER           = 1
-INDEX_SCRIPT            = 2
-INDEX_PLUGIN            = 3
-INDEX_PLUGIN_MUSIC      = 4
-INDEX_PLUGIN_PICTURES   = 5
-INDEX_PLUGIN_PROGRAMS   = 6
-INDEX_PLUGIN_VIDEO      = 7
+INDEX_SKIN_NIGHTLY      = 1
+INDEX_SCRAPER           = 2
+INDEX_SCRAPER_MUSIC     = 3
+INDEX_SCRAPER_VIDEO     = 4
+INDEX_SCRIPT            = 5
+INDEX_PLUGIN            = 6
+INDEX_PLUGIN_MUSIC      = 7
+INDEX_PLUGIN_PICTURES   = 8
+INDEX_PLUGIN_PROGRAMS   = 9
+INDEX_PLUGIN_VIDEO      = 10
+INDEX_SCRIPT_CAT        = 11
+INDEX_NEW               = 12
 
-SRV_DIR_SKIN            = "/.passionxbmc/Themes/"
-SRV_DIR_SCRAPER         = "/.passionxbmc/Scraper/"
-SRV_DIR_SCRIPT          = "/.passionxbmc/Scripts/"
-SRV_DIR_PLUGIN          = "/.passionxbmc/Plugins/"
-SRV_DIR_PLUGIN_MUSIC    = "/.passionxbmc/Plugins/Music/"
-SRV_DIR_PLUGIN_PICTURES = "/.passionxbmc/Plugins/Pictures/"
-SRV_DIR_PLUGIN_PROGRAMS = "/.passionxbmc/Plugins/Programs/"
-SRV_DIR_PLUGIN_VIDEO    = "/.passionxbmc/Plugins/Videos/"
 
+SRV_DIR_SKIN            = "/Themes/"
+SRV_DIR_SCRAPER         = "/Scraper/"
+SRV_DIR_SCRAPER_MUSIC   = "/Scraper/Music/"
+SRV_DIR_SCRAPER_VIDEO   = "/Scraper/Video/"
+SRV_DIR_SCRIPT          = "/Scripts/"
+SRV_DIR_PLUGIN          = "/Plugins/"
+SRV_DIR_PLUGIN_MUSIC    = "/Plugins/Music/"
+SRV_DIR_PLUGIN_PICTURES = "/Plugins/Pictures/"
+SRV_DIR_PLUGIN_PROGRAMS = "/Plugins/Programs/"
+SRV_DIR_PLUGIN_VIDEO    = "/Plugins/Videos/"
+
+THUMB_NOT_AVAILABLE     = "IPX-NotAvailable2.png"
 THUMB_SKIN              = "IPX-defaultSkin.png"
+THUMB_SKIN_NIGHTLY      = "IPX-defaultSkinNightly.png"
 THUMB_SCRAPER           = "IPX-defaultScraper.png"
-THUMB_SCRIPT            = "IPX-defaultScript_Plugin.png"
-THUMB_PLUGIN            = THUMB_SCRIPT
+THUMB_SCRAPER_MUSIC     = "IPX-defaultScraperMusic.png"
+THUMB_SCRAPER_VIDEO     = "IPX-defaultScraperVideo.png"
+THUMB_SCRIPT            = "IPX-defaultScript.png"
+THUMB_PLUGIN            = "IPX-defaultPlugin.png"
 THUMB_PLUGIN_MUSIC      = "IPX-defaultPluginMusic.png"
 THUMB_PLUGIN_PICTURES   = "IPX-defaultPluginPicture.png"
 THUMB_PLUGIN_PROGRAMS   = "IPX-defaultPluginProgram.png"
-THUMB_PLUGIN_VIDEO      = "IPX-defaultPluginVideo.png"  
+THUMB_PLUGIN_VIDEO      = "IPX-defaultPluginVideo.png"
+THUMB_PLUGIN_WEATHER    = "IPX-defaultPluginWeather.png"
+THUMB_NEW               = "IPX-defaultNew.png"
 
 INDEX_SRV_ITEM_FORMAT_DIR      = 0
 INDEX_SRV_ITEM_FORMAT_FILE_ZIP = 1
@@ -102,6 +122,8 @@ INDEX_SRV_ITEM_FORMAT_INVALID  = 2
 
 def ReadConfig():
     config = ConfigParser()
+    #print "ReadConfig"
+    #print profile_conf
     if not os.path.exists( profile_conf ):
         config.read( default_conf )
         config.write( open( profile_conf, "w" ) )
@@ -109,25 +131,33 @@ def ReadConfig():
     config.read( profile_conf )
     return config
 
+def ReadDefaultConfig():
+    config = ConfigParser()
+    config.read( default_conf )
+    return config
+
 
 def SetConfiguration():
     """ Definit les repertoires locaux de l'utilisateur """
     from utilities import SYSTEM_PLATFORM
     XBMC_ROOT = sys.modules[ "__main__" ].SPECIAL_XBMC_HOME
+    DIR_CACHE = sys.modules[ "__main__" ].DIR_CACHE
 
-    logger.LOG( logger.LOG_DEBUG, str( "*" * 85 ) )
-    logger.LOG( logger.LOG_DEBUG, "Setting Configuration".center( 85 ) )
-    logger.LOG( logger.LOG_DEBUG, str( "*" * 85 ) )
-    logger.LOG( logger.LOG_DEBUG, "%s case", SYSTEM_PLATFORM )
+    print "*" * 85
+    print "Setting Configuration".center( 85 )
+    print "*" * 85
+    print "%s case" % SYSTEM_PLATFORM
 
     ROOTDIR = os.getcwd().replace( ";", "" )
 
+    if os.path.exists( profile_conf ):
+        os.remove( profile_conf )
     config = ReadConfig()
     USRPath = False
 
     if not os.path.isdir( XBMC_ROOT ):
         XBMC_ROOT = Dialog().browse( 0, sys.modules[ "__main__" ].__language__( 100 ), "files" )
-        logger.LOG( logger.LOG_DEBUG, "Other case, XBMC = %s", XBMC_ROOT )
+        print "Other case, XBMC = %s" % XBMC_ROOT
     config.set( "InstallPath", "path", XBMC_ROOT )
 
     if SYSTEM_PLATFORM == "linux":
@@ -138,10 +168,6 @@ def SetConfiguration():
         PMIIIDir = os.path.join( os.sep+"usr", "share", "xbmc", "skin" )
         config.set( "InstallPath", "PMIIIDir", PMIIIDir )
         USRPath = True
-    elif SYSTEM_PLATFORM == "osx":
-        #Set OSX ScraperDir
-        scraperDir = os.path.join( sys.modules[ "__main__" ].SPECIAL_XBMC_DIR, "system", "scrapers", "video" )
-        config.set( "InstallPath", "ScraperDir", scraperDir )        
     else:
         #Set Win ScraperDir
         scraperDir = os.path.join( XBMC_ROOT, "system", "scrapers", "video" )
@@ -157,6 +183,7 @@ def SetConfiguration():
     config.set( "InstallPath", "ScriptsDir", os.path.join( XBMC_ROOT, "scripts" ) )
 
     #Set PluginDir
+    # DEPRECATED (need to be cleaned)
     PluginDir = os.path.join( XBMC_ROOT, "plugins" )
     config.set( "InstallPath", "PluginDir", PluginDir )
     config.set( "InstallPath", "PluginMusDir", os.path.join( PluginDir, "music" ) )
@@ -165,7 +192,7 @@ def SetConfiguration():
     config.set( "InstallPath", "PluginVidDir", os.path.join( PluginDir, "video" ) )
 
     #Set CacheDir
-    config.set( "InstallPath", "CacheDir", os.path.join( ROOTDIR, "cache" ) )
+    config.set( "InstallPath", "CacheDir", DIR_CACHE )
 
     #Set UserDataDir
     config.set( "InstallPath", "UserDataDir", os.path.join( XBMC_ROOT, "userdata" ) )
@@ -174,6 +201,112 @@ def SetConfiguration():
     config.set( "InstallPath", "pathok", True )
     config.write( open( profile_conf, "w" ) )
 
+
+def GetInstallPaths():
+    """ Definit les repertoires locaux de l'utilisateur """
+    from utilities import SYSTEM_PLATFORM
+
+    XBMC_ROOT = sys.modules[ "__main__" ].SPECIAL_XBMC_HOME
+    DIR_CACHE = sys.modules[ "__main__" ].DIR_CACHE
+    ROOTDIR = os.getcwd().replace( ";", "" )
+
+    #config = ReadConfig()
+    USRPath = 'False'
+
+    Paths = {}
+    Path_list = []
+    Path_name = []
+    Paths["path"] = Path_list
+    Paths["title"] = Path_name
+    
+    if not os.path.isdir( XBMC_ROOT ):
+        XBMC_ROOT = Dialog().browse( 0, sys.modules[ "__main__" ].__language__( 100 ), "files" )
+        #print "Other case, XBMC = %s" % XBMC_ROOT
+    Path_list.append(XBMC_ROOT)
+    Path_name.append("path") 
+
+    if SYSTEM_PLATFORM == "linux":
+        #Set Linux normal ScraperDir
+        Path_list.append(os.path.join( os.sep+"usr", "share", "xbmc", "system", "scrapers", "video" ))
+        Path_name.append("ScraperDir")
+        #Set Linux PMIIIDir
+        Path_list.append(os.path.join( os.sep+"usr", "share", "xbmc", "skin" ))
+        Path_name.append("PMIIIDir")
+        USRPath = 'True'
+    else:
+        #Set Win ScraperDir
+        Path_name.append("ScraperDir") 
+        Path_list.append(os.path.join( XBMC_ROOT, "system", "scrapers", "video" ))
+
+    #Set ScraperType
+    Path_list.append(USRPath)
+    Path_name.append("USRPath")
+
+    #Set ThemesDir
+    Path_list.append(os.path.join( XBMC_ROOT, "skin" ) )
+    Path_name.append("ThemesDir") 
+
+    #Set ScriptsDir
+    Path_list.append(os.path.join( XBMC_ROOT, "scripts" ) )
+    Path_name.append("ScriptsDir")
+
+    #Set PluginDir
+    PluginDir = os.path.join( XBMC_ROOT, "plugins" )
+    Path_list.append(PluginDir)
+    Path_name.append("PluginDir") 
+    Path_list.append(os.path.join( PluginDir, "music" ) )
+    Path_name.append("PluginMusDir") 
+    Path_list.append(os.path.join( PluginDir, "pictures" ) )
+    Path_name.append("PluginPictDir") 
+    Path_list.append(os.path.join( PluginDir, "programs" ) )
+    Path_name.append("PluginProgDir")
+    Path_list.append(os.path.join( PluginDir, "video" ) )
+    Path_name.append("PluginVidDir") 
+
+    #Set CacheDir
+    Path_list.append( DIR_CACHE )
+    Path_name.append("CacheDir") 
+
+    #Set UserDataDir
+    Path_list.append( os.path.join( XBMC_ROOT, "userdata" ) )
+    Path_name.append("UserDataDir")
+    
+    #Set Other Dir
+    Path_name.append("Other")
+    Path_list.append("Browse" )
+
+    return Paths
+
+def getBaseURLDbCrossway():
+    """
+    Return the base URL of the baseurldbcrossway PHP page (json)
+    """
+    print "getBaseURLDbCrossway"
+    config = ReadConfig()
+    return config.get( 'ServeurID', 'baseurldbcrossway' )
+
+
+def getBaseURLDownloadManager():
+    """
+    Return the base URL of the PHP page
+    """
+    print "getBaseURLDownloadManager"
+    config = ReadConfig()
+    return config.get( 'ServeurID', 'baseurldownloadmgr' )
+
+def getBaseURLDownloadFile():
+    """
+    Return the base URL for downloading file on the website
+    """
+    config = ReadConfig()
+    return config.get( 'ServeurID', 'baseurldownfile' )
+
+def getBaseURLPreviewPicture():
+    """
+    Return the base URL for downloading file on the website
+    """
+    config = ReadConfig()
+    return config.get( 'ServeurID', 'baseurlpreviewpic' )
 
 class configCtrl:
     """
@@ -190,6 +323,11 @@ class configCtrl:
             self.config = ReadConfig()
 
             self.CACHEDIR      = self.config.get( 'InstallPath', 'CacheDir' )
+            # force change cache path to userdata
+            if sys.modules[ "__main__" ].DIR_CACHE != self.CACHEDIR:
+                SetConfiguration()
+                self.config = ReadConfig()
+                self.CACHEDIR  = self.config.get( 'InstallPath', 'CacheDir' )
             self.themesDir     = self.config.get( 'InstallPath', 'ThemesDir' )
             self.scriptDir     = self.config.get( 'InstallPath', 'ScriptsDir' )
             self.scraperDir    = self.config.get( 'InstallPath', 'ScraperDir' )
@@ -212,18 +350,38 @@ class configCtrl:
             self.itemDescripDir  = self.config.get( 'ServeurID', 'contentdescriptorDir' )
             self.itemDescripFile = self.config.get( 'ServeurID', 'contentdescriptor' )
 
-#            self.remotedirList   = [ "/.passionxbmc/Themes/", "/.passionxbmc/Scraper/", "/.passionxbmc/Scripts/", "/.passionxbmc/Plugins/",
-#                "/.passionxbmc/Plugins/Music/", "/.passionxbmc/Plugins/Pictures/", "/.passionxbmc/Plugins/Programs/", "/.passionxbmc/Plugins/Videos/" ]
+#            self.remotedirList   = [ "/Themes/", "/Scraper/", "/Scripts/", "/Plugins/",
+#                "/Plugins/Music/", "/Plugins/Pictures/", "/Plugins/Programs/", "/Plugins/Videos/" ]
 
             # Repertoire sur le serveur FTP
             # ATTENTION: Ne pas changer l'ordre de ce tableau, il correspond aux index (INDEX_SKIN ...)
-            self.remotedirList   = [ SRV_DIR_SKIN, SRV_DIR_SCRAPER, SRV_DIR_SCRIPT, SRV_DIR_PLUGIN, SRV_DIR_PLUGIN_MUSIC, 
-                                     SRV_DIR_PLUGIN_PICTURES, SRV_DIR_PLUGIN_PROGRAMS, SRV_DIR_PLUGIN_VIDEO ]
+#            self.remotedirList   = [ SRV_DIR_SKIN, SRV_DIR_SCRAPER, SRV_DIR_SCRIPT, SRV_DIR_PLUGIN, SRV_DIR_PLUGIN_MUSIC, 
+#                                     SRV_DIR_PLUGIN_PICTURES, SRV_DIR_PLUGIN_PROGRAMS, SRV_DIR_PLUGIN_VIDEO ]
+            self.remotedirList   = [ SRV_DIR_SKIN, 
+                                     SRV_DIR_SKIN, 
+                                     SRV_DIR_SCRAPER, 
+                                     SRV_DIR_SCRAPER_MUSIC, 
+                                     SRV_DIR_SCRAPER_VIDEO, 
+                                     SRV_DIR_SCRIPT, 
+                                     SRV_DIR_PLUGIN, 
+                                     SRV_DIR_PLUGIN_MUSIC, 
+                                     SRV_DIR_PLUGIN_PICTURES, 
+                                     SRV_DIR_PLUGIN_PROGRAMS, 
+                                     SRV_DIR_PLUGIN_VIDEO ]
             
             # Repertoire locaux
             # ATTENTION: Ne pas changer l'ordre de ce tableau, il correspond aux index (INDEX_SKIN ...)
-            self.localdirList    = [ self.themesDir, self.scraperDir, self.scriptDir, self.pluginDir,
-                self.pluginMusDir, self.pluginPictDir, self.pluginProgDir, self.pluginVidDir ]
+            self.localdirList    = [ self.themesDir,
+                                     self.themesDir,
+                                     self.scraperDir, 
+                                     self.scraperDir, 
+                                     self.scraperDir, 
+                                     self.scriptDir, 
+                                     self.pluginDir,
+                                     self.pluginMusDir, 
+                                     self.pluginPictDir, 
+                                     self.pluginProgDir, 
+                                     self.pluginVidDir ]
 
             #TODO: A supprimer et remplacer par self.typeList une fois le code mias a jour dans les fichiers utilisant CONF
             self.downloadTypeLst = [ "Themes", "Scrapers", "Scripts", "Plugins",
@@ -231,23 +389,42 @@ class configCtrl:
             
             # Type d'elements
             # ATTENTION: Ne pas changer l'ordre de ce tableau, il correspond aux index (INDEX_SKIN ...)
-            self.typeList = [ TYPE_SKIN, TYPE_SCRAPER, TYPE_SCRIPT, TYPE_PLUGIN, TYPE_PLUGIN_MUSIC,    
-                              TYPE_PLUGIN_PICTURES, TYPE_PLUGIN_PROGRAMS, TYPE_PLUGIN_VIDEO    ] # Note: TYPE_ROOT est en dehors de la liste
+            self.typeList = [ TYPE_SKIN,
+                              TYPE_SKIN_NIGHTLY,
+                              TYPE_SCRAPER,
+                              TYPE_SCRAPER_MUSIC,
+                              TYPE_SCRAPER_VIDEO,
+                              TYPE_SCRIPT, 
+                              TYPE_PLUGIN, 
+                              TYPE_PLUGIN_MUSIC,    
+                              TYPE_PLUGIN_PICTURES, 
+                              TYPE_PLUGIN_PROGRAMS, 
+                              TYPE_PLUGIN_VIDEO ] # Note: TYPE_ROOT est en dehors de la liste
 
             # Thumbs des elements selon le type
             # ATTENTION: Ne pas changer l'ordre de ce tableau, il correspond aux index (INDEX_SKIN ...)
-            self.thumbList    = [ THUMB_SKIN, THUMB_SCRAPER, THUMB_SCRIPT, THUMB_PLUGIN, THUMB_PLUGIN_MUSIC, 
-                                  THUMB_PLUGIN_PICTURES, THUMB_PLUGIN_PROGRAMS,THUMB_PLUGIN_VIDEO   ] # Note: TYPE_ROOT est en dehors de la liste
+            self.thumbList    = [ THUMB_SKIN,
+                                  THUMB_SKIN_NIGHTLY,
+                                  THUMB_SCRAPER, 
+                                  THUMB_SCRAPER_MUSIC,
+                                  THUMB_SCRAPER_VIDEO,
+                                  THUMB_SCRIPT, 
+                                  THUMB_PLUGIN, 
+                                  THUMB_PLUGIN_MUSIC, 
+                                  THUMB_PLUGIN_PICTURES, 
+                                  THUMB_PLUGIN_PROGRAMS,
+                                  THUMB_PLUGIN_VIDEO ] # Note: TYPE_ROOT est en dehors de la liste
             
             # Filtre sur les elemens a affciher selon le cas (racine ou plugin)
-            self.rootDisplayList   = [ INDEX_SKIN, INDEX_SCRAPER, INDEX_SCRIPT, INDEX_PLUGIN ]                                # Liste de la racine: Cette liste est un filtre ( utilisant l'index ) sur les listes ci-dessus
+            #self.rootDisplayList   = [ INDEX_SKIN, INDEX_SCRAPER, INDEX_SCRIPT, INDEX_PLUGIN ]     # Liste de la racine: Cette liste est un filtre ( utilisant l'index ) sur les listes ci-dessus
+            self.rootDisplayList   = [ INDEX_SKIN, INDEX_SCRAPER_MUSIC, INDEX_SCRAPER_VIDEO, INDEX_SCRIPT, INDEX_PLUGIN ]     # Liste de la racine: Cette liste est un filtre ( utilisant l'index ) sur les listes ci-dessus
             self.pluginDisplayList = [ INDEX_PLUGIN_MUSIC, INDEX_PLUGIN_PICTURES, INDEX_PLUGIN_PROGRAMS, INDEX_PLUGIN_VIDEO ] # Liste des plugins : Cette liste est un filtre ( utilisant l'index ) sur les listes ci-dessus
 
             self.is_conf_valid = True
         except:
             self.is_conf_valid = False
-            logger.LOG( logger.LOG_DEBUG, "Exception while loading configuration file conf.cfg" )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print "Exception while loading configuration file conf.cfg"
+            print_exc()
 
     def getSrvHost( self ):
         return self.host
@@ -266,3 +443,5 @@ class configCtrl:
         Renvoi le nom du fichier de description sur le serveur
         """
         return self.itemDescripFile
+
+

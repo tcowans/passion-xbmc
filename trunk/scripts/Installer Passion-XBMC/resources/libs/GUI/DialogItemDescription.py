@@ -1,26 +1,15 @@
 
-#Modules general
+# Modules general
 import os
 import sys
-import shutil
-import ftplib
+from traceback import print_exc
 
-#Other module
-from threading import Thread
-
-#modules XBMC
+# Modules XBMC
 import xbmc
 import xbmcgui
 
-#modules custom
+# Modules custom
 from utilities import *
-from pil_util import makeThumbnails
-
-#module logger
-try:
-    logger = sys.modules[ "__main__" ].logger
-except:
-    import script_log as logger
 
 
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
@@ -43,29 +32,45 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
     # autre facon de recuperer tous les infos d'un item dans la liste.
     i_thumbnail       = xbmc.getInfoImage( "ListItem.Thumb" )
     i_previewPicture  = xbmc.getInfoImage( "ListItem.Property(fanartpicture)" )
-    i_date            = unicode( xbmc.getInfoLabel( "ListItem.Property(date)" ), 'utf-8')
-    i_title           = unicode( xbmc.getInfoLabel( "ListItem.Property(title)" ), "utf-8")
-    i_added           = unicode( xbmc.getInfoLabel( "ListItem.Property(added)" ), 'utf-8')
-    i_itemId          = unicode( xbmc.getInfoLabel( "ListItem.Property(itemId)" ), 'utf-8')
-    i_author          = unicode( xbmc.getInfoLabel( "ListItem.Property(author)" ), 'utf-8')
-    i_version         = unicode( xbmc.getInfoLabel( "ListItem.Property(version)" ), "utf-8")
-    i_language        = unicode( xbmc.getInfoLabel( "ListItem.Property(language)" ), "utf-8")
-    i_fileName        = unicode( xbmc.getInfoLabel( "ListItem.Property(fileName)" ), 'utf-8')
-    i_type            = unicode( xbmc.getInfoLabel( "Container.Property(Category)" ), "utf-8")
-    i_description     = unicode( xbmc.getInfoLabel( "ListItem.Property(description)" ), "utf-8")
-    i_previewVideoURL = unicode( xbmc.getInfoLabel( "ListItem.Property(previewVideoURL)" ), 'utf-8')
+    i_date            = unicode( xbmc.getInfoLabel( "ListItem.Property(date)" ), "utf-8" )
+    i_title           = unicode( xbmc.getInfoLabel( "ListItem.Property(title)" ), "utf-8" )
+    i_added           = unicode( xbmc.getInfoLabel( "ListItem.Property(added)" ), "utf-8" )
+    i_itemId          = unicode( xbmc.getInfoLabel( "ListItem.Property(itemId)" ), "utf-8" )
+    i_author          = unicode( xbmc.getInfoLabel( "ListItem.Property(author)" ), "utf-8" )
+    i_outline         = unicode( xbmc.getInfoLabel( "ListItem.Property(outline)" ), "utf-8" )
+    i_version         = unicode( xbmc.getInfoLabel( "ListItem.Property(version)" ), "utf-8" )
+    i_language        = unicode( xbmc.getInfoLabel( "ListItem.Property(language)" ), "utf-8" )
+    i_fileName        = unicode( xbmc.getInfoLabel( "ListItem.Property(fileName)" ), "utf-8" )
+    i_type            = unicode( xbmc.getInfoLabel( "Container.Property(Category)" ), "utf-8" )
+    i_dlsource        = unicode( xbmc.getInfoLabel( "container.Property(DLSource)" ), "utf-8" )
+    i_description     = unicode( xbmc.getInfoLabel( "ListItem.Property(description)" ), "utf-8" )
+    i_previewVideoURL = unicode( xbmc.getInfoLabel( "ListItem.Property(previewVideoURL)" ), "utf-8" )
 
     def __init__( self, *args, **kwargs ):
         xbmcgui.WindowXMLDialog.__init__( self, *args, **kwargs )
+        xbmc.executebuiltin( "Skin.Reset(AnimeWindowXMLDialogClose)" )
+        xbmc.executebuiltin( "Skin.SetBool(AnimeWindowXMLDialogClose)" )
+
         self.mainwin = kwargs[ "mainwin" ]
-        self._set_skin_colours()
 
     def onInit( self ):
         # onInit est pour le windowXML seulement
         try:
+            self._set_skin_colours()
             self._set_controls_labels()
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
+
+    def _set_skin_colours( self ):
+        try:
+            xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,%s)" % ( self.mainwin.settings[ "skin_colours_path" ], ) )
+            xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,%s)"  % ( ( self.mainwin.settings[ "skin_colours" ] or get_default_hex_color() ), ) )
+            xbmc.executebuiltin( "Skin.SetString(PassionLabelHexColour,%s)" % ( ( self.mainwin.settings[ "labels_colours" ] or get_default_hex_color( "Blue Confluence" ) ), ) )
+        except:
+            xbmc.executebuiltin( "Skin.SetString(PassionLabelHexColour,ffffffff)" )
+            xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,ffffffff)" )
+            xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,default)" )
+            print_exc()
 
     def _set_controls_labels( self ):
         xbmcgui.lock()
@@ -76,25 +81,29 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
                 thumbnail = os.path.join( BASE_THUMBS_PATH, filename[ 0 ], filename )
                 if os.path.isfile( thumbnail ): self.i_thumbnail = thumbnail
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
         try:
             self.getControl( 48 ).reset()
             listitem = xbmcgui.ListItem( self.i_title, "", self.i_thumbnail, self.i_thumbnail )
-            listitem.setProperty( "type", self.i_type )
-            listitem.setProperty( "date", self.i_date )#
             listitem.setProperty( "title", self.i_title )
-            listitem.setProperty( "added", self.i_added )
             listitem.setProperty( "itemId", self.i_itemId )
             listitem.setProperty( "author", self.i_author )
-            listitem.setProperty( "version", self.i_version )
+            listitem.setProperty( "DLSource", self.i_dlsource )
+            listitem.setProperty( "type", self.i_type )
             listitem.setProperty( "language", self.i_language )
+            listitem.setProperty( "version", self.i_version )
+            listitem.setProperty( "date", self.i_date )
+            listitem.setProperty( "added", self.i_added )
+            listitem.setProperty( "outline", self.i_outline )
+            #listitem.setProperty( "rating", self.i_rating ) # not implanted
             listitem.setProperty( "fileName", self.i_fileName )
+
             listitem.setProperty( "description", self.i_description or _( 604 ) )
             listitem.setProperty( "fanartpicture", self.i_previewPicture )
             listitem.setProperty( "previewVideoURL", self.i_previewVideoURL )
             self.getControl( 48 ).addItem( listitem )
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
         try:
             self.getControl( 49 ).reset()
 
@@ -123,35 +132,25 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
             self.getControl( 49 ).addItem( listitem )
 
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
         xbmcgui.unlock()
 
     def get_item_infos( self, main_listitem ):
         try:
-            self.i_date            = unicode( main_listitem.getProperty( "date" ), 'utf-8')
-            self.i_added           = unicode( main_listitem.getProperty( "added" ), 'utf-8')
-            self.i_title           = unicode( main_listitem.getProperty( "title" ), 'utf-8')
-            self.i_itemId          = unicode( main_listitem.getProperty( "itemId" ), 'utf-8') or str( self.mainwin.getCurrentListPosition()+1 )
-            self.i_author          = unicode( main_listitem.getProperty( "author" ), 'utf-8')
-            self.i_version         = unicode( main_listitem.getProperty( "version" ), 'utf-8')
-            self.i_language        = unicode( main_listitem.getProperty( "language" ), 'utf-8')
-            self.i_fileName        = unicode( main_listitem.getProperty( "fileName" ), 'utf-8')
-            self.i_description     = unicode( main_listitem.getProperty( "description" ), 'utf-8')
-            self.i_previewPicture  = unicode( main_listitem.getProperty( "fanartpicture" ), 'utf-8')
-            self.i_previewVideoURL = unicode( main_listitem.getProperty( "previewVideoURL" ), 'utf-8')
+            self.i_date            = unicode( main_listitem.getProperty( "date" ), "utf-8" )
+            self.i_added           = unicode( main_listitem.getProperty( "added" ), "utf-8" )
+            self.i_title           = unicode( main_listitem.getProperty( "title" ), "utf-8" )
+            self.i_itemId          = unicode( main_listitem.getProperty( "itemId" ), "utf-8" ) or str( self.mainwin.getCurrentListPosition()+1 )
+            self.i_author          = unicode( main_listitem.getProperty( "author" ), "utf-8" )
+            self.i_version         = unicode( main_listitem.getProperty( "version" ), "utf-8" )
+            self.i_outline         = unicode( main_listitem.getProperty( "outline" ), "utf-8" )
+            self.i_language        = unicode( main_listitem.getProperty( "language" ), "utf-8" )
+            self.i_fileName        = unicode( main_listitem.getProperty( "fileName" ), "utf-8" )
+            self.i_description     = unicode( main_listitem.getProperty( "description" ), "utf-8" )
+            self.i_previewPicture  = unicode( main_listitem.getProperty( "fanartpicture" ), "utf-8" )
+            self.i_previewVideoURL = unicode( main_listitem.getProperty( "previewVideoURL" ), "utf-8" )
         except:
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-
-    def _set_skin_colours( self ):
-        #xbmcgui.lock()
-        try:
-            xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,%s)" % ( self.mainwin.settings[ "skin_colours_path" ], ) )
-            xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,%s)" % ( ( self.mainwin.settings[ "skin_colours" ] or get_default_hex_color() ), ) )
-        except:
-            xbmc.executebuiltin( "Skin.SetString(PassionSkinHexColour,ffffffff)" )
-            xbmc.executebuiltin( "Skin.SetString(PassionSkinColourPath,default)" )
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
-        #xbmcgui.unlock()
+            print_exc()
 
     def onFocus( self, controlID ):
         #cette fonction n'est pas utiliser ici, mais dans les XML si besoin
@@ -184,29 +183,28 @@ class ItemDescription( xbmcgui.WindowXMLDialog ):
             else:
                 pass
         except:
-            #import traceback; traceback.print_exc()
-            logger.EXC_INFO( logger.LOG_ERROR, sys.exc_info(), self )
+            print_exc()
 
     def onAction( self, action ):
         #( ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, ACTION_CONTEXT_MENU, )
         if action in ( 9, 10, 117 ): self._close_dialog()
 
     def _close_dialog( self, OK=False ):
+        import time
+        xbmc.executebuiltin( "Skin.Reset(AnimeWindowXMLDialogClose)" )
+        time.sleep( .4 )
         #xbmc.sleep( 100 )
         self.close()
 
 
 def show_description( mainwin ):
     """
-    Affiche une fenetre contenant les informations sur un item
+        Affiche une fenetre contenant les informations sur un item
     """
-    file_xml = "passion-ItemDescript.xml"
-    #depuis la revision 14811 on a plus besoin de mettre le chemin complet, la racine suffit
-    dir_path = os.getcwd().rstrip( ";" )
-    #recupere le nom du skin et si force_fallback est vrai, il va chercher les images du defaultSkin.
-    current_skin, force_fallback = getUserSkin()
 
-    #TODO: ajouter check si infoWarehouse n'a pas ete cree
+    dir_path = os.getcwd().rstrip( ";" )
+    current_skin, force_fallback = getUserSkin()
+    file_xml = ( "IPX-ItemDescript.xml", "passion-ItemDescript.xml" )[ current_skin != "Default.HD" ]
 
     w = ItemDescription( file_xml, dir_path, current_skin, force_fallback, mainwin=mainwin )
     w.doModal()

@@ -1,0 +1,145 @@
+
+# GENERAL
+## PASSION-XBMC | Général, http://passion-xbmc.org/?action=.xml;type=rss, bar.png
+
+# LES NEWS
+## LES NEWS | Releases  Nouvelles et Plan de Route, http://passion-xbmc.org/les-news-de-xbmx/?action=.xml;type=rss, news.png
+
+# XBMC
+## XBMC | XBMC, http://passion-xbmc.org/xbmc/?action=.xml;type=rss, xbmc.png
+## XBMC | Pilotage - Telecommande, http://passion-xbmc.org/pilotage-telecommande/?action=.xml;type=rss, xbmc.png
+## XBMC | Scraper Ciné-Passion Support Français, http://passion-xbmc.org/scraper-cine-passion-support-francais/?action=.xml;type=rss, cinepassion.png
+## XBMC | Développement Scraper, http://passion-xbmc.org/developpement-scraper/?action=.xml;type=rss, private.png + cinepassion.png
+## XBMC | Clients Scraper, http://passion-xbmc.org/clients-scraper/?action=.xml;type=rss, private.png + cinepassion.png
+## XBMC | Scraper Ciné-Passion English Support, http://passion-xbmc.org/scraper-cine-passion-english-support/?action=.xml;type=rss, cinepassion.png
+## XBMC | Outils supplémentaires pour XBMC, http://passion-xbmc.org/outils-supplementaires-pour-xbmc/?action=.xml;type=rss, config.png
+
+# XBMC SOUS UBUNTU
+## XBMC SOUS UBUNTU | Demande de Support, http://passion-xbmc.org/support-xbmc-sous-ubuntu/?action=.xml;type=rss, ubuntu.png
+## XBMC SOUS UBUNTU | Support Résolu, http://passion-xbmc.org/support-xmbc-ubuntu-resolu/?action=.xml;type=rss, ubuntu.png
+
+# LE FORUM LINUX
+## LE FORUM LINUX | Discussions Générales, http://passion-xbmc.org/discussions-xbmx-sous-linux/?action=.xml;type=rss, icone_linux.png
+## LE FORUM LINUX | Tutoriels, http://passion-xbmc.org/tutoriels-linux/?action=.xml;type=rss, book.png
+
+# MYXBMC PASSION | LA DISTRIBUTION IDÉALE POUR VOTRE HTPC
+## MYXBMC PASSION | Tutoriels et Astuces Diverses, http://passion-xbmc.org/tutoriels-et-astuces-diverses/?action=.xml;type=rss, book.png
+## MYXBMC PASSION | Demande de Support, http://passion-xbmc.org/support-de-la-distribution-myxbmc-passion/?action=.xml;type=rss, ubuntu.png
+## MYXBMC PASSION | Support Résolu, http://passion-xbmc.org/support-myxbmc-resolu/?action=.xml;type=rss, ubuntu.png
+## MYXBMC PASSION | Beta Tests, http://passion-xbmc.org/beta-tests/?action=.xml;type=rss, private.png + ubuntu.png
+
+# XBMC LIVE
+## XBMC LIVE | Demande de Support, http://passion-xbmc.org/support-xbmc-live/?action=.xml;type=rss, live_petit.png
+## XBMC LIVE | Support Résolu, http://passion-xbmc.org/support-xbmc-live-resolu/?action=.xml;type=rss, live_petit.png
+
+# XBMC SOUS UNE AUTRE DISTRIBUTION LINUX
+## XBMC SOUS UNE AUTRE DISTRIBUTION LINUX | Demande de support, http://passion-xbmc.org/support-xbmc-linux/?action=.xml;type=rss, icone_linux.png
+## XBMC SOUS UNE AUTRE DISTRIBUTION LINUX | Support résolu, http://passion-xbmc.org/support-xbmc-linux-resolu/?action=.xml;type=rss, icone_linux.png
+
+# SUPPORT MATÉRIEL (TÉLÉCOMMANDE, TUNER TNT, TV-OUT...).
+## LE FORUM LINUX | Tests de matériel sous Linux, http://passion-xbmc.org/tests-de-materiel-sous-linux/?action=.xml;type=rss, config.png
+## LE FORUM LINUX | Demande de support, http://passion-xbmc.org/support-materiel-xbmx-sous-linux/?action=.xml;type=rss, config.png
+## LE FORUM LINUX | Support résolu, http://passion-xbmc.org/support-materiel-xbmx-sous-linux-resolu/?action=.xml;type=rss, config.png
+
+# AUTRES MEDIA-CENTERS SOUS LINUX
+## AUTRES MEDIA-CENTERS SOUS LINUX | Autres media-centers sous Linux, http://passion-xbmc.org/autres-media-centers-sous-linux/?action=.xml;type=rss, video_small.png
+## AUTRES MEDIA-CENTERS SOUS LINUX | Administration du Forum Linux, http://passion-xbmc.org/administration-du-forum-xbmx-linux/?action=.xml;type=rss, private.png + bar.png
+
+# XBMC SOUS WINDOWS
+## XBMC SOUS WINDOWS | Demande de Support, http://passion-xbmc.org/support-xbmc-sous-windows/?action=.xml;type=rss, windows.png
+## XBMC SOUS WINDOWS | Support Résolu, http://passion-xbmc.org/support-xbmc-windows-resolu/?action=.xml;type=rss, windows.png
+
+# LE FORUM WINDOWS
+## LE FORUM WINDOWS | Tutoriels, http://passion-xbmc.org/tutoriels-xbmx-windows/?action=.xml;type=rss, book.png
+
+# WINDOWS
+## LE FORUM WINDOWS | Releases XBMC, http://passion-xbmc.org/releases-xbmc/?action=.xml;type=rss, windows.png
+## LE FORUM WINDOWS | Support Pilotage divers et Télécommandes, http://passion-xbmc.org/support-pilotage-xbmx-sous-windows/?action=.xml;type=rss, windows.png
+## LE FORUM WINDOWS | Support Résolu, http://passion-xbmc.org/problemes-resolus-pilotage-xbmx-sous-windows/?action=.xml;type=rss, windows.png
+
+# XBMC SOUS OSX
+## XBMC SOUS OSX | Demande de Support, http://passion-xbmc.org/support-xbmx-sous-mac/?action=.xml;type=rss, mac.png
+## XBMC SOUS OSX | Support Résolu, http://passion-xbmc.org/support-resolu-xbmc-sous-mac/?action=.xml;type=rss, mac.png
+
+# LE FORUM MAC
+## LE FORUM MAC | Discussion Générale, http://passion-xbmc.org/discussion-generale/?action=.xml;type=rss, cafe.png
+
+# TUTORIELS ET DOSSIERS
+## LE FORUM MAC | Tutoriels, http://passion-xbmc.org/tutoriels-mac/?action=.xml;type=rss, book.png
+## LE FORUM MAC | Apple remote, http://passion-xbmc.org/apple-remote/?action=.xml;type=rss, book.png
+## LE FORUM MAC | Xbmc / Software, http://passion-xbmc.org/software-mac/?action=.xml;type=rss, book.png
+## LE FORUM MAC | Hardware, http://passion-xbmc.org/hardware-mac/?action=.xml;type=rss, book.png
+## LE FORUM MAC | Apple TV, http://passion-xbmc.org/apple-tv/?action=.xml;type=rss, book.png
+
+# HARDWARE
+## HARDWARE | Conseils d'achat, http://passion-xbmc.org/conseils-d%27achat/?action=.xml;type=rss, config.png
+## HARDWARE | Vos configurations, http://passion-xbmc.org/vos-configurations/?action=.xml;type=rss, membre.png
+
+# XBMC SOUS ATV
+## XBMC SOUS ATV | USB Creator pour Apple TV, http://passion-xbmc.org/usb-creator-pour-apple-tv/?action=.xml;type=rss, livecd.png
+## XBMC SOUS ATV | Support Résolu, http://passion-xbmc.org/support-resolu-usb-creator/?action=.xml;type=rss, livecd.png
+
+# XBMC SUR XBOX PREMIÈRE GÉNÉRATION
+## XBMC SUR XBOX | Demande de Support, http://passion-xbmc.org/support-xbmc-sur-xbox/?action=.xml;type=rss, xbox.png
+## XBMC SUR XBOX | Sujets Résolus, http://passion-xbmc.org/support-resolu-modifications-consoles-xbox/?action=.xml;type=rss, xbox.png
+
+# LE FORUM XBOX
+# LA XBOX
+## LE FORUM XBOX | Informations diverses, http://passion-xbmc.org/nouvelles-xbmc-et-xbox/?action=.xml;type=rss, news.png
+## LE FORUM XBOX | Débats et discussions, http://passion-xbmc.org/debats-a-propos-de-xbmc-sur-xbox/?action=.xml;type=rss, membre.png
+
+# HARDWARE
+## LE FORUM XBOX | Tutoriaux, http://passion-xbmc.org/tutoriaux/?action=.xml;type=rss, book.png
+## LE FORUM XBOX | Support, http://passion-xbmc.org/support-modification-consoles/?action=.xml;type=rss, xbox.png
+## LE FORUM XBOX | Sujets Résolus, http://passion-xbmc.org/sujets-resolus-308/?action=.xml;type=rss, xbox.png
+
+# LES SKINS POUR XBMC
+## LES SKINS POUR XBMC | Skins, http://passion-xbmc.org/skins-pour-xbmc/?action=.xml;type=rss, skin.png
+## LES SKINS POUR XBMC | Aeon, http://passion-xbmc.org/aeon/?action=.xml;type=rss, aeon.jpg
+## LES SKINS POUR XBMC | Alaska, http://passion-xbmc.org/alaska/?action=.xml;type=rss, alaska.jpg
+## LES SKINS POUR XBMC | Confluence, http://passion-xbmc.org/confluence/?action=.xml;type=rss, confluence.jpg
+## LES SKINS POUR XBMC | MediaStream, http://passion-xbmc.org/mediastream/?action=.xml;type=rss, mediastream.jpg
+## LES SKINS POUR XBMC | MediaStream Redux, http://passion-xbmc.org/mediastream-redux/?action=.xml;type=rss, redux.jpg
+## LES SKINS POUR XBMC | MiniMeedia, http://passion-xbmc.org/minimeedia/?action=.xml;type=rss, mini.jpg
+## LES SKINS POUR XBMC | PM3.HD, http://passion-xbmc.org/pm3-hd/?action=.xml;type=rss, pm3.jpg
+## LES SKINS POUR XBMC | Rapier, http://passion-xbmc.org/rapier/?action=.xml;type=rss, rapier.jpg
+## LES SKINS POUR XBMC | Transparency!, http://passion-xbmc.org/transparency!/?action=.xml;type=rss, transparency.jpg
+## LES SKINS POUR XBMC | Développement / maquettes / Archives, http://passion-xbmc.org/developpement-maquettes-archives/?action=.xml;type=rss, config.png
+
+# RELEASES ET SUPPORT
+## LE FORUM PYTHON | Releases de scripts et de plugins xbmc, http://passion-xbmc.org/releases-scripts-et-plugins/?action=.xml;type=rss, script.png
+## LE FORUM PYTHON | Jeux/Games pour XBMC, http://passion-xbmc.org/jeuxgames-pour-xbmc/?action=.xml;type=rss, script.png
+## LE FORUM PYTHON | Vos idées de scripts et plugins, http://passion-xbmc.org/vos-idees-de-scripts-pour-xbmx/?action=.xml;type=rss, script.png
+
+# DÉVELOPPEMENT PYTHON
+## LE FORUM PYTHON | Documentation, http://passion-xbmc.org/documentation-python/?action=.xml;type=rss, script.png
+
+# DÉVELOPPEMENT
+## LE FORUM PYTHON | Développement, http://passion-xbmc.org/developpement-python/?action=.xml;type=rss, script.png
+## LE FORUM PYTHON | Développement Privé, http://passion-xbmc.org/developpement-prive/?action=.xml;type=rss, private.png + script.png
+## LE FORUM PYTHON | Développements sur le site, http://passion-xbmc.org/developpements-sur-le-site/?action=.xml;type=rss, private.png + script.png
+
+# DISCUSSIONS GÉNÉRALES
+## LE FORUM PYTHON | La taverne de la langue fourchue, http://passion-xbmc.org/taverne-scripts/?action=.xml;type=rss, cafe.png
+## LE FORUM PYTHON | Administration du forum Scripts, http://passion-xbmc.org/administration-du-forum-scripts/?action=.xml;type=rss, private.png + bar.png
+
+# HARDWARE
+## HARDWARE | Hardware, http://passion-xbmc.org/hardware-pour-xbmx/?action=.xml;type=rss, config.png
+## HARDWARE | Tutoriels, http://passion-xbmc.org/tutos_hardware/?action=.xml;type=rss, book.png
+## HARDWARE | Tests de matériel sous Linux, http://passion-xbmc.org/tests-de-materiel-sous-linux/?action=.xml;type=rss, config.png
+## HARDWARE | Vos Configs, http://passion-xbmc.org/vos-configuration-pour-xbmx/?action=.xml;type=rss, membre.png
+
+# VIE DU SITE
+## VIE DU SITE | Le site, http://passion-xbmc.org/xbmc-passion-le-site/?action=.xml;type=rss, brico.jpg
+## VIE DU SITE | Charte - A lire obligatoirement; ne dites pas qu'on ne vous avait pas prévenu :), http://passion-xbmc.org/charte/?action=.xml;type=rss, news.png
+## VIE DU SITE | Café, http://passion-xbmc.org/cafe-passion-xbmx/?action=.xml;type=rss, cafe.png
+## VIE DU SITE | Membres, http://passion-xbmc.org/membres/?action=.xml;type=rss, membre.png
+## VIE DU SITE | Films et Musique, http://passion-xbmc.org/films-et-musique/?action=.xml;type=rss, video.png
+## VIE DU SITE | Livres et BD, http://passion-xbmc.org/livres-et-bd/?action=.xml;type=rss, book.png
+## VIE DU SITE | Corbeille, http://passion-xbmc.org/corbeille/?action=.xml;type=rss, trash.png
+
+# HIPS
+## HIPS | Hips, http://passion-xbmc.org/hips/?action=.xml;type=rss, private.png + bar.png
+## HIPS | Underground, http://passion-xbmc.org/underground/?action=.xml;type=rss, private.png + bar.png
+## HIPS | Mods, http://passion-xbmc.org/mods/?action=.xml;type=rss, private.png + config.png
+## HIPS | Trash, http://passion-xbmc.org/trash/?action=.xml;type=rss, private.png + trash.png
