@@ -13,6 +13,8 @@ Module de partage des fonctions et des constantes
 #which were imported and used within the module).
 __all__ = [
     # public names
+    "copy_dir",
+    "copy_inside_dir",
     "SYSTEM_PLATFORM",
     "parse_rss_xml",
     "set_web_navigator",
@@ -48,6 +50,9 @@ import elementtree.ElementTree as ET
 import xbmc
 import xbmcgui
 
+# Modules Custom
+import shutil2
+
 
 #REPERTOIRE RACINE ( default.py )
 CWD = os.getcwd().rstrip( ";" )
@@ -56,6 +61,29 @@ BASE_SETTINGS_PATH = os.path.join( sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA
 RSS_FEEDS_XML = os.path.join( CWD, "resources", "RssFeeds.xml" )
 
 BASE_THUMBS_PATH = os.path.join( sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA, "Thumbnails" )
+
+
+def copy_dir( dirname, destination, overwrite=True ):
+    if not overwrite and os.path.isdir( destination ):
+        shutil2.rmtree( destination )
+    shutil2.copytree( dirname, destination, overwrite=overwrite )
+
+
+def copy_inside_dir( dirname, destination, overwrite=True ):
+    list_dir = os.listdir( dirname )
+    for file in list_dir:
+        src = os.path.join( dirname, file )
+        dst = os.path.join( destination, file )
+        if os.path.isfile( src ):
+            if not os.path.isdir( os.path.dirname( dst ) ):
+                os.makedirs( os.path.dirname( dst ) )
+            if not overwrite and os.path.isfile( dst ):
+                os.unlink( dst )
+            shutil2.copyfile( src, dst, overwrite=overwrite )
+        elif os.path.isdir( src ):
+            if not overwrite and os.path.isdir( dst ):
+                shutil2.rmtree( dst )
+            shutil2.copytree( src, dst, overwrite=overwrite )
 
 
 def set_cache_thumb_name( path ):
