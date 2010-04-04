@@ -13,6 +13,7 @@
 				<width>1100</width>
 				<height>720</height>
 				<texture border="15,0,0,0" flipx="true">IPX-MediaBladeSub.png</texture>
+				<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 			</control>
 			<control type="button">
 				<description>Close Window button</description>
@@ -104,7 +105,7 @@
 								<font>font13_title</font>
 								<align>right</align>
 								<aligny>center</aligny>
-								<textcolor>FF0084ff</textcolor>
+								<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 								<selectedcolor>FFEB9E17</selectedcolor>
 								<info>ListItem.Label</info>
 							</control>
@@ -140,7 +141,7 @@
 								<font>font13_title</font>
 								<align>right</align>
 								<aligny>center</aligny>
-								<textcolor>FF0084ff</textcolor>
+								<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 								<selectedcolor>FFEB9E17</selectedcolor>
 								<info>ListItem.Label</info>
 							</control>
@@ -250,7 +251,7 @@
 						<width>400</width>
 						<height>30</height>
 						<font>font13_title</font>
-						<textcolor>FF0084ff</textcolor>
+						<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 						<shadowcolor>FF000000</shadowcolor>
 						<scroll>true</scroll>
 						<align>left</align>
@@ -263,7 +264,7 @@
 						<width>400</width>
 						<height>30</height>
 						<font>font13_title</font>
-						<textcolor>FF0084ff</textcolor>
+						<textcolor>$INFO[Skin.String(PassionLabelHexColour)]</textcolor>
 						<shadowcolor>FF000000</shadowcolor>
 						<scroll>true</scroll>
 						<align>right</align>
@@ -349,6 +350,7 @@
 			<width>846</width>
 			<height>720</height>
 			<texture flipx="true">IPX-HomeBlade.png</texture>
+			<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 		</control>
 		<control type="group">
 			<posx>160r</posx>
@@ -363,6 +365,7 @@
 				<width>150</width>
 				<height>35</height>
 				<texture flipx="true" border="32,0,0,0">IPX-header.png</texture>
+				<colordiffuse>$INFO[Skin.String(PassionSkinHexColour)]</colordiffuse>
 			</control>
 			<control type="label">
 				<description>time label</description>

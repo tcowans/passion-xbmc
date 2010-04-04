@@ -213,11 +213,19 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                 # liste des options pour skins et scrapers
                 buttons = { 1001: _( 157 ), 1002: _( 156 ), 1003: _( 161 ), 1004: _( 162 ), 1005: _( 185 ), 1006: _( 1002 ) }
 
+            if os.path.exists( os.path.join( item_path, "description.xml" ) ):
+                buttons.update( { 999: _( 1001 ) } )
+
             from DialogContextMenu import show_context_menu
             selected = show_context_menu( buttons, self.get_view_mode() )
             del show_context_menu
 
-            if selected == 1000: # Executer/Lancer
+            if selected == 999:
+                import infos
+                infos.show_info( item_path )
+                del infos
+
+            elif selected == 1000: # Executer/Lancer
                 if ( self.itemTypeList.index(self.curListType) in self.pluginDisplayList ):
                     # Cas d'un sous-plugin (video, musique ...)
                     # window id's : http://xbmc.org/wiki/?title=Window_IDs

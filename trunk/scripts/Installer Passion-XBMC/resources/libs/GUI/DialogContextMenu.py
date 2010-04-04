@@ -14,7 +14,7 @@ from utilities import *
 
 class ContextMenu( xbmcgui.WindowXMLDialog ):
     # control id's
-    CONTROL_CM_BUTTON_START = 1000
+    CONTROL_CM_BUTTON_START = 999
     CONTROL_CM_BUTTON_END   = 1007
     CONTROL_CM_BUTTONS = range( CONTROL_CM_BUTTON_START, ( CONTROL_CM_BUTTON_END + 1 ) )
 
@@ -65,7 +65,7 @@ class ContextMenu( xbmcgui.WindowXMLDialog ):
     def close_dialog( self ):
         import time
         xbmc.executebuiltin( "Skin.Reset(AnimeWindowXMLDialogClose)" )
-        time.sleep( .1 ) # pour les fade plus que .1 pas beau :(
+        time.sleep( .01 ) # pour les fade plus que .1 pas beau :(
         self.close()
 
 def show_context_menu( buttons={}, view_mode="0" ):
