@@ -328,7 +328,7 @@ def get_film_info(id_allo , BA = False , all_BA = False , emissions_liees = Fals
             args = "%s&%s&%s" % ( urllib.quote_plus( "cmedia=%s" % i[0] ), urllib.quote_plus( local_trailer ) , quality)
             if not os.path.exists(local_trailer):c_items += [ ( "Télécharger", "XBMC.RunScript(%s,%s)" % ( script, args ) ) ]
             else : c_items += [ ( "jouer en local", "xbmc.PlayMedia(%s)" % local_trailer) ]
-            addDir(i[4], i[0],5,image, c_items )
+            addDir(i[4], i[1],5,image, c_items )
         
     if all_BA:
         print "test all ba" #DEBUG     
