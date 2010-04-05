@@ -7,8 +7,8 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/"
 __credits__      = "Team XBMC passion, http://passion-xbmc.org/developpement-python/%28script%29-sporlive-display/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "26-03-2010"
-__version__      = "1.5.3"
+__date__         = "05-04-2010"
+__version__      = "1.5.4"
 __svn_revision__  = "$Revision$".replace( "Revision", "" ).strip( "$: " )
 __XBMC_Revision__ = "20000" #XBMC Babylon
 __useragent__    = "Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.0.1) Gecko/2008070208 Firefox/3.0.1"
@@ -27,6 +27,7 @@ sys.path.append( os.path.join( BASE_RESOURCE_PATH, "lib" ) )
 cache_dir = os.path.join ( BASE_RESOURCE_PATH , "Cache" )
 trailer_dir = xbmcplugin.getSetting("trailer_path")
 trailer_dir = xbmc.translatePath(trailer_dir)
+dialog = xbmcgui.Dialog()
 print "trailer dir: %s" % trailer_dir
 
 tempfile= os.path.join ( cache_dir , "data.html" )
@@ -240,44 +241,125 @@ def get_film_list( url , database = False):
     print "total movies = %s" % count
     return catalogue
 
-def get_film_info(id_allo , BA = False):
+def get_film_info(id_allo , BA = False , all_BA = False , emissions_liees = False , interviews = False):
     film = {}
     film_url = "http://www.allocine.fr/film/fichefilm_gen_cfilm=%s.html" % id_allo
     film_data = get_html_source( film_url )
-    #save_data(film_data)
+    save_data(film_data) #DEBUG
     
     try: media_list = re.findall( '<a href="/video/player_gen_cmedia=(.*?)&cfilm=.*.html"><b>', film_data )
     except:
         print_exc()
         media_list = ""
+    match = re.search(r'<a class="fs11 underline" href="(.*)"><img class="ico icoticka" alt=" " width="0" height="0" src="http://images.allocine.fr/commons/empty.gif"/><span>Toutes les vid\xc3\xa9os</span></a>', film_data, re.IGNORECASE)
+    if match: url_all_video = match.group(1)
+    else: url_all_video = ""
+    print "url_video: %s" % url_all_video #DEBUG
+    
     if BA:
         BA_list = []
         if media_list:
             for id_media in media_list: BA_list.append(get_media_link(id_media))
         film["Bande-annonces"] = BA_list
-        
-#     match = re.search( '<a href="/video/player_gen_cmedia=(.*?)&cfilm=.*.html"><b>', film_data )
-#     if match :
-#         url_media = "http://www.allocine.fr/video/player_gen_cmedia=%s&cfilm=%s.html" % (match.group(1) , id_allo)
-#         print "url page média: %s" % "http://www.allocine.fr/video/player_gen_cmedia=%s&cfilm=%s.html" % (match.group(1) , id_allo)
-#         media_data = get_html_source( url_media )
-#         #save_data(media_data)
-#     else: media_data = None     
-#     
-#     if media_data:
-#         debut = media_data.find("carouselcontainer_BA\" class=") # renvoi 1
-#         print "début: %s" % debut
-#         fin = media_data.find("Autres bandes-annonces") #renvoi 5
-#         print "fin: %s" % fin
-#         media_data[debut:fin] #renvoi "lexs"
-#         save_data(media_data)
-#         match = re.search( '<!-- CONSTRAINT RIGHT COLUMN -->(.*)<div id="VideoEnplus"  class="">' , media_data )
-#         print match
-#     if match :
-#         print "colonne trouvée"
-#         print (match.group(1))
+        return film
     
-    return film
+    if emissions_liees or all_BA or interviews:
+        print "test liens toutes vidéos" #DEBUG
+        if not url_all_video == "":
+            print "url toutes vidéos trouvé" #DEBUG
+            video_data = get_html_source( "http://www.allocine.fr" + url_all_video )
+            save_data(video_data) #DEBUG
+    
+    if interviews:
+        print "test interviews liées" #DEBUG
+        match = re.search(r"<h2>\s+(\d+) Interviews li\xc3\xa9es \xc3\xa0 ce film\s+</h2>(.*?)<h2>Autres bandes-annonces</h2>", video_data, re.DOTALL | re.IGNORECASE)
+        if match: 
+            nbre_interviews = match.group(1)
+            interviews_data = match.group(2)
+        else:
+            dialog.ok("Interviews Allociné" , "aucune interview liée")
+            return False
+            nbre_interviews = ""
+            interviews_data = ""
+        save_data(interviews_data) #DEBUG
+        print "nombre interviews liées: %s" % nbre_interviews #DEBUG
+        result = re.findall(r'(?i)<a href=\'/film/fichefilm-\d+/interviews/\?cmedia=(\d+)\'>\s+<img src=\'(.*?)\' alt="Photo : (.*?)"  title="Photo : (.*?)" />\s+</a>', interviews_data)
+        print "nombre emissions liées trouvées: %s" % len(result) #DEBUG
+        for i in result: 
+            print i[3] , i[1]#DEBUG
+            #ba = get_media_link(i[0])
+            print i[2]
+            if xbmcplugin.getSetting("hdimage") == "true": image = i[1].replace( "cx_120_96/b_1_x/o_play.png_5_se" , "r_760_x" )
+            else: image = i[1]
+            print image
+            c_items = []
+            local_trailer = os.path.join( trailer_dir, "%s.flv" % translate_string( i[3] ) )
+            script = "special://home/plugins/video/Bande-Annonce Allocine/resources/lib/downloader.py"
+            args = "%s&%s&%s" % ( urllib.quote_plus( "cmedia=%s" % i[0] ), urllib.quote_plus( local_trailer ) , quality)
+            if not os.path.exists(local_trailer):c_items += [ ( "Télécharger", "XBMC.RunScript(%s,%s)" % ( script, args ) ) ]
+            else : c_items += [ ( "jouer en local", "xbmc.PlayMedia(%s)" % local_trailer) ]
+            addDir(i[3], i[0],5,image, c_items )
+            
+    if emissions_liees:
+        print "test emisions liées" #DEBUG
+        match = re.search(r"<h2>(\d+) \xc3\xa9missions li\xc3\xa9es</h2>(.*?)<h2>Autres bandes-annonces</h2>", video_data, re.DOTALL | re.IGNORECASE)
+        if match: 
+            nbre_emissions = match.group(1)
+            emision_data = match.group(2)
+        else:
+            dialog.ok("Emissions Allociné" , "aucune emission liée")
+            return False
+            nbre_emissions = ""
+            emision_data = ""
+        save_data(emision_data) #DEBUG
+        print "nombre emissions liées: %s" % nbre_emissions #DEBUG
+        result = re.findall(r'(?i)<a href=\'/video/emissions/(.*?)/episode/\?cmedia=(\d+)\'>\s+<img src=\'(.*?)\' alt="Photo : (.*?)"  title="Photo : (.*?)" />', emision_data)
+        print "nombre emissions liées trouvées: %s" % len(result) #DEBUG
+        for i in result: 
+            print i[4] #DEBUG
+            #ba = get_media_link(i[0])
+            print i[2]
+            if xbmcplugin.getSetting("hdimage") == "true": image = i[2].replace("cx_120_110/o_overlayEmissions-P2C-120.png_1_c", "r_760_x" ).replace("cx_120_110/o_overlayEmissions-MerciQui-120.png_1_c", "r_760_x" ).replace("cx_120_110/o_overlayEmissions-LaMinute-120.png_1_c", "r_760_x" ).replace("cx_120_110/o_overlayEmissions-D2DVD-120.png_1_c", "r_760_x" ).replace("cx_120_110/o_overlayEmissions-TES-120.png_1_c", "r_760_x" ).replace("cx_120_110/o_overlayEmissions-FauxR-120.png_1_c", "r_760_x" )
+            else: image = i[2]
+            print image
+            c_items = []
+            local_trailer = os.path.join( trailer_dir, "%s.flv" % translate_string( i[4] ) )
+            script = "special://home/plugins/video/Bande-Annonce Allocine/resources/lib/downloader.py"
+            args = "%s&%s&%s" % ( urllib.quote_plus( "cmedia=%s" % i[0] ), urllib.quote_plus( local_trailer ) , quality)
+            if not os.path.exists(local_trailer):c_items += [ ( "Télécharger", "XBMC.RunScript(%s,%s)" % ( script, args ) ) ]
+            else : c_items += [ ( "jouer en local", "xbmc.PlayMedia(%s)" % local_trailer) ]
+            addDir(i[4], i[0],5,image, c_items )
+        
+    if all_BA:
+        print "test all ba" #DEBUG     
+        if url_all_video:            
+            match = re.search(r"(\d+) bandes-annonces", video_data)
+            if match: nb_ba = match.group(1)
+            else: nb_ba = ""
+            print "nombre BA: %s" % nb_ba #DEBUG
+            
+            match = re.search("-- CONSTRAINT RIGHT COLUMN -->(.*?)Autres bandes-annonces", video_data, re.DOTALL)
+            if match: video_data = match.group(1)
+            else: video_data = ""
+            #save_data(video_data) #DEBUG
+            #result = re.findall(r"(?i)<a href=\'/video/player_gen_cmedia=(.*?)&cfilm=(.*?).html\'>\s+", video_data) #DEBUG
+            result = re.findall(r"""<a href=\'/video/player_gen_cmedia=(.*?)&cfilm=(.*?).html\'>\s+<img src=\'(.*?)\' alt="Photo : (.*?)"  title="Photo : (.*?)" />\s+</a>""", video_data)
+            print "liste BA: %s ba trouvées " %  len(result)  #DEBUG
+            print "#####################liste des BA##########################" #DEBUG
+            for i in result: 
+                print i[4] #DEBUG
+                if xbmcplugin.getSetting("hdimage") == "true": image = i[2].replace( "cx_120_96/b_1_x/o_play.png_5_se" , "r_760_x" )
+                else: image = i[2]
+                c_items = []
+                local_trailer = os.path.join( trailer_dir, "%s.flv" % translate_string( i[4] ) )
+                script = "special://home/plugins/video/Bande-Annonce Allocine/resources/lib/downloader.py"
+                args = "%s&%s&%s" % ( urllib.quote_plus( "cmedia=%s" % i[0] ), urllib.quote_plus( local_trailer ) , quality)
+                if not os.path.exists(local_trailer):c_items += [ ( "Télécharger", "XBMC.RunScript(%s,%s)" % ( script, args ) ) ]
+                else : c_items += [ ( "jouer en local", "xbmc.PlayMedia(%s)" % local_trailer) ]
+                addDir(i[4], i[0],5,image, c_items )
+            print "#####################liste des BA FIN######################" #DEBUG 
+    return True
+    
 
 def get_media_link(id_media):
     media_url = "http://www.allocine.fr/skin/video/AcVisionData_xml.asp?media=%s" % id_media
@@ -469,7 +551,7 @@ print "Name: "+str(name)
 
 OK = True
 
-if mode==None or url==None or len(url)<1:
+if mode==None or url==None or len(url)<1: #menu principal
     addDir("A ne pas manquer","http://www.allocine.fr/video/bandes-annonces/plus/",1,"")
     addDir("films au cinema","http://www.allocine.fr/video/bandes-annonces/films-au-cinema/plus/",1,"")
     addDir("prochainement","http://www.allocine.fr/video/bandes-annonces/films-prochainement/plus/",1,"")
@@ -485,12 +567,12 @@ if mode==None or url==None or len(url)<1:
                 addDir( cine[1],"http://www.allocine.fr/seance/salle_gen_csalle=%s.html" % cine[0],4,"", c_items )                
         addDir("Ajouter Un Cinéma...","",3,"")
 
-if mode == 1:
+if mode == 1: # affichage des liste ba / series / emissions / interviews
     xbmcplugin.setPluginCategory(int(sys.argv[1]), name)
     if load_DB( name ) == "": create_DB( url , name)
     data=load_DB( name )
     for film in data:
-        if film["type"] == "film": 
+        if film["type"] == "film":
             if xbmcplugin.getSetting("date_sortie") == "true" : ajout_sortie = "[CR]" +  film["sortie"]
             else : ajout_sortie = ""
             addDir(film["name"] + ajout_sortie ,"%s##%s" % (film["poster"] , film["id_allo"]),2,film["poster"], sortie=film["sortie"])
@@ -506,13 +588,15 @@ if mode == 1:
             if not os.path.exists(local_trailer):c_items += [ ( "Télécharger", "XBMC.RunScript(%s,%s)" % ( script, args ) ) ]
             else : c_items += [ ( "jouer en local", "xbmc.PlayMedia(%s)" % local_trailer) ]
             addDir(film["name"], film["id_media"],5,film["poster"], c_items )
+
+        
         
 
-if mode == 2:
+if mode == 2: #menu bande-annonce de film + liens contenus liées
+    print 'name : %s' % name #DEBUG
     poster = url.split("##")[0]
     url = url.split("##")[1]
     film = get_film_info(url, BA = True)
-
     for ba in film["Bande-annonces"]:
         #print ba
         # ajout d'un bouton dans le contextmenu pour télécharger / jouer le trailer
@@ -522,18 +606,17 @@ if mode == 2:
         args = "%s&%s" % ( urllib.quote_plus( ba["%s" % quality ] ), urllib.quote_plus( local_trailer ) )
         if not os.path.exists(local_trailer):c_items += [ ( "Télécharger", "XBMC.RunScript(%s,%s)" % ( script, args ) ) ]
         else : c_items += [ ( "jouer en local", "xbmc.PlayMedia(%s)" % local_trailer) ]
-        
-#         DLLabelButton = "Télécharger"
-#         DLActionButton = 'XBMC.RunPlugin(%s?mode=10&name=%s&url=%s)' % ( sys.argv[ 0 ], urllib.quote_plus( set_entity_or_charref(ba["name"] )), urllib.quote_plus( ba["%s" % quality ] ), )
-#         c_items.append(( DLLabelButton, DLActionButton ))
         addLink(ba["name"].split(" - ")[1],ba["%s" % quality ],poster , c_items )
+    addDir("Voir toutes les bandes-annonce",  url ,8, poster )
+    addDir("Voir les émissions liées",  url ,9, poster )
+    addDir("Voir les interviews liées",  url ,10, poster )
     
     #########################################################
 if mode == 3:
     search_cinema()
     OK= False
     
-if mode == 4:
+if mode == 4: # liste des films dans le cinema
     mon_cine = get_film_in_cinema( url )
     #print mon_cine
     for film_in_cine in mon_cine:
@@ -555,7 +638,7 @@ if mode == 4:
         except : print_exc()
 
 
-if mode == 5:
+if mode == 5: #envoi de la video au lecteur et recherche de la video via l'idmedia
     
     ba = get_media_link( url )
     trailer = ba["%s" % quality ]
@@ -569,7 +652,7 @@ if mode == 5:
     xbmc.Player().play(trailer, playableVideoItem, False)
     OK = False
 
-if mode == 6:
+if mode == 6: #liste des emissions et images associées
     emission_list = get_emission_list(url)
     print emission_list
     picture = {}
@@ -591,9 +674,18 @@ if mode == 6:
         addDir(emission[1], "http://www.allocine.fr%s" % emission[0], 1 , image )
         
 
-if mode == 7:
+if mode == 7: #suppression cinema perso
     delete_cinema( (url, name ))
     xbmc.executebuiltin("Container.Refresh")
     OK=False
+    
+if mode == 8: #toutes les ba du film
+    OK = get_film_info(url, all_BA = True)
+
+if mode == 9: #toutes les vidéo liées du film
+    OK = get_film_info(url, emissions_liees = True)
+
+if mode == 10: #toutes les vidéo liées du film
+    OK = get_film_info(url, interviews = True)
         
 end_of_directory( OK )
