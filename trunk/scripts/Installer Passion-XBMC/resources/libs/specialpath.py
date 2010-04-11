@@ -20,6 +20,7 @@ __all__ = [
     "DIR_PLUGIN_PICTURES",
     "DIR_PLUGIN_PROGRAMS",
     "DIR_PLUGIN_VIDEO",
+    "DIR_PLUGIN_WEATHER",
     "DIR_ROOT",
     "DIR_CACHE"
     ]
@@ -90,6 +91,7 @@ DIR_PLUGIN_MUSIC    = os.path.join( DIR_PLUGIN, "music" )
 DIR_PLUGIN_PICTURES = os.path.join( DIR_PLUGIN, "pictures" )
 DIR_PLUGIN_PROGRAMS = os.path.join( DIR_PLUGIN, "programs" )
 DIR_PLUGIN_VIDEO    = os.path.join( DIR_PLUGIN, "video" )
+DIR_PLUGIN_WEATHER  = os.path.join( DIR_PLUGIN, "weather" )
 
 DIR_ROOT            = os.getcwd().replace( ";", "" )
 DIR_CACHE           = os.path.join( SPECIAL_SCRIPT_DATA, "cache" )

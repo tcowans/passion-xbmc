@@ -12,6 +12,9 @@
 	<controls>
 		<control type="group">
 			<animation effect="fade" time="250" condition="!Skin.HasSetting(AnimeWindowXMLDialogClose)">conditional</animation>
+			<animation effect="slide" start="0,0" end="0,19" condition="stringcompare(Container(10000).NumItems,10)">Conditional</animation>
+			<animation effect="slide" start="0,0" end="0,19" condition="stringcompare(Container(10000).NumItems,9)">Conditional</animation>
+			<animation effect="slide" start="0,0" end="0,19" condition="stringcompare(Container(10000).NumItems,8)">Conditional</animation>
 			<animation effect="slide" start="0,0" end="0,19" condition="stringcompare(Container(10000).NumItems,7)">Conditional</animation>
 			<animation effect="slide" start="0,0" end="0,38" condition="stringcompare(Container(10000).NumItems,6)">Conditional</animation>
 			<animation effect="slide" start="0,0" end="0,57" condition="stringcompare(Container(10000).NumItems,5)">Conditional</animation>
@@ -80,6 +83,9 @@
 				<animation effect="zoom" start="100" end="0,0,370,186" condition="stringcompare(Container(10000).NumItems,5)">Conditional</animation>
 				<animation effect="zoom" start="100" end="0,0,370,224" condition="stringcompare(Container(10000).NumItems,6)">Conditional</animation>
 				<animation effect="zoom" start="100" end="0,0,370,262" condition="stringcompare(Container(10000).NumItems,7)">Conditional</animation>
+				<animation effect="zoom" start="100" end="0,0,370,262" condition="stringcompare(Container(10000).NumItems,8)">Conditional</animation>
+				<animation effect="zoom" start="100" end="0,0,370,262" condition="stringcompare(Container(10000).NumItems,9)">Conditional</animation>
+				<animation effect="zoom" start="100" end="0,0,370,262" condition="stringcompare(Container(10000).NumItems,10)">Conditional</animation>
 			</control>
 			<control type="image">
 				<description>background bottom image</description>
@@ -95,6 +101,9 @@
 				<animation effect="slide" start="0,0" end="0,-114" condition="stringcompare(Container(10000).NumItems,5)">Conditional</animation>
 				<animation effect="slide" start="0,0" end="0,-76" condition="stringcompare(Container(10000).NumItems,6)">Conditional</animation>
 				<animation effect="slide" start="0,0" end="0,-38" condition="stringcompare(Container(10000).NumItems,7)">Conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-38" condition="stringcompare(Container(10000).NumItems,8)">Conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-38" condition="stringcompare(Container(10000).NumItems,9)">Conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-38" condition="stringcompare(Container(10000).NumItems,10)">Conditional</animation>
 			</control>
 
 			<control type="list" id="10000">

@@ -113,20 +113,6 @@ class fileMgr:
 
         return dirList
 
-#    def renameItem( self, base_path, old_name, new_name):
-#        """
-#        Rename an item (file or directory)
-#        Return True if success, False otherwise
-#        """
-#        result = True
-#        try:
-#            os.rename( os.path.join(base_path, old_name), os.path.join(base_path, new_name) )
-#        except:
-#            result = False
-#            print "renameItem: Exception renaming Item: %s" % old_name 
-#            print_exc()
-#        return result
-
     def renameItem( self, base_path, old_name, new_name):
         """
         Rename an item (file or directory)
@@ -232,7 +218,7 @@ class fileMgr:
     def linux_is_write_access( self, path ):
         """
         Linux
-        Verifie si on a les dorit en ecriture sur un element
+        Verifie si on a les droit en ecriture sur un element
         """
         Wtest = os.access( path, os.W_OK )
         if Wtest == True:
