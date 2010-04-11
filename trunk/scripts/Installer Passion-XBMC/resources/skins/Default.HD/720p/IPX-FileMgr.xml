@@ -23,7 +23,7 @@
 			<posy>0</posy>
 			<width>1280</width>
 			<height>720</height>
-			<texture background="true">scripts.jpg</texture>
+			<texture>scripts.jpg</texture>
 		</control>
 
 		<control type="group">
@@ -253,7 +253,7 @@
 						<height>540</height>
 						<aspectratio aligny="bottom">keep</aspectratio>
 						<fadetime>400</fadetime>
-						<texture background="true">$INFO[Container(50).ListItem.Icon]</texture>
+						<texture>$INFO[Container(50).ListItem.Icon]</texture>
 						<bordertexture border="8">IPX-ThumbShadow.png</bordertexture>
 						<bordersize>8</bordersize>
 					</control>
@@ -264,7 +264,7 @@
 						<height>524</height>
 						<aspectratio aligny="top">keep</aspectratio>
 						<fadetime>400</fadetime>
-						<texture diffuse="IPX-diffuse_mirror3.png" flipy="true" background="true">$INFO[Container(50).ListItem.Icon]</texture>
+						<texture diffuse="IPX-diffuse_mirror3.png" flipy="true">$INFO[Container(50).ListItem.Icon]</texture>
 					</control>
 				</control>
 
@@ -737,7 +737,7 @@
 							<bordertexture border="5">IPX-button-nofocus.png</bordertexture>
 							<bordersize>5</bordersize>
 							<fadetime>100</fadetime>
-							<texture background="true">$INFO[Listitem.Icon]</texture>
+							<texture>$INFO[Listitem.Icon]</texture>
 						</control>
 						<control type="label">
 							<posx>135</posx>
@@ -772,7 +772,7 @@
 							<bordertexture border="5">IPX-folder-focus.png</bordertexture>
 							<bordersize>5</bordersize>
 							<fadetime>100</fadetime>
-							<texture background="true">$INFO[Listitem.Icon]</texture>
+							<texture>$INFO[Listitem.Icon]</texture>
 							<animation type="Focus" reversible="false">
 								<effect type="zoom" center="auto" start="100" end="50" time="600"/>
 								<effect type="rotatey" center="134,0" start="0" end="360,0" delay="400" time="1000"/>
@@ -788,7 +788,7 @@
 							<bordertexture border="5">IPX-button-nofocus.png</bordertexture>
 							<bordersize>5</bordersize>
 							<fadetime>100</fadetime>
-							<texture background="true">$INFO[Listitem.Icon]</texture>
+							<texture>$INFO[Listitem.Icon]</texture>
 							<animation effect="fade" end="0" time="0">Focus</animation>
 							<animation effect="zoom" center="auto" start="125" end="100" time="400">UnFocus</animation>
 						</control>

@@ -239,7 +239,8 @@ GOTO UnrarBuild
     IF NOT EXIST %BackupPath% (
       MD %BackupPath%
     )
-    XCOPY "%xbmc_install_path:~1,-2%" %BackupPath%\ /E /I /Y /F /V /EXCLUDE:"%CD%\backup_exclude.txt" > "%CD%\LOGS\backup.log"
+    SET BackupExclude = "%CD%\backup_exclude.txt"
+    XCOPY "%xbmc_install_path:~1,-2%" %BackupPath%\ /E /I /Y /F /V /EXCLUDE:%BackupExclude% > "%CD%\LOGS\backup.log"
     IF NOT "%ErrorLevel:~0,1%"=="0" (
       ECHO Erreur: Les fichiers n'ont pas été sauvegardés ou l'ont été en partie!
       )
@@ -265,6 +266,7 @@ GOTO UnrarBuild
   ECHO.
 
   IF "%BuildName%"=="Setup" GOTO PCInstaller
+  IF "%BuildName:~4,5%"=="Setup" GOTO PCInstaller
 
   ECHO Mise à jour d'XBMC depuis %BuildName%...
   ECHO Veuillez patienter...
@@ -352,8 +354,8 @@ GOTO UnrarBuild
 
 :PCInstaller
   DEL %InfoPaths%
-  IF EXIST "%XBMCTemp%\Setup.exe" (
-    START %XBMCTemp%\Setup.exe
+  IF EXIST "%XBMCTemp%\%BuildName%.exe" (
+    START %XBMCTemp%\%BuildName%.exe
     EXIT
   ) ELSE (
     ECHO Impossible de lancer Windows Installer!

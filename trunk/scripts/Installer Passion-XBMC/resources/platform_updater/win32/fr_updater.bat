@@ -186,6 +186,7 @@ GOTO UnrarBuild
   UNRAR x -o+ %xbmc_build% %XBMCTemp% > "%CD%\LOGS\unrar.log"
   rem ECHO Erreur numero %ErrorLevel%
   ECHO.
+  ::GET BUILD NAME
   ::METTRE ICI UNE FONCTION POUR LES ERREURS SI PAS D'ERREUR UPDATE
   IF NOT "%ErrorLevel:~0,1%"=="0" (
     GOTO NoUpdate
@@ -239,7 +240,8 @@ GOTO UnrarBuild
     IF NOT EXIST %BackupPath% (
       MD %BackupPath%
     )
-    XCOPY "%xbmc_install_path:~1,-2%" %BackupPath%\ /E /I /Y /F /V /EXCLUDE:"%CD%\backup_exclude.txt" > "%CD%\LOGS\backup.log"
+    SET BackupExclude = "%CD%\backup_exclude.txt"
+    XCOPY "%xbmc_install_path:~1,-2%" %BackupPath%\ /E /I /Y /F /V /EXCLUDE:%BackupExclude% > "%CD%\LOGS\backup.log"
     IF NOT "%ErrorLevel:~0,1%"=="0" (
       ECHO Erreur: Les fichiers n'ont pas ‚t‚ sauvegard‚s ou l'ont ‚t‚ en partie!
       )
@@ -265,6 +267,7 @@ GOTO UnrarBuild
   ECHO.
 
   IF "%BuildName%"=="Setup" GOTO PCInstaller
+  IF "%BuildName:~4,5%"=="Setup" GOTO PCInstaller
 
   ECHO Mise … jour d'XBMC depuis %BuildName%...
   ECHO Veuillez patienter...
@@ -352,8 +355,8 @@ GOTO UnrarBuild
 
 :PCInstaller
   DEL paths.txt
-  IF EXIST "%XBMCTemp%\Setup.exe" (
-    START %XBMCTemp%\Setup.exe
+  IF EXIST "%XBMCTemp%\%BuildName%.exe" (
+    START %XBMCTemp%\%BuildName%.exe
     EXIT
   ) ELSE (
     ECHO Impossible de lancer Windows Installer!
