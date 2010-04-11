@@ -15,7 +15,7 @@ from utilities import *
 class ContextMenu( xbmcgui.WindowXMLDialog ):
     # control id's
     CONTROL_CM_BUTTON_START = 999
-    CONTROL_CM_BUTTON_END   = 1007
+    CONTROL_CM_BUTTON_END   = 1010
     CONTROL_CM_BUTTONS = range( CONTROL_CM_BUTTON_START, ( CONTROL_CM_BUTTON_END + 1 ) )
 
     def __init__( self, *args, **kwargs ):

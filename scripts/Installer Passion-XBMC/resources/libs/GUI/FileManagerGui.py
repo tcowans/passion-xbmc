@@ -10,9 +10,10 @@ import xbmcgui
 
 # Modules custom
 import shutil2
-from CONF import *
+#from CONF import *
 from utilities import *
 from FileManager import *
+from Item import *
 
 
 # INITIALISATION CHEMIN RACINE
@@ -80,8 +81,8 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         xbmcgui.WindowXML.__init__( self, *args, **kwargs )
         self.homeLastPosition = kwargs.get( "homeLastPosition" )
         #from CONF import configCtrl
-        self.configManager = configCtrl()
-        if not self.configManager.is_conf_valid: raise
+        #self.configManager = configCtrl()
+        #if not self.configManager.is_conf_valid: raise
 
         #used for show cat from new home gui
         self.HomeAction = kwargs.get( "HomeAction" )
@@ -90,13 +91,22 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         self._show_settings    = kwargs[ "mainfunctions" ][ 0 ]
         self._close_script     = kwargs[ "mainfunctions" ][ 1 ]
 
-        self.localdirList      = self.configManager.localdirList      # Liste des repertoire locaux
+        # TYPE_ROOT
+        self.rootDisplayList    = [ TYPE_SKIN, 
+                                    TYPE_SCRAPER, 
+                                    TYPE_SCRIPT, 
+                                    TYPE_PLUGIN ] 
+        # TYPE_PLUGIN
+        self.pluginDisplayList  = [ TYPE_PLUGIN_MUSIC, 
+                                    TYPE_PLUGIN_PICTURES, 
+                                    TYPE_PLUGIN_PROGRAMS, 
+                                    TYPE_PLUGIN_VIDEO, 
+                                    TYPE_PLUGIN_WEATHER ]
+        
+        # TYPE_SCRAPER
+        self.scraperDisplayList = [ TYPE_SCRAPER_MUSIC, TYPE_SCRAPER_VIDEO ]
 
-        self.itemTypeList      = self.configManager.typeList          # Liste des types des items geres (plugins, scripts, skins ...)
-        self.itemThumbList     = self.configManager.thumbList         # Liste des icones standards
-        self.rootDisplayList   = self.configManager.rootDisplayList   # Liste de la racine: Cette liste est un filtre ( utilisant l'index ) sur les listes downloadTypeList et localdirList
-        self.pluginDisplayList = self.configManager.pluginDisplayList # Liste des plugins : Cette liste est un filtre ( utilisant l'index ) sur les listes downloadTypeList et localdirList
-
+        
         self.curListType        = TYPE_ROOT
         self.currentItemList    = []
         self.index              = ""
@@ -111,7 +121,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
             except:
                 print_exc()
 
-        self.fileMgr            = fileMgr()
+        self.fileMgr = fileMgr()
 
 
     def onInit( self ):
@@ -149,7 +159,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                 #Traitement si selection d'un element de la liste
                 if self.pardir_not_hidden and self.getCurrentListPosition() == 0:
                     self.parentDir()
-                elif ( self.curListType == TYPE_ROOT or self.curListType == TYPE_PLUGIN ):
+                elif ( self.curListType == TYPE_ROOT or self.curListType == TYPE_PLUGIN or self.curListType == TYPE_SCRAPER ):
                     try: self.main_list_last_pos.append( self.getCurrentListPosition() )
                     except: self.main_list_last_pos.append( 0 )
                     self.curListType = self.currentItemList[ self.getCurrentListPosition()-self.pardir_not_hidden ].type # On extrait le type de l'item selectionne
@@ -203,14 +213,14 @@ class FileMgrWindow( xbmcgui.WindowXML ):
             item_path     = self.currentItemList[ self.index-self.pardir_not_hidden ].local_path # On extrait le chemin de l'item
             item_basename = os.path.basename( item_path )
 
-            if ( ( self.getListItem( self.index ).getProperty( "Running" ) == "true" ) or self.curListType == TYPE_ROOT or self.curListType == TYPE_PLUGIN ):
-                # liste des options pour skin ou l'add-ons en court d'utilisation
+            if ( ( self.getListItem( self.index ).getProperty( "Running" ) == "true" ) or self.curListType == TYPE_ROOT or self.curListType == TYPE_PLUGIN or self.curListType == TYPE_SCRAPER ):
+                # Options list for skin or add-ons currently in use
                 buttons = { 1003: _( 161 ), 1005: _( 185 ), 1006: _( 1002 ) }
-            elif ( self.curListType == TYPE_SCRIPT ) or ( self.itemTypeList.index(self.curListType) in self.pluginDisplayList ):
-                # liste des options pour plugins et scripts
+            elif ( self.curListType == TYPE_SCRIPT ) or ( self.curListType in self.pluginDisplayList ): 
+                # Options list for plugins, scripts and scrapers
                 buttons = { 1000: _( 160 ), 1001: _( 157 ), 1002: _( 156 ), 1003: _( 161 ), 1004: _( 162 ), 1005: _( 185 ), 1006: _( 1002 ) }
             else:
-                # liste des options pour skins et scrapers
+                # Options list for skins et scrapers
                 buttons = { 1001: _( 157 ), 1002: _( 156 ), 1003: _( 161 ), 1004: _( 162 ), 1005: _( 185 ), 1006: _( 1002 ) }
 
             if os.path.exists( os.path.join( item_path, "description.xml" ) ):
@@ -226,7 +236,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                 del infos
 
             elif selected == 1000: # Executer/Lancer
-                if ( self.itemTypeList.index(self.curListType) in self.pluginDisplayList ):
+                if ( self.curListType in self.pluginDisplayList ):
                     # Cas d'un sous-plugin (video, musique ...)
                     # window id's : http://xbmc.org/wiki/?title=Window_IDs
                     if ( self.curListType == TYPE_PLUGIN_VIDEO ):
@@ -237,6 +247,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                         command = "XBMC.ActivateWindow(10001,plugin://programs/%s/)" % ( item_basename, )
                     elif ( self.curListType == TYPE_PLUGIN_PICTURES ):
                         command = "XBMC.ActivateWindow(10002,plugin://pictures/%s/)" % ( item_basename, )
+                    #TODO: case of Weather plugin 
                 elif ( self.curListType == TYPE_SCRIPT ):
                     command = "XBMC.RunScript(%s)" % ( os.path.join( item_path, "default.py" ), )
 
@@ -250,7 +261,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                 # Renommer l'element
                 item_dirname  = os.path.dirname( item_path )
 
-                if ( self.curListType == TYPE_SCRAPER ):
+                if ( self.curListType in [ TYPE_SCRAPER_MUSIC, TYPE_SCRAPER_VIDEO]):
                     icon_path     = self.currentItemList[ self.index-self.pardir_not_hidden ].thumb # On extrait le chemin de l'icone
                     icon_basename = os.path.basename( icon_path )
                     default_basename = os.path.splitext( item_basename )[ 0 ]
@@ -261,7 +272,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                         # ne renomme pas l'item si le nouveau nom est le meme que le default
                         if default_basename != inputText:
                             self.fileMgr.renameItem( item_dirname, item_basename, inputText + '.xml' )
-                            if not icon_path in self.itemThumbList:
+                            if icon_path  != get_thumb( self.curListType ):
                                 self.fileMgr.renameItem( item_dirname, icon_basename, icon_basename.replace( os.path.splitext(icon_basename)[0], inputText) )
                             xbmcgui.Dialog().ok( _( 155 ), inputText )
                             self.updateDataAndList()
@@ -278,12 +289,12 @@ class FileMgrWindow( xbmcgui.WindowXML ):
 
             elif selected == 1002:
                 # Supprimer l'element
-                if ( self.curListType == TYPE_SCRAPER ):
+                if ( self.curListType in [ TYPE_SCRAPER_MUSIC, TYPE_SCRAPER_VIDEO]):
                     icon_path      = self.currentItemList[ self.index-self.pardir_not_hidden ].thumb # On extrait le chemin de l'icone
                     item_shortname = os.path.splitext(item_basename)[0] # Sans extension
                     if xbmcgui.Dialog().yesno( _( 158 )%item_shortname, _( 159 )%item_shortname ):
                         self.fileMgr.deleteItem( item_path )
-                        if not icon_path in self.itemThumbList:
+                        if icon_path  != get_thumb( self.curListType ):
                             self.fileMgr.deleteItem( icon_path )
                         self.updateDataAndList()
                 else:
@@ -293,7 +304,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
 
             elif selected == 1003:
                 # copier l'element
-                if ( self.curListType == TYPE_SCRAPER ):
+                if ( self.curListType in [ TYPE_SCRAPER_MUSIC, TYPE_SCRAPER_VIDEO]):
                     #TODO : A optimiser, on doit pouvoir faire mieux
                     item_dirname   = os.path.dirname( item_path )
                     item_shortname = os.path.splitext(item_basename)[0] # Sans extension
@@ -336,7 +347,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
 
             elif selected == 1004:
                 # deplacer l'element
-                if ( self.curListType == TYPE_SCRAPER ):
+                if ( self.curListType in [ TYPE_SCRAPER_MUSIC, TYPE_SCRAPER_VIDEO]):
                     #TODO : A optimiser, on doit pouvoir faire mieux
                     item_dirname   = os.path.dirname( item_path )
                     item_shortname = os.path.splitext(item_basename)[0] # Sans extension
@@ -397,7 +408,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
     def _switch_media( self ):
         try:
             from DialogContextMenu import show_context_menu
-            buttons = { 1000: _( 11 ), 1001: _( 12 ), 1002: _( 13 ), 1003: _( 14 ), 1004: _( 18 ), 1005: _( 16 ), 1006: _( 15 ), 1007: _( 17 ) }
+            buttons = { 1000: _( 11 ), 1001: _( 12 ), 1002: _( 1201 ), 1003: _( 1202 ), 1004: _( 13 ), 1005: _( 14 ), 1006: _( 18 ), 1007: _( 16 ), 1008: _( 15 ), 1009: _( 17 ), 1010: _( 1801 ) }
             selected = show_context_menu( buttons, self.get_view_mode() )
             del show_context_menu
             switch = None
@@ -408,23 +419,32 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                 switch = TYPE_SCRAPER
                 self.index = 1
             elif selected == 1002:
+                switch = TYPE_SCRAPER_MUSIC
+                self.index = 0
+            elif selected == 1003:
+                switch = TYPE_SCRAPER_VIDEO
+                self.index = 1
+            elif selected == 1004:
                 switch = TYPE_SCRIPT
                 self.index = 2
-            elif selected == 1003:
+            elif selected == 1005:
                 switch = TYPE_PLUGIN
                 self.index = 3
-            elif selected == 1004:
+            elif selected == 1006:
                 switch = TYPE_PLUGIN_VIDEO
                 self.index = 3
-            elif selected == 1005:
+            elif selected == 1007:
                 switch = TYPE_PLUGIN_PICTURES
                 self.index = 1
-            elif selected == 1006:
+            elif selected == 1008:
                 switch = TYPE_PLUGIN_MUSIC
                 self.index = 0
-            elif selected == 1007:
+            elif selected == 1009:
                 switch = TYPE_PLUGIN_PROGRAMS
                 self.index = 2
+            elif selected == 1010:
+                switch = TYPE_PLUGIN_WEATHER
+                self.index = 4
             if switch:
                 self.curListType = switch
                 self.updateDataAndList()
@@ -440,8 +460,10 @@ class FileMgrWindow( xbmcgui.WindowXML ):
             try:
                 # on verifie si on est un sous plugin
                 #if ( TYPE_PLUGIN + ' ' in self.curListType ):
-                if ( self.itemTypeList.index(self.curListType) in self.pluginDisplayList ):
+                if ( self.curListType in self.pluginDisplayList ):
                     self.curListType = TYPE_PLUGIN
+                elif ( self.curListType in self.scraperDisplayList ):
+                    self.curListType = TYPE_SCRAPER
                 else:
                     # cas standard
                     self.curListType = TYPE_ROOT
@@ -470,7 +492,7 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                 self._close_dialog()
 
             elif ( action == ACTION_PARENT_DIR ):
-                 self.parentDir()
+                self.parentDir()
 
             elif ( action == ACTION_SHOW_INFO ):
                 # Affiche le description.xml de l'item selectionner si il existe
@@ -480,6 +502,8 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                     import infos
                     infos.show_info( item_path )
                     del infos
+                else:
+                    xbmcgui.Dialog().ok( _( 599 ), _( 240 ) )
         except:
             print "FileMgrWindow::onAction: Exception"
             print_exc()
@@ -538,56 +562,60 @@ class FileMgrWindow( xbmcgui.WindowXML ):
 
             # Recuperation des infos
             if ( self.curListType == TYPE_ROOT ):
-                for index, filterIdx in enumerate( self.rootDisplayList ):
-                    listItemObj = ListItemObject( type=self.itemTypeList[ filterIdx ], name=self.itemTypeList[ filterIdx ], local_path=self.localdirList[ filterIdx ], thumb=self.itemThumbList[ filterIdx ] )
-                    self.currentItemList.append(listItemObj)
+                for item in self.rootDisplayList:
+                    listItemObj = ListItemObject( type = item, name = get_type_title( item ), local_path = get_install_path( item ), thumb = get_thumb( item ) )
+                    self.currentItemList.append( listItemObj )
             elif ( self.curListType == TYPE_PLUGIN ):
-                for index, filterIdx in enumerate( self.pluginDisplayList ):
-                    listItemObj = ListItemObject( type=self.itemTypeList[ filterIdx ], name=self.itemTypeList[ filterIdx ], local_path=self.localdirList[ filterIdx ], thumb=self.itemThumbList[ filterIdx ] )
-                    self.currentItemList.append(listItemObj)
+                for item in self.pluginDisplayList:
+                    listItemObj = ListItemObject( type = item, name = get_type_title( item ), local_path = get_install_path( item ), thumb = get_thumb( item ) )
+                    self.currentItemList.append( listItemObj )
+            elif ( self.curListType == TYPE_SCRAPER ):
+                for item in self.scraperDisplayList:
+                    listItemObj = ListItemObject( type = item, name = get_type_title( item ), local_path = get_install_path( item ), thumb = get_thumb( item ) )
+                    self.currentItemList.append( listItemObj )
             #elif TYPE_PLUGIN + ' ' in self.curListType:
-            elif ( ( self.curListType == TYPE_SCRIPT ) or ( self.itemTypeList.index(self.curListType) in self.pluginDisplayList ) ):
-                listdir = self.fileMgr.listDirFiles( self.localdirList[ self.itemTypeList.index(self.curListType) ] )
+            elif ( self.curListType in [ TYPE_SCRIPT, TYPE_PLUGIN_MUSIC, TYPE_PLUGIN_PICTURES, TYPE_PLUGIN_PROGRAMS, TYPE_PLUGIN_VIDEO, TYPE_PLUGIN_WEATHER ] ):
+                listdir = self.fileMgr.listDirFiles( get_install_path( self.curListType ) )
                 listdir.sort( key=str.lower )
-                for index, item  in enumerate( listdir ):
+                for item  in listdir:
                     # Note:  dans le futur on pourra ici initialiser 'thumb' avec l'icone du script, plugin, themes ...
                     #        pour le moment on prend l'icone correspondant au type
-                    script_path    = os.path.join(self.localdirList[ self.itemTypeList.index(self.curListType) ],item)
-                    thumbnail_path = os.path.join(script_path, "default.tbn")
+                    script_path    = os.path.join( get_install_path( self.curListType ), item )
+                    thumbnail_path = os.path.join( script_path, "default.tbn" )
                     if not os.path.exists(thumbnail_path):
-                        thumbnail_path = self.itemThumbList[ self.itemTypeList.index(self.curListType) ]
-                    listItemObj = ListItemObject( type=self.curListType, name=item, local_path=script_path, thumb=thumbnail_path )
-                    self.currentItemList.append(listItemObj)
-            elif ( self.curListType == TYPE_SCRAPER ):
-                listdir = self.fileMgr.listDirFiles( self.localdirList[ self.itemTypeList.index(self.curListType) ] )
+                        thumbnail_path = get_thumb( self.curListType )
+                    listItemObj = ListItemObject( type = self.curListType, name = item, local_path = script_path, thumb = thumbnail_path )
+                    self.currentItemList.append( listItemObj )
+            elif ( self.curListType in [ TYPE_SCRAPER_MUSIC, TYPE_SCRAPER_VIDEO ] ):
+                listdir = self.fileMgr.listDirFiles( get_install_path( self.curListType ) )
                 listdir.sort( key=str.lower )
-                for index, item  in enumerate( listdir ):
+                for item  in listdir:
                     if (item.endswith( '.xml' )):
                         # on cherche l'image
-                        scraper_base_path    = self.localdirList[ self.itemTypeList.index(self.curListType) ]
+                        scraper_base_path    = get_install_path( self.curListType )
                         scraper_thumb = None
                         if ( os.path.splitext(item)[0] + '.gif' in listdir ):
-                            scraper_thumb = os.path.join(scraper_base_path, os.path.splitext(item)[0] + '.gif' )
+                            scraper_thumb = os.path.join( scraper_base_path, os.path.splitext(item)[0] + '.gif' )
                         elif ( os.path.splitext(item)[0] + '.jpg' in listdir ):
-                            scraper_thumb = os.path.join(scraper_base_path, os.path.splitext(item)[0] + '.jpg' )
+                            scraper_thumb = os.path.join( scraper_base_path, os.path.splitext(item)[0] + '.jpg' )
                         elif ( os.path.splitext(item)[0] + '.png' in listdir ):
-                            scraper_thumb = os.path.join(scraper_base_path, os.path.splitext(item)[0] + '.png' )
+                            scraper_thumb = os.path.join( scraper_base_path, os.path.splitext(item)[0] + '.png' )
                         elif ( os.path.splitext(item)[0] + '.jpeg' in listdir ):
-                            scraper_thumb = os.path.join(scraper_base_path, os.path.splitext(item)[0] + '.jpeg' )
+                            scraper_thumb = os.path.join( scraper_base_path, os.path.splitext(item)[0] + '.jpeg' )
                         elif ( os.path.splitext(item)[0] + '.tbn' in listdir ):
-                            scraper_thumb = os.path.join(scraper_base_path, os.path.splitext(item)[0] + '.tbn' )
+                            scraper_thumb = os.path.join( scraper_base_path, os.path.splitext(item)[0] + '.tbn' )
                         else:
-                            scraper_thumb = self.itemThumbList[ self.itemTypeList.index(self.curListType) ]
-                        listItemObj = ListItemObject( type=self.curListType, name=os.path.splitext(item)[0], local_path=os.path.join(self.localdirList[ self.itemTypeList.index(self.curListType) ],item), thumb=scraper_thumb )
-                        self.currentItemList.append(listItemObj)
+                            scraper_thumb = get_thumb( self.curListType )
+                        listItemObj = ListItemObject( type = self.curListType, name = os.path.splitext(item)[0], local_path = os.path.join( scraper_base_path, item ), thumb = scraper_thumb )
+                        self.currentItemList.append( listItemObj )
             else:
-                listdir = self.fileMgr.listDirFiles( self.localdirList[ self.itemTypeList.index(self.curListType) ] )
+                listdir = self.fileMgr.listDirFiles( get_install_path( self.curListType ) )
                 listdir.sort( key=str.lower )
-                for index, item  in enumerate( listdir ):
+                for item  in listdir:
                     # Note:  dans le futur on pourra ici initialiser 'thumb' avec l'icone du script, plugin, themes ...
                     #        pour le moment on prend l'icone correspondant au type
-                    listItemObj = ListItemObject( type=self.curListType, name=item, local_path=os.path.join(self.localdirList[ self.itemTypeList.index(self.curListType) ],item), thumb=self.itemThumbList[ self.itemTypeList.index(self.curListType) ] )
-                    self.currentItemList.append(listItemObj)
+                    listItemObj = ListItemObject( type = self.curListType, name = item, local_path = os.path.join( get_install_path( self.curListType ),item ), thumb = get_thumb( self.curListType ) )
+                    self.currentItemList.append( listItemObj )
         except:
             print "FileMgrWindow: Exception durant la recuperation des donnees"
             print_exc()
@@ -644,6 +672,9 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                             num_item += len( os.listdir( item.local_path+os.sep+"Programs" ) )
                             num_item += len( os.listdir( item.local_path+os.sep+"Video" ) )
                             num_item += len( os.listdir( item.local_path+os.sep+"weather" ) )
+                        elif ( item.name == TYPE_SCRAPER != self.curListType ):
+                            num_item = len( os.listdir( item.local_path+os.sep+"music" ) )
+                            num_item += len( os.listdir( item.local_path+os.sep+"video" ) )
                         else:
                             num_item = len( os.listdir( item.local_path ) )
                         displayListItem.setProperty( "objects", str( num_item ) )
@@ -671,16 +702,28 @@ class FileMgrWindow( xbmcgui.WindowXML ):
         except:
             print_exc()
 
+
     def check_w_rights(self):
         """
-        Verifie les droits en ecriture des repertoires principaux dont on a besoin
+        Check we have permissions for writing
         """
+        
         set_write_access = False
         if ( ( SYSTEM_PLATFORM == "linux" ) or ( SYSTEM_PLATFORM == "osx" ) ):
+
+            installpaths = [ get_install_path( TYPE_SKIN ), 
+                             get_install_path( TYPE_SCRAPER_MUSIC ), 
+                             get_install_path( TYPE_SCRAPER_VIDEO ), 
+                             get_install_path( TYPE_SCRIPT ), 
+                             get_install_path( TYPE_PLUGIN_MUSIC ), 
+                             get_install_path( TYPE_PLUGIN_PICTURES ), 
+                             get_install_path( TYPE_PLUGIN_PROGRAMS ), 
+                             get_install_path( TYPE_PLUGIN_VIDEO ), 
+                             get_install_path( TYPE_PLUGIN_WEATHER ) ]
+
             # On fait un check rapide pour voir si on a les droit en ecriture
-            for index, filterIdx in enumerate( self.rootDisplayList ):
-                local_path=self.localdirList[ filterIdx ]
-                if self.fileMgr.linux_is_write_access( local_path ):
+            for local_path in installpaths:
+                if not self.fileMgr.linux_is_write_access( local_path ):
                     # Au moins un element n'a pas les droit, on ne pas pas plus loin et on demande le mot de passe
                     set_write_access = True
                     break
@@ -692,10 +735,10 @@ class FileMgrWindow( xbmcgui.WindowXML ):
                 keyboard.doModal()
                 if keyboard.isConfirmed():
                     password = keyboard.getText()
-                    for index, filterIdx in enumerate( self.rootDisplayList ):
-                        local_path=self.localdirList[ filterIdx ]
+                    for local_path in installpaths:
                         if self.fileMgr.linux_is_write_access( local_path ):
                             self.fileMgr.linux_set_write_access( local_path, password )
+    
 
     def _close_dialog( self ):
         #xbmc.sleep( 100 )

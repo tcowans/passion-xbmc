@@ -14,6 +14,7 @@ __all__ = [
     "TYPE_PLUGIN_PICTURES",
     "TYPE_PLUGIN_PROGRAMS",
     "TYPE_PLUGIN_VIDEO",
+    "TYPE_PLUGIN_WEATHER",
     "TYPE_NEW",
     "INDEX_SKIN",
     "INDEX_SCRAPER",
@@ -25,6 +26,7 @@ __all__ = [
     "INDEX_PLUGIN_PICTURES",
     "INDEX_PLUGIN_PROGRAMS",
     "INDEX_PLUGIN_VIDEO",
+    "INDEX_PLUGIN_WEATHER",
     "THUMB_NOT_AVAILABLE",
     "THUMB_SKIN",
     "THUMB_SCRAPER",
@@ -36,6 +38,7 @@ __all__ = [
     "THUMB_PLUGIN_PICTURES",
     "THUMB_PLUGIN_PROGRAMS",
     "THUMB_PLUGIN_VIDEO",
+    "THUMB_PLUGIN_WEATHER",
     "TITLE_ROOT",
     "TITLE_SKIN",
     "TITLE_SCRAPER",
@@ -47,6 +50,7 @@ __all__ = [
     "TITLE_PLUGIN_PICTURES",
     "TITLE_PLUGIN_PROGRAMS",
     "TITLE_PLUGIN_VIDEO",
+    "TITLE_PLUGIN_WEATHER",
     "get_install_path",
     "get_thumb",
     "get_type_title",
@@ -81,6 +85,7 @@ TYPE_PLUGIN_MUSIC       = "PLUGIN_MUSIC"
 TYPE_PLUGIN_PICTURES    = "PLUGIN_PICTURES"
 TYPE_PLUGIN_PROGRAMS    = "PLUGIN_PROGRAMS"
 TYPE_PLUGIN_VIDEO       = "PLUGIN_VIDEO"
+TYPE_PLUGIN_WEATHER     = "PLUGIN_WEATHER"
 TYPE_SCRIPT_CAT         = "SCRIPT_CAT"
 TYPE_NEW                = "NEW"
 
@@ -96,6 +101,7 @@ TITLE_PLUGIN_MUSIC       = _( 15 )
 TITLE_PLUGIN_PICTURES    = _( 16 )
 TITLE_PLUGIN_PROGRAMS    = _( 17 )
 TITLE_PLUGIN_VIDEO       = _( 18 )
+TITLE_PLUGIN_WEATHER     = _( 1801 )
 TITLE_NEW                = _( 22 )
 #TITLE_ALL                = _( 2201 )
 
@@ -110,9 +116,10 @@ INDEX_PLUGIN_MUSIC      = 6
 INDEX_PLUGIN_PICTURES   = 7
 INDEX_PLUGIN_PROGRAMS   = 8
 INDEX_PLUGIN_VIDEO      = 9
-INDEX_SCRIPT_CAT        = 10
-INDEX_NEW               = 11
-INDEX_SKIN_NIGHTLY      = 12
+INDEX_PLUGIN_WEATHER    = 10
+INDEX_SCRIPT_CAT        = 11
+INDEX_NEW               = 12
+INDEX_SKIN_NIGHTLY      = 13
 
 THUMB_NOT_AVAILABLE     = "IPX-NotAvailable2.png"
 THUMB_SKIN              = "IPX-defaultSkin.png"
@@ -145,6 +152,7 @@ supportedAddonList = [ TYPE_SCRAPER,
                        TYPE_PLUGIN_PICTURES,
                        TYPE_PLUGIN_PROGRAMS,
                        TYPE_PLUGIN_VIDEO,
+                       TYPE_PLUGIN_WEATHER,
                        TYPE_SCRIPT_CAT,
                        TYPE_NEW ]
 
@@ -159,6 +167,7 @@ item_path = { TYPE_SCRAPER         : DIR_SCRAPER,
               TYPE_PLUGIN_PICTURES : DIR_PLUGIN_PICTURES, 
               TYPE_PLUGIN_PROGRAMS : DIR_PLUGIN_PROGRAMS, 
               TYPE_PLUGIN_VIDEO    : DIR_PLUGIN_VIDEO,
+              TYPE_PLUGIN_WEATHER  : DIR_PLUGIN_WEATHER,
               TYPE_SCRIPT_CAT      : None,
               TYPE_NEW             : None }
 
@@ -173,6 +182,7 @@ item_thumb = { TYPE_SCRAPER         : THUMB_SCRAPER,
                TYPE_PLUGIN_PICTURES : THUMB_PLUGIN_PICTURES, 
                TYPE_PLUGIN_PROGRAMS : THUMB_PLUGIN_PROGRAMS, 
                TYPE_PLUGIN_VIDEO    : THUMB_PLUGIN_VIDEO,
+               TYPE_PLUGIN_WEATHER  : THUMB_PLUGIN_WEATHER,
                TYPE_SCRIPT_CAT      : THUMB_SCRIPT,
                TYPE_NEW             : THUMB_NEW }
 
@@ -187,6 +197,7 @@ item_title = { TYPE_SCRAPER         : TITLE_SCRAPER,
                TYPE_PLUGIN_PICTURES : TITLE_PLUGIN_PICTURES, 
                TYPE_PLUGIN_PROGRAMS : TITLE_PLUGIN_PROGRAMS, 
                TYPE_PLUGIN_VIDEO    : TITLE_PLUGIN_VIDEO,
+               TYPE_PLUGIN_WEATHER  : TITLE_PLUGIN_WEATHER,
                TYPE_SCRIPT_CAT      : TITLE_SCRIPT, 
                TYPE_NEW             : TITLE_NEW}
 
@@ -201,6 +212,7 @@ item_index = { TYPE_SCRAPER         : INDEX_SCRAPER,
                TYPE_PLUGIN_PICTURES : INDEX_PLUGIN_PICTURES, 
                TYPE_PLUGIN_PROGRAMS : INDEX_PLUGIN_PROGRAMS, 
                TYPE_PLUGIN_VIDEO    : INDEX_PLUGIN_VIDEO,
+               TYPE_PLUGIN_WEATHER  : INDEX_PLUGIN_WEATHER,
                TYPE_SCRIPT_CAT      : INDEX_SCRIPT_CAT,
                TYPE_NEW             : INDEX_NEW }
 

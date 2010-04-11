@@ -18,8 +18,8 @@ __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/scripts/Install
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center, [ALL]"
 
-__version__      = "pre-2.0"
-__statut__       = "RC3" #(dev,svn,release,etc)
+__version__      = "2.0"
+__statut__       = "release" #(dev,svn,release,etc)
 
 
 # don't edit __date__ and __svn_revision__

@@ -202,9 +202,10 @@ class MainWindow( xbmcgui.WindowXML ):
             self.verifrep( self.CacheDir )
         self.verifrep( self.configManager.pluginProgDir )
 
-        # Change permission on Linux platform
-        if SYSTEM_PLATFORM == "linux":
-            self.linux_chmod( self.scraperDir )
+        # Check permission on Linux/Mac platforms
+        self.check_w_rights()
+#        if SYSTEM_PLATFORM == "linux":
+#            self.linux_chmod( self.scraperDir )
         
 #        #TODO: A nettoyer, ton PMIIIDir n'est pas defini pour XBOX sans le test si dessous
 #        if self.USRPath == True:
@@ -1066,31 +1067,72 @@ class MainWindow( xbmcgui.WindowXML ):
             print "verifrep - Exception durant la creation du repertoire: %s" % folder
             print_exc()
 
-    def linux_chmod( self, path ):
+    
+    def check_w_rights(self):
         """
-        Effectue un chmod sur un repertoire pour ne plus etre bloque par les droits root sur plateforme linux
+        Check we have permissions for writing
         """
-        Wtest = os.access( path, os.W_OK )
-        if Wtest == True:
-            self.rightstest = True
-            print "linux chmod rightest OK"
-        else:
-            xbmcgui.Dialog().ok( _( 19 ), _( 20 ) )
-            keyboard = xbmc.Keyboard( "", _( 21 ), True )
-            keyboard.doModal()
-            if keyboard.isConfirmed():
-                password = keyboard.getText()
-                PassStr = "echo %s | "%password
-                ChmodStr = "sudo -S chmod 777 -R %s"%path
-                try:
-                    os.system( PassStr + ChmodStr )
-                    self.rightstest = True
-                except:
-                    self.rightstest = False
-                    print "bypass: erreur CHMOD %s" % path
-                    print_exc()
-            else:
-                self.rightstest = False
+        
+        set_write_access = False
+        if ( ( SYSTEM_PLATFORM == "linux" ) or ( SYSTEM_PLATFORM == "osx" ) ):
+            from Item import *
+            from FileManager import fileMgr
+
+            installpaths = [ get_install_path( TYPE_SKIN ), 
+                              get_install_path( TYPE_SCRAPER_MUSIC ), 
+                              get_install_path( TYPE_SCRAPER_VIDEO ), 
+                              get_install_path( TYPE_SCRIPT ), 
+                              get_install_path( TYPE_PLUGIN_MUSIC ), 
+                              get_install_path( TYPE_PLUGIN_PICTURES ), 
+                              get_install_path( TYPE_PLUGIN_PROGRAMS ), 
+                              get_install_path( TYPE_PLUGIN_VIDEO ), 
+                              get_install_path( TYPE_PLUGIN_WEATHER ) ]
+
+            fileMgr = fileMgr()
+            # On fait un check rapide pour voir si on a les droit en ecriture
+            for local_path in installpaths:
+                if not fileMgr.linux_is_write_access( local_path ):
+                    # Au moins un element n'a pas les droit, on ne pas pas plus loin et on demande le mot de passe
+                    set_write_access = True
+                    break
+
+            if ( set_write_access == True ):
+                # On parcoure tous les repertoire et on met a jour les droits si besoin
+                xbmcgui.Dialog().ok( _( 19 ), _( 20 ) )
+                keyboard = xbmc.Keyboard( "", _( 21 ), True )
+                keyboard.doModal()
+                if keyboard.isConfirmed():
+                    password = keyboard.getText()
+                    for local_path in installpaths:
+                        if fileMgr.linux_is_write_access( local_path ):
+                            fileMgr.linux_set_write_access( local_path, password )
+            del fileMgr
+
+#    def linux_chmod( self, path ):
+#        """
+#        Effectue un chmod sur un repertoire pour ne plus etre bloque par les droits root sur plateforme linux
+#        """
+#        Wtest = os.access( path, os.W_OK )
+#        if Wtest == True:
+#            self.rightstest = True
+#            print "linux chmod rightest OK"
+#        else:
+#            xbmcgui.Dialog().ok( _( 19 ), _( 20 ) )
+#            keyboard = xbmc.Keyboard( "", _( 21 ), True )
+#            keyboard.doModal()
+#            if keyboard.isConfirmed():
+#                password = keyboard.getText()
+#                PassStr = "echo %s | "%password
+#                ChmodStr = "sudo -S chmod 777 -R %s"%path
+#                try:
+#                    os.system( PassStr + ChmodStr )
+#                    self.rightstest = True
+#                except:
+#                    self.rightstest = False
+#                    print "bypass: erreur CHMOD %s" % path
+#                    print_exc()
+#            else:
+#                self.rightstest = False
 
     def processOldDownload( self, itemInstaller ):
         """
