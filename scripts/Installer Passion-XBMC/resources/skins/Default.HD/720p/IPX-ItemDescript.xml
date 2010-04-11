@@ -91,7 +91,7 @@
 							<posy>0</posy>
 							<width>675</width>
 							<height>380</height>
-							<texture background="true">$INFO[Container(48).ListItem.Property(fanartpicture)]</texture>
+							<texture>$INFO[Container(48).ListItem.Property(fanartpicture)]</texture>
 							<bordertexture border="5">IPX-button-nofocus.png</bordertexture>
 							<bordersize>4</bordersize>
 							<aspectratio>keep</aspectratio>
@@ -164,7 +164,7 @@
 						<aspectratio>keep</aspectratio>
 						<bordertexture border="5">IPX-button-nofocus.png</bordertexture>
 						<bordersize>4</bordersize>
-						<texture background="true">$INFO[Container(48).ListItem.Icon]</texture>
+						<texture>$INFO[Container(48).ListItem.Icon]</texture>
 					</control>
 					<control type="image">
 						<posx>4</posx>
