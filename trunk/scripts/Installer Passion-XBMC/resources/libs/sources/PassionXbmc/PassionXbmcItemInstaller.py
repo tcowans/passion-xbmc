@@ -150,11 +150,11 @@ class PassionXbmcItemInstaller(ArchItemInstaller):
                         status = "ERRORFILENAME"
                         print_exc()
                     
-                    if self.filesize <= 0:
-                        try:
-                            self.filesize = int( headers['Content-Length'] )
-                        except:
-                            self.filesize = 0
+                    #if self.filesize <= 0:
+                    try:
+                        self.filesize = int( headers['Content-Length'] )
+                    except:
+                        pass
 
                 except Exception, e:
                     self.filename = "unknownfilename"

@@ -566,7 +566,6 @@ class MainWindow( xbmcgui.WindowXML ):
                 #print "Download via itemInstaller"
                 dp = xbmcgui.DialogProgress()
                 dp.create(_( 137 ))
-                #status, destination = itemInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )
                 status, destination = itemInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )
     
                 dp.close()
