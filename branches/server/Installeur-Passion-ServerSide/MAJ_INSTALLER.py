@@ -135,18 +135,6 @@ def go():
 
         DIALOG_PROGRESS.create( dialog_lang[0], dialog_lang[1], dialog_lang[2] )
         
-#        if get_system_platform() == "osx":
-#            print "Platform is MAC OSX : Current update is not compatible with MACOSX"
-#            print "Stopping update ..."
-#            
-#            dialogInfo = xbmcgui.Dialog()
-#            if __language__ == 'french':
-#                result = dialogInfo.ok("Installeur Passion-XBMC - Mise a jour", "Désolé, cette mise a jour n'est pas encore disponible pour MAC OSX", "Mise a jour annulée")
-#            else:
-#                result = dialogInfo.ok("Installer Passion-XBMC - Update", "Sorry this update is not yet available for MAC OSX", "Update cancelled")
-#        else:
-#            print "Other platforme"
-
         DIALOG_PROGRESS.update( -1, dialog_lang[1], dialog_lang[2], dialog_lang[3] )
         xbmc.sleep(100)
             
@@ -157,13 +145,14 @@ def go():
         config = ConfigParser.ConfigParser()
         config.read(confmaj)
     
-        passiondir  = config.get('Localparam', 'passiondir')
+        passiondir  = config.get('Localparam', 'PassionDir')
         installDir  = config.get('Localparam', 'scriptDir')
         archive     = config.get('Localparam', 'Archive')
         script      = config.get('Localparam', 'Scripttolaunch')
         
         SPECIAL_PROFILE_DIR = xbmc.translatePath( "special://profile/" )
-        if PLATFORM_MAC or not os.path.isdir( SPECIAL_PROFILE_DIR  ): SPECIAL_PROFILE_DIR = xbmc.translatePath( "P:\\" )
+        #if PLATFORM_MAC or not os.path.isdir( SPECIAL_PROFILE_DIR  ): SPECIAL_PROFILE_DIR = xbmc.translatePath( "P:\\" )
+        if not os.path.isdir( SPECIAL_PROFILE_DIR  ): SPECIAL_PROFILE_DIR = xbmc.translatePath( "P:\\" )
         
         SPECIAL_SCRIPT_DATA = os.path.join( SPECIAL_PROFILE_DIR, "script_data", "Installer Passion-XBMC" )
 
