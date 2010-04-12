@@ -55,15 +55,11 @@ class PassionFtpBrowser(Browser):
         self.rightstest         = ""
         self.CACHEDIR           = self.configManager.CACHEDIR
 
-        # Connection au serveur FTP
+        # Connection to FTP server
         try:
 
-            #self.passionFTPCtrl = FtpDownloadCtrl( self.host, self.user, self.password, self.remotedirList, self.localdirList, self.downloadTypeList, self.CACHEDIR )
             self.passionFTPCtrl = FtpDownloadCtrl( self.host, self.user, self.password, self.remotedirList, self.CACHEDIR )
             self.connected = True
-
-            #self.updateList()
-
         except:
             print "PassionFtpBrowser::__init__: Exception durant la connection FTP"
             print "Impossible de se connecter au serveur FTP: %s" % self.host

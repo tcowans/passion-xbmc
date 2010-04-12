@@ -105,6 +105,7 @@ TITLE_PLUGIN_WEATHER     = _( 1801 )
 TITLE_NEW                = _( 22 )
 #TITLE_ALL                = _( 2201 )
 
+# Note: those indexes are also used in CONF.py careful with any changes
 #INDEX_ROOT              = None
 INDEX_SKIN              = 0
 INDEX_SCRAPER           = 1
