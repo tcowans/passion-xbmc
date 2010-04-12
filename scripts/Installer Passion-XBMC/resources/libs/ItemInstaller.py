@@ -264,12 +264,11 @@ class ArchItemInstaller(ItemInstaller):
     
                     if dirName == "":
                         installError = _( 139 ) % os.path.basename( self.downloadArchivePath )
-                        print "Erreur durant l'extraction de %s - impossible d'extraire le nom du repertoire" % os.path.basename( self.downloadArchivePath )
+                        print "Error during the extraction of %s - impossible to extract the name of the directory " % os.path.basename( self.downloadArchivePath )
                         status = "ERROR"
                     else:
-                        # Extraction sucessfull
+                        # Extraction successful
                         self.destinationPath = os.path.join( self.typeInstallPath, os.path.basename( file_path ) )
-                        #self.installNameList = [ os.path.basename( file_path ) ] # For the future if we manage package of addons
                         self.installName = os.path.basename( file_path )
                         self.extractedDirPath = file_path
                         print self.destinationPath
@@ -289,27 +288,8 @@ class ArchItemInstaller(ItemInstaller):
         print self.destinationPath
         print "self.installName"
         print self.installName
-        #return status, self.type, self.destinationPath, self.extractedDirPath
         return status
 
-#    def isAlreadyInstalled( self ):
-#        """
-#        Check if extracted item is already installed
-#        Needs to be called after extractItem (destinationPath has to be determined fisrt)
-#        """
-#        result = False
-#        if self.type != Item.TYPE_SCRAPER:
-#            if os.path.exists( self.destinationPath ):
-#                result = True
-#        else:
-#            #Scraper
-#            if self.scraperName != None:
-#                # Check if scraper exist (only done on xml file)
-#                if os.path.exists( os.path.join( self.destinationPath, self.scraperName + ".xml" ) ):
-#                    result = True
-#                
-#        #TODO : Scraper already installed case
-#        return result
     
     def copyItem( self, msgFunc=None,progressBar=None ):
         """
@@ -393,7 +373,6 @@ class ArchItemInstaller(ItemInstaller):
                             # TODO: in case of skin check skin is not the one currently used
                             if self.copyItem( msgFunc=msgFunc, progressBar=progressBar ) == False:
                                 result = "ERROR"
-                                #self.status = "DOWNLOADED"
                                 self.status = "ERROR"
                                 print "installItem - Error during copy"
                             else:
@@ -406,6 +385,11 @@ class ArchItemInstaller(ItemInstaller):
                         print "installItem - Item is already installed - stopping install"
                         result = "ALREADYINSTALLED"
                         self.status = "EXTRACTED"
+                else:
+                    print "installItem - unknown error during extraction"
+                    result = "ERROR"
+                    self.status = "ERROR"
+                    
 #            elif statusDownload == "ERRORFILENAME":
 #                pass
             elif statusDownload == "CANCELED":
