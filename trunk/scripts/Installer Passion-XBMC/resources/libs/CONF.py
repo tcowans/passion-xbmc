@@ -72,20 +72,22 @@ TYPE_PLUGIN_VIDEO       = _( 18 )
 TYPE_NEW                = _( 22 )
 
 
+# Note: those indexes are also used in Item.py careful with any changes
 #INDEX_ROOT              = None
 INDEX_SKIN              = 0
-INDEX_SKIN_NIGHTLY      = 1
-INDEX_SCRAPER           = 2
-INDEX_SCRAPER_MUSIC     = 3
-INDEX_SCRAPER_VIDEO     = 4
-INDEX_SCRIPT            = 5
-INDEX_PLUGIN            = 6
-INDEX_PLUGIN_MUSIC      = 7
-INDEX_PLUGIN_PICTURES   = 8
-INDEX_PLUGIN_PROGRAMS   = 9
-INDEX_PLUGIN_VIDEO      = 10
+INDEX_SCRAPER           = 1
+INDEX_SCRAPER_MUSIC     = 2
+INDEX_SCRAPER_VIDEO     = 3
+INDEX_SCRIPT            = 4
+INDEX_PLUGIN            = 5
+INDEX_PLUGIN_MUSIC      = 6
+INDEX_PLUGIN_PICTURES   = 7
+INDEX_PLUGIN_PROGRAMS   = 8
+INDEX_PLUGIN_VIDEO      = 9
+INDEX_PLUGIN_WEATHER    = 10
 INDEX_SCRIPT_CAT        = 11
 INDEX_NEW               = 12
+INDEX_SKIN_NIGHTLY      = 13
 
 
 SRV_DIR_SKIN            = "/Themes/"
@@ -98,6 +100,7 @@ SRV_DIR_PLUGIN_MUSIC    = "/Plugins/Music/"
 SRV_DIR_PLUGIN_PICTURES = "/Plugins/Pictures/"
 SRV_DIR_PLUGIN_PROGRAMS = "/Plugins/Programs/"
 SRV_DIR_PLUGIN_VIDEO    = "/Plugins/Videos/"
+SRV_DIR_PLUGIN_WEATHER  = "/Plugins/weather/"
 
 THUMB_NOT_AVAILABLE     = "IPX-NotAvailable2.png"
 THUMB_SKIN              = "IPX-defaultSkin.png"
@@ -358,7 +361,6 @@ class configCtrl:
 #            self.remotedirList   = [ SRV_DIR_SKIN, SRV_DIR_SCRAPER, SRV_DIR_SCRIPT, SRV_DIR_PLUGIN, SRV_DIR_PLUGIN_MUSIC, 
 #                                     SRV_DIR_PLUGIN_PICTURES, SRV_DIR_PLUGIN_PROGRAMS, SRV_DIR_PLUGIN_VIDEO ]
             self.remotedirList   = [ SRV_DIR_SKIN, 
-                                     SRV_DIR_SKIN, 
                                      SRV_DIR_SCRAPER, 
                                      SRV_DIR_SCRAPER_MUSIC, 
                                      SRV_DIR_SCRAPER_VIDEO, 

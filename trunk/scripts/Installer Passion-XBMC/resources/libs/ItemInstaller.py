@@ -234,11 +234,9 @@ class ArchItemInstaller(ItemInstaller):
                 # Extraction in cache directory (if OK copy later on to the correct location)
                 file_path, OK = extractor.extract( self.downloadArchivePath, report=True )
 
-                #if self.type == Item.TYPE_SCRAPER:
                 if Item.TYPE_SCRAPER + "_" in self.type:
                     # Scrapers
                     # ----------------
-                    #self.extracter.extract( archive, self.localdirList[ self.downloadTypeList.index( self.type ) ] )
                     if ( OK == bool( file_path ) ) and os.path.exists( file_path ):
                         # Extraction sucessfull
                         self.destinationPath = self.typeInstallPath
@@ -247,13 +245,9 @@ class ArchItemInstaller(ItemInstaller):
                         # Get scraper file's name
                         try:
                             self.scraperFileList = os.listdir( str( self.extractedDirPath ) )
-                            #self.installNameList = os.listdir( str( self.extractedDirPath ) )
-                            #self.scraperName = os.path.splitext(self.scraperFileList[0])[0]
                             self.installName = os.path.splitext(self.scraperFileList[0])[0]
                             print "self.scraperFileList"
                             print self.scraperFileList
-                            #print "self.scraperName"
-                            #print self.scraperName
                         except Exception, e:
                             print "ArchItemInstaller: Exception in extractItem while listing scraper files: %s" % self.extractedDirPath
                             print_exc()
@@ -265,12 +259,12 @@ class ArchItemInstaller(ItemInstaller):
                     # Recuperons le nom du repertoire a l'interieur de l'archive:
                     dirName = ""
                     if ( OK == bool( file_path ) ) and os.path.exists( file_path ):
-                        dirName = os.path.basename( file_path )#self.extracter.getDirName( archive )
+                        dirName = os.path.basename( file_path )
                         
     
                     if dirName == "":
-                        installError = _( 139 ) % archive
-                        print "Erreur durant l'extraction de %s - impossible d'extraire le nom du repertoire" % archive
+                        installError = _( 139 ) % os.path.basename( self.downloadArchivePath )
+                        print "Erreur durant l'extraction de %s - impossible d'extraire le nom du repertoire" % os.path.basename( self.downloadArchivePath )
                         status = "ERROR"
                     else:
                         # Extraction sucessfull
