@@ -1,0 +1,383 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!--GENERAL STRINGS -->
+  <string id="0">[XBMC]-资源管理中心</string>
+  <string id="1">我的论坛</string>
+  <string id="2">选项设置</string>
+  <string id="3">帮助</string>
+  <string id="4">关于汉化</string>
+  <string id="5">资源管理</string>
+  <string id="6">Add-ons管理</string>
+  <string id="7">下载安装</string>
+  <string id="8">退出</string>
+
+  <string id="10">选择</string>
+  <string id="11">皮肤主题</string>
+  <string id="1101">Skins Nightly Builds Passion</string>
+  <string id="12">刮削器/过滤器</string>
+  <string id="1201">Music Scrapers</string>
+  <string id="1202">Video Scrapers</string>
+  <string id="13">脚本插件</string>
+  <string id="14">程序</string>
+  <string id="15">音乐插件</string>
+  <string id="16">图片插件</string>
+  <string id="17">程序插件</string>
+  <string id="18">视频插件</string>
+  <string id="1801">Weather Plugins</string>
+  <string id="19">要求密码</string>
+  <string id="20">请输入您的系统管理员密码</string>
+  <string id="21">系统管理员密码</string>
+  <string id="22">New Add-ons</string>
+  <string id="2201">All</string>
+
+  <string id="23">Message(s)</string>
+  <string id="24">页</string>
+  <string id="25">项目数</string>
+  <string id="26">项目</string>
+  <string id="27">的</string>
+
+  <string id="28">Nightly</string>
+  <string id="29">Nightly Builds</string>
+  <string id="30">Debug Info</string>
+  <string id="31">Caches Cleaner</string>
+  <string id="32">Servers</string>
+
+  <string id="41">Reset</string>
+  <string id="42">Hide Infos</string>
+  <string id="43">Hide CUBE³</string>
+  <string id="44">Rotate Icon</string>
+  <string id="45">Hide Compass</string>
+  <string id="46">Compass Icon</string>
+  <string id="47">Compass Fanart</string>
+
+  <string id="51">Hide Fanart</string>
+  <string id="52">Misc Options</string>
+  <string id="53">Changelog</string>
+  <string id="54">Build Availability</string>
+  <string id="55">Update XBMC</string>
+  <string id="56">Manage Exclude</string>
+  <string id="57">Limit:</string>
+  <string id="58">-</string>
+  <string id="59">-</string>
+  <string id="60">-</string>
+  <string id="61">-</string>
+  <string id="62">-</string>
+
+  <!--MISC STRINGS -->
+  <string id="100">请选择XBMC的安装目录</string>
+  <string id="101">系统配置</string>
+  <string id="102">[资源管理中心]检查更新版本中...</string>
+  <string id="103">正在创建[用户图形界面]</string>
+  <string id="104">载入信息中...</string>
+  <string id="105">有新版本可用</string>
+  <string id="106">你想更新此版本吗？</string>
+  <string id="107">RSS新闻订阅:</string>
+  <string id="108">&#32;无效!</string>
+
+  <string id="110">请稍候...</string>
+  <string id="111">错误</string>
+  <string id="112">在初始化,此动作被例外</string>
+  <string id="113">更新设置并退出</string>
+  <string id="114">更新设置并重新启动</string>
+  <string id="115">退出且不改变设置</string>
+  <string id="116">更改sources.xml文件, 确定吗?</string>
+  <string id="117">无法起作用</string>
+  <string id="118">您不能覆盖当前正在使用的皮肤主题</string>
+  <string id="119">您要下载的皮肤目前使用中[CR]下载之前请更改使用其他皮肤</string>
+  <string id="120">您没有管理员权限[CR]您不能安装此皮肤主题</string>
+  <string id="121">您没有管理员权限[CR]您不能安装此 刮削器/过滤器</string>
+  <string id="122">下载进度: %s</string>
+  <string id="123">下载完成: %d%%</string>
+  <string id="124">下载任务取消</string>
+  <string id="125">下载任务正在取消中</string>
+  <string id="126">你要删除已经下载的文件吗?</string>
+  <string id="127">目录删除</string>
+  <string id="128">目录:</string>
+  <string id="129">已被删除</string>
+  <string id="130">无法删除此目录</string>
+  <string id="131">文件删除</string>
+  <string id="132">文件:</string>
+  <string id="133">无法删除此文件</string>
+  <string id="134">下载完成</string>
+  <string id="135">已被下载到此目录中:</string>
+  <string id="136">安装进度: %s</string>
+  <string id="137">安装正在进行中 ...</string>
+  <string id="138">安装中 %s</string>
+  <string id="139">发生错误在 %s 提取过程中</string>
+  <string id="140">跳过在 %s 提取过程中</string>
+  <string id="141">安装完成</string>
+  <string id="142">%s 已安装</string>
+  <string id="143">完成</string>
+  <string id="144">错误 - 安装不成功</string>
+  <string id="145">请查看LOGS文件</string>
+  <string id="146">安装中止</string>
+  <string id="147">%s 安装已被中止</string>
+  <string id="148">未知错误</string>
+  <string id="149">%s 已经存在, 你想如何操作?</string>
+  <string id="150">删除目录</string>
+  <string id="151">重命名此目录</string>
+  <string id="152">覆盖此目录</string>
+  <string id="153">取消</string>
+  <string id="154">输入新名称:</string>
+  <string id="155">项目已被重命名:</string>
+  <string id="156">删除</string>
+  <string id="157">重命名</string>
+  <string id="158">删除 %s</string>
+  <string id="159">您确定要删除 %s ?</string>
+  <string id="160">运行</string>
+  <string id="161">复制</string>
+  <string id="162">移动</string>
+  <string id="163">确认档案复制</string>
+  <string id="164">确认档案移动</string>
+  <string id="165">复制这些文件?</string>
+  <string id="166">移动这些文件?</string>
+  <string id="167">浏览要复制的: %s</string>
+  <string id="168">浏览要移动的: %s</string>
+  <string id="169">操作已被中止</string>
+  <string id="170">复制失败</string>
+  <string id="171">至少有一个文件无法复制</string>
+  <string id="172">移动失败</string>
+  <string id="173">至少有一个文件无法移动</string>  
+  <string id="174">删除失败</string>
+  <string id="175">至少有一个文件无法删除</string>
+  <string id="176">复制中...</string>
+  <string id="177">移动中...</string>
+  <string id="178">从:&#32;</string>
+  <string id="179">到:&#32;</string>
+  <string id="180">确认文件下载</string>
+  <string id="181">您确定要下载这些文件?</string>
+
+  <string id="182">End of the extraction</string>
+
+  <string id="184">刷新</string>
+  <string id="185">计算大小</string>
+  <string id="186">计算文件夹大小</string>
+  <string id="187">UnRar: %i of %i items</string>
+  <string id="188">UnZip: %i of %i items</string>
+  <string id="189">Size: %.2f / %.2f Mb</string>
+  <string id="190">Size: %.2f / ? Mb</string>
+  <string id="191">kb/s</string>
+
+  <!--FORUM DIRECT INFOS STRINGS -->
+  <string id="199">Topics</string>
+  <string id="200">Profile</string>
+  <string id="201">Connect</string>
+  <string id="202">Forum List</string>
+  <string id="203">Forum Passion-XBMC</string>
+  <string id="205">Please enter your login Passion-XBMC</string>
+  <string id="206">Please now enter the password</string>
+  <string id="207">Incomplete identification</string>
+  <string id="208">Identification canceled</string>
+  <string id="209">Welcome</string>
+  <string id="210">You are connected!</string>
+  <string id="211">You have %i message!</string>
+  <string id="212">Personal messages</string>
+  <string id="213">%i Personal messages of recovery!</string>
+  <string id="214">Breathe deeply and repeat testing</string>
+  <string id="215">Goodbye</string>
+  <string id="216">Personal messages...</string>
+
+
+  <string id="236">请确认主题打开:</string>
+  <string id="237">跳过</string>
+  <string id="238">打开</string>
+  <string id="239">检索主题中...</string>
+  <string id="240">无更多资料！</string>
+  <string id="241">无法检索信息！</string>
+
+  <!-- STRINGS FOR LIST VIEW MODE -->
+  <string id="350">列表</string>
+  <string id="351">信息</string>
+  <string id="352">图标</string>
+  <string id="353"></string>
+  <string id="354"></string>
+  <string id="355"></string>
+  <string id="356">媒体</string>
+  <string id="357"></string>
+  <string id="358"></string>
+  <string id="359">旋转</string>
+  <string id="360">路径:</string>
+  <string id="361">大小:</string>
+  <string id="362">创建于:</string>
+  <string id="363">上次修改:</string>
+  <string id="364">上次访问:</string>
+  <string id="365">Contains</string>
+  <string id="366">Item(s)</string>
+
+  <!--SETTINGS STRINGS -->
+  <string id="499">版本: %s</string>
+  <string id="500">设置</string>
+  <string id="501">允许修改 sources.xml 这个配置文件</string>
+  <string id="502">主题每页限制</string>
+  <string id="503">[B]&#126;&#126;[/B]</string><!--illimited symbol -->
+  <string id="504">00|5|10|25|50|100</string><!--LIST LIMIT FOR TOPICS IN DIRECT INFOS: 00=illimited -->
+  <string id="505">皮肤色调</string>
+  <string id="506">无</string>
+  <string id="507">启用个性背景</string>
+  <string id="508">路径:</string>
+  <string id="509">你想删除此背景图片路径?</string>
+  <string id="510">在启动时检测更新版本</string>
+  <string id="511">RSS新闻订阅</string>
+  <string id="512">启用 [B]*script*[/B] [调试]模式</string>
+  <string id="513">在主菜单隐藏[我的论坛]按钮</string>
+  <string id="514">隐藏[父目录]的标志</string>
+  <string id="515">隐藏媒体扩展信息</string>
+  <string id="516">启用图片插件一样动态背景</string>
+  <string id="517">缩略图缓存大小</string>
+
+  <string id="518">Web浏览器</string>
+  <string id="519">冻结[XBMC媒体中心]直至关闭Web浏览器</string>
+  <string id="520">请选择您的Web浏览器</string>
+  <string id="521">输入Web浏览器名称</string>
+  <string id="522">Shortcut of "Installer" button</string>
+  <string id="523">Color Labels</string>
+
+  <string id="530">禁用[启动LOGO屏幕]</string>
+  <string id="531">皮肤主题</string>
+  <string id="532">皮肤主题已更改</string>
+  <string id="533">插件需要重新载入，更改的皮肤主题才能生效。</string>
+  <string id="534">您想现在重新载入吗?</string>
+
+  <string id="540">Support</string>
+  <string id="541">Default[CR]Settings</string>
+  <string id="542">(Manager only)</string>
+
+  <string id="550">French support</string>
+  <string id="551">English support</string>
+  <string id="552">Click to get help!</string>
+
+  <!--DESCRIPTION STRINGS -->
+  <string id="599">Add-ons Infos</string>
+  <string id="600">描述</string>
+  <string id="601">类型</string>
+  <string id="602">版本</string>
+  <string id="603">日期</string>
+  <string id="604">没有可用的描述</string>
+  <string id="605">退出</string>
+  <string id="606">缩放图片</string>
+  <string id="607">下载</string>
+  <string id="608">语言</string>
+  <string id="609">法语</string>
+  <string id="610">英语</string>
+  <string id="611">多国语言</string>
+  <string id="612">未知</string>
+  <string id="613">发布</string>
+  <string id="614">描述 : 不详</string>
+  <string id="615">德语</string>
+  <string id="616">西班牙语</string>
+  <string id="617">荷兰语</string>
+  <string id="618">芬兰语</string>
+  <string id="619">瑞典语</string>
+  <string id="620">作者</string>
+  <string id="621">文件名</string>
+  <string id="622">CLICK FOR ZOOM IMAGE</string>
+  <string id="623">IMAGE[CR][CR]UNAVAILABLE</string>
+  <string id="624">Image</string>
+  <string id="625">Flip Image</string>
+  
+  <!--ABOUT STRINGS -->
+  <string id="698">Statut</string>
+  <string id="699">Revision</string>
+  <string id="700">版本</string>
+  <string id="701">团队协作</string>
+  <string id="702">程序开发</string>
+  <string id="703">平面设计</string>
+  <string id="704">插件创建基于此前的创意: %s</string>
+  <string id="705">特别感谢 %s</string>  
+  <string id="706">建议与支持</string>  
+  <string id="707">日期</string>  
+  <string id="708">版本号</string>  
+  <string id="709">语言翻译</string>  
+  <string id="710">该脚本由passion团队制作,它可以让您在XBMC里下载、安装[Passion-XBMC]网站[CR]上的内容，网站网址：[passion-xbmc.org]。在该网站的FTP服务器，制作团队[CR]一直在更新XBMC的皮肤、脚本、程序插件和刮削器等。这个插件可以管理已安装[CR]的各种项目，还可以直接浏览http://passion-xbmc.org/网站上的论坛。[CR]中文简体翻译：MEEDIO</string>
+
+  <string id="720">Others Devs &#38; Helper</string>
+  <string id="730">Special Thanks to:</string>
+
+  <!--CONTEXT MENU STRINGS -->
+  <string id="999">Menu</string>
+  <string id="1000">安装</string>
+  <string id="1001">信息</string>
+  <string id="1002">切换媒体</string>
+
+  <!-- Caches Cleaner -->
+  <string id="32650">Cleaning: %s</string>
+  <string id="32651">%i files and %i folders cleaned</string>
+  <string id="32652">Dir: %s</string>
+  <string id="32653">File: %s</string>
+  <string id="32654">Clear All Caches</string>
+  <string id="32655">Clear All Caches of XBMC</string>
+  <string id="32656">Clear XBMC Cache [COLOR=88FFFFFF][%s][/COLOR]</string>
+  <string id="32657">Clear MS Cache [COLOR=88FFFFFF][E:\CACHE\][/COLOR]</string>
+  <string id="32658">Clear XBox Caches [COLOR=88FFFFFF][X:\, Y:\, Z:\][/COLOR]</string>
+  <string id="32659">Caches Cleaner...</string>
+  <string id="32660">Caches Cleaner</string>
+  <string id="32661">Clear Caches</string>
+  <string id="32662">Clear All Caches of Installer Passion-XBMC</string>
+
+  <!-- XBMC SVN Updater for XBox -->
+  <string id="32700">Warning!</string>
+  <string id="32701">In this menu, you can delete, rename, copy ... files from your Xbox or even format a partition. Improper handling can lead to a system error. Use this menu if you know exactly what you do.</string>
+  <string id="32702">Warning! Read ...</string>
+  <string id="32709">Before starting the Updater will do a verification test. It will check the existence of the Build and your installation folder of XBMC. If no error during this check, a confirmation of update will be requested.</string>
+  <string id="32749">Update</string>
+  <string id="32750">Run the update now</string>
+  <string id="32751">Press "YES" to proceed update your XBMC.\nAnd do nothing that could make a system error.\nBe patient and wait until the execution...</string>
+  <string id="32752">Update completed successfully.\nWill you return to XBMC?</string>
+  <string id="32753">Rebooting XBMC...</string>
+  <string id="32760">Return to XBMC</string>
+  <string id="32761">Reload Updater</string>
+  <string id="32770">Restart XBox</string>
+  <string id="32780">Shotdown XBox</string>
+  <string id="32789">Installation directory of XBMC</string>
+  <string id="32790">Files Manager</string>
+  <string id="32791">Text Editor</string>
+  <string id="32795">Settings</string>
+
+  <string id="32799">Success</string>
+  <string id="32800">Cleaner</string>
+  <string id="32801">About This Section</string>
+  <string id="32802">The Cleaner is designed to reset XBMC. It will delete folders and/or files that were created during the first use of XBMC or just delete the settings. It also allows clean caches E, X, Y, Z.</string>
+  <string id="32810">Reset XBMC</string>
+  <string id="32811">Confirm the reset of XBMC.\nWarning, this action will reset the folder "UserData" to the original state and you lose all: [Database, thumbnails, guisettings, Advancedsettings, ...]. Are you sure?</string>
+  <string id="32812">Enter name to create a backup, just in case!</string>
+  <string id="32813">Reseting XBMC done.</string>
+  <string id="32820">Clear XBMC Settings</string>
+  <string id="32821">Confirm delete XBMC settings.\nWarning, this action will remove the file guisettings.xml. Are you sure?</string>
+  <string id="32822">Cleaning settings XBMC done.</string>
+  <string id="32830">Clear XBMC Save</string>
+  <string id="32831">Confirm delete the backup of XBMC.\nOnly useful to erase the traces of an old version of XBMC. Are you sure?</string>
+  <string id="32832">Cleaning save XBMC done.</string>
+  <string id="32840">Clear Caches X, Y &amp; Z</string>
+  <string id="32841">Confirm emptying Caches X:\, Y:\, Z:\. Are you sure?</string>
+  <string id="32842">Emptying the Caches finished.</string>
+  <string id="32850">Clear Cache E</string>
+  <string id="32851">Confirm emptying Cache E:\CACHE\nAre you sure?</string>
+  <string id="32852">Emptying the Cache E finished.</string>
+
+  <string id="32860">XBMC Nightly Builds</string>
+  <string id="32861">Fetching Unofficial Nightly Builds...</string>
+  <string id="32862">Confirm the download!</string>
+  <string id="32863">Are you sure you want to download this build?</string>
+  <string id="32864">Confirm Launching Update</string>
+  <string id="32865">Your version: %s</string>
+  <string id="32866">Shift to: %s</string>
+  <string id="32867">There have not updated for your Platform!</string>
+  <string id="32868">Be patient it would soon!</string>
+
+  <string id="32900">Use this package to over-write your current installed application.</string>
+  <string id="32901">Use this package to install a fresh copy using the latest SVN release.</string>
+  <string id="32902">Use this package to install a full version on your deb based Linux.</string>
+  <string id="32903">Use this package for a clean install or upgrade on your XBMC.</string>
+  <string id="32904">Use this package to install a full version on your OS X Bases Systems.</string>
+
+  <string id="32910">Add/Remove file or folder on update</string>
+  <string id="32911">Add file</string>
+  <string id="32912">Add folder</string>
+  <string id="32913">Remove all</string>
+  <string id="32914">Browse for exclude file on update</string>
+  <string id="32915">Browse for exclude folder on update</string>
+  <string id="32916">Confirm remove</string>
+  <string id="32917">Are you sure you want to remove everything?</string>
+  <string id="32918">Are you sure you want to remove:</string>
+  <string id="32919">Excluded: %s</string>
+</strings>
