@@ -6,8 +6,8 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 #__svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/video/XbmcStuff downloader/"
 __credits__      = "Team XBMC, http://passion-xbmc.org/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "01-03-2010"
-__version__      = "1.0.4"
+__date__         = "15-04-2010"
+__version__      = "1.1beta"
 __svn_revision__  = "$Revision$"
 __XBMC_Revision__ = "20000" #XBMC Babylon
 __useragent__    = "Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.0.1) Gecko/2008070208 Firefox/3.0.1"
@@ -42,6 +42,7 @@ xmlfile = os.path.join( BASE_RESOURCE_PATH , "temp.xml" )
 artist_url = "http://www.xbmcstuff.com/music_scraper.php?&id_scraper=OIBNYbNUYBCezub&t=artists"
 album_url = "http://www.xbmcstuff.com/music_scraper.php?&id_scraper=OIBNYbNUYBCezub&t=cdarts"
 cross_url = "http://www.xbmcstuff.com/music_scraper.php?&id_scraper=OIBNYbNUYBCezub&t=cross"
+DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
 try: storage=( "skin", "albumfolder" )[ int( xbmcplugin.getSetting("folder") ) ]
 except:
@@ -151,7 +152,7 @@ def get_local_album(artist_name):
     
     conn_b = sqlite3.connect(db_path)
     d = conn_b.cursor()
-    d.execute("SELECT DISTINCT strArtist , idArtist, strPath, strAlbum FROM songview Where strArtist LIKE '%s' AND strAlbum != ''" % artist_name )
+    d.execute("""SELECT DISTINCT strArtist , idArtist, strPath, strAlbum FROM songview Where strArtist LIKE "%s" AND strAlbum != ''""" % artist_name )
     for item in d:
         album = {}
         album["artist"] = repr(item[0]).strip("'u")
@@ -233,12 +234,43 @@ def find_cdart(album):
     #xml = get_html_source( cross_url + "&album=%s&artist=%s" % (album["title"].replace(" " , "%").replace("," , "").replace("'" , "%") , artist_album_list[0]["artist"].replace(" " , "%" )))
     #print cross_url + "&album=%s&artist=%s" % (album["title"].replace(" " , "%").replace("," , "").replace("'" , "%"), artist_album_list[0]["artist"].replace(" " , "%" ))
     match = re.findall( "<picture>(.*?)</picture>", xml )
-    print xml
+    #print xml
     try: print urllib.quote_plus(album["title"])
     except: print_exc()
     try: print urllib.quote_plus(artist_album_list[0]["artist"])
     except: print_exc()
     return match
+    
+def find_cdart2(album):
+    url = cross_url + "&album=%s&artist=%s" % (urllib.quote_plus(album["title"].replace(",","")) , urllib.quote_plus(album["artist"]))
+    xml = get_html_source( url ) 
+    #xml = get_html_source( cross_url + "&album=%s&artist=%s" % (album["title"].replace(" " , "%").replace("," , "").replace("'" , "%") , artist_album_list[0]["artist"].replace(" " , "%" )))
+    #print cross_url + "&album=%s&artist=%s" % (album["title"].replace(" " , "%").replace("," , "").replace("'" , "%"), artist_album_list[0]["artist"].replace(" " , "%" ))
+    match = re.findall( "<picture>(.*?)</picture>", xml )
+    #print "url: " + url  #DEBUG
+    #print "xml: " + xml   #DEBUG
+    try: print "titre album: " + urllib.quote_plus(album["title"])
+    except: print_exc()
+    try: print "artiste: " + urllib.quote_plus(urllib.quote_plus(album["artist"]))
+    except: print_exc()
+    return match
+    
+def download_cdart( url_cdart , album ):
+    destination = os.path.join( album["path"] , "cdart.png")
+    print "download :" + url_cdart , "path: " + destination
+    try:
+        def _report_hook( count, blocksize, totalsize ):
+            percent = int( float( count * blocksize * 100 ) / totalsize )
+            strProgressBar = str( percent )
+            #print percent  #DEBUG
+            DIALOG_PROGRESS.update( percent,"%s%s" % (Language.getLocalizedString(30026) , album["artist"]) , "%s%s  *DOWNLOAD*" % (Language.getLocalizedString(30027) , album["title"]) )
+            if ( DIALOG_PROGRESS.iscanceled() ):
+                pass
+        fp , h = urllib.urlretrieve(url_cdart,destination , _report_hook )
+        print fp
+        return fp
+    except :
+        print_exc()
     
     
     
@@ -269,6 +301,7 @@ print "Name: "+str(name)
 if mode==None :
     addDir( Language.getLocalizedString(30005),"",1,"")
     addDir(Language.getLocalizedString(30006),"",1,"")
+    addDir(Language.getLocalizedString(30023),"",5,"")
 if mode== 1 :
 
     distant_artist = str.lower(get_html_source( artist_url ))
@@ -408,4 +441,34 @@ if mode == 4:
     xbmcgui.Dialog().ok(message[0] ,message[1] ,message[2] ,message[3])
     OK = False
 
+if mode == 5:
+    DIALOG_PROGRESS.create( Language.getLocalizedString(30024), Language.getLocalizedString(30025) )
+    local_artist = get_local_artist()
+    count_artist_local = len(local_artist)
+    artist_count = 0
+    download_count = 0
+    #print local_artist #DEBUG
+    for artist in local_artist:
+        artist_count = float(artist_count) + 1
+        #print "artist count: %s" % artist_count  #DEBUG
+        percent = (artist_count / count_artist_local) * 100
+        #print percent  #DEBUG
+        DIALOG_PROGRESS.update( percent , Language.getLocalizedString(30026) + artist["name"], )
+        #print urllib.unquote_plus(artist["name"])
+        local_album_list = get_local_album(artist["name"])
+        #print local_album_list #DEBUG
+        for album in local_album_list:
+            DIALOG_PROGRESS.update( percent , "%s%s" % (Language.getLocalizedString(30026) , artist["name"]) , "%s%s" % (Language.getLocalizedString(30027) , album["title"]) )
+            test_album = find_cdart2(album)
+            #print "dico album: " , album #DEBUG
+            if not test_album == [] : 
+                print "####################################################FOUND####################################################"
+                download_cdart( test_album[0] , album )
+                download_count = download_count + 1
+    DIALOG_PROGRESS.close()
+    OK = False
+    end_of_directory( OK )
+    valid = xbmcgui.Dialog().ok( Language.getLocalizedString(30028), "%s %s" % ( download_count , Language.getLocalizedString(30029)) )
+    print valid       
+        
 end_of_directory( OK )

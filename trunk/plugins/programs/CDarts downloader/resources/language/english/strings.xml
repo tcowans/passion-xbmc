@@ -22,5 +22,11 @@
   <string id="30020">Choose an Artist</string>
   <string id="30021">Not Found on XBMCSTUFF.com</string>
   <string id="30022">No CDart found for</string>
-  <string id="30023"></string>
+  <string id="30023">Automatic download</string>
+  <string id="30024">CDarts search</string>
+  <string id="30025">Getting local artists</string>
+  <string id="30026">Artist: </string>
+  <string id="30027">Album: </string>
+  <string id="30028">End</string>
+  <string id="30029">CDarts downloaded</string>
 </strings>
