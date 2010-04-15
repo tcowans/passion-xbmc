@@ -3,11 +3,11 @@
 __plugin__       = "CDart Downloader"
 __author__       = "Ppic"
 __url__          = "http://code.google.com/p/passion-xbmc/"
-#__svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/video/XbmcStuff downloader/"
+__svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/program/cdart downloader"
 __credits__      = "Team XBMC, http://passion-xbmc.org/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
 __date__         = "15-04-2010"
-__version__      = "1.1beta"
+__version__      = "1.1"
 __svn_revision__  = "$Revision$"
 __XBMC_Revision__ = "20000" #XBMC Babylon
 __useragent__    = "Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.0.1) Gecko/2008070208 Firefox/3.0.1"
@@ -455,7 +455,11 @@ if mode == 5:
         #print percent  #DEBUG
         DIALOG_PROGRESS.update( percent , Language.getLocalizedString(30026) + artist["name"], )
         #print urllib.unquote_plus(artist["name"])
-        local_album_list = get_local_album(artist["name"])
+        try: local_album_list = get_local_album(artist["name"])
+        except: 
+            local_album_list = []
+            print "erreur recherche album %s" % artist["name"]
+            print_exc()
         #print local_album_list #DEBUG
         for album in local_album_list:
             DIALOG_PROGRESS.update( percent , "%s%s" % (Language.getLocalizedString(30026) , artist["name"]) , "%s%s" % (Language.getLocalizedString(30027) , album["title"]) )
