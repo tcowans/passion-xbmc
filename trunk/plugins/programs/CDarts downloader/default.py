@@ -257,6 +257,7 @@ def find_cdart2(album):
     
 def download_cdart( url_cdart , album ):
     destination = os.path.join( album["path"] , "cdart.png")
+    
     print "download :" + url_cdart , "path: " + destination
     try:
         def _report_hook( count, blocksize, totalsize ):
@@ -266,9 +267,10 @@ def download_cdart( url_cdart , album ):
             DIALOG_PROGRESS.update( percent,"%s%s" % (Language.getLocalizedString(30026) , album["artist"]) , "%s%s  *DOWNLOAD*" % (Language.getLocalizedString(30027) , album["title"]) )
             if ( DIALOG_PROGRESS.iscanceled() ):
                 pass
-        fp , h = urllib.urlretrieve(url_cdart,destination , _report_hook )
-        print fp
-        return fp
+        if os.path.exists(album["path"]):
+            fp , h = urllib.urlretrieve(url_cdart,destination , _report_hook )
+            print fp
+            return fp
     except :
         print_exc()
     
@@ -449,11 +451,12 @@ if mode == 5:
     download_count = 0
     #print local_artist #DEBUG
     for artist in local_artist:
+        print "SEARCH: %s" % artist["name"]
         artist_count = float(artist_count) + 1
         #print "artist count: %s" % artist_count  #DEBUG
         percent = (artist_count / count_artist_local) * 100
         #print percent  #DEBUG
-        DIALOG_PROGRESS.update( percent , Language.getLocalizedString(30026) + artist["name"], )
+        DIALOG_PROGRESS.update( percent , Language.getLocalizedString(30026) + translate_string(artist["name"]), )
         #print urllib.unquote_plus(artist["name"])
         try: local_album_list = get_local_album(artist["name"])
         except: 
@@ -462,13 +465,15 @@ if mode == 5:
             print_exc()
         #print local_album_list #DEBUG
         for album in local_album_list:
-            DIALOG_PROGRESS.update( percent , "%s%s" % (Language.getLocalizedString(30026) , artist["name"]) , "%s%s" % (Language.getLocalizedString(30027) , album["title"]) )
+            print "SEARCH: %s - %s" % (artist["name"] , album["title"])
+            DIALOG_PROGRESS.update( percent , "%s%s" % (Language.getLocalizedString(30026) , translate_string(artist["name"])) , "%s%s" % (Language.getLocalizedString(30027) , album["title"]) )
             test_album = find_cdart2(album)
             #print "dico album: " , album #DEBUG
             if not test_album == [] : 
                 print "####################################################FOUND####################################################"
                 download_cdart( test_album[0] , album )
                 download_count = download_count + 1
+            else: print "Not found !"
     DIALOG_PROGRESS.close()
     OK = False
     end_of_directory( OK )
