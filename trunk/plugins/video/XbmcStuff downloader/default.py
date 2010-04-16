@@ -1,4 +1,4 @@
-﻿########################################
+########################################
 #xbmcstuff downloader v1.5
 #by ppic
 ########################################
@@ -39,8 +39,8 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/video/XbmcStuff downloader/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "18-01-2010"
-__version__      = "1.5.2"
+__date__         = "17-04-2010"
+__version__      = "1.5.5"
 __svn_revision__  = "$Revision$"
 __XBMC_Revision__ = "20000" #XBMC Babylon
 
@@ -451,9 +451,11 @@ def parser(data):
 def listing():
     conn = sqlite3.connect(db_path)
     c = conn.cursor()
-    c.execute('select c00,c12,strPath from tvshowview')
+    try: c.execute('select c00,c12,strPath from tvshowview')
+    except: c.execute('select tvshow.c00 , tvshow.c12 , path.strPath from tvshow , path , tvshowlinkpath where path.idPath = tvshowlinkpath.idPath AND tvshow.idShow = tvshowlinkpath.idShow')
     try:
         for import_base in c:
+            print import_base
             try:
                 thumb = thumbnails.get_cached_video_thumb( import_base[2] )
                 if not os.path.isfile(thumb):
