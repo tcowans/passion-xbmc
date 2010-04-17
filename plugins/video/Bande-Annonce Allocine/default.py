@@ -512,7 +512,7 @@ def get_emission_list(url):
     else: menu_emission = ""
     #print "menu emission" + menu_emission
 
-    match = re.compile('<a href="(.*?)/">(.*?)</a>',re.DOTALL ).findall( menu_emission )
+    match = re.compile('<a href="(.*?)">(.*?)</a>',re.DOTALL ).findall( menu_emission )
     if match: emission_list = match
     else: emission_list = ""    
     return emission_list
