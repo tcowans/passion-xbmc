@@ -86,9 +86,10 @@ def get_nightly_builds( current_rev="0" ):
 
         html = download_html( base_url )
 
-        box = re.compile( '<\!--start news box-->(.*?)<\!--RSS Feeds -->', re.S ).findall( html )[ 0 ]
-        rev, builddate = re.findall( '<a href="#toper">.*?Build r(.*?)<span .*?>Uploaded (.*?)</span>', box, re.S )[ 0 ]
-        notebox =  re.findall( '<div class="Fixme">(.*?)</div>', box, re.S )[ 0 ].replace( "<hr />", "[B] - [/B]" ).replace( "\r", "" ).replace( "&nbsp;", " " ).strip( os.linesep ).replace( "\n", "  " ).strip()
+        box = re.compile( '<\!-- The News Box -->(.*?)<\!--roller over image box-->', re.S ).findall( html )[ 0 ]
+        rev = re.findall( '<div style=".*?">Build r(.*?)</div>', box, re.S )[ 0 ]
+        builddate = re.findall( '<div style=".*?">Uploaded (.*?)</div>', box, re.S )[ 0 ]
+        notebox = re.search( '<div style=".*?">(.*?)</div>', box, re.S ).group( 1 ).replace( "<hr />", "[B] - [/B]" ).replace( "\r", "" ).replace( "&nbsp;", " " ).strip( os.linesep ).replace( "\n", "  " ).strip()
 
         heading = "Unofficial Nightly Builds: XBMC SVN r%s" % rev
         info = "[B]%s:[/B] %s" % ( builddate, notebox )
