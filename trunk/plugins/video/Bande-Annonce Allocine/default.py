@@ -7,8 +7,8 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/"
 __credits__      = "Team XBMC passion, http://passion-xbmc.org/developpement-python/%28script%29-sporlive-display/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "05-04-2010"
-__version__      = "1.5.4"
+__date__         = "25-04-2010"
+__version__      = "1.5.5"
 __svn_revision__  = "$Revision$".replace( "Revision", "" ).strip( "$: " )
 __XBMC_Revision__ = "20000" #XBMC Babylon
 __useragent__    = "Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.0.1) Gecko/2008070208 Firefox/3.0.1"
@@ -145,8 +145,8 @@ def get_film_list( url , database = False):
     print "nb d'items: %s" % total_item
 
     #progress bar:
-    dp = xbmcgui.DialogProgress()
-    dp.create("Update Database")
+    #dp = xbmcgui.DialogProgress()
+    #dp.create("Update Database")
     
     
     while pager <= nbpage and nbpage != "error" and pager <= [5,10,20,30,999][int(xbmcplugin.getSetting("page_limit"))]:
@@ -204,9 +204,10 @@ def get_film_list( url , database = False):
                 else: film["name"] = ""
                 
                 print "récupération info %s (%s/%s): %s" % ( film["type"] , count , total_item , film["name"] )
-                dp.update(ratio , "récupération info %s (%s/%s)" % ( film["type"], count , total_item ), film["name"])
-                if dp.iscanceled() :
-                    break
+                #dp.update(ratio , "récupération info %s (%s/%s)" % ( film["type"], count , total_item ), film["name"])
+#                 if dp.iscanceled() :
+#                     dp.close()
+#                     break
                 match = re.search( "<a href='/video/player_gen_cmedia=(.*?)&c%s=(.*?).html'" % film["type"] , i )
                 if match: 
                     film["id_allo"] = match.group(2)
@@ -229,6 +230,22 @@ def get_film_list( url , database = False):
                     film["poster"] = film["poster"].replace( "c_120_160/b_1_x/o_play.png_5_se" , "r_760_x" ).replace("cx_120_96/b_1_x/o_play.png_5_se", "r_760_x" ).replace("c_120_120/b_1_x/o_play.png_5_se", "r_760_x" )
                     film["poster"] = film["poster"].replace("cx_120_113/o_overlayEmissions-P2C-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-MerciQui-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-LaMinute-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-D2DVD-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-TES-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-FauxR-120.png_1_c", "r_760_x" )
                 catalogue.append(film)
+                if film["type"] == "film":
+                    if xbmcplugin.getSetting("date_sortie") == "true" : ajout_sortie = "[CR]" +  film["sortie"]
+                    else : ajout_sortie = ""
+                    addDir(film["name"] + ajout_sortie ,"%s##%s" % (film["poster"] , film["id_allo"]),2,film["poster"], sortie=film["sortie"])
+                    xbmcplugin.addSortMethod(int(sys.argv[1]), xbmcplugin.SORT_METHOD_TITLE)
+                    xbmcplugin.addSortMethod(int(sys.argv[1]), xbmcplugin.SORT_METHOD_DATE)
+                    #xbmcplugin.addSortMethod(int(sys.argv[1]), xbmcplugin.SORT_METHOD_NONE)
+                else :
+                    #print "image:%s " % film["poster"]
+                    c_items = []
+                    local_trailer = os.path.join( trailer_dir, "%s.flv" % translate_string(film["name"] ) )
+                    script = "special://home/plugins/video/Bande-Annonce Allocine/resources/lib/downloader.py"
+                    args = "%s&%s&%s" % ( urllib.quote_plus( "cmedia=%s" % film["id_media"] ), urllib.quote_plus( local_trailer ) , quality)
+                    if not os.path.exists(local_trailer):c_items += [ ( "Télécharger", "XBMC.RunScript(%s,%s)" % ( script, args ) ) ]
+                    else : c_items += [ ( "jouer en local", "xbmc.PlayMedia(%s)" % local_trailer) ]
+                    addDir(film["name"], film["id_media"],5,film["poster"], c_items )
         
                 
                             
@@ -237,7 +254,7 @@ def get_film_list( url , database = False):
             print_exc()
             
         pager = pager + 1
-    
+    #dp.close()
     print "total movies = %s" % count
     return catalogue
 
@@ -245,7 +262,7 @@ def get_film_info(id_allo , BA = False , all_BA = False , emissions_liees = Fals
     film = {}
     film_url = "http://www.allocine.fr/film/fichefilm_gen_cfilm=%s.html" % id_allo
     film_data = get_html_source( film_url )
-    save_data(film_data) #DEBUG
+    #save_data(film_data) #DEBUG
     
     try: media_list = re.findall( '<a href="/video/player_gen_cmedia=(.*?)&cfilm=.*.html"><b>', film_data )
     except:
@@ -254,7 +271,7 @@ def get_film_info(id_allo , BA = False , all_BA = False , emissions_liees = Fals
     match = re.search(r'<a class="fs11 underline" href="(.*)"><img class="ico icoticka" alt=" " width="0" height="0" src="http://images.allocine.fr/commons/empty.gif"/><span>Toutes les vid\xc3\xa9os</span></a>', film_data, re.IGNORECASE)
     if match: url_all_video = match.group(1)
     else: url_all_video = ""
-    print "url_video: %s" % url_all_video #DEBUG
+#    print "url_video: %s" % url_all_video #DEBUG
     
     if BA:
         BA_list = []
@@ -264,14 +281,14 @@ def get_film_info(id_allo , BA = False , all_BA = False , emissions_liees = Fals
         return film
     
     if emissions_liees or all_BA or interviews:
-        print "test liens toutes vidéos" #DEBUG
+#        print "test liens toutes vidéos" #DEBUG
         if not url_all_video == "":
-            print "url toutes vidéos trouvé" #DEBUG
+#            print "url toutes vidéos trouvé" #DEBUG
             video_data = get_html_source( "http://www.allocine.fr" + url_all_video )
-            save_data(video_data) #DEBUG
+#            save_data(video_data) #DEBUG
     
     if interviews:
-        print "test interviews liées" #DEBUG
+#        print "test interviews liées" #DEBUG
         match = re.search(r"<h2>\s+(\d+) Interviews li\xc3\xa9es \xc3\xa0 ce film\s+</h2>(.*?)<h2>Autres bandes-annonces</h2>", video_data, re.DOTALL | re.IGNORECASE)
         if match: 
             nbre_interviews = match.group(1)
@@ -281,12 +298,12 @@ def get_film_info(id_allo , BA = False , all_BA = False , emissions_liees = Fals
             return False
             nbre_interviews = ""
             interviews_data = ""
-        save_data(interviews_data) #DEBUG
-        print "nombre interviews liées: %s" % nbre_interviews #DEBUG
+#        save_data(interviews_data) #DEBUG
+#        print "nombre interviews liées: %s" % nbre_interviews #DEBUG
         result = re.findall(r'(?i)<a href=\'/film/fichefilm-\d+/interviews/\?cmedia=(\d+)\'>\s+<img src=\'(.*?)\' alt="Photo : (.*?)"  title="Photo : (.*?)" />\s+</a>', interviews_data)
-        print "nombre emissions liées trouvées: %s" % len(result) #DEBUG
+#        print "nombre emissions liées trouvées: %s" % len(result) #DEBUG
         for i in result: 
-            print i[3] , i[1]#DEBUG
+#            print i[3] , i[1]#DEBUG
             #ba = get_media_link(i[0])
             print i[2]
             if xbmcplugin.getSetting("hdimage") == "true": image = i[1].replace( "cx_120_96/b_1_x/o_play.png_5_se" , "r_760_x" )
@@ -301,7 +318,7 @@ def get_film_info(id_allo , BA = False , all_BA = False , emissions_liees = Fals
             addDir(i[3], i[0],5,image, c_items )
             
     if emissions_liees:
-        print "test emisions liées" #DEBUG
+#        print "test emisions liées" #DEBUG
         match = re.search(r"<h2>(\d+) \xc3\xa9missions li\xc3\xa9es</h2>(.*?)<h2>Autres bandes-annonces</h2>", video_data, re.DOTALL | re.IGNORECASE)
         if match: 
             nbre_emissions = match.group(1)
@@ -311,12 +328,12 @@ def get_film_info(id_allo , BA = False , all_BA = False , emissions_liees = Fals
             return False
             nbre_emissions = ""
             emision_data = ""
-        save_data(emision_data) #DEBUG
-        print "nombre emissions liées: %s" % nbre_emissions #DEBUG
+#        save_data(emision_data) #DEBUG
+#        print "nombre emissions liées: %s" % nbre_emissions #DEBUG
         result = re.findall(r'(?i)<a href=\'/video/emissions/(.*?)/episode/\?cmedia=(\d+)\'>\s+<img src=\'(.*?)\' alt="Photo : (.*?)"  title="Photo : (.*?)" />', emision_data)
-        print "nombre emissions liées trouvées: %s" % len(result) #DEBUG
+#        print "nombre emissions liées trouvées: %s" % len(result) #DEBUG
         for i in result: 
-            print i[4] #DEBUG
+#            print i[4] #DEBUG
             #ba = get_media_link(i[0])
             print i[2]
             if xbmcplugin.getSetting("hdimage") == "true": image = i[2].replace("cx_120_110/o_overlayEmissions-P2C-120.png_1_c", "r_760_x" ).replace("cx_120_110/o_overlayEmissions-MerciQui-120.png_1_c", "r_760_x" ).replace("cx_120_110/o_overlayEmissions-LaMinute-120.png_1_c", "r_760_x" ).replace("cx_120_110/o_overlayEmissions-D2DVD-120.png_1_c", "r_760_x" ).replace("cx_120_110/o_overlayEmissions-TES-120.png_1_c", "r_760_x" ).replace("cx_120_110/o_overlayEmissions-FauxR-120.png_1_c", "r_760_x" )
@@ -331,12 +348,12 @@ def get_film_info(id_allo , BA = False , all_BA = False , emissions_liees = Fals
             addDir(i[4], i[1],5,image, c_items )
         
     if all_BA:
-        print "test all ba" #DEBUG     
+#        print "test all ba" #DEBUG     
         if url_all_video:            
             match = re.search(r"(\d+) bandes-annonces", video_data)
             if match: nb_ba = match.group(1)
             else: nb_ba = ""
-            print "nombre BA: %s" % nb_ba #DEBUG
+#            print "nombre BA: %s" % nb_ba #DEBUG
             
             match = re.search("-- CONSTRAINT RIGHT COLUMN -->(.*?)Autres bandes-annonces", video_data, re.DOTALL)
             if match: video_data = match.group(1)
@@ -344,10 +361,10 @@ def get_film_info(id_allo , BA = False , all_BA = False , emissions_liees = Fals
             #save_data(video_data) #DEBUG
             #result = re.findall(r"(?i)<a href=\'/video/player_gen_cmedia=(.*?)&cfilm=(.*?).html\'>\s+", video_data) #DEBUG
             result = re.findall(r"""<a href=\'/video/player_gen_cmedia=(.*?)&cfilm=(.*?).html\'>\s+<img src=\'(.*?)\' alt="Photo : (.*?)"  title="Photo : (.*?)" />\s+</a>""", video_data)
-            print "liste BA: %s ba trouvées " %  len(result)  #DEBUG
-            print "#####################liste des BA##########################" #DEBUG
+#            print "liste BA: %s ba trouvées " %  len(result)  #DEBUG
+#            print "#####################liste des BA##########################" #DEBUG
             for i in result: 
-                print i[4] #DEBUG
+#                print i[4] #DEBUG
                 if xbmcplugin.getSetting("hdimage") == "true": image = i[2].replace( "cx_120_96/b_1_x/o_play.png_5_se" , "r_760_x" )
                 else: image = i[2]
                 c_items = []
@@ -357,7 +374,7 @@ def get_film_info(id_allo , BA = False , all_BA = False , emissions_liees = Fals
                 if not os.path.exists(local_trailer):c_items += [ ( "Télécharger", "XBMC.RunScript(%s,%s)" % ( script, args ) ) ]
                 else : c_items += [ ( "jouer en local", "xbmc.PlayMedia(%s)" % local_trailer) ]
                 addDir(i[4], i[0],5,image, c_items )
-            print "#####################liste des BA FIN######################" #DEBUG 
+#            print "#####################liste des BA FIN######################" #DEBUG 
     return True
     
 
@@ -593,7 +610,7 @@ if mode == 1: # affichage des liste ba / series / emissions / interviews
         
 
 if mode == 2: #menu bande-annonce de film + liens contenus liées
-    print 'name : %s' % name #DEBUG
+#    print 'name : %s' % name #DEBUG
     poster = url.split("##")[0]
     url = url.split("##")[1]
     film = get_film_info(url, BA = True)
