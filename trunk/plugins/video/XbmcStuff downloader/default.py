@@ -1,5 +1,5 @@
 ########################################
-#xbmcstuff downloader v1.5
+#xbmcstuff downloader
 #by ppic
 ########################################
 ##changelog:
@@ -39,8 +39,8 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/video/XbmcStuff downloader/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "17-04-2010"
-__version__      = "1.5.5"
+__date__         = "26-04-2010"
+__version__      = "1.5.6"
 __svn_revision__  = "$Revision$"
 __XBMC_Revision__ = "20000" #XBMC Babylon
 
@@ -470,7 +470,8 @@ def listing():
             #print "tvshow_name_img: %s - %s" % ( tvshow_name_img[0] , tvshow_name_img[1] )
             if not correct_size(tvshow_name_img[1]): tvshow_name = coloring( tvshow_name_img[0] , "red" , tvshow_name_img[0] )
             else: tvshow_name = tvshow_name_img[0]
-            addDir(tvshow_name,tvshow_id,1,tvshow_name_img[1])
+            try: addDir(tvshow_name,tvshow_id,1,tvshow_name_img[1])
+            else: print_exc()
         c.close()
     except:
         print "no tvdbid found in db"
