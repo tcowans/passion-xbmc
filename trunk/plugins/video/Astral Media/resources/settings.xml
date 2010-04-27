@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings>
+  <setting type="lsep" label="Affichage"/>
+  <setting id="mixtitle" type="bool" label="Mixer le titre des émissions avec les épisodes" default="false"/>
+  <setting enable="eq(-1,true)" id="separator" type="text" label=" &#8226; Séparateur" default="-" />
   <setting type="lsep" label="Réglages Qualité"/>
   <setting id="quality" type="enum" label="Qualité de la lecture des médias" values="[HD]|(SD)" default="0" />
 </settings>
