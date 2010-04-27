@@ -218,15 +218,19 @@ class Main:
             total_items = len( episodes )
             # { "tvshowtitle": "", "title": "", "type": "", "duration": "",
             #   "date": "", "plot": "", "thumb": "", "episode" : "", "season" : "" }
+            mixtitle = xbmcplugin.getSetting( "mixtitle" ) == "true"
+            separator = xbmcplugin.getSetting( "separator" ) or "-"
             for videoid, episode in episodes.items():
-                DIALOG_PROGRESS.update( -1, _( 1040 ), episode[ "title" ] )
-                listitem = xbmcgui.ListItem( episode[ "title" ], "", episode[ "thumb" ], episode[ "thumb" ] )
+                fulltitle = "%s %s %s" % ( episode[ "tvshowtitle" ], separator, episode[ "title" ] )
+                title = ( episode[ "title" ], fulltitle )[ mixtitle ]
+                DIALOG_PROGRESS.update( -1, _( 1040 ), title )
+                listitem = xbmcgui.ListItem( title, "", episode[ "thumb" ], episode[ "thumb" ] )
                 c_items = [ ( _( 13346 ), "XBMC.Action(Info)", ) ]
                 c_items += [ ( _( 654 ), "XBMC.ActivateWindow(scriptsdebuginfo)" ) ]
                 listitem.addContextMenuItems( c_items, replaceItems=True )
 
                 infolabels = {
-                    "title": episode[ "title" ],
+                    "title": title,
                     "tvshowtitle": episode[ "tvshowtitle" ],
                     "genre": episode[ "type" ],
                     "studio": canals[ self.args.canal ][ 0 ],
