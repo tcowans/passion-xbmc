@@ -33,25 +33,42 @@ def get_html_source( url ):
 
 def getWebVideoUrl( canal_url, videoid ):
     url = "%s/webtele/_dyn/getWebVideoUrl_highlow.jsp?videoId=%s" % ( canal_url, videoid )
-    jsp = get_html_source( url )
-    return re.findall( '(http:/(?:\\/[\\w\\.\\-]+)+)', jsp )
+    return re.findall( '(http:/(?:\\/[\\w\\.\\-]+)+)', get_html_source( url ) )
 
 
-def getTvShows( canal_url="", page="1" ):
+def getContents( html, canal_url, programid ):
+    contents = { "typeId": [], "themeId": [], "programId": [], "episodeId": [] }
+    try:
+        for content in contents.keys():
+            regexp = '<select name="%s" id="%s".*?>(.*?)</select>' % ( content, content )
+            for options in re.compile( regexp, re.S ).findall( html ):
+                contents[ content ] = re.findall( '<option value="(\d+)".*?>(.*?)</option>', options )
+    except:
+        print_exc()
+    try:
+        if programid != "0":
+            url = "%s/webtele/_dyn/getEpisodesWithVideosXml.jsp?programId=%s&episodeId=0" % ( canal_url, programid )
+            html = get_html_source( url )
+            contents[ "episodeId" ] = re.findall( '<episode id="(\d+)".*?>(.*?)</episode>', html )
+    except:
+        print_exc()
+    return contents
+
+
+def getTvShows( canal_url="", typeid="0", themeid="0", programid="0", episodeid="0", pageid="1" ):
+    contents = {}
     tvshows = {}
     pages = "1"
     try:
-        if "canalvie" in canal_url: uri = "%s/webtele/recherche/?type=0&theme=0&emission=0&episode=0&tri=0&page=%s"
-        else: uri = "%s/webtele/recherche/?type=0&emission=0&episode=0&tri=0&page=%s"
-        url = uri % ( canal_url, page )
+        themeid = ( "", "&theme=" + themeid )[ "canalvie" in canal_url ]
+        url = "%s/webtele/recherche/?type=%s%s&emission=%s&episode=%s&tri=0&page=%s" % ( canal_url, typeid, themeid, programid, episodeid, pageid )
         html = get_html_source( url )
+        #html = get_html_source( "../../source/www.seriesplus.com.htm" )
         #print url
         #print html
-        #html = get_html_source( "www.seriesplus.com.htm" )
-        #html = get_html_source( "www.canald.com.htm" )
-        #html = get_html_source( "www.ztele.com.htm" )
-        #html = get_html_source( "www.historiatv.com.htm" )
-        #html = get_html_source( "www.canalvie.com.htm" )
+
+        contents = getContents( html, canal_url, programid )
+
         try:
             total = int( re.compile( '<a name="resultats"></a>.*?\t(\\d+) r.*?sultats.*?</div>', re.S ).search( html ).group( 1 ) )
             if ( total / 10 ) * 10 < total: pages = str( ( total / 10 ) + 1 )
@@ -87,7 +104,7 @@ def getTvShows( canal_url="", page="1" ):
                 print tvshowtitle, title
     except:
         print_exc()
-    return tvshows, pages
+    return tvshows, pages, contents
 
 
 
@@ -95,15 +112,17 @@ if ( __name__ == "__main__" ):
     import time
     t1 = time.time()
     canal_url = canals[ "ztele" ][ 1 ]
-    tvshows, pages = getTvShows( canal_url, "20" )
+    tvshows, pages, contents = getTvShows( canal_url, programid="2209", pageid="1" )
     print pages
+    print contents
+    print
     for k, v in tvshows.items():
         print v[ "tvshowtitle" ]
         print v[ "title" ]
         print v[ "episode" ]
         print v[ "season" ]
         videoid = k#tvshows.keys()[ 0 ]
-        print getWebVideoUrl( canal_url, videoid )
+        #print getWebVideoUrl( canal_url, videoid )
         print
-        break
+        #break
     print time.time() - t1

@@ -34,9 +34,6 @@ ECHO Thumbs.db>>"BUILD\exclude.txt"
 ECHO Desktop.ini>>"BUILD\exclude.txt"
 ECHO .pyo>>"BUILD\exclude.txt"
 ECHO .pyc>>"BUILD\exclude.txt"
-echo captcha.gif>>"BUILD\exclude.txt"
-ECHO .html>>"BUILD\exclude.txt"
-ECHO .lwp>>"BUILD\exclude.txt"
 ECHO .bak>>"BUILD\exclude.txt"
 
 :MakeReleaseBuild
@@ -45,7 +42,6 @@ ECHO ----------------------------------------------------------------------
 ECHO.
 ECHO Copying required files to \Build\%PluginType%\%PluginName%\ folder . . .
 XCOPY resources "BUILD\%PluginType%\%PluginName%\resources" /E /Q /I /Y /EXCLUDE:BUILD\exclude.txt
-XCOPY cache "BUILD\%PluginType%\%PluginName%\cache" /E /Q /I /Y /EXCLUDE:BUILD\exclude.txt
 COPY default.py "BUILD\%PluginType%\%PluginName%\"
 COPY default.tbn "BUILD\%PluginType%\%PluginName%\"
 ECHO.
