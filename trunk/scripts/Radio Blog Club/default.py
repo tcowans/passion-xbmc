@@ -329,7 +329,7 @@ class GUI(xbmcgui.WindowXML):
         userdir = self.userPreset['userdir']
         browse = None
         if (userdir is None) or (not os.path.isdir(userdir)):
-            browse = xbmcgui.Dialog().browse(3, xbmc.getLocalizedString(20005), "files")
+            browse = xbmcgui.Dialog().browse(3, "Recordings folder", "files")
         if browse:
             self.userPreset["userdir"] = str(browse)
             self.saveUserPreset()
@@ -338,7 +338,7 @@ class GUI(xbmcgui.WindowXML):
 
     def setDirRecorder(self):
         userdir = self.userPreset['userdir']
-        browse = xbmcgui.Dialog().browse(3, xbmc.getLocalizedString(20005), "files")
+        browse = xbmcgui.Dialog().browse(3, "Recordings folder", "files")
         if browse:
             self.userPreset["userdir"] = str(browse)
             self.saveUserPreset()

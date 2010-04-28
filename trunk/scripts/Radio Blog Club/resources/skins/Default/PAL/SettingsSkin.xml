@@ -119,7 +119,7 @@
                 <posx>0</posx>
                 <posy>35</posy>
                 <width>485</width>
-                <label>20005</label>
+                <label>Recordings folder</label>
                 <onleft>9001</onleft>
                 <onright>9001</onright>
                 <onup>20</onup>

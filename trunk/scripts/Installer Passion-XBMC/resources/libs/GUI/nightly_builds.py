@@ -144,7 +144,7 @@ def downloader( heading, url, destination="", onBackground=False ):
     filepath = ""
     try:
         if not destination:
-            dpath = xbmc.translatePath( get_browse_dialog( heading=_( 20005 ) ) )
+            dpath = xbmc.translatePath( get_browse_dialog( heading="Recordings folder" ) )
             if not dpath and not os.path.exists( dpath ):
                 try: raise pDialogCanceled()
                 except pDialogCanceled, error:
