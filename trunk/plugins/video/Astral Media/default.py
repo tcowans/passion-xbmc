@@ -7,7 +7,7 @@ __svn_url__       = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/video/
 __credits__       = "Team XBMC, http://xbmc.org/"
 __platform__      = "xbmc media center, [ALL]"
 __date__          = "27-04-2010"
-__version__       = "1.0.1"
+__version__       = "1.0.2"
 __svn_revision__  = "$Revision$"
 
 
@@ -15,7 +15,6 @@ __svn_revision__  = "$Revision$"
 import os
 import sys
 import time
-import urllib
 from traceback import print_exc
 
 import xbmc
@@ -122,8 +121,7 @@ class Main:
                 tbn = os.path.join( os.getcwd(), "resources", "media", "%s.png" % canal )
                 listitem = xbmcgui.ListItem( value[ 0 ], "", tbn, tbn )
 
-                c_items = []
-                c_items += [ ( _( 654 ), "XBMC.ActivateWindow(scriptsdebuginfo)" ) ]
+                c_items = self._add_default_c_items()
                 listitem.addContextMenuItems( c_items, replaceItems=True )
 
                 infolabels = { "title": value[ 0 ], "plot": value[ 2 ] }
@@ -146,7 +144,7 @@ class Main:
                 title = "[B]Émissions[/B] (%i)" % (len( contents[ "programId" ] )-1)
                 listitem = xbmcgui.ListItem( title, "", tbn, tbn )
 
-                c_items = [ ( _( 654 ), "XBMC.ActivateWindow(scriptsdebuginfo)" ) ]
+                c_items = self._add_default_c_items()
                 listitem.addContextMenuItems( c_items, replaceItems=True )
 
                 infolabels = { "title": title, "tvshowtitle": canals[ self.args.canal ][ 0 ], "plot": "Afficher la liste des émissions disponibles" }
@@ -161,7 +159,7 @@ class Main:
                 title = "[B]Épisodes[/B] (%i)" % (len( contents[ "episodeId" ] )-1)
                 listitem = xbmcgui.ListItem( title, "", tbn, tbn )
 
-                c_items = [ ( _( 654 ), "XBMC.ActivateWindow(scriptsdebuginfo)" ) ]
+                c_items = self._add_default_c_items()
                 listitem.addContextMenuItems( c_items, replaceItems=True )
 
                 tvshowtitle = "".join( [ t for i, t in contents[ "programId" ] if i == self.args.emission ] )
@@ -177,7 +175,7 @@ class Main:
                 title = "[B]Types de vidéo[/B] (%i)" % (len( contents[ "typeId" ] )-1)
                 listitem = xbmcgui.ListItem( title, "", tbn, tbn )
 
-                c_items = [ ( _( 654 ), "XBMC.ActivateWindow(scriptsdebuginfo)" ) ]
+                c_items = self._add_default_c_items()
                 listitem.addContextMenuItems( c_items, replaceItems=True )
 
                 infolabels = { "title": title, "tvshowtitle": canals[ self.args.canal ][ 0 ], "plot": "Afficher la liste des types de vidéo" }
@@ -192,7 +190,7 @@ class Main:
                 title = "[B]Thématiques[/B] (%i)" % (len( contents[ "themeId" ] )-1)
                 listitem = xbmcgui.ListItem( title, "", tbn, tbn )
 
-                c_items = [ ( _( 654 ), "XBMC.ActivateWindow(scriptsdebuginfo)" ) ]
+                c_items = self._add_default_c_items()
                 listitem.addContextMenuItems( c_items, replaceItems=True )
 
                 infolabels = { "title": title, "tvshowtitle": canals[ self.args.canal ][ 0 ], "plot": "Afficher la liste Thématiques" }
@@ -204,6 +202,15 @@ class Main:
         except:
             print_exc()
         return OK
+
+    def _add_default_c_items( self ):
+        c_items = []
+        try:
+            c_items += [ ( "Téléchargements en cours...", 'XBMC.RunPlugin(%s?show_dl="True")' % sys.argv[ 0 ] ) ]
+            c_items += [ ( _( 654 ), "XBMC.ActivateWindow(scriptsdebuginfo)" ) ]
+        except:
+            print_exc()
+        return c_items
 
     def _add_directory_items( self ):
         OK = True
@@ -225,8 +232,14 @@ class Main:
                 title = ( episode[ "title" ], fulltitle )[ mixtitle ]
                 DIALOG_PROGRESS.update( -1, _( 1040 ), title )
                 listitem = xbmcgui.ListItem( title, "", episode[ "thumb" ], episode[ "thumb" ] )
-                c_items = [ ( _( 13346 ), "XBMC.Action(Info)", ) ]
-                c_items += [ ( _( 654 ), "XBMC.ActivateWindow(scriptsdebuginfo)" ) ]
+
+                flvs = getWebVideoUrl( canal_url, videoid )
+                try: flv = flvs[ int( xbmcplugin.getSetting( "quality" ) ) ]
+                except: flv = flvs[ 0 ]
+
+                c_items = [ ( _( 33003 ), "XBMC.RunPlugin(%s?dl_url=%s)" % ( sys.argv[ 0 ], repr( flv ) ) ) ]
+                c_items += [ ( _( 13346 ), "XBMC.Action(Info)", ) ]
+                c_items += self._add_default_c_items()
                 listitem.addContextMenuItems( c_items, replaceItems=True )
 
                 infolabels = {
@@ -244,10 +257,6 @@ class Main:
                     }
                 listitem.setInfo( type="video", infoLabels=infolabels )
 
-                flvs = getWebVideoUrl( canal_url, videoid )
-                try: flv = flvs[ int( xbmcplugin.getSetting( "quality" ) ) ]
-                except: flv = flvs[ 0 ]
-
                 OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=flv, listitem=listitem, isFolder=False, totalItems=total_items )
                 if ( not OK ): raise
 
@@ -259,7 +268,7 @@ class Main:
                     tbn = os.path.join( os.getcwd(), "resources", "media", "next1.png" )
                     listitem = xbmcgui.ListItem( "[B]Page suivante[/B]", "", tbn, tbn )
 
-                    c_items = [ ( _( 654 ), "XBMC.ActivateWindow(scriptsdebuginfo)" ) ]
+                    c_items = self._add_default_c_items()
                     listitem.addContextMenuItems( c_items, replaceItems=True )
 
                     infolabels = { "title": "Page suivante", "tvshowtitle": canals[ self.args.canal ][ 0 ], "plot": "Aller à la page %s de %s" % ( next, pages ) }
@@ -297,6 +306,62 @@ class Main:
         xbmcplugin.endOfDirectory( handle=int( sys.argv[ 1 ] ), succeeded=OK )#, cacheToDisc=True )#updateListing = True,
 
 
+class DialogDownloadProgress( xbmcgui.WindowXMLDialog ):
+    def __init__( self, *args, **kwargs ):
+        xbmcgui.WindowXMLDialog.__init__( self, *args, **kwargs )
+        xbmc.executebuiltin( "Skin.Reset(AnimeWindowXMLDialogClose)" )
+        xbmc.executebuiltin( "Skin.SetBool(AnimeWindowXMLDialogClose)" )
+        self.doModal()
+
+    def onInit( self ):
+        pass
+
+    def onFocus( self, controlID ):
+        pass
+
+    def onClick( self, controlID ):
+        try:
+            win = xbmcgui.Window( xbmcgui.getCurrentWindowDialogId() )
+            if   controlID == 1401: win.setProperty( 'progress.01.isAlive', "kill" )
+            elif controlID == 1402: win.setProperty( 'progress.02.isAlive', "kill" )
+            elif controlID == 1403: win.setProperty( 'progress.03.isAlive', "kill" )
+            elif controlID == 1404: win.setProperty( 'progress.04.isAlive', "kill" )
+            elif controlID == 1405: win.setProperty( 'progress.05.isAlive', "kill" )
+            elif controlID == 1406: win.setProperty( 'progress.06.isAlive', "kill" )
+            elif controlID == 1407: win.setProperty( 'progress.07.isAlive', "kill" )
+            elif controlID == 1408: win.setProperty( 'progress.08.isAlive', "kill" )
+            elif controlID == 1409: win.setProperty( 'progress.09.isAlive', "kill" )
+            elif controlID == 1410: win.setProperty( 'progress.10.isAlive', "kill" )
+            elif controlID == 1411: win.setProperty( 'progress.11.isAlive', "kill" )
+            elif controlID == 1412: win.setProperty( 'progress.12.isAlive', "kill" )
+        except:
+            print_exc()
+
+    def onAction( self, action ):
+        if action in [ 9, 10, 117 ]:
+            self._close_dialog()
+
+    def _close_dialog( self ):
+        xbmc.executebuiltin( "Skin.Reset(AnimeWindowXMLDialogClose)" )
+        import time
+        time.sleep( .4 )
+        self.close()
+
+
 
 if ( __name__ == "__main__" ):
-    Main()
+    if ( "show_dl=" in sys.argv[ 2 ] ):
+        DialogDownloadProgress( "DialogDownloadProgress.xml", os.getcwd(), "Default" )
+    elif ( "dl_url=" in sys.argv[ 2 ] ):
+        # download selected media via script downloader ( onBackground or with progressBar )
+        exec "args = _Info(%s)" % ( sys.argv[ 2 ][ 1: ].replace( "&", ", " ), )
+        script = os.path.join( os.getcwd(), "resources", "pluginAPI", "Downloader.py" )
+        # get settings
+        DL_PATH = ( xbmcplugin.getSetting( "DlPath" ), "" )[ ( xbmcplugin.getSetting( "AskDl" ) == "true" ) ]
+        if DL_PATH: destination = os.path.join( DL_PATH, os.path.basename( args.dl_url ) )
+        else: destination = DL_PATH
+        DL_RPCT = int( "0|5|10|20|25|50|100".split( "|" )[ int( xbmcplugin.getSetting( "ReportPercent" ) ) ] ) or -1
+        onBackground = ( 0, DL_RPCT )[ ( xbmcplugin.getSetting( "DlBackground" ) == "true" ) ]
+        xbmc.executebuiltin( "XBMC.RunScript(%s,%s,%s,%s)" % ( script, args.dl_url, destination, onBackground ) )
+    else:
+        Main()
