@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addoninfo>
-  <id>arkanoid.script</id>
+  <id>script.game.arkanoid</id>
   <type>script</type>
   <title>Arkanoid</title>
   <library>default.py</library>

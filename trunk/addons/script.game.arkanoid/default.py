@@ -3,11 +3,11 @@
 __script__        = "Arkanoid"
 __author__        = "Frost"
 __url__           = "http://passion-xbmc.org/"
-__svn_url__       = "http://passion-xbmc.googlecode.com/svn/trunk/addons/Arkanoid/"
+__svn_url__       = "http://passion-xbmc.googlecode.com/svn/trunk/addons/script.game.arkanoid/"
 __credits__       = "Team XBMC, http://xbmc.org/"
 __platform__      = "xbmc media center, [ALL]"
 __started__       = "26-02-2010"
-__date__          = "28-04-2010"
+__date__          = "29-04-2010"
 __version__       = "pre-1.0.0"
 __statut__        = "Beta1"
 __svn_revision__  = "$Revision$".replace( "Revision", "" ).strip( "$: " )
