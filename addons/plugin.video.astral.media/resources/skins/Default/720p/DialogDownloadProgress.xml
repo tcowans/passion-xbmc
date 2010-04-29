@@ -1,0 +1,467 @@
+<window type="dialog" id="3099">
+	<defaultcontrol always="true">400</defaultcontrol>
+	<coordinates>
+		<system>1</system>
+		<posx>0</posx>
+		<posy>0</posy>
+	</coordinates>
+	<controls>
+		<control type="group">
+			<animation effect="slide" start="400,0" end="0,0" time="400" tween="quadratic" easing="out">WindowOpen</animation>
+			<animation effect="slide" start="0,0" end="400,0" time="400" tween="quadratic" easing="out" condition="!Skin.HasSetting(AnimeWindowXMLDialogClose)">conditional</animation>
+			<control type="image">
+				<posx>400r</posx>
+				<posy>0</posy>
+				<width>400</width>
+				<height>720</height>
+				<texture border="15,0,0,0" flipx="true">AMDL-HomeBladeSub.png</texture>
+			</control>
+			<control type="button">
+				<description>Close Window button</description>
+				<posx>380r</posx>
+				<posy>0</posy>
+				<width>64</width>
+				<height>32</height>
+				<label>-</label>
+				<font>-</font>
+				<onclick>PreviousMenu</onclick>
+				<texturefocus>AMDL-DialogCloseButton-focus.png</texturefocus>
+				<texturenofocus>AMDL-DialogCloseButton.png</texturenofocus>
+				<onleft>450</onleft>
+				<onright>450</onright>
+				<onup>450</onup>
+				<ondown>450</ondown>
+				<visible>system.getbool(input.enablemouse)</visible>
+			</control>
+
+			<control type="label">
+				<description>header label</description>
+				<posx>390r</posx>
+				<posy>30</posy>
+				<width>370</width>
+				<height>30</height>
+				<font>font13_title</font>
+				<label>Download Progress...</label>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>FFFFFFFF</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+			</control>
+
+			<control type="grouplist" id="400">
+				<posx>390r</posx>
+				<posy>70</posy>
+				<width>450</width>
+				<height>600</height>
+				<itemgap>1</itemgap>
+				<pagecontrol>-</pagecontrol>
+				<scrolltime>200</scrolltime>
+				<onleft>400</onleft>
+				<onright>400</onright>
+				<onup>400</onup>
+				<ondown>400</ondown>
+				<control type="button" id="1401">
+					<description>progress 01 cancel button</description>
+					<width>370</width>
+					<height>40</height>
+					<font>-</font>
+					<texturefocus border="5">AMDL-button-focus.png</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<pulseonselect>no</pulseonselect>
+					<visible>!IsEmpty(Window.Property(progress.01.isAlive))</visible>
+				</control>
+				<control type="progress" id="401">
+					<description>progress 01 control</description>
+					<width>370</width>
+					<height>8</height>
+					<texturebg border="6,0,6,0">AMDL-OSDProgressBack.png</texturebg>
+					<lefttexture>-</lefttexture>
+					<midtexture border="6,0,6,0">AMDL-OSDProgressMid.png</midtexture>
+					<righttexture>-</righttexture>
+					<overlaytexture>-</overlaytexture>
+					<visible>!IsEmpty(Window.Property(progress.01.isAlive))</visible>
+				</control>
+				<control type="button" id="1402">
+					<description>progress 02 cancel button</description>
+					<width>370</width>
+					<height>40</height>
+					<font>-</font>
+					<texturefocus border="5">AMDL-button-focus.png</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<pulseonselect>no</pulseonselect>
+					<visible>!IsEmpty(Window.Property(progress.02.isAlive))</visible>
+				</control>
+				<control type="progress" id="402">
+					<description>progress 02 control</description>
+					<width>370</width>
+					<height>8</height>
+					<texturebg border="6,0,6,0">AMDL-OSDProgressBack.png</texturebg>
+					<lefttexture>-</lefttexture>
+					<midtexture border="6,0,6,0">AMDL-OSDProgressMid.png</midtexture>
+					<righttexture>-</righttexture>
+					<overlaytexture>-</overlaytexture>
+					<visible>!IsEmpty(Window.Property(progress.02.isAlive))</visible>
+				</control>
+				<control type="button" id="1403">
+					<description>progress 03 cancel button</description>
+					<width>370</width>
+					<height>40</height>
+					<font>-</font>
+					<texturefocus border="5">AMDL-button-focus.png</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<pulseonselect>no</pulseonselect>
+					<visible>!IsEmpty(Window.Property(progress.03.isAlive))</visible>
+				</control>
+				<control type="progress" id="403">
+					<description>progress 03 control</description>
+					<width>370</width>
+					<height>8</height>
+					<texturebg border="6,0,6,0">AMDL-OSDProgressBack.png</texturebg>
+					<lefttexture>-</lefttexture>
+					<midtexture border="6,0,6,0">AMDL-OSDProgressMid.png</midtexture>
+					<righttexture>-</righttexture>
+					<overlaytexture>-</overlaytexture>
+					<visible>!IsEmpty(Window.Property(progress.03.isAlive))</visible>
+				</control>
+				<control type="button" id="1404">
+					<description>progress 04 cancel button</description>
+					<width>370</width>
+					<height>40</height>
+					<font>-</font>
+					<texturefocus border="5">AMDL-button-focus.png</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<pulseonselect>no</pulseonselect>
+					<visible>!IsEmpty(Window.Property(progress.04.isAlive))</visible>
+				</control>
+				<control type="progress" id="404">
+					<description>progress 04 control</description>
+					<width>370</width>
+					<height>8</height>
+					<texturebg border="6,0,6,0">AMDL-OSDProgressBack.png</texturebg>
+					<lefttexture>-</lefttexture>
+					<midtexture border="6,0,6,0">AMDL-OSDProgressMid.png</midtexture>
+					<righttexture>-</righttexture>
+					<overlaytexture>-</overlaytexture>
+					<visible>!IsEmpty(Window.Property(progress.04.isAlive))</visible>
+				</control>
+				<control type="button" id="1405">
+					<description>progress 05 cancel button</description>
+					<width>370</width>
+					<height>40</height>
+					<font>-</font>
+					<texturefocus border="5">AMDL-button-focus.png</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<pulseonselect>no</pulseonselect>
+					<visible>!IsEmpty(Window.Property(progress.05.isAlive))</visible>
+				</control>
+				<control type="progress" id="405">
+					<description>progress 05 control</description>
+					<width>370</width>
+					<height>8</height>
+					<texturebg border="6,0,6,0">AMDL-OSDProgressBack.png</texturebg>
+					<lefttexture>-</lefttexture>
+					<midtexture border="6,0,6,0">AMDL-OSDProgressMid.png</midtexture>
+					<righttexture>-</righttexture>
+					<overlaytexture>-</overlaytexture>
+					<visible>!IsEmpty(Window.Property(progress.05.isAlive))</visible>
+				</control>
+				<control type="button" id="1406">
+					<description>progress 06 cancel button</description>
+					<width>370</width>
+					<height>40</height>
+					<font>-</font>
+					<texturefocus border="5">AMDL-button-focus.png</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<pulseonselect>no</pulseonselect>
+					<visible>!IsEmpty(Window.Property(progress.06.isAlive))</visible>
+				</control>
+				<control type="progress" id="406">
+					<description>progress 06 control</description>
+					<width>370</width>
+					<height>8</height>
+					<texturebg border="6,0,6,0">AMDL-OSDProgressBack.png</texturebg>
+					<lefttexture>-</lefttexture>
+					<midtexture border="6,0,6,0">AMDL-OSDProgressMid.png</midtexture>
+					<righttexture>-</righttexture>
+					<overlaytexture>-</overlaytexture>
+					<visible>!IsEmpty(Window.Property(progress.06.isAlive))</visible>
+				</control>
+				<control type="button" id="1407">
+					<description>progress 07 cancel button</description>
+					<width>370</width>
+					<height>40</height>
+					<font>-</font>
+					<texturefocus border="5">AMDL-button-focus.png</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<pulseonselect>no</pulseonselect>
+					<visible>!IsEmpty(Window.Property(progress.07.isAlive))</visible>
+				</control>
+				<control type="progress" id="407">
+					<description>progress 07 control</description>
+					<width>370</width>
+					<height>8</height>
+					<texturebg border="6,0,6,0">AMDL-OSDProgressBack.png</texturebg>
+					<lefttexture>-</lefttexture>
+					<midtexture border="6,0,6,0">AMDL-OSDProgressMid.png</midtexture>
+					<righttexture>-</righttexture>
+					<overlaytexture>-</overlaytexture>
+					<visible>!IsEmpty(Window.Property(progress.07.isAlive))</visible>
+				</control>
+				<control type="button" id="1408">
+					<description>progress 08 cancel button</description>
+					<width>370</width>
+					<height>40</height>
+					<font>-</font>
+					<texturefocus border="5">AMDL-button-focus.png</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<pulseonselect>no</pulseonselect>
+					<visible>!IsEmpty(Window.Property(progress.08.isAlive))</visible>
+				</control>
+				<control type="progress" id="408">
+					<description>progress 08 control</description>
+					<width>370</width>
+					<height>8</height>
+					<texturebg border="6,0,6,0">AMDL-OSDProgressBack.png</texturebg>
+					<lefttexture>-</lefttexture>
+					<midtexture border="6,0,6,0">AMDL-OSDProgressMid.png</midtexture>
+					<righttexture>-</righttexture>
+					<overlaytexture>-</overlaytexture>
+					<visible>!IsEmpty(Window.Property(progress.08.isAlive))</visible>
+				</control>
+				<control type="button" id="1409">
+					<description>progress 09 cancel button</description>
+					<width>370</width>
+					<height>40</height>
+					<font>-</font>
+					<texturefocus border="5">AMDL-button-focus.png</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<pulseonselect>no</pulseonselect>
+					<visible>!IsEmpty(Window.Property(progress.09.isAlive))</visible>
+				</control>
+				<control type="progress" id="409">
+					<description>progress 09 control</description>
+					<width>370</width>
+					<height>8</height>
+					<texturebg border="6,0,6,0">AMDL-OSDProgressBack.png</texturebg>
+					<lefttexture>-</lefttexture>
+					<midtexture border="6,0,6,0">AMDL-OSDProgressMid.png</midtexture>
+					<righttexture>-</righttexture>
+					<overlaytexture>-</overlaytexture>
+					<visible>!IsEmpty(Window.Property(progress.09.isAlive))</visible>
+				</control>
+				<control type="button" id="1410">
+					<description>progress 10 cancel button</description>
+					<width>370</width>
+					<height>40</height>
+					<font>-</font>
+					<texturefocus border="5">AMDL-button-focus.png</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<pulseonselect>no</pulseonselect>
+					<visible>!IsEmpty(Window.Property(progress.10.isAlive))</visible>
+				</control>
+				<control type="progress" id="410">
+					<description>progress 10 control</description>
+					<width>370</width>
+					<height>8</height>
+					<texturebg border="6,0,6,0">AMDL-OSDProgressBack.png</texturebg>
+					<lefttexture>-</lefttexture>
+					<midtexture border="6,0,6,0">AMDL-OSDProgressMid.png</midtexture>
+					<righttexture>-</righttexture>
+					<overlaytexture>-</overlaytexture>
+					<visible>!IsEmpty(Window.Property(progress.10.isAlive))</visible>
+				</control>
+				<control type="button" id="1411">
+					<description>progress 11 cancel button</description>
+					<width>370</width>
+					<height>40</height>
+					<font>-</font>
+					<texturefocus border="5">AMDL-button-focus.png</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<pulseonselect>no</pulseonselect>
+					<visible>!IsEmpty(Window.Property(progress.11.isAlive))</visible>
+				</control>
+				<control type="progress" id="411">
+					<description>progress 11 control</description>
+					<width>370</width>
+					<height>8</height>
+					<texturebg border="6,0,6,0">AMDL-OSDProgressBack.png</texturebg>
+					<lefttexture>-</lefttexture>
+					<midtexture border="6,0,6,0">AMDL-OSDProgressMid.png</midtexture>
+					<righttexture>-</righttexture>
+					<overlaytexture>-</overlaytexture>
+					<visible>!IsEmpty(Window.Property(progress.11.isAlive))</visible>
+				</control>
+				<control type="button" id="1412">
+					<description>progress 12 cancel button</description>
+					<width>370</width>
+					<height>40</height>
+					<font>-</font>
+					<texturefocus border="5">AMDL-button-focus.png</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<pulseonselect>no</pulseonselect>
+					<visible>!IsEmpty(Window.Property(progress.12.isAlive))</visible>
+				</control>
+				<control type="progress" id="412">
+					<description>progress 12 control</description>
+					<width>370</width>
+					<height>8</height>
+					<texturebg border="6,0,6,0">AMDL-OSDProgressBack.png</texturebg>
+					<lefttexture>-</lefttexture>
+					<midtexture border="6,0,6,0">AMDL-OSDProgressMid.png</midtexture>
+					<righttexture>-</righttexture>
+					<overlaytexture>-</overlaytexture>
+					<visible>!IsEmpty(Window.Property(progress.12.isAlive))</visible>
+				</control>
+			</control>
+
+			<control type="list" id="450">
+				<hitrect x="0" y="0" w="0" h="0" />
+				<posx>390r</posx>
+				<posy>70</posy>
+				<width>450</width>
+				<height>600</height>
+				<pagecontrol>-</pagecontrol>
+				<scrolltime>200</scrolltime>
+				<onup>450</onup>
+				<onleft>450</onleft>
+				<onright>450</onright>
+				<ondown>450</ondown>
+				<itemlayout height="50">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>370</width>
+						<height>50</height>
+						<texture border="5">AMDL-button-nofocus.png</texture>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>350</width>
+						<height>40</height>
+						<font>font10_title</font>
+						<textcolor>FFEB9E17</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label][COLOR=FFFFFFFF]$INFO[ListItem.Label2,[CR]][/COLOR]</label>
+					</control>
+				</itemlayout>
+				<focusedlayout height="50">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>370</width>
+						<height>50</height>
+						<texture border="5">AMDL-button-nofocus.png</texture>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>350</width>
+						<height>40</height>
+						<font>font10_title</font>
+						<textcolor>FFEB9E17</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label][COLOR=FFFFFFFF]$INFO[ListItem.Label2,[CR]][/COLOR]</label>
+					</control>
+				</focusedlayout>
+				<content>
+					<item id="1">
+						<label>$INFO[Window.Property(progress.01.heading)]</label>
+						<label2>$INFO[Window.Property(progress.01.label)]</label2>
+						<onclick>-</onclick>
+						<visible>!IsEmpty(Window.Property(progress.01.isAlive))</visible>
+					</item>
+					<item id="2">
+						<label>$INFO[Window.Property(progress.02.heading)]</label>
+						<label2>$INFO[Window.Property(progress.02.label)]</label2>
+						<onclick>-</onclick>
+						<visible>!IsEmpty(Window.Property(progress.02.isAlive))</visible>
+					</item>
+					<item id="3">
+						<label>$INFO[Window.Property(progress.03.heading)]</label>
+						<label2>$INFO[Window.Property(progress.03.label)]</label2>
+						<onclick>-</onclick>
+						<visible>!IsEmpty(Window.Property(progress.03.isAlive))</visible>
+					</item>
+					<item id="4">
+						<label>$INFO[Window.Property(progress.04.heading)]</label>
+						<label2>$INFO[Window.Property(progress.04.label)]</label2>
+						<onclick>-</onclick>
+						<visible>!IsEmpty(Window.Property(progress.04.isAlive))</visible>
+					</item>
+					<item id="5">
+						<label>$INFO[Window.Property(progress.05.heading)]</label>
+						<label2>$INFO[Window.Property(progress.05.label)]</label2>
+						<onclick>-</onclick>
+						<visible>!IsEmpty(Window.Property(progress.05.isAlive))</visible>
+					</item>
+					<item id="6">
+						<label>$INFO[Window.Property(progress.06.heading)]</label>
+						<label2>$INFO[Window.Property(progress.06.label)]</label2>
+						<onclick>-</onclick>
+						<visible>!IsEmpty(Window.Property(progress.06.isAlive))</visible>
+					</item>
+					<item id="7">
+						<label>$INFO[Window.Property(progress.07.heading)]</label>
+						<label2>$INFO[Window.Property(progress.07.label)]</label2>
+						<onclick>-</onclick>
+						<visible>!IsEmpty(Window.Property(progress.07.isAlive))</visible>
+					</item>
+					<item id="8">
+						<label>$INFO[Window.Property(progress.08.heading)]</label>
+						<label2>$INFO[Window.Property(progress.08.label)]</label2>
+						<onclick>-</onclick>
+						<visible>!IsEmpty(Window.Property(progress.08.isAlive))</visible>
+					</item>
+					<item id="9">
+						<label>$INFO[Window.Property(progress.09.heading)]</label>
+						<label2>$INFO[Window.Property(progress.09.label)]</label2>
+						<onclick>-</onclick>
+						<visible>!IsEmpty(Window.Property(progress.09.isAlive))</visible>
+					</item>
+					<item id="10">
+						<label>$INFO[Window.Property(progress.10.heading)]</label>
+						<label2>$INFO[Window.Property(progress.10.label)]</label2>
+						<onclick>-</onclick>
+						<visible>!IsEmpty(Window.Property(progress.10.isAlive))</visible>
+					</item>
+					<item id="11">
+						<label>$INFO[Window.Property(progress.11.heading)]</label>
+						<label2>$INFO[Window.Property(progress.11.label)]</label2>
+						<onclick>-</onclick>
+						<visible>!IsEmpty(Window.Property(progress.11.isAlive))</visible>
+					</item>
+					<item id="12">
+						<label>$INFO[Window.Property(progress.12.heading)]</label>
+						<label2>$INFO[Window.Property(progress.12.label)]</label2>
+						<onclick>-</onclick>
+						<visible>!IsEmpty(Window.Property(progress.12.isAlive))</visible>
+					</item>
+				</content>
+			</control>
+			<control type="label">
+				<description>Page label</description>
+				<posx>30r</posx>
+				<posy>670</posy>
+				<width>350</width>
+				<height>30</height>
+				<align>right</align>
+				<aligny>center</aligny>
+				<font>font12</font>
+				<textcolor>FFb4b4b4</textcolor>
+				<label>([COLOR=FF0084ff]$INFO[Container(450).NumItems][/COLOR]) $LOCALIZE[31025] - $LOCALIZE[31024] ([COLOR=FF0084ff]$INFO[Container(450).CurrentPage]/$INFO[Container(450).NumPages][/COLOR])</label>
+			</control>
+		</control>
+		<control type="image">
+			<posx>26r</posx>
+			<posy>0</posy>
+			<width>846</width>
+			<height>720</height>
+			<texture flipx="true">AMDL-HomeBlade.png</texture>
+			<animation effect="slide" start="26,0" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+			<animation effect="slide" start="0,0" end="26,0" time="200" delay="200" tween="quadratic" easing="out" condition="!Skin.HasSetting(AnimeWindowXMLDialogClose)">conditional</animation>
+		</control>
+	</controls>
+</window>
