@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!-- Les strings de 32000 à 32999 sont réservées aux scripts -->
+  <!--GENERAL STRINGS -->
+  <string id="32000">Calculatrice</string>
+  <string id="32034">erreur</string>
+</strings>
