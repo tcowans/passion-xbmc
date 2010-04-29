@@ -3,30 +3,22 @@ CLS
 COLOR 1B
 
 :Begin
-:: Set script name based on current directory fullname
-FOR /F "Delims=" %%D IN ("%CD%") DO SET ScriptName=%%~nxD
+:: Set Addon name based on current directory fullname
+FOR /F "Delims=" %%D IN ("%CD%") DO SET AddonName=%%~nxD
 
 :: Set window title
-TITLE %ScriptName% Build Script!
+TITLE %AddonName% Build Addon!
 
 :MakeBuildFolder
 :: Create Build folder
 ECHO ----------------------------------------------------------------------
 ECHO.
-ECHO Creating \BUILD\%ScriptName%\ folder . . .
+ECHO Creating \BUILD\addons\%AddonName%\ folder . . .
 IF EXIST BUILD (
     RD BUILD /S /Q
 )
 MD BUILD
 ECHO.
-
-:GetRevision
-:: Extract Revision # and SET %Revision% variable
-ECHO ----------------------------------------------------------------------
-ECHO.
-ECHO Extracting revision number . . .
-ECHO.
-FOR /F "Tokens=2* Delims=]" %%R IN ('FIND /v /n "&_&_&_&" ".svn\entries" ^| FIND "[11]"') DO SET Revision=%%R
 
 :MakeExcludeFile
 :: Create exclude file
@@ -40,30 +32,22 @@ ECHO Desktop.ini>>"BUILD\exclude.txt"
 
 ECHO .pyo>>"BUILD\exclude.txt"
 ECHO .pyc>>"BUILD\exclude.txt"
-ECHO .mrc>>"BUILD\exclude.txt"
+ECHO .bak>>"BUILD\exclude.txt"
 
 :MakeReleaseBuild
 :: Create release build
 ECHO ----------------------------------------------------------------------
 ECHO.
-ECHO Copying required files to \Build\%ScriptName%\ folder . . .
-XCOPY resources "BUILD\%ScriptName%\resources" /E /Q /I /Y /EXCLUDE:BUILD\exclude.txt
-XCOPY psyco "BUILD\%ScriptName%\psyco" /E /Q /I /Y /EXCLUDE:BUILD\exclude.txt
-COPY default.tbn "BUILD\%ScriptName%\"
-
-:: Create new default.py with __svn_revision__ embedded
-ECHO # %ScriptName% script revision: %Revision% - built with build.bat version 1.0 #> "BUILD\%ScriptName%\default.py"
-FOR /F "Tokens=1* Delims=]" %%L IN ('FIND /v /n "&_&_&_&" default.py') DO (
-    IF /I "%%M"=="__svn_revision__ = 0" (
-        ECHO __svn_revision__ = "%Revision%">> "BUILD\%ScriptName%\default.py"
-    ) ELSE IF "%%M"=="" (
-        ECHO.>> "BUILD\%ScriptName%\default.py"
-    ) ELSE (
-        ECHO %%M>> "BUILD\%ScriptName%\default.py"
-        )
-    )
-)
+ECHO Copying required files to \Build\addons\%AddonName%\ folder . . .
+XCOPY resources "BUILD\addons\%AddonName%\resources" /E /Q /I /Y /EXCLUDE:BUILD\exclude.txt
+COPY default.py "BUILD\addons\%AddonName%\"
+COPY description.xml "BUILD\addons\%AddonName%\"
 ECHO.
+ECHO Copying optional files to \Build\addons\%AddonName%\ folder . . .
+IF EXIST "icon.png" COPY icon.png "BUILD\addons\%AddonName%\"
+IF EXIST "fanart.jpg" COPY fanart.jpg "BUILD\addons\%AddonName%\"
+IF EXIST "default.tbn" COPY default.tbn "BUILD\addons\%AddonName%\"
+IF EXIST "changelog.txt" COPY changelog.txt "BUILD\addons\%AddonName%\"
 
 :Cleanup
 :: Delete exclude.txt file
@@ -86,10 +70,10 @@ IF EXIST "%XBMC_EXE%" (
     ECHO ----------------------------------------------------------------------
     ECHO.
     ECHO XBMC is installed on your PC!
-    ECHO [1] Yes, copy a new "\Build\%ScriptName%\ to %XBMC_EXE%\scripts\%ScriptName%\"
-    ECHO [2] Yes, copy a new build and run XBMC in fullscreen
+    ECHO [1] Yes, copy a new "\Build\addons\%AddonName%\ to %XBMC_EXE%\addons\%AddonName%\"
+    ECHO [2] Yes, copy a new build and run XBMC...
     ECHO [3] No, i prefer copied manually
-    ECHO [4] Create ZIP "BUILD\%ScriptName%.zip"
+    ECHO [4] Create ZIP "BUILD\addons\%AddonName%.zip"
     ECHO.
     ECHO ----------------------------------------------------------------------
     SET /P COPY_BUILD_ANSWER=Copy a new BUILD? [1/2/3/4]:
@@ -102,9 +86,9 @@ IF EXIST "%XBMC_EXE%" (
     :: Copy release build
     ECHO ----------------------------------------------------------------------
     ECHO.
-    ECHO Copying "\Build\%ScriptName%\ to \XBMC\scripts\%ScriptName%\" folder . . .
-    rem ren "%XBMC_EXE%\scripts\%ScriptName%\" %ScriptName%_old
-    XCOPY "BUILD\%ScriptName%" "%XBMC_EXE%\scripts\%ScriptName%\" /E /Q /I /Y
+    ECHO Copying "\Build\addons\%AddonName%\ to \XBMC\addons\%AddonName%\" folder . . .
+    rem ren "%XBMC_EXE%\addons\%AddonName%\" %AddonName%_old
+    XCOPY "BUILD\addons\%AddonName%" "%XBMC_EXE%\addons\%AddonName%\" /E /Q /I /Y
     ECHO.
 
     :: Notify user of completion of copy
@@ -116,10 +100,10 @@ IF EXIST "%XBMC_EXE%" (
     ECHO.
 
     IF /I %COPY_BUILD_ANSWER% EQU 2 (
-        ECHO Starting XBMC in fullscreen.
+        ECHO Starting XBMC ...
         ECHO.
         ECHO ======================================================================
-        start /D"%XBMC_EXE%" XBMC.exe -fs -p
+        start /D"%XBMC_EXE%" XBMC.exe -p
         )
 
     GOTO END
@@ -127,16 +111,16 @@ IF EXIST "%XBMC_EXE%" (
 :ZIP_BUILD
     set ZIP="%ProgramFiles%\7-Zip\7z.exe"
     set ZIP_ROOT=7z.exe
-    set ZIPOPS_EXE=a -tzip "%ScriptName%.zip" "%ScriptName%"
-    ECHO IF EXIST %ZIP% ( %ZIP% %ZIPOPS_EXE%>>"BUILD\zip_build.bat"
-    ECHO   ) ELSE (>>"BUILD\zip_build.bat"
-    ECHO   IF EXIST %ZIP_ROOT% ( %ZIP_ROOT% %ZIPOPS_EXE%>>"BUILD\zip_build.bat"
-    ECHO     ) ELSE (>>"BUILD\zip_build.bat"
-    ECHO     ECHO  not installed!  Skipping .zip compression...>>"BUILD\zip_build.bat"
-    ECHO     )>>"BUILD\zip_build.bat"
-    ECHO   )>>"BUILD\zip_build.bat"
-    cd BUILD
-    ECHO Compressing "BUILD\%ScriptName%.zip"...
+    set ZIPOPS_EXE=a -tzip "%AddonName%.zip" "%AddonName%"
+    ECHO IF EXIST %ZIP% ( %ZIP% %ZIPOPS_EXE%>>"BUILD\addons\zip_build.bat"
+    ECHO   ) ELSE (>>"BUILD\addons\zip_build.bat"
+    ECHO   IF EXIST %ZIP_ROOT% ( %ZIP_ROOT% %ZIPOPS_EXE%>>"BUILD\addons\zip_build.bat"
+    ECHO     ) ELSE (>>"BUILD\addons\zip_build.bat"
+    ECHO     ECHO  not installed!  Skipping .zip compression...>>"BUILD\addons\zip_build.bat"
+    ECHO     )>>"BUILD\addons\zip_build.bat"
+    ECHO   )>>"BUILD\addons\zip_build.bat"
+    cd BUILD\addons\
+    ECHO Compressing "BUILD\addons\%AddonName%.zip"...
     CALL zip_build.bat
     ::cd ..
     ::DEL "BUILD\zip_build.bat"
@@ -149,10 +133,10 @@ IF EXIST "%XBMC_EXE%" (
     ECHO.
     ECHO Build Complete.
     ECHO.
-    ECHO Final build is located in the \BUILD\ folder.
+    ECHO Final build is located in the \BUILD\addons\ folder.
     ECHO.
-    ECHO copy: \%ScriptName%\ folder from the \BUILD\ folder.
-    ECHO to: /XBMC/scripts/ folder.
+    ECHO copy: \addons\%AddonName%\ folder from the \BUILD\addons\ folder
+    ECHO to: /XBMC/addons/ folder.
     ECHO.
     ECHO ======================================================================
     ECHO.
