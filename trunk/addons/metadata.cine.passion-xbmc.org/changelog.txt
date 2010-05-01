@@ -1,0 +1,9 @@
+1.0.1
+- changed xbmc minimal version to 29618
+- changed name "metadata.cine-passion.fr for metadata.cine.passion-xbmc.org", don't use ".fr" is not same web site
+- added misc options in settings dialog, for support and tools
+- added more strings
+- added source in SVN Passion
+
+1.0.0
+- original version
