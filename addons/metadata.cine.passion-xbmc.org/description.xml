@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addoninfo>
+  <id>metadata.cine.passion-xbmc.org</id>
+  <type>scraper</type>
+  <supportedcontent>
+    <content>movies</content>
+  </supportedcontent>
+  <title>Ciné-Passion</title>
+  <library>cine-passion.xml</library>
+  <version>1.0.1</version>
+  <platforms>
+    <platform>all</platform>
+  </platforms>
+  <minversion>
+    <xbmc>29618</xbmc>
+  </minversion>
+  <author>Team Passion-XBMC (passion-xbmc.org)</author>
+  <summary>Le scraper Ciné-passion récupère les informations des films en français du site passion-xbmc.org</summary>
+  <description>Le scraper Ciné-passion et son interface web existent grâce aux travaux successifs de plusieurs développeurs: L8Tig, Vadius45 et Tolriq.
+Merci aux développeurs, à Oncleben31 et Vincent81 pour leurs interventions et idées, à tous les membres qui nous ont soutenus et ceux qui nous ont aidés par leurs rapports de bugs.
+Bien que sa vocation communautaire devrait permettre à terme de constituer une base de donnée indépendante, c'est grâce à l'existence de plusieurs sites que ces travaux ont pu êtres réalisés. 
+</description>
+  <dependencies></dependencies>
+  <disclaimer>Le scraper Ciné-passion n'est pas affilié à Allociné mais vous recommande son utilisation pour disposer d'informations plus complètes sur : Cinéma, DVD, Séries TV et VOD</disclaimer>
+</addoninfo>

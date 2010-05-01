@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!-- Default Scraper labels -->
+  <string id="30000">Langue</string>
+  <string id="30001">Notes</string>
+
+  <!-- Misc labels -->
+  <string id="30100">Options Diverses</string>
+  <string id="30101">XBMC pour</string>
+  <string id="30102">[Inconnue]</string>
+  <string id="30103">Linux</string>
+  <string id="30104">OSX</string>
+  <string id="30105">Windows</string>
+  <string id="30106">XBox</string>
+  <string id="30107">Afficher la liste d'outils liés au scraper Ciné-Passion</string>
+  <string id="30108">&#8226; Navigateur Internet :</string>
+  <string id="30109">&#8226; XBNE NFO Éditeur :</string>
+  <string id="30110">&#8226; EMM - Ember Media Manager :</string>
+
+  <!-- strings 32000 thru 32999 reserved for scripts -->
+  <string id="32000">Ciné-Passion</string>
+  <string id="32001">Support et Outils</string>
+  <string id="32002">La XBox n'a pas de navigateur internet.</string>
+  <string id="32003">Vous devez utiliser un PC avec un navigateur.</string>
+  <string id="32004">Scraper Ciné-Passion Support Fr - En</string>
+  <string id="32005">Visiter et/ou participer au scraper Ciné-Passion</string>
+  <string id="32006">NFO Creator Ciné-passion</string>
+  <string id="32007">XBNE NFO Éditeur</string>
+  <string id="32008">EMM - Ember Media Manager - Ciné-Passion</string>
+  <string id="32009">Annuler/Quitter</string>
+</strings>

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!-- Default Scraper labels -->
+  <string id="30000">Language</string>
+  <string id="30001">Rating</string>
+
+  <!-- Misc labels -->
+  <string id="30100">Misc Options</string>
+  <string id="30101">XBMC for</string>
+  <string id="30102">[Unknown]</string>
+  <string id="30103">Linux</string>
+  <string id="30104">OSX</string>
+  <string id="30105">Windows</string>
+  <string id="30106">XBox</string>
+  <string id="30107">Show list of tools related to scraper Cine-Passion</string>
+  <string id="30108">&#8226; Web Browser:</string>
+  <string id="30109">&#8226; XBNE NFO Editor:</string>
+  <string id="30110">&#8226; EMM - Ember Media Manager:</string>
+
+  <!-- strings 32000 thru 32999 reserved for scripts -->
+  <string id="32000">Cine-Passion</string>
+  <string id="32001">Support and Tools</string>
+  <string id="32002">The XBox has no browser.</string>
+  <string id="32003">You must use a PC with a browser.</string>
+  <string id="32004">Scraper Cine-Passion Support Fr - En</string>
+  <string id="32005">Visit and/or participate in scraper Cine-Passion</string>
+  <string id="32006">NFO Creator Cine-passion</string>
+  <string id="32007">XBNE NFO Editor</string>
+  <string id="32008">EMM - Ember Media Manager - Cine-Passion</string>
+  <string id="32009">Cancel/Exit</string>
+</strings>
