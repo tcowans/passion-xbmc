@@ -164,6 +164,12 @@ def go():
         deleteDir(passiondir,keep=dirs2keep)
         print "%s content deleted"%passiondir
         
+        sys.path.append(passiondir)
+        
+        print "Extracting %s"%archive
+        DIALOG_PROGRESS.update( -1, dialog_lang[1], dialog_lang[2], dialog_lang[6] )
+        zipextraction(archive,passiondir)
+
         try:
             # Nettoyage des donnes dans user data
             if os.path.isdir( SPECIAL_SCRIPT_DATA ):
@@ -175,12 +181,6 @@ def go():
             print ("error/INSTALLMAJ go: " + str(sys.exc_info()[0]))
             traceback.print_exc()
         
-        sys.path.append(passiondir)
-        
-        print "Extracting %s"%archive
-        DIALOG_PROGRESS.update( -1, dialog_lang[1], dialog_lang[2], dialog_lang[6] )
-        zipextraction(archive,passiondir)
-
         DIALOG_PROGRESS.close()
         
         #On supprime le config parser
