@@ -7,8 +7,8 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/"
 __credits__      = "Team XBMC passion, http://passion-xbmc.org/developpement-python/%28script%29-sporlive-display/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "25-04-2010"
-__version__      = "1.5.5"
+__date__         = "16-05-2010"
+__version__      = "1.5.6"
 __svn_revision__  = "$Revision$".replace( "Revision", "" ).strip( "$: " )
 __XBMC_Revision__ = "20000" #XBMC Babylon
 __useragent__    = "Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.0.1) Gecko/2008070208 Firefox/3.0.1"
@@ -171,6 +171,16 @@ def get_film_list( url , database = False):
                     film["poster"] = film["poster"].replace( "c_120_160/b_1_x/o_play.png_5_se" , "r_760_x" ).replace("cx_120_96/b_1_x/o_play.png_5_se", "r_760_x" ).replace("c_120_120/b_1_x/o_play.png_5_se", "r_760_x" )
                     film["poster"] = film["poster"].replace("cx_120_113/o_overlayEmissions-P2C-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-MerciQui-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-LaMinute-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-D2DVD-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-TES-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-FauxR-120.png_1_c", "r_760_x" )
                 catalogue.append(film)
+                try:
+                    c_items = []
+                    local_trailer = os.path.join( trailer_dir, "%s.flv" % translate_string(film["name"] ) )
+                    script = "special://home/plugins/video/Bande-Annonce Allocine/resources/lib/downloader.py"
+                    args = "%s&%s&%s" % ( urllib.quote_plus( "cmedia=%s" % film["id_media"] ), urllib.quote_plus( local_trailer ) , quality)
+                    if not os.path.exists(local_trailer):c_items += [ ( "Télécharger", "XBMC.RunScript(%s,%s)" % ( script, args ) ) ]
+                    else : c_items += [ ( "jouer en local", "xbmc.PlayMedia(%s)" % local_trailer) ]
+                    addDir(film["name"], film["id_media"],5,film["poster"], c_items )
+                except: 
+                    print_exc()
                 print "#######trouvé########trouvé############trouvé##########trouvé###########"
             MEDIA=re.compile( '<div class="mainzone">(.*?)<div class="spacer">', re.DOTALL ).findall(page_data)
             #save_data(page_data)
@@ -587,24 +597,25 @@ if mode==None or url==None or len(url)<1: #menu principal
 if mode == 1: # affichage des liste ba / series / emissions / interviews
     xbmcplugin.setPluginCategory(int(sys.argv[1]), name)
     if load_DB( name ) == "": create_DB( url , name)
-    data=load_DB( name )
-    for film in data:
-        if film["type"] == "film":
-            if xbmcplugin.getSetting("date_sortie") == "true" : ajout_sortie = "[CR]" +  film["sortie"]
-            else : ajout_sortie = ""
-            addDir(film["name"] + ajout_sortie ,"%s##%s" % (film["poster"] , film["id_allo"]),2,film["poster"], sortie=film["sortie"])
-            xbmcplugin.addSortMethod(int(sys.argv[1]), xbmcplugin.SORT_METHOD_TITLE)
-            xbmcplugin.addSortMethod(int(sys.argv[1]), xbmcplugin.SORT_METHOD_DATE)
-            #xbmcplugin.addSortMethod(int(sys.argv[1]), xbmcplugin.SORT_METHOD_NONE)
-        else :
-            #print "image:%s " % film["poster"]
-            c_items = []
-            local_trailer = os.path.join( trailer_dir, "%s.flv" % translate_string(film["name"] ) )
-            script = "special://home/plugins/video/Bande-Annonce Allocine/resources/lib/downloader.py"
-            args = "%s&%s&%s" % ( urllib.quote_plus( "cmedia=%s" % film["id_media"] ), urllib.quote_plus( local_trailer ) , quality)
-            if not os.path.exists(local_trailer):c_items += [ ( "Télécharger", "XBMC.RunScript(%s,%s)" % ( script, args ) ) ]
-            else : c_items += [ ( "jouer en local", "xbmc.PlayMedia(%s)" % local_trailer) ]
-            addDir(film["name"], film["id_media"],5,film["poster"], c_items )
+    else: 
+        data=load_DB( name )
+        for film in data:
+            if film["type"] == "film":
+                if xbmcplugin.getSetting("date_sortie") == "true" : ajout_sortie = "[CR]" +  film["sortie"]
+                else : ajout_sortie = ""
+                addDir(film["name"] + ajout_sortie ,"%s##%s" % (film["poster"] , film["id_allo"]),2,film["poster"], sortie=film["sortie"])
+                xbmcplugin.addSortMethod(int(sys.argv[1]), xbmcplugin.SORT_METHOD_TITLE)
+                xbmcplugin.addSortMethod(int(sys.argv[1]), xbmcplugin.SORT_METHOD_DATE)
+                #xbmcplugin.addSortMethod(int(sys.argv[1]), xbmcplugin.SORT_METHOD_NONE)
+            else :
+                #print "image:%s " % film["poster"]
+                c_items = []
+                local_trailer = os.path.join( trailer_dir, "%s.flv" % translate_string(film["name"] ) )
+                script = "special://home/plugins/video/Bande-Annonce Allocine/resources/lib/downloader.py"
+                args = "%s&%s&%s" % ( urllib.quote_plus( "cmedia=%s" % film["id_media"] ), urllib.quote_plus( local_trailer ) , quality)
+                if not os.path.exists(local_trailer):c_items += [ ( "Télécharger", "XBMC.RunScript(%s,%s)" % ( script, args ) ) ]
+                else : c_items += [ ( "jouer en local", "xbmc.PlayMedia(%s)" % local_trailer) ]
+                addDir(film["name"], film["id_media"],5,film["poster"], c_items )
 
         
         
