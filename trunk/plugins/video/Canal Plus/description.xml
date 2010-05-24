@@ -15,7 +15,7 @@
     <xbmc>26017</xbmc>
   </minversion>
   <author>Alexsolex - Temhil</author>
-  <summary>Plugin vidéo sur les émissions Québécoise en français</summary>
+  <summary>Plugin vidéo donnant acces a toutes les vidéos de la mosaique Canal+</summary>
   <description>Ce plugin vous donne acces a toutes les vidéos de la mosaique Canal+. 
 Vous choisissez une catégorie, puis une sous catégorie et à vous les videos de Canal+ en visualisation en haute ou basse qualité.
 </description>
