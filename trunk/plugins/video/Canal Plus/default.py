@@ -15,19 +15,22 @@ Installer dans in Q:\plugins\video\Canal Plus
     - Les images sont desormais automatiquement telechargees par le plugin lui meme
     - Adaptation de la fonction de recherche au modifications du site
 23-10-09 Version Pre2.0b by Temhil
-	- Replaced separator in the URL "&" by "#" (broken due to change made in XBMC)
-	- Added plugin variable for SVN repo installer infos
+    - Replaced separator in the URL "&" by "#" (broken due to change made in XBMC)
+    - Added plugin variable for SVN repo installer infos
+23-10-09 Version 2.0 by Temhil
+    - Replaced XML parser BeautifulSoup by ElementTree (needed because some XML were not correctly formed)
+    - Added support of new video stream URL, now http and rtmp urls are both supported
 """
 
-__script__ = "Unknown"
-__plugin__ = "Canal Plus"
-__author__ = "Alexsolex"
-__url__ = "http://passion-xbmc.org/index.php"
-__svn_url__ = "http://code.google.com/p/passion-xbmc/source/browse/#svn/trunk/plugins/video/Canal%20Plus"
-__credits__ = "Team XBMC Passion"
-__platform__ = "xbmc media center"
-__date__ = "10-23-2009"
-__version__ = "Pre2.0b"
+__script__       = "Unknown"
+__plugin__       = "Canal Plus"
+__author__       = "Alexsolex / Temhil"
+__url__          = "http://passion-xbmc.org/index.php"
+__svn_url__      = "http://code.google.com/p/passion-xbmc/source/browse/#svn/trunk/plugins/video/Canal%20Plus"
+__credits__      = "Team XBMC Passion"
+__platform__     = "xbmc media center"
+__date__         = "05-23-2010"
+__version__      = "2.0"
 __svn_revision__ = 0
 
 import sys
@@ -180,59 +183,62 @@ def show_videos(theme_id,subtheme_id,referer,keyword=""):
     #chargement de la queue avec les identifiants de clips
     pDialog.update(0, __language__ ( 30201 ) )
     
-    videos = cpp.get_videos(xmlParam, theme_id=theme_id , subtheme_id = subtheme_id, keyword=keyword)
+    #videos = cpp.get_videos(xmlParam, theme_id=theme_id , subtheme_id = subtheme_id, keyword=keyword)
+    videos = cpp.get_videos( subtheme_id = subtheme_id, keyword=keyword )
     cpt=0
     for video in videos:
-        cpt=cpt+1
-        pDialog.update(int(99*float(cpt)/(len(videos)*2)), __language__ ( 30202 ) )
-        infos = cpp.get_info(video["videoID"])
-        #url = sys.argv[0]+"?showvideoinfos="+video["videoID"]
-        if int(xbmcplugin.getSetting('video_quality')) == 1: # Basse qualite
-            url=infos["video.low"]
-        else:
-            url=infos["video.hi"]
-        
-#        q_in.put((video["title"],video['image.url'],os.path.join(CACHEDIR,str(video["videoID"])+".jpg")))
-#        item=xbmcgui.ListItem(label=video["title"],label2=video["publication_date"],
-#                              iconImage=os.path.join(CACHEDIR,str(video["videoID"])+".jpg"),
-#                              thumbnailImage=os.path.join(CACHEDIR,str(video["videoID"])+".jpg"))
-        item=xbmcgui.ListItem(label=video["title"],label2=video["publication_date"],
-                              iconImage=video['image.url'],
-                              thumbnailImage=video['image.url'])
-
-        #menu contextuel
-        label  = __language__( 30100 ) # Enregistrer (Haute Qualitée)
-        action = 'XBMC.RunScript(%s,%s,%s)'%(os.path.join(os.getcwd(), "resources", "libs", "FLVdownload.py"),
-                                             infos["video.hi"],
-                                             os.path.join(DOWNLOADDIR,xbmc.makeLegalFilename(os.path.basename(infos["video.hi"])))
-                                             )
-        item.addContextMenuItems([ (
-            __language__( 30100 ),
-            'XBMC.RunScript(%s,%s,%s)'%(os.path.join(os.getcwd(), "resources", "libs","FLVdownload.py"),
-                                        infos["video.hi"],
-                                        os.path.join(DOWNLOADDIR,xbmc.makeLegalFilename(os.path.basename(infos["video.hi"])))
-                                        ),
-                                    ),(
-            __language__( 30101 ),
-            'XBMC.RunScript(%s,%s,%s)'%(os.path.join(os.getcwd(), "resources", "libs","FLVdownload.py"),
-                                             infos["video.low"],
-                                             os.path.join(DOWNLOADDIR,xbmc.makeLegalFilename(os.path.basename(infos["video.hi"])))
-                                             ),
-                                    )
-            ])
-        #infos sur la video
-#        item.setInfo('Video', 
-#                     infoLabels={ 'Date': infos["publication_date"] })
-        item.setInfo( type="Video",
-                      infoLabels={ "Title": video["title"] + " " + video["publication_date"],
-                                   "Rating":video["note"],
-                                   "Date": video["publication_date"],
-                                   "Plot": video["description"]})
-        ok = ok and xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),
-                                                url=url,
-                                                listitem=item,
-                                                isFolder=False)
-        pDialog.update(int(99*float(cpt)/(len(videos)*2)), "Chargement des éléments...")
+        try:
+            cpt=cpt+1
+            pDialog.update(int(99*float(cpt)/(len(videos)*2)), __language__ ( 30202 ) )
+            infos = cpp.get_info(video["videoID"])
+            #url = sys.argv[0]+"?showvideoinfos="+video["videoID"]
+            if int(xbmcplugin.getSetting('video_quality')) == 1: # Basse qualite
+                url=infos["video.low"]
+            else:
+                url=infos["video.hi"]
+            
+#            q_in.put((video["title"],video['image.url'],os.path.join(CACHEDIR,str(video["videoID"])+".jpg")))
+#            item=xbmcgui.ListItem(label=video["title"],label2=video["publication_date"],
+#                                  iconImage=os.path.join(CACHEDIR,str(video["videoID"])+".jpg"),
+#                                  thumbnailImage=os.path.join(CACHEDIR,str(video["videoID"])+".jpg"))
+            item=xbmcgui.ListItem(label=video["title"],label2=video["publication_date"],
+                                  iconImage=video['image.url'],
+                                  thumbnailImage=video['image.url'])
+    
+            #menu contextuel
+            label  = __language__( 30100 ) # Enregistrer (Haute Qualitée)
+            action = 'XBMC.RunScript(%s,%s,%s)'%(os.path.join(os.getcwd(), "resources", "libs", "FLVdownload.py"),
+                                                 infos["video.hi"],
+                                                 os.path.join(DOWNLOADDIR,xbmc.makeLegalFilename(os.path.basename(infos["video.hi"])))
+                                                 )
+            item.addContextMenuItems([ (
+                __language__( 30100 ),
+                'XBMC.RunScript(%s,%s,%s)'%(os.path.join(os.getcwd(), "resources", "libs","FLVdownload.py"),
+                                            infos["video.hi"],
+                                            os.path.join(DOWNLOADDIR,xbmc.makeLegalFilename(os.path.basename(infos["video.hi"])))
+                                            ),
+                                        ),(
+                __language__( 30101 ),
+                'XBMC.RunScript(%s,%s,%s)'%(os.path.join(os.getcwd(), "resources", "libs","FLVdownload.py"),
+                                                 infos["video.low"],
+                                                 os.path.join(DOWNLOADDIR,xbmc.makeLegalFilename(os.path.basename(infos["video.hi"])))
+                                                 ),
+                                        )
+                ])
+            #infos sur la video
+            item.setInfo( type="Video",
+                          infoLabels={ "Title": video["title"] + " " + video["publication_date"],
+                                       "Rating":video["note"],
+                                       "Date": video["publication_date"],
+                                       "Plot": video["description"]})
+            ok = ok and xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),
+                                                    url=url,
+                                                    listitem=item,
+                                                    isFolder=False)
+            pDialog.update(int(99*float(cpt)/(len(videos)*2)), "Chargement des éléments...")
+        except:
+            print "cplusplus - show_videos: error while retrieving videos list and info"
+            traceback.print_exc()
         
         
     # TODO: on n'a plus besoin des threads pour telecharger les images que l'on laisse telecharger par le plugin lui meme desormaus    
@@ -394,21 +400,21 @@ elif "dlvideo" in parametres.keys():
                                                     ))
 elif "search" in parametres.keys():
     show_keyboard(parametres["theme_id"],parametres["subtheme_id"])
-##    #télécharge la vidéo selon l'url fournie
-##    pDialog = xbmcgui.DialogProgress()
-##    ret = pDialog.create('CanalPlus', 'Démarrage du téléchargement ...')
-##    #téléchargement par Thread : FONCTIONNE MAIS TRES MAL : pas convaincant
-##    goDL = cpp.DL_video(parametres["dlvideo"],
-##                        #xbmc.makeLegalFilename(os.path.join(DOWNLOADDIR,os.path.basename(parametres["dlvideo"]))),
-##                        os.path.join(DOWNLOADDIR,xbmc.makeLegalFilename(os.path.basename(parametres["dlvideo"]))),
-##                        pDialog.update,pDialog)
-##    pDialog.close()
-##    if goDL==1:
-##        xbmc.executebuiltin("XBMC.Notification(%s,%s)"%("Telechargement termine !",""))
-##    elif goDL == 0:
-##        xbmc.executebuiltin("XBMC.Notification(%s,%s)"%("Fichier existant !","Telechargement annule."))
-##    elif goDL == -1:
-##        xbmc.executebuiltin("XBMC.Notification(%s,%s)"%("Telechargement annule par l'utilisateur.",""))
+#    #télécharge la vidéo selon l'url fournie
+#    pDialog = xbmcgui.DialogProgress()
+#    ret = pDialog.create('CanalPlus', 'Démarrage du téléchargement ...')
+#    #téléchargement par Thread : FONCTIONNE MAIS TRES MAL : pas convaincant
+#    goDL = cpp.DL_video(parametres["dlvideo"],
+#                        #xbmc.makeLegalFilename(os.path.join(DOWNLOADDIR,os.path.basename(parametres["dlvideo"]))),
+#                        os.path.join(DOWNLOADDIR,xbmc.makeLegalFilename(os.path.basename(parametres["dlvideo"]))),
+#                        pDialog.update,pDialog)
+#    pDialog.close()
+#    if goDL==1:
+#        xbmc.executebuiltin("XBMC.Notification(%s,%s)"%("Telechargement termine !",""))
+#    elif goDL == 0:
+#        xbmc.executebuiltin("XBMC.Notification(%s,%s)"%("Fichier existant !","Telechargement annule."))
+#    elif goDL == -1:
+#        xbmc.executebuiltin("XBMC.Notification(%s,%s)"%("Telechargement annule par l'utilisateur.",""))
 
 elif "showpicture" in parametres.keys():
     #ne fait rien
