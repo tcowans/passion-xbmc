@@ -1,19 +1,18 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addoninfo>
-  <id>script.game.arkanoid</id>
-  <type>script</type>
-  <title>Arkanoid</title>
-  <library>default.py</library>
-  <version>pre-1.0.0</version>
-  <platforms>
+<addon id="script.game.arkanoid"
+       name="Arkanoid"
+       version="pre-1.0.0"
+       provider-name="Frost (passion-xbmc.org)">
+  <requires>
+    <import addon="xbmc.python" version="1.0"/>
+  </requires>
+  <extension point="xbmc.python.script"
+             library="default.py"/>
+  <extension point="xbmc.addon.metadata">
     <platform>all</platform>
-  </platforms>
-  <minversion>
-    <xbmc>29000</xbmc>
-  </minversion>
-  <author>Frost (passion-xbmc.org)</author>
-  <summary>Replica of the famous game Arkanoid (1986) and Tournament Arkanoid (1987) ported on XBMC with a few variables</summary>
-  <description>Replica of the famous game Arkanoid (1986) and Tournament Arkanoid (1987) ported on XBMC with a few variables
+    <minversion>29000</minversion>
+    <summary>Replica of the famous game Arkanoid</summary>
+    <description>Replica of the famous game Arkanoid (1986) and Tournament Arkanoid (1987) ported on XBMC with a few variables
 
 [B]Includes 4 playing mode:[/B]
  - Classic Mode &#45;&#62; Arkanoid (1986) 32 Level, no boss "Doh" level in future
@@ -58,6 +57,6 @@ PC:[/B]
 
 [B]Support/Help:[/B]
  - [B]French:[/B] http://passion-xbmc.org/jeuxgames-pour-xbmc/arkanoid-pre1-0-alpha/
- - [B]English:[/B] http://forum.xbmc.org/showthread.php?t=70978
-</description>
-</addoninfo>
+ - [B]English:[/B] http://forum.xbmc.org/showthread.php?t=70978</description>
+  </extension>
+</addon>
