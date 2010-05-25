@@ -20,7 +20,7 @@ try:
     if not exists( CACHE ): makedirs( CACHE )
 except: print_exc()
 
-try: Settings( "Arkanoid" ).openSettings()
+try: Settings( "script.game.arkanoid" ).openSettings()
 except:
     try: Settings( dirname( dirname( getcwd() ) ) ).openSettings()
     except:
