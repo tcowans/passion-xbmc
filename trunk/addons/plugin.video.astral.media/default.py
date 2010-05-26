@@ -1,13 +1,14 @@
 ﻿
 # plugin constants
 __plugin__        = "Astral Media"
+__pluginID__      = "plugin.video.astral.media"
 __author__        = "Frost"
 __url__           = "http://code.google.com/p/passion-xbmc/"
 __svn_url__       = "http://passion-xbmc.googlecode.com/svn/trunk/addons/plugin.video.astral.media/"
 __credits__       = "Team XBMC, http://xbmc.org/"
 __platform__      = "xbmc media center, [ALL]"
-__date__          = "29-04-2010"
-__version__       = "1.0.3"
+__date__          = "26-05-2010"
+__version__       = "1.0.4"
 __svn_revision__  = "$Revision$"
 
 
@@ -214,7 +215,8 @@ class Main:
         c_items = []
         try:
             c_items += [ ( "Téléchargements en cours...", 'XBMC.RunPlugin(%s?show_dl="True")' % sys.argv[ 0 ] ) ]
-            c_items += [ ( _( 654 ), "XBMC.ActivateWindow(scriptsdebuginfo)" ) ]
+            c_items += [ ( _( 1045 ), "XBMC.RunPlugin(%s?action=settings)" % ( sys.argv[ 0 ], ) ) ]
+            #c_items += [ ( _( 654 ), "XBMC.ActivateWindow(scriptsdebuginfo)" ) ]
         except:
             print_exc()
         return c_items
@@ -358,7 +360,9 @@ class DialogDownloadProgress( xbmcgui.WindowXMLDialog ):
 
 if ( __name__ == "__main__" ):
     try:
-        if ( "show_dl=" in sys.argv[ 2 ] ):
+        if ( "action=settings" in  sys.argv[ 2 ] ):
+            xbmc.Settings( __pluginID__ ).openSettings()
+        elif ( "show_dl=" in sys.argv[ 2 ] ):
             DialogDownloadProgress( "DialogDownloadProgress.xml", os.getcwd(), "Default" )
         elif ( "dl_url=" in sys.argv[ 2 ] ):
             # download selected media via script downloader ( onBackground or with progressBar )
