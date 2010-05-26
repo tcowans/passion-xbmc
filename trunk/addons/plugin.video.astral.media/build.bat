@@ -41,7 +41,7 @@ ECHO.
 ECHO Copying required files to \Build\addons\%AddonName%\ folder . . .
 XCOPY resources "BUILD\addons\%AddonName%\resources" /E /Q /I /Y /EXCLUDE:BUILD\exclude.txt
 COPY default.py "BUILD\addons\%AddonName%\"
-COPY description.xml "BUILD\addons\%AddonName%\"
+COPY addon.xml "BUILD\addons\%AddonName%\"
 ECHO.
 ECHO Copying optional files to \Build\addons\%AddonName%\ folder . . .
 IF EXIST "icon.png" COPY icon.png "BUILD\addons\%AddonName%\"
