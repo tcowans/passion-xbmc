@@ -1,22 +1,18 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addoninfo>
-  <id>plugin.video.astral.media</id>
-  <type>plugin</type>
-  <supportedcontent>
-    <content>video</content>
-  </supportedcontent>
-  <title>Astral Media</title>
-  <library>default.py</library>
-  <version>1.0.3</version>
-  <platforms>
+<addon id="plugin.video.astral.media"
+       name="Astral Media"
+       version="1.0.3"
+       provider-name="Frost (passion-xbmc.org)">
+  <requires>
+    <import addon="xbmc.python" version="1.0"/>
+  </requires>
+  <extension point="xbmc.python.plugin"
+             library="default.py"/>
+  <extension point="xbmc.addon.metadata">
     <platform>all</platform>
-  </platforms>
-  <minversion>
-    <xbmc>29000</xbmc>
-  </minversion>
-  <author>Frost (passion-xbmc.org)</author>
-  <summary>Plugin vidéo sur les émissions Québécoise en français</summary>
-  <description>Plugin vidéo vous permettent de regarder la TV Québécoise, mais à 90% avec un bon français :P
+    <minversion>29000</minversion>
+    <summary>Plugin vidéo sur les émissions Québécoise en français</summary>
+    <description>Plugin vidéo vous permettent de regarder la TV Québécoise, mais à 90% avec un bon français :P
 
 [B]Genres de tous:[/B]
  - [B]Canal D[/B] vous propose des documentaires divers dont des documentaires animaliers, des biographies, des enquêtes policières et des émissions d'humour.
@@ -31,6 +27,9 @@
  - Exclusivités web
  - Extraits d'émission
 
-Et plus...
-</description>
-</addoninfo>
+Et plus...</description>
+    <supportedcontent>
+      <content>video</content>
+    </supportedcontent>
+  </extension>
+</addon>
