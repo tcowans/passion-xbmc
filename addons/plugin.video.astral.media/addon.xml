@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="plugin.video.astral.media"
        name="Astral Media"
-       version="1.0.3"
+       version="1.0.5"
        provider-name="Frost (passion-xbmc.org)">
   <requires>
     <import addon="xbmc.python" version="1.0"/>
   </requires>
-  <extension point="xbmc.python.plugin"
-             library="default.py"/>
+  <extension point="xbmc.python.pluginsource"
+             library="default.py">
+    <provides>video</provides>
+  </extension>
   <extension point="xbmc.addon.metadata">
-    <platform>all</platform>
-    <minversion>29000</minversion>
     <summary>Plugin vidéo sur les émissions Québécoise en français</summary>
     <description>Plugin vidéo vous permettent de regarder la TV Québécoise, mais à 90% avec un bon français :P
 
@@ -27,9 +27,7 @@
  - Exclusivités web
  - Extraits d'émission
 
-Et plus...</description>
-    <supportedcontent>
-      <content>video</content>
-    </supportedcontent>
+Et plus...[CR]</description>
+    <platform>all</platform>
   </extension>
 </addon>

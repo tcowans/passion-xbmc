@@ -1,16 +1,15 @@
 ﻿
 # plugin constants
 __plugin__        = "Astral Media"
-__pluginID__      = "plugin.video.astral.media"
+__addonID__       = "plugin.video.astral.media"
 __author__        = "Frost"
 __url__           = "http://code.google.com/p/passion-xbmc/"
 __svn_url__       = "http://passion-xbmc.googlecode.com/svn/trunk/addons/plugin.video.astral.media/"
 __credits__       = "Team XBMC, http://xbmc.org/"
 __platform__      = "xbmc media center, [ALL]"
-__date__          = "26-05-2010"
-__version__       = "1.0.4"
+__date__          = "09-06-2010"
+__version__       = "1.0.5"
 __svn_revision__  = "$Revision$"
-
 
 
 import os
@@ -20,13 +19,18 @@ from traceback import print_exc
 
 import xbmc
 import xbmcgui
+import xbmcaddon
 import xbmcplugin
+ 
+__addon__ = xbmcaddon.Addon( __addonID__ )
+__settings__ = __addon__
+__language__ = xbmc.getLocalizedString
+#__language__ = __addon__.getLocalizedString
+
 
 from resources.pluginAPI.scrapers import *
 from resources.pluginAPI.htmldecode import *
 
-
-_ = xbmc.getLocalizedString
 
 DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
@@ -61,9 +65,9 @@ class Main:
     def _get_settings( self ):
         self.settings = {}
         try:
-            self.settings[ "dl_path" ] = ( xbmcplugin.getSetting( int( sys.argv[ 1 ] ), "DlPath" ), "" )[ ( xbmcplugin.getSetting( int( sys.argv[ 1 ] ), "AskDl" ) == "true" ) ]
-            self.settings[ "dl_rpct" ] = int( "0|5|10|20|25|50|100".split( "|" )[ int( xbmcplugin.getSetting( int( sys.argv[ 1 ] ), "ReportPercent" ) ) ] ) or -1
-            self.settings[ "dl_onbg" ] = ( 0, self.settings[ "dl_rpct" ] )[ ( xbmcplugin.getSetting( int( sys.argv[ 1 ] ), "DlBackground" ) == "true" ) ]
+            self.settings[ "dl_path" ] = ( __settings__.getSetting( "DlPath" ), "" )[ ( __settings__.getSetting( "AskDl" ) == "true" ) ]
+            self.settings[ "dl_rpct" ] = int( "0|5|10|20|25|50|100".split( "|" )[ int( __settings__.getSetting( "ReportPercent" ) ) ] ) or -1
+            self.settings[ "dl_onbg" ] = ( 0, self.settings[ "dl_rpct" ] )[ ( __settings__.getSetting( "DlBackground" ) == "true" ) ]
             file( os.path.join( os.getcwd(), "settings.dl" ), "w" ).write( repr( self.settings ) )
         except:
             print_exc()
@@ -125,7 +129,7 @@ class Main:
         OK = True
         try:
             for canal, value in sorted( canals.items() ):
-                DIALOG_PROGRESS.update( -1, _( 1040 ), value[ 0 ] )
+                DIALOG_PROGRESS.update( -1, __language__( 1040 ), value[ 0 ] )
                 tbn = os.path.join( os.getcwd(), "resources", "media", "%s.png" % canal )
                 listitem = xbmcgui.ListItem( value[ 0 ], "", tbn, tbn )
 
@@ -215,8 +219,8 @@ class Main:
         c_items = []
         try:
             c_items += [ ( "Téléchargements en cours...", 'XBMC.RunPlugin(%s?show_dl="True")' % sys.argv[ 0 ] ) ]
-            c_items += [ ( _( 1045 ), "XBMC.RunPlugin(%s?action=settings)" % ( sys.argv[ 0 ], ) ) ]
-            #c_items += [ ( _( 654 ), "XBMC.ActivateWindow(scriptsdebuginfo)" ) ]
+            c_items += [ ( __language__( 1045 ), "XBMC.RunPlugin(%s?action=settings)" % ( sys.argv[ 0 ], ) ) ]
+            #c_items += [ ( __language__( 654 ), "XBMC.ActivateWindow(scriptsdebuginfo)" ) ]
         except:
             print_exc()
         return c_items
@@ -234,20 +238,20 @@ class Main:
             total_items = len( episodes )
             # { "tvshowtitle": "", "title": "", "type": "", "duration": "",
             #   "date": "", "plot": "", "thumb": "", "episode" : "", "season" : "" }
-            mixtitle = xbmcplugin.getSetting( int( sys.argv[ 1 ] ), "mixtitle" ) == "true"
-            separator = xbmcplugin.getSetting( int( sys.argv[ 1 ] ), "separator" ) or "-"
+            mixtitle = __settings__.getSetting( "mixtitle" ) == "true"
+            separator = __settings__.getSetting( "separator" ) or "-"
             for videoid, episode in episodes.items():
                 fulltitle = "%s %s %s" % ( episode[ "tvshowtitle" ], separator, episode[ "title" ] )
                 title = ( episode[ "title" ], fulltitle )[ mixtitle ]
-                DIALOG_PROGRESS.update( -1, _( 1040 ), title )
+                DIALOG_PROGRESS.update( -1, __language__( 1040 ), title )
                 listitem = xbmcgui.ListItem( title, "", episode[ "thumb" ], episode[ "thumb" ] )
 
                 flvs = getWebVideoUrl( canal_url, videoid )
-                try: flv = flvs[ int( xbmcplugin.getSetting( int( sys.argv[ 1 ] ), "quality" ) ) ]
+                try: flv = flvs[ int( __settings__.getSetting( "quality" ) ) ]
                 except: flv = flvs[ 0 ]
 
-                c_items = [ ( _( 33003 ), "XBMC.RunPlugin(%s?dl_url=%s)" % ( sys.argv[ 0 ], repr( flv ) ) ) ]
-                c_items += [ ( _( 13346 ), "XBMC.Action(Info)", ) ]
+                c_items = [ ( __language__( 33003 ), "XBMC.RunPlugin(%s?dl_url=%s)" % ( sys.argv[ 0 ], repr( flv ) ) ) ]
+                c_items += [ ( __language__( 13346 ), "XBMC.Action(Info)", ) ]
                 c_items += self._add_default_c_items()
                 listitem.addContextMenuItems( c_items, replaceItems=True )
 
@@ -361,7 +365,7 @@ class DialogDownloadProgress( xbmcgui.WindowXMLDialog ):
 if ( __name__ == "__main__" ):
     try:
         if ( "action=settings" in  sys.argv[ 2 ] ):
-            xbmc.Settings( __pluginID__ ).openSettings()
+            __settings__.openSettings()
         elif ( "show_dl=" in sys.argv[ 2 ] ):
             DialogDownloadProgress( "DialogDownloadProgress.xml", os.getcwd(), "Default" )
         elif ( "dl_url=" in sys.argv[ 2 ] ):

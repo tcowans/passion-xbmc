@@ -38,7 +38,7 @@ class Main( xbmcgui.WindowXML ):
     def setSettings( self ):
         SETTINGS = { "custom_bg": "", "bg_ingame": 0, "custom_bg_ingame": "", "mouse_zone": False }
         try:
-            settings = sys.modules[ "__main__" ].settings()
+            settings = sys.modules[ "__main__" ].__settings__
             SETTINGS[ "custom_bg" ] = settings.getSetting( "custom_bg" )
             SETTINGS[ "bg_ingame" ] = int( settings.getSetting( "bg_ingame" ) )
             SETTINGS[ "custom_bg_ingame" ] = settings.getSetting( "custom_bg_ingame" )
@@ -205,12 +205,12 @@ class Main( xbmcgui.WindowXML ):
                 self._stop_game()
 
             elif controlID == 126:
-                settings = sys.modules[ "__main__" ].settings()
+                settings = sys.modules[ "__main__" ].__settings__
                 skin_setting = settings.getSetting( "skin" )
                 settings.openSettings()
                 xbmc.sleep( 500 )
                 self.setSettings()
-                if skin_setting != sys.modules[ "__main__" ].settings().getSetting( "skin" ):
+                if skin_setting != sys.modules[ "__main__" ].__settings__.getSetting( "skin" ):
                     self.closeGame()
                     xbmc.executescript( os.path.join( CWD, 'default.py' ) )
 
@@ -380,7 +380,7 @@ def showMain():
                 #reset skin setting and reload script
                 xbmcgui.Dialog().ok( "Error!!!", "XML File for Window is missing in Skin: %s" % CURRENT_SKIN, "", "Default skin will be loaded..." )
                 print "Error on load xml in skin: %s" % CURRENT_SKIN
-                sys.modules[ "__main__" ].settings().setSetting( "skin", "Classic" )
+                sys.modules[ "__main__" ].__settings__.setSetting( "skin", "Classic" )
                 xbmc.executescript( os.path.join( CWD, 'default.py' ) )
     except:
         print_exc()

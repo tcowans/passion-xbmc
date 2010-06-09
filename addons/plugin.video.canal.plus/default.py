@@ -24,13 +24,14 @@ Installer dans in Q:\plugins\video\Canal Plus
 
 __script__       = "Unknown"
 __plugin__       = "Canal Plus"
+__addonID__      = "plugin.video.canal.plus"
 __author__       = "Alexsolex / Temhil"
 __url__          = "http://passion-xbmc.org/index.php"
-__svn_url__      = "http://code.google.com/p/passion-xbmc/source/browse/#svn/trunk/plugins/video/Canal%20Plus"
+__svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/addons/plugin.video.canal.plus/"
 __credits__      = "Team XBMC Passion"
 __platform__     = "xbmc media center"
-__date__         = "05-23-2010"
-__version__      = "2.0"
+__date__         = "09-06-2010"
+__version__      = "2.1"
 __svn_revision__ = 0
 
 import sys
@@ -52,8 +53,13 @@ global q_in,q_out
 # Repertoires
 ROOTDIR  = os.getcwd().replace( ";", "" ) # Create a path with valid format
 
-# Support multilangue
-__language__ = xbmc.Language( ROOTDIR, "french" ).getLocalizedString
+
+import xbmcaddon
+ 
+__addon__ = xbmcaddon.Addon( __addonID__ )
+__settings__ = __addon__
+__language__ = __addon__.getLocalizedString
+
 
 def getfiles():
     # fonction exécutée par les threads
@@ -194,7 +200,7 @@ def show_videos(theme_id,subtheme_id,referer,keyword=""):
             pDialog.update(int(99*float(cpt)/(len(videos)*2)), __language__ ( 30202 ) )
             infos = cpp.get_info(video["videoID"])
             #url = sys.argv[0]+"?showvideoinfos="+video["videoID"]
-            if int(xbmcplugin.getSetting( int( sys.argv[ 1 ] ), 'video_quality') ) == 1: # Basse qualite
+            if int(__settings__.getSetting('video_quality') ) == 1: # Basse qualite
                 url=infos["video.low"]
             else:
                 url=infos["video.hi"]

@@ -14,9 +14,12 @@ from operator import __neg__
 from cmath import pi as __PI__
 from marshal import dump, load
 
+import xbmcaddon
+ 
+__addon__ = xbmcaddon.Addon( sys.modules[ "__main__" ].__addonID__ )
+LANGUAGE  = __addon__.getLocalizedString
 
 CWD = os.getcwd().rstrip( ";" )
-LANGUAGE = xbmc.Language( CWD ).getLocalizedString
 
 #####################################################################################################
 ''' Function: Skin '''

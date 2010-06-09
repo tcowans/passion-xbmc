@@ -2,13 +2,14 @@
 
 # script constants
 __plugin__       = "Bandes-Annonces Allocine"
+__addonID__      = "plugin.video.Bande-Annonce Allocine"
 __author__       = "Ppic"
 __url__          = "http://code.google.com/p/passion-xbmc/"
-__svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/"
+__svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/addons/plugin.video.Bande-Annonce%20Allocine/"
 __credits__      = "Team XBMC passion, http://passion-xbmc.org/developpement-python/%28script%29-sporlive-display/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "16-05-2010"
-__version__      = "1.5.6"
+__date__         = "09-06-2010"
+__version__      = "1.5.7"
 __svn_revision__  = "$Revision: 709 $".replace( "Revision", "" ).strip( "$: " )
 __XBMC_Revision__ = "20000" #XBMC Babylon
 __useragent__    = "Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.0.1) Gecko/2008070208 Firefox/3.0.1"
@@ -22,10 +23,16 @@ import xbmcgui
 import xbmcplugin
 from traceback import print_exc
 
+
+import xbmcaddon
+
+__settings__ = xbmcaddon.Addon( __addonID__ )
+
+
 BASE_RESOURCE_PATH = os.path.join( os.getcwd(), "resources" )
 sys.path.append( os.path.join( BASE_RESOURCE_PATH, "lib" ) )
 cache_dir = os.path.join ( BASE_RESOURCE_PATH , "Cache" )
-trailer_dir = xbmcplugin.getSetting(int( sys.argv[ 1 ] ),"trailer_path")
+trailer_dir = __settings__.getSetting("trailer_path")
 trailer_dir = xbmc.translatePath(trailer_dir)
 dialog = xbmcgui.Dialog()
 print "trailer dir: %s" % trailer_dir
@@ -37,11 +44,11 @@ if not os.path.isdir(cache_dir):
 from convert import set_entity_or_charref
 from convert import translate_string
 
-try: quality=( "ld", "md", "hd" )[ int( xbmcplugin.getSetting(int( sys.argv[ 1 ] ),"quality") ) ]
+try: quality=( "ld", "md", "hd" )[ int( __settings__.getSetting("quality") ) ]
 except:
-    #xbmcplugin.openSettings(sys.argv[0])
-    quality=( "ld", "md", "hd" )[ int( xbmcplugin.getSetting(int( sys.argv[ 1 ] ),"quality") ) ]
-print xbmcplugin.getSetting(int( sys.argv[ 1 ] ),"mon_cine")
+    #__settings__.openSettings()
+    quality=( "ld", "md", "hd" )[ int( __settings__.getSetting("quality") ) ]
+print __settings__.getSetting("mon_cine")
 
 def addLink(name,url,iconimage, c_items = None ):
         ok=True
@@ -149,7 +156,7 @@ def get_film_list( url , database = False):
     #dp.create("Update Database")
     
     
-    while pager <= nbpage and nbpage != "error" and pager <= [5,10,20,30,999][int(xbmcplugin.getSetting(int( sys.argv[ 1 ] ),"page_limit"))]:
+    while pager <= nbpage and nbpage != "error" and pager <= [5,10,20,30,999][int(__settings__.getSetting("page_limit"))]:
         if not pager == 1:
             current_url= "%s?page=%s" % (url , pager)
             print "page %s: %s" % ( pager , current_url )
@@ -167,7 +174,7 @@ def get_film_list( url , database = False):
                 film["name"] = match.group(4)
                 film["id_allo"] = match.group(2)
                 film["id_media"] = match.group(2)
-                if xbmcplugin.getSetting(int( sys.argv[ 1 ] ),"hdimage") == "true":
+                if __settings__.getSetting("hdimage") == "true":
                     film["poster"] = film["poster"].replace( "c_120_160/b_1_x/o_play.png_5_se" , "r_760_x" ).replace("cx_120_96/b_1_x/o_play.png_5_se", "r_760_x" ).replace("c_120_120/b_1_x/o_play.png_5_se", "r_760_x" )
                     film["poster"] = film["poster"].replace("cx_120_113/o_overlayEmissions-P2C-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-MerciQui-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-LaMinute-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-D2DVD-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-TES-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-FauxR-120.png_1_c", "r_760_x" )
                 catalogue.append(film)
@@ -235,13 +242,13 @@ def get_film_list( url , database = False):
                     film["sortie"] = match.group(1).replace("/",".")
                 try: film["poster"] = re.findall( "<img src='(.*?)'", i )[0]
                 except: film["poster"] = ""
-                print "hd image: %s" % xbmcplugin.getSetting(int( sys.argv[ 1 ] ),"hdimage")
-                if xbmcplugin.getSetting(int( sys.argv[ 1 ] ),"hdimage") == "true":
+                print "hd image: %s" % __settings__.getSetting("hdimage")
+                if __settings__.getSetting("hdimage") == "true":
                     film["poster"] = film["poster"].replace( "c_120_160/b_1_x/o_play.png_5_se" , "r_760_x" ).replace("cx_120_96/b_1_x/o_play.png_5_se", "r_760_x" ).replace("c_120_120/b_1_x/o_play.png_5_se", "r_760_x" )
                     film["poster"] = film["poster"].replace("cx_120_113/o_overlayEmissions-P2C-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-MerciQui-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-LaMinute-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-D2DVD-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-TES-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-FauxR-120.png_1_c", "r_760_x" )
                 catalogue.append(film)
                 if film["type"] == "film":
-                    if xbmcplugin.getSetting(int( sys.argv[ 1 ] ),"date_sortie") == "true" : ajout_sortie = "[CR]" +  film["sortie"]
+                    if __settings__.getSetting("date_sortie") == "true" : ajout_sortie = "[CR]" +  film["sortie"]
                     else : ajout_sortie = ""
                     addDir(film["name"] + ajout_sortie ,"%s##%s" % (film["poster"] , film["id_allo"]),2,film["poster"], sortie=film["sortie"])
                     xbmcplugin.addSortMethod(int(sys.argv[1]), xbmcplugin.SORT_METHOD_TITLE)
@@ -316,7 +323,7 @@ def get_film_info(id_allo , BA = False , all_BA = False , emissions_liees = Fals
 #            print i[3] , i[1]#DEBUG
             #ba = get_media_link(i[0])
             print i[2]
-            if xbmcplugin.getSetting(int( sys.argv[ 1 ] ),"hdimage") == "true": image = i[1].replace( "cx_120_96/b_1_x/o_play.png_5_se" , "r_760_x" )
+            if __settings__.getSetting("hdimage") == "true": image = i[1].replace( "cx_120_96/b_1_x/o_play.png_5_se" , "r_760_x" )
             else: image = i[1]
             print image
             c_items = []
@@ -346,7 +353,7 @@ def get_film_info(id_allo , BA = False , all_BA = False , emissions_liees = Fals
 #            print i[4] #DEBUG
             #ba = get_media_link(i[0])
             print i[2]
-            if xbmcplugin.getSetting(int( sys.argv[ 1 ] ),"hdimage") == "true": image = i[2].replace("cx_120_110/o_overlayEmissions-P2C-120.png_1_c", "r_760_x" ).replace("cx_120_110/o_overlayEmissions-MerciQui-120.png_1_c", "r_760_x" ).replace("cx_120_110/o_overlayEmissions-LaMinute-120.png_1_c", "r_760_x" ).replace("cx_120_110/o_overlayEmissions-D2DVD-120.png_1_c", "r_760_x" ).replace("cx_120_110/o_overlayEmissions-TES-120.png_1_c", "r_760_x" ).replace("cx_120_110/o_overlayEmissions-FauxR-120.png_1_c", "r_760_x" )
+            if __settings__.getSetting("hdimage") == "true": image = i[2].replace("cx_120_110/o_overlayEmissions-P2C-120.png_1_c", "r_760_x" ).replace("cx_120_110/o_overlayEmissions-MerciQui-120.png_1_c", "r_760_x" ).replace("cx_120_110/o_overlayEmissions-LaMinute-120.png_1_c", "r_760_x" ).replace("cx_120_110/o_overlayEmissions-D2DVD-120.png_1_c", "r_760_x" ).replace("cx_120_110/o_overlayEmissions-TES-120.png_1_c", "r_760_x" ).replace("cx_120_110/o_overlayEmissions-FauxR-120.png_1_c", "r_760_x" )
             else: image = i[2]
             print image
             c_items = []
@@ -375,7 +382,7 @@ def get_film_info(id_allo , BA = False , all_BA = False , emissions_liees = Fals
 #            print "#####################liste des BA##########################" #DEBUG
             for i in result: 
 #                print i[4] #DEBUG
-                if xbmcplugin.getSetting(int( sys.argv[ 1 ] ),"hdimage") == "true": image = i[2].replace( "cx_120_96/b_1_x/o_play.png_5_se" , "r_760_x" )
+                if __settings__.getSetting("hdimage") == "true": image = i[2].replace( "cx_120_96/b_1_x/o_play.png_5_se" , "r_760_x" )
                 else: image = i[2]
                 c_items = []
                 local_trailer = os.path.join( trailer_dir, "%s.flv" % translate_string( i[4] ) )
@@ -585,7 +592,7 @@ if mode==None or url==None or len(url)<1: #menu principal
     addDir("séries Tv","http://www.allocine.fr/video/series/plus/",1,"")
     addDir("émissions","http://www.allocine.fr/video/",6,"")
     addDir("interviews","http://www.allocine.fr/video/interviews/plus",1,"")
-    if xbmcplugin.getSetting(int( sys.argv[ 1 ] ),"mon_cine") == "true" :
+    if __settings__.getSetting("mon_cine") == "true" :
         if os.path.exists(os.path.join(cache_dir , "cine.list")): 
             mes_cines = load_data(os.path.join(cache_dir , "cine.list"))
             for cine in mes_cines:
@@ -601,7 +608,7 @@ if mode == 1: # affichage des liste ba / series / emissions / interviews
         data=load_DB( name )
         for film in data:
             if film["type"] == "film":
-                if xbmcplugin.getSetting(int( sys.argv[ 1 ] ),"date_sortie") == "true" : ajout_sortie = "[CR]" +  film["sortie"]
+                if __settings__.getSetting("date_sortie") == "true" : ajout_sortie = "[CR]" +  film["sortie"]
                 else : ajout_sortie = ""
                 addDir(film["name"] + ajout_sortie ,"%s##%s" % (film["poster"] , film["id_allo"]),2,film["poster"], sortie=film["sortie"])
                 xbmcplugin.addSortMethod(int(sys.argv[1]), xbmcplugin.SORT_METHOD_TITLE)
@@ -692,7 +699,7 @@ if mode == 6: #liste des emissions et images associées
     picture["Plein 2 Cin\xc3\xa9"] = "http://images.allocine.fr/r_720_x/commons/logos/Logos_p2c_160x128.jpg"
     for emission in emission_list:
         try: 
-            if xbmcplugin.getSetting(int( sys.argv[ 1 ] ),"hdimage") == "true":
+            if __settings__.getSetting("hdimage") == "true":
                 image = picture["%s" % emission[1]].replace("r_760_x","")
             else: image = picture["%s" % emission[1]]
             
