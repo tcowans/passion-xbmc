@@ -5,10 +5,12 @@ from os import getcwd, makedirs
 from os.path import dirname, exists, join
 
 from xbmcgui import Dialog
-from xbmc import translatePath, getLocalizedString, Settings
+from xbmc import translatePath, getLocalizedString
+from xbmcaddon import Addon
 
+__addonID__ = "script.game.arkanoid"
 
-CACHE = translatePath( "special://profile/addon_data/Arkanoid/" )
+CACHE = translatePath( "special://profile/addon_data/%s/" % __addonID__ )
 
 try:
     if exists( CACHE ) and Dialog().yesno( "Arkanoid Cache", getLocalizedString( 122 ) ):
@@ -20,9 +22,5 @@ try:
     if not exists( CACHE ): makedirs( CACHE )
 except: print_exc()
 
-try: Settings( "script.game.arkanoid" ).openSettings()
-except:
-    try: Settings( dirname( dirname( getcwd() ) ) ).openSettings()
-    except:
-        try: Settings( join( getcwd(), "Arkanoid" ) ).openSettings()
-        except: print_exc()
+try: Addon( __addonID__ ).openSettings()
+except: print_exc()

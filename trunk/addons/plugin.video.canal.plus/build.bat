@@ -40,7 +40,9 @@ ECHO ----------------------------------------------------------------------
 ECHO.
 ECHO Copying required files to \Build\addons\%AddonName%\ folder . . .
 XCOPY resources "BUILD\addons\%AddonName%\resources" /E /Q /I /Y /EXCLUDE:BUILD\exclude.txt
-COPY cine-passion.xml "BUILD\addons\%AddonName%\"
+XCOPY downloads "BUILD\addons\%AddonName%\downloads" /E /Q /I /Y /EXCLUDE:BUILD\exclude.txt
+XCOPY cache "BUILD\addons\%AddonName%\cache" /E /Q /I /Y /EXCLUDE:BUILD\exclude.txt
+COPY default.py "BUILD\addons\%AddonName%\"
 COPY addon.xml "BUILD\addons\%AddonName%\"
 ECHO.
 ECHO Copying optional files to \Build\addons\%AddonName%\ folder . . .

@@ -41,7 +41,7 @@ class customDict( dict ):
 def getUserSkin():
     default_skin = "Classic"
     try:
-        skin_setting = sys.modules[ "__main__" ].settings().getSetting( "skin" )
+        skin_setting = sys.modules[ "__main__" ].__settings__.getSetting( "skin" )
         if skin_setting != default_skin and not os.path.exists( os.path.join( CWD, "resources", "skins", skin_setting ) ):
             skin_setting = None
     except:
