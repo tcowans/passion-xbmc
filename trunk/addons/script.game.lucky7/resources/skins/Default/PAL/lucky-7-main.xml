@@ -1,0 +1,876 @@
+<window>
+	<defaultcontrol>24</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+	<!-- <animation effect="rotatex" center="360,50" start="10" end="10" time="0">WindowOpen</animation> -->
+	<animation effect="fade" time="400">WindowOpen</animation>
+	<animation effect="fade" time="400">WindowClose</animation>
+
+	<controls>
+		<!-- BACKGROUNDS DIALOG -->
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>720</width>
+			<height>576</height>
+			<texture>7-fanart.png</texture>
+			<animation effect="fade" end="99" time="1000">WindowOpen</animation>
+			<!-- <animation effect="rotatex" center="360,50" start="-10" end="-10" time="0" condition="true">Conditional</animation>-->
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>720</width>
+			<height>576</height>
+			<texture border="20">7-DialogBack.png</texture>
+			<animation effect="fade" start="85" end="85" time="0">WindowOpen</animation>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>720</width>
+			<height>576</height>
+			<texture border="20">7-DialogFront.png</texture>
+		</control>
+
+		<!-- BUTTON CLOSE DIALOG MOUSE ONLY -->
+		<control type="button" id="300">
+			<description>Close Window button</description>
+			<posx>656</posx>
+			<posy>37</posy>
+			<width>25</width>
+			<height>20</height>
+			<hitrect x="646" y="37" w="35" h="30" />
+			<label>-</label>
+			<font>-</font>
+			<texturefocus>7-close-windowFO.png</texturefocus>
+			<texturenofocus>7-close-window.png</texturenofocus>
+			<onleft>9000</onleft>
+			<onright>9000</onright>
+			<onup>9000</onup>
+			<ondown>9000</ondown>
+			<visible>system.getbool(lookandfeel.enablemouse)</visible>
+		</control>
+
+		<!-- LABELS HEADING -->
+		<control type="label">
+			<description>time label</description>
+			<posx>680</posx>
+			<posy>10</posy>
+			<height>37</height>
+			<label>[B]$INFO[System.Time][/B]</label>
+			<align>right</align>
+			<aligy>center</aligy>
+			<font>special12</font>
+			<textcolor>60ffffff</textcolor>
+			<shadowcolor>FF000000</shadowcolor>
+		</control>
+		<control type="label">
+			<description>Title value</description>
+			<posx>40</posx>
+			<posy>45</posy>
+			<width>640</width>
+			<height>30</height>
+			<font>font13</font>
+			<align>center</align>
+			<aligny>center</aligny>
+			<textcolor>99ffffff</textcolor>
+			<shadowcolor>FF000000</shadowcolor>
+			<label>[B][I]$LOCALIZE[SCRIPT0][/I][/B]</label>
+			<animation effect="zoom" center="auto" start="100" end="150" time="0" condition="true">Conditional</animation>
+		</control>
+		<control type="image">
+			<posx>40</posx>
+			<posy>85</posy>
+			<width>640</width>
+			<height>3</height>
+			<texture>7-separator.png</texture>
+		</control>
+
+		<!-- SPINNER -->
+		<control type="group">
+			<animation effect="slide" start="-160,0" end="0,0" delay="200" time="1000" acceleration="-1.3">WindowOpen</animation>
+			<!-- MIRROR SPINNER -->
+			<control type="togglebutton">
+				<description>spinner</description>
+				<posx>585</posx>
+				<posy>105</posy>
+				<width>90</width>
+				<height>270</height>
+				<camera x="585" y="280" />
+				<label>-</label>
+				<font>-</font>
+				<aligny>-</aligny>
+				<texturefocus>spinner_shadow.png</texturefocus>
+				<texturenofocus>spinner.png</texturenofocus>
+				<usealttexture>!IsEmpty(Container.Property(active_spinner))</usealttexture>
+				<alttexturefocus>spinner_shadow.png</alttexturefocus>
+				<alttexturenofocus>spinner_shadow.png</alttexturenofocus>
+				<aspectratio align="left">keep</aspectratio>
+				<pulseonselect>false</pulseonselect>
+				<onfocus>SetFocus(25)</onfocus>
+				<onleft>25</onleft>
+				<onright>25</onright>
+				<onup>25</onup>
+				<ondown>25</ondown>
+				<animation effect="fade" start="20" end="20" time="0" condition="true">Conditional</animation>
+				<animation effect="rotatex" tween="back" easing="inout" center="330" start="0" end="10" delay="200" time="1000" condition="!IsEmpty(Container.Property(active_spinner))">Conditional</animation>
+			</control>
+			<!-- BUTTON SPINNER -->
+			<control type="togglebutton" id="25">
+				<description>spinner</description>
+				<posx>580</posx>
+				<posy>100</posy>
+				<width>100</width>
+				<height>280</height>
+				<camera x="580" y="280" />
+				<hitrect x="630" y="110" w="30" h="60" />
+				<label>-</label>
+				<font>-</font>
+				<aligny>-</aligny>
+				<texturefocus>spinner_shadow.png</texturefocus>
+				<texturenofocus>spinner.png</texturenofocus>
+				<usealttexture>!IsEmpty(Container.Property(active_spinner))</usealttexture>
+				<alttexturefocus>spinner_shadow.png</alttexturefocus>
+				<alttexturenofocus>spinner_shadow.png</alttexturenofocus>
+				<aspectratio align="left">keep</aspectratio>
+				<pulseonselect>false</pulseonselect>
+				<onleft>9001</onleft>
+				<onright>9002</onright>
+				<onup>9002</onup>
+				<ondown>9002</ondown>
+				<animation effect="rotatex" tween="back" easing="inout" center="330" start="0" end="-45" delay="200" time="1000" condition="!IsEmpty(Container.Property(active_spinner))">Conditional</animation>
+			</control>
+		</control>
+
+		<!-- SLOT THREE -->
+		<control type="group">
+			<description>slot 3</description>
+			<posx>445</posx>
+			<posy>100</posy>
+			<animation effect="slide" start="-160,0" end="0,0" delay="200" time="1000" acceleration="-1.3">WindowOpen</animation>
+			<control type="image">
+				<description>back image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>150</width>
+				<height>280</height>
+				<texture border="10">7-back-slots.png</texture>
+			</control>
+			<control type="image" id="131">
+				<description>top image</description>
+				<posx>20</posx>
+				<posy>-15</posy>
+				<width>100</width>
+				<height>100</height>
+				<texture diffuse="slot_diffuse.png">fruits/Watermelon.png</texture>
+				<info>Container.Property(slot3_top)</info>
+				<aspectratio>keep</aspectratio>
+				<animation effect="rotatex" center="50" start="-45" end="45" time="0" condition="true">Conditional</animation>
+			</control>
+			<control type="image" id="132">
+				<description>bottom image</description>
+				<posx>25</posx>
+				<posy>200</posy>
+				<width>100</width>
+				<height>100</height>
+				<texture diffuse="slot_diffuse2.png">fruits/Strawberry.png</texture>
+				<info>Container.Property(slot3_bottom)</info>
+				<aspectratio>keep</aspectratio>
+				<animation effect="rotatex" center="215" start="45" end="-45" time="0" condition="true">Conditional</animation>
+			</control>
+			<control type="image">
+				<description>winning slot image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>150</width>
+				<height>280</height>
+				<texture>winning-slot.png</texture>
+				<aspectratio>keep</aspectratio>
+				<bordersize>5</bordersize>
+				<visible>!IsEmpty(Container.Property(slot3_win))</visible>
+				<animation type="conditional" condition="true" loop="true" acceleration="-1.1">
+					<effect type="fade" start="25" end="100" time="1600" />
+					<effect type="fade" start="100" end="25" time="1600" delay="1600" />
+				</animation>
+			</control>
+			<control type="image" id="130">
+				<description>middle image</description>
+				<posx>10</posx>
+				<posy>0</posy>
+				<width>130</width>
+				<height>280</height>
+				<texture>fruits/coconut.png</texture>
+				<info>Container.Property(slot3_middle)</info>
+				<aspectratio>keep</aspectratio>
+			</control>
+		</control>
+ 
+		<!-- SLOT ONE -->
+		<control type="group">
+			<description>slot 1</description>
+			<posx>125</posx>
+			<posy>100</posy>
+			<animation effect="slide" start="160,0" end="0,0" delay="200" time="1000" acceleration="-1.3">WindowOpen</animation>
+			<control type="image">
+				<description>back image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>150</width>
+				<height>280</height>
+				<texture border="10">7-back-slots.png</texture>
+			</control>
+			<control type="image" id="111">
+				<description>top image</description>
+				<posx>30</posx>
+				<posy>-15</posy>
+				<width>100</width>
+				<height>100</height>
+				<texture diffuse="slot_diffuse.png">fruits/lemon.png</texture>
+				<info>Container.Property(slot1_top)</info>
+				<aspectratio>keep</aspectratio>
+				<animation effect="rotatex" center="50" start="-45" end="45" time="0" condition="true">Conditional</animation>
+			</control>
+			<control type="image" id="112">
+				<description>bottom image</description>
+				<posx>25</posx>
+				<posy>200</posy>
+				<width>100</width>
+				<height>100</height>
+				<texture diffuse="slot_diffuse2.png">fruits/grapes.png</texture>
+				<info>Container.Property(slot1_bottom)</info>
+				<aspectratio>keep</aspectratio>
+				<animation effect="rotatex" center="215" start="45" end="-45" time="0" condition="true">Conditional</animation>
+			</control>
+			<control type="image">
+				<description>winning slot image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>150</width>
+				<height>280</height>
+				<texture>winning-slot.png</texture>
+				<aspectratio>keep</aspectratio>
+				<bordersize>5</bordersize>
+				<visible>!IsEmpty(Container.Property(slot1_win))</visible>
+				<animation type="conditional" condition="true" loop="true" acceleration="-1.1">
+					<effect type="fade" start="25" end="100" time="1600" />
+					<effect type="fade" start="100" end="25" time="1600" delay="1600" />
+				</animation>
+			</control>
+			<control type="image" id="110">
+				<description>middle image</description>
+				<posx>10</posx>
+				<posy>0</posy>
+				<width>130</width>
+				<height>280</height>
+				<texture>fruits/kiwi.png</texture>
+				<info>Container.Property(slot1_middle)</info>
+				<aspectratio>keep</aspectratio>
+			</control>
+		</control>
+		<!-- SLOT TWO -->
+		<control type="group">
+			<description>slot 2</description>
+			<posx>285</posx>
+			<posy>100</posy>
+			<control type="image">
+				<description>back image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>150</width>
+				<height>280</height>
+				<texture border="10">7-back-slots.png</texture>
+			</control>
+			<control type="image" id="121">
+				<description>top image</description>
+				<posx>25</posx>
+				<posy>-15</posy>
+				<width>100</width>
+				<height>100</height>
+				<texture diffuse="slot_diffuse.png">nonfruits/bell.png</texture>
+				<info>Container.Property(slot2_top)</info>
+				<aspectratio>keep</aspectratio>
+				<animation effect="rotatex" center="50" start="-45" end="45" time="0" condition="true">Conditional</animation>
+			</control>
+			<control type="image" id="122">
+				<description>bottom image</description>
+				<posx>25</posx>
+				<posy>200</posy>
+				<width>100</width>
+				<height>100</height>
+				<texture diffuse="slot_diffuse2.png">fruits/cherries.png</texture>
+				<info>Container.Property(slot2_bottom)</info>
+				<aspectratio>keep</aspectratio>
+				<animation effect="rotatex" center="215" start="45" end="-45" time="0" condition="true">Conditional</animation>
+			</control>
+			<control type="image">
+				<description>winning slot image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>150</width>
+				<height>280</height>
+				<texture>winning-slot.png</texture>
+				<aspectratio>keep</aspectratio>
+				<bordersize>5</bordersize>
+				<visible>!IsEmpty(Container.Property(slot2_win))</visible>
+				<animation type="conditional" condition="true" loop="true" acceleration="-1.1">
+					<effect type="fade" start="25" end="100" time="1600" />
+					<effect type="fade" start="100" end="25" time="1600" delay="1600" />
+				</animation>
+			</control>
+			<control type="image" id="120">
+				<description>middle image</description>
+				<posx>10</posx>
+				<posy>0</posy>
+				<width>130</width>
+				<height>280</height>
+				<texture>nonfruits/seven.png</texture>
+				<info>Container.Property(slot2_middle)</info>
+				<aspectratio>keep</aspectratio>
+			</control>
+		</control>
+
+		<!-- JACKPOT VALUE -->
+		<control type="label">
+			<description>jackpot value</description>
+			<posx>575</posx>
+			<posy>45</posy>
+			<width>100</width>
+			<height>30</height>
+			<font>font13</font>
+			<align>center</align>
+			<aligny>center</aligny>
+			<textcolor>ffffffff</textcolor>
+			<shadowcolor>FF000000</shadowcolor>
+			<label>$INFO[Container.Property(jackpot),$LOCALIZE[SCRIPT2][CR][I][COLOR=ffe2ff43]$LOCALIZE[SCRIPT1][/COLOR],[/I]]</label>
+		</control>
+		<!-- CASH VALUE -->
+		<control type="label">
+			<description>cash value</description>
+			<posx>60</posx>
+			<posy>45</posy>
+			<width>100</width>
+			<height>30</height>
+			<font>font13</font>
+			<aligny>center</aligny>
+			<textcolor>ffffffff</textcolor>
+			<shadowcolor>FF000000</shadowcolor>
+			<label>$INFO[ListItem.Label2,[I][COLOR=ffe2ff43]$LOCALIZE[SCRIPT1][/COLOR],[/I]]</label>
+			<animation effect="zoom" center="auto" start="100" end="150" time="0" condition="true">conditional</animation>
+		</control>
+
+		<!-- BET CASH CONTROL -->
+		<control type="fixedlist" id="50">
+			<description>bet +/- Container</description>
+			<posx>40</posx>
+			<posy>90</posy>
+			<width>100</width>
+			<height>407</height>
+			<onleft>61</onleft>
+			<onright>62</onright>
+			<onup>61</onup>
+			<ondown>61</ondown>
+			<pagecontrol>61</pagecontrol>
+			<scrolltime>200</scrolltime>
+			<focusposition>37</focusposition>
+			<hitrect x="46" y="425" w="65" h="70" />
+			<itemlayout height="10">
+				<control type="image">
+					<description>bet image</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>80</width>
+					<height>80</height>
+					<info>ListItem.ActualIcon</info>
+					<aspectratio>keep</aspectratio>
+				</control>
+				<control type="label">
+					<posx>38</posx>
+					<posy>-2</posy>
+					<width>60</width>
+					<height>80</height>
+					<font>special13</font>
+					<align>center</align>
+					<aligny>center</aligny>
+					<scroll>true</scroll>
+					<scrollspeed>100</scrollspeed>
+					<textcolor>99ffffff</textcolor>
+					<shadowcolor>FF000000</shadowcolor>
+					<selectedcolor>FFe2ff43</selectedcolor>
+					<label>$INFO[ListItem.Label,[B]$LOCALIZE[SCRIPT1],[/B]]</label>
+					<visible>false</visible>
+				</control>
+			</itemlayout>
+			<focusedlayout height="10">
+				<control type="image">
+					<description>bet image</description>
+					<posx>0</posx>
+					<posy>-40</posy>
+					<width>80</width>
+					<height>80</height>
+					<info>ListItem.ActualIcon</info>
+					<aspectratio>keep</aspectratio>
+					<animation effect="zoom" center="auto" start="100" end="125" time="300">Focus</animation>
+					<animation effect="zoom" center="auto" start="125" end="100" time="200">unFocus</animation>
+				</control>
+				<control type="label">
+					<posx>38</posx>
+					<posy>-42</posy>
+					<width>60</width>
+					<height>80</height>
+					<font>special13</font>
+					<align>center</align>
+					<aligny>center</aligny>
+					<scroll>true</scroll>
+					<scrollspeed>100</scrollspeed>
+					<textcolor>99ffffff</textcolor>
+					<shadowcolor>FF000000</shadowcolor>
+					<selectedcolor>FFe2ff43</selectedcolor>
+					<label>$INFO[ListItem.Label,[B]$LOCALIZE[SCRIPT1],[/B]]</label>
+					<animation effect="zoom" center="38" start="100" end="125" time="300">Focus</animation>
+					<animation effect="zoom" center="38" start="125" end="100" time="200">unFocus</animation>
+				</control>
+			</focusedlayout>
+		</control>
+		<control type="spincontrol" id="61">
+			<description>bet +/- button</description>
+			<posx>46</posx>
+			<posy>505</posy>
+			<width>33</width>
+			<height>22</height>
+			<reverse>no</reverse>
+			<subtype>page</subtype>
+			<font>-</font>
+			<textcolor>ffffffff</textcolor>
+			<textureup flipy="true">7-scroll-up-2.png</textureup>
+			<texturedown flipy="true">7-scroll-down-2.png</texturedown>
+			<textureupfocus flipy="true">7-scroll-up-focus-2.png</textureupfocus>
+			<texturedownfocus flipy="true">7-scroll-down-focus-2.png</texturedownfocus>
+			<onleft>9000</onleft>
+			<onright>62</onright>
+			<ondown>50</ondown>
+			<onup>50</onup>
+			<showonepage>true</showonepage>
+		</control>
+		<!-- BUTTON 2x GAIN -->
+		<control type="group">
+			<description>bet 2x gain push button</description>
+			<posx>115</posx>
+			<posy>475</posy>
+			<animation effect="fade" time="1000" reversible="true" condition="Control.isVisible(62)">conditional</animation>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>64</width>
+				<height>64</height>
+				<texture>7-button.png</texture>
+				<visible>Control.isVisible(62)</visible>
+				<animation effect="fade" time="1000">VisibleChange</animation>
+			</control>
+			<control type="radiobutton" id="62">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>55</width>
+				<height>55</height>
+				<hitrect x="0" y="0" w="54" h="54" />
+				<radioposx>36</radioposx>
+				<radioposy>30</radioposy>
+				<radiowidth>15</radiowidth>
+				<radioheight>15</radioheight>
+				<textureradiofocus>7-radiobutton-focus.png</textureradiofocus>
+				<textureradionofocus>7-radiobutton-nofocus.png</textureradionofocus>
+				<texturefocus>-</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<pulseonselect>false</pulseonselect>
+				<font>font10</font>
+				<textoffsetx>8</textoffsetx>
+				<aligny>center</aligny>
+				<label>SCRIPT401</label>
+				<textcolor>99ffffff</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<focusedcolor>FFe2ff43</focusedcolor>
+				<onleft>61</onleft>
+				<onright>31</onright>
+				<onup>50</onup>
+				<ondown>61</ondown>
+				<animation effect="fade" time="1000">VisibleChange</animation>
+			</control>
+		</control>
+
+		<!-- GROUP BUTTON: STOP SLOT "1" OR "2" OR "3" -->
+		<control type="group" id="9001">
+			<posx>130</posx>
+			<posy>385</posy>
+			<control type="button" id="21">
+				<description>stop slot 2 push button</description>
+				<posx>210</posx>
+				<posy>0</posy>
+				<width>50</width>
+				<height>50</height>
+				<label>-</label>
+				<font>-</font>
+				<aligny>-</aligny>
+				<texturefocus>7-home-power.png</texturefocus>
+				<texturenofocus>7-home-power.png</texturenofocus>
+				<onleft>20</onleft>
+				<onright>22</onright>
+				<onup>9000</onup>
+				<ondown>9000</ondown>
+				<hitrect x="214" y="4" w="37" h="37" />
+			</control>
+			<control type="image">
+				<posx>214</posx>
+				<posy>4</posy>
+				<width>37</width>
+				<height>37</height>
+				<texture>7-home-power-focus.gif</texture>
+				<visible>Control.HasFocus(21) | Control.HasFocus(23)</visible>
+			</control>
+			<control type="button" id="20">
+				<description>stop slot 1 push button</description>
+				<posx>50</posx>
+				<posy>0</posy>
+				<width>50</width>
+				<height>50</height>
+				<label>-</label>
+				<font>-</font>
+				<aligny>-</aligny>
+				<texturefocus>7-home-power.png</texturefocus>
+				<texturenofocus>7-home-power.png</texturenofocus>
+				<onleft>22</onleft>
+				<onright>21</onright>
+				<onup>9000</onup>
+				<ondown>9000</ondown>
+				<hitrect x="54" y="4" w="37" h="37" />
+			</control>
+			<control type="image">
+				<posx>54</posx>
+				<posy>4</posy>
+				<width>37</width>
+				<height>37</height>
+				<texture>7-home-power-focus.gif</texture>
+				<visible>Control.HasFocus(20) | Control.HasFocus(23)</visible>
+			</control>
+			<control type="button" id="22">
+				<description>stop slot 3 push button</description>
+				<posx>370</posx>
+				<posy>0</posy>
+				<width>50</width>
+				<height>50</height>
+				<label>-</label>
+				<font>-</font>
+				<aligny>-</aligny>
+				<texturefocus>7-home-power.png</texturefocus>
+				<texturenofocus>7-home-power.png</texturenofocus>
+				<onleft>21</onleft>
+				<onright>25</onright>
+				<onup>9000</onup>
+				<ondown>9000</ondown>
+				<hitrect x="374" y="4" w="37" h="37" />
+			</control>
+			<control type="image">
+				<posx>374</posx>
+				<posy>4</posy>
+				<width>37</width>
+				<height>37</height>
+				<texture>7-home-power-focus.gif</texture>
+				<visible>Control.HasFocus(22) | Control.HasFocus(23)</visible>
+			</control>
+		</control>
+
+		<!-- GROUP BUTTON: STOP ALL SLOTS / START SPIN / AUTO SPIN -->
+		<control type="group" id="9000">
+			<posx>130</posx>
+			<posy>385</posy>
+			<control type="button" id="23">
+				<description>stop all push button</description>
+				<posx>277</posx>
+				<posy>50</posy>
+				<width>80</width>
+				<height>80</height>
+				<label>-</label>
+				<font>-</font>
+				<aligny>-</aligny>
+				<texturefocus>7-home-power.png</texturefocus>
+				<texturenofocus>7-home-power.png</texturenofocus>
+				<onleft>24</onleft>
+				<onright>9002</onright>
+				<onup>9001</onup>
+				<ondown>9001</ondown>
+				<hitrect x="283" y="56" w="60" h="59" />
+			</control>
+			<control type="image">
+				<posx>283</posx>
+				<posy>56</posy>
+				<width>60</width>
+				<height>59</height>
+				<texture>7-home-power-focus.gif</texture>
+				<visible>Control.HasFocus(23)</visible>
+			</control>
+			<control type="button" id="24">
+				<description>start slots spin push button</description>
+				<posx>117</posx>
+				<posy>50</posy>
+				<width>80</width>
+				<height>80</height>
+				<label>-</label>
+				<font>-</font>
+				<aligny>-</aligny>
+				<texturefocus>7-home-playmedia.png</texturefocus>
+				<texturenofocus>7-home-playmedia.png</texturenofocus>
+				<onleft>31</onleft>
+				<onright>23</onright>
+				<onup>9001</onup>
+				<ondown>9001</ondown>
+				<hitrect x="123" y="56" w="59" h="59" />
+			</control>
+			<control type="image">
+				<posx>123</posx>
+				<posy>56</posy>
+				<width>59</width>
+				<height>59</height>
+				<texture>7-home-playmedia-focus.gif</texture>
+				<visible>Control.HasFocus(24)</visible>
+			</control>
+			<control type="radiobutton" id="31">
+				<description>auto spin mode button</description>
+				<posx>101</posx>
+				<posy>46</posy>
+				<width>20</width>
+				<height>80</height>
+				<radioposx>21</radioposx>
+				<radioposy>0</radioposy>
+				<radiowidth>18</radiowidth>
+				<radioheight>18</radioheight>
+				<animation effect="slide" end="20,0" time="200" condition="!IsEmpty(Container.Property(autospin))">conditional</animation>
+				<textureradiofocus>7-radiobutton-focus.png</textureradiofocus>
+				<textureradionofocus>7-radiobutton-nofocus.png</textureradionofocus>
+				<texturefocus>-</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<pulseonselect>false</pulseonselect>
+				<font>font10</font>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>[UPPERCASE]$LOCALIZE[SCRIPT400][/UPPERCASE]</label>
+				<textcolor>99ffffff</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<focusedcolor>FFe2ff43</focusedcolor>
+				<onleft>62</onleft>
+				<onright>24</onright>
+				<onup>9001</onup>
+				<ondown>9001</ondown>
+			</control>
+		</control>
+
+		<!-- GROUP BUTTON OPTIONS: SHOW DIALOG INFOS / MUTE SOUND FX -->
+		<control type="group" id="9002">
+			<posx>130</posx>
+			<posy>385</posy>
+			<control type="togglebutton" id="32">
+				<description>Mute mode button</description>
+				<posx>455</posx>
+				<posy>115</posy>
+				<width>30</width>
+				<height>30</height>
+				<hitrect x="445" y="100" w="50" h="45" />
+				<label>SCRIPT402</label>
+				<altlabel>SCRIPT403</altlabel>
+				<font>font10</font>
+				<textoffsety>-15</textoffsety>
+				<align>center</align>
+				<texturefocus>7-VolumeIcon-Mute.png</texturefocus>
+				<texturenofocus>7-VolumeIcon.png</texturenofocus>
+				<usealttexture>Skin.HasSetting(Lucky7_SFX_Muted)</usealttexture>
+				<alttexturefocus>7-VolumeIcon-unMute.png</alttexturefocus>
+				<alttexturenofocus>7-VolumeIcon-Mute.png</alttexturenofocus>
+				<onclick>Skin.ToggleSetting(Lucky7_SFX_Muted)</onclick>
+				<pulseonselect>no</pulseonselect>
+				<textcolor>99ffffff</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<focusedcolor>FFe2ff43</focusedcolor>
+				<onleft>9000</onleft>
+				<onright>30</onright>
+				<onup>25</onup>
+				<ondown>25</ondown>
+			</control>
+			<control type="button" id="30">
+				<description>Infos push button</description>
+				<posx>500</posx>
+				<posy>100</posy>
+				<width>50</width>
+				<height>50</height>
+				<label>-</label>
+				<font>-</font>
+				<aligny>-</aligny>
+				<texturefocus>7-home-favourites.png</texturefocus>
+				<texturenofocus>7-home-favourites.png</texturenofocus>
+				<onleft>32</onleft>
+				<onright>61</onright>
+				<onup>25</onup>
+				<ondown>25</ondown>
+				<hitrect x="504" y="104" w="37" h="37" />
+			</control>
+			<control type="image">
+				<posx>504</posx>
+				<posy>104</posy>
+				<width>37</width>
+				<height>37</height>
+				<texture>7-home-favourites-focus.gif</texture>
+				<visible>Control.HasFocus(30)</visible>
+			</control>
+		</control>
+
+		<!-- ALL FRUITS ANIMATION WIN -->
+		<control type="group">
+			<description>all fruits animation win</description>
+			<posx>296</posx>
+			<posy>224</posy>
+			<visible>!IsEmpty(Container.Property(all_fruits))</visible>
+			<animation type="conditional" condition="true" loop="true" acceleration="-1.1">
+				<effect type="fade" start="25" end="100" time="1000" />
+				<effect type="fade" start="100" end="25" time="1000" delay="1000" />
+			</animation>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>128</width>
+				<height>128</height>
+				<info>Container.Property(slot1_top)</info>
+				<aspectratio>keep</aspectratio>
+				<animation effect="slide" end="-428,-352" time="5000" loop="true" condition="true">conditional</animation>
+				<animation effect="rotatey" center="64" start="0" end="-360" time="5000" loop="true" condition="true">Conditional</animation>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>128</width>
+				<height>128</height>
+				<info>Container.Property(slot2_top)</info>
+				<aspectratio>keep</aspectratio>
+				<animation effect="slide" end="0,-352" time="5000" loop="true" condition="true">conditional</animation>
+				<animation effect="rotatey" center="64" start="0" end="360" time="5000" loop="true" condition="true">Conditional</animation>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>128</width>
+				<height>128</height>
+				<info>Container.Property(slot3_top)</info>
+				<aspectratio>keep</aspectratio>
+				<animation effect="slide" end="428,-352" time="5000" loop="true" condition="true">conditional</animation>
+				<animation effect="rotatey" center="64" start="0" end="-360" time="5000" loop="true" condition="true">Conditional</animation>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>128</width>
+				<height>128</height>
+				<info>Container.Property(slot1_middle)</info>
+				<aspectratio>keep</aspectratio>
+				<animation effect="slide" end="-428,0" time="5000" loop="true" condition="true">conditional</animation>
+				<animation effect="rotatey" center="64" start="0" end="360" time="5000" loop="true" condition="true">Conditional</animation>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>128</width>
+				<height>128</height>
+				<info>Container.Property(slot3_middle)</info>
+				<aspectratio>keep</aspectratio>
+				<animation effect="slide" end="428,0" time="5000" loop="true" condition="true">conditional</animation>
+				<animation effect="rotatey" center="64" start="0" end="-360" time="5000" loop="true" condition="true">Conditional</animation>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>128</width>
+				<height>128</height>
+				<info>Container.Property(slot1_bottom)</info>
+				<aspectratio>keep</aspectratio>
+				<animation effect="slide" end="-428,352" time="5000" loop="true" condition="true">conditional</animation>
+				<animation effect="rotatey" center="64" start="0" end="360" time="5000" loop="true" condition="true">Conditional</animation>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>128</width>
+				<height>128</height>
+				<info>Container.Property(slot2_bottom)</info>
+				<aspectratio>keep</aspectratio>
+				<animation effect="slide" end="0,352" time="5000" loop="true" condition="true">conditional</animation>
+				<animation effect="rotatey" center="64" start="0" end="-360" time="5000" loop="true" condition="true">Conditional</animation>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>128</width>
+				<height>128</height>
+				<info>Container.Property(slot3_bottom)</info>
+				<aspectratio>keep</aspectratio>
+				<animation effect="slide" end="428,352" time="5000" loop="true" condition="true">conditional</animation>
+				<animation effect="rotatey" center="64" start="0" end="360" time="5000" loop="true" condition="true">Conditional</animation>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>128</width>
+				<height>128</height>
+				<info>Container.Property(slot2_middle)</info>
+				<aspectratio>keep</aspectratio>
+				<animation effect="rotatex" center="64" start="0" end="-360" time="5000" loop="true" condition="true">Conditional</animation>
+			</control>
+		</control>
+
+		<!-- WIN / LOSE VALUE -->
+		<control type="group">
+			<animation type="conditional" condition="true" loop="true" acceleration="-1.1">
+				<effect type="zoom" center="auto" start="100" end="400" time="3000" />
+				<effect type="zoom" center="auto" start="100" end="25" time="3000" delay="3000" />
+			</animation>
+			<control type="label">
+				<description>win and jackpot label</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>720</width>
+				<height>576</height>
+				<label>$INFO[Container.Property(all_fruits),,[CR]]$INFO[Container.Property(winning),$LOCALIZE[SCRIPT406][CR]$LOCALIZE[SCRIPT407][CR][I][COLOR=ffe2ff43]$LOCALIZE[SCRIPT1][/COLOR][/I]]$INFO[Container.Property(pot_win),[CR][I][COLOR=ffe2ff43]+ $LOCALIZE[SCRIPT1][/COLOR][/I]]</label>
+				<font>special13</font>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>ffffffff</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<visible>!IsEmpty(Container.Property(winning)) + !IsEmpty(Container.Property(pot_win))</visible>
+				<animation effect="fade" reversible="true" time="1000">VisibleChange</animation>
+			</control>
+			<control type="label">
+				<description>win or jackpot label</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>720</width>
+				<height>576</height>
+				<label>$INFO[Container.Property(all_fruits),,[CR]]$INFO[Container.Property(winning),$LOCALIZE[SCRIPT407][CR][I][COLOR=ffe2ff43]$LOCALIZE[SCRIPT1][/COLOR][/I]]$INFO[Container.Property(pot_win),$LOCALIZE[SCRIPT406][CR]$LOCALIZE[SCRIPT407][CR][I][COLOR=ffe2ff43]$LOCALIZE[SCRIPT1][/COLOR][/I]]</label>
+				<font>special13</font>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>ffffffff</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<visible>IsEmpty(Container.Property(winning)) + !IsEmpty(Container.Property(pot_win)) | !IsEmpty(Container.Property(winning)) + IsEmpty(Container.Property(pot_win))</visible>
+				<animation effect="fade" reversible="true" time="1000">VisibleChange</animation>
+			</control>
+			<control type="label">
+				<description>lose label</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>720</width>
+				<height>576</height>
+				<label>$INFO[Container.Property(lose),$LOCALIZE[SCRIPT408][CR][I][COLOR=ffe2ff43]$LOCALIZE[SCRIPT1][/COLOR][/I]]</label>
+				<font>special13</font>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>ffffffff</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<visible>!IsEmpty(Container.Property(lose))</visible>
+				<animation effect="fade" reversible="true" time="1000">VisibleChange</animation>
+			</control>
+		</control>
+	</controls>
+</window>

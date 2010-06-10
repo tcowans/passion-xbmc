@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>  <!--Finnish 15.3.2008-->
+  <!-- GENERAL STRINGS -->
+  <string id="100">xbmc media center</string>
+  <string id="101">Mika Pirinen</string><!-- Translators name -->
+
+  <string id="0">Lucky $even</string>
+  <string id="1">&#36;&#32;</string><!-- symbol money -->
+  <string id="2">Jackpot</string>
+  <string id="3">Tietoja</string>
+  <string id="4">Versio:&#32;</string>
+  <string id="5">Sinulla on rahaa %i%s pankissa</string>
+  <string id="6">Voit jatkaa tai aloittaa</string>
+  <string id="7">uuden pelin</string>
+  <string id="8">Uusi</string>
+  <string id="9">Jatka</string>
+
+  <string id="11">Sinulla 0n rahaa 0%s </string>
+  <string id="12">Yritä uudelleen!</string>
+
+  <string id="400">A[CR]u[CR]t[CR]o</string>
+  <string id="401">2x</string>
+  <string id="402">Ääni FX</string>
+  <string id="403">FX vaimennettu</string>
+  <string id="404"></string>
+  <string id="405">Kaikki hedelmät!</string>
+  <string id="406">JACKPOT!</string>
+  <string id="407">Voitit!</string>
+  <string id="408">Hävisit!</string>
+  <string id="409"></string>
+  
+  <string id="510">Voittaja</string>
+  <string id="511">Voittokassa</string>
+  <string id="512">Asennus</string>
+
+  <string id="562">Bonus</string>
+  <string id="563">Näppäimet</string>
+  <string id="564">Asetukset</string>
+  <string id="565">Lucky 7 v1</string>
+  <string id="566">Tietoja!</string>
+
+  <!-- Credits -->
+  <string id="900">Versi</string>
+  <string id="901">Kiitokset</string>
+  <string id="902">Lisäkiitokset</string>
+  <string id="903">Kiitokset Skinistä</string>
+
+  <!-- Credits headings-->
+  <string id="910">Kehitys &amp; koodaus</string>
+  <string id="911">Koodaus &amp; Skini</string>
+  <string id="912">Grafiikka &amp; Skini</string>
+  <string id="913">Käytettävyys</string>
+  <string id="914">Englannin kieliversio</string>
+
+  <!-- strings 32000 thru 32999 reserved for scripts -->
+  <!-- DIALOG BONUS STRINGS -->
+  <string id="32100">1000x %s1[CR]+ Jackpot</string>
+  <string id="32101">100x %s1[CR]BORDER</string>
+  <string id="32102">10x %s1[CR]CENTER</string>
+  <string id="32103">500x %s1</string>
+  <string id="32104">300x %s1</string>
+  <string id="32105">200x %s1</string>
+  <string id="32106">100x %s1</string>
+  <string id="32107">50x %s1[CR]ANY BAR</string>
+  <string id="32108">25x %s1[CR]TWO BAR[CR]+ ANY BAR</string>
+  <string id="32109">100x %s1</string>
+  <string id="32110">10x %s1[CR]ANY TWO</string>
+  <string id="32111">1x %s1[CR]ANY ONE</string>
+  <string id="32112">75x %s1</string>
+  <string id="32113">50x %s1</string>
+  <string id="32114">25x %s1</string>
+  <string id="32115">20x %s1</string>
+  <string id="32116">15x %s1</string>
+  <string id="32117">10x %s1</string>
+  <string id="32118">5x %s1</string>
+  <string id="32119">Jackpot[CR]All Fruits[CR]Any Nine</string>
+
+  <!-- DIALOG KEYMAP INFOS STRINGS -->
+  <!-- LINE 1 -->
+  <string id="32200">KUVAUS</string> <!-- ROW 1 -->
+  <string id="32201">TOIMINTA</string> <!-- ROW 2 -->
+  <string id="32202">NÄPPÄIMISTÖ</string> <!-- ROW 3 -->
+  <string id="32203">PELIOHJAIN</string> <!-- ROW 4 -->
+  <string id="32204">KAUKO-OHJAIN</string> <!-- ROW 5 -->
+  <!-- LINE 2 -->
+  <string id="32205">Valinta</string>
+  <string id="32206">Ohjaa painikkeilla</string>
+  <string id="32207">Enter</string>
+  <string id="32208">Button A</string>
+  <string id="32209">SELECT</string>
+  <!-- LINE 3 -->
+  <string id="32210">Lisää panosta</string>
+  <string id="32211">+</string>
+  <string id="32212">Tab / Page Up</string>
+  <string id="32213">Button X</string>
+  <string id="32214">SKIP +</string>
+  <!-- LINE 4 -->
+  <string id="32215">Vähennä panosta</string>
+  <string id="32216">-</string>
+  <string id="32217">Back Space / Page Down</string>
+  <string id="32218">Button B</string>
+  <string id="32219">SKIP -</string>
+  <!-- LINE 5 -->
+  <string id="32220">Maksimi panos</string>
+  <string id="32221">Sijoita kaikki</string>
+  <string id="32222">Kirjain M</string>
+  <string id="32223">Button Black</string>
+  <string id="32224">PAUSE</string>
+  <!-- LINE 6 -->
+  <string id="32225">Sijoita 2x panos</string>
+  <string id="32226">Tuplaa</string>
+  <string id="32227">Merkki *</string>
+  <string id="32228">N/A</string>
+  <string id="32229"> </string>
+  <!-- LINE 7 -->
+  <string id="32230">Aloita pyöritys</string>
+  <string id="32231">Pelaa</string>
+  <string id="32232">Kirjain Q[CR]Space Bar</string>
+  <string id="32233">Button Y</string>
+  <string id="32234">DISPLAY</string>
+  <!-- LINE 9 -->
+  <string id="32235">Pysäytä kiekot</string>
+  <string id="32236">Pysäyttää kiekot</string>
+  <string id="32237">Escape[CR]Numero 0</string>
+  <string id="32238">Button Back</string>
+  <string id="32239">UP</string>
+  <!-- LINE 10 -->
+  <string id="32240">Pysäytä kiekko[CR] 1 | 2 | 3 </string>
+  <string id="32241">Pysäytä kiekko</string>
+  <string id="32242">Numerot[CR]1 | 2 | 3</string>
+  <string id="32243">N/A</string>
+  <string id="32244">LEFT|DOWN|RIGHT</string>
+  <!-- LINE 11 -->
+  <string id="32245">Avaa valikko</string>
+  <string id="32246">Avaa valikon</string>
+  <string id="32247">Kirjain I</string>
+  <string id="32248">Button White</string>
+  <string id="32249">TITLE</string>
+  <!-- LINE 12 -->
+  <string id="32250">Sulje valikko</string>
+  <string id="32251">Sulkee valikon</string>
+  <string id="32252">Escape[CR]Back Space</string>
+  <string id="32253">Button Back[CR]Button B[CR]Button White</string>
+  <string id="32254">TITLE</string>
+  <!-- LINE 13 -->
+  <string id="32255">Lopeta peli</string>
+  <string id="32256">Lopettaa pelin</string>
+  <string id="32257">Escape</string>
+  <string id="32258">Button Back</string>
+  <string id="32259">MENU</string>
+  <!-- LINE 8 -->
+  <string id="32260">Autom. pyöritys</string>
+  <string id="32261">Autom.</string>
+  <string id="32262">Kirjain A</string>
+  <string id="32263">N/A</string>
+  <string id="32264">BACK</string>
+</strings>

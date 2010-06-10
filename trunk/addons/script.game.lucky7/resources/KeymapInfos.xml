@@ -1,0 +1,110 @@
+﻿<keymapinfos>
+  <!--
+  <line id="0">
+    <row>STRING32200</row>
+    <row>STRING32200</row>
+    <row img1="" img2="" img3="" usealt="false">STRING32200</row>
+    <row img1="" img2="" img3="" usealt="false">STRING32200</row>
+    <row img1="" img2="" img3="" usealt="false">STRING32200</row>
+  </line>
+  -->
+
+  <line id="1">
+    <row>STRING32200</row> <!-- ROW 1: DESCIPTION -->
+    <row>STRING32201</row> <!-- ROW 2: GLOBAL ACTION -->
+    <row>STRING32202</row> <!-- ROW 3: KEYBOARD -->
+    <row>STRING32203</row> <!-- ROW 4: XBOB PAD -->
+    <row>STRING32204</row> <!-- ROW 5: GENERAL REMOTE -->
+  </line>
+  <line id="2">
+    <row>STRING32205</row>
+    <row>STRING32206</row>
+    <row img1="keys_help/keyboard/enter.png" img2="" img3="" usealt="false">STRING32207</row>
+    <row img1="keys_help/xbox/A.png" img2="" img3="" usealt="false">STRING32208</row>
+    <row img1="" img2="" img3="" usealt="false">STRING32209</row>
+  </line>
+  <line id="3">
+    <row>STRING32210</row>
+    <row>STRING32211</row>
+    <row img1="keys_help/keyboard/tab.png" img2="keys_help/keyboard/page-up.png" img3="" usealt="false">STRING32212</row>
+    <row img1="keys_help/xbox/Y.png" img2="" img3="" usealt="false">STRING32213</row>
+    <row img1="" img2="" img3="" usealt="false">STRING32214</row>
+  </line>
+  <line id="4">
+    <row>STRING32215</row>
+    <row>STRING32216</row>
+    <row img1="keys_help/keyboard/backspace.png" img2="keys_help/keyboard/page-down.png" img3="" usealt="false">STRING32217</row>
+    <row img1="keys_help/xbox/B.png" img2="" img3="" usealt="false">STRING32218</row>
+    <row img1="" img2="" img3="" usealt="false">STRING32219</row>
+  </line>
+  <line id="5">
+    <row>STRING32220</row>
+    <row>STRING32221</row>
+    <row img1="keys_help/keyboard/M.png" img2="" img3="" usealt="false">STRING32222</row>
+    <row img1="keys_help/xbox/black.png" img2="" img3="" usealt="false">STRING32223</row>
+    <row img1="" img2="" img3="" usealt="false">STRING32224</row>
+  </line>
+  <line id="6">
+    <row>STRING32225</row>
+    <row>STRING32226</row>
+    <row img1="keys_help/keyboard/num-star.png" img2="" img3="" usealt="false">STRING32227</row>
+    <row img1="keys_help/xbox/start.png" img2="" img3="" usealt="false">STRING32228</row>
+    <row img1="" img2="" img3="" usealt="false">STRING32229</row>
+  </line>
+  <line id="7">
+    <row>STRING32230</row>
+    <row>STRING32231</row>
+    <row img1="keys_help/keyboard/spacebar.png" img2="keys_help/keyboard/Q.png" img3="" usealt="false">STRING32232</row>
+    <row img1="keys_help/xbox/X.png" img2="" img3="" usealt="false">STRING32233</row>
+    <row img1="" img2="" img3="" usealt="false">STRING32234</row>
+  </line>
+  <line id="8">
+    <row>STRING32260</row>
+    <row>STRING32261</row>
+    <row img1="keys_help/keyboard/A.png" img2="" img3="" usealt="false">STRING32262</row>
+    <row img1="" img2="" img3="" usealt="false">STRING32263</row>
+    <row img1="" img2="" img3="" usealt="false">STRING32264</row>
+  </line>
+  <line id="9">
+    <row>STRING32235</row>
+    <row>STRING32236</row>
+    <row img1="keys_help/keyboard/esc.png" img2="keys_help/keyboard/num-0.png" img3="" usealt="false">STRING32237</row>
+    <row img1="keys_help/xbox/back.png" img2="" img3="" usealt="false">STRING32238</row>
+    <row img1="" img2="" img3="" usealt="false">STRING32239</row>
+  </line>
+  <line id="10">
+    <row>STRING32240</row>
+    <row>STRING32241</row>
+    <row img1="keys_help/keyboard/num-1-2-3.png" img2="" img3="" usealt="false">STRING32242</row>
+    <row img1="" img2="" img3="" usealt="false">STRING32243</row>
+    <row img1="" img2="" img3="" usealt="false">STRING32244</row>
+  </line>
+  <line id="11">
+    <row>STRING32245</row>
+    <row>STRING32246</row>
+    <row img1="keys_help/keyboard/contextmenu.png" img2="keys_help/keyboard/I.png" img3="" usealt="false">STRING32247</row>
+    <row img1="keys_help/xbox/white.png" img2="" img3="" usealt="false">STRING32248</row>
+    <row img1="" img2="" img3="" usealt="false">STRING32249</row>
+  </line>
+  <line id="12">
+    <row>STRING32250</row>
+    <row>STRING32251</row>
+    <row img1="keys_help/keyboard/esc.png" img2="keys_help/keyboard/backspace.png" img3="keys_help/keyboard/contextmenu.png" usealt="false">STRING32252</row>
+    <row img1="keys_help/xbox/back.png" img2="keys_help/xbox/B.png" img3="keys_help/xbox/white.png" usealt="false">STRING32253</row>
+    <row img1="" img2="" img3="" usealt="false">STRING32254</row>
+  </line>
+  <line id="13">
+    <row>STRING32255</row>
+    <row>STRING32256</row>
+    <row img1="keys_help/keyboard/esc.png" img2="" img3="" usealt="false">STRING32257</row>
+    <row img1="keys_help/xbox/back.png" img2="" img3="" usealt="false">STRING32258</row>
+    <row img1="" img2="" img3="" usealt="false">STRING32259</row>
+  </line>
+  <line id="14">
+    <row>XBMC[CR]Default Controls</row>
+    <row>STRING32201</row>
+    <row img1="" img2="" img3="" usealt="xbmcwiki=0">XBox Media[CR]Extender Remote[CR][I]Click for Show[/I]</row>
+    <row img1="" img2="" img3="" usealt="xbmcwiki=1">XBox[CR]Controller[CR][I]Click for Show[/I]</row>
+    <row img1="" img2="" img3="" usealt="xbmcwiki=2">XBox[CR]DVD-Remote[CR][I]Click for Show[/I]</row>
+  </line>
+</keymapinfos>

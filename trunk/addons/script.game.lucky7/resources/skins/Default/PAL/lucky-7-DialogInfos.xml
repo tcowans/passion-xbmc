@@ -1,0 +1,1618 @@
+<window>
+	<defaultcontrol>10</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+	<animation type="WindowOpen" acceleration="-1.3">
+		<effect type="fade" time="1000" />
+		<effect type="slide" time="600" start="0,-360" end="0,0" />
+		<effect type="rotatex" tween="bounce" easing="out" center="auto" start="75" end="0" time="2000" />
+	</animation>
+
+	<controls>
+	<!-- BACKGROUNDS DIALOG -->
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>720</width>
+			<height>576</height>
+			<texture border="20">7-DialogBack.png</texture>
+			<animation effect="fade" start="100" end="75" time="200" condition="Window.IsActive(slideshow)">Conditional</animation>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>720</width>
+			<height>576</height>
+			<texture border="20">7-DialogFront.png</texture>
+		</control>
+
+		<!-- BUTTON CLOSE DIALOG MOUSE ONLY -->
+		<control type="button" id="303">
+			<description>Close Window button</description>
+			<posx>656</posx>
+			<posy>37</posy>
+			<width>25</width>
+			<height>20</height>
+			<hitrect x="646" y="37" w="35" h="30" />
+			<label>-</label>
+			<font>-</font>
+			<texturefocus>7-close-windowFO.png</texturefocus>
+			<texturenofocus>7-close-window.png</texturenofocus>
+			<onleft>9000</onleft>
+			<onright>9000</onright>
+			<onup>9000</onup>
+			<ondown>9000</ondown>
+			<visible>system.getbool(lookandfeel.enablemouse)</visible>
+		</control>
+
+		<!-- LABELS DIALOG -->
+		<control type="label">
+			<description>dialog Heading</description>
+			<posx>50</posx>
+			<posy>50</posy>
+			<label>[B]$LOCALIZE[SCRIPT3] - [I]$LOCALIZE[SCRIPT0][/I][/B]</label>
+			<font>special13</font>
+			<textcolor>DDced8da</textcolor>
+			<shadowcolor>FF000000</shadowcolor>
+		</control>
+		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+		<!-- ** Required ** Do not change id's or type's -->
+		<control type="label">
+			<description>script version</description>
+			<posx>655</posx>
+			<posy>50</posy>
+			<width>200</width>
+			<height>40</height>
+			<label>$LOCALIZE[SCRIPT4] 2.0.0</label>
+			<font>font12</font>
+			<textcolor>DDced8da</textcolor>
+			<shadowcolor>FF000000</shadowcolor>
+			<align>right</align>
+		</control>
+
+		<!-- Main buttons ** required ** -->
+		<control type="group" id="1000">
+			<posx>45</posx>
+			<posy>90</posy>
+			<control type="image">
+				<description>divider</description>
+				<posx>-11</posx>
+				<posy>26</posy>
+				<width>11</width>
+				<height>4</height>
+				<texture flipy="true">7-tab.png</texture>
+			</control>
+			<control type="togglebutton" id="10">
+				<description>Bonus Button</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>102</width>
+				<height>30</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>SCRIPT562</label>
+				<font>special12</font>
+				<textcolor>99ffffff</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<textoffsetx>17</textoffsetx>
+				<pulseonselect>no</pulseonselect>
+				<texturenofocus border="3">7-button-nofocus2.png</texturenofocus>
+				<texturefocus border="3,20,3,0">7-button-focus2.png</texturefocus>
+				<usealttexture>Skin.String(PassionSettings,1)</usealttexture>
+				<alttexturefocus border="3,20,3,0">7-button-focus2.png</alttexturefocus>
+				<alttexturenofocus border="3">7-button-nofocus-tab.png</alttexturenofocus>
+				<onfocus>Skin.SetString(PassionSettings,1)</onfocus>
+				<onleft>70</onleft>
+				<onright>20</onright>
+				<onup>9001</onup>
+				<ondown>9001</ondown>
+			</control>
+			<control type="image">
+				<description>divider</description>
+				<posx>102</posx>
+				<posy>26</posy>
+				<width>2</width>
+				<height>4</height>
+				<texture flipy="true">7-tab.png</texture>
+			</control>
+			<control type="togglebutton" id="20">
+				<description>Keymap Button</description>
+				<posx>104</posx>
+				<posy>0</posy>
+				<width>102</width>
+				<height>30</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>SCRIPT563</label>
+				<font>special12</font>
+				<textcolor>99ffffff</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<textoffsetx>17</textoffsetx>
+				<pulseonselect>no</pulseonselect>
+				<texturenofocus border="3">7-button-nofocus2.png</texturenofocus>
+				<texturefocus border="3,20,3,0">7-button-focus2.png</texturefocus>
+				<usealttexture>Skin.String(PassionSettings,2)</usealttexture>
+				<alttexturefocus border="3,20,3,0">7-button-focus2.png</alttexturefocus>
+				<alttexturenofocus border="3">7-button-nofocus-tab.png</alttexturenofocus>
+				<onfocus>Skin.SetString(PassionSettings,2)</onfocus>
+				<onleft>10</onleft>
+				<onright>30</onright>
+				<onup>9002</onup>
+				<ondown>9002</ondown>
+			</control>
+			<control type="image">
+				<description>divider</description>
+				<posx>206</posx>
+				<posy>26</posy>
+				<width>2</width>
+				<height>4</height>
+				<texture flipy="true">7-tab.png</texture>
+			</control>
+			<control type="togglebutton" id="30">
+				<description>Winner Button</description>
+				<posx>208</posx>
+				<posy>0</posy>
+				<width>102</width>
+				<height>30</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>SCRIPT2</label>
+				<font>special12</font>
+				<textcolor>99ffffff</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<textoffsetx>17</textoffsetx>
+				<pulseonselect>no</pulseonselect>
+				<texturenofocus border="3">7-button-nofocus2.png</texturenofocus>
+				<texturefocus border="3,20,3,0">7-button-focus2.png</texturefocus>
+				<usealttexture>Skin.String(PassionSettings,3)</usealttexture>
+				<alttexturefocus border="3,20,3,0">7-button-focus2.png</alttexturefocus>
+				<alttexturenofocus border="3">7-button-nofocus-tab.png</alttexturenofocus>
+				<onfocus>Skin.SetString(PassionSettings,3)</onfocus>
+				<onleft>20</onleft>
+				<onright>40</onright>
+				<onup>9003</onup>
+				<ondown>9003</ondown>
+			</control>
+			<control type="image">
+				<description>divider</description>
+				<posx>310</posx>
+				<posy>26</posy>
+				<width>2</width>
+				<height>4</height>
+				<texture flipy="true">7-tab.png</texture>
+			</control>
+			<control type="togglebutton" id="40">
+				<description>Settings Button</description>
+				<posx>312</posx>
+				<posy>0</posy>
+				<width>102</width>
+				<height>30</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>SCRIPT564</label>
+				<font>special12</font>
+				<textcolor>99ffffff</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<textoffsetx>17</textoffsetx>
+				<pulseonselect>no</pulseonselect>
+				<texturenofocus border="3">7-button-nofocus2.png</texturenofocus>
+				<texturefocus border="3,20,3,0">7-button-focus2.png</texturefocus>
+				<usealttexture>Skin.String(PassionSettings,4)</usealttexture>
+				<alttexturefocus border="3,20,3,0">7-button-focus2.png</alttexturefocus>
+				<alttexturenofocus border="3">7-button-nofocus-tab.png</alttexturenofocus>
+				<onfocus>Skin.SetString(PassionSettings,4)</onfocus>
+				<onleft>30</onleft>
+				<onright>60</onright>
+				<onup>9004</onup>
+				<ondown>9004</ondown>
+				<enable>false</enable>
+			</control>
+			<control type="image">
+				<description>divider</description>
+				<posx>414</posx>
+				<posy>26</posy>
+				<width>2</width>
+				<height>4</height>
+				<texture flipy="true">7-tab.png</texture>
+			</control>
+			<control type="togglebutton" id="60">
+				<description>Old Version Button</description>
+				<posx>416</posx>
+				<posy>0</posy>
+				<width>103</width>
+				<height>30</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>SCRIPT565</label>
+				<font>special12</font>
+				<textcolor>99ffffff</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<textoffsetx>17</textoffsetx>
+				<pulseonselect>no</pulseonselect>
+				<texturenofocus border="3">7-button-nofocus2.png</texturenofocus>
+				<texturefocus border="3,20,3,0">7-button-focus2.png</texturefocus>
+				<usealttexture>Skin.String(PassionSettings,5)</usealttexture>
+				<alttexturefocus border="3,20,3,0">7-button-focus2.png</alttexturefocus>
+				<alttexturenofocus border="3">7-button-nofocus-tab.png</alttexturenofocus>
+				<onfocus>Skin.SetString(PassionSettings,5)</onfocus>
+				<onleft>40</onleft>
+				<onright>70</onright>
+				<onup>9005</onup>
+				<ondown>9005</ondown>
+			</control>
+			<control type="image">
+				<description>divider</description>
+				<posx>519</posx>
+				<posy>26</posy>
+				<width>2</width>
+				<height>4</height>
+				<texture flipy="true">7-tab.png</texture>
+			</control>
+			<control type="togglebutton" id="70">
+				<description>About Button</description>
+				<posx>521</posx>
+				<posy>0</posy>
+				<width>103</width>
+				<height>30</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>SCRIPT566</label>
+				<font>special12</font>
+				<textcolor>99ffffff</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<textoffsetx>17</textoffsetx>
+				<pulseonselect>no</pulseonselect>
+				<texturenofocus border="3">7-button-nofocus2.png</texturenofocus>
+				<texturefocus border="3,20,3,0">7-button-focus2.png</texturefocus>
+				<usealttexture>Skin.String(PassionSettings,6)</usealttexture>
+				<alttexturefocus border="3,20,3,0">7-button-focus2.png</alttexturefocus>
+				<alttexturenofocus border="3">7-button-nofocus-tab.png</alttexturenofocus>
+				<onfocus>Skin.SetString(PassionSettings,6)</onfocus>
+				<onleft>60</onleft>
+				<onright>10</onright>
+				<onup>70</onup>
+				<ondown>70</ondown>
+			</control>
+			<control type="image">
+				<description>divider</description>
+				<posx>624</posx>
+				<posy>26</posy>
+				<width>11</width>
+				<height>4</height>
+				<texture flipy="true">7-tab.png</texture>
+			</control>
+		</control>
+
+		<!-- TAB BONUS -->
+		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+		<!-- ** Required ** Do not change id's or type's -->
+		<control type="group" id="9001">
+			<description>menu bonus</description>
+			<visible>Skin.String(PassionSettings,1)</visible>
+			<posx>38</posx>
+			<posy>126</posy>
+			<control type="scrollbar" id="151">
+				<posx>628</posx>
+				<posy>0</posy>
+				<width>10</width>
+				<height>400</height>
+				<texturesliderbackground border="2,2,2,2">7-scrollbar_bar_back2.png</texturesliderbackground>
+				<texturesliderbar border="2,10,2,10">7-scrollbar_bar.png</texturesliderbar>
+				<texturesliderbarfocus border="2,10,2,10">7-scrollbar_bar_focus.png</texturesliderbarfocus>
+				<textureslidernib>7-scrollbar_nib.png</textureslidernib>
+				<textureslidernibfocus>7-scrollbar_nib.png</textureslidernibfocus>
+				<onleft>150</onleft>
+				<onright>150</onright>
+				<showonepage>true</showonepage>
+				<orientation>vertical</orientation>
+			</control>
+			<control type="panel" id="150">
+				<description>Container</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>625</width>
+				<height>400</height>
+				<onleft>10</onleft>
+				<onright>151</onright>
+				<onup>10</onup>
+				<ondown>150</ondown>
+				<pagecontrol>151</pagecontrol>
+				<scrolltime>200</scrolltime>
+				<itemlayout height="50" width="208">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>208</width>
+						<height>50</height>
+						<texture>7-empty.png</texture>
+						<bordertexture border="5">7-button-nofocus.png</bordertexture>
+						<bordersize>5</bordersize>
+					</control>
+					<control type="image">
+						<description>slot 1 image</description>
+						<posx>5</posx>
+						<posy>0</posy>
+						<width>40</width>
+						<height>50</height>
+						<texture>7-empty.png</texture>
+						<info>ListItem.Property(slot1)</info>
+						<bordertexture border="5">7-button-nofocus.png</bordertexture>
+						<bordersize>5</bordersize>
+						<aspectratio>keep</aspectratio>
+					</control>
+					<control type="image">
+						<description>slot 2 image</description>
+						<posx>45</posx>
+						<posy>0</posy>
+						<width>40</width>
+						<height>50</height>
+						<texture>7-empty.png</texture>
+						<info>ListItem.Property(slot2)</info>
+						<bordertexture border="5">7-button-nofocus.png</bordertexture>
+						<bordersize>5</bordersize>
+						<aspectratio>keep</aspectratio>
+					</control>
+					<control type="image">
+						<description>slot 3 image</description>
+						<posx>85</posx>
+						<posy>0</posy>
+						<width>40</width>
+						<height>50</height>
+						<texture>7-empty.png</texture>
+						<info>ListItem.Property(slot3)</info>
+						<bordertexture border="5">7-button-nofocus.png</bordertexture>
+						<bordersize>5</bordersize>
+						<aspectratio>keep</aspectratio>
+					</control>
+					<control type="label">
+						<posx>165</posx>
+						<posy>0</posy>
+						<width>80</width>
+						<height>50</height>
+						<font>font10</font>
+						<align>center</align>
+						<aligny>center</aligny>
+						<scroll>true</scroll>
+						<scrollspeed>100</scrollspeed>
+						<textcolor>99ffffff</textcolor>
+						<shadowcolor>FF000000</shadowcolor>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<label>$INFO[ListItem.Label,[B],[/B]]</label>
+					</control>
+				</itemlayout>
+				<focusedlayout height="50" width="208">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>208</width>
+						<height>50</height>
+						<texture border="5">7-folder-back.png</texture>
+						<bordertexture border="5">7-back-slots.png</bordertexture>
+						<bordersize>3</bordersize>
+						<animation effect="zoom" center="auto" start="100" end="125" time="200">Focus</animation>
+					</control>
+					<control type="image">
+						<description>slot 1 image</description>
+						<posx>5</posx>
+						<posy>0</posy>
+						<width>40</width>
+						<height>50</height>
+						<texture>7-empty.png</texture>
+						<info>ListItem.Property(slot1)</info>
+						<bordertexture border="5">7-back-slots.png</bordertexture>
+						<bordersize>5</bordersize>
+						<aspectratio>keep</aspectratio>
+						<animation effect="zoom" center="105,25" start="100" end="125" time="200">Focus</animation>
+					</control>
+					<control type="image">
+						<description>slot 2 image</description>
+						<posx>45</posx>
+						<posy>0</posy>
+						<width>40</width>
+						<height>50</height>
+						<texture>7-empty.png</texture>
+						<info>ListItem.Property(slot2)</info>
+						<bordertexture border="5">7-back-slots.png</bordertexture>
+						<bordersize>5</bordersize>
+						<aspectratio>keep</aspectratio>
+						<animation effect="zoom" center="105,25" start="100" end="125" time="200">Focus</animation>
+					</control>
+					<control type="image">
+						<description>slot 3 image</description>
+						<posx>85</posx>
+						<posy>0</posy>
+						<width>40</width>
+						<height>50</height>
+						<texture>7-empty.png</texture>
+						<info>ListItem.Property(slot3)</info>
+						<bordertexture border="5">7-back-slots.png</bordertexture>
+						<bordersize>5</bordersize>
+						<aspectratio>keep</aspectratio>
+						<animation effect="zoom" center="105,25" start="100" end="125" time="200">Focus</animation>
+					</control>
+					<control type="label">
+						<posx>165</posx>
+						<posy>0</posy>
+						<width>80</width>
+						<height>50</height>
+						<font>font10</font>
+						<align>center</align>
+						<aligny>center</aligny>
+						<scroll>true</scroll>
+						<scrollspeed>100</scrollspeed>
+						<textcolor>99ffffff</textcolor>
+						<shadowcolor>FF000000</shadowcolor>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<label>$INFO[ListItem.Label,[B],[/B]]</label>
+						<animation effect="zoom" center="130,25" start="100" end="150" time="200">Focus</animation>
+					</control>
+				</focusedlayout>
+			</control>
+		</control>
+
+		<!-- TAB KEYMAP -->
+		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+		<!-- ** Required ** Do not change id's or type's -->
+		<control type="group" id="9002">
+			<description>keymap section</description>
+			<visible>Skin.String(PassionSettings,2)</visible>
+			<posx>38</posx>
+			<posy>126</posy>
+			<control type="scrollbar" id="251">
+				<posx>628</posx>
+				<posy>0</posy>
+				<width>10</width>
+				<height>400</height>
+				<texturesliderbackground border="2,2,2,2">7-scrollbar_bar_back2.png</texturesliderbackground>
+				<texturesliderbar border="2,10,2,10">7-scrollbar_bar.png</texturesliderbar>
+				<texturesliderbarfocus border="2,10,2,10">7-scrollbar_bar_focus.png</texturesliderbarfocus>
+				<textureslidernib>7-scrollbar_nib.png</textureslidernib>
+				<textureslidernibfocus>7-scrollbar_nib.png</textureslidernibfocus>
+				<onleft>250</onleft>
+				<onright>250</onright>
+				<showonepage>true</showonepage>
+				<orientation>vertical</orientation>
+			</control>
+			<control type="panel" id="250">
+				<description>Container</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>625</width>
+				<height>400</height>
+				<onleft>20</onleft>
+				<onright>251</onright>
+				<onup>20</onup>
+				<ondown>250</ondown>
+				<pagecontrol>251</pagecontrol>
+				<scrolltime>200</scrolltime>
+				<itemlayout height="50" width="125">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>125</width>
+						<height>50</height>
+						<texture>7-empty.png</texture>
+						<bordertexture border="5">7-button-nofocus.png</bordertexture>
+						<bordersize>5</bordersize>
+						<aspectratio>keep</aspectratio>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>125</width>
+						<height>50</height>
+						<info>ListItem.Property(img1)</info>
+						<bordertexture border="5">-</bordertexture>
+						<bordersize>5</bordersize>
+						<aspectratio>keep</aspectratio>
+						<visible>IsEmpty(ListItem.Property(img2))</visible>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>62</width>
+						<height>50</height>
+						<info>ListItem.Property(img1)</info>
+						<bordertexture border="5">-</bordertexture>
+						<bordersize>5</bordersize>
+						<aspectratio>keep</aspectratio>
+						<visible>!IsEmpty(ListItem.Property(img2)) + IsEmpty(ListItem.Property(img3))</visible>
+					</control>
+					<control type="image">
+						<posx>63</posx>
+						<posy>0</posy>
+						<width>62</width>
+						<height>50</height>
+						<info>ListItem.Property(img2)</info>
+						<bordertexture border="5">-</bordertexture>
+						<bordersize>5</bordersize>
+						<aspectratio>keep</aspectratio>
+						<visible>!IsEmpty(ListItem.Property(img2)) + IsEmpty(ListItem.Property(img3))</visible>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>41</width>
+						<height>50</height>
+						<info>ListItem.Property(img1)</info>
+						<bordertexture border="5">-</bordertexture>
+						<bordersize>5</bordersize>
+						<aspectratio>keep</aspectratio>
+						<visible>!IsEmpty(ListItem.Property(img2)) + !IsEmpty(ListItem.Property(img3))</visible>
+					</control>
+					<control type="image">
+						<posx>42</posx>
+						<posy>0</posy>
+						<width>41</width>
+						<height>50</height>
+						<info>ListItem.Property(img2)</info>
+						<bordertexture border="5">-</bordertexture>
+						<bordersize>5</bordersize>
+						<aspectratio>keep</aspectratio>
+						<visible>!IsEmpty(ListItem.Property(img2)) + !IsEmpty(ListItem.Property(img3))</visible>
+					</control>
+					<control type="image">
+						<posx>84</posx>
+						<posy>0</posy>
+						<width>41</width>
+						<height>50</height>
+						<info>ListItem.Property(img3)</info>
+						<bordertexture border="5">-</bordertexture>
+						<bordersize>5</bordersize>
+						<aspectratio>keep</aspectratio>
+						<visible>!IsEmpty(ListItem.Property(img3))</visible>
+					</control>
+					<control type="label">
+						<posx>62</posx>
+						<posy>0</posy>
+						<width>125</width>
+						<height>50</height>
+						<font>font10</font>
+						<align>center</align>
+						<aligny>center</aligny>
+						<scroll>true</scroll>
+						<scrollspeed>100</scrollspeed>
+						<textcolor>99ffffff</textcolor>
+						<shadowcolor>FF000000</shadowcolor>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<label>$INFO[ListItem.Label,[B],[/B]]</label>
+					</control>
+				</itemlayout>
+				<focusedlayout height="50" width="125">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>125</width>
+						<height>50</height>
+						<texture border="5">7-folder-back.png</texture>
+						<bordertexture border="5">7-back-slots.png</bordertexture>
+						<bordersize>3</bordersize>
+						<aspectratio>keep</aspectratio>
+						<animation effect="zoom" center="auto" start="100" end="150" time="200">Focus</animation>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>125</width>
+						<height>50</height>
+						<info>ListItem.Property(img1)</info>
+						<bordertexture border="5">-</bordertexture>
+						<bordersize>5</bordersize>
+						<aspectratio>keep</aspectratio>
+						<animation effect="zoom" center="auto" start="100" end="150" time="200">Focus</animation>
+						<visible>IsEmpty(ListItem.Property(img2))</visible>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>62</width>
+						<height>50</height>
+						<info>ListItem.Property(img1)</info>
+						<bordertexture border="5">-</bordertexture>
+						<bordersize>5</bordersize>
+						<aspectratio>keep</aspectratio>
+						<animation effect="zoom" center="62,25" start="100" end="150" time="200">Focus</animation>
+						<visible>!IsEmpty(ListItem.Property(img2)) + IsEmpty(ListItem.Property(img3))</visible>
+					</control>
+					<control type="image">
+						<posx>63</posx>
+						<posy>0</posy>
+						<width>62</width>
+						<height>50</height>
+						<info>ListItem.Property(img2)</info>
+						<bordertexture border="5">-</bordertexture>
+						<bordersize>5</bordersize>
+						<aspectratio>keep</aspectratio>
+						<animation effect="zoom" center="63,25" start="100" end="150" time="200">Focus</animation>
+						<visible>!IsEmpty(ListItem.Property(img2)) + IsEmpty(ListItem.Property(img3))</visible>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>41</width>
+						<height>50</height>
+						<info>ListItem.Property(img1)</info>
+						<bordertexture border="5">-</bordertexture>
+						<bordersize>5</bordersize>
+						<aspectratio>keep</aspectratio>
+						<animation effect="zoom" center="59,25" start="100" end="150" time="200">Focus</animation>
+						<visible>!IsEmpty(ListItem.Property(img2)) + !IsEmpty(ListItem.Property(img3))</visible>
+					</control>
+					<control type="image">
+						<posx>42</posx>
+						<posy>0</posy>
+						<width>41</width>
+						<height>50</height>
+						<info>ListItem.Property(img2)</info>
+						<bordertexture border="5">-</bordertexture>
+						<bordersize>5</bordersize>
+						<aspectratio>keep</aspectratio>
+						<animation effect="zoom" center="auto" start="100" end="150" time="200">Focus</animation>
+						<visible>!IsEmpty(ListItem.Property(img2)) + !IsEmpty(ListItem.Property(img3))</visible>
+					</control>
+					<control type="image">
+						<posx>84</posx>
+						<posy>0</posy>
+						<width>41</width>
+						<height>50</height>
+						<info>ListItem.Property(img3)</info>
+						<bordertexture border="5">-</bordertexture>
+						<bordersize>5</bordersize>
+						<aspectratio>keep</aspectratio>
+						<animation effect="zoom" center="65,25" start="100" end="150" time="200">Focus</animation>
+						<visible>!IsEmpty(ListItem.Property(img3))</visible>
+					</control>
+					<control type="label">
+						<posx>62</posx>
+						<posy>0</posy>
+						<width>125</width>
+						<height>50</height>
+						<font>font10</font>
+						<align>center</align>
+						<aligny>center</aligny>
+						<scroll>true</scroll>
+						<scrollspeed>100</scrollspeed>
+						<textcolor>99ffffff</textcolor>
+						<shadowcolor>FF000000</shadowcolor>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<label>$INFO[ListItem.Label,[B],[/B]]</label>
+						<animation effect="zoom" center="62,25" start="100" end="150" time="200">Focus</animation>
+					</control>
+				</focusedlayout>
+			</control>
+		</control>
+
+		<!-- TAB JACKPOT -->
+		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+		<!-- ** Required ** Do not change id's or type's -->
+		<control type="group" id="9003">
+			<description>jackpot section</description>
+			<visible>Skin.String(PassionSettings,3)</visible>
+			<posx>170</posx>
+			<posy>126</posy>
+			<control type="image">
+				<description>profile image</description>
+				<posx>14</posx>
+				<posy>0</posy>
+				<width>128</width>
+				<height>194</height>
+				<texture>7-empty.png</texture>
+				<info>Container(350).ListItem.Thumb</info>
+				<bordertexture border="5">7-back-slots.png</bordertexture>
+				<bordersize>5</bordersize>
+				<aspectratio>keep</aspectratio>
+			</control>
+			<control type="label">
+				<description>text</description>
+				<posx>-132</posx>
+				<posy>0</posy>
+				<width>144</width>
+				<height>194</height>
+				<label>$INFO[Container(350).ListItem.Label,[B]$LOCALIZE[SCRIPT510][/B][CR],[CR][CR]]$INFO[Container(350).ListItem.Property(jackpot),[B]$LOCALIZE[SCRIPT2][/B][CR]$LOCALIZE[SCRIPT1],[CR]]$INFO[Container(350).ListItem.Property(cash),[B]$LOCALIZE[SCRIPT511][/B][CR]$LOCALIZE[SCRIPT1],[CR]]$INFO[Container(350).ListItem.Property(bet),[B]$LOCALIZE[SCRIPT512][/B][CR]$LOCALIZE[SCRIPT1]]</label>
+				<font>font12</font>
+				<textcolor>DDced8da</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<align>center</align>
+				<aligny>center</aligny>
+			</control>
+			<control type="image">
+				<posx>-132</posx>
+				<posy>199</posy>
+				<width>264</width>
+				<height>3</height>
+				<texture>7-separator.png</texture>
+			</control>
+			<control type="list" id="350">
+				<description>Container</description>
+				<posx>-132</posx>
+				<posy>207</posy>
+				<width>260</width>
+				<height>198</height>
+				<onleft>30</onleft>
+				<onright>351</onright>
+				<onup>30</onup>
+				<ondown>350</ondown>
+				<pagecontrol>351</pagecontrol>
+				<scrolltime>200</scrolltime>
+				<itemlayout height="22" width="260">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>260</width>
+						<height>22</height>
+						<texture>7-empty.png</texture>
+						<bordertexture border="5">7-button-nofocus.png</bordertexture>
+						<bordersize>5</bordersize>
+					</control>
+					<control type="label">
+						<posx>130</posx>
+						<posy>0</posy>
+						<width>260</width>
+						<height>22</height>
+						<font>font10</font>
+						<align>center</align>
+						<aligny>center</aligny>
+						<scroll>true</scroll>
+						<scrollspeed>100</scrollspeed>
+						<textcolor>99ffffff</textcolor>
+						<shadowcolor>FF000000</shadowcolor>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<label>$INFO[ListItem.Property(date_time)]</label>
+					</control>
+				</itemlayout>
+				<focusedlayout height="22" width="260">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>260</width>
+						<height>22</height>
+						<texture>7-empty.png</texture>
+						<bordertexture border="5">7-button-nofocus.png</bordertexture>
+						<bordersize>5</bordersize>
+						<visible>!Control.HasFocus(350)</visible>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>260</width>
+						<height>22</height>
+						<texture border="5">7-folder-back.png</texture>
+						<bordertexture border="5">7-back-slots.png</bordertexture>
+						<bordersize>3</bordersize>
+						<visible>Control.HasFocus(350)</visible>
+					</control>
+					<control type="label">
+						<posx>130</posx>
+						<posy>0</posy>
+						<width>260</width>
+						<height>22</height>
+						<font>font10</font>
+						<align>center</align>
+						<aligny>center</aligny>
+						<scroll>true</scroll>
+						<scrollspeed>100</scrollspeed>
+						<textcolor>99ffffff</textcolor>
+						<shadowcolor>FF000000</shadowcolor>
+						<selectedcolor>FFe2ff43</selectedcolor>
+						<label>$INFO[ListItem.Property(date_time),[I],[/I]]</label>
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="scrollbar" id="351">
+				<posx>132</posx>
+				<posy>207</posy>
+				<width>10</width>
+				<height>198</height>
+				<texturesliderbackground border="2,2,2,2">7-scrollbar_bar_back2.png</texturesliderbackground>
+				<texturesliderbar border="2,10,2,10">7-scrollbar_bar.png</texturesliderbar>
+				<texturesliderbarfocus border="2,10,2,10">7-scrollbar_bar_focus.png</texturesliderbarfocus>
+				<textureslidernib>7-scrollbar_nib.png</textureslidernib>
+				<textureslidernibfocus>7-scrollbar_nib.png</textureslidernibfocus>
+				<onleft>350</onleft>
+				<onright>350</onright>
+				<showonepage>true</showonepage>
+				<orientation>vertical</orientation>
+			</control>
+			<control type="group" id="3001">
+				<description>cube move next</description>
+				<camera x="360" y="-36" />
+				<visible>Container(350).OnNext + !Control.IsVisible(3002)</visible>
+				<animation type="Hidden" acceleration="-1.1">
+					<effect type="slide" tween="sine" easing="inout" time="1000" start="0,0" end="66,0" />
+					<effect type="rotatey" tween="sine" easing="inout" center="288,160" start="0" end="90" time="1000" />
+				</animation>
+				<control type="image">
+					<description>cube back</description>
+					<posx>194</posx>
+					<posy>66</posy>
+					<width>256</width>
+					<height>256</height>
+					<texture flipy="true">7-empty.png</texture>
+					<info>Container(350).ListItem(-2).Property(screenshot)</info>
+					<bordertexture border="5">7-back-slots.png</bordertexture>
+					<bordersize>5</bordersize>
+					<aspectratio>stretch</aspectratio>
+					<visible>true</visible>
+					<animation effect="rotatex" center="194,128" start="0" end="-180" time="0" condition="true">Conditional</animation>
+				</control>
+				<control type="image">
+					<description>cube left</description>
+					<posx>-62</posx>
+					<posy>66</posy>
+					<width>256</width>
+					<height>256</height>
+					<texture>7-empty.png</texture>
+					<info>Container(350).ListItem(1).Property(screenshot)</info>
+					<bordertexture border="5">7-back-slots.png</bordertexture>
+					<bordersize>5</bordersize>
+					<aspectratio>stretch</aspectratio>
+					<animation effect="rotatey" center="194" start="0" end="90" time="0" condition="true">Conditional</animation>
+				</control>
+				<control type="image">
+					<description>cube bottom</description>
+					<posx>194</posx>
+					<posy>322</posy>
+					<width>256</width>
+					<height>256</height>
+					<texture>7-empty.png</texture>
+					<info>Container(350).ListItem(-3).Property(screenshot)</info>
+					<bordertexture border="5">7-back-slots.png</bordertexture>
+					<bordersize>10</bordersize>
+					<aspectratio>stretch</aspectratio>
+					<animation effect="rotatex" center="322" start="0" end="-90" time="0" condition="true">Conditional</animation>
+				</control>
+				<control type="image">
+					<description>cube bottom shadow</description>
+					<posx>194</posx>
+					<posy>375</posy>
+					<width>256</width>
+					<height>256</height>
+					<texture>7-empty.png</texture>
+					<!--<texture diffuse="slot_diffuse2.png">7-empty.png</texture>-->
+					<info>Container(350).ListItem(-3).Property(screenshot)</info>
+					<bordertexture border="5">7-back-slots.png</bordertexture>
+					<bordersize>5</bordersize>
+					<aspectratio>stretch</aspectratio>
+					<animation effect="fade" start="35" end="35" time="0" condition="true">Conditional</animation>
+					<animation effect="rotatex" center="375" start="0" end="-90" time="0" condition="true">Conditional</animation>
+				</control>
+				<control type="image">
+					<description>cube top</description>
+					<posx>194</posx>
+					<posy>-190</posy>
+					<width>256</width>
+					<height>256</height>
+					<texture>7-empty.png</texture>
+					<info>Container(350).ListItem(2).Property(screenshot)</info>
+					<bordertexture border="5">7-back-slots.png</bordertexture>
+					<bordersize>10</bordersize>
+					<aspectratio>stretch</aspectratio>
+					<animation effect="rotatex" center="66" start="0" end="90" time="0" condition="true">Conditional</animation>
+				</control>
+				<control type="image">
+					<description>cube front</description>
+					<posx>194</posx>
+					<posy>66</posy>
+					<width>256</width>
+					<height>256</height>
+					<texture>7-empty.png</texture>
+					<info>Container(350).ListItem(-1).Property(screenshot)</info>
+					<bordertexture border="5">7-back-slots.png</bordertexture>
+					<bordersize>5</bordersize>
+					<aspectratio>stretch</aspectratio>
+				</control>
+				<control type="image">
+					<description>cube right</description>
+					<posx>450</posx>
+					<posy>66</posy>
+					<width>256</width>
+					<height>256</height>
+					<texture>7-empty.png</texture>
+					<info>Container(350).ListItem(0).Property(screenshot)</info>
+					<bordertexture border="5">7-back-slots.png</bordertexture>
+					<bordersize>5</bordersize>
+					<aspectratio>stretch</aspectratio>
+					<animation effect="rotatey" center="450" start="0" end="-90" time="0" condition="true">Conditional</animation>
+				</control>
+			</control>
+			<control type="group" id="3002">
+				<description>cube move previous</description>
+				<camera x="360" y="-36" />
+				<visible>Container(350).OnPrevious + !Control.IsVisible(3001)</visible>
+				<animation type="Hidden" acceleration="-1.1">
+					<effect type="slide" tween="sine" easing="inout" time="1000" start="0,0" end="-76,0" />
+					<effect type="rotatey" tween="sine" easing="inout" center="360,166" start="0" end="-90" time="1000" />
+				</animation>
+				<control type="image">
+					<description>cube bottom</description>
+					<posx>194</posx>
+					<posy>322</posy>
+					<width>256</width>
+					<height>256</height>
+					<texture>7-empty.png</texture>
+					<info>Container(350).ListItem(-3).Property(screenshot)</info>
+					<bordertexture border="5">7-back-slots.png</bordertexture>
+					<bordersize>10</bordersize>
+					<aspectratio>stretch</aspectratio>
+					<animation effect="rotatex" center="322" start="0" end="-90" time="0" condition="true">Conditional</animation>
+				</control>
+				<control type="image">
+					<description>cube back</description>
+					<posx>194</posx>
+					<posy>66</posy>
+					<width>256</width>
+					<height>256</height>
+					<texture flipy="true">7-empty.png</texture>
+					<info>Container(350).ListItem(-2).Property(screenshot)</info>
+					<bordertexture border="5">7-back-slots.png</bordertexture>
+					<bordersize>5</bordersize>
+					<aspectratio>stretch</aspectratio>
+					<visible>true</visible>
+					<animation effect="rotatex" center="194,128" start="0" end="-180" time="0" condition="true">Conditional</animation>
+				</control>
+				<control type="image">
+					<description>cube right</description>
+					<posx>450</posx>
+					<posy>66</posy>
+					<width>256</width>
+					<height>256</height>
+					<texture>7-empty.png</texture>
+					<info>Container(350).ListItem(-1).Property(screenshot)</info>
+					<bordertexture border="5">7-back-slots.png</bordertexture>
+					<bordersize>5</bordersize>
+					<aspectratio>stretch</aspectratio>
+					<animation effect="rotatey" center="450" start="0" end="-90" time="0" condition="true">Conditional</animation>
+				</control>
+				<control type="image">
+					<description>cube top</description>
+					<posx>194</posx>
+					<posy>-190</posy>
+					<width>256</width>
+					<height>256</height>
+					<texture>7-empty.png</texture>
+					<info>Container(350).ListItem(2).Property(screenshot)</info>
+					<bordertexture border="5">7-back-slots.png</bordertexture>
+					<bordersize>10</bordersize>
+					<aspectratio>stretch</aspectratio>
+					<animation effect="rotatex" center="66" start="0" end="90" time="0" condition="true">Conditional</animation>
+				</control>
+				<control type="image">
+					<description>cube bottom shadow</description>
+					<posx>194</posx>
+					<posy>375</posy>
+					<width>256</width>
+					<height>256</height>
+					<texture>7-empty.png</texture>
+					<!--<texture diffuse="slot_diffuse2.png">7-empty.png</texture>-->
+					<info>Container(350).ListItem(-3).Property(screenshot)</info>
+					<bordertexture border="5">7-back-slots.png</bordertexture>
+					<bordersize>5</bordersize>
+					<aspectratio>stretch</aspectratio>
+					<animation effect="fade" start="35" end="35" time="0" condition="true">Conditional</animation>
+					<animation effect="rotatex" center="375" start="0" end="-90" time="0" condition="true">Conditional</animation>
+				</control>
+				<control type="image">
+					<description>cube front</description>
+					<posx>194</posx>
+					<posy>66</posy>
+					<width>256</width>
+					<height>256</height>
+					<texture>7-empty.png</texture>
+					<info>Container(350).ListItem(1).Property(screenshot)</info>
+					<bordertexture border="5">7-back-slots.png</bordertexture>
+					<bordersize>5</bordersize>
+					<aspectratio>stretch</aspectratio>
+				</control>
+				<control type="image">
+					<description>cube left</description>
+					<posx>-62</posx>
+					<posy>66</posy>
+					<width>256</width>
+					<height>256</height>
+					<texture>7-empty.png</texture>
+					<info>Container(350).ListItem(0).Property(screenshot)</info>
+					<bordertexture border="5">7-back-slots.png</bordertexture>
+					<bordersize>5</bordersize>
+					<aspectratio>stretch</aspectratio>
+					<animation effect="rotatey" center="194" start="0" end="90" time="0" condition="true">Conditional</animation>
+				</control>
+			</control>
+			<control type="group">
+				<description>cube fixe</description>
+				<camera x="360" y="-36" />
+				<animation effect="rotatey" tween="linear" easing="inout" center="320,130" start="0" end="-360" time="20000" acceleration="-1.3" loop="true" reversible="false" condition="System.IdleTime(5)">Conditional</animation>
+				<visible>![Control.IsVisible(3001) | Control.IsVisible(3002)]</visible>
+				<control type="image">
+					<description>cube bottom</description>
+					<posx>194</posx>
+					<posy>322</posy>
+					<width>256</width>
+					<height>256</height>
+					<texture>7-empty.png</texture>
+					<info>Container(350).ListItem(-3).Property(screenshot)</info>
+					<bordertexture border="5">7-back-slots.png</bordertexture>
+					<bordersize>10</bordersize>
+					<aspectratio>stretch</aspectratio>
+					<animation effect="rotatex" center="322" start="0" end="-90" time="0" condition="true">Conditional</animation>
+				</control>
+				<control type="image">
+					<description>cube back</description>
+					<posx>194</posx>
+					<posy>66</posy>
+					<width>256</width>
+					<height>256</height>
+					<texture flipx="true" flipy="true">7-empty.png</texture>
+					<info>Container(350).ListItem(-2).Property(screenshot)</info>
+					<bordertexture border="5">7-back-slots.png</bordertexture>
+					<bordersize>5</bordersize>
+					<aspectratio>stretch</aspectratio>
+					<visible>true</visible>
+					<animation effect="rotatex" center="194,128" start="0" end="-180" time="0" condition="true">Conditional</animation>
+				</control>
+				<control type="image">
+					<description>cube right</description>
+					<posx>450</posx>
+					<posy>66</posy>
+					<width>256</width>
+					<height>256</height>
+					<texture>7-empty.png</texture>
+					<info>Container(350).ListItem(-1).Property(screenshot)</info>
+					<bordertexture border="5">7-back-slots.png</bordertexture>
+					<bordersize>5</bordersize>
+					<aspectratio>stretch</aspectratio>
+					<animation effect="rotatey" center="450" start="0" end="-90" time="0" condition="true">Conditional</animation>
+				</control>
+				<control type="image">
+					<description>cube left</description>
+					<posx>-62</posx>
+					<posy>66</posy>
+					<width>256</width>
+					<height>256</height>
+					<texture>7-empty.png</texture>
+					<info>Container(350).ListItem(1).Property(screenshot)</info>
+					<bordertexture border="5">7-back-slots.png</bordertexture>
+					<bordersize>5</bordersize>
+					<aspectratio>stretch</aspectratio>
+					<animation effect="rotatey" center="194" start="0" end="90" time="0" condition="true">Conditional</animation>
+				</control>
+				<control type="image">
+					<description>cube top</description>
+					<posx>194</posx>
+					<posy>-190</posy>
+					<width>256</width>
+					<height>256</height>
+					<texture>7-empty.png</texture>
+					<info>Container(350).ListItem(2).Property(screenshot)</info>
+					<bordertexture border="5">7-back-slots.png</bordertexture>
+					<bordersize>10</bordersize>
+					<aspectratio>stretch</aspectratio>
+					<animation effect="rotatex" center="66" start="0" end="90" time="0" condition="true">Conditional</animation>
+				</control>
+				<control type="image">
+					<description>cube bottom shadow</description>
+					<posx>194</posx>
+					<posy>375</posy>
+					<width>256</width>
+					<height>256</height>
+					<texture>7-empty.png</texture>
+					<!--<texture diffuse="slot_diffuse2.png">7-empty.png</texture>-->
+					<info>Container(350).ListItem(-3).Property(screenshot)</info>
+					<bordertexture border="5">7-back-slots.png</bordertexture>
+					<bordersize>5</bordersize>
+					<aspectratio>stretch</aspectratio>
+					<animation effect="fade" start="35" end="35" time="0" condition="true">Conditional</animation>
+					<animation effect="rotatex" center="375" start="0" end="-90" time="0" condition="true">Conditional</animation>
+				</control>
+				<control type="image">
+					<description>cube front</description>
+					<posx>194</posx>
+					<posy>66</posy>
+					<width>256</width>
+					<height>256</height>
+					<texture>7-empty.png</texture>
+					<info>Container(350).ListItem(0).Property(screenshot)</info>
+					<bordertexture border="5">7-back-slots.png</bordertexture>
+					<bordersize>5</bordersize>
+					<aspectratio>stretch</aspectratio>
+				</control>
+			</control>
+		</control>
+
+		<!-- TAB SETTINGS AND SVN -->
+		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+		<!-- ** Required ** Do not change id's or type's -->
+		<control type="grouplist" id="9004">
+			<description>svn section</description>
+			<visible>Skin.String(PassionSettings,4)</visible>
+			<posx>38</posx>
+			<posy>126</posy>
+			<width>625</width>
+			<height>400</height>
+			<itemgap>0</itemgap>
+			<pagecontrol>-</pagecontrol>
+			<orientation>vertical</orientation>
+			<onleft>40</onleft>
+			<onright>40</onright>
+			<onup>40</onup>
+			<ondown>40</ondown>
+			<control type="radiobutton" id="140">
+				<description>button SVN 1</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>625</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT0</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<aligny>center</aligny>
+				<texturefocus border="5">7-button-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<textureradiofocus>7-settings-check-box.png</textureradiofocus>
+				<textureradionofocus>7-settings-check-boxNF.png</textureradionofocus>
+			</control>
+			<control type="button" id="500">
+				<description>button SVN 2</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>625</width>
+				<height>34</height>
+				<textoffsetx>7</textoffsetx>
+				<label>SCRIPT0</label>
+				<font>font13</font>
+				<textcolor>ffffffff</textcolor>
+				<colordiffuse>ffffffff</colordiffuse>
+				<disabledcolor>60d0d0d0</disabledcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<aligny>center</aligny>
+				<texturefocus border="5">7-button-focus.png</texturefocus>
+				<texturenofocus>-</texturenofocus>
+			</control>
+		</control>
+
+		<!-- TAB OLD VERSION -->
+		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+		<!-- ** Required ** Do not change id's or type's -->
+		<control type="group" id="9005">
+			<description>version 1 section</description>
+			<visible>Skin.String(PassionSettings,5)</visible>
+			<posx>38</posx>
+			<posy>126</posy>
+			<control type="button" id="700">
+				<description>button run version 1</description>
+				<posx>480</posx>
+				<posy>0</posy>
+				<width>50</width>
+				<height>50</height>
+				<hitrect x="484" y="4" w="37" h="37" />
+				<label>-</label>
+				<font>-</font>
+				<aligny>-</aligny>
+				<texturefocus>7-home-playmedia.png</texturefocus>
+				<texturenofocus>7-home-playmedia.png</texturenofocus>
+				<onleft>60</onleft>
+				<onright>60</onright>
+				<onup>60</onup>
+				<ondown>60</ondown>
+			</control>
+			<control type="image">
+				<posx>484</posx>
+				<posy>4</posy>
+				<width>37</width>
+				<height>37</height>
+				<height>59</height>
+				<texture>7-home-playmedia-focus.gif</texture>
+				<visible>Control.HasFocus(700)</visible>
+			</control>
+			<control type="label">
+				<description>text infos</description>
+				<posx>475</posx>
+				<posy>0</posy>
+                <width>200</width>
+                <height>200</height>
+				<align>center</align>
+				<font>font12</font>
+				<label>[CR][B]Author[/B][CR]Frost[CR][CR][B]Version[/B][CR]2.0.0[CR][CR][B]Release Date[/B][CR]25-11-2006</label>
+				<textcolor>DDced8da</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+			</control>
+			<control type="label">
+				<description>V1 URL Label</description>
+				<posx>7</posx>
+				<posy>385</posy>
+				<width>625</width>
+				<align>center</align>
+				<font>font10</font>
+				<label>http://passion-xbmc.googlecode.com/svn/trunk/addons/script.game.lucky7/resources/Lucky7v1/</label>
+				<textcolor>DDced8da</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+			</control>
+			<control type="group">
+				<description>cube fixe anime</description>
+				<camera x="360" y="-36" />
+				<animation type="conditional" condition="System.IdleTime(1) + Control.IsVisible(9005)" loop="true" reversible="true">
+					<effect type="rotatey" tween="linear" easing="inout" center="320,130" start="0" end="-360" time="20000" acceleration="-1.3" />
+					<effect type="rotatex" tween="bounce" easing="out" center="228,128" start="0" end="-360" time="20000" delay="20000" acceleration="-1.3" />
+				</animation>
+				<!--<animation effect="rotatey" center="320,130" start="0" end="-45" time="0" condition="true">Conditional</animation>-->
+				<control type="image">
+					<description>cube bottom</description>
+					<posx>194</posx>
+					<posy>322</posy>
+					<width>256</width>
+					<height>256</height>
+					<texture>lucky7v1-bonus.png</texture>
+					<bordertexture border="5">7-back-slots.png</bordertexture>
+					<bordersize>10</bordersize>
+					<aspectratio>stretch</aspectratio>
+					<animation effect="rotatex" center="322" start="0" end="-90" time="0" condition="true">Conditional</animation>
+				</control>
+				<control type="image">
+					<description>cube back</description>
+					<posx>194</posx>
+					<posy>66</posy>
+					<width>256</width>
+					<height>256</height>
+					<texture flipx="true" flipy="true">lucky7v1.png</texture>
+					<bordertexture border="5">7-back-slots.png</bordertexture>
+					<bordersize>5</bordersize>
+					<aspectratio>stretch</aspectratio>
+					<visible>true</visible>
+					<animation effect="rotatex" center="194,128" start="0" end="-180" time="0" condition="true">Conditional</animation>
+				</control>
+				<control type="image">
+					<description>cube right</description>
+					<posx>450</posx>
+					<posy>66</posy>
+					<width>256</width>
+					<height>256</height>
+					<texture>lucky7v1.png</texture>
+					<bordertexture border="5">7-back-slots.png</bordertexture>
+					<bordersize>5</bordersize>
+					<aspectratio>stretch</aspectratio>
+					<animation effect="rotatey" center="450" start="0" end="-90" time="0" condition="true">Conditional</animation>
+				</control>
+				<control type="image">
+					<description>cube left</description>
+					<posx>-62</posx>
+					<posy>66</posy>
+					<width>256</width>
+					<height>256</height>
+					<texture>lucky7v1.png</texture>
+					<bordertexture border="5">7-back-slots.png</bordertexture>
+					<bordersize>5</bordersize>
+					<aspectratio>stretch</aspectratio>
+					<animation effect="rotatey" center="194" start="0" end="90" time="0" condition="true">Conditional</animation>
+				</control>
+				<control type="image">
+					<description>cube top</description>
+					<posx>194</posx>
+					<posy>-190</posy>
+					<width>256</width>
+					<height>256</height>
+					<texture>lucky7v1-bonus.png</texture>
+					<bordertexture border="5">7-back-slots.png</bordertexture>
+					<bordersize>10</bordersize>
+					<aspectratio>stretch</aspectratio>
+					<animation effect="rotatex" center="66" start="0" end="90" time="0" condition="true">Conditional</animation>
+				</control>
+				<control type="image">
+					<description>cube bottom shadow</description>
+					<posx>194</posx>
+					<posy>375</posy>
+					<width>256</width>
+					<height>256</height>
+					<texture>lucky7v1-bonus.png</texture>
+					<!--<texture diffuse="slot_diffuse2.png">lucky7v1.png</texture>-->
+					<bordertexture border="5">7-back-slots.png</bordertexture>
+					<bordersize>5</bordersize>
+					<aspectratio>stretch</aspectratio>
+					<animation effect="fade" start="35" end="35" time="0" condition="true">Conditional</animation>
+					<animation effect="rotatex" center="375" start="0" end="-90" time="0" condition="true">Conditional</animation>
+				</control>
+				<control type="image">
+					<description>cube front</description>
+					<posx>194</posx>
+					<posy>66</posy>
+					<width>256</width>
+					<height>256</height>
+					<texture>lucky7v1.png</texture>
+					<bordertexture border="5">7-back-slots.png</bordertexture>
+					<bordersize>5</bordersize>
+					<aspectratio>stretch</aspectratio>
+				</control>
+			</control>
+		</control>
+
+		<!-- TAB ABOUT -->
+		<!-- **Requis ** Ne pas modifier l'identifiant ou le type-->
+		<!-- ** Required ** Do not change id's or type's -->
+		<control type="group" id="9006">
+			<description>about section</description>
+			<visible>Skin.String(PassionSettings,6)</visible>
+			<posx>45</posx>
+			<posy>131</posy>
+			<control type="image">
+				<description>image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>625</width>
+				<height>395</height>
+				<texture>7-empty.png</texture>
+				<bordertexture border="5">7-back-slots.png</bordertexture>
+				<bordersize>5</bordersize>
+			</control>
+			<control type="image">
+				<description>image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>625</width>
+				<height>395</height>
+				<texture>nonfruits/seven.png</texture>
+				<bordertexture border="5">-</bordertexture>
+				<bordersize>5</bordersize>
+				<aspectratio>keep</aspectratio>
+				<animation effect="fade" start="50" end="50" time="0" condition="true">conditional</animation>
+			</control>
+			<!-- ** Required ** Do not change <description> or <type> -->
+			<control type="label" id="601">
+				<description>Team Credits Label</description>
+				<posx>0</posx>
+				<posy>5</posy>
+				<width>625</width>
+				<align>center</align>
+				<font>font12</font>
+				<textcolor>60ffffff</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+			</control>
+			<!-- ** Required ** Do not change <id> or <type> -->
+			<control type="list" id="600">
+				<description>Team Credits List</description>
+				<posx>0</posx>
+				<posy>35</posy>
+				<width>625</width>
+				<height>100</height>
+				<scrolltime>200</scrolltime>
+				<onleft>70</onleft>
+				<onright>70</onright>
+				<onup>70</onup>
+				<ondown>70</ondown>
+				<itemlayout height="20">
+					<control type="label">
+						<posx>50</posx>
+						<posy>0</posy>
+						<width>287</width>
+						<height>20</height>
+						<font>font13</font>
+						<aligny>center</aligny>
+						<align>left</align>
+						<info>ListItem.Label</info>
+						<shadowcolor>FF000000</shadowcolor>
+					</control>
+					<control type="label">
+						<posx>575</posx>
+						<posy>0</posy>
+						<width>262</width>
+						<height>20</height>
+						<font>font13</font>
+						<aligny>center</aligny>
+						<align>right</align>
+						<info>ListItem.Label2</info>
+						<shadowcolor>FF000000</shadowcolor>
+					</control>
+				</itemlayout>
+				<focusedlayout height="20">
+					<control type="label">
+						<posx>50</posx>
+						<posy>0</posy>
+						<width>287</width>
+						<height>20</height>
+						<font>font13</font>
+						<aligny>center</aligny>
+						<align>left</align>
+						<info>ListItem.Label</info>
+						<shadowcolor>FF000000</shadowcolor>
+					</control>
+					<control type="label">
+						<posx>575</posx>
+						<posy>0</posy>
+						<width>262</width>
+						<height>20</height>
+						<font>font13</font>
+						<aligny>center</aligny>
+						<align>right</align>
+						<info>ListItem.Label2</info>
+						<shadowcolor>FF000000</shadowcolor>
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="image">
+				<description>separator image</description>
+				<posx>0</posx>
+				<posy>121</posy>
+				<width>625</width>
+				<height>3</height>
+				<texture>7-separator.png</texture>
+			</control>
+			<!-- ** Required ** Do not change <description> -->
+			<control type="label" id="611">
+				<description>Additional Credits Label</description>
+				<posx>0</posx>
+				<posy>126</posy>
+				<width>625</width>
+				<align>center</align>
+				<font>font12</font>
+				<textcolor>60ffffff</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+			</control>
+			<!-- ** Required ** Do not change <description> or <type> -->
+			<control type="list" id="610">
+				<description>Additional Credits List</description>
+				<posx>0</posx>
+				<posy>156</posy>
+				<width>625</width>
+				<height>100</height>
+				<scrolltime>200</scrolltime>
+				<onleft>70</onleft>
+				<onright>70</onright>
+				<onup>70</onup>
+				<ondown>70</ondown>
+				<itemlayout height="20">
+					<control type="label">
+						<posx>50</posx>
+						<posy>0</posy>
+						<width>287</width>
+						<height>20</height>
+						<font>font13</font>
+						<aligny>center</aligny>
+						<align>left</align>
+						<info>ListItem.Label</info>
+						<shadowcolor>FF000000</shadowcolor>
+					</control>
+					<control type="label">
+						<posx>575</posx>
+						<posy>0</posy>
+						<width>262</width>
+						<height>20</height>
+						<font>font13</font>
+						<aligny>center</aligny>
+						<align>right</align>
+						<info>ListItem.Label2</info>
+						<shadowcolor>FF000000</shadowcolor>
+					</control>
+				</itemlayout>
+				<focusedlayout height="20">
+					<control type="label">
+						<posx>50</posx>
+						<posy>0</posy>
+						<width>287</width>
+						<height>20</height>
+						<font>font13</font>
+						<aligny>center</aligny>
+						<align>left</align>
+						<info>ListItem.Label</info>
+						<shadowcolor>FF000000</shadowcolor>
+					</control>
+					<control type="label">
+						<posx>575</posx>
+						<posy>0</posy>
+						<width>262</width>
+						<height>20</height>
+						<font>font13</font>
+						<aligny>center</aligny>
+						<align>right</align>
+						<info>ListItem.Label2</info>
+						<shadowcolor>FF000000</shadowcolor>
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="image">
+				<description>separator image</description>
+				<posx>0</posx>
+				<posy>245</posy>
+				<width>625</width>
+				<height>3</height>
+				<texture>7-separator.png</texture>
+			</control>
+			<!-- ** Required ** Do not change <description> -->
+			<control type="label" id="621">
+				<description>Skin Credits Label</description>
+				<posx>0</posx>
+				<posy>250</posy>
+				<width>625</width>
+				<align>center</align>
+				<font>font12</font>
+				<textcolor>60ffffff</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+			</control>
+			<!-- ** Optional ** -->
+			<!-- This control is where you add your credits. -->
+			<control type="list" id="620">
+				<description>Skinning Credits List</description>
+				<posx>0</posx>
+				<posy>280</posy>
+				<width>625</width>
+				<height>100</height>
+				<scrolltime>200</scrolltime>
+				<onleft>70</onleft>
+				<onright>70</onright>
+				<onup>70</onup>
+				<ondown>70</ondown>
+				<content>
+					<item label="Graphics &amp; Skinning" label2="Chokemaniac &amp; Jezz X">-</item>
+					<item label="Graphics Fruits Illustrated 1.0" label2="Kevin Andersson, www.kevinandersson.dk">-</item>
+				</content>
+				<itemlayout height="20">
+					<control type="label">
+						<posx>50</posx>
+						<posy>0</posy>
+						<width>287</width>
+						<height>20</height>
+						<font>font13</font>
+						<aligny>center</aligny>
+						<align>left</align>
+						<info>ListItem.Label</info>
+						<shadowcolor>FF000000</shadowcolor>
+					</control>
+					<control type="label">
+						<posx>575</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>20</height>
+						<font>font13</font>
+						<aligny>center</aligny>
+						<align>right</align>
+						<info>ListItem.Label2</info>
+						<shadowcolor>FF000000</shadowcolor>
+					</control>
+				</itemlayout>
+				<focusedlayout height="20">
+					<control type="label">
+						<posx>50</posx>
+						<posy>0</posy>
+						<width>287</width>
+						<height>20</height>
+						<font>font13</font>
+						<aligny>center</aligny>
+						<align>left</align>
+						<info>ListItem.Label</info>
+						<shadowcolor>FF000000</shadowcolor>
+					</control>
+					<control type="label">
+						<posx>575</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>20</height>
+						<font>font13</font>
+						<aligny>center</aligny>
+						<align>right</align>
+						<info>ListItem.Label2</info>
+						<shadowcolor>FF000000</shadowcolor>
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="image">
+				<description>separator image</description>
+				<posx>0</posx>
+				<posy>365</posy>
+				<width>625</width>
+				<height>3</height>
+				<texture>7-separator.png</texture>
+			</control>
+			<!-- ** Required ** Do not change <description> or <type> -->
+			<control type="label" id="666">
+				<description>SVN URL Label</description>
+				<posx>0</posx>
+				<posy>370</posy>
+				<width>625</width>
+				<align>center</align>
+				<font>font10</font>
+				<textcolor>DDced8da</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+			</control>
+		</control>
+
+	</controls>
+</window>
