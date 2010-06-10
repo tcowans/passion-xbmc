@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!-- GENERAL STRINGS -->
+  <string id="100">xbmc media center</string>
+  <string id="101">Lucky</string><!-- Translators name -->
+
+  <string id="0">Lucky $even</string>
+  <string id="1">&#36;&#32;</string><!-- symbole monnaitaire: dollars est par default -->
+  <string id="2">Jackpot</string>
+  <string id="3">Infos</string>
+  <string id="4">Version:&#32;</string>
+  <string id="5">Vous avez de l'argents en banque %s%i</string>
+  <string id="6">Vous pouvez continuer ou commencer</string>
+  <string id="7">une nouvelle partie</string>
+  <string id="8">Nouvelle</string>
+  <string id="9">Continuer</string>
+
+  <string id="11">Vous n'avez plus d'argent %s0 :(</string>
+  <string id="12">Essayez à nouveau!</string>
+
+  <string id="400">A[CR]u[CR]t[CR]o</string>
+  <string id="401">Mise 2x[CR]Gain</string>
+  <string id="402">Son FX</string>
+  <string id="403">FX Muet</string>
+  <string id="404"></string>
+  <string id="405">ALL FRUITS!</string>
+  <string id="406">JACKPOT!</string>
+  <string id="407">VOUS GAGNEZ!</string>
+  <string id="408">VOUS PERDEZ!</string>
+  <string id="409"></string>
+
+  <string id="510">Gagnant</string>
+  <string id="511">Argent Gagner</string>
+  <string id="512">Mise</string>
+
+  <string id="562">Bonus</string>
+  <string id="563">Contrôles</string>
+  <string id="564">Paramètres</string>
+  <string id="565">Lucky 7 v1</string>
+  <string id="566">À propos!</string>
+
+  <!-- Credits -->
+  <string id="900">Version</string>
+  <string id="901">Team Crédits</string>
+  <string id="902">Crédits Supplémentaires</string>
+  <string id="903">Thème Crédits</string>
+
+  <!-- Credits headings-->
+  <string id="910">Chef Développeur &amp; Codeur</string>
+  <string id="911">Codeur &amp; Skinning</string>
+  <string id="912">Graphiques &amp; Skinning</string>
+  <string id="913">Utilisabilité</string>
+  <string id="914">Traducteur de la Langue française</string>
+
+  <!-- strings 32000 thru 32999 reserved for scripts -->
+  <!-- DIALOG BONUS STRINGS -->
+  <string id="32100">1000x %s1[CR]+ Jackpot</string>
+  <string id="32101">100x %s1[CR]BORDURE</string>
+  <string id="32102">10x %s1[CR]CENTRE</string>
+  <string id="32103">500x %s1</string>
+  <string id="32104">300x %s1</string>
+  <string id="32105">200x %s1</string>
+  <string id="32106">100x %s1</string>
+  <string id="32107">50x %s1[CR]TOUT BAR</string>
+  <string id="32108">25x %s1[CR]DEUX BAR[CR]+ TOUT BAR</string>
+  <string id="32109">100x %s1</string>
+  <string id="32110">10x %s1[CR]DEUX FOIS</string>
+  <string id="32111">1x %s1[CR]UNE FOIS</string>
+  <string id="32112">75x %s1</string>
+  <string id="32113">50x %s1</string>
+  <string id="32114">25x %s1</string>
+  <string id="32115">20x %s1</string>
+  <string id="32116">15x %s1</string>
+  <string id="32117">10x %s1</string>
+  <string id="32118">5x %s1</string>
+  <string id="32119">Jackpot[CR]All Fruits[CR]NEUF FOIS</string>
+
+  <!-- DIALOG KEYMAP INFOS STRINGS -->
+  <!-- LINE 1 -->
+  <string id="32200">DESCIPTION</string> <!-- ROW 1 -->
+  <string id="32201">ACTION GLOBAL</string> <!-- ROW 2 -->
+  <string id="32202">CLAVIER</string> <!-- ROW 3 -->
+  <string id="32203">MANETTE</string> <!-- ROW 4 -->
+  <string id="32204">RÉCEPTEUR IR</string> <!-- ROW 5 -->
+  <!-- LINE 2 -->
+  <string id="32205">Sélect</string>
+  <string id="32206">Sélect</string>
+  <string id="32207">Entrée</string>
+  <string id="32208">Bouton A</string>
+  <string id="32209">SELECT</string>
+  <!-- LINE 3 -->
+  <string id="32210">Miser Plus</string>
+  <string id="32211">Page Précédente[CR]Plein écran</string>
+  <string id="32212">Tab / Page Précédente</string>
+  <string id="32213">Bouton Y</string>
+  <string id="32214">SKIP +</string>
+  <!-- LINE 4 -->
+  <string id="32215">Miser Moins</string>
+  <string id="32216">Page Suivante[CR]Dossier Parent</string>
+  <string id="32217">Effacer / Page Suivante</string>
+  <string id="32218">Bouton B</string>
+  <string id="32219">SKIP -</string>
+  <!-- LINE 5 -->
+  <string id="32220">Miser tout l'argent</string>
+  <string id="32221">N/A</string>
+  <string id="32222">Lettre M</string>
+  <string id="32223">Bouton Noir</string>
+  <string id="32224">PAUSE</string>
+  <!-- LINE 6 -->
+  <string id="32225">Miser 2x Gain</string>
+  <string id="32226">N/A</string>
+  <string id="32227">Numérique *</string>
+  <string id="32228">Button Start</string>
+  <string id="32229">N/A</string>
+  <!-- LINE 7 -->
+  <string id="32230">Débuter le spin</string>
+  <string id="32231">File d'attente</string>
+  <string id="32232">Lettre Q[CR]Barre d'espace</string>
+  <string id="32233">Bouton X</string>
+  <string id="32234">DISPLAY</string>
+  <!-- LINE 9 -->
+  <string id="32235">Arrêter toutes[CR]les slots</string>
+  <string id="32236">Menu Précédent</string>
+  <string id="32237">Échappe[CR]Numérique 0</string>
+  <string id="32238">Bouton Retour</string>
+  <string id="32239">UP</string>
+  <!-- LINE 10 -->
+  <string id="32240">Arrêter les slots[CR]Une par Une[CR]Un | Deux | Trois</string>
+  <string id="32241">N/A</string>
+  <string id="32242">Numérique[CR]1 | 2 | 3</string>
+  <string id="32243">N/A</string>
+  <string id="32244">LEFT|DOWN|RIGHT</string>
+  <!-- LINE 11 -->
+  <string id="32245">Voir les infos</string>
+  <string id="32246">Info</string>
+  <string id="32247">Lettre I[CR]Menu contextuel / Options</string>
+  <string id="32248">Bouton Blanc</string>
+  <string id="32249">TITLE</string>
+  <!-- LINE 12 -->
+  <string id="32250">Fermer le dialogue</string>
+  <string id="32251">Menu Précédent[CR]Dossier Parent[CR]Menu contextuel</string>
+  <string id="32252">Échappe[CR]Effacer[CR]Menu contextuel / Options</string>
+  <string id="32253">Bouton Retour[CR]Bouton B[CR]Bouton Blanc</string>
+  <string id="32254">TITLE</string>
+  <!-- LINE 13 -->
+  <string id="32255">Fermer le jeux</string>
+  <string id="32256">Menu Précédent</string>
+  <string id="32257">Échappe</string>
+  <string id="32258">Bouton Retour</string>
+  <string id="32259">MENU</string>
+  <!-- LINE 8 -->
+  <string id="32260">Auto Spin</string>
+  <string id="32261">N/A</string>
+  <string id="32262">Lettre A</string>
+  <string id="32263">N/A</string>
+  <string id="32264">BACK</string>
+</strings>
