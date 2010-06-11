@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="script.video.tac.tv"
+       name="Têtes à claques (tac.tv)"
+       version="2.0.0"
+       provider-name="Temhil (passion-xbmc.org)">
+  <requires>
+    <import addon="xbmc.python" version="1.0"/>
+  </requires>
+  <extension point="xbmc.python.script"
+             library="default.py"/>
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary>TAC.TV script</summary>
+    <description>This script allows to watch videos on www.tac.tv website which I highly recommend. 
+Each week a new short video is added. Watch out! Laughing too much can cause belly pain!
+If you like and enjoy TAC.tv, please support their creators by visiting their website www.tac.tv and/or buying their DVD(s)
+</description>
+    <disclaimer>Distribution rights and pictures are property of Salambo productions Inc (www.tac.tv)</disclaimer>
+    <summary lang="fr">Script Têtes à claques</summary>
+    <description lang="fr">Ce script permet de visionner les vidéos sur le site www.tetesaclaques.tv que je vous le recommande fortement. 
+Attention rires en vue!
+On y découvre chaque semaine un nouveau clip de quelques minutes qui vaut vraiment le détour.
+Si vous aimez les Têtes à claques, merci d'encourager leur createurs
+en visitant leur site web www.tetesaclaques.tv et/ou en achetant le DVD(s)
+</description>
+    <disclaimer lang="fr">Les droits des diffusions et des images utilisées sont exclusivement
+réservés à Salambo productions inc (www.tetesaclaques.tv)</disclaimer>
+  </extension>
+</addon>

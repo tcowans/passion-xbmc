@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+    <!-- Sstrings de 32000 à 32999 are reserved to the scripts -->
+    <!--GENERAL STRINGS -->
+    <string id="32000">TAC.tv</string>
+
+    <!-- Dialog Messages -->
+    <string id="32100">Creating the GUI</string>
+    <string id="32101">System Configuration</string>
+    <string id="32102">Loading information</string>
+    <string id="32103">Checking update</string>
+    <string id="32104">Updating information</string>
+    <string id="32110">Please wait...</string>
+    <string id="32111">Error</string>
+    <string id="32112">Exception during initialization</string>
+    <string id="32113">Impossible to load TAC.tv webpage</string>
+    <string id="32114">Connection problem?</string>
+    <string id="32115">Changes on TAC.tv website?</string>
+    <string id="32116">You need to select a language the fisrt time</string>
+    <string id="32117">in order to use this script</string>
+    <string id="32118">You will be able to change it later on if necessary</string>
+    
+    <!-- UI Strings -->
+    <string id="32300">English</string>
+    <string id="32301">Français</string>
+    <string id="32302">SELECT</string>
+    <string id="32303">Settings</string>
+    <string id="32304">About</string>
+    <string id="32305">Video(s)</string>
+    <string id="32306">Collection</string>
+    <string id="32307">Series</string>
+    <string id="32308">Extras</string>
+    <string id="32309">TV Ads</string>
+    <string id="32310">Vote</string>
+    <string id="32311">Date</string>
+    <string id="32312">v</string>
+
+    <!-- Settings -->
+    <string id="32500">Video Player: </string>
+    <string id="32501">Auto</string>
+    <string id="32502">DVD Player</string>
+    <string id="32503">MPlayer</string>
+    <string id="32504">Startup language: </string>
+    <string id="32505">French</string>
+    <string id="32506">English</string>
+    <string id="32507">Automatic cache cleaning: </string>
+    <string id="32508">Activated</string>
+    <string id="32509">Deactivated</string>
+    <string id="32510">Select video Player</string>
+    <string id="32511">Select default language</string>
+    <string id="32512">Select cache cleaning</string>
+    <string id="32513">Activate</string>
+    <string id="32514">Deactivate</string>
+    <string id="32515">None</string>
+    <string id="32516">Current language: </string>
+    <string id="32517">Finnish</string>
+
+    <!-- Settings buttons -->
+    <string id="32600">Ok</string>
+    <string id="32601">Cancel</string>
+    <string id="32602">Save</string>
+    <string id="32603">Credits</string>
+    <string id="32604">Defaults</string>
+
+    <!-- Settings error messages -->
+    <string id="32701">Saving settings ...</string>
+    <string id="32702">There was an error saving settings!</string>
+    <string id="32703">New parameters saved</string>
+    <string id="32704">No modification detected</string>
+
+    <!-- Settings restart required message -->
+    <string id="32710">Some settings changed require a restart to take effect.</string>
+    <string id="32711">Would you like to restart now?</string>
+
+    <!-- Credits -->
+    <string id="32800">Version: </string>
+    <string id="32801">Author: </string>
+    <string id="32802">Description: </string>
+    <string id="32803">This script allows to watch videos on www.tac.tv website which I highly recommend. Each week a new short video is added. Watch out! Laughing too much can cause belly pain!
+If you like and enjoy TAC.tv, please support their creators by visiting their website www.tac.tv and/or buying their DVD(s)</string>
+    <string id="32804">Distribution rights and pictures are property of Salambo productions Inc (www.tac.tv)</string>
+    
+    <!-- Images -->
+    <string id="32900">logo-en.png</string>
+    
+</strings>
