@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<strings>
+  <!-- strings 32000 thru 32999 reserved for scripts -->
+  <!-- GENERAL STRINGS: USED IN XML -->
+  <string id="32000">Sudoku</string>
+
+  <string id="32100">Generate Game [B]&#62;[/B]</string>
+  <string id="32101">WEB: Easy [B]&#62;[/B]</string>
+  <string id="32102">WEB: Medium [B]&#62;[/B]</string>
+  <string id="32103">WEB: Hard [B]&#62;[/B]</string>
+  <string id="32104">WEB: Evil [B]&#62;[/B]</string>
+  <string id="32110">[B]&#60;[/B] %s Numbers [B]&#62;[/B]</string>
+  <string id="32120">[B]&#60;[/B] %s in Square [B]&#62;[/B]</string>
+  <string id="32130">[B]&#60;[/B] %s of Each [B]&#62;[/B]</string>
+  <string id="32140">Clear</string>
+  <string id="32150">Reveal Number</string>
+  <string id="32160">Save Game</string>
+  <string id="32170">Load Game</string>
+  <string id="32180">Delete Game</string>
+  <string id="32190">Exit</string>
+
+  <string id="32200">[I]Numbers:[/I] %s ( %s to go )</string>
+  <string id="32201">[I]Status:[/I] %s to go</string>
+  <string id="32202">Done in %s</string>
+  <string id="32210">[I]Saved as:[/I] %s</string>
+  <string id="32211">Not Saved!</string>
+  <string id="32220">[I]Timer:[/I] %s</string>
+</strings>
