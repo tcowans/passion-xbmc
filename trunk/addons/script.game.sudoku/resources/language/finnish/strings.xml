@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings><!--  4.8.2009 Finnish   -->
+  <!-- strings 32000 thru 32999 reserved for scripts -->
+  <!-- GENERAL STRINGS: USED IN XML -->
+  <string id="32000">Sudoku</string>
+
+  <string id="32100">[B]Luo uusi peli &#62;[/B]</string>
+  <string id="32101">Ruudukko: Helppo [B]&#62;[/B]</string>
+  <string id="32102">Ruudukko: Normaali [B]&#62;[/B]</string>
+  <string id="32103">Ruudukko: Vaikea [B]&#62;[/B]</string>
+  <string id="32104">Ruudukko: Mahdoton [B]&#62;[/B]</string>
+  <string id="32110">[B]&#60;[/B] %s numeroa [B]&#62;[/B]</string>
+  <string id="32120">[B]&#60;[/B] %s vähintään [B]&#62;[/B]</string>
+  <string id="32130">[B]&#60;[/B] %s per neliö [B]&#62;[/B]</string>
+  <string id="32140">Tyhjennä</string>
+  <string id="32150">Näytä numero</string>
+  <string id="32160">Tallenna peli</string>
+  <string id="32170">Lataa peli</string>
+  <string id="32180">Poista peli</string>
+  <string id="32190">Lopeta</string>
+
+  <string id="32200">[I]Numerot:[/I] %s ( %s lopetukseen )</string>
+  <string id="32201">[I]Tilanne:[/I] %s yritystä loppuun</string>
+  <string id="32202">Valmis, vaati %s</string>
+  <string id="32210">[I]Tallennettu nimellä:[/I] %s</string>
+  <string id="32211">Ei tallennettu!</string>
+  <string id="32220">[I]Ajastin:[/I] %s</string>
+</strings>
