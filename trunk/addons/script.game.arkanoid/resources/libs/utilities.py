@@ -16,7 +16,7 @@ import xbmcgui
 CWD = os.getcwd().rstrip( ";" )
 BASE_RESOURCE_PATH = os.path.join( CWD, "resources" )
 
-SCORES_PATH = xbmc.translatePath( "special://profile/addon_data/Arkanoid/scores.doh" )
+SCORES_PATH = xbmc.translatePath( "special://profile/addon_data/%s/scores.doh" % sys.modules[ "__main__" ].__addonID__ )
 if not os.path.isdir( os.path.dirname( SCORES_PATH ) ): os.makedirs( os.path.dirname( SCORES_PATH ) )
 
 
