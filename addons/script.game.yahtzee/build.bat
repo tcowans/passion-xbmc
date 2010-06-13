@@ -6,8 +6,12 @@ COLOR 1B
 :: Set Addon name based on current directory fullname
 FOR /F "Delims=" %%D IN ("%CD%") DO SET AddonName=%%~nxD
 
+:: Extract Version # and SET %addonVer% variable
+FOR /F "Tokens=2* Delims= " %%R IN ('FIND /v /n "&_&_&_&" "addon.xml" ^| FIND "[4]"') DO SET addonVer=%%R
+SET addonVer=%addonVer:~9,-1%
+
 :: Set window title
-TITLE %AddonName% Build Addon!
+TITLE %AddonName%-%addonVer% Build Addon!
 
 :MakeBuildFolder
 :: Create Build folder
@@ -59,60 +63,19 @@ DEL "BUILD\exclude.txt"
 ECHO.
 ECHO.
 
-:: XBMC is installed
-SET XBMC_EXE=%ProgramFiles%\XBMC
-IF EXIST "%XBMC_EXE%" (
-    GOTO XBMC_EXIST
+ECHO ----------------------------------------------------------------------
+ECHO.
+SET /P zipaddon=Do you want create a zip of the Add-on.? [Y/N]:
+IF "%zipaddon:~0,1%"=="y" (
+    GOTO ZIP_BUILD
 ) ELSE (
     GOTO Finish
 )
 
-:XBMC_EXIST
-    ECHO ----------------------------------------------------------------------
-    ECHO.
-    ECHO XBMC is installed on your PC!
-    ECHO [1] Yes, copy a new "\Build\addons\%AddonName%\ to %XBMC_EXE%\addons\%AddonName%\"
-    ECHO [2] Yes, copy a new build and run XBMC...
-    ECHO [3] No, i prefer copied manually
-    ECHO [4] Create ZIP "BUILD\addons\%AddonName%.zip"
-    ECHO.
-    ECHO ----------------------------------------------------------------------
-    SET /P COPY_BUILD_ANSWER=Copy a new BUILD? [1/2/3/4]:
-    IF /I %COPY_BUILD_ANSWER% EQU 1 GOTO COPY_BUILD
-    IF /I %COPY_BUILD_ANSWER% EQU 2 GOTO COPY_BUILD
-    IF /I %COPY_BUILD_ANSWER% EQU 3 GOTO Finish
-    IF /I %COPY_BUILD_ANSWER% EQU 4 GOTO ZIP_BUILD
-
-:COPY_BUILD
-    :: Copy release build
-    ECHO ----------------------------------------------------------------------
-    ECHO.
-    ECHO Copying "\Build\addons\%AddonName%\ to \XBMC\addons\%AddonName%\" folder . . .
-    rem ren "%XBMC_EXE%\addons\%AddonName%\" %AddonName%_old
-    XCOPY "BUILD\addons\%AddonName%" "%XBMC_EXE%\addons\%AddonName%\" /E /Q /I /Y
-    ECHO.
-
-    :: Notify user of completion of copy
-    ECHO ======================================================================
-    ECHO.
-    ECHO Build Complete and Copied.
-    ECHO.
-    ECHO ======================================================================
-    ECHO.
-
-    IF /I %COPY_BUILD_ANSWER% EQU 2 (
-        ECHO Starting XBMC ...
-        ECHO.
-        ECHO ======================================================================
-        start /D"%XBMC_EXE%" XBMC.exe -p
-        )
-
-    GOTO END
-
 :ZIP_BUILD
     set ZIP="%ProgramFiles%\7-Zip\7z.exe"
     set ZIP_ROOT=7z.exe
-    set ZIPOPS_EXE=a -tzip "%AddonName%.zip" "%AddonName%"
+    set ZIPOPS_EXE=a -tzip -mx=9 "%AddonName%-%addonVer%.zip" "%AddonName%"
     ECHO IF EXIST %ZIP% ( %ZIP% %ZIPOPS_EXE%>>"BUILD\addons\zip_build.bat"
     ECHO   ) ELSE (>>"BUILD\addons\zip_build.bat"
     ECHO   IF EXIST %ZIP_ROOT% ( %ZIP_ROOT% %ZIPOPS_EXE%>>"BUILD\addons\zip_build.bat"
@@ -121,7 +84,7 @@ IF EXIST "%XBMC_EXE%" (
     ECHO     )>>"BUILD\addons\zip_build.bat"
     ECHO   )>>"BUILD\addons\zip_build.bat"
     cd BUILD\addons\
-    ECHO Compressing "BUILD\addons\%AddonName%.zip"...
+    ECHO Compressing "BUILD\addons\%AddonName%-%addonVer%.zip"...
     CALL zip_build.bat
     ::cd ..
     ::DEL "BUILD\zip_build.bat"
