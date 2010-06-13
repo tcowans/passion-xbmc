@@ -40,11 +40,11 @@ except:
 ############################################################################
 
 # Set paths
-ROOTDIR = os.getcwd().replace( ";", "" ) # Create a path with valid format
+ROOTDIR = os.getcwd() # Create a path with valid format
 
 IMAGEDIR    = os.path.join( ROOTDIR, "resources", "skins", "Default", "media" )
-CACHEDIR    = os.path.join( ROOTDIR, "cache")
-CONFDIR     = os.path.join( xbmc.translatePath( "P:\\script_data"  ), __script__ )
+CONFDIR     = xbmc.translatePath( "special://profile/addon_data/%s/" % __addonID__ )
+CACHEDIR    = os.path.join( CONFDIR, "cache")
 
 # List of directories to check at startup
 dirCheckList   = ( CACHEDIR, CONFDIR, ) #Tuple - Singleton (Note Extra ,)

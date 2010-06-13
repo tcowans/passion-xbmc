@@ -1,6 +1,7 @@
 
 #Modules general
 import os
+import sys
 import glob
 import time
 import random
@@ -41,8 +42,8 @@ CWD = os.getcwd().rstrip( ";" )
 FILE_LUCKY_7_V1   = os.path.join( CWD, "resources", "Lucky7v1", "default_v1.py" )
 FILE_KEYMAP_INFOS = os.path.join( CWD, "resources", "KeymapInfos.xml" )
 
-CREDITS_FILE      = xbmc.translatePath( "special://masterprofile/addon_data/script.game.lucky7/credits.db" )
-SCREENSHOT_DATA   = xbmc.translatePath( "special://masterprofile/addon_data/script.game.lucky7/ScreenShot/" )
+CREDITS_FILE      = xbmc.translatePath( "special://masterprofile/addon_data/%s/credits.db" % sys.modules[ "__main__" ].__addonID__ )
+SCREENSHOT_DATA   = xbmc.translatePath( "special://masterprofile/addon_data/%s/ScreenShot/" % sys.modules[ "__main__" ].__addonID__ )
 WINNER_JACKPOT    = os.path.join( SCREENSHOT_DATA, "jackpot.txt" )
 
 # if necessary create folder data

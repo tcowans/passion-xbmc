@@ -41,7 +41,7 @@ GET_LOCALIZED_STRING = xbmcaddon.Addon( __addonID__ ).getLocalizedString
 scriptPath = os.getcwd()
 
 RESOURCES = os.path.join( scriptPath, "resources" )
-GAMES = xbmc.translatePath( "special://profile/addon_data/script.game.sudoku/Games/" )
+GAMES = xbmc.translatePath( "special://profile/addon_data/%s/Games/" % __addonID__ )
 if not os.path.isdir( GAMES ): os.makedirs( GAMES )
 
 
