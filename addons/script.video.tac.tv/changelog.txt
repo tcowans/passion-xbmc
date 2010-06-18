@@ -1,22 +1,9 @@
-
-
-Script Têtes à claques par Temhil (temhil@gmail.com)
-
-
-Description:
------------
-Ce script permet de visionner les vidéos sur le site www.tetesaclaques.tv que je vous le recommande fortement. 
-Attention rires en vue!
-On y découvre chaque semaine un nouveau clip de quelques minutes qui vaut vraiment le détour.
-Si vous aimez les Têtes à claques, merci d'encourager leur createurs
-en visitant leur site web www.tetesaclaques.tv et/ou en achetant le DVD(s)
-
-Les droits des diffusions et des images utilisées sont exclusivement
-réservés à Salambo productions inc (www.tetesaclaques.tv)
-
-
 Historique:
 ----------
+19-06-10 Version 2.0.1 by Frost
+  - added provides to append in video section, same as plugin video :D
+
+
 26-12-08 Version 2.0 par Temhil
   - Passage a WindowXML, changement total de l'interface (presentation sous forme de tabs comem sur le site web)
   - Correction bug ou aucune image s'affichait lorsque l'on n'a pas d'url d'images dans le XML
@@ -57,19 +44,6 @@ Historique:
 
 ____________________________________________________________________________________________________________________________________
 ____________________________________________________________________________________________________________________________________
-
-
-TAC.TV script by Temhil (temhil@gmail.com)
-
-
-
-Description:
------------
-This script allows to watch videos on www.tac.tv website which I highly recommend. 
-Each week a new short video is added. Watch out! Laughing too much can cause belly pain!
-If you like and enjoy TAC.tv, please support their creators by visiting their website www.tac.tv and/or buying their DVD(s)
-
-Distribution rights and pictures are property of Salambo productions Inc (www.tac.tv)
 
 History:
 -------
