@@ -13,7 +13,7 @@
     <summary>Grab infos of next TV Shows Aired.</summary>
 	<summary lang="fr">Découvrez les épisodes de vos séries préférées</summary>
     <description>This script will get next aired episode informations of TVshows you have in librairy [CR] Informations given by www.TVrage.com</description>
-	<description lang="fr">Ce script permettra de connaitre la prochaine date de diffusion des séries présentes dans votre Biblithèque [CR] Informations fournies par www.TVrage.com</disclaimer>
+	<description lang="fr">Ce script permettra de connaitre la prochaine date de diffusion des séries présentes dans votre Biblithèque [CR] Informations fournies par www.TVrage.com</description>
     <disclaimer>this script is still a Beta version</disclaimer>
 	<disclaimer lang="fr">Ce script est encore une version Beta</disclaimer>
   </extension>
