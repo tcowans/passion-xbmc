@@ -56,7 +56,7 @@ def get_html_source( url , save=False):
     except:
         print_exc()
         print "### ERROR impossible d'ouvrir la page %s" % url
-        dialog.ok("ERROR" , "TVrage.com might be down")
+        #dialog.ok("ERROR" , "TVrage.com might be down")
         return ""
 
 def save_file( txt , temp):
@@ -150,6 +150,7 @@ def getDetails( user_request="" ):
     next_num = 0
     total_not_found = 0
     count = 0
+    total_url_error = 0
 
     DIALOG_PROGRESS.create( "TV Show - Next Aired script in action ..." , "Getting informations ..." )
     list_tv = listing()
@@ -171,6 +172,7 @@ def getDetails( user_request="" ):
         else:
             request_num = request_num + 1
             infos = quick_search( show[0] )
+            if infos == "": total_url_error = total_url_error +1
 
         if infos:
             if infos['Status'] == "Canceled/Ended":
@@ -183,7 +185,7 @@ def getDetails( user_request="" ):
                 infos["ep_img"] = thumbnails.get_cached_video_thumb( show[1] )
                 infos['Show path'] = show[1]
                 try:
-                    print "##### NEXT AIRED INFOS##### Show Path: %s" % infos['Show path']
+                    print "##### NEXT AIRED INFOS##### Show Path: %s" % infos['Show path'].encode("utf-8")
                     print "##### NEXT AIRED INFOS##### Show Name: %s" % infos['Show Name']
                     print "##### NEXT AIRED INFOS##### Status: %s" % infos['Status']
                     print "##### NEXT AIRED INFOS##### Started: %s" % infos['Started']
@@ -214,5 +216,6 @@ def getDetails( user_request="" ):
     print "### Total request: %s " % request_num
     print "### Total Canceled added: %s " % cancel_add
     print "### Total not found: %s " % total_not_found
+    print "### Total url error: %s " % total_url_error
     DIALOG_PROGRESS.close()
     return next_aired_list
