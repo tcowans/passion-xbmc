@@ -1,15 +1,16 @@
-﻿
+
 import os
 from traceback import print_exc
 
 import xbmc
 import xbmcgui
-from xbmcaddon import Addon
+try: from xbmcaddon import Addon
+except : pass
 
 CWD = os.getcwd()
 
-__settings__ = Addon( os.path.basename( CWD ) )
-
+try: __settings__ = Addon( os.path.basename( CWD ) )
+except: __settings__ = xbmc.Settings( os.getcwd() )
 SPECIAL_PROFILE_DIR = xbmc.translatePath( "special://profile/" )
 IMG_DIR = os.path.join( CWD , "resources" , "images" , "sports")
 ACTION_PREVIOUS_MENU = 10

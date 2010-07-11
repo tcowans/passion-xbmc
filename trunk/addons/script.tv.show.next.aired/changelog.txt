@@ -1,2 +1,5 @@
 06-07-2010:
   -Initial commit
+
+11-07-2010:
+  -compatibility with pre-merge version

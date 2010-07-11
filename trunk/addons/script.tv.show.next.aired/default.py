@@ -5,8 +5,8 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 __svn_url__      = ""
 __credits__      = "Team Passion-XBMC, http://passion-xbmc.org/"
 __platform__     = "xbmc media center, [ALL, without XBox]"
-__date__         = "23-06-2010"
-__version__      = "1.0.1"
+__date__         = "11-07-2010"
+__version__      = "1.0.2"
 __svn_revision__  = "$Revision$"
 
 

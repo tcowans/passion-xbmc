@@ -31,6 +31,8 @@ from pysqlite2 import dbapi2 as sqlite3
 from convert import translate_string
 from file_item import Thumbnails
 thumbnails = Thumbnails()
+errornum = 0
+
 
 fr = ["janvier" , "février" , "mars" , "avril" , "mai" , "juin" , "juillet" , "août" , "septembre" , "octobre" , "novembre" , "décembre" , "Lundi" , "Mardi" , "Mercredi" , "Jeudi" , "Vendredi" , "Samedi" , "Dimanche"]
 us = ["January" , "February" , "March" , "April" , "May" , "June" , "July" , "August" , "September" , "October" , "November" , "December" , "Monday" , "Tuesday" , "Wednesday" , "Thursday" , "Friday" , "Saturday" , "Sunday"]
@@ -55,7 +57,9 @@ def get_html_source( url , save=False):
         return htmlsource
     except:
         print_exc()
-        print "### ERROR impossible d'ouvrir la page %s" % url
+        print "### ERROR impossible d'ouvrir la page %s" % ( url )
+        errornum = errornum + 1
+        print "### ERROR impossible d'ouvrir la page %s" % ( errornum )
         #dialog.ok("ERROR" , "TVrage.com might be down")
         return ""
 
@@ -150,7 +154,6 @@ def getDetails( user_request="" ):
     next_num = 0
     total_not_found = 0
     count = 0
-    total_url_error = 0
 
     DIALOG_PROGRESS.create( "TV Show - Next Aired script in action ..." , "Getting informations ..." )
     list_tv = listing()
@@ -172,7 +175,9 @@ def getDetails( user_request="" ):
         else:
             request_num = request_num + 1
             infos = quick_search( show[0] )
-            if infos == "": total_url_error = total_url_error +1
+            if infos == "error": 
+                total_url_error = total_url_error + 1
+                infos = False
 
         if infos:
             if infos['Status'] == "Canceled/Ended":
@@ -216,6 +221,6 @@ def getDetails( user_request="" ):
     print "### Total request: %s " % request_num
     print "### Total Canceled added: %s " % cancel_add
     print "### Total not found: %s " % total_not_found
-    print "### Total url error: %s " % total_url_error
+    #print "### Total url error: %s " % total_url_error
     DIALOG_PROGRESS.close()
     return next_aired_list
