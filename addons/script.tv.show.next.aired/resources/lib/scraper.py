@@ -1,14 +1,4 @@
-﻿
-__script__       = "TV-Show Next-Aired"
-__author__       = "Ppic"
-__url__          = "http://code.google.com/p/passion-xbmc/"
-__svn_url__      = ""
-__credits__      = "Team XBMC PASSION, http://passion-xbmc.org/"
-__platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "04-06-2010"
-__version__      = "1.0"
-__svn_revision__  = "$Revision: 697 $"
-__XBMC_Revision__ = "20000" #XBMC Babylon
+
 __useragent__ = "Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.0.1) Gecko/2008070208 Firefox/3.6"
 
 import urllib
@@ -20,13 +10,15 @@ import xbmc
 import xbmcgui
 
 SOURCEPATH = os.getcwd()
+DATA_PATH = xbmc.translatePath("special://home/userdata/addon_data/script.tv.show.next.aired")
+
 RESOURCES_PATH = os.path.join( SOURCEPATH , "resources" )
-CACHE_PATH = os.path.join( RESOURCES_PATH , "cache" )
-IMAGES_PATH = os.path.join( RESOURCES_PATH , "images" )
+CACHE_PATH = os.path.join( DATA_PATH , "cache" )
+IMAGES_PATH = os.path.join( DATA_PATH , "images" )
 dialog = xbmcgui.Dialog()
 db_path = os.path.join(xbmc.translatePath( "special://profile/Database/" ), "MyVideos34.db")
-canceled_path = os.path.join (CACHE_PATH , "canceled.db")
-next_aired_path = os.path.join (CACHE_PATH , "next_aired.db")
+canceled_path = os.path.join (DATA_PATH , "canceled.db")
+next_aired_path = os.path.join (DATA_PATH , "next_aired.db")
 search_name = ""
 if not os.path.exists(CACHE_PATH): os.makedirs(CACHE_PATH)
 if not os.path.exists(IMAGES_PATH): os.makedirs(IMAGES_PATH)
@@ -43,13 +35,7 @@ thumbnails = Thumbnails()
 fr = ["janvier" , "février" , "mars" , "avril" , "mai" , "juin" , "juillet" , "août" , "septembre" , "octobre" , "novembre" , "décembre" , "Lundi" , "Mardi" , "Mercredi" , "Jeudi" , "Vendredi" , "Samedi" , "Dimanche"]
 us = ["January" , "February" , "March" , "April" , "May" , "June" , "July" , "August" , "September" , "October" , "November" , "December" , "Monday" , "Tuesday" , "Wednesday" , "Thursday" , "Friday" , "Saturday" , "Sunday"]
 
-def footprints():
-    print "### %s starting ..." % __script__
-    print "### author: %s" % __author__
-    print "### URL: %s" % __url__
-    print "### credits: %s" % __credits__
-    print "### date: %s" % __date__
-    print "### version: %s" % __version__
+
 
 def get_html_source( url , save=False):
     """ fetch the html source """
@@ -159,7 +145,6 @@ def existing_data(showname,next_aired_list):
 def getDetails( user_request="" ):
     # recherche manuel, user_request pas implanter
     DIALOG_PROGRESS = xbmcgui.DialogProgress()
-    footprints()
     cancel_add = 0
     request_num = 0
     next_num = 0
