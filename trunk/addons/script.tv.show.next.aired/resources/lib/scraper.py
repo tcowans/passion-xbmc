@@ -58,8 +58,10 @@ def get_html_source( url , save=False):
     except:
         print_exc()
         print "### ERROR impossible d'ouvrir la page %s" % ( url )
-        errornum = errornum + 1
-        print "### ERROR impossible d'ouvrir la page %s" % ( errornum )
+        try: 
+            errornum = errornum + 1
+            print "### ERROR impossible d'ouvrir la page %s" % ( errornum )
+        except: print_exc()
         #dialog.ok("ERROR" , "TVrage.com might be down")
         return ""
 
