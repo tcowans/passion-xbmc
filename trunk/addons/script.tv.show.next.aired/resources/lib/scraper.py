@@ -31,7 +31,7 @@ from pysqlite2 import dbapi2 as sqlite3
 from convert import translate_string
 from file_item import Thumbnails
 thumbnails = Thumbnails()
-errornum = 0
+
 
 
 fr = ["janvier" , "février" , "mars" , "avril" , "mai" , "juin" , "juillet" , "août" , "septembre" , "octobre" , "novembre" , "décembre" , "Lundi" , "Mardi" , "Mercredi" , "Jeudi" , "Vendredi" , "Samedi" , "Dimanche"]
@@ -154,7 +154,7 @@ def getDetails( user_request="" ):
     next_num = 0
     total_not_found = 0
     count = 0
-
+    errornum = 0
     DIALOG_PROGRESS.create( "TV Show - Next Aired script in action ..." , "Getting informations ..." )
     list_tv = listing()
     total_show = len(list_tv)
