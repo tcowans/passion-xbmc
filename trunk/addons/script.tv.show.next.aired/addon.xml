@@ -1,7 +1,7 @@
-﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="script.tv.show.next.aired"
        name="TV Show - Next Aired"
-       version="1.0.0"
+       version="1.0.1"
        provider-name="Ppic, Frost (passion-xbmc.org)">
   <requires>
     <import addon="xbmc.python" version="1.0"/>
@@ -11,10 +11,6 @@
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>
     <summary>Grab infos of next TV Shows Aired.</summary>
-	<summary lang="fr">Découvrez les épisodes de vos séries préférées</summary>
-    <description>This script will get next aired episode informations of TVshows you have in librairy [CR] Informations given by www.TVrage.com</description>
-	<description lang="fr">Ce script permettra de connaitre la prochaine date de diffusion des séries présentes dans votre Biblithèque [CR] Informations fournies par www.TVrage.com</description>
-    <disclaimer>this script is still a Beta version</disclaimer>
-	<disclaimer lang="fr">Ce script est encore une version Beta</disclaimer>
+    <description>Grab infos of next TV Shows Aired.</description>
   </extension>
 </addon>
