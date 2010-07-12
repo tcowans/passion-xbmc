@@ -28,15 +28,20 @@ __settings__ = xbmcaddon.Addon( __addonID__ )
 BASE_RESOURCE_PATH = os.path.join( os.getcwd(), "resources" )
 sys.path.append( os.path.join( BASE_RESOURCE_PATH, "lib" ) )
 CACHE_PATH = xbmc.translatePath ("special://home/userdata/addon_data/%s" % __addonID__)
+
 if not os.path.exists(CACHE_PATH): os.makedirs(CACHE_PATH)
 chaine_path = os.path.join( CACHE_PATH , "liste_chaine.tmp" )
-emissions_path = os.path.join( CACHE_PATH , "liste_emissions.tmp" ) 
+emissions_path = os.path.join( CACHE_PATH , "liste_emissions.tmp" )
+asx_path = os.path.join( CACHE_PATH , "temp.asx" )
+
 from convert import translate_string
+from convert import set_entity_or_charref
 tempfile = os.path.join( os.getcwd() , "temp.html" )
 
 BASE_URL = "http://www.pluzz.fr/"
 MAGIC_URL = "http://www.pluzz.fr/appftv/webservices/video/getInfosVideo.php?src=cappuccino&video-type=simple&template=ftvi&template-format=complet&id-externe="
-
+URL_MP4 = "rtmp://videozones-rtmp.francetv.fr/ondemand/mp4:cappuccino/publication"
+URL_WMV = "mms://a988.v101995.c10199.e.vm.akamaistream.net/7/988/10199/3f97c7e6/ftvigrp.download.akamai.com/10199/cappuccino/production/publication"
 
 def addLink(name,url,iconimage, c_items = None ):
         ok=True
@@ -141,10 +146,11 @@ def get_video_url(em_url):
         video_id = match.group(1)
         video_name = match.group(2)
         print "### video_id = %s" % video_id
-        get_video_info(video_id)
+        video = get_video_info(video_id)
 # 	   liz=xbmcgui.ListItem(name, iconImage="DefaultVideo.png", thumbnailImage=iconimage)
 # 	   liz.setInfo( type="Video", infoLabels={ "Title": name } )
 # 	   xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=url,listitem=liz)
+        return video
     else:
         print "### pas de vidéo trouvée"
         video_id = False
@@ -153,17 +159,31 @@ def get_video_url(em_url):
 def get_video_info(video_id):
     print "### récupération page %s%s" % ( MAGIC_URL , video_id)
     data = get_html_source ( MAGIC_URL + video_id )
-    save_data(data,tempfile)
+    save_data(data,tempfile)         
+    video = {}
+    #récupération infos du film
     match = re.search("<titre-public><!\[CDATA\[(.*?)\]\]></titre-public>",data)
-    if match: print match.group(1)
+    if match: video["titre"] = match.group(1)
     match = re.search("<nom><!\[CDATA\[(.*?)\]\]></nom>",data)
-    if match: print match.group(1)
+    if match: video["nomfichier"] = match.group(1)
     match = re.search("<chemin><!\[CDATA\[(.*?)\]\]></chemin>",data)
-    if match: print match.group(1)
+    if match: video["chemin"] = match.group(1)
     match = re.search("<url><!\[CDATA\[(.*?)\]\]></url>",data)
-    if match: print match.group(1)
+    if match: video["image"] = match.group(1)
+    else: video["image"] = ""
     match = re.search("<duree><!\[CDATA\[(.*?)\]\]></duree>",data)
-    if match: print match.group(1)
+    if match: video["duree"] = match.group(1)
+    
+    #chemin en fonction du type
+    if ".wmv" in video["nomfichier"]: video["link"] = URL_WMV + video["chemin"] + video["nomfichier"]
+    elif ".asx" in video["nomfichier"]: 
+        data = get_html_source ( video["chemin"] + video["nomfichier"])
+        match = re.search("""<ref href = "(.*?)" />""" , data )
+        if match: video["link"] = match.group(1)    
+    elif ".mp4" in video["nomfichier"]: video["link"] = URL_MP4 + video["chemin"] + video["nomfichier"]
+    print video
+    return video
+ 
     
 #début du code:
 
@@ -196,11 +216,19 @@ if mode==None or url==None or len(url)<1: #menu principal
 if mode == 1:
     liste_emissions = load_data( emissions_path )
     for emission in liste_emissions:
-        if emission["chaine"] == url: addDir(emission["nom"] , translate_string(emission["nom"]).replace(" ","-").lower() ,2,"" )
+        if emission["chaine"] == url: addDir(emission["nom"] , translate_string(emission["nom"].replace("Î","i").replace("ô","o").replace("è","e")).replace(" ","-").replace("'","-").lower() ,2,"" )
         
-if mode == 2:      
-    get_video_url(url)       
-        
+if mode == 2: 
+     
+    video = get_video_url(url)
+    try: 
+        playableVideoItem = xbmcgui.ListItem( video["titre"] , path = video["link"] )
+        playableVideoItem.setThumbnailImage(video["image"])
+        print "###%s###" % video["link"]
+        xbmc.Player().play( video["link"] , playableVideoItem , False )  
+    except: xbmcgui.Dialog().ok("Plugin Pluzz.fr" , "Impossible de lire la vidéo")   
+     
+    OK = False    
         
         
 end_of_directory( OK )    
