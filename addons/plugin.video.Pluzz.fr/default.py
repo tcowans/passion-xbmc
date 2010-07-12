@@ -31,8 +31,12 @@ CACHE_PATH = xbmc.translatePath ("special://home/userdata/addon_data/%s" % __add
 if not os.path.exists(CACHE_PATH): os.makedirs(CACHE_PATH)
 chaine_path = os.path.join( CACHE_PATH , "liste_chaine.tmp" )
 emissions_path = os.path.join( CACHE_PATH , "liste_emissions.tmp" ) 
-
 from convert import translate_string
+tempfile = os.path.join( os.getcwd() , "temp.html" )
+
+BASE_URL = "http://www.pluzz.fr/"
+MAGIC_URL = "http://www.pluzz.fr/appftv/webservices/video/getInfosVideo.php?src=cappuccino&video-type=simple&template=ftvi&template-format=complet&id-externe="
+
 
 def addLink(name,url,iconimage, c_items = None ):
         ok=True
@@ -127,7 +131,40 @@ def get_emissions_list():    #récupération de la liste des émissions
             emission["nom"] = infos[1]
             if emission["chaine"] not in liste_chaines: liste_chaines.append(emission["chaine"])
             liste_emissions.append(emission)
-
+            
+def get_video_url(em_url):
+    print "### récupération page %s%s%s" % ( BASE_URL , em_url , ".html")
+    data = get_html_source ( BASE_URL + em_url + ".html")
+    
+    match = re.search(r'<div id="playerCtnr">\s+<a href="http://info\.francetelevisions\.fr/\?id-video=(.*)" id="current_video" class="video" type="video/cappuccino">.*?</a>\s+<div class="accroche">(.*)\s+</div>', data)
+    if match:
+        video_id = match.group(1)
+        video_name = match.group(2)
+        print "### video_id = %s" % video_id
+        get_video_info(video_id)
+# 	   liz=xbmcgui.ListItem(name, iconImage="DefaultVideo.png", thumbnailImage=iconimage)
+# 	   liz.setInfo( type="Video", infoLabels={ "Title": name } )
+# 	   xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=url,listitem=liz)
+    else:
+        print "### pas de vidéo trouvée"
+        video_id = False
+        video_name = False        
+    
+def get_video_info(video_id):
+    print "### récupération page %s%s" % ( MAGIC_URL , video_id)
+    data = get_html_source ( MAGIC_URL + video_id )
+    save_data(data,tempfile)
+    match = re.search("<titre-public><!\[CDATA\[(.*?)\]\]></titre-public>",data)
+    if match: print match.group(1)
+    match = re.search("<nom><!\[CDATA\[(.*?)\]\]></nom>",data)
+    if match: print match.group(1)
+    match = re.search("<chemin><!\[CDATA\[(.*?)\]\]></chemin>",data)
+    if match: print match.group(1)
+    match = re.search("<url><!\[CDATA\[(.*?)\]\]></url>",data)
+    if match: print match.group(1)
+    match = re.search("<duree><!\[CDATA\[(.*?)\]\]></duree>",data)
+    if match: print match.group(1)
+    
 #début du code:
 
 params=get_params()
@@ -159,10 +196,10 @@ if mode==None or url==None or len(url)<1: #menu principal
 if mode == 1:
     liste_emissions = load_data( emissions_path )
     for emission in liste_emissions:
-        if emission["chaine"] == url: addDir(emission["nom"],emission["nom"],2,"" )
+        if emission["chaine"] == url: addDir(emission["nom"] , translate_string(emission["nom"]).replace(" ","-").lower() ,2,"" )
         
 if mode == 2:      
-    print url  
+    get_video_url(url)       
         
         
         
