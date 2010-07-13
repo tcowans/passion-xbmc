@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="xbmc4xbox.addon.library"
+       name="xbmcaddon library"
+       version="1.0.0"
+       provider-name="Frost (passion-xbmc.org)">
+  <requires>
+    <import addon="xbmc.python" version="1.0" />
+  </requires>
+  <!-- "xbmc.python.library" -->
+  <extension point="xbmc.python.script"
+             library="xbmcaddon.py" />
+  <extension point="xbmc.addon.metadata">
+    <summary>xbmcaddon library for XBox</summary>
+    <description>Simulating xbmcaddon library for XBox or XBMC pre-r28256.</description>
+    <platform>all</platform>
+  </extension>
+</addon>
