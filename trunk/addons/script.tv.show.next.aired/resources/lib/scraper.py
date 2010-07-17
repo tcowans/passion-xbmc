@@ -10,7 +10,7 @@ import xbmc
 import xbmcgui
 
 SOURCEPATH = os.getcwd()
-DATA_PATH = xbmc.translatePath( "special://profile/addon_data/%s/script.tv.show.next.aired")
+DATA_PATH = xbmc.translatePath( "special://profile/addon_data/script.tv.show.next.aired/")
 
 RESOURCES_PATH = os.path.join( SOURCEPATH , "resources" )
 CACHE_PATH = os.path.join( DATA_PATH , "cache" )
