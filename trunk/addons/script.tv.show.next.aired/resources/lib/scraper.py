@@ -10,7 +10,7 @@ import xbmc
 import xbmcgui
 
 SOURCEPATH = os.getcwd()
-DATA_PATH = xbmc.translatePath("special://home/userdata/addon_data/script.tv.show.next.aired")
+DATA_PATH = xbmc.translatePath( "special://profile/addon_data/%s/script.tv.show.next.aired")
 
 RESOURCES_PATH = os.path.join( SOURCEPATH , "resources" )
 CACHE_PATH = os.path.join( DATA_PATH , "cache" )
@@ -23,11 +23,13 @@ search_name = ""
 if not os.path.exists(CACHE_PATH): os.makedirs(CACHE_PATH)
 if not os.path.exists(IMAGES_PATH): os.makedirs(IMAGES_PATH)
 
-# append the proper platforms folder to our path, xbox is the same as win32
-env = ( os.environ.get( "OS", "win32" ), "win32", )[ os.environ.get( "OS", "win32" ) == "xbox" ]
-sys.path.append( os.path.join( RESOURCES_PATH, "platform_libraries", env ) )
-sys.path.append( os.path.join( RESOURCES_PATH, "lib" ) )
-from pysqlite2 import dbapi2 as sqlite3
+try:
+    from pysqlite2 import dbapi2 as sqlite
+except:
+    # append the proper xbox platforms folder to our path, xbox is the same as win32
+    sys.path.append( os.path.join( RESOURCES_PATH, "platform_libraries", "win32" ) )
+    from pysqlite2 import dbapi2 as sqlite
+
 from convert import translate_string
 from file_item import Thumbnails
 thumbnails = Thumbnails()
@@ -87,7 +89,7 @@ def convert_date(date):
     return date
 
 def listing():
-    conn = sqlite3.connect(db_path)
+    conn = sqlite.connect(db_path)
     c = conn.cursor()
     try: c.execute('select c00,strPath from tvshowview')
     except: c.execute('select tvshow.c00 , path.strPath from tvshow , path , tvshowlinkpath where path.idPath = tvshowlinkpath.idPath AND tvshow.idShow = tvshowlinkpath.idShow')

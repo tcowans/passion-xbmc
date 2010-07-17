@@ -141,7 +141,8 @@ def getUserSkin():
 def MyDialog(tv_list):
     current_skin, force_fallback = getUserSkin()
     #"MyDialog.xml", CWD, current_skin, force_fallback sert a ouvrir le xml du script
-    w = MainGui( "DialogNextAired.xml", CWD, current_skin, force_fallback , listing=tv_list )
+    try: w = MainGui( "DialogNextAired.xml", CWD, current_skin, "720p", force_fallback , listing=tv_list )
+    except: w = MainGui( "DialogNextAired.xml", CWD, current_skin, force_fallback , listing=tv_list )
     w.doModal()
     del w
 
