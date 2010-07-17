@@ -80,7 +80,7 @@
 								<width>270</width>
 								<height>190</height>
 								<aspectratio>stretch</aspectratio>
-								<imagepath background="true">$INFO[Container(48).ListItem.Property(filepath)]/resources/media/stages/Arkanoid 1986</imagepath>
+								<imagepath background="true">$INFO[Container(48).ListItem.Property(path)]/resources/media/stages/Arkanoid 1986</imagepath>
 								<timeperimage>4500</timeperimage>
 								<randomize>true</randomize>
 								<fadetime>1000</fadetime>
@@ -103,7 +103,7 @@
 								<width>270</width>
 								<height>190</height>
 								<aspectratio>stretch</aspectratio>
-								<imagepath background="true">$INFO[Container(48).ListItem.Property(filepath)]/resources/media/stages/Tournament Arkanoid 1987</imagepath>
+								<imagepath background="true">$INFO[Container(48).ListItem.Property(path)]/resources/media/stages/Tournament Arkanoid 1987</imagepath>
 								<timeperimage>4500</timeperimage>
 								<randomize>true</randomize>
 								<fadetime>1000</fadetime>
@@ -195,9 +195,9 @@
 						<content>
 							<item>
 								<label>$LOCALIZE[21863]:</label>
-								<label2>$INFO[Container(48).ListItem.Property(authors)]</label2>
+								<label2>$INFO[Container(48).ListItem.Property(author)]</label2>
 								<onclick>-</onclick>
-								<visible>!IsEmpty(Container(48).ListItem.Property(authors))</visible>
+								<visible>!IsEmpty(Container(48).ListItem.Property(author))</visible>
 							</item>
 							<item>
 								<label>Version:</label>
@@ -218,28 +218,10 @@
 								<visible>!IsEmpty(Container(48).ListItem.Property(type))</visible>
 							</item>
 							<item>
-								<label>Platforms:</label>
-								<label2>$INFO[Container(48).ListItem.Property(platforms)]</label2>
-								<onclick>-</onclick>
-								<visible>!IsEmpty(Container(48).ListItem.Property(platforms))</visible>
-							</item>
-							<item>
-								<label>Min. Revision:</label>
-								<label2>$INFO[Container(48).ListItem.Property(minrevision)]</label2>
-								<onclick>-</onclick>
-								<visible>!IsEmpty(Container(48).ListItem.Property(minrevision))</visible>
-							</item>
-							<item>
 								<label>Summary:</label>
 								<label2>$INFO[Container(48).ListItem.Property(summary)]</label2>
 								<onclick>-</onclick>
 								<visible>!IsEmpty(Container(48).ListItem.Property(summary))</visible>
-							</item>
-							<item>
-								<label>Tags:</label>
-								<label2>$INFO[Container(48).ListItem.Property(tags)]</label2>
-								<onclick>-</onclick>
-								<visible>!IsEmpty(Container(48).ListItem.Property(tags))</visible>
 							</item>
 							<item>
 								<label>Disclaimer:</label>
@@ -248,22 +230,16 @@
 								<visible>!IsEmpty(Container(48).ListItem.Property(disclaimer))</visible>
 							</item>
 							<item>
-								<label>License:</label>
-								<label2>$INFO[Container(48).ListItem.Property(license)]</label2>
-								<onclick>-</onclick>
-								<visible>!IsEmpty(Container(48).ListItem.Property(license))</visible>
-							</item>
-							<item>
 								<label>ID:</label>
-								<label2>$INFO[Container(48).ListItem.Property(guid)]</label2>
+								<label2>$INFO[Container(48).ListItem.Property(id)]</label2>
 								<onclick>-</onclick>
-								<visible>!IsEmpty(Container(48).ListItem.Property(guid))</visible>
+								<visible>!IsEmpty(Container(48).ListItem.Property(id))</visible>
 							</item>
 							<item>
 								<label>15311</label>
-								<label2>$INFO[Container(48).ListItem.Property(filepath)]</label2>
+								<label2>$INFO[Container(48).ListItem.Property(path)]</label2>
 								<onclick>-</onclick>
-								<visible>!IsEmpty(Container(48).ListItem.Property(filepath))</visible>
+								<visible>!IsEmpty(Container(48).ListItem.Property(path))</visible>
 							</item>
 						</content>
 					</control>

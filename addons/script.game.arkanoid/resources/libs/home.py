@@ -189,12 +189,14 @@ class Main( xbmcgui.WindowXML ):
 
             elif controlID == 122:
                 import editor
-                w = editor.levelEditor( "levelEditor.xml", CWD, CURRENT_SKIN, FORCE_FALLBACK )
+                try: w = editor.levelEditor( "levelEditor.xml", CWD, CURRENT_SKIN, "720p", FORCE_FALLBACK )
+                except: w = editor.levelEditor( "levelEditor.xml", CWD, CURRENT_SKIN, FORCE_FALLBACK )
                 w.doModal()
                 del w, editor
 
             elif controlID == 125:
-                w = HighScores( "highScores.xml", CWD, CURRENT_SKIN, FORCE_FALLBACK )
+                try: w = HighScores( "highScores.xml", CWD, CURRENT_SKIN, "720p", FORCE_FALLBACK )
+                except: w = HighScores( "highScores.xml", CWD, CURRENT_SKIN, FORCE_FALLBACK )
                 w.doModal()
                 del w
 
@@ -216,14 +218,16 @@ class Main( xbmcgui.WindowXML ):
 
             elif controlID == 127:
                 import infos
-                w = infos.Info( "infos.xml", CWD, CURRENT_SKIN, FORCE_FALLBACK )
+                try: w = infos.Info( "infos.xml", CWD, CURRENT_SKIN, "720p", FORCE_FALLBACK )
+                except: w = infos.Info( "infos.xml", CWD, CURRENT_SKIN, FORCE_FALLBACK )
                 w.doModal()
                 del w, infos
         except:
             print_exc()
 
     def add_score( self, mode, score, level ):
-        HS = HighScores( "highScores.xml", CWD, CURRENT_SKIN, FORCE_FALLBACK )
+        try: HS = HighScores( "highScores.xml", CWD, CURRENT_SKIN, "720p", FORCE_FALLBACK )
+        except: HS = HighScores( "highScores.xml", CWD, CURRENT_SKIN, FORCE_FALLBACK )
         if HS.addScore( mode, score, level ):
             HS.doModal()
         del HS
@@ -368,7 +372,8 @@ def showMain():
     w = None
     try:
         try:
-            w = Main( "arkanoid.xml", CWD, CURRENT_SKIN, FORCE_FALLBACK )
+            try: w = Main( "arkanoid.xml", CWD, CURRENT_SKIN, "720p", FORCE_FALLBACK )
+            except: w = Main( "arkanoid.xml", CWD, CURRENT_SKIN, FORCE_FALLBACK )
         except Exception, e:
             print_exc()
             #TypeError
