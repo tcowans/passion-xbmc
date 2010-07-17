@@ -1,13 +1,14 @@
 
 __script__       = "TV-Show Next-Aired"
+__addonID__      = "script.tv.show.next.aired"
 __author__       = "Ppic, Frost"
 __url__          = "http://code.google.com/p/passion-xbmc/"
-__svn_url__      = ""
+__svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/addons/script.tv.show.next.aired/"
 __credits__      = "Team Passion-XBMC, http://passion-xbmc.org/"
-__platform__     = "xbmc media center, [ALL, without XBox]"
-__date__         = "11-07-2010"
-__version__      = "1.0.2"
-__svn_revision__  = "$Revision$"
+__platform__     = "xbmc media center, [ALL]"
+__date__         = "17-07-2010"
+__version__      = "1.0.3"
+__svn_revision__ = "$Revision$"
 
 
 import os
