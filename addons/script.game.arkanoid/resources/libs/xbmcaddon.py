@@ -1,24 +1,62 @@
 """
-   Module xbmcaddon for XBox
+   Simulating xbmcaddon library for XBox
 """
 
-__addonID__ = "xbmc4xbox.addon.library"
-__script__  = "xbmcaddon library"
-__version__ = "1.0.0"
-__author__  = "Frost"
+__addonID__  = "xbmc4xbox.addon.library"
+__script__   = "xbmcaddon library"
+__version__  = "1.0.0"
+__author__   = "Frost, http://passion-xbmc.org"
+__credits__  = "Team XBMC, http://xbmc.org/"
 
 
 import os
 import re
 import sys
-import __builtin__
+from __builtin__ import object
+from traceback import print_exc
 from locale import getdefaultlocale
 
-try: lang = getdefaultlocale()[ 0 ][ :2 ].lower()
-except: lang = "en"
+import xbmc
+__platform__ = "xbmc media center, [%s]" % xbmc.__platform__
 
 
-class Addon( __builtin__.object ):
+def makeDefaultIcon( home ):
+    """makeLegalFileSettings(homepath) -- make default.tbn, if icon.png exists
+    """
+    try:
+        ico = os.path.join( home, "icon.png" )
+        tbn = os.path.join( home, "default.tbn" )
+        if not os.path.exists( tbn ) and os.path.exists( ico ):
+            from shutil import copy
+            copy( ico, tbn )
+    except:
+        print_exc()
+
+
+def makeLegalFileSettings( settings_xml ):
+    """makeLegalFileSettings(filepath) -- Returns True, if unsupported tags found and removed
+    *Note, only tag 'category' are removed or replaced by lsep.
+    """
+    try:
+        xml = file( settings_xml, "r" ).read()
+        categories = re.compile( '<category label="(.*?)">' ).findall( xml )
+        if categories:
+            file( settings_xml + ".bak", "w" ).write( xml )
+            legal = xml
+            for category in categories:
+                lsep = '<setting type="lsep" label="%s" />' % category
+                lsep = ( "", lsep )[ lsep not in legal ]
+                legal = re.sub( '<category label="%s">' % category, lsep, legal )
+                #legal = legal.replace( '<category label="%s">' % category, lsep )
+            legal = re.sub( "</category>", "", legal )
+
+            file( settings_xml, "w" ).write( legal )
+            return True
+    except:
+        print_exc()
+
+
+class Addon( object ):
     """Addon class.
 
     Addon(id) -- Creates a new Addon class.
@@ -31,6 +69,9 @@ class Addon( __builtin__.object ):
     def __init__( self, id=None ):
         self.cwd = os.getcwd()
         self.id = id or os.path.basename( self.cwd )
+
+        makeLegalFileSettings( os.path.join( self.cwd, "resources", "settings.xml" ) )
+        makeDefaultIcon( self.cwd )
 
         try: self.addon_xml = file( os.path.join( self.cwd, "addon.xml" ) ).read()
         except Exception, e: self.addon_xml = "%s\n %s" % ( str( e ), os.path.join( self.cwd, "addon.xml" ) )
@@ -67,8 +108,7 @@ class Addon( __builtin__.object ):
             import xbmcplugin
             self.Settings = xbmcplugin
         else:
-            from xbmc import Settings
-            try: self.Settings = Settings( os.getcwd() )
+            try: self.Settings = xbmc.Settings( self.cwd )
             except Exception, e: print self.id + ": " + str( e )
 
     def getAddonInfo( self, property ):
@@ -80,6 +120,9 @@ class Addon( __builtin__.object ):
         example:
          - version = self.Addon.getAddonInfo('version')
         """
+        try: lang = getdefaultlocale()[ 0 ][ :2 ].lower()
+        except: lang = "en"
+
         if ( property == "author" ):
             author = re.search( 'provider-name="(.*?)"', self.addon_xml )
             if author: return author.group( 1 )
@@ -169,7 +212,7 @@ class Addon( __builtin__.object ):
         if self.Settings:
             return self.Settings.getSetting( key )
 
-    def openSettings( self ):
+    def openSettings( self, *args ):
         """openSettings() -- Opens this scripts settings dialog.
         example:
           - self.Settings.openSettings()
@@ -194,6 +237,6 @@ class Addon( __builtin__.object ):
 if  __name__ == "__main__":
     __addon__ = Addon( id=__addonID__ )
     print __addon__.getLocalizedString( 6 )
-    print repr( __addon__.getSetting( 'apikey' ) ), __addon__.Settings
+    print repr( __addon__.getSetting( 'apikey' ) )
     for property in ("author", "changelog", "description", "disclaimer", "fanart", "icon", "id", "name", "path", "profile", "stars", "summary", "type", "version"):
         print property + ": " + str( __addon__.getAddonInfo( property ) )
