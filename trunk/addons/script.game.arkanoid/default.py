@@ -9,7 +9,7 @@ __credits__       = "Team XBMC, http://xbmc.org/"
 __platform__      = "xbmc media center, [ALL]"
 __started__       = "26-02-2010"
 __date__          = "17-07-2010"
-__version__       = "1.0.1"
+__version__       = "1.0.2"
 __statut__        = "Beta3"
 __svn_revision__  = "$Revision$".replace( "Revision", "" ).strip( "$: " )
 
