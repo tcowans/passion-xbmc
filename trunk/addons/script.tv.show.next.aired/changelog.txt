@@ -3,3 +3,11 @@
 
 11-07-2010:
   -compatibility with pre-merge version
+
+17-07-2010:
+  - fixed: windowxml resolution default to "720p"
+  - changed: platform_libraries for addon script.module.pysqlite, only xbox include platform_libraries/win32
+  - added: provides -> video to append in video mediatheque
+
+19-07-2010:
+  - change sql query, now use xbmchttp to get info.
