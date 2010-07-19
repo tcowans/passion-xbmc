@@ -16,19 +16,11 @@ RESOURCES_PATH = os.path.join( SOURCEPATH , "resources" )
 CACHE_PATH = os.path.join( DATA_PATH , "cache" )
 IMAGES_PATH = os.path.join( DATA_PATH , "images" )
 dialog = xbmcgui.Dialog()
-db_path = os.path.join(xbmc.translatePath( "special://profile/Database/" ), "MyVideos34.db")
 canceled_path = os.path.join (DATA_PATH , "canceled.db")
 next_aired_path = os.path.join (DATA_PATH , "next_aired.db")
 search_name = ""
 if not os.path.exists(CACHE_PATH): os.makedirs(CACHE_PATH)
 if not os.path.exists(IMAGES_PATH): os.makedirs(IMAGES_PATH)
-
-try:
-    from pysqlite2 import dbapi2 as sqlite
-except:
-    # append the proper xbox platforms folder to our path, xbox is the same as win32
-    sys.path.append( os.path.join( RESOURCES_PATH, "platform_libraries", "win32" ) )
-    from pysqlite2 import dbapi2 as sqlite
 
 from convert import translate_string
 from file_item import Thumbnails
@@ -89,24 +81,24 @@ def convert_date(date):
     return date
 
 def listing():
-    conn = sqlite.connect(db_path)
-    c = conn.cursor()
-    try: c.execute('select c00,strPath from tvshowview')
-    except: c.execute('select tvshow.c00 , path.strPath from tvshow , path , tvshowlinkpath where path.idPath = tvshowlinkpath.idPath AND tvshow.idShow = tvshowlinkpath.idShow')
+    # sql statement for tv shows
+    sql_data = "select tvshow.c00 , path.strPath from tvshow , path , tvshowlinkpath where path.idPath = tvshowlinkpath.idPath AND tvshow.idShow = tvshowlinkpath.idShow"
+    xml_data = xbmc.executehttpapi( "QueryVideoDatabase(%s)" % urllib.quote_plus( sql_data ), )
+    match = re.findall( "<field>(.*?)</field><field>(.*?)</field>", xml_data, re.DOTALL )
+
     try:
         TVlist = []
-        for import_base in c:
-            #print import_base
-            try: TVlist.append( (translate_string(import_base[0]).encode("utf-8") , import_base[1] ) )
+        for import_base in match:
+            try: 
+                TVlist.append( (translate_string(import_base[0]).encode("utf-8") , import_base[1] ) )
+                print "### %s" % import_base[1]
             except:
                 print "### error in listing()"
-                try: print "### %s" % import_base[0]
+                try: print "### %s" % import_base[1]
                 except: pass
                 print_exc()
-        c.close()
         return TVlist
     except:
-        c.close()
         print "nothing in get db"
         return False
         print_exc()
@@ -161,6 +153,7 @@ def getDetails( user_request="" ):
     errornum = 0
     DIALOG_PROGRESS.create( "TV Show - Next Aired script in action ..." , "Getting informations ..." )
     list_tv = listing()
+    print "### %s" % listing()
     total_show = len(list_tv)
     canceled = get_list(canceled_path)
     next_aired_list = []
