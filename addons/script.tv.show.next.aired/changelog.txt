@@ -11,3 +11,6 @@
 
 19-07-2010:
   - change sql query, now use xbmchttp to get info.
+
+21-07-2010:
+  - try to correct linux platform urllib bug
