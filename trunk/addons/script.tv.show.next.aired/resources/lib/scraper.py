@@ -8,6 +8,7 @@ import sys
 from traceback import print_exc
 import xbmc
 import xbmcgui
+import time
 
 SOURCEPATH = os.getcwd()
 DATA_PATH = xbmc.translatePath( "special://profile/addon_data/script.tv.show.next.aired/")
@@ -38,26 +39,26 @@ def get_html_source( url , save=False):
     class AppURLopener(urllib.FancyURLopener):
         version = __useragent__
     urllib._urlopener = AppURLopener()
-
-    try:
-        if os.path.isfile( url ): sock = open( url, "r" )
-        else:
-            urllib.urlcleanup()
-            sock = urllib.urlopen( url )
-
-        htmlsource = sock.read()
-        if save: file( os.path.join( CACHE_PATH , save ) , "w" ).write( htmlsource )
-        sock.close()
-        return htmlsource
-    except:
-        print_exc()
-        print "### ERROR impossible d'ouvrir la page %s" % ( url )
-        try: 
-            errornum = errornum + 1
-            print "### ERROR impossible d'ouvrir la page %s" % ( errornum )
-        except: print_exc()
-        #dialog.ok("ERROR" , "TVrage.com might be down")
-        return ""
+    succeed = 0
+    while succeed <= 5:
+        try:
+            if os.path.isfile( url ): sock = open( url, "r" )
+            else:
+                urllib.urlcleanup()
+                sock = urllib.urlopen( url )
+    
+            htmlsource = sock.read()
+            if save: file( os.path.join( CACHE_PATH , save ) , "w" ).write( htmlsource )
+            sock.close()
+            succeed = 5
+            return htmlsource
+        except:
+            print_exc()
+            print "### ERROR impossible d'ouvrir la page %s" % ( url )
+            time.sleep(1)
+            #dialog.ok("ERROR" , "TVrage.com might be down")
+            succeed = succeed + 1
+    return ""
 
 def save_file( txt , temp):
     try:
