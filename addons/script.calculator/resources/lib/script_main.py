@@ -19,7 +19,7 @@ import xbmcaddon
 __addon__ = xbmcaddon.Addon( sys.modules[ "__main__" ].__addonID__ )
 LANGUAGE  = __addon__.getLocalizedString
 
-CWD = os.getcwd().rstrip( ";" )
+CWD = os.getcwd()
 
 #####################################################################################################
 ''' Function: Skin '''
@@ -527,11 +527,9 @@ class CALC( xbmcgui.WindowXMLDialog ):
 #if __name__ == "__main__":
 def Main():
     try:
-        file_xml = "DialogCalculator.xml"
-        dir_path = CWD #xbmc.translatePath( os.path.join( CWD, "resources" ) )
-        w = CALC( file_xml, dir_path, CURRENT_SKIN, FORCE_FALLBACK )
+        try: w = CALC( "DialogCalculator.xml", CWD, CURRENT_SKIN, "PAL", FORCE_FALLBACK )
+        except: w = CALC( "DialogCalculator.xml", CWD, CURRENT_SKIN, FORCE_FALLBACK )
         w.doModal()
         del w
     except:
         traceback.print_exc()
-        #xbmc.executebuiltin( "XBMC.ActivateWindow(scriptsdebuginfo)" )
