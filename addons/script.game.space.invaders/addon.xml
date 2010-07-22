@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.game.spaces.invaders"
+<addon id="script.game.space.invaders"
        name="Space Invaders"
        version="0.98a"
        provider-name="Donno (darkdonno@gmail.com)">

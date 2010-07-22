@@ -112,7 +112,7 @@
 """
 
 __title__ = "Space Invaders"
-__addonID__ = "script.game.spaces.invaders"
+__addonID__ = "script.game.space.invaders"
 __version__ = '0.98a'
 __coder__ = 'Donno'
 __author__ = 'Donno [darkdonno@gmail.com]'
