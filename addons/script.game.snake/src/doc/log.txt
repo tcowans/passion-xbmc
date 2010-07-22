@@ -1,0 +1,116 @@
+# v1.0a
+#
+#   31.01.10 - Changed/backport: version 1.31 to 1.0 to 1.0a for rework again on XBMC
+#            - Fixed/changed: old protocol not work on win32 (p:\\) and  t:\\ now use special://profile/script_data/Snake/
+#            - removed: xbmc.enableNavSounds, because not work on win32, but wors on XBox
+#            - Fixed: home path
+
+# v1.31
+#
+#   11.03.07 - added: language finnish. thanks to Mikkko70
+#   11.03.07 - changed: navigation in votes menu
+#   11.03.07 - added: function to delete a level from server
+#   11.03.07 - added: levelupload is fixed to 5 levels per player now
+#   10.03.07 - fixed: leveldownload was broken
+#   09.03.07 - added: function to create neccessary folders (some did not appear after update)
+#   09.03.07 - made update more save
+#   09.03.07 - fixed: updatecheck on startup setting works now
+#   09.03.07 - changed: rewrote update function for better startup check
+#   08.03.07 - changed: connection to highscore set to new server
+#   07.03.07 - server back online
+
+# v1.3
+#
+#   27.01.07 - translated new functions
+#   26.01.07 - added: new highscorelist mode (hold)
+#   23.01.07 - added: votingfunction for userlevels
+#   23.01.07 - added: userlevel infowindow
+#   22.01.07 - added: deletefunction for userlevels
+#   21.01.07 - fixed: focustexture in settings
+#   20.01.07 - added: downloadfunction for userlevels
+#   20.01.07 - added: levelupload works
+#   20.01.07 - added: context menu
+#   20.01.07 - changed: better levelselection menu
+#   15.01.07 - added: function to cleanup lib directory
+#   14.01.07 - added: "reload picture" button in profile window
+#   14.01.07 - added: tempfile management
+
+# v1.2
+#
+#   31.12.06 - added: new setting: "check for language updates on startup"
+#   31.12.06 - added: language-update function
+#   31.12.06 - added: made new functions multilingual
+#   31.12.06 - added: reply and delete added to message function
+#   31.12.06 - added: send message function
+#   30.10.06 - added: new settings option "check new messages on startup"
+#   29.12.06 - added: basic messag system added (show and read recieved and sent messages)
+
+# v1.1
+#
+#   12.12.06 - changed: the whole game is now in lib dir - only pyo will be delivered
+#   12.12.06 - added: settings for gamesound, menu animation, userpics in highscorelist
+#   12.12.06 - added: settings for updatecheck on startup (does not work yet)
+#   12.12.06 - added: settingsmenu
+#   11.12.06 - added: some loading images (updated progress class)
+#   11.12.06 - movesd: Leveleditor into Levelmanagement
+#   11.12.06 - added: function to delete official levels
+#   11.12.06 - changed: Menupoint "Leveleditor" is now "Levelmanagement"
+#   05.12.06 - added: gamerpicture of the 1st place in onlinehighscore menu
+#   05.12.06 - updated: onlinehighscores library
+#   04.12.06 - added: name of author while levelload
+#   04.12.06 - updated: startmenu
+#   04.12.06 - added: gamerpicture to startmenu (set a pic on www.xbmc.de/xbmcgames)
+
+# v1.0
+#
+#   04.11.06 - changed: made higscore more save
+#   04.11.06 - changed: counting after restart is faster now (3,2,1...)
+#   04.11.06 - added: security update to onlinehighscore
+#   03.11.06 - removed: update button in online menu
+#   03.11.06 - changed: update is now done before scriptstart
+
+# v0.96
+#
+#   30.10.06 - added: keyvalue to levelfiles
+#   29.10.06 - fixed: problems with .DS_Store files
+#   29.10.06 - fixed: Script crashed by saving highscore when server offline
+#   29.10.06 - added: french language file - thanks to alexsolex
+#   29.10.06 - added: dutch language file - thanks to insomniac83
+#   27.10.06 - fixed: Connection was detected when Server was offline
+#   26.10.06 - fixed: levelname bug in leveleditor
+#   26.10.06 - fixed: some bugs in leveleditor ui
+#   26.10.06 - added: ask for creating a online account after game if none is set up
+#   25.10.06 - added: Gamerpicture in profile
+#   25.10.06 - added: update check on startup
+#   25.10.06 - added: online update function
+#   25.10.06 - changed: made highscoreupload more save
+#   25.10.06 - cleaned up code - tnx to tAGEdIEB
+#   25.10.06 - added: only top 10 highscores will be submittet to online DB now
+#   08.09.06 - changed: made the onlineaccountmenu more userfriendly
+#   06.09.06 - added sound to all menus
+#   09.08.06 - added: seperation between "Name" and "local Name"
+#   09.08.06 - fixed: empty highscore crashes Script on load
+#   08.08.06 - start adding new Layout
+#   02.08.06 - added: online highscorelists can be showed in the game
+#   26.07.06 - moved: settings moved to specific xbmc Userfolder - depending on current Profile
+#   18.07.06 - added: acoountmanagement for onlinehighscore
+#   17.07.06 - added: onlinehighscore libary
+#   05.07.06 - added: gamesounds
+#   02.07.06 - added: delete function for Highscores
+#   25.06.06 - added: leveldownload
+#   25.06.06 - added: "Online Features" section
+#   24.06.06 - added: pause function
+#   24.06.06 - added: seperated menu for leveleditor
+#   24.06.06 - changed: controls in leveleditor
+#   20.06.06 - fixed: some small bugs
+#   19.06.06 - added: 3 seconds animation before gamestart
+#   19.06.06 - added: progress bars for loading a level
+#   18.06.06 - added: custom dialogs
+#   18.06.06 - Highscores can be showed seperated by levels
+#   18.06.06 - highscores can be saved in a xml now
+#   17.06.06 - food and score works
+#   17.06.06 - moving out of field makes the snake appear on the other side
+#   17.06.06 - HitTests working (wall, food, snake)
+#   17.06.06 - moving snake with dpad works (not threaded)
+#   16.06.06 - creating level from xml file works
+#   16.06.06 - start
