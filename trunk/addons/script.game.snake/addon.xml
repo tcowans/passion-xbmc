@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="script.game.snake"
+       name="Snake"
+       version="1.0.0"
+       provider-name="Rocko aka Rockstar">
+  <requires>
+    <import addon="xbmc.python" version="1.0"/>
+  </requires>
+  <extension point="xbmc.python.script"
+             library="default.py"/>
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary>Snake Game for XBMC</summary>
+    <description>All credits and special thanks to Rocko.</description>
+    <disclaimer>Remember, High-scores on-line not working....</disclaimer>
+  </extension>
+</addon>

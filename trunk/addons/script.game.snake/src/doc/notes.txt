@@ -1,0 +1,19 @@
+TODO:
+DONE!! - online Highscores only for official Maps
+DONE!! - fix Bug with Splashscreen
+DONE!! - write "get_userhighscores.php"
+DONE!! - add function to lib: get_userhighscores
+DONE!! - write "get_all_levels(gamename)"
+DONE!! - add function to lib: get_all_levels(gamename)
+DONE!! - higscoreupload limitation to 10 highscores
+DONE!! - add Updatefunction
+DONE!! - make scoreupload save
+DONE!! - create languagefiles
+DONE!! - replace all strings with languageIDs
+DONE!! - image for score display
+DONE!! - userimage in profilemenu
+DONE!! - open profile window when no profile is set by trying to upload highscore
+DONE!! - remember saving status in leveleditor
+DONE!! - ask for saving level instead messaging
+DONE!! - rename level in list after renaming it in editor
+DONE!! - dont allow similar Levelnames in normal and custom levels
