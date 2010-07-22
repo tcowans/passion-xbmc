@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="script.calculator"
        name="Calculator"
-       version="2.1.2"
+       version="2.1.3"
        provider-name="Frost (passion-xbmc.org)">
   <requires>
     <import addon="xbmc.python" version="1.0"/>
@@ -11,6 +11,6 @@
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>
     <summary>Calculator for XBMC</summary>
-    <description>Calculator for XBMC[CR][CR]Warning: PAL Resolution is only supported</description>
+    <description>Calculator for XBMC</description>
   </extension>
 </addon>
