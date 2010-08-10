@@ -1,6 +1,9 @@
-09-08-10 : 	v1.3.1 adding licence.txt 
-			start adaptation for official repository
-			
-09-08-10 :  v1.3.5 change sqlite to http api to hit bd.
+v1.4.0
+- refetch a single logo now replace cache (will reload skin to take change immediately).
 
-10-08-10 :  v1.4 refrech a single logo now replace cache.
+v1.3.5 
+- change sqlite to http api to hit bd.
+
+v1.3.1 adding licence.txt 
+- start adaptation for official repository
+	
