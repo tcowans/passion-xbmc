@@ -3,8 +3,8 @@ __script__       = "MyFont.py"
 __author__       = "Ppic, Frost"
 __credits__      = "Team XBMC-Passion, http://passion-xbmc.org/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "08-01-2010"
-__version__      = "1.1"
+__date__         = "29-12-2009"
+__version__      = "1.0"
 
 #python librairy to add font to the current skin. need to have font_filename.ttf in /resources/fonts/, this script will automatically add it to current skin when called.
 
@@ -30,9 +30,12 @@ def getFontsXML():
         for item in list_dir:
             item = os.path.join( skin_dir, item )
             if os.path.isdir( item ):
-                font_xml = os.path.join( item, "Font.xml" )
-                if os.path.exists( font_xml ):
+                font_xml = os.path.join( item, "font.xml" )
+                font_xml_maj = os.path.join( item, "Font.xml" )
+                if os.path.exists( font_xml ) :
                     fontxml_paths.append( font_xml )
+                elif os.path.exists( font_xml_maj ) : 
+                    fontxml_paths.append( font_xml_maj )
     except:
         print_exc()
     return fontxml_paths
