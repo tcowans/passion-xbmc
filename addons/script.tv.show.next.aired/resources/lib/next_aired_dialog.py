@@ -50,7 +50,8 @@ class MainGui( xbmcgui.WindowXMLDialog ):
                         listitem.setProperty("next_ep_name", episode[keys].split("^")[1])
                         next_ep_date = episode[keys].split("^")[2].split("/")
                         if len(next_ep_date) == 3: listitem.setProperty("next_ep_date", "%s %s %s" % ( next_ep_date[1] , next_ep_date[0] , next_ep_date[2] ) )
-                        else: listitem.setProperty("next_ep_date", "%s %s" % ( next_ep_date[0] , next_ep_date[1] ) )
+                        elif len(next_ep_date) == 2: listitem.setProperty("next_ep_date", "%s %s" % ( next_ep_date[0] , next_ep_date[1] ) )
+                        else: listitem.setProperty("next_ep_date", next_ep_date[0] )
                     #else:
                     listitem.setProperty(keys.replace( "+", "" ), episode[keys].replace( "^", ". " ).replace( "|", "/" ))
 
