@@ -12,9 +12,9 @@
   </extension>
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>
-    <summary>Grab infos of next TV Shows Aired.</summary>
+    <summary lang="en">Grab infos of next TV Shows Aired.</summary>
     <summary lang="fr">Récupère les dates de diffusions de vos séries</summary>
-    <description>Grab infos of next TV Shows Aired. You'll never miss them</description>
+    <description lang="en">Grab infos of next TV Shows Aired. You'll never miss them</description>
     <description lang="fr">Ce script interroge votre médiathèque puis vas récupérer les infos sur les prochaines diffusions de vos séries.
     vous n'en manquerez plus aucune </description>
   </extension>
