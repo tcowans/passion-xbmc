@@ -5,11 +5,11 @@ __plugin__       = "Pluzz.fr"
 __addonID__      = "plugin.video.Pluzz.fr"
 __author__       = "Ppic"
 __url__          = "http://code.google.com/p/passion-xbmc/"
-__svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/addons/plugin.video.Bande-Annonce%20Allocine/"
-__credits__      = "Team XBMC passion, http://passion-xbmc.org/developpement-python/%28script%29-sporlive-display/"
+__svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/addons/"
+__credits__      = "Team XBMC passion, http://passion-xbmc.org/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "11-07-2010"
-__version__      = "1.0"
+__date__         = "23-08-2010"
+__version__      = "1.1.0"
 __svn_revision__  = "$Revision: 709 $".replace( "Revision", "" ).strip( "$: " )
 __XBMC_Revision__ = "20000" #XBMC Babylon
 __useragent__    = "Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.0.1) Gecko/2008070208 Firefox/3.0.1"
@@ -41,7 +41,7 @@ tempfile = os.path.join( os.getcwd() , "temp.html" )
 BASE_URL = "http://www.pluzz.fr/"
 MAGIC_URL = "http://www.pluzz.fr/appftv/webservices/video/getInfosVideo.php?src=cappuccino&video-type=simple&template=ftvi&template-format=complet&id-externe="
 URL_MP4 = "rtmp://videozones-rtmp.francetv.fr/ondemand/mp4:cappuccino/publication"
-URL_WMV = "mms://a988.v101995.c10199.e.vm.akamaistream.net/7/988/10199/3f97c7e6/ftvigrp.download.akamai.com/10199/cappuccino/production/publication"
+URL_WMV = "http://a988.v101995.c10199.e.vm.akamaistream.net/7/988/10199/3f97c7e6/ftvigrp.download.akamai.com/10199/cappuccino/production/publication"
 
 def addLink(name,url,iconimage, c_items = None ):
         ok=True
@@ -159,7 +159,7 @@ def get_video_url(em_url):
 def get_video_info(video_id):
     print "### récupération page %s%s" % ( MAGIC_URL , video_id)
     data = get_html_source ( MAGIC_URL + video_id )
-    save_data(data,tempfile)         
+    #save_data(data,tempfile)         
     video = {}
     #récupération infos du film
     match = re.search("<titre-public><!\[CDATA\[(.*?)\]\]></titre-public>",data)
@@ -175,7 +175,7 @@ def get_video_info(video_id):
     if match: video["duree"] = match.group(1)
     
     #chemin en fonction du type
-    if ".wmv" in video["nomfichier"]: video["link"] = URL_WMV + video["chemin"] + video["nomfichier"]
+    if ".wmv" in video["nomfichier"]: video["link"] = URL_WMV + video["chemin"] + video["nomfichier"] + "?MSWMExt=.asf"
     elif ".asx" in video["nomfichier"]: 
         data = get_html_source ( video["chemin"] + video["nomfichier"])
         match = re.search("""<ref href = "(.*?)" />""" , data )
