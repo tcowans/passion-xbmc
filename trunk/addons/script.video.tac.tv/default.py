@@ -55,8 +55,8 @@ __url__           = "http://code.google.com/p/passion-xbmc/"
 __svn_url__       = "http://passion-xbmc.googlecode.com/svn/trunk/addons/script.video.tac.tv/"
 __credits__       = "Team XBMC Passion"
 __platform__      = "xbmc media center, [ALL]"
-__date__          = "18-06-2010"
-__version__       = "2.0.1"
+__date__          = "06-09-2010"
+__version__       = "2.0.2"
 __svn_revision__  = "$Revision$"
 
 import resources.libs.main as gui

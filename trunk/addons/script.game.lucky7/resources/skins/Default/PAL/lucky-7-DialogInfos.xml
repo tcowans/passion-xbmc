@@ -62,7 +62,7 @@
 			<posy>50</posy>
 			<width>200</width>
 			<height>40</height>
-			<label>$LOCALIZE[SCRIPT4] 2.0.0</label>
+			<label>$LOCALIZE[SCRIPT4] 2.0.1</label>
 			<font>font12</font>
 			<textcolor>DDced8da</textcolor>
 			<shadowcolor>FF000000</shadowcolor>

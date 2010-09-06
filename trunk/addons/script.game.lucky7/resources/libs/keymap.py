@@ -1,5 +1,5 @@
 
-#http://xbmc.svn.sourceforge.net/viewvc/xbmc/trunk/XBMC/guilib/Key.h
+#http://xbmc.svn.sourceforge.net/viewvc/xbmc/trunk/guilib/Key.h?content-type=text%2Fplain
 #http://xbmc.org/wiki/?title=HOW-TO_write_Python_Scripts#Control_Type:_Remote
 #	
 # Button code for XBOX DVD-Remote
@@ -33,7 +33,7 @@
 
 SHOW_DIALOG_INFOS  = { 229: "REMOTE_TITLE_BUTTON", 261: "BUTTON_WHITE", 61513: "KEYBOARD_LETTER_I" }
 
-CLOSE_GAME         = { 247: "REMOTE_MENU_BUTTON", 275: "BUTTON_BACK" }
+CLOSE_GAME         = { 10: "ACTION_PREVIOUS_MENU", 247: "REMOTE_MENU_BUTTON", 275: "BUTTON_BACK" }
 CLOSE_DIALOG       = { 229: "REMOTE_TITLE_BUTTON", 261: "BUTTON_WHITE" }
 CLOSE_DIALOG.update( CLOSE_GAME )
 
