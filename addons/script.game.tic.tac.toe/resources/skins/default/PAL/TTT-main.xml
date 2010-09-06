@@ -544,7 +544,7 @@
 					<posy>84</posy>
 					<width>805</width>
 					<height>46</height>
-					<texture>sub-background-label.png</texture>
+					<texture>TTT-sub-background-label.png</texture>
 				</control>
 				<control type="label">
 					<description>information during the game</description>

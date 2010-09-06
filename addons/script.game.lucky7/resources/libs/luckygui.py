@@ -526,7 +526,8 @@ class LUCKY7( xbmcgui.WindowXML ):
     def _show_infos( self ):
         import dialogInfos
         current_skin, force_fallback = getUserSkin()
-        w = dialogInfos.DialogInfos( "lucky-7-DialogInfos.xml", CWD, current_skin, force_fallback, close_game=self._close_game )
+        try: w = dialogInfos.DialogInfos( "lucky-7-DialogInfos.xml", CWD, current_skin, "PAL", close_game=self._close_game )
+        except: w = dialogInfos.DialogInfos( "lucky-7-DialogInfos.xml", CWD, current_skin, force_fallback, close_game=self._close_game )
         w.doModal()
         del w
         del dialogInfos
@@ -549,7 +550,8 @@ def show_game():
     current_skin, force_fallback = getUserSkin()
 
     #xbmc.enableNavSounds( False )
-    w = LUCKY7( file_xml, dir_path, current_skin, force_fallback )
+    try: w = LUCKY7( file_xml, dir_path, current_skin, "PAL" )
+    except: w = LUCKY7( file_xml, dir_path, current_skin, force_fallback )
     w.doModal()
     del w
     #xbmc.enableNavSounds( True )

@@ -527,7 +527,7 @@ class CALC( xbmcgui.WindowXMLDialog ):
 #if __name__ == "__main__":
 def Main():
     try:
-        try: w = CALC( "DialogCalculator.xml", CWD, CURRENT_SKIN, "PAL", FORCE_FALLBACK )
+        try: w = CALC( "DialogCalculator.xml", CWD, CURRENT_SKIN, "PAL" )
         except: w = CALC( "DialogCalculator.xml", CWD, CURRENT_SKIN, FORCE_FALLBACK )
         w.doModal()
         del w

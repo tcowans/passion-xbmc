@@ -1775,7 +1775,8 @@ def show_tac_main_window( startupwin=None ):
     current_skin, force_fallback = getUserSkin()
     
     print "Creating TacMainWindow"
-    w = TacMainWindow( file_xml, dir_path, current_skin, force_fallback, startupwin=startupwin )
+    try: w = TacMainWindow( file_xml, dir_path, current_skin, "PAL", startupwin=startupwin )
+    except: w = TacMainWindow( file_xml, dir_path, current_skin, force_fallback, startupwin=startupwin )
     w.doModal()
     del w
                         

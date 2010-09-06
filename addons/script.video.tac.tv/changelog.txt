@@ -1,5 +1,8 @@
 Historique:
 ----------
+06-09-10 Version 2.0.2 by Frost
+  - fixed windowXML resolution
+
 19-06-10 Version 2.0.1 by Frost
   - added provides to append in video section, same as plugin video :D
 

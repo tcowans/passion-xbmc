@@ -7,8 +7,8 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/addons/script.game.tic.tac.toe/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center, [ALL]"
-__date__         = "11-06-2010"
-__version__      = "1.0.0"
+__date__         = "06-09-2010"
+__version__      = "1.0.1"
 __svn_revision__ = "$Revision$"
 
 
@@ -362,6 +362,7 @@ class TILES( dict ):
 
 if  __name__ == "__main__":
     current_skin, force_fallback = getUserSkin()
-    w = TTT( "TTT-main.xml", CWD, current_skin, force_fallback )
+    try: w = TTT( "TTT-main.xml", CWD, current_skin, "PAL" )
+    except: w = TTT( "TTT-main.xml", CWD, current_skin, force_fallback )
     w.doModal()
     del w
