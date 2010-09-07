@@ -608,7 +608,8 @@ class Main(xbmcgui.Window):
 
 	def setInfo(self):
 		if self.initing == 0:
-			theObj =self.getFocus()
+			try: theObj =self.getFocus()
+			except: theObj = None
 			if theObj == self.startButton:
 				self.infoLabel.setLabel(glob.language.string(0))
 				self.infoShadowLabel.setLabel(glob.language.string(0))
