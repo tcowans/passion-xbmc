@@ -7,8 +7,8 @@ __url__           = "http://code.google.com/p/passion-xbmc/"
 __svn_url__       = "http://passion-xbmc.googlecode.com/svn/trunk/addons/plugin.video.astral.media/"
 __credits__       = "Team XBMC, http://xbmc.org/"
 __platform__      = "xbmc media center, [ALL]"
-__date__          = "09-06-2010"
-__version__       = "1.0.5"
+__date__          = "07-09-2010"
+__version__       = "1.0.6"
 __svn_revision__  = "$Revision$"
 
 
@@ -19,20 +19,20 @@ from traceback import print_exc
 
 import xbmc
 import xbmcgui
-import xbmcaddon
 import xbmcplugin
+from xbmcaddon import Addon
  
-__addon__ = xbmcaddon.Addon( __addonID__ )
-__settings__ = __addon__
-__language__ = xbmc.getLocalizedString
-#__language__ = __addon__.getLocalizedString
+__settings__ = Addon( __addonID__ )
+__addonDir__ = __settings__.getAddonInfo( "path" )
+__string__   = xbmc.getLocalizedString
+__language__ = __string__ #__settings__.getLocalizedString
 
 
 from resources.pluginAPI.scrapers import *
 from resources.pluginAPI.htmldecode import *
 
 
-DIALOG_PROGRESS = xbmcgui.DialogProgress()
+#DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
 
 class _Info:
@@ -68,13 +68,13 @@ class Main:
             self.settings[ "dl_path" ] = ( __settings__.getSetting( "DlPath" ), "" )[ ( __settings__.getSetting( "AskDl" ) == "true" ) ]
             self.settings[ "dl_rpct" ] = int( "0|5|10|20|25|50|100".split( "|" )[ int( __settings__.getSetting( "ReportPercent" ) ) ] ) or -1
             self.settings[ "dl_onbg" ] = ( 0, self.settings[ "dl_rpct" ] )[ ( __settings__.getSetting( "DlBackground" ) == "true" ) ]
-            file( os.path.join( os.getcwd(), "settings.dl" ), "w" ).write( repr( self.settings ) )
+            file( os.path.join( __addonDir__, "settings.dl" ), "w" ).write( repr( self.settings ) )
         except:
             print_exc()
 
     def select( self ):
         try:
-            contents = eval( file( os.path.join( os.getcwd(), "contents.data" ), "r" ).read() )
+            contents = eval( file( os.path.join( __addonDir__, "contents.data" ), "r" ).read() )
             if "emission='select" in sys.argv[ 2 ]:
                 emissions = contents[ "programId" ]
                 choice = [ self._decode( title ) for i, title in emissions ]
@@ -129,8 +129,8 @@ class Main:
         OK = True
         try:
             for canal, value in sorted( canals.items() ):
-                DIALOG_PROGRESS.update( -1, __language__( 1040 ), value[ 0 ] )
-                tbn = os.path.join( os.getcwd(), "resources", "media", "%s.png" % canal )
+                #DIALOG_PROGRESS.update( -1, __language__( 1040 ), value[ 0 ] )
+                tbn = os.path.join( __addonDir__, "resources", "media", "%s.png" % canal )
                 listitem = xbmcgui.ListItem( value[ 0 ], "", tbn, tbn )
 
                 c_items = self._add_default_c_items()
@@ -150,9 +150,9 @@ class Main:
     def _add_directory_contents( self, contents ):
         OK = True
         try:
-            file( os.path.join( os.getcwd(), "contents.data" ), "w" ).write( repr( contents ) )
+            file( os.path.join( __addonDir__, "contents.data" ), "w" ).write( repr( contents ) )
             if contents[ "programId" ]:
-                tbn = os.path.join( os.getcwd(), "resources", "media", "%s.png" % self.args.canal )
+                tbn = os.path.join( __addonDir__, "resources", "media", "%s.png" % self.args.canal )
                 title = "[B]Émissions[/B] (%i)" % (len( contents[ "programId" ] )-1)
                 listitem = xbmcgui.ListItem( title, "", tbn, tbn )
 
@@ -167,7 +167,7 @@ class Main:
                 if ( not OK ): raise
 
             if contents[ "episodeId" ]:
-                tbn = os.path.join( os.getcwd(), "resources", "media", "%s.png" % self.args.canal )
+                tbn = os.path.join( __addonDir__, "resources", "media", "%s.png" % self.args.canal )
                 title = "[B]Épisodes[/B] (%i)" % (len( contents[ "episodeId" ] )-1)
                 listitem = xbmcgui.ListItem( title, "", tbn, tbn )
 
@@ -183,7 +183,7 @@ class Main:
                 if ( not OK ): raise
 
             if contents[ "typeId" ]:
-                tbn = os.path.join( os.getcwd(), "resources", "media", "%s.png" % self.args.canal )
+                tbn = os.path.join( __addonDir__, "resources", "media", "%s.png" % self.args.canal )
                 title = "[B]Types de vidéo[/B] (%i)" % (len( contents[ "typeId" ] )-1)
                 listitem = xbmcgui.ListItem( title, "", tbn, tbn )
 
@@ -198,7 +198,7 @@ class Main:
                 if ( not OK ): raise
 
             if contents[ "themeId" ]:
-                tbn = os.path.join( os.getcwd(), "resources", "media", "%s.png" % self.args.canal )
+                tbn = os.path.join( __addonDir__, "resources", "media", "%s.png" % self.args.canal )
                 title = "[B]Thématiques[/B] (%i)" % (len( contents[ "themeId" ] )-1)
                 listitem = xbmcgui.ListItem( title, "", tbn, tbn )
 
@@ -243,7 +243,7 @@ class Main:
             for videoid, episode in episodes.items():
                 fulltitle = "%s %s %s" % ( episode[ "tvshowtitle" ], separator, episode[ "title" ] )
                 title = ( episode[ "title" ], fulltitle )[ mixtitle ]
-                DIALOG_PROGRESS.update( -1, __language__( 1040 ), title )
+                #DIALOG_PROGRESS.update( -1, __language__( 1040 ), title )
                 listitem = xbmcgui.ListItem( title, "", episode[ "thumb" ], episode[ "thumb" ] )
 
                 flvs = getWebVideoUrl( canal_url, videoid )
@@ -278,7 +278,7 @@ class Main:
                 if 1 < int( pages ) >= ( int( self.args.page )+1 ):
                     next = str( int( self.args.page )+1 )
 
-                    tbn = os.path.join( os.getcwd(), "resources", "media", "next1.png" )
+                    tbn = os.path.join( __addonDir__, "resources", "media", "next1.png" )
                     listitem = xbmcgui.ListItem( "[B]Page suivante[/B]", "", tbn, tbn )
 
                     c_items = self._add_default_c_items()
@@ -367,13 +367,13 @@ if ( __name__ == "__main__" ):
         if ( "action=settings" in  sys.argv[ 2 ] ):
             __settings__.openSettings()
         elif ( "show_dl=" in sys.argv[ 2 ] ):
-            DialogDownloadProgress( "DialogDownloadProgress.xml", os.getcwd(), "Default" )
+            DialogDownloadProgress( "DialogDownloadProgress.xml", __addonDir__ )
         elif ( "dl_url=" in sys.argv[ 2 ] ):
             # download selected media via script downloader ( onBackground or with progressBar )
             exec "args = _Info(%s)" % ( sys.argv[ 2 ][ 1: ].replace( "&", ", " ), )
-            script = os.path.join( os.getcwd(), "resources", "pluginAPI", "Downloader.py" )
+            script = os.path.join( __addonDir__, "resources", "pluginAPI", "Downloader.py" )
             # get settings
-            settings = eval( file( os.path.join( os.getcwd(), "settings.dl" ), "r" ).read() )
+            settings = eval( file( os.path.join( __addonDir__, "settings.dl" ), "r" ).read() )
             DL_PATH = settings[ "dl_path" ]
             if DL_PATH: destination = os.path.join( DL_PATH, os.path.basename( args.dl_url ) )
             else: destination = DL_PATH
