@@ -152,15 +152,6 @@ class Main(xbmcgui.Window):
 		self.load_info()
 		self.load_language()
 
-		if glob.CONNECTION == 1:
-			self.check_for_update()
-		else:
-			self.update_available = 0
-
-		if self.update_available == 1:
-			self.do_update()
-
-
 
 	def onAction(self, action):
 		play_sound("menu_move")
@@ -249,71 +240,6 @@ class Main(xbmcgui.Window):
 					glob.info[str(child.nodeName)]=str(child.childNodes[0].nodeValue)
 			print "loading info successfull"
 		print "-----------------------------"
-
-	def check_for_update(self):
-		self.updateurl = "http://snake.dirtyduckdesigns.de/script_update/"
-		self.updatefile = "update.xml"
-		self.versionfile = "version.txt"
-		
-		print "-----------------------------"
-		print "searching for update"
-		vurl = urllib.urlopen(self.updateurl+self.versionfile)
-		self.uversion = vurl.read()
-		vurl.close()
-		print "done searching for update"
-		print "-----------------------------"
-		if float(str(self.uversion).strip()) > float(str(glob.info["version"])):
-			self.update_available = 1
-		else:
-			self.update_available = 0
-
-	def do_update(self):
-		if self.question(glob.language.string(13),glob.language.string(14)+"\nversion "+str(self.uversion).strip()+"\n"+glob.language.string(15)):
-			self.progressbar = Progress(text=glob.language.string(16))
-			self.progressbar.show()
-			self.progressbar.update_progress(1,glob.language.string(16))
-			tempurl = urllib.urlopen(self.updateurl+self.updatefile)
-			self.tempstrings = tempurl.readlines()
-			tempurl.close()
-			self.progressbar.close()
-			del self.progressbar
-			
-			self.exp="""<file><source>(.*?)</source><destination>(.*?)</destination></file>"""
-			self.exp2="""<folder><destination>(.*?)</destination></folder>"""
-	
-			self.id = 0
-			for self.line in self.tempstrings:
-				try:
-					self.res=re.findall(self.exp,self.line)
-					self.results = self.res[0]
-				except:
-					self.results = 0
-	
-				if self.results != 0:
-					self.progressbar = Progress(text=glob.language.string(17))
-					self.progressbar.show()
-					self.progressbar.update_progress(1,glob.language.string(18))
-					self.save(self.updateurl+str(self.results[0]),HOME_DIR+str(self.results[1]))
-					self.progressbar.close()
-					del self.progressbar
-
-				try:
-					self.res2=re.findall(self.exp2,self.line)
-					self.results2 = self.res2[0]
-				except:
-					self.results2 = 0
-	
-				if self.results2 != 0:
-					self.progressbar = Progress(text=glob.language.string(17))
-					self.progressbar.show()
-					self.progressbar.update_progress(1,glob.language.string(18))
-					os.mkdir(HOME_DIR+self.results2,0777)
-					self.progressbar.close()
-					del self.progressbar
-			self.message(glob.language.string(19),glob.language.string(19))
-
-
-
 
 	def hook(self, count_blocks, block_size, total_size):
 		current_size = block_size * count_blocks
