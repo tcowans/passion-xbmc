@@ -5,8 +5,6 @@ import time
 import datetime
 from traceback import print_exc
 
-import elementtree.HTMLTreeBuilder as ET
-
 ENCODING = ( "", "iso-8859-1", "UTF-8", )[ 2 ]
 
 try:
