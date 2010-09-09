@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="repository.passion.xbmc.svn"
+		name="Passion-XBMC Add-ons (SVN)"
+		version="1.0.0"
+		provider-name="Team Passion-XBMC">
+	<extension point="xbmc.addon.repository"
+		name="Passion-XBMC Add-on SVN Repository">
+		<info compressed="false">http://passion-xbmc.googlecode.com/svn/trunk/addons/addons_repo/addons.xml</info>
+		<checksum>http://passion-xbmc.googlecode.com/svn/trunk/addons/addons_repo/addons.xml.md5</checksum>
+		<datadir zip="false">http://passion-xbmc.googlecode.com/svn/trunk/addons</datadir>
+	</extension>
+	<extension point="xbmc.addon.metadata">
+		<summary>Install Add-ons from passion-xbmc.googlecode.com</summary>
+		<description>Download and install Add-ons from passion-xbmc.googlecode.com</description>
+		<platform>all</platform>
+	</extension>
+</addon>
