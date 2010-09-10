@@ -46,13 +46,15 @@ ECHO Copying required files to \Build\addons\%AddonName%\ folder . . .
 XCOPY lib "BUILD\addons\%AddonName%\lib" /E /Q /I /Y /EXCLUDE:BUILD\exclude.txt
 XCOPY media "BUILD\addons\%AddonName%\media" /E /Q /I /Y /EXCLUDE:BUILD\exclude.txt
 XCOPY sounds "BUILD\addons\%AddonName%\sounds" /E /Q /I /Y /EXCLUDE:BUILD\exclude.txt
-COPY default.py "BUILD\addons\%AddonName%\"
+IF EXIST "addon.py" COPY addon.py "BUILD\addons\%AddonName%\"
+IF EXIST "default.py" COPY default.py "BUILD\addons\%AddonName%\"
 COPY addon.xml "BUILD\addons\%AddonName%\"
 ECHO.
 ECHO Copying optional files to \Build\addons\%AddonName%\ folder . . .
 IF EXIST "icon.png" COPY icon.png "BUILD\addons\%AddonName%\"
 IF EXIST "fanart.jpg" COPY fanart.jpg "BUILD\addons\%AddonName%\"
 IF EXIST "changelog.txt" COPY changelog.txt "BUILD\addons\%AddonName%\"
+IF EXIST "license.txt" COPY license.txt "BUILD\addons\%AddonName%\"
 
 :Cleanup
 :: Delete exclude.txt file

@@ -47,6 +47,7 @@ ECHO Copying optional files to \Build\addons\%AddonName%\ folder . . .
 IF EXIST "icon.png" COPY icon.png "BUILD\addons\%AddonName%\"
 IF EXIST "fanart.jpg" COPY fanart.jpg "BUILD\addons\%AddonName%\"
 IF EXIST "changelog.txt" COPY changelog.txt "BUILD\addons\%AddonName%\"
+IF EXIST "license.txt" COPY license.txt "BUILD\addons\%AddonName%\"
 
 :Cleanup
 :: Delete exclude.txt file

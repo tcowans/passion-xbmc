@@ -21,7 +21,7 @@ ECHO Creating \BUILD\addons\%AddonName%\ folder . . .
 IF EXIST BUILD (
     RD BUILD /S /Q
 )
-MD BUILD
+MD "BUILD\addons\%AddonName%\"
 ECHO.
 
 :MakeExcludeFile
@@ -43,9 +43,6 @@ ECHO .bak>>"BUILD\exclude.txt"
 ECHO ----------------------------------------------------------------------
 ECHO.
 ECHO Copying required files to \Build\addons\%AddonName%\ folder . . .
-XCOPY resources "BUILD\addons\%AddonName%\resources" /E /Q /I /Y /EXCLUDE:BUILD\exclude.txt
-IF EXIST "addon.py" COPY addon.py "BUILD\addons\%AddonName%\"
-IF EXIST "default.py" COPY default.py "BUILD\addons\%AddonName%\"
 COPY addon.xml "BUILD\addons\%AddonName%\"
 ECHO.
 ECHO Copying optional files to \Build\addons\%AddonName%\ folder . . .
