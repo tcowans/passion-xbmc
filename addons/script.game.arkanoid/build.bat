@@ -37,6 +37,7 @@ ECHO Desktop.ini>>"BUILD\exclude.txt"
 ECHO .pyo>>"BUILD\exclude.txt"
 ECHO .pyc>>"BUILD\exclude.txt"
 ECHO .bak>>"BUILD\exclude.txt"
+ECHO oldlibs>>"BUILD\exclude.txt"
 
 :MakeReleaseBuild
 :: Create release build

@@ -120,7 +120,7 @@ Vous choisissez une catégorie, puis une sous catégorie et à vous les videos d
     <description>Calculator for XBMC</description>
   </extension>
 </addon>
-<addon id="script.game.arkanoid" name="Arkanoid" provider-name="Frost (passion-xbmc.org)" version="1.0.3">
+<addon date="11.09.2010" id="script.game.arkanoid" name="Arkanoid" provider-name="Frost (passion-xbmc.org)" version="1.0.4">
   <requires>
     <import addon="xbmc.python" version="1.0" />
   </requires>
