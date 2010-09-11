@@ -25,6 +25,23 @@ BASE_RESOURCE_PATH = utilities.BASE_RESOURCE_PATH
 CURRENT_SKIN, FORCE_FALLBACK = utilities.CURRENT_SKIN, utilities.FORCE_FALLBACK
 
 
+def getWindow( window, xmlFilename, scriptPath=os.getcwd(), defaultSkin="Default", defaultRes="720p", forceFallback=False ):
+    """ getWindow( ... ) return good window class for addons system or xbox
+        xmlFilename     : string - the name of the xml file to look for.
+        scriptPath      : [opt] string - path to script. used to fallback to if the xml doesn't exist in the current skin. (eg os.getcwd())
+        defaultSkin     : [opt] string - name of the folder in the skins path to look in for the xml. (default='Default')
+        defaultRes      : [opt] string - default skins resolution. (default='720p')
+        forceFallback   : [opt] boolean - if true then it will look only in the defaultSkin folder. (default=False)
+    """
+    W = None
+    try: W = window( xmlFilename, scriptPath, defaultSkin, defaultRes )
+    except: print_exc()
+    if W is None:
+        try: W = window( xmlFilename, scriptPath, defaultSkin, forceFallback )
+        except: print_exc()
+    return W
+
+
 class Main( xbmcgui.WindowXML ):
     def __init__( self, *args, **kwargs ):
         xbmcgui.WindowXML.__init__( self, *args, **kwargs )
@@ -189,14 +206,12 @@ class Main( xbmcgui.WindowXML ):
 
             elif controlID == 122:
                 import editor
-                try: w = editor.levelEditor( "levelEditor.xml", CWD, CURRENT_SKIN, "720p", FORCE_FALLBACK )
-                except: w = editor.levelEditor( "levelEditor.xml", CWD, CURRENT_SKIN, FORCE_FALLBACK )
+                w = getWindow( editor.levelEditor, "levelEditor.xml", CWD, CURRENT_SKIN, "720p", FORCE_FALLBACK )
                 w.doModal()
                 del w, editor
 
             elif controlID == 125:
-                try: w = HighScores( "highScores.xml", CWD, CURRENT_SKIN, "720p", FORCE_FALLBACK )
-                except: w = HighScores( "highScores.xml", CWD, CURRENT_SKIN, FORCE_FALLBACK )
+                w = getWindow( HighScores, "highScores.xml", CWD, CURRENT_SKIN, "720p", FORCE_FALLBACK )
                 w.doModal()
                 del w
 
@@ -218,16 +233,14 @@ class Main( xbmcgui.WindowXML ):
 
             elif controlID == 127:
                 import infos
-                try: w = infos.Info( "infos.xml", CWD, CURRENT_SKIN, "720p", FORCE_FALLBACK )
-                except: w = infos.Info( "infos.xml", CWD, CURRENT_SKIN, FORCE_FALLBACK )
+                w = getWindow( infos.Info, "infos.xml", CWD, CURRENT_SKIN, "720p", FORCE_FALLBACK )
                 w.doModal()
                 del w, infos
         except:
             print_exc()
 
     def add_score( self, mode, score, level ):
-        try: HS = HighScores( "highScores.xml", CWD, CURRENT_SKIN, "720p", FORCE_FALLBACK )
-        except: HS = HighScores( "highScores.xml", CWD, CURRENT_SKIN, FORCE_FALLBACK )
+        HS = getWindow( HighScores, "highScores.xml", CWD, CURRENT_SKIN, "720p", FORCE_FALLBACK )
         if HS.addScore( mode, score, level ):
             HS.doModal()
         del HS
@@ -372,8 +385,7 @@ def showMain():
     w = None
     try:
         try:
-            try: w = Main( "arkanoid.xml", CWD, CURRENT_SKIN, "720p", FORCE_FALLBACK )
-            except: w = Main( "arkanoid.xml", CWD, CURRENT_SKIN, FORCE_FALLBACK )
+            w = getWindow( Main, "arkanoid.xml", CWD, CURRENT_SKIN, "720p", FORCE_FALLBACK )
         except Exception, e:
             print_exc()
             #TypeError
