@@ -98,16 +98,16 @@ Vous choisissez une catégorie, puis une sous catégorie et à vous les videos d
   </extension>
 </addon>
 <addon id="repository.passion.xbmc.svn" name="Passion-XBMC Add-ons (SVN)" provider-name="Team Passion-XBMC" version="1.0.0">
-	<extension name="Passion-XBMC Add-on SVN Repository" point="xbmc.addon.repository">
-		<info compressed="false">http://passion-xbmc.googlecode.com/svn/trunk/addons/addons_repo/addons.xml</info>
-		<checksum>http://passion-xbmc.googlecode.com/svn/trunk/addons/addons_repo/addons.xml.md5</checksum>
-		<datadir zip="false">http://passion-xbmc.googlecode.com/svn/trunk/addons</datadir>
-	</extension>
-	<extension point="xbmc.addon.metadata">
-		<summary>Install Add-ons from passion-xbmc.googlecode.com</summary>
-		<description>Download and install Add-ons from passion-xbmc.googlecode.com</description>
-		<platform>all</platform>
-	</extension>
+  <extension name="Passion-XBMC Add-on SVN Repository" point="xbmc.addon.repository">
+    <info compressed="false">http://passion-xbmc.googlecode.com/svn/trunk/addons/addons_repo/addons.xml</info>
+    <checksum>http://passion-xbmc.googlecode.com/svn/trunk/addons/addons_repo/addons.xml.md5</checksum>
+    <datadir zip="false">http://passion-xbmc.googlecode.com/svn/trunk/addons</datadir>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary>Install Add-ons from passion-xbmc.googlecode.com</summary>
+    <description>Download and install Add-ons from passion-xbmc.googlecode.com</description>
+    <platform>all</platform>
+  </extension>
 </addon>
 <addon id="script.calculator" name="Calculator" provider-name="Frost (passion-xbmc.org)" version="2.1.4">
   <requires>
@@ -120,7 +120,7 @@ Vous choisissez une catégorie, puis une sous catégorie et à vous les videos d
     <description>Calculator for XBMC</description>
   </extension>
 </addon>
-<addon id="script.game.arkanoid" name="Arkanoid" provider-name="Frost (passion-xbmc.org)" version="1.0.2">
+<addon id="script.game.arkanoid" name="Arkanoid" provider-name="Frost (passion-xbmc.org)" version="1.0.3">
   <requires>
     <import addon="xbmc.python" version="1.0" />
   </requires>
