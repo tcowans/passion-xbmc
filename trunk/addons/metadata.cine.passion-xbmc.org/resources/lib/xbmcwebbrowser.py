@@ -4,6 +4,7 @@
 
 import sys
 import webbrowser
+from traceback import print_exc
 
 import xbmc
 from xbmcaddon import Addon
