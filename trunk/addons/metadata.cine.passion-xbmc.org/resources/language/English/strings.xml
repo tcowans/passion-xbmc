@@ -10,6 +10,10 @@
   <string id="30013">IMDB</string>
 
   <string id="30020">Scraper</string>
-  <string id="30030">Credits</string>
-  <string id="30031">[B]Help enrich the database of Cine-Passion[/B]</string>
+
+  <string id="30050">Website</string>
+  <string id="30051">Forum Support</string>
+  <string id="30052">[B]Click here for support[/B]</string>
+  <string id="30053">Participate</string>
+  <string id="30054">[B]Click here for participate/visit[/B]</string>
 </strings>

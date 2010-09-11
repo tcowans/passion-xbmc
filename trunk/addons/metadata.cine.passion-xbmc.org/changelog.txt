@@ -1,4 +1,10 @@
-﻿1.0.10
+﻿1.1.1
+- changed default rating for IMDB
+- added [settings.xml] website launcher for forum support and/or participate
+- changed English language strings
+- updated French language strings
+
+1.0.10
 - added Hungarian translation.
 
 1.0.9

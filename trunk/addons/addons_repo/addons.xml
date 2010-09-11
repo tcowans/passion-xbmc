@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <addons>
-<addon id="metadata.cine.passion-xbmc.org" name="Ciné-Passion" provider-name="Team Passion-XBMC (passion-xbmc.org)" version="1.0.10">
+<addon id="metadata.cine.passion-xbmc.org" name="Ciné-Passion" provider-name="Team Passion-XBMC (passion-xbmc.org)" version="1.1.1">
   <requires>
     <import addon="xbmc.metadata" version="1.0" />
   </requires>
