@@ -19,6 +19,18 @@ def _decode( text ):
     return text
 
 
+def get_revision():
+    import re
+    addon_rev = ""
+    try:
+        txt = file( os.path.join( os.getcwd(), "addon.xml" ), "r" ).read()
+        rev = re.search( "<.+?Revision.+?(\d+).+?>", txt )
+        if rev: addon_rev = rev.group( 1 )
+    except:
+        print_exc()
+    return addon_rev
+
+
 class Info( xbmcgui.WindowXMLDialog ):
     def __init__( self, *args, **kwargs ):
         xbmcgui.WindowXMLDialog.__init__( self, *args, **kwargs )
@@ -28,15 +40,15 @@ class Info( xbmcgui.WindowXMLDialog ):
     def onInit( self ):
         try:
             self.getControl( 48 ).reset()
-            icon = sys.modules[ "__main__" ].__addon__.getAddonInfo( "icon" )
-            listitem = xbmcgui.ListItem( _decode( sys.modules[ "__main__" ].__addon__.getAddonInfo( "name" ) ), "", icon, icon )
+            icon = sys.modules[ "__main__" ].__settings__.getAddonInfo( "icon" )
+            listitem = xbmcgui.ListItem( _decode( sys.modules[ "__main__" ].__settings__.getAddonInfo( "name" ) ), "", icon, icon )
             
             for property in ( "author", "changelog", "description", "disclaimer",
                 "fanart", "icon", "id", "name", "path", "profile", "stars", "summary", "type", "version" ):
-                    value = str( sys.modules[ "__main__" ].__addon__.getAddonInfo( property ) )
+                    value = str( sys.modules[ "__main__" ].__settings__.getAddonInfo( property ) )
                     listitem.setProperty( property, _decode( value ) )
 
-            listitem.setProperty( "revision", sys.modules[ "__main__" ].__svn_revision__ )
+            listitem.setProperty( "revision", get_revision() )
             self.getControl( 48 ).addItem( listitem )
         except:
             print_exc()
