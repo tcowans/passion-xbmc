@@ -31,12 +31,13 @@ def getWindow( window, xmlFilename, scriptPath=os.getcwd(), defaultSkin="Default
         scriptPath      : [opt] string - path to script. used to fallback to if the xml doesn't exist in the current skin. (eg os.getcwd())
         defaultSkin     : [opt] string - name of the folder in the skins path to look in for the xml. (default='Default')
         defaultRes      : [opt] string - default skins resolution. (default='720p')
-        forceFallback   : [opt] boolean - if true then it will look only in the defaultSkin folder. (default=False)
+        forceFallback   : [opt] boolean - if true then it will look only in the defaultSkin folder. (default=False) (old version only)
     """
     W = None
     try: W = window( xmlFilename, scriptPath, defaultSkin, defaultRes )
     except: print_exc()
     if W is None:
+        # execpt window for old version of xbmc
         try: W = window( xmlFilename, scriptPath, defaultSkin, forceFallback )
         except: print_exc()
     return W
