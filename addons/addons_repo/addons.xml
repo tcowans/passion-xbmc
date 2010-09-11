@@ -176,7 +176,7 @@ PC:[/B]
  - [B]English:[/B] http://forum.xbmc.org/showthread.php?t=70978</description>
   </extension>
 </addon>
-<addon id="script.game.hangman" name="HangMan" provider-name="Frost (passion-xbmc.org)" version="1.0.3">
+<addon date="11.09.2010" id="script.game.hangman" name="HangMan" provider-name="Frost (passion-xbmc.org)" version="1.0.4">
   <requires>
     <import addon="xbmc.python" version="1.0" />
   </requires>
@@ -185,6 +185,7 @@ PC:[/B]
     <platform>all</platform>
     <summary>Jeu du bonhomme pendu pour XBMC</summary>
     <description>Le pendu est un jeu consistant à trouver un mot en devinant quelles sont les lettres qui le composent. Le jeu se joue traditionnellement à deux, avec un papier et un crayon, selon un déroulement bien particulier.</description>
+    <broken>Currently broken because [B]xbmcgui.WindowDialog[/B] not displaying GUI.</broken>
   </extension>
 </addon>
 <addon id="script.game.lucky7" name="Lucky $even" provider-name="Frost (passion-xbmc.org)" version="2.0.1">
@@ -198,7 +199,7 @@ PC:[/B]
     <description>Petit jeux qui simule les 7 Chanceux "machine à sous ou Machine Slots" qu'on peut retrouver dans les Casinos. Les sous sont virtuel bien sure.[CR][CR]Warning: PAL Resolution is only supported</description>
   </extension>
 </addon>
-<addon id="script.game.snake" name="Snake" provider-name="Rocko aka Rockstar" version="1.0.0">
+<addon date="11.09.2010" id="script.game.snake" name="Snake" provider-name="Rocko aka Rockstar" version="1.0.1">
   <requires>
     <import addon="xbmc.python" version="1.0" />
   </requires>
@@ -208,9 +209,10 @@ PC:[/B]
     <summary>Snake Game for XBMC</summary>
     <description>All credits and special thanks to Rocko.</description>
     <disclaimer>Remember, High-scores on-line not working....</disclaimer>
+    <broken>Currently broken because [B]xbmcgui.WindowDialog[/B] not displaying GUI.</broken>
   </extension>
 </addon>
-<addon id="script.game.space.invaders" name="Space Invaders" provider-name="Donno (darkdonno@gmail.com)" version="0.98a">
+<addon date="11.09.2010" id="script.game.space.invaders" name="Space Invaders" provider-name="Donno (darkdonno@gmail.com)" version="0.99">
   <requires>
     <import addon="xbmc.python" version="1.0" />
   </requires>
@@ -242,6 +244,7 @@ Feature List:
   GameOver Screens  ('Splash' Full Screen picture)  - Out Of Lifes and Invaders have landed
 </description>
     <disclaimer>Remember, High-scores on-line not working....</disclaimer>
+    <broken>Currently broken because [B]xbmcgui.WindowDialog[/B] not displaying GUI.</broken>
   </extension>
 </addon>
 <addon id="script.game.sudoku" name="Sudoku" provider-name="MrZ (matz.hedman@telia.com)" version="1.1.0">
@@ -256,7 +259,7 @@ Feature List:
     <description>Le but du jeu est de remplir la grille avec une série de chiffres (ou de lettres ou de symboles) tous différents, qui ne se trouvent jamais plus d’une fois sur une même ligne, dans une même colonne ou dans une même sous-grille. La plupart du temps, les symboles sont des chiffres allant de 1 à 9, les sous-grilles étant alors des carrés de 3 × 3. Quelques symboles sont déjà disposés dans la grille, ce qui autorise une résolution progressive du problème complet.</description>
   </extension>
 </addon>
-<addon id="script.game.tetris" name="Tetris" provider-name="Asteron (asteron.projects.googlepages.com)" version="1.0.0">
+<addon date="11.09.2010" id="script.game.tetris" name="Tetris" provider-name="Asteron (asteron.projects.googlepages.com)" version="1.0.1">
   <requires>
     <import addon="xbmc.python" version="1.0" />
   </requires>
@@ -313,6 +316,7 @@ risky.  Leveling up is   easier with smaller clears and will get you more
 quickly to the higher scoring levels.  You must find a good balance between 
 high-scoring multi-line clears and the smaller, safer clears.
 </description>
+    <broken>Currently broken because [B]xbmcgui.WindowDialog[/B] not displaying GUI.</broken>
   </extension>
 </addon>
 <addon id="script.game.tic.tac.toe" name="Tic Tac Toe" provider-name="Frost (passion-xbmc.org)" version="1.0.1">
