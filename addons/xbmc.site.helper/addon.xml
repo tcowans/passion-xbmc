@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="xbmc.site.helper"
-       name="XBMC Helper"
-       version="1.0.0"
+<!--$Revision$-->
+<addon id="xbmc.site.helper" name="XBMC Helper"
+       version="1.0.1" date="17.09.2010"
        provider-name="Frost (passion-xbmc.org)">
   <requires>
     <import addon="xbmc.python" version="1.0"/>
   </requires>
-  <extension point="xbmc.python.script" library="addon.py"/>
+  <extension point="xbmc.python.script"
+             library="addon.py"/>
   <extension point="xbmc.addon.metadata">
     <summary>XBMC Online Helper</summary>
     <description>[B]XBMC ONLINE HELPER[/B][CR][CR]from:[CR] &#8226; xbmc.org (English)[CR] &#8226; passion-xbmc.org (French)</description>
