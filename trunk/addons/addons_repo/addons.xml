@@ -396,7 +396,7 @@ en visitant leur site web www.tetesaclaques.tv et/ou en achetant le DVD(s)
 réservés à Salambo productions inc (www.tetesaclaques.tv)</disclaimer>
   </extension>
 </addon>
-<addon id="xbmc.site.helper" name="XBMC Helper" provider-name="Frost (passion-xbmc.org)" version="1.0.0">
+<addon date="17.09.2010" id="xbmc.site.helper" name="XBMC Helper" provider-name="Frost (passion-xbmc.org)" version="1.0.1">
   <requires>
     <import addon="xbmc.python" version="1.0" />
   </requires>

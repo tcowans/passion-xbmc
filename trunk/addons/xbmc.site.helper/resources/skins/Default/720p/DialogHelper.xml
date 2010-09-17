@@ -184,30 +184,30 @@
 					</control>
 					<!-- wiki.passion-xbmc.org -->
 					<control type="group">
-						<height>2403</height>
+						<height>2594</height>
 						<visible>Container(9000).Position(1)</visible>
 						<animation effect="fade" time="600">Visible</animation>
 						<control type="image">
 							<posx>0</posx>
 							<posy>0</posy>
 							<width>796</width>
-							<height>801</height>
+							<height>865</height>
 							<aspectratio>stretch</aspectratio>
 							<texture>$INFO[Skin.String(helper.skin.path),,backgrounds/wiki.passion-xbmc.org1.png]</texture>
 						</control>
 						<control type="image">
 							<posx>0</posx>
-							<posy>801</posy>
+							<posy>865</posy>
 							<width>796</width>
-							<height>801</height>
+							<height>865</height>
 							<aspectratio>stretch</aspectratio>
 							<texture>$INFO[Skin.String(helper.skin.path),,backgrounds/wiki.passion-xbmc.org2.png]</texture>
 						</control>
 						<control type="image">
 							<posx>0</posx>
-							<posy>1602</posy>
+							<posy>1730</posy>
 							<width>796</width>
-							<height>801</height>
+							<height>864</height>
 							<aspectratio>stretch</aspectratio>
 							<texture>$INFO[Skin.String(helper.skin.path),,backgrounds/wiki.passion-xbmc.org3.png]</texture>
 						</control>

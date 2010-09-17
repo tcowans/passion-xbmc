@@ -11,9 +11,7 @@ import xbmcgui
 from xbmcaddon import Addon
 
 # Add-on Constants
-__date__    = "10-09-2010"
-__addonID__ = "xbmc.site.helper"
-
+__addonID__  = os.path.basename( os.getcwd() )#"xbmc.site.helper"
 __settings__ = Addon( __addonID__ )
 __addonDir__ = __settings__.getAddonInfo( "path" )
 __language__ = __settings__.getLocalizedString # Add-on strings
