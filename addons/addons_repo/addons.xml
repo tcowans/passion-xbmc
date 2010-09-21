@@ -1,0 +1,493 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<addons>
+<addon id="xbmc4xbox.addon.library" name="xbmcaddon library" provider-name="Frost (passion-xbmc.org)" version="1.0.0">
+  <requires>
+    <import addon="xbmc.python" version="1.0" />
+  </requires>
+  
+  <extension library="xbmcaddon.py" point="xbmc.python.script" />
+  <extension point="xbmc.addon.metadata">
+    <summary>xbmcaddon library for XBox</summary>
+    <description>Simulating xbmcaddon library for XBox or XBMC pre-r28256.</description>
+    <platform>all</platform>
+  </extension>
+</addon>
+<addon id="plugin.video.Pluzz.fr" name="Pluzz.fr" provider-name="PPIC (passion-xbmc.org)" version="1.1.0">
+  <requires>
+    <import addon="xbmc.python" version="1.0" />
+  </requires>
+  <extension library="default.py" point="xbmc.python.pluginsource">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary>TV Caztchup de France Télévision</summary>
+    <description>Retrouver les émissions des 7 derniers jours en visionnage[CR]pour les chaines suivantes:
+    [B]France2, France3, France4, France5 et Franceô. [/B]
+</description>
+    <platform>all</platform>
+  </extension>
+</addon>
+<addon date="11.09.2010" id="script.game.space.invaders" name="Space Invaders" provider-name="Donno (darkdonno@gmail.com)" version="0.99">
+  <requires>
+    <import addon="xbmc.python" version="1.0" />
+  </requires>
+  <extension library="default.py" point="xbmc.python.script" />
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary>Space Invaders Game for XBMC</summary>
+    <description>All credits and special thanks to Donno.
+About:
+  Project Started around April/May 2006.
+  An attempt to show the true power in combining XBMC with Python.
+  So I decide to choose to make  Space Invaders Remake
+  I will not release the script till I think its full ready for public use.
+  Check the web page for a few avi (which are WIP showing the progress)
+
+Feature List:
+  Themes - Incomplete (Coded but not Made, code needs improving)
+  Background Music - Optional 'Overwrite music' with Custom Playlist.pls in Music folder
+  Highscore Loading from Internet/Local
+  Standard Objects: Red Bonus Saucer, Shields, Invaders
+  Collision Dectection between Friendly and Emeny bullet
+  Every 1000 score will give you an extra life
+  Added Check for Theme Media
+  Invader fire at you and the shields
+  Settings - Options
+  Special Effect Sounds
+  Pause
+  AutoPause when you go to Full Screen Video/Viz
+  GameOver Screens  ('Splash' Full Screen picture)  - Out Of Lifes and Invaders have landed
+</description>
+    <disclaimer>Remember, High-scores on-line not working....</disclaimer>
+    <broken>Currently broken because [B]xbmcgui.WindowDialog[/B] not displaying GUI.</broken>
+  </extension>
+</addon>
+<addon id="plugin.video.Bande-Annonce Allocine" name="Bande-Annonce Allociné" provider-name="PPIC (passion-xbmc.org)" version="1.5.7">
+  <requires>
+    <import addon="xbmc.python" version="1.0" />
+  </requires>
+  <extension library="default.py" point="xbmc.python.pluginsource">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary>Plugin vidéo sur les Vidéos en français / VOST</summary>
+    <description>Plugin vidéo sur les Vidéos en français / VOST
+
+[B]Contenus:[/B]
+ - [B]Bandes Annonces[/B] - Vous propose de voir les bandes annonces des films des différentes catégories: prochainement / en salle / à ne pas manquer.
+ - [B]Séries[/B] - Vous propose les différentes bandes annonce / extraits d'épisode des séries.
+ - [B]émissions TV[/B] - Retrouver l'intégralité des émissions allociné depuis votre canapé.
+ - [B]Interviews[/B] - Les interviews de star sont elles aussi disponibles.
+Et plus...[CR]</description>
+    <platform>all</platform>
+  </extension>
+</addon>
+<addon id="plugin.video.astral.media" name="Astral Media" provider-name="Frost (passion-xbmc.org)" version="1.0.6">
+  <requires>
+    <import addon="xbmc.python" version="1.0" />
+  </requires>
+  <extension library="default.py" point="xbmc.python.pluginsource">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary>Plugin vidéo sur les émissions Québécoise en français</summary>
+    <description>Plugin vidéo vous permettent de regarder la TV Québécoise, mais à 90% avec un bon français :P
+
+[B]Genres de tous:[/B]
+ - [B]Canal D[/B] vous propose des documentaires divers dont des documentaires animaliers, des biographies, des enquêtes policières et des émissions d'humour.
+ - [B]Canal Vie[/B] vous présente des émissions et vous propose de la webtélé.
+ - [B]HiSToRiA TV[/B] - Chaîne de télévision francophone spécialisée sur l'histoire.
+ - [B]Séries+[/B] propose des séries télé ayant comme genres le drame, la comédie, les enquêtes policières et le suspense ainsi que des nouvelles et potins de stars.
+ - [B]Ztélé[/B] est une chaîne de télévision spécialisée dans les nouvelles technologies, la science, le multimédia, les jeux vidéo et les séries de science-fiction.
+
+[B]Types de contenue:[/B]
+ - Bandes-annonces
+ - Épisodes complets
+ - Exclusivités web
+ - Extraits d'émission
+
+Et plus...[CR]</description>
+    <platform>all</platform>
+  </extension>
+</addon>
+<addon date="17.09.2010" id="xbmc.site.helper" name="XBMC Helper" provider-name="Frost (passion-xbmc.org)" version="1.0.1">
+  <requires>
+    <import addon="xbmc.python" version="1.0" />
+  </requires>
+  <extension library="addon.py" point="xbmc.python.script" />
+  <extension point="xbmc.addon.metadata">
+    <summary>XBMC Online Helper</summary>
+    <description>[B]XBMC ONLINE HELPER[/B][CR][CR]from:[CR] • xbmc.org (English)[CR] • passion-xbmc.org (French)</description>
+    <platform>all</platform>
+  </extension>
+</addon>
+<addon id="script.game.lucky7" name="Lucky $even" provider-name="Frost (passion-xbmc.org)" version="2.0.1">
+  <requires>
+    <import addon="xbmc.python" version="1.0" />
+  </requires>
+  <extension library="default.py" point="xbmc.python.script" />
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary>Machine à sous ou Machine Slots</summary>
+    <description>Petit jeux qui simule les 7 Chanceux "machine à sous ou Machine Slots" qu'on peut retrouver dans les Casinos. Les sous sont virtuel bien sure.[CR][CR]Warning: PAL Resolution is only supported</description>
+  </extension>
+</addon>
+<addon id="plugin.programm.webbrowser" name="Web Browser" provider-name="CinPoU" version="1.5">
+  <requires>
+    <import addon="xbmc.python" version="1.0" />
+  </requires>
+  <extension library="default.py" point="xbmc.python.pluginsource">
+    <provides>executable</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary>Web Browser: télécharger depuis Google, ou ajouter, afficher et lancer vos favoris internet.</summary>
+    <description>Configurer votre navigateur favoris, et votre compte Gmail (optionnel), et vous pourrez lancer vos pages favorites depuis xbmc.
+    </description>
+    <platform>all</platform>
+  </extension>
+</addon>
+<addon id="repository.passion.xbmc.svn" name="Passion-XBMC Add-ons (SVN)" provider-name="Team Passion-XBMC" version="1.0.0">
+  <extension name="Passion-XBMC Add-on SVN Repository" point="xbmc.addon.repository">
+    <info compressed="false">http://passion-xbmc.googlecode.com/svn/trunk/addons/addons_repo/addons.xml</info>
+    <checksum>http://passion-xbmc.googlecode.com/svn/trunk/addons/addons_repo/addons.xml.md5</checksum>
+    <datadir zip="false">http://passion-xbmc.googlecode.com/svn/trunk/addons</datadir>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary>Install Add-ons from passion-xbmc.googlecode.com</summary>
+    <description>Download and install Add-ons from passion-xbmc.googlecode.com</description>
+    <platform>all</platform>
+  </extension>
+</addon>
+<addon date="11.09.2010" id="script.game.tetris" name="Tetris" provider-name="Asteron (asteron.projects.googlepages.com)" version="1.0.1">
+  <requires>
+    <import addon="xbmc.python" version="1.0" />
+  </requires>
+  <extension library="default.py" point="xbmc.python.script" />
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary>Tetris Game for XBMC</summary>
+    <disclaimer>Remember, High-scores on-line not working....</disclaimer>
+    <description>All credits and special thanks to Asteron.
+Intro:
+  Tetris: The timeless classic finally reaches the XBMC platform! 
+  If you aren't familiar with this game by now then there's no hope for you.  
+  Clear lines to get points.  Advance through the levels for large bonuses.  
+  Take a chance and go for the 4-line clears to get the best score!  
+  
+  Are you up to the challenge?
+
+You can find the latest version of this script at:  
+  http://code.google.com/p/xbmc-scripting/
+  http://asteron.projects.googlepages.com/
+  
+Features:
+  Online and Local Highscores - submit your best scores to the online database run by Rockstarr
+  Ghost Piece - turn on this advanced option from the pause menu to see where a piece will fall
+  Saved settings - you will only need to enter your name once but can change it later
+  Custom sounds and graphics !
+
+Controls: 
+  Left     - move piece left
+  Right    - move piece right
+  X        - rotate piece counter clockwise
+  B / Q    - rotate piece clockwise (Q = Queue Item)
+  Up       - 'near' drop : drops the piece to just above the ground
+  A / Down - 'hard' drop : drops the piece to the ground and locks it
+  RTrigger - increases gravity
+  Start    - Pause screen
+
+Scoring:
+  1-line clear -  1 point  times current level
+  2-line clear -  4 points times current level
+  3-line clear -  9 points times current level
+  4-line clear - 16 points times current level
+  Level Up     - 15 points times new level 
+
+Speed:
+  Each level speed increases by 40% up to a maximum speed around level 8.  
+  Surviving becomes very difficult and you should try to get as many points 
+  as you can before losing control.
+
+High-score Strategy:
+  Going for nothing but 4-line clears will give you the most points in any 
+given level.  However, this tends to lead to high towers and is inherently 
+risky.  Leveling up is   easier with smaller clears and will get you more 
+quickly to the higher scoring levels.  You must find a good balance between 
+high-scoring multi-line clears and the smaller, safer clears.
+</description>
+    <broken>Currently broken because [B]xbmcgui.WindowDialog[/B] not displaying GUI.</broken>
+  </extension>
+</addon>
+<addon id="script.video.tac.tv" name="Têtes à claques (tac.tv)" provider-name="Temhil (passion-xbmc.org)" version="2.0.2">
+  <requires>
+    <import addon="xbmc.python" version="1.0" />
+  </requires>
+  <extension library="default.py" point="xbmc.python.script">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary>TAC.TV script</summary>
+    <description>This script allows to watch videos on www.tac.tv website which I highly recommend. 
+Each week a new short video is added. Watch out! Laughing too much can cause belly pain!
+If you like and enjoy TAC.tv, please support their creators by visiting their website www.tac.tv and/or buying their DVD(s)
+</description>
+    <disclaimer>Distribution rights and pictures are property of Salambo productions Inc (www.tac.tv)</disclaimer>
+    <summary lang="fr">Script Têtes à claques</summary>
+    <description lang="fr">Ce script permet de visionner les vidéos sur le site www.tetesaclaques.tv que je vous le recommande fortement. 
+Attention rires en vue!
+On y découvre chaque semaine un nouveau clip de quelques minutes qui vaut vraiment le détour.
+Si vous aimez les Têtes à claques, merci d'encourager leur createurs
+en visitant leur site web www.tetesaclaques.tv et/ou en achetant le DVD(s)
+</description>
+    <disclaimer lang="fr">Les droits des diffusions et des images utilisées sont exclusivement
+réservés à Salambo productions inc (www.tetesaclaques.tv)</disclaimer>
+  </extension>
+</addon>
+<addon date="11.09.2010" id="script.game.snake" name="Snake" provider-name="Rocko aka Rockstar" version="1.0.1">
+  <requires>
+    <import addon="xbmc.python" version="1.0" />
+  </requires>
+  <extension library="default.py" point="xbmc.python.script" />
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary>Snake Game for XBMC</summary>
+    <description>All credits and special thanks to Rocko.</description>
+    <disclaimer>Remember, High-scores on-line not working....</disclaimer>
+    <broken>Currently broken because [B]xbmcgui.WindowDialog[/B] not displaying GUI.</broken>
+  </extension>
+</addon>
+<addon id="script.calendar" name="Calendar" provider-name="CinPoU + PassionXBMC-Team" version="1.5-b1">
+  <requires>
+    <import addon="xbmc.python" version="1.0" />
+  </requires>
+  <extension library="default.py" point="xbmc.python.script">
+    <provides>executable</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary>Calendar permet de gérer vos agendas</summary>
+    <description>Calendar vous donne accès en lecture et écriture à vos agendas Google, mais aussi en consultation de vos agenda locaux et sur le web (format Ics)
+    </description>
+  </extension>
+</addon>
+<addon id="plugin.programm.launcher" name="Launcher" provider-name="CinPoU, leo212" version="1.5-b1">
+  <requires>
+    <import addon="xbmc.python" version="1.0" />
+  </requires>
+  <extension library="default.py" point="xbmc.python.pluginsource">
+    <provides>executable</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary>Launcher permet d'exécuter des programmes et émulateurs</summary>
+    <description>Ce plugin vous permet de lister vos programmes, jeux, et émulateurs préférés, et les lancer depuis votre média center préféré.
+    </description>
+  </extension>
+</addon>
+<addon id="script.game.sudoku" name="Sudoku" provider-name="MrZ (matz.hedman@telia.com)" version="1.1.0">
+  <requires>
+    <import addon="xbmc.python" version="1.0" />
+  </requires>
+  <extension library="default.py" point="xbmc.python.script" />
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary>Sudoku for XBMC</summary>
+    <summary lang="fr">Jeu du Sudoku pour XBMC.</summary>
+    <description>Le but du jeu est de remplir la grille avec une série de chiffres (ou de lettres ou de symboles) tous différents, qui ne se trouvent jamais plus d’une fois sur une même ligne, dans une même colonne ou dans une même sous-grille. La plupart du temps, les symboles sont des chiffres allant de 1 à 9, les sous-grilles étant alors des carrés de 3 × 3. Quelques symboles sont déjà disposés dans la grille, ce qui autorise une résolution progressive du problème complet.</description>
+  </extension>
+</addon>
+<addon id="plugin.video.tvplugin" name="TV Plugin" provider-name="CinPoU (passion-xbmc.org)" version="1.5">
+  <requires>
+    <import addon="xbmc.python" version="1.0" />
+  </requires>
+  <extension library="default.py" point="xbmc.python.pluginsource">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary>Plugin permettant de lister les chaînes de votre fournisseur d'accès</summary>
+    <description>Affiche les chaînes du fournisseur d'accès internet séléctionné, et permets de les lire dans xbmc, ou le lecteur de son choix.</description>
+    <platform>all</platform>
+  </extension>
+</addon>
+<addon id="script.calculator" name="Calculator" provider-name="Frost (passion-xbmc.org)" version="2.1.4">
+  <requires>
+    <import addon="xbmc.python" version="1.0" />
+  </requires>
+  <extension library="default.py" point="xbmc.python.script" />
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary>Calculator for XBMC</summary>
+    <description>Calculator for XBMC</description>
+  </extension>
+</addon>
+<addon id="plugin.video.canal.plus" name="Canal+" provider-name="Alexsolex / Temhil (passion-xbmc.org)" version="2.1">
+  <requires>
+    <import addon="xbmc.python" version="1.0" />
+  </requires>
+  <extension library="default.py" point="xbmc.python.pluginsource">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary>Plugin vidéo donnant acces a toutes les vidéos de la mosaique Canal+</summary>
+    <description>Ce plugin vous donne acces a toutes les vidéos de la mosaique Canal+. 
+Vous choisissez une catégorie, puis une sous catégorie et à vous les videos de Canal+ en visualisation en haute ou basse qualité.
+    </description>
+    <platform>all</platform>
+  </extension>
+</addon>
+<addon id="metadata.cine.passion-xbmc.org" name="Ciné-Passion" provider-name="Team Passion-XBMC (passion-xbmc.org)" version="1.1.1">
+  <requires>
+    <import addon="xbmc.metadata" version="1.0" />
+  </requires>
+  <extension language="multi" library="cine-passion.xml" point="xbmc.metadata.scraper.movies" />
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">Ciné-passion scraper grabs film's informations in french from passion-xbmc.org.</summary>
+    <summary lang="hu">Ciné-passion francia filmadat leolvasó</summary>
+    <summary lang="fr">Le scraper Ciné-passion récupère les informations des films en français du site passion-xbmc.org.</summary>
+    <description lang="en">Ciné-passion scraper has been created by members of passion-xbmc.org community.</description>
+    <description lang="hu">A Ciné-passion leolvasót a passion-xbmc.org közösség tagjai hozták létre.</description>
+    <description lang="fr">Le scraper Ciné-passion est le fruit du travail de développeurs appartenant à la communauté Passion-xbmc.org.</description>
+    <disclaimer lang="en">Ciné-passion scraper is a community database where everyone is welcome to help.</disclaimer>
+    <disclaimer lang="hu">Ciné-passion leolvasó egy közösségi adatbázis ahol mindenki segítsége fontos.</disclaimer>
+    <disclaimer lang="fr">Le Scraper Ciné-Passion est une base de données communautaire à laquelle tout le monde est invité à participer.</disclaimer>
+    <platform>all</platform>
+  </extension>
+</addon>
+<addon id="script.game.tic.tac.toe" name="Tic Tac Toe" provider-name="Frost (passion-xbmc.org)" version="1.0.1">
+  <requires>
+    <import addon="xbmc.python" version="1.0" />
+  </requires>
+  <extension library="default.py" point="xbmc.python.script" />
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary>Tic Tac Toe for XBMC</summary>
+    <description>Jeu du Tic Tac Toe ou dit aussi Morpion. Jouer contre XBMC ou avec un deuxième joueur.</description>
+  </extension>
+</addon>
+<addon date="11.09.2010" id="script.game.hangman" name="HangMan" provider-name="Frost (passion-xbmc.org)" version="1.0.4">
+  <requires>
+    <import addon="xbmc.python" version="1.0" />
+  </requires>
+  <extension library="default.py" point="xbmc.python.script" />
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary>Jeu du bonhomme pendu pour XBMC</summary>
+    <description>Le pendu est un jeu consistant à trouver un mot en devinant quelles sont les lettres qui le composent. Le jeu se joue traditionnellement à deux, avec un papier et un crayon, selon un déroulement bien particulier.</description>
+    <broken>Currently broken because [B]xbmcgui.WindowDialog[/B] not displaying GUI.</broken>
+  </extension>
+</addon>
+<addon id="script.game.yahtzee" name="Yahtzee" provider-name="Frost (passion-xbmc.org)" version="1.0.0">
+  <requires>
+    <import addon="xbmc.python" version="1.0" />
+  </requires>
+  <extension library="default.py" point="xbmc.python.script" />
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary>Jeu de société et de hasard</summary>
+    <description>Les règlements du jeu sont disponible sur wikipedia ici http://fr.wikipedia.org/wiki/Yahtzee
+Noter que le jeu est un dériver, mais les règles restent semblables.</description>
+  </extension>
+</addon>
+<addon id="script.tv.show.next.aired" name="TV Show - Next Aired" provider-name="Ppic, Frost (passion-xbmc.org)" version="1.0.6">
+  <requires>
+    <import addon="xbmc.python" version="1.0" />
+  </requires>
+  <extension library="default.py" point="xbmc.python.script">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary lang="en">Grab infos of next TV Shows Aired.</summary>
+    <summary lang="fr">Récupère les dates de diffusions de vos séries</summary>
+    <description lang="en">Grab infos of next TV Shows Aired. You'll never miss them</description>
+    <description lang="fr">Ce script interroge votre médiathèque puis vas récupérer les infos sur les prochaines diffusions de vos séries.
+    vous n'en manquerez plus aucune </description>
+  </extension>
+</addon>
+<addon id="plugin.programm.books" name="Books Library" provider-name="CinPoU, Frost, Team XBMC-Passion (passion-xbmc.org)" version="0.2">
+  <requires>
+    <import addon="xbmc.python" version="1.0" />
+    <import addon="script.module.pysqlite" version="2.5.6" />
+  </requires>
+  <extension library="default.py" point="xbmc.python.pluginsource">
+    <provides>executable</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary>Books Library permet de visualiser sa bibliothèque de livre</summary>
+    <description>Ce plugin vous permet de visualiser votre bibliothèque de livres, créée depuis LibFly. D'autres sources seront ajoutées au fur et à mesure, comme Google Books.</description>
+    <platform>all</platform>
+  </extension>
+</addon>
+<addon id="script.logo-downloader" name="Logo Downloader" provider-name="ppic" version="2.0.0">
+  <requires>
+    <import addon="xbmc.python" version="1.0" />
+  </requires>
+  <extension library="default.py" point="xbmc.python.library" />
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <minversion>30369</minversion>
+    <summary>TV Show Logo Downloader script</summary>
+    <description>Download TV show Logos</description>
+  </extension>
+</addon>
+<addon date="11.09.2010" id="script.game.arkanoid" name="Arkanoid" provider-name="Frost (passion-xbmc.org)" version="1.0.4">
+  <requires>
+    <import addon="xbmc.python" version="1.0" />
+  </requires>
+  <extension library="default.py" point="xbmc.python.script" />
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary>Replica of the famous game Arkanoid</summary>
+    <description>Replica of the famous game Arkanoid (1986) and Tournament Arkanoid (1987) ported on XBMC with a few variables
+
+[B]Includes 4 playing mode:[/B]
+ - Classic Mode -&gt; Arkanoid (1986) 32 Level, no boss "Doh" level in future
+ - Tournament Mode -&gt; Tournament Arkanoid (1987) 32 Level, no boss "Doh" level in future
+ - Mode Custom Level -&gt; Playing with staff levels
+ - Practice Mode -&gt; Play a particular level of Arkanoid (1986) or Tournament Arkanoid (1987)
+
+Includes a level editor, either to a full level or for edit an original level
+
+Management scores not completed on this Alpha
+
+Known bugs should be corrected on the next release.
+ - The ball can sometimes passed through a indestructible block "Gold" and stuck the other side.
+   the only solution for now is to leave the script and start again
+
+ - Again the ball sometimes it is bounded and turn around but the angle changes slowly and it feels it is taken,
+   then the only solution for the impatient like me , is out of the script and start again
+
+[B]Controls support:
+PC:[/B]
+ - [B]MOUSE:[/B]
+   - Move Left/Right for control vaus
+   - Left button = launch ball or fire
+   - Right button = Pause Game
+
+ - [B]KEYBOARD[/B]
+   - Arrows Left &lt;-
+   - Arrows Right -&gt;
+   - Enter for launch ball or fire
+   - C or Menu KEY for pause game
+
+[B]XBOX:[/B]
+ - [B]KEYBOARD/MOUSE:[/B]
+   - Same as PC
+
+ - [B]D-PAD:[/B]
+   - A = Select/launch ball/Fire
+   - Left &lt;-
+   - Right -&gt;
+   - Trigger Left/Right for control vaus
+   - White = pause game
+
+[B]Support/Help:[/B]
+ - [B]French:[/B] http://passion-xbmc.org/jeuxgames-pour-xbmc/arkanoid-pre1-0-alpha/
+ - [B]English:[/B] http://forum.xbmc.org/showthread.php?t=70978</description>
+  </extension>
+</addon>
+</addons>
