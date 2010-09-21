@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!-- Les strings de 30000 à 30999 sont réservées aux paramètres plug-in -->
+  <!--GENERAL STRINGS -->
+  <string id="30000">Choose your ISP</string>
+  <string id="30001">Free</string>
+  <string id="30002">SFR</string>
+  <string id="30003">Orange</string>
+  <string id="30100">Browse</string>
+  <string id="30101">Arguments (Optionnal)</string>
+  <string id="30102">Activate external player (Optionnal)</string>
+  <string id="30103">or write the path...</string>
+</strings>
