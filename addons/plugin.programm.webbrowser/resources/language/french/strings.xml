@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+
+  <string id="11">Ouvrir une URL</string>
+  <string id="12">Ajouter un favoris</string>
+  <string id="101">Adresse</string>
+  <string id="102">Titre</string>
+  <string id="103">Ajout d'un favoris</string>
+  <string id="104">Annulé par l'utilisateur</string>
+  <string id="105">Favoris ajouté</string>
+  <string id="106">Veuillez redémarrer le plugin</string>
+  <string id="107">Favoris supprimé</string>
+  <string id="108">Aperçu mis à jour</string>
+  <string id="201">Actualiser l'aperçu</string>
+  <string id="202">Supprimer le favoris</string>
+  <string id="203">Ajouter aux favoris locaux</string>
+
+  <!-- Les strings de 30000 à 30999 sont réservées aux paramètres plug-in -->
+  <!--GENERAL STRINGS -->
+  <string id="30000">Parcourir</string>
+  <string id="30001">ou rentrer la commande manuellement...</string>
+  <string id="30002">Arguments (Optionnel)</string>
+  <string id="30003">Email Google</string>
+  <string id="30004">Password</string>
+</strings>

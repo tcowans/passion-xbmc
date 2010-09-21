@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.programm.webbrowser"
+       name="Web Browser"
+       version="1.5"
+       provider-name="CinPoU">
+  <requires>
+    <import addon="xbmc.python" version="1.0"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource"
+             library="default.py">
+    <provides>executable</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary>Web Browser: télécharger depuis Google, ou ajouter, afficher et lancer vos favoris internet.</summary>
+    <description>Configurer votre navigateur favoris, et votre compte Gmail (optionnel), et vous pourrez lancer vos pages favorites depuis xbmc.
+    </description>
+    <platform>all</platform>
+  </extension>
+</addon>
+
