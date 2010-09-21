@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+
+  <string id="1">Titre</string>
+  <string id="2">Auteur</string>
+  <string id="5">Genre</string>
+  <string id="6">Langue</string>
+  <string id="8">Sources</string>
+  <string id="3">Editeur</string>
+  <string id="4">Nombre de pages</string>
+  <string id="7">Date</string>
+
+  <string id="51">Ajouter</string>
+  <string id="52">Supprimer la source</string>
+  <string id="53">Actualiser la source</string>
+  <string id="54">Ajout de la source</string>
+  <string id="55">Veuillez patienter...</string>
+  <string id="56">Exporter la source</string>
+
+  <!--Add Source -->
+  <string id="510">AJOUTER UNE SOURCE</string>
+  <string id="511">Choix de la source</string>
+  <string id="512">Paramètres</string>
+  <string id="513">Annuler</string>
+  <string id="514">OK</string>
+  <string id="515">ID de l'utilisateur</string>
+  <string id="516">Nom de la source</string>
+  <string id="517">Chemin du fichier xml</string>
+  <string id="518">Chemin du dossier image</string>
+
+  <!--Export Source -->
+  <string id="81">Dossier cible</string>
+  <string id="82">Fichier Existant</string>
+  <string id="83">Le fichier xml existe déjà.</string>
+  <string id="84">L'écraser?</string>
+  <string id="85">Dossier Existant</string>
+  <string id="86">Le dossier "Covers" existe déjà.</string>
+  <string id="87">Opération annulée</string>
+  <string id="88">Opération annulée par l'utilisateur</string>
+  <string id="89">Exportation de la bibliothèque...</string>
+  <string id="891">Export XML</string>
+  <string id="892">Remplacer la source existante par l'export créé?</string>
+
+  <!-- Les strings de 30000 à 30999 sont réservées aux paramètres plug-in -->
+  <!--GENERAL STRINGS -->
+  <string id="30000">Parcourir</string>
+  <string id="30001">ou rentrer la commande manuellement...</string>
+  <string id="30002">Arguments (Optionnel)</string>
+  <string id="30003">Email Google</string>
+  <string id="30004">Password</string>
+</strings>
