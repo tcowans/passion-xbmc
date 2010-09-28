@@ -154,7 +154,7 @@ Vous choisissez une catégorie, puis une sous catégorie et à vous les videos d
     <platform>all</platform>
   </extension>
 </addon>
-<addon id="repository.passion.xbmc.svn" name="Passion-XBMC Add-ons (SVN)" provider-name="Team Passion-XBMC" version="1.0.0">
+<addon id="repository.passion.xbmc.svn" name="Passion-XBMC Add-ons (SVN)" provider-name="Team Passion-XBMC" version="1.0.1">
   <extension name="Passion-XBMC Add-on SVN Repository" point="xbmc.addon.repository">
     <info compressed="false">http://passion-xbmc.googlecode.com/svn/trunk/addons/addons_repo/addons.xml</info>
     <checksum>http://passion-xbmc.googlecode.com/svn/trunk/addons/addons_repo/addons.xml.md5</checksum>
@@ -411,6 +411,18 @@ high-scoring multi-line clears and the smaller, safer clears.
     <summary>Jeu de société et de hasard</summary>
     <description>Les règlements du jeu sont disponible sur wikipedia ici http://fr.wikipedia.org/wiki/Yahtzee
 Noter que le jeu est un dériver, mais les règles restent semblables.</description>
+  </extension>
+</addon>
+<addon id="script.genre-editor" name="Genre Editor" provider-name="GMib" version="0.0.2">
+  <requires>
+    <import addon="xbmc.python" version="1.0" />
+  </requires>
+  <extension library="default.py" point="xbmc.python.library" />
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <minversion>30369</minversion>
+    <summary>Edit Movie and TVShow Genre</summary>
+    <description>Edit Movie and TVShow Genre</description>
   </extension>
 </addon>
 <addon id="script.logo-downloader" name="Logo Downloader" provider-name="ppic" version="2.0.0">
