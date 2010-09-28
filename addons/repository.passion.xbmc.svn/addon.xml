@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="repository.passion.xbmc.svn"
     name="Passion-XBMC Add-ons (SVN)"
-    version="1.0.0"
+    version="1.0.1"
     provider-name="Team Passion-XBMC">
   <extension point="xbmc.addon.repository"
     name="Passion-XBMC Add-on SVN Repository">
