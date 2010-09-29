@@ -1,0 +1,7 @@
+New XBMC build needed for cdart and clearart
+
+CDArt: cdart.png must be in your musicpath\artist\album\ folder eg: d:\music\albums\band\album\cdart.png
+
+TV Show Logos: logo.png must be in tv show root folder eg: d:\video\tvshows\tvshowname\logo.png
+
+ClearArt: clearart.png must be in tv show root folder eg. d:\video\tvshows\alias\clearart.png
