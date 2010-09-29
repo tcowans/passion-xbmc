@@ -1,0 +1,116 @@
+<window type="dialog" id="25622">
+	<zorder>1</zorder> 
+	<defaultcontrol always="true">120</defaultcontrol>
+	<coordinates>
+		<system>1</system>
+		<posx>50</posx>
+		<posy>15</posy>
+	</coordinates>
+  
+	<controls>
+		<control type="image"> <!-- Background dialog -->
+			<description>background image</description>
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>390</width>
+			<height>680</height>
+			<texture flipx="true">dialogbackground.png</texture>
+		</control>
+		<control type="group">
+			<posx>20</posx>
+			<posy>15</posy>
+			<width>360</width>
+			<height>640</height>
+			<control type="list" id="120"> <!-- List -->
+				<posx>350r</posx>
+				<posy>0</posy>
+				<width>350</width>
+				<height>660</height>
+				<onleft>22</onleft>
+				<onright>22</onright>
+				<onup>120</onup>
+				<ondown>120</ondown>
+				<viewtype label="535">list</viewtype>
+				<pagecontrol>121</pagecontrol>
+				<scrolltime>200</scrolltime>
+				<itemlayout width="350" height="20">
+					<control type="image"> <!-- genre selected icon must be named "ok.png" in media skin dir -->
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>20</width>
+						<height>20</height>
+						<info>Listitem.Icon</info>
+					</control>
+					<control type="label">
+						<posx>20</posx>
+						<posy>0</posy>
+						<width>320</width>
+						<height>20</height>
+						<font>cirrus_16</font>
+						<aligny>center</aligny>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<info>ListItem.Label</info>
+					</control>
+				</itemlayout>
+				<focusedlayout width="350" height="25">
+					<control type="image"> <!-- genre selected icon must be named "ok.png" in media skin dir -->
+						<posx>0</posx>
+						<posy>4</posy>
+						<width>20</width>
+						<height>20</height>
+						<info>Listitem.Icon</info>
+					</control>
+					<control type="label">
+						<posx>20</posx>
+						<posy>0</posy>
+						<width>320</width>
+						<height>25</height>
+						<font>cirrus_18</font>
+						<aligny>center</aligny>
+						<textcolor>orange</textcolor>
+						<align>left</align>
+						<info>ListItem.Label</info>
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="grouplist" id="121">
+				<posx>115r</posx>
+				<posy>180r</posy>
+				<width>115</width>
+				<height>180</height>
+				<itemgap>5</itemgap>
+				<align>center</align>
+				<orientation>vertical</orientation>
+				<onleft>120</onleft>
+				<onright>120</onright>
+				<onup>121</onup>
+				<ondown>121</ondown>
+				<control type="button" id="22"> <!-- Save button -->
+					<description>Save</description>
+					<width>115</width>
+					<include>ButtonInfoDialogsCommonValues</include>
+					<label>Save</label>
+				</control>
+				<control type="button" id="23"> <!-- Cancel button -->
+					<description>Cancel</description>
+					<width>115</width>
+					<include>ButtonInfoDialogsCommonValues</include>
+					<label>Cancel</label>
+				</control>
+				<control type="button" id="24"> <!-- Add button -->
+					<description>Add</description>
+					<width>115</width>
+					<include>ButtonInfoDialogsCommonValues</include>
+					<label>Add</label>
+				</control>
+				<control type="button" id="25"> <!-- Del button -->
+					<description>Del</description>
+					<width>115</width>
+					<include>ButtonInfoDialogsCommonValues</include>
+					<label>Del</label>
+				</control>
+			</control>
+		</control>
+	</controls>
+</window>

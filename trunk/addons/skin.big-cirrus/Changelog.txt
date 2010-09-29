@@ -1,0 +1,75 @@
+1.1.5 - Big-Cirrus
+-- Fix slide effect of home submenu
+-- Add support for edit-genre script.
+-- Add Logo button on info view.
+-- Add display of logo and clearart in info view.
+-- Add Addon in home submenu
+
+1.1.4 - Cirrus
+-- Fixed problem where home menu background for movies and tv shows couldn't be set unless they were set to off in the home menu settings
+-- Changed appearance and location of recently added movies and tv shows on home screen
+-- TV Shows recently added apepars below movies when 'videos' is selected
+-- Changed location of 'media scanning' dialog (covers up top left corner but can't think of anywhere else it could go)
+-- Fixed missing background for DialogAddonSettings (eg. screensaver settings)
+-- Fixed recently added script error (note - this will now only work for dharma builds)
+-- Added <import addon="script.recentlyadded" version="1.0.4"/> to requires section of addon.xml
+-- Changed location of DialogSlider to the top (so the subtitles offset doesn't cover the subs, needs testing)
+-- Fixed position of window title for music files
+-- Changed a bunch of labels so english no longer hardcoded (note: there is still some, all to do with custom skin settings)
+
+1.1.3
+-- Added dvd/bluray/hddvd cases option for rightlist (turn on in left menu in view)
+-- Added option for "clear" cases when case option is turned on (must admit the clear cases look pretty cool...)
+-- Fixed tvlogo fallback image appearing over logo when shows are not in a season folder
+-- Fanart View - when info is visible the picture now scrolls through extrathumbs folder (and displays normal fanart if there is no extrathumbs)
+-- Added lyrics button to Music OSD (enable in skin settings-addons)
+-- Added subtitles button to video OSD (enable in skin settings-addons)
+-- Changed appearance and location of "loading media" dialog
+-- Fixed - Artist/Album label to wide and overlapped with codec info in musicVis
+-- Moved now playing info to bottom right so it doesn't overlap with section titles
+-- Moved music library sub-headings so they're the same as other sections
+-- Changed TV and Movies home menu so that they show UNLESS the "No TVShows/Movies" button is selected in skin settings (ie they are no longer hidden by default)
+-- Added ClearArt toggle to skin settings - enables clearart on both video seekbar and videoinfo (TV Shows only)
+
+1.1.2
+-- Added ability to select custom background for custom home menu items
+-- Reduced transparency of recently added boxes.
+
+1.1.1
+-- Added custom home menus - needs testing however, but I *think* it works
+-- Added Addons item to settings menu (links to addon browser)
+-- Added Rightlist view to addon browser (needs work)
+-- Improved the look of the recently added boxes on the home screen
+-- Fixed an alignment issue on half-wall view
+
+1.1
+-- Getting ready for Dharma:
+-- Added AddonBrowser.xml
+-- Added DialogAddonInfo.xml
+-- Added DialogAddonSettings.xml
+-- Added DialogTextViewer.xml
+-- Removed DialogPluginSettings.xml
+-- Removed DialogScriptInfo.xml
+-- Removed MusicOSDVisSettings.xml
+-- Removed MyScripts.xml
+-- Removed DefaultScript.png
+
+1.0.2
+-- Fixed up missing characters in font - languages such as swedish and french should appear properly now
+
+1.0.1
+-- Changed font to an open source free one (still looks pretty similar - probably actually more readable)
+-- Added "Clean Home Screen" skin option which removes XBMC logo and bottom buttons (buttons also then become available in the system sub-menu)
+-- Added RightList "Slim" option (to left slideout menu) - removes ratings stars to fit more on the screen
+-- Added UK mpaa ratings
+-- Added conditional "mins" to runtime tags (appears if the video database doesn't have 'mins' in the duration field)
+-- Slowed down cdart spin speed
+-- Added conditional to tv logo fallback for when a tv show only has one season (ie no season folders)
+-- Added clearart to tv shows seekbar (Note: needs newer version of XBMC than 9.11)
+-- Added 'get fanart' 'get thumb' etc buttons back onto the videoinfo screen
+-- Made the above mentioned buttons look heaps better
+-- Wall view now scrolls vertically
+-- Made thumbnails a little bit smaller in rightlist episodes view
+-- Changed albumInfo screen so it looks like the rest of the skin
+-- Lots of little cosmetic changes, new buttons etc.
+
