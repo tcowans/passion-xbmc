@@ -8,6 +8,7 @@
 		<import addon="xbmc.gui" version="2.11"/>
 		<import addon="script.logo-downloader" version="2.0.0"/>
 		<import addon="script.recentlyadded" version="1.0.4"/>
+		<import addon="script.genre-editor" version="0.0.2"/>
 	</requires>
 	<extension 
 		point="xbmc.gui.skin"
