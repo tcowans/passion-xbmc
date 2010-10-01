@@ -16,23 +16,25 @@
     <include condition="Skin.HasSetting(homepageHideRecentlyAdded)">HomeRecentlyAddedInfo</include>
 <!-- Music Info -->
     <control type="group">
-      <posx>0</posx>
-      <posy>0</posy>
+      <posx>30r</posx>
+      <posy>480</posy>
       <visible>Player.HasAudio + !Skin.HasSetting(homepageMusicinfo)</visible>
       <include>VisibleFadeEffect</include>
       <include>Window_OpenClose_Animation</include>
       <animation effect="slide" end="0,30" time="0" condition="!system.getbool(lookandfeel.enablerssfeeds)">conditional</animation>
       <control type="image">
-        <posx>0</posx>
-        <posy>0</posy>
-        <width>1280</width>
-        <height>250</height>
-        <texture>blackgradientvert.png</texture>
-      </control>
+		<description>background</description>
+		<posx>550r</posx>
+		<aspectratio alignx="left">stretch</aspectratio>
+		<posy>0</posy>
+		<width>820</width>
+		<height>210</height>
+		<texture border="10" flipy="true" diffuse="recentlyaddeddiffuse.png">rightlistbackground.png</texture>
+	  </control>
       <control type="image">
         <description>Cover image</description>
         <posx>200r</posx>
-        <posy>20</posy>
+        <posy>15</posy>
         <width>180</width>
         <height>180</height>
         <aspectratio aligny="bottom">stretch</aspectratio>
@@ -49,7 +51,7 @@
       <control type="label">
         <description>NowPlaying label</description>
         <posx>210r</posx>
-        <posy>20</posy>
+        <posy>10</posy>
         <height>30</height>
         <width>660</width>
         <label>[COLOR=orange]$LOCALIZE[31040][/COLOR]</label>
@@ -68,30 +70,17 @@
         <label>$INFO[MusicPlayer.Artist]</label>
         <align>right</align>
         <aligny>center</aligny>
-        <font>cirrus_20</font>
+        <font>cirrus_24</font>
         <textcolor>white</textcolor>
         <shadowcolor>black</shadowcolor>
       </control>
       <control type="label">
         <description>Album Label</description>
         <posx>210r</posx>
-        <posy>70</posy>
+        <posy>75</posy>
         <height>30</height>
         <width>660</width>
         <label>$INFO[MusicPlayer.Album]$INFO[musicplayer.discnumber, - $LOCALIZE[427]:]</label>
-        <align>right</align>
-        <aligny>center</aligny>
-        <font>cirrus_16</font>
-        <textcolor>white</textcolor>
-        <shadowcolor>black</shadowcolor>
-      </control>
-      <control type="label">
-        <description>Title label</description>
-        <posx>210r</posx>
-        <posy>95</posy>
-        <height>30</height>
-        <width>660</width>
-        <label>$INFO[MusicPlayer.Title]</label>
         <align>right</align>
         <aligny>center</aligny>
         <font>cirrus_20</font>
@@ -99,15 +88,28 @@
         <shadowcolor>black</shadowcolor>
       </control>
       <control type="label">
+        <description>Title label</description>
+        <posx>210r</posx>
+        <posy>110</posy>
+        <height>30</height>
+        <width>660</width>
+        <label>$INFO[MusicPlayer.Title]</label>
+        <align>right</align>
+        <aligny>center</aligny>
+        <font>cirrus_24</font>
+        <textcolor>white</textcolor>
+        <shadowcolor>black</shadowcolor>
+      </control>
+      <control type="label">
         <description>Time Label</description>
         <posx>210r</posx>
-        <posy>120</posy>
+        <posy>150</posy>
         <height>30</height>
         <width>325</width>
         <label>$INFO[Player.Time]$INFO[Player.Duration, / ]</label>
         <align>right</align>
         <aligny>center</aligny>
-        <font>cirrus_16</font>
+        <font>cirrus_30</font>
         <textcolor>white</textcolor>
         <shadowcolor>black</shadowcolor>
       </control>
@@ -390,7 +392,7 @@
           <height>240</height>
           <align>center</align>
           <onleft>9000</onleft>
-          <onright>Control.SetFocus(8000,0)</onright>
+          <onright>8000</onright>
           <onup>9010</onup>
           <ondown>9010</ondown>
           <itemgap>0</itemgap>
@@ -625,14 +627,14 @@
           </control>
         </control>
 		<!-- MY MAIN MENU MODS -->
-        <control type="grouplist" id="9016">
+        <control type="grouplist" id="9016"> <!-- Movie -->
           <posx>10</posx>
           <posy>0</posy>
           <width>280</width>
           <height>400</height>
           <align>center</align>
           <onleft>9000</onleft>
-          <onright>Control.SetFocus(8000,0)</onright>
+          <onright>8002</onright>
           <onup>9016</onup>
           <ondown>9016</ondown>
           <itemgap>0</itemgap>
@@ -678,14 +680,14 @@
             <onclick>UpdateLibrary(Video)</onclick>
           </control>
         </control>
-        <control type="grouplist" id="9017">
+        <control type="grouplist" id="9017"> <!-- TVShow -->
           <posx>10</posx>
           <posy>0</posy>
           <width>280</width>
           <height>240</height>
           <align>center</align>
           <onleft>9000</onleft>
-          <onright>Control.SetFocus(8001,0)</onright>
+          <onright>8003</onright>
           <onup>9017</onup>
           <ondown>9017</ondown>
           <itemgap>0</itemgap>
@@ -761,9 +763,9 @@
       <control type="fixedlist" id="9000">
         <hitrect x="50" y="50" w="330" h="620" />
         <posx>-20</posx>
-        <posy>0</posy>
+        <posy>80</posy>
         <width>400</width>
-        <height>720</height>
+        <height>520</height>
         <onleft>10</onleft>
         <onright>9001</onright>
         <onup>9000</onup>
@@ -782,7 +784,7 @@
             <height>40</height>
             <font>cirrus_50</font>
             <textcolor>grey3</textcolor>
-            <align>left</align>
+			<align>left</align>
             <aligny>center</aligny>
             <label>$INFO[ListItem.Label]</label>
             <animation effect="zoom" start="65" end="65" time="0" condition="true">Conditional</animation>
@@ -995,7 +997,7 @@
       </control>
       <control type="group" id="10">
         <posx>15</posx>
-        <posy>55r</posy>
+        <posy>50r</posy>
         <control type="button" id="20">
           <description>Power push button</description>
           <posx>90</posx>
@@ -1070,18 +1072,71 @@
           <visible>!System.HasMediaDVD + !Skin.HasSetting(cleanHome)</visible>
         </control>
       </control>
+	  <control type="image">
+		<posx>0</posx>
+		<posy>120r</posy>
+		<width>290</width>
+		<height>1</height>
+		<aspectratio>stretch</aspectratio>
+		<texture>separator.png</texture>
+	</control>
+	  <control type="label">
+        <description>time label</description>
+        <posx>10</posx>
+        <posy>112r</posy>
+        <width>500</width>
+        <height>38</height>
+        <aligny>top</aligny>
+        <font>cirrus_40</font>
+        <textcolor>grey</textcolor>
+        <label>$INFO[System.Time]</label>
+      </control>
+	  <control type="group">
+        <posx>150</posx>
+        <posy>98r</posy>
+        <visible>!Skin.HasSetting(homepageWeatherinfo) + Weather.IsFetched</visible>
+        <control type="image">
+          <description>Weather image</description>
+          <posx>75</posx>
+          <posy>-13</posy>
+          <width>50</width>
+          <height>50</height>
+          <aspectratio>keep</aspectratio>
+          <texture>$INFO[Weather.Conditions]</texture>
+        </control>
+        <control type="label">
+          <description>temp label</description>
+          <posx>0</posx>
+          <posy>0</posy>
+          <width>200</width>
+          <height>28</height>
+          <aligny>center</aligny>
+          <font>cirrus_24</font>
+          <textcolor>white</textcolor>
+          <shadowcolor>black</shadowcolor>
+          <label>$INFO[Weather.Temperature]</label>
+        </control>
+      </control>
+	  <control type="image">
+		<posx>0</posx>
+		<posy>55r</posy>
+		<width>290</width>
+		<height>1</height>
+		<aspectratio>stretch</aspectratio>
+		<texture>separator.png</texture>
+	</control>
     </control>
    <control type="group">
-      <posx>140</posx>
+      <posx>290</posx>
       <posy>15</posy>
       <animation effect="slide" end="0,35" time="300" tween="quadratic" easing="out">WindowClose</animation>
       <animation effect="slide" start="0,35" time="300" tween="quadratic" easing="out">WindowOpen</animation>
       <control type="rss">
         <description>RSS feed</description>
-        <posx>1280r</posx>
+        <posx>0</posx>
         <posy>670</posy>
         <height>35</height>
-        <width>1280</width>
+        <width>1040</width>
         <font>font12</font>
         <urlset>1</urlset>
         <textcolor>orange</textcolor>
@@ -1090,74 +1145,27 @@
         <visible>system.getbool(lookandfeel.enablerssfeeds)</visible>
       </control>
     </control>
-    <control type="group">
-      <posx>60r</posx><!-- 380r -->
-      <posy>200r</posy>
-      <width>500</width>
-      <align>right</align>
-      <animation effect="slide" start="0,0" end="-60,0" delay="0" time="300" condition="Window.IsVisible(MuteBug)">conditional</animation>
-      <animation effect="slide" start="0,0" end="380,0" delay="0" time="300">WindowClose</animation>
-      <animation effect="slide" start="380,0" end="0,0" delay="0" time="300">WindowOpen</animation>
+	
+    
+         
       <control type="label">
-        <description>time label</description>
-        <posx>20</posx>
-        <posy>10</posy>
-        <width>500</width>
-        <height>28</height>
-        <align>right</align>
-        <aligny>top</aligny>
-        <font>cirrus_50</font>
-        <textcolor>white</textcolor>
-        <shadowcolor>black</shadowcolor>
-        <label>$INFO[System.Time]</label>
-      </control>
-      <control type="label">
-        <description>time label</description>
-        <posx>20</posx>
-        <posy>75</posy>
+		<animation effect="slide" end="1280,0" time="500" tween="quadratic" easing="out">WindowClose</animation>
+		<animation effect="slide" start="1280,0" time="500" tween="quadratic" easing="out">WindowOpen</animation>
+        <description>Date label</description>
+        <posx>290</posx>
+        <posy>95r</posy>
         <width>550</width>
         <height>28</height>
-        <align>right</align>
         <aligny>center</aligny>
-        <font>cirrus_30</font>
-        <textcolor>white</textcolor>
+        <font>cirrus_24</font>
+        <textcolor>grey</textcolor>
         <shadowcolor>black</shadowcolor>
-        <label>[COLOR=grey]$INFO[System.Date][/COLOR]</label>
+        <label>$INFO[System.Date]</label>
       </control>      
       <!-- weather Info -->
-      <control type="group">
-        <posx>800r</posx>
-        <posy>110</posy>
-        <align>right</align>
-        <animation effect="slide" start="0,0" end="-60,0" delay="0" time="300" condition="Window.IsVisible(MuteBug)">conditional</animation>
-        <animation effect="slide" start="0,0" end="510,0" delay="0" time="300">WindowClose</animation>
-        <animation effect="slide" start="510,0" end="0,0" delay="0" time="300">WindowOpen</animation>
-        <visible>!Skin.HasSetting(homepageWeatherinfo) + Weather.IsFetched</visible>
-        <control type="image">
-          <description>Weather image</description>
-          <posx>270</posx>
-          <posy>10</posy>
-          <width>50</width>
-          <height>50</height>
-          <aspectratio>keep</aspectratio>
-          <texture>$INFO[Weather.Conditions]</texture>
-        </control>
-        <control type="label">
-          <description>time label</description>
-          <posx>260</posx>
-          <posy>20</posy>
-          <width>200</width>
-          <height>28</height>
-          <align>right</align>
-          <aligny>center</aligny>
-          <font>cirrus_30</font>
-          <textcolor>white</textcolor>
-          <shadowcolor>black</shadowcolor>
-          <label>$INFO[Weather.Temperature]</label>
-        </control>
-      </control>
       
-    </control>
+      
+    
   </controls>
 
 </window>
