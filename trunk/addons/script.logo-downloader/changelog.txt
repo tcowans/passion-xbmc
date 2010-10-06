@@ -1,3 +1,7 @@
+v2.1.2
+- corection for nvfo change, now search for <tvdbid> and <id>.
+- add "no tvdb id found"
+
 v2.1.1
 - correct type of image selection.
 - add scan canceling

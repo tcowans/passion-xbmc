@@ -425,7 +425,7 @@ Noter que le jeu est un dériver, mais les règles restent semblables.</descript
     <description>Edit Movie and TVShow Genre</description>
   </extension>
 </addon>
-<addon id="script.logo-downloader" name="Logo Downloader" provider-name="ppic" version="2.0.0">
+<addon id="script.logo-downloader" name="Logo Downloader" provider-name="ppic" version="2.1.2">
   <requires>
     <import addon="xbmc.python" version="1.0" />
   </requires>
@@ -437,7 +437,7 @@ Noter que le jeu est un dériver, mais les règles restent semblables.</descript
     <description>Download TV show Logos</description>
   </extension>
 </addon>
-<addon id="script.tv.show.next.aired" name="TV Show - Next Aired" provider-name="Ppic, Frost (passion-xbmc.org)" version="1.0.6">
+<addon id="script.tv.show.next.aired" name="TV Show - Next Aired" provider-name="Ppic, Frost (passion-xbmc.org)" version="1.1.0">
   <requires>
     <import addon="xbmc.python" version="1.0" />
   </requires>
@@ -478,6 +478,23 @@ en visitant leur site web www.tetesaclaques.tv et/ou en achetant le DVD(s)
     <disclaimer lang="fr">Les droits des diffusions et des images utilisées sont exclusivement
 réservés à Salambo productions inc (www.tetesaclaques.tv)</disclaimer>
   </extension>
+</addon>
+<addon id="skin.Big-cirrus" name="Big-Cirrus" provider-name="GMib" version="1.1.6">
+	<requires>
+		<import addon="xbmc.gui" version="2.11" />
+		<import addon="script.logo-downloader" version="2.0.0" />
+		<import addon="script.recentlyadded" version="1.0.4" />
+		<import addon="script.genre-editor" version="0.0.2" />
+	</requires>
+	<extension debugging="false" defaultresolution="720p" defaultresolutionwide="720p" defaultthemename="textures.xbt" effectslowdown="0.75" point="xbmc.gui.skin" />
+		<extension point="xbmc.addon.metadata">
+		<platform>all</platform>
+		<minversion app="xbmc">28000</minversion>
+		<summary lang="en">Big-Cirrus skin by GMib (Based on Cirrus skin by Crookas)</summary>
+		<summary lang="fr">Big-Cirrus skin par GMib (Basé sur le skin Cirrus de Crookas)</summary>
+		<description lang="en">Big-Cirrus is a modded version of Crookas's Cirrus skin modded for small TV. Cirrus is a lightweight skin which has a focus on speed, ease of use and ease of navigation. It also uses TV logos, cleararts, and cdart if you want them.</description>
+		<description lang="fr">Big-Cirrus est une version modifiée du skin Cirrus pour petit téléviseur. Cirrus est un skin léger qui met l'accent sur la vitesse, la facilité d'utilisation et la facilité de navigation. Il utilise également les logos TV, cleararts, et cdart.</description>
+	</extension>
 </addon>
 <addon date="17.09.2010" id="xbmc.site.helper" name="XBMC Helper" provider-name="Frost (passion-xbmc.org)" version="1.0.1">
   <requires>
