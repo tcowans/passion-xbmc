@@ -437,6 +437,18 @@ Noter que le jeu est un dériver, mais les règles restent semblables.</descript
     <description>Download TV show Logos</description>
   </extension>
 </addon>
+<addon id="script.module.dialogaddonscan" name="Dialog Addon Scan" provider-name="Frost (passion-xbmc.org)" version="1.0.0">
+  <requires>
+    <import addon="xbmc.python" version="1.0" />
+  </requires>
+  <extension library="lib" point="xbmc.python.module" />
+  <extension point="xbmc.addon.metadata">
+    <summary>...</summary>
+    <description>...</description>
+    <license>GPL</license>
+    <platform>all</platform>
+  </extension>
+</addon>
 <addon id="script.tv.show.next.aired" name="TV Show - Next Aired" provider-name="Ppic, Frost (passion-xbmc.org)" version="1.1.0">
   <requires>
     <import addon="xbmc.python" version="1.0" />
