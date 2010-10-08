@@ -49,6 +49,9 @@ class xbmcguiWindowError( WindowsError ):
 
 class Window:
     def __init__( self, parent_win=None, **kwargs ):
+        if xbmc.getInfoLabel( "Window.Property(DialogAddonScanIsAlive)" ) == "true":
+            raise xbmcguiWindowError( "DialogAddonScanIsAlive: Not possible to over scan!" )
+
         # http://wiki.xbmc.org/index.php?title=Window_IDs
         self.window = parent_win
 
@@ -81,6 +84,11 @@ class Window:
         xbmcgui.unlock()
         if error:
             raise xbmcguiWindowError( "xbmcgui.Window(%s)" % repr( current_window ) )
+
+        self.window.setProperty( "DialogAddonScanIsAlive", "true" )
+        #if xbmc.getInfoLabel( "Window.Property(DialogAddonScanIsAlive)" ) == "true":
+        #    print self.window.getProperty( "DialogAddonScanIsAlive" )
+        #    print xbmc.getInfoLabel( "Window.Property(DialogAddonScanIsAlive)" )
 
     def initialize( self ):
         try:
@@ -145,6 +153,8 @@ class Window:
         if self.background:
             try: self.window.removeControl( self.background )
             except: pass
+        try: self.window.clearProperty( "DialogAddonScanIsAlive" )
+        except: pass
 
 
 class AddonScan( Window ):
@@ -188,23 +198,28 @@ class AddonScan( Window ):
 
 
 def Demo():
-    scan = AddonScan()
-    # create dialog
-    scan.create( "Demo: "+__addonName__ )
+    try:
+        scan = AddonScan()
+        # create dialog
+        scan.create( "Demo: "+__addonName__ )
 
-    for pct in range( 101 ):
-        percent2 = pct
-        percent1 = percent2*10
-        while percent1 > 100:
-            percent1 -= 100
-        line2 = "Progress1 [B]%i%%[/B]   |   Progress2 [B]%i%%[/B]" % ( percent1, percent2 )
+        for pct in range( 101 ):
+            percent2 = pct
+            percent1 = percent2*10
+            while percent1 > 100:
+                percent1 -= 100
+            line2 = "Progress1 [B]%i%%[/B]   |   Progress2 [B]%i%%[/B]" % ( percent1, percent2 )
 
-        # update dialog ( [ int1, int2, line1=str, line2=str ] ) all args optional
-        scan.update( percent1, percent2, line2=line2 )
-        time.sleep( .25 )
+            # update dialog ( [ int1, int2, line1=str, line2=str ] ) all args optional
+            scan.update( percent1, percent2, line2=line2 )
+            time.sleep( .25 )
 
-    # close dialog and auto destroy all controls
-    scan.close()
+        # close dialog and auto destroy all controls
+        scan.close()
+    except xbmcguiWindowError:
+        print_exc()
+    except:
+        print_exc()
 
 
 

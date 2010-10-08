@@ -1,0 +1,7 @@
+1.0.1
+ - added: Window.Property(DialogAddonScanIsAlive) value is "true"
+    if xbmc.getInfoLabel( "Window.Property(DialogAddonScanIsAlive)" ) == "true":
+        print "Oops! pass is alive :)"
+
+1.0.0
+ - initial version
