@@ -77,7 +77,7 @@
       <control type="label">
         <description>Album Label</description>
         <posx>210r</posx>
-        <posy>75</posy>
+        <posy>78</posy>
         <height>30</height>
         <width>660</width>
         <label>$INFO[MusicPlayer.Album]$INFO[musicplayer.discnumber, - $LOCALIZE[427]:]</label>

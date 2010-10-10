@@ -693,7 +693,7 @@
 						<posx>0</posx>
 						<posy>10</posy>
 						<width>855</width>
-						<height>320</height>
+						<height>330</height>
 						<font>cirrus_24</font>
 						<align>justify</align>
 						<textcolor>white</textcolor>
@@ -731,6 +731,8 @@
 					<visible>Control.IsVisible(50)</visible>
 				</control>
 				<control type="panel" id="50">
+					<include>VisibleFadeEffect</include>
+					<visible>!Control.HasFocus(12)</visible>
 					<posx>380</posx>
 					<posy>330</posy>
 					<width>860</width>
@@ -827,12 +829,6 @@
 						<onclick>XBMC.RunScript(script.genre-editor,"$INFO[ListItem.TVShowTitle]","TVShow")</onclick>
 						<label>Edit genre</label>
 					</control>
-					<!-- <control type="button" id="103">
-						<description>test</description>
-						<include>ButtonInfoDialogsCommonValues</include>
-						<onclick>XBMC.RunScript(script.test)</onclick>
-						<label>test</label>
-					</control> -->
 					<control type="button" id="5">
 						<description>Cast/Review</description>
 						<include>ButtonInfoDialogsCommonValues</include>

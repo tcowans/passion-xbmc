@@ -141,7 +141,7 @@
       <control type="image">
         <posx>268</posx>
         <posy>1</posy>
-        <width>802</width>
+        <width>732</width>
         <height>636</height>
         <texture border="5">homesubbackground.png</texture>
       </control>
@@ -168,8 +168,8 @@
       <control type="image">
         <posx>270</posx>
         <posy>62</posy>
-        <width>799</width>
-        <height>446</height>
+        <width>729</width>
+        <height>376</height>
         <aspectratio>stretch</aspectratio>
         <fadetime>600</fadetime>
         <texture background="true">$INFO[Container(9000).ListItem.Icon]</texture>
@@ -177,8 +177,8 @@
       <control type="image">
         <posx>270</posx>
         <posy>62</posy>
-        <width>600</width>
-        <height>340</height>
+        <width>630</width>
+        <height>330</height>
         <aspectratio>stretch</aspectratio>
         <texture>GlassOverlay.png</texture>
         <colordiffuse>AAFFFFFF</colordiffuse>
@@ -186,9 +186,9 @@
       <control type="textbox">
         <description>Appearance Description</description>
         <posx>300</posx>
-        <posy>520</posy>
-        <width>740</width>
-        <height>100</height>
+        <posy>450</posy>
+        <width>640</width>
+        <height>200</height>
         <font>cirrus_20</font>
         <label>$INFO[Container(9000).ListItem.Label2]</label>
         <align>left</align>
