@@ -437,14 +437,14 @@ Noter que le jeu est un dériver, mais les règles restent semblables.</descript
     <description>Download TV show Logos</description>
   </extension>
 </addon>
-<addon id="script.module.dialogaddonscan" name="Dialog Addon Scan" provider-name="Frost (passion-xbmc.org)" version="1.0.0">
+<addon id="script.module.dialogaddonscan" name="Dialog Addon Scan" provider-name="Frost (passion-xbmc.org)" version="1.0.2">
   <requires>
     <import addon="xbmc.python" version="1.0" />
   </requires>
   <extension library="lib" point="xbmc.python.module" />
   <extension point="xbmc.addon.metadata">
-    <summary>...</summary>
-    <description>...</description>
+    <summary>Dialog Scan for Add-on</summary>
+    <description>Dialog Scan for Add-on</description>
     <license>GPL</license>
     <platform>all</platform>
   </extension>

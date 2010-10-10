@@ -1,3 +1,13 @@
+1.0.2
+ - added: iscanceled()
+   - function to cancel scan: 
+   -- ( xbmcgui.Window( xbmcgui.getCurrentWindowId() ).setProperty( "CancelDialogAddonScan", "true" ) )
+ - added: small settings for displaying dialog positions...
+ - changed: properties name ( DialogAddonScanIsAlive -> DialogAddonScan.IsAlive )
+ - added: skin xml ( but is not displaying, is loaded for keeping layout of controls )
+
+ Note: The "readme.txt" is not updated. See Demo() function in DialogAddonScan.
+
 1.0.1
  - added: Window.Property(DialogAddonScanIsAlive) value is "true"
     if xbmc.getInfoLabel( "Window.Property(DialogAddonScanIsAlive)" ) == "true":
