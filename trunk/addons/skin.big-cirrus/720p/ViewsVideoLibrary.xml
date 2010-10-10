@@ -34,7 +34,7 @@
 				<posx>600r</posx>
 				<posy>50</posy>
 				<width>600</width>
-				<height>500</height>
+				<height>470</height>
 				<onleft>2</onleft>
 				<onup>569</onup>
 				<ondown>569</ondown>
@@ -75,6 +75,7 @@
 						<width>183</width>
 						<height>25</height>
 						<texture>$INFO[Listitem.StarRating]</texture>
+						<visible>!stringcompare(ListItem.Label,..)</visible>
 					</control>
 					<control type="image">
 						<posx>20r</posx>
@@ -113,6 +114,7 @@
 						<height>25</height>
 						<color>orange</color>
 						<texture>$INFO[Listitem.StarRating]</texture>
+						<visible>!stringcompare(ListItem.Label,..)</visible>
 						<colordiffuse>black</colordiffuse>
 					</control>
 					<control type="image">
@@ -184,6 +186,7 @@
 						<height>25</height>
 						<color>orange</color>
 						<texture>$INFO[Listitem.StarRating]</texture>
+						<visible>!stringcompare(ListItem.Label,..)</visible>
 						<colordiffuse>black</colordiffuse>
 					</control>
 					<control type="image">
@@ -485,7 +488,7 @@
 					<posx>20</posx>
 					<posy>360</posy>
 					<visible>Container.Content(Movies)</visible>
-					<control type="group">
+					<control type="group"> <!-- Poster !showcase -->
 						<visible>!Skin.HasSetting(showCases)</visible>
 						<posx>0</posx>
 						<posy>-40</posy>
@@ -517,8 +520,8 @@
 							<texture>border-poster.png</texture>
 						</control>					
 					</control>
-					<!-- Blueray and DVD cover images if turned on -->
-				<control type="group">
+					
+				<control type="group"> <!-- Blueray and DVD cover images if turned on -->
 					<visible>Skin.HasSetting(showCases) + !Skin.HasSetting(showClearCases)</visible>
 					<posx>0</posx>
 					<posy>-20</posy>
@@ -562,8 +565,8 @@
 						<visible>substring(ListItem.filename,hddvd)</visible>
 					</control>
 				</control>
-				<!-- Blueray and DVD CLEAR cover images if turned on -->
-				<control type="group">
+				
+				<control type="group"> <!-- Blueray and DVD CLEAR cover images if turned on -->
 					<visible>Skin.HasSetting(showCases) + Skin.HasSetting(showClearCases)</visible>
 					<posx>0</posx>
 					<posy>-20</posy>
@@ -607,63 +610,63 @@
 						<visible>substring(ListItem.filename,hddvd)</visible>
 					</control>
 				</control>
-					<control type="group">
-						<posx>250</posx>
-						<posy>210</posy>
-						<control type="label"> <!-- ANNEE -->
-							<description>Year Label</description>
-							<posx>0</posx>
-							<posy>10</posy>
-							<width>320</width>
-							<height>25</height>
-							<label>$INFO[ListItem.Year,[COLOR=orange]$LOCALIZE[345]:[/COLOR] ]</label>
-							<align>left</align>
-							<aligny>center</aligny>
-							<font>cirrus_30</font>
-							<textcolor>white</textcolor>
-							<shadowcolor>black</shadowcolor>
-						</control>
-						<control type="label"> <!-- GENRE -->
-							<description>Genre label</description>
-							<posx>0</posx>
-							<posy>50</posy>
-							<width>650</width>
-							<height>25</height>
-							<label>$INFO[ListItem.Genre,[COLOR=orange]$LOCALIZE[515]:[/COLOR] ]</label>
-							<align>left</align>
-							<aligny>center</aligny>
-							<font>cirrus_24</font>
-							<textcolor>white</textcolor>
-							<shadowcolor>black</shadowcolor>
-						</control>
-						<control type="label"> <!-- RUNTIME -->
-							<description>Runtime label</description>
-							<posx>0</posx>
-							<posy>90</posy>
-							<width>320</width>
-							<height>25</height>
-							<label>$INFO[ListItem.Duration,[COLOR=orange]$LOCALIZE[2050]: [/COLOR]] mins</label>
-							<align>left</align>
-							<aligny>center</aligny>
-							<font>cirrus_24</font>
-							<textcolor>white</textcolor>
-							<shadowcolor>black</shadowcolor>
-							<visible>!SubString(ListItem.Duration,mins)</visible>
-						</control>
-						<control type="label"> <!-- RUNTIME -->
-							<description>Runtime label</description>
-							<posx>0</posx>
-							<posy>90</posy>
-							<width>320</width>
-							<height>25</height>
-							<label>$INFO[ListItem.Duration,[COLOR=orange]$LOCALIZE[2050]:[/COLOR] ]</label>
-							<align>left</align>
-							<aligny>center</aligny>
-							<font>cirrus_24</font>
-							<textcolor>white</textcolor>
-							<shadowcolor>black</shadowcolor>
-							<visible>SubString(ListItem.Duration,mins)</visible>
-						</control>
+				<control type="group">
+					<posx>250</posx>
+					<posy>210</posy>
+					<control type="label"> <!-- ANNEE -->
+						<description>Year Label</description>
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>320</width>
+						<height>25</height>
+						<label>$INFO[ListItem.Year,[COLOR=orange]$LOCALIZE[345]:[/COLOR] ]</label>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>cirrus_30</font>
+						<textcolor>white</textcolor>
+						<shadowcolor>black</shadowcolor>
+					</control>
+					<control type="label"> <!-- GENRE -->
+						<description>Genre label</description>
+						<posx>0</posx>
+						<posy>50</posy>
+						<width>650</width>
+						<height>25</height>
+						<label>$INFO[ListItem.Genre,[COLOR=orange]$LOCALIZE[515]:[/COLOR] ]</label>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>cirrus_24</font>
+						<textcolor>white</textcolor>
+						<shadowcolor>black</shadowcolor>
+					</control>
+					<control type="label"> <!-- RUNTIME -->
+						<description>Runtime label</description>
+						<posx>0</posx>
+						<posy>100</posy>
+						<width>320</width>
+						<height>25</height>
+						<label>$INFO[ListItem.Duration,[COLOR=orange]$LOCALIZE[2050]: [/COLOR]] mins</label>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>cirrus_24</font>
+						<textcolor>white</textcolor>
+						<shadowcolor>black</shadowcolor>
+						<visible>!SubString(ListItem.Duration,mins) + !stringcompare(ListItem.Label,..)</visible>
+					</control>
+					<control type="label"> <!-- RUNTIME -->
+						<description>Runtime label</description>
+						<posx>0</posx>
+						<posy>90</posy>
+						<width>320</width>
+						<height>25</height>
+						<label>$INFO[ListItem.Duration,[COLOR=orange]$LOCALIZE[2050]:[/COLOR] ]</label>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>cirrus_24</font>
+						<textcolor>white</textcolor>
+						<shadowcolor>black</shadowcolor>
+						<visible>SubString(ListItem.Duration,mins)</visible>
+					</control>
 					</control>
 					<control type="image">
 						<width>170</width>
