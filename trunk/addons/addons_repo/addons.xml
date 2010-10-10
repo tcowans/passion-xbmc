@@ -425,7 +425,7 @@ Noter que le jeu est un dériver, mais les règles restent semblables.</descript
     <description>Edit Movie and TVShow Genre</description>
   </extension>
 </addon>
-<addon id="script.logo-downloader" name="Logo Downloader" provider-name="ppic" version="2.1.2">
+<addon id="script.logo-downloader" name="Logo Downloader" provider-name="ppic" version="2.1.3">
   <requires>
     <import addon="xbmc.python" version="1.0" />
   </requires>

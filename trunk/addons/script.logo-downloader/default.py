@@ -1,11 +1,13 @@
+# -*- coding: utf-8 -*-
+
 __script__       = "Logo Downloader"
 __author__       = "Ppic"
 __url__          = "http://code.google.com/p/passion-xbmc/"
 __svn_url__      = ""
 __credits__      = "Team XBMC PASSION, http://passion-xbmc.org/"
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "06-10-2010"
-__version__      = "2.1.2"
+__date__         = "11-10-2010"
+__version__      = "2.1.3"
 __svn_revision__  = "$Revision: 000 $"
 __XBMC_Revision__ = "30000" #XBMC Babylon
 __useragent__ = "Logo downloader %s" % __version__
