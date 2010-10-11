@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <!--$Revision$-->
 <addon id="script.game.space.invaders" name="Space Invaders"
-       version="0.99" date="11.09.2010"
+       version="1.0.0" date="11.10.2010"
        provider-name="Donno (darkdonno@gmail.com)">
   <requires>
     <import addon="xbmc.python" version="1.0"/>
@@ -35,6 +35,5 @@ Feature List:
   GameOver Screens  ('Splash' Full Screen picture)  - Out Of Lifes and Invaders have landed
 </description>
     <disclaimer>Remember, High-scores on-line not working....</disclaimer>
-    <broken>Currently broken because [B]xbmcgui.WindowDialog[/B] not displaying GUI.</broken>
   </extension>
 </addon>
