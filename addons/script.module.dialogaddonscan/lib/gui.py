@@ -17,6 +17,15 @@ ADDON_SKIN = ( "default", XBMC_SKIN )[ os.path.exists( os.path.join( SKINS_PATH,
 MEDIA_PATH = os.path.join( SKINS_PATH, ADDON_SKIN, "media" )
 
 
+def getTexture( texture ):
+    if not xbmc.skinHasImage( texture ):
+        if os.path.isfile( os.path.join( MEDIA_PATH, texture ) ):
+            texture = os.path.join( MEDIA_PATH, texture )
+        else:
+            texture = ""
+    return texture
+
+
 class xbmcguiWindowError( WindowsError ):
     def __init__( self, winError=None ):
         WindowsError.__init__( self, winError )
@@ -26,42 +35,36 @@ class Control:
     def __init__( self, control, coords=( 0, 0 ), anim=[], **kwargs ):
         self.controlXML = control
         self.id = self.controlXML.getId()
-        self.label = xbmc.getInfoLabel( "Control.GetLabel(%i) " % self.id )
+        self.label = xbmc.getInfoLabel( "Control.GetLabel(%i)" % self.id )
         self.anim = anim
 
+        try: extra = dict( [ k.split( "=" ) for k in self.label.split( "," ) ] )
+        except: extra = {}
         option = {}
         x, y, w, h = self.getCoords( coords )
         if type( self.controlXML ) == xbmcgui.ControlImage:
             # http://passion-xbmc.org/gros_fichiers/XBMC%20Python%20Doc/xbmc_svn/xbmcgui.html#ControlImage
-            ex = {}
-            if self.label.count( "=" ) or self.label.count( "," ):
-                try: ex = dict( [ k.split( "=" ) for k in self.label.split( "," ) ] )
-                except: pass
             texture = self.label
-            valide = "colorKey, aspectRatio, colorDiffuse".split( ", " )
-            for key, value in ex.items():
+            valideOption = "colorKey, aspectRatio, colorDiffuse".split( ", " )
+            for key, value in extra.items():
+                key, value = key.strip(), value.strip()
                 if key == "texture": texture = value
-                if key not in valide: continue
+                if key not in valideOption: continue
                 option[ key ] = value
                 if "color" in key.lower():
                     option[ key ] = '0x' + value
                 elif key == "aspectRatio" and value.isdigit():
                     option[ key ] = int( value )
-            if not xbmc.skinHasImage( texture ):
-                if os.path.isfile( os.path.join( MEDIA_PATH, texture ) ):
-                    texture = os.path.join( MEDIA_PATH, texture )
-                else:
-                    texture = ""
+            texture = getTexture( texture )
             # ControlImage( x, y, width, height, filename[, colorKey, aspectRatio, colorDiffuse] )
             self.control = xbmcgui.ControlImage( x, y, w, h, texture, **option )
 
         elif type( self.controlXML ) == xbmcgui.ControlLabel:
             # http://passion-xbmc.org/gros_fichiers/XBMC%20Python%20Doc/xbmc_svn/xbmcgui.html#ControlLabel
-            try: ex = dict( [ k.split( "=" ) for k in self.label.split( "," ) ] )
-            except: ex = {}
-            valide = "font, textColor, disabledColor, alignment, hasPath, angle".split( ", " )
-            for key, value in ex.items():
-                if key not in valide: continue
+            valideOption = "font, textColor, disabledColor, alignment, hasPath, angle".split( ", " )
+            for key, value in extra.items():
+                key, value = key.strip(), value.strip()
+                if key not in valideOption: continue
                 option[ key ] = value
                 if "color" in key.lower():
                     option[ key ] = '0x' + value
@@ -76,16 +79,36 @@ class Control:
 
         elif type( self.controlXML ) == xbmcgui.ControlProgress:
             # http://passion-xbmc.org/gros_fichiers/XBMC%20Python%20Doc/xbmc_svn/xbmcgui.html#ControlProgress
-            #option = {'texturebg': 'ProgressBack.png', 'texturemid': 'ProgressFront.png'}
-            valide = "texturebg, textureleft, texturemid, textureright, textureoverlay".split( ", " )
-            for key, img in kwargs.items():
-                if key not in valide: continue
-                if not img: option[ key ] = ""
-                elif xbmc.skinHasImage( img ): option[ key ] = img
-                elif os.path.isfile( os.path.join( MEDIA_PATH, img ) ):
-                    option[ key ] = os.path.join( MEDIA_PATH, img )
-            #ControlProgress(x, y, width, height[, texturebg, textureleft, texturemid, textureright, textureoverlay])
-            self.control = xbmcgui.ControlProgress( x, y, w, h,  **option )
+            valideOption = "texturebg, textureleft, texturemid, textureright, textureoverlay".split( ", " )
+            for key, value in kwargs.items():
+                key, value = key.strip(), value.strip()
+                if key not in valideOption: continue
+                option[ key ] = getTexture( value )
+            # ControlProgress(x, y, width, height[, texturebg, textureleft, texturemid, textureright, textureoverlay])
+            self.control = xbmcgui.ControlProgress( x, y, w, h, **option )
+
+        elif type( self.controlXML ) in [ xbmcgui.ControlButton, xbmcgui.ControlRadioButton ]:
+            # http://passion-xbmc.org/gros_fichiers/XBMC%20Python%20Doc/xbmc_svn/xbmcgui.html#ControlRadioButton
+            # ControlRadioButton(x, y, width, height, label[, focusTexture, noFocusTexture, textOffsetX, textOffsetY, alignment, font, textColor, disabledColor, angle, shadowColor, focusedColor, TextureRadioFocus, TextureRadioNoFocus])
+            option = { "TextureRadioFocus": "", "TextureRadioNoFocus": "" }
+            # http://passion-xbmc.org/gros_fichiers/XBMC%20Python%20Doc/xbmc_svn/xbmcgui.html#ControlButton
+            # ControlButton(x, y, width, height, label[, focusTexture, noFocusTexture, textOffsetX, textOffsetY, alignment, font, textColor, disabledColor, angle, shadowColor, focusedColor])
+            valideOption = "focusTexture, noFocusTexture, textOffsetX, textOffsetY, alignment, font, textColor, disabledColor, angle, shadowColor, focusedColor, TextureRadioFocus, TextureRadioNoFocus".split( ", " )
+            for key, value in extra.items():
+                key, value = key.strip(), value.strip()
+                if key not in valideOption: continue
+                option[ key ] = value
+                if "color" in key.lower():
+                    option[ key ] = '0x' + value
+                elif key == "alignment":
+                    option[ key ] = self.getAlignment( value )
+                elif key in "focusTexture,noFocusTexture,TextureRadioFocus,TextureRadioNoFocus".split( "," ):
+                    option[ key ] = getTexture( value )
+                elif key in "angle,textOffsetX,textOffsetY".split( "," ) and value.isdigit():
+                    option[ key ] = int( value )
+            self.control = xbmcgui.ControlRadioButton( x, y, w, h, "", **option )
+            # used for cancel scan ( iscanceled = self.control.isSelected() )
+            self.control.setSelected( False )
 
     def getCoords( self, default ):
         x, y = self.controlXML.getPosition()
@@ -116,10 +139,24 @@ class Control:
             try: self.control.setAnimations( self.anim )
             except: print_exc()
 
+    def setNavigation( self, window ):
+        if type( self.control ) in [ xbmcgui.ControlButton, xbmcgui.ControlRadioButton ]:
+            visible = __settings__.getSetting( "hidecancelbtn" ) == "true"
+            self.control.setVisible( visible )
+            if not visible: return
+            try:
+                direction = window.getControl( window.getFocusId() )
+                self.control.setNavigation( direction, direction, direction, direction )
+                window.setFocusId( self.control.getId() )
+            except TypeError: pass
+            except:
+                print_exc()
+
     def addControl( self, window ):
         window.addControl( self.control )
         self.control.setVisibleCondition( "[SubString(Window.Property(DialogAddonScan.Hide),false) | SubString(Window.Property(DialogAddonScan.Hide),)]" )
         self.setAnimations()
+        self.setNavigation( window )
         return self.control
 
 
@@ -166,6 +203,8 @@ class DialogAddonScanXML( xbmcgui.WindowXMLDialog ):
 
         self.controls[ "progress2" ] = Control( self.getControl( 2005 ), coordinates, c_anim, **progressTextures )
 
+        self.controls[ "button" ] = Control( self.getControl( 2006 ), coordinates, c_anim )
+
     def onFocus( self, controlID ):
         pass
 
@@ -194,18 +233,21 @@ class Window:
         self.label      = None
         self.progress1  = None
         self.progress2  = None
+        self.button     = None
 
     def setupWindow( self ):
         error = 0
         try: xbmcgui.lock()
         except: pass
-        #get the id for the current 'active' window as an integer.
+        # get the id for the current 'active' window as an integer.
         # http://wiki.xbmc.org/index.php?title=Window_IDs
         try: currentWindowId = xbmcgui.getCurrentWindowId()
         except: currentWindowId = self.window
 
+        if hasattr( self.button, "isSelected" ):
+            self.canceled = self.button.isSelected()
         if hasattr( self.window, "getProperty" ):
-            self.canceled = ( self.window.getProperty( "DialogAddonScan.Cancel" ) == "true" )
+            self.canceled = self.canceled  or ( self.window.getProperty( "DialogAddonScan.Cancel" ) == "true" )
         if hasattr( self.window, "setProperty" ):
             self.window.setProperty( "DialogAddonScan.Hide", __settings__.getSetting( "hidedialog" ) )
 
@@ -257,6 +299,11 @@ class Window:
             self.progress2 = self.controls[ "progress2" ].addControl( self.window )
         except:
             print_exc()
+        try:
+            # BUTTON CANCEL
+            self.button = self.controls[ "button" ].addControl( self.window )
+        except:
+            print_exc()
 
     def removeControls( self ):
         if hasattr( self.window, "removeControl" ):
@@ -271,6 +318,9 @@ class Window:
                 except: pass
             if self.heading:
                 try: self.window.removeControl( self.heading )
+                except: pass
+            if self.button:
+                try: self.window.removeControl( self.button )
                 except: pass
             if self.background:
                 try: self.window.removeControl( self.background )

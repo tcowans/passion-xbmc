@@ -7,6 +7,7 @@ import xbmc
 from xbmcaddon import Addon
 
 from gui import Window
+from gui import xbmcguiWindowError
 
 
 __settings__  = Addon( "script.module.dialogaddonscan" )
@@ -34,7 +35,7 @@ class AddonScan( Window ):
         self.update( 0, 0, line1, line2 )
 
     def iscanceled( self ):
-        """ @ mudole.py
+        """ @ module.py
             if xbmc.getInfoLabel( "Window.Property(DialogAddonScanIsAlive)" ) == "true":
                 # ok rajoute un bouton stop dans le context menu
                 c_items += [ ( "Stop Addon Scan", "RunPlugin(%s?action=stopscan)" % sys.argv[ 0 ] ) ]
@@ -74,7 +75,6 @@ def Demo():
     selected = xbmcgui.Dialog().select( "Demo: "+__addonName__, [ "Show demo scan", "Open settings" ] )
     if selected == 0:
         from time import sleep
-        from gui import xbmcguiWindowError
         try:
             scan = AddonScan()
             # create dialog
