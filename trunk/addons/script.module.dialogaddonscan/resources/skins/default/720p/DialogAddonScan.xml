@@ -1,5 +1,5 @@
 <window id="3000">
-	<defaultcontrol>1</defaultcontrol>
+	<defaultcontrol>2006</defaultcontrol>
 	<!-- Dummy XML, load xml for keeping infos of displaying -->
 	<controls>
 		<!-- ALL ID'S REQUIRED -->
@@ -34,7 +34,7 @@
 				<posy>4</posy>
 				<width>370</width>
 				<height>18</height>
-				<!-- OPTION: [font=, textColor=, disabledColor=, alignment=, hasPath=, angle=] -->
+				<!-- OPTION: [font=, textColor=, disabledColor=, alignment=x+y, hasPath=, angle=] -->
 				<label>font=font10,textColor=FFEB9E17,alignment=left+centery</label>
 				<!--<font>font10_title</font>
 				<textcolor>selected</textcolor>
@@ -48,7 +48,7 @@
 				<posy>20</posy>
 				<width>370</width>
 				<height>20</height>
-				<!-- OPTION: [font=, textColor=, disabledColor=, alignment=, hasPath=, angle=] -->
+				<!-- OPTION: [font=, textColor=, disabledColor=, alignment=x+y, hasPath=, angle=] -->
 				<label>font=font10,textColor=FFFFFFFF,alignment=left+centery</label>
 				<!--<font>font10</font>
 				<align>left</align>
@@ -75,6 +75,16 @@
 				<description>Infos Progress Images</description>
 				<!-- OPTION: [texturebg=, textureleft=, texturemid=, textureright=, textureoverlay=] -->
 				<label>texturebg=ProgressBack.png,texturemid=ProgressFront.png,textureleft=,textureright=,textureoverlay=</label>
+				<visible>false</visible>
+			</control>
+			<control type="button" id="2006">
+				<description>cancel button</description>
+				<posx>345</posx>
+				<posy>0</posy>
+				<width>40</width>
+				<height>20</height>
+				<!-- OPTION: [focusTexture=, noFocusTexture=, textOffsetX=, textOffsetY=, alignment=x+y, font=, textColor=, disabledColor=, angle=, shadowColor=, focusedColor=] -->
+				<label>focusTexture=DialogCloseButton-focus.png,noFocusTexture=DialogCloseButton.png</label>
 				<visible>false</visible>
 			</control>
 		</control>

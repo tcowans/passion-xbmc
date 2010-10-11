@@ -20,11 +20,14 @@
   <string id="30104">Position X</string>
   <string id="30105">Position Y</string>
 
+  <string id="30110">Enable Cancel button</string>
+  <string id="30111">(Only mouse has ability to cancel)</string>
+
   <!-- Credits -->
   <string id="30500"></string>
   <string id="30501">Idea of:</string>
   <string id="30502">Council:</string>
   <string id="30503"></string>
-  <string id="30504"></string>
-  <string id="30505"></string>
+  <string id="30504">Show Changelog</string>
+  <string id="30505">Show Dev Readme</string>
 </strings>

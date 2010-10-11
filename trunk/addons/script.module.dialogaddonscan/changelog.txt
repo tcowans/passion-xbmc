@@ -1,3 +1,9 @@
+1.0.3
+ - added: Cancel button ( Only mouse has ability to cancel )
+ - added: settings to enable cancel button
+ - added: text viewer for "changelog.txt" and "readme.txt" via dialog settings
+ - updated: readme.txt
+
 1.0.2
  - added: iscanceled()
    - function to cancel scan: 
