@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <!--$Revision$-->
 <addon id="script.game.tetris" name="Tetris"
-       version="1.0.1" date="11.09.2010"
+       version="1.0.2" date="11.10.2010"
        provider-name="Asteron (asteron.projects.googlepages.com)">
   <requires>
     <import addon="xbmc.python" version="1.0"/>
@@ -60,6 +60,5 @@ risky.  Leveling up is   easier with smaller clears and will get you more
 quickly to the higher scoring levels.  You must find a good balance between 
 high-scoring multi-line clears and the smaller, safer clears.
 </description>
-    <broken>Currently broken because [B]xbmcgui.WindowDialog[/B] not displaying GUI.</broken>
   </extension>
 </addon>
