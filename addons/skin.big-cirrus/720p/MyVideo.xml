@@ -2,7 +2,6 @@
   <defaultcontrol always="true">50</defaultcontrol>
   <allowoverlay>no</allowoverlay>
   <views>50,508,500</views>
-  <visible>!Skin.HasSetting(kiosk)</visible>
   <controls>
     <include>CommonVideoBackground</include>
     <control type="image">

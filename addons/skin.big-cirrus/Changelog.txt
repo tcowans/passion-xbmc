@@ -1,3 +1,9 @@
+1.1.7
+-- Add trailer overlay icon in rightlist, add skin setting for activate it.
+-- Add skin setting for disable plot in fullscreen Info.
+-- fix : hiding some element when ".." item selected
+-- fix incorect position of right paging label in filebrowser
+
 1.1.6
 -- Add script genre-editor in require
 -- Reworked home, now playing diplay now correctly

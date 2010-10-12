@@ -13,7 +13,8 @@
 				<aspectratio>stretch</aspectratio>
  				<texture>OSDbackground.png</texture> <!-- flip y when up the top -->
 			</control>
-			<control type="group">
+			<control type="group"> <!-- PLOT -->
+				<visible>Skin.HasSetting(plotfi)</visible>
 				<animation effect="slide" start="0,-160" end="0,0" time="400" tween="quadratic" easing="out">WindowOpen</animation>
 				<animation effect="slide" start="0,0" end="0,-160" time="400" tween="quadratic" easing="out">WindowClose</animation>
 				<control type="image"> <!-- background -->
@@ -24,7 +25,7 @@
 					<aspectratio>stretch</aspectratio>
 					<texture flipy="true">OSDbackground.png</texture> <!-- flip y when up the top -->
 				</control>
-				<control type="textbox" > <!-- Syn-->
+				<control type="textbox" > 
 					<posx>10</posx>
 					<posy>5</posy>
 					<width>1255</width>

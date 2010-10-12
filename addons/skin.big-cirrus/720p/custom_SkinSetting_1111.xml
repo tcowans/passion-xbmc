@@ -178,13 +178,25 @@
             <width>750</width>
             <height>40</height>
             <font>cirrus_20</font>
-            <label>Enable Kiosk Mode (disable slideout menu)</label>
+            <label>Enable Plot in fullscreen video info</label>
             <textcolor>grey2</textcolor>
             <focusedcolor>white</focusedcolor>
             <texturefocus flipx="true">listwhitegradient.png</texturefocus>
             <texturenofocus>menuitemNF.png</texturenofocus>
-            <onclick>Skin.ToggleSetting(kiosk)</onclick>
-            <selected>Skin.HasSetting(kiosk)</selected>
+            <onclick>Skin.ToggleSetting(plotfi)</onclick>
+            <selected>Skin.HasSetting(plotfi)</selected>
+          </control>
+		  <control type="radiobutton" id="1013">
+            <width>750</width>
+            <height>40</height>
+            <font>cirrus_20</font>
+            <label>Enable overlay trailer icon in rightlist</label>
+            <textcolor>grey2</textcolor>
+            <focusedcolor>white</focusedcolor>
+            <texturefocus flipx="true">listwhitegradient.png</texturefocus>
+            <texturenofocus>menuitemNF.png</texturenofocus>
+            <onclick>Skin.ToggleSetting(otlist)</onclick>
+            <selected>Skin.HasSetting(otlist)</selected>
           </control>
           <control type="radiobutton" id="2021">
             <description>Clean Home Screen</description>

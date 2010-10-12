@@ -1136,7 +1136,7 @@
 		<animation effect="slide" start="1280,0" time="500" tween="quadratic" easing="out">WindowOpen</animation>
         <description>Date label</description>
         <posx>290</posx>
-        <posy>95r</posy>
+        <posy>10</posy>
         <width>550</width>
         <height>28</height>
         <aligny>center</aligny>
