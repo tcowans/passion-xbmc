@@ -20,6 +20,11 @@ Installer dans in Q:\plugins\video\Canal Plus
 23-10-09 Version 2.0 by Temhil
     - Replaced XML parser BeautifulSoup by ElementTree (needed because some XML were not correctly formed)
     - Added support of new video stream URL, now http and rtmp urls are both supported
+09-06-10 Version 2.1 by Frost
+    - Modified the code for Dharma compatibility
+11-10-10 Version 2.2 by Temhil
+    - Moved cache and download directories to user data
+    - some cleanup
 """
 
 __script__       = "Unknown"
@@ -30,8 +35,8 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/addons/plugin.video.canal.plus/"
 __credits__      = "Team XBMC Passion"
 __platform__     = "xbmc media center"
-__date__         = "09-06-2010"
-__version__      = "2.1"
+__date__         = "11-10-2010"
+__version__      = "2.2"
 __svn_revision__ = 0
 
 import sys
@@ -50,8 +55,6 @@ from Queue import Queue, Empty
 
 global q_in,q_out
 
-# Repertoires
-ROOTDIR  = os.getcwd().replace( ";", "" ) # Create a path with valid format
 
 
 import xbmcaddon
@@ -59,6 +62,7 @@ import xbmcaddon
 __addon__ = xbmcaddon.Addon( __addonID__ )
 __settings__ = __addon__
 __language__ = __addon__.getLocalizedString
+__addonDir__ = __settings__.getAddonInfo( "path" )
 
 
 def getfiles():
@@ -76,15 +80,28 @@ def getfiles():
         # q_in est vide; on a terminé
         pass
 
-if os.name=='posix':
-    # Linux case
-    ROOTDIR = os.path.abspath(os.curdir).replace(';','')
-else:
-    # Xbox and Windows case
-    ROOTDIR = os.getcwd().replace(';','')
-    
-DOWNLOADDIR = os.path.join(ROOTDIR,"downloads")
-CACHEDIR = os.path.join(ROOTDIR,"cache")
+ADDON_DATA  = xbmc.translatePath( "special://profile/addon_data/%s/" % __addonID__ )
+DOWNLOADDIR = os.path.join( ADDON_DATA, "downloads")
+CACHEDIR    = os.path.join( ADDON_DATA, "cache")
+
+# List of directories to check at startup
+dirCheckList   = ( CACHEDIR, DOWNLOADDIR, ) #Tuple - Singleton (Note Extra ,)
+
+
+
+def verifrep( folder ):
+    """
+        Source MyCine (thanks!)
+        Check a folder exists and make it if necessary
+    """
+    try:
+        #print("verifrep check if directory: " + folder + " exists")
+        if not os.path.exists( folder ):
+            print( "verifrep Impossible to find the directory - trying to create the directory: " + folder )
+            os.makedirs( folder )
+    except Exception, e:
+        print( "Exception while creating folder " + folder )
+        print( str( e ) )
 
 def search_item():
     url = sys.argv[0]+"?search=&referer=%s"%(theme_id,theme_titre)
@@ -368,69 +385,79 @@ def show_dialog(titre,message,message2="",message3=""):
     dialog.ok(titre, message,message2,message3)
     return True
 
-    
-#Il faut parser les paramètres
-stringparams = sys.argv[2] #les paramètres sont sur le 3ieme argument passé au script
-try:
-    if stringparams[0]=="?":#pour enlever le ? si il est en début des paramètres
-        stringparams=stringparams[1:]
-except:
-    pass
-parametres={}
-for param in stringparams.split("&"):#on découpe les paramètres sur le '&'
+if ( __name__ == "__main__" ):
+
     try:
-        cle,valeur=param.split("=")#on sépare les couples clé/valeur
-    except:
-        cle=param
-        valeur=""
-    parametres[cle]=valeur #on rempli le dictionnaire des paramètres
-#voilà, 'parametres' contient les paramètres parsés
-
-if "listethemes" in parametres.keys():
-    #à priori non utilisé !
-    #on liste les themes
-    show_themes()
-elif "listesubthemes" in parametres.keys():
-    #on liste les sous-themes
-    show_subthemes(parametres["listesubthemes"],parametres["referer"])
-elif "listevideos" in parametres.keys():
-    #on liste les videos
-    theme_id,subtheme_id = parametres["listevideos"].split("#")
-    show_videos(theme_id,subtheme_id,parametres["referer"])
-elif "showvideoinfos" in parametres.keys():
-    #montre les infos de la video
-    show_video_infos(parametres["showvideoinfos"])
-
-elif "dlvideo" in parametres.keys():
-    xbmc.executebuiltin('XBMC.RunScript(%s,%s,%s)'%(os.path.join(os.getcwd(), "resources", "libs","FLVdownload.py"),
-                                                    parametres["dlvideo"],
-                                                    os.path.join(DOWNLOADDIR,xbmc.makeLegalFilename(os.path.basename(parametres["dlvideo"])))
-                                                    ))
-elif "search" in parametres.keys():
-    show_keyboard(parametres["theme_id"],parametres["subtheme_id"])
-#    #télécharge la vidéo selon l'url fournie
-#    pDialog = xbmcgui.DialogProgress()
-#    ret = pDialog.create('CanalPlus', 'Démarrage du téléchargement ...')
-#    #téléchargement par Thread : FONCTIONNE MAIS TRES MAL : pas convaincant
-#    goDL = cpp.DL_video(parametres["dlvideo"],
-#                        #xbmc.makeLegalFilename(os.path.join(DOWNLOADDIR,os.path.basename(parametres["dlvideo"]))),
-#                        os.path.join(DOWNLOADDIR,xbmc.makeLegalFilename(os.path.basename(parametres["dlvideo"]))),
-#                        pDialog.update,pDialog)
-#    pDialog.close()
-#    if goDL==1:
-#        xbmc.executebuiltin("XBMC.Notification(%s,%s)"%("Telechargement termine !",""))
-#    elif goDL == 0:
-#        xbmc.executebuiltin("XBMC.Notification(%s,%s)"%("Fichier existant !","Telechargement annule."))
-#    elif goDL == -1:
-#        xbmc.executebuiltin("XBMC.Notification(%s,%s)"%("Telechargement annule par l'utilisateur.",""))
-
-elif "showpicture" in parametres.keys():
-    #ne fait rien
-    print os.path.join(CACHEDIR,parametres["showpicture"])
-else:
-    show_themes()
-    #show_dialog("erreur","paramètre inconnu")
-
-xbmcplugin.endOfDirectory(int(sys.argv[1]))#il faut cloturer le plugin avec ca pour finaliser la liste
+        cpp.CACHEDIR = CACHEDIR
+        #Il faut parser les paramètres
+        stringparams = sys.argv[2] #les paramètres sont sur le 3ieme argument passé au script
+        try:
+            if stringparams[0]=="?":#pour enlever le ? si il est en début des paramètres
+                stringparams=stringparams[1:]
+        except:
+            pass
+        parametres={}
+        for param in stringparams.split("&"):#on découpe les paramètres sur le '&'
+            try:
+                cle,valeur=param.split("=")#on sépare les couples clé/valeur
+            except:
+                cle=param
+                valeur=""
+            parametres[cle]=valeur #on rempli le dictionnaire des paramètres
+        #voilà, 'parametres' contient les paramètres parsés
+        
+        if "listethemes" in parametres.keys():
+            #à priori non utilisé !
+            #on liste les themes
+            show_themes()
+        elif "listesubthemes" in parametres.keys():
+            #on liste les sous-themes
+            show_subthemes(parametres["listesubthemes"],parametres["referer"])
+        elif "listevideos" in parametres.keys():
+            #on liste les videos
+            theme_id,subtheme_id = parametres["listevideos"].split("#")
+            show_videos(theme_id,subtheme_id,parametres["referer"])
+        elif "showvideoinfos" in parametres.keys():
+            #montre les infos de la video
+            show_video_infos(parametres["showvideoinfos"])
+        
+        elif "dlvideo" in parametres.keys():
+            xbmc.executebuiltin('XBMC.RunScript(%s,%s,%s)'%(os.path.join(os.getcwd(), "resources", "libs","FLVdownload.py"),
+                                                            parametres["dlvideo"],
+                                                            os.path.join(DOWNLOADDIR,xbmc.makeLegalFilename(os.path.basename(parametres["dlvideo"])))
+                                                            ))
+        elif "search" in parametres.keys():
+            show_keyboard(parametres["theme_id"],parametres["subtheme_id"])
+        #    #télécharge la vidéo selon l'url fournie
+        #    pDialog = xbmcgui.DialogProgress()
+        #    ret = pDialog.create('CanalPlus', 'Démarrage du téléchargement ...')
+        #    #téléchargement par Thread : FONCTIONNE MAIS TRES MAL : pas convaincant
+        #    goDL = cpp.DL_video(parametres["dlvideo"],
+        #                        #xbmc.makeLegalFilename(os.path.join(DOWNLOADDIR,os.path.basename(parametres["dlvideo"]))),
+        #                        os.path.join(DOWNLOADDIR,xbmc.makeLegalFilename(os.path.basename(parametres["dlvideo"]))),
+        #                        pDialog.update,pDialog)
+        #    pDialog.close()
+        #    if goDL==1:
+        #        xbmc.executebuiltin("XBMC.Notification(%s,%s)"%("Telechargement termine !",""))
+        #    elif goDL == 0:
+        #        xbmc.executebuiltin("XBMC.Notification(%s,%s)"%("Fichier existant !","Telechargement annule."))
+        #    elif goDL == -1:
+        #        xbmc.executebuiltin("XBMC.Notification(%s,%s)"%("Telechargement annule par l'utilisateur.",""))
+        
+        elif "showpicture" in parametres.keys():
+            #ne fait rien
+            print os.path.join(CACHEDIR,parametres["showpicture"])
+        else:
+            show_themes()
+            
+            # Verifions si les repertoire dans user data ont ete crees.
+            for i in range( len( dirCheckList ) ):
+                verifrep( dirCheckList[i] ) 
+        
+            #show_dialog("erreur","paramètre inconnu")
+        
+        xbmcplugin.endOfDirectory(int(sys.argv[1]))#il faut cloturer le plugin avec ca pour finaliser la liste
     
+    except:
+        print_exc()
     
