@@ -110,7 +110,7 @@ Et plus...[CR]</description>
     <platform>all</platform>
   </extension>
 </addon>
-<addon id="plugin.video.canal.plus" name="Canal+" provider-name="Alexsolex / Temhil (passion-xbmc.org)" version="2.1">
+<addon id="plugin.video.canal.plus" name="Canal+" provider-name="Alexsolex / Temhil (passion-xbmc.org)" version="2.2">
   <requires>
     <import addon="xbmc.python" version="1.0" />
   </requires>
