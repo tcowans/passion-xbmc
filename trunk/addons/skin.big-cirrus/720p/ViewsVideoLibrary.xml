@@ -78,6 +78,14 @@
 						<visible>!stringcompare(ListItem.Label,..)</visible>
 					</control>
 					<control type="image">
+						<visible>!IsEmpty(ListItem.Trailer) + Skin.HasSetting(otlist)</visible>
+						<posx>18r</posx>
+						<posy>21</posy>
+						<width>25</width>
+						<height>25</height>
+						<texture>trailer-overlay.png</texture>
+					</control>
+					<control type="image">
 						<posx>20r</posx>
 						<posy>15</posy>
 						<width>30</width>
@@ -118,6 +126,14 @@
 						<colordiffuse>black</colordiffuse>
 					</control>
 					<control type="image">
+						<visible>!IsEmpty(ListItem.Trailer) + Skin.HasSetting(otlist)</visible>
+						<posx>18r</posx>
+						<posy>21</posy>
+						<width>25</width>
+						<height>25</height>
+						<texture>trailer-overlay.png</texture>
+					</control>
+					<control type="image">
 						<posx>20r</posx>
 						<posy>15</posy>
 						<width>30</width>
@@ -148,6 +164,14 @@
 						<textcolor>white</textcolor>
 						<scroll>false</scroll>
 						<shadowcolor>black</shadowcolor>
+					</control>
+					<control type="image">
+						<visible>!IsEmpty(ListItem.Trailer) + Skin.HasSetting(otlist)</visible>
+						<posx>18r</posx>
+						<posy>8</posy>
+						<width>25</width>
+						<height>25</height>
+						<texture>trailer-overlay.png</texture>
 					</control>
 					<control type="image">
 						<posx>20r</posx>
@@ -188,6 +212,14 @@
 						<texture>$INFO[Listitem.StarRating]</texture>
 						<visible>!stringcompare(ListItem.Label,..)</visible>
 						<colordiffuse>black</colordiffuse>
+					</control>
+					<control type="image">
+						<visible>!IsEmpty(ListItem.Trailer) + Skin.HasSetting(otlist)</visible>
+						<posx>18r</posx>
+						<posy>21</posy>
+						<width>25</width>
+						<height>25</height>
+						<texture>trailer-overlay.png</texture>
 					</control>
 					<control type="image">
 						<posx>20r</posx>
