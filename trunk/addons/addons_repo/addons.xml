@@ -445,7 +445,7 @@ Noter que le jeu est un dériver, mais les règles restent semblables.</descript
     <platform>all</platform>
   </extension>
 </addon>
-<addon id="script.tv.show.next.aired" name="TV Show - Next Aired" provider-name="Ppic, Frost (passion-xbmc.org)" version="1.1.0">
+<addon id="script.tv.show.next.aired" name="TV Show - Next Aired" provider-name="Ppic, Frost (passion-xbmc.org)" version="2.0.1">
   <requires>
     <import addon="xbmc.python" version="1.0" />
   </requires>
@@ -487,7 +487,7 @@ en visitant leur site web www.tetesaclaques.tv et/ou en achetant le DVD(s)
 réservés à Salambo productions inc (www.tetesaclaques.tv)</disclaimer>
   </extension>
 </addon>
-<addon id="skin.Big-cirrus" name="Big-Cirrus" provider-name="GMib" version="1.1.6">
+<addon id="skin.Big-cirrus" name="Big-Cirrus" provider-name="GMib" version="1.1.7">
 	<requires>
 		<import addon="xbmc.gui" version="2.11" />
 		<import addon="script.logo-downloader" version="2.0.0" />
