@@ -1,4 +1,5 @@
 1.1.7
+-- Add list id 6 in dialogselect.
 -- Add trailer overlay icon in rightlist, add skin setting for activate it.
 -- Add skin setting for disable plot in fullscreen Info.
 -- fix : hiding some element when ".." item selected
