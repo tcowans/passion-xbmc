@@ -1,0 +1,5 @@
+1.0.1
+ - fixed: bad info of creator on unofficial releases
+
+1.0.0
+ - initial version

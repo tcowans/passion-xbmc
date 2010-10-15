@@ -166,7 +166,7 @@ Vous choisissez une catégorie, puis une sous catégorie et à vous les videos d
     <platform>all</platform>
   </extension>
 </addon>
-<addon id="repository.xbmc.builds" name="XBMC Builds Repository" provider-name="Frost (passion-xbmc.org)" version="1.0.0">
+<addon id="repository.xbmc.builds" name="XBMC Builds Repository" provider-name="Frost (passion-xbmc.org)" version="1.0.1">
   <requires>
     <import addon="xbmc.python" version="1.0" />
     <import addon="script.module.elementtree" version="1.2.7" />

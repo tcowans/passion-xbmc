@@ -224,10 +224,13 @@ class Main:
             url = urllib.unquote_plus( self.args.get( "listurl" ) )
             if url == "unofficial":
                 self.releases = repo.getUnofficialBuilds()
+                creator = ""
             elif url == "available":
                 self.releases = self._getAvailableUpdates()
+                creator = "Team XBMC"
             else:
                 self.releases = repo.getListing( url )
+                creator = "Team XBMC"
             self.releases = sorted( self.releases, key=lambda l: not l[ "isFolder" ] )
             #self.releases.reverse()
             StarRating = 5
@@ -242,7 +245,7 @@ class Main:
                     "Name": title,
                     "Path": release[ "link" ],
                     "Type": release[ "type" ],
-                    "Creator": "Team XBMC",
+                    "Creator": creator,
                     "StarRating": "rating0.png",
                     "Version": release[ "revision" ],
                     "Status": release[ "date" ] or release[ "type" ],
