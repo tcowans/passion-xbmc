@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+    <!-- Downloadings -->
+    <setting type="lsep" label="30400" />
+    <!--<setting id="RenameDl" type="bool" label="30401" default="false" />-->
+    <setting id="usetempdir" type="bool" label="30406" default="true" />
+    <setting id="browsedir" enable="eq(-1,false)" type="bool" label="30402" default="true" />
+    <setting id="downloadpath" enable="eq(-1,false)+eq(-2,false)" type="folder" source="auto" option="writeable" mask="/" label="30403" default="" />
+    <!-- In Background -->
+    <setting type="sep" />
+    <setting id="downloadinbackground" type="bool" label="30404" default="false" />
+    <setting id="reportpercent" enable="eq(-1,true)" label="30405" type="enum" values="0[B] %[/B]|5[B] %[/B]|10[B] %[/B]|20[B] %[/B]|25[B] %[/B]|50[B] %[/B]|100[B] %[/B]" default="4" />
+</settings>

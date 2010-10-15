@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!-- WindowXML -->
+  <string id="0">XBMC Builds Repository</string>
+  <string id="2">Downloads in progress</string>
+
+  <!-- Add-on title -->
+  <string id="30000">XBMC Builds Repository</string>
+  <string id="30001"></string>
+
+  <!-- category separators -->
+  <string id="30050">Général</string>
+  <string id="30051"></string>
+  <string id="30052"></string>
+  <string id="30053"></string>
+  <string id="30054"></string>
+  <string id="30055"></string>
+  <string id="30056"></string>
+
+  <!-- Recordings -->
+  <string id="30400">Téléchargements</string>
+  <string id="30401">Activer le renommage des enregistrements</string>
+  <string id="30402">Toujours me demander le dossier des enregistrements</string>
+  <string id="30403">&#8226; Chemin:</string>
+  <string id="30404">Télécharger en arrière-plan</string>
+  <string id="30405">&#8226; Signaler les téléchargements à toute les</string>
+  <string id="30406">Enregistrer dans le répertoire temporaire du système</string>
+</strings>
