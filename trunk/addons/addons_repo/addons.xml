@@ -166,6 +166,21 @@ Vous choisissez une catégorie, puis une sous catégorie et à vous les videos d
     <platform>all</platform>
   </extension>
 </addon>
+<addon id="repository.xbmc.builds" name="XBMC Builds Repository" provider-name="Frost (passion-xbmc.org)" version="1.0.0">
+  <requires>
+    <import addon="xbmc.python" version="1.0" />
+    <import addon="script.module.elementtree" version="1.2.7" />
+  </requires>
+  <extension library="addon.py" point="xbmc.python.pluginsource">
+    <provides>executable</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary>XBMC Builds Repository</summary>
+    <description>Download Builds from XBMC.org and from Unofficial Nightly Builds[CR]For stability, Stable releases is recommended.</description>
+    <disclaimer>Team XBMC did not make all of the builds on this repository and are not responsible for their content from Unofficial Nightly Builds</disclaimer>
+    <platform>all</platform>
+  </extension>
+</addon>
 <addon id="script.calculator" name="Calculator" provider-name="Frost (passion-xbmc.org)" version="2.1.4">
   <requires>
     <import addon="xbmc.python" version="1.0" />
