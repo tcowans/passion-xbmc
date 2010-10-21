@@ -1,3 +1,6 @@
+1.0.4
+ - fixed: NameError: name 'WindowsError' is not defined
+
 1.0.3
  - added: Cancel button ( Only mouse has ability to cancel )
  - added: settings to enable cancel button
@@ -7,7 +10,7 @@
 1.0.2
  - added: iscanceled()
    - function to cancel scan: 
-   -- ( xbmcgui.Window( xbmcgui.getCurrentWindowId() ).setProperty( "CancelDialogAddonScan", "true" ) )
+   -- ( xbmcgui.Window( xbmcgui.getCurrentWindowId() ).setProperty( "DialogAddonScan.Cancel", "true" ) )
  - added: small settings for displaying dialog positions...
  - changed: properties name ( DialogAddonScanIsAlive -> DialogAddonScan.IsAlive )
  - added: skin xml ( but is not displaying, is loaded for keeping layout of controls )

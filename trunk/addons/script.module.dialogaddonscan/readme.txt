@@ -106,6 +106,8 @@
 [B]
 7. Settings access[/B]
   - Access from your addon settings.xml
+    <setting label="Settings Dialog Scan" option="close" type="action" action="Addon.OpenSettings(script.module.dialogaddonscan)" default="" />
+    or
     <setting label="Settings Dialog Scan" option="close" type="action" action="RunScript(special://home/addons/script.module.dialogaddonscan/lib/DialogAddonScan.py,opensettins)" default="" />
 
   - Access from python code
