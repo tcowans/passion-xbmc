@@ -28,7 +28,7 @@ def getTexture( texture ):
 
 class xbmcguiWindowError( Exception ):
     def __init__( self, winError=None ):
-        self.winError = winError
+        Exception.__init__( self, winError )
 
 
 class Control:

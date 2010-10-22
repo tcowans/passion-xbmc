@@ -1,3 +1,6 @@
+1.0.5
+ - fixed-changed: xbmcguiWindowError( Exception )
+
 1.0.4
  - fixed: NameError: name 'WindowsError' is not defined
 
