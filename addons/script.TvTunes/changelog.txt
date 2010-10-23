@@ -1,0 +1,22 @@
+v0.5.0:
+- added backend to play theme when entering a show. this will play theme.mp3 in your tv show folder
+- Skinners informations:
+will automatically launch when browsing videolibrary, automaticaly end when playing video or exiting video library
+add this button in MyVideoNav.xml:
+
+	    <control type="button" id="9999">
+            <description>trigger</description>
+            <onfocus>XBMC.RunScript(script.TvTunes,backend=True&amploop=False)</onfocus>
+            <onfocus>SetFocus(50)</onfocus>
+            <texturenofocus>-</texturenofocus>
+            <texturefocus>-</texturefocus>
+        </control>	
+        
+change the defaultcontrol to 9999 (or id you want for this control) and put your previous defaultcontrol in SefFocus()
+loop can be True or False if you want or not to repeat the theme in loop while browsing in the tv show.
+
+you can also use this visible condition to prevent activating visualisation or music baground fanart:
+        !substring(MusicPlayer.Title,-theme)
+        
+v0.1.0:
+-initial release
