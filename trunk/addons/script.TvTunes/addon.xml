@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="script.TvTunes"
+       name="TvTunes"
+       version="0.5.0"
+       provider-name="Ppic (passion-xbmc.org)">
+  <requires>
+    <import addon="xbmc.python" version="1.0"/>
+  </requires>
+  <extension point="xbmc.python.script"
+             library="default.py">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary lang="en">Get and play your Tv shows sound Theme</summary>
+    <summary lang="fr">TelevisionTunes sound Theme</summary>
+    <description lang="en">This script will help you to get theme of your tvshow library from www.televisiontunes.com
+    it will save them in theme.mp3 file in each of your tvshow folder then they will be play while browsing your tvshow library when you enter the tvshow folder (need your skin to be compatible for this feature)</description>
+    <description lang="fr">Ce script vous aidera à télécharger vos génériques de série depuis www.televisiontunes.com
+    Il les enregistrera dans un fichier theme.mp3 dans vos répertoires de série, ils seront ensuite joué lorsque vous entrerez dans la série correspondante (cette fonctionalité requiert une skin compatible</description>
+    <disclaimer lang="en">Skinners, please see changelog.txt to know how to integrate it in your skin</disclaimer>
+    <disclaimer lang="fr">Skinneurs, lisez le changelog.txt pour obtenir les infos pour l'intégrer à votre skin</disclaimer>
+  </extension>
+</addon>
