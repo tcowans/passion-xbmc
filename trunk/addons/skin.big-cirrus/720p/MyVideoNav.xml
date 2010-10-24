@@ -1,10 +1,17 @@
 <window id="25">
-  <defaultcontrol always="true">50</defaultcontrol>
+  <defaultcontrol always="true">9999</defaultcontrol>
   <allowoverlay>no</allowoverlay>
   <views>50,508,511,569,513,514,519</views>
   <controls>
+	<control type="button" id="9999">
+            <description>trigger</description>
+            <onfocus>XBMC.RunScript(script.TvTunes,backend=True&amploop=False)</onfocus>
+            <onfocus>SetFocus(50)</onfocus>
+            <texturenofocus>-</texturenofocus>
+            <texturefocus>-</texturefocus>
+        </control>	
     <include>CommonVideoBackground</include>
-    <control type="group">
+	<control type="group">
       <include>Window_OpenClose_Animation</include>    
       <control type="image">
         <posx>0</posx>
@@ -52,7 +59,7 @@
         <visible>Container.Content(MusicVideos) | Container.Content(Artists) | Container.Content(Albums)</visible>
       </control>
     </control>
-    <include>CommonMediaPlayingBackground</include>
+   <include>CommonMediaPlayingBackground</include>
     <control type="group">
       <include>Window_OpenClose_Animation</include>    
       <control type="group">
@@ -128,7 +135,7 @@
 		<control type="image">
 			<description>VIEW OPTIONS TEXT</description>
 			<posx>-230</posx>
-			<posy>100</posy>
+			<posy>130</posy>
 			<width>220</width>
 			<height>80</height>
 			<aspectratio>keep</aspectratio>
@@ -137,8 +144,8 @@
 		<!-- MENU ITEMS BELOW -->
       <control type="group" id="9000">
         <posx>-250</posx>
-        <posy>180</posy>
-        <include>CommonNowPlaying</include>
+        <posy>210</posy>
+        <!-- <include>CommonNowPlaying</include> -->
         <control type="button" id="2">
           <description>View As button</description>
           <posx>0</posx>
@@ -269,14 +276,14 @@
             <selected>Skin.HasSetting(View508HideInfo)</selected>
             <visible>Control.IsVisible(508)</visible>
           </control>
-		  <control type="radiobutton" id="2051">
+		  <!-- <control type="radiobutton" id="2051">
 			<description>Toggle Rightlist Slim View</description>
 			<include>ButtonCommonValues</include>
 			<label>Slim Right List</label>
 			<onclick>Skin.ToggleSetting(slimRightList)</onclick>
 			<selected>Skin.HasSetting(slimRightList)</selected>
 			<visible>Control.IsVisible(569)</visible>
-		  </control>
+		  </control> -->
 		  <control type="radiobutton" id="2052">
 			<description>Toggle Cases</description>
 			<include>ButtonCommonValues</include>

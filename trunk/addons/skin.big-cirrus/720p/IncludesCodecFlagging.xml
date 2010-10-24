@@ -1,8 +1,15 @@
 <includes>
 	<include name="VideoCodecFlaggingConditions">
+		<!-- <control type="image">
+			<description>Video rez Image</description>
+			<width>72</width>
+			<height>28</height>
+			<aspectratio>keep</aspectratio>
+			<texture>$INFO[ListItem.VideoResolution,flagging/video/,.png]</texture>
+		</control> -->
 		<control type="image">
 			<description>Xvid Codec Image</description>
-			<width>120</width>
+			<width>94</width>
 			<height>28</height>
 			<aspectratio>keep</aspectratio>
 			<texture>flagging/video/xvid.png</texture>
@@ -10,7 +17,7 @@
 		</control>
 		<control type="image">
 			<description>Divx Codec Image</description>
-			<width>130</width>
+			<width>102</width>
 			<height>28</height>
 			<aspectratio>keep</aspectratio>
 			<texture>flagging/video/divx.png</texture>
@@ -18,7 +25,7 @@
 		</control>
 		<control type="image">
 			<description>h264 Codec Image</description>
-			<width>70</width>
+			<width>97</width>
 			<height>28</height>
 			<aspectratio>keep</aspectratio>
 			<texture>flagging/video/h264.png</texture>
@@ -26,7 +33,7 @@
 		</control>
 		<control type="image">
 			<description>avc1 Codec Image</description>
-			<width>90</width>
+			<width>81</width>
 			<height>28</height>
 			<aspectratio>keep</aspectratio>
 			<texture>flagging/video/avc1.png</texture>
@@ -34,7 +41,7 @@
 		</control>
 		<control type="image">
 			<description>wvc1 Codec Image</description>
-			<width>90</width>
+			<width>70</width>
 			<height>28</height>
 			<aspectratio>keep</aspectratio>
 			<texture>flagging/video/wvc1.png</texture>
@@ -42,7 +49,7 @@
 		</control>
 		<control type="image">
 			<description>mpeg1video Codec Image</description>
-			<width>128</width>
+			<width>102</width>
 			<height>28</height>
 			<aspectratio>keep</aspectratio>
 			<texture>flagging/video/mpeg1video.png</texture>
@@ -50,7 +57,7 @@
 		</control>
 		<control type="image">
 			<description>mpeg2video Codec Image</description>
-			<width>128</width>
+			<width>102</width>
 			<height>28</height>
 			<aspectratio>keep</aspectratio>
 			<texture>flagging/video/mpeg2video.png</texture>
@@ -60,7 +67,7 @@
 	<include name="VideoTypeHackFlaggingConditions">
 		<control type="image">
 			<description>Bluray Image</description>
-			<width>65</width>
+			<width>53</width>
 			<height>28</height>
 			<aspectratio>keep</aspectratio>
 			<texture>flagging/video/bluray.png</texture>
@@ -68,7 +75,7 @@
 		</control>
 		<control type="image">
 			<description>HDDVD Image</description>
-			<width>132</width>
+			<width>107</width>
 			<height>28</height>
 			<aspectratio>keep</aspectratio>
 			<texture>flagging/video/hddvd.png</texture>
@@ -238,7 +245,7 @@
 	<include name="AudioCodecFlaggingConditions">
 		<control type="image">
 			<description>mp3 Codec Image</description>
-			<width>72</width>
+			<width>95</width>
 			<height>28</height>
 			<aspectratio>keep</aspectratio>
 			<texture>flagging/audio/mp3.png</texture>
@@ -246,7 +253,7 @@
 		</control>
 		<control type="image">
 			<description>dts Codec Image</description>
-			<width>130</width>
+			<width>106</width>
 			<height>28</height>
 			<aspectratio>keep</aspectratio>
 			<texture>flagging/audio/dts.png</texture>
@@ -254,7 +261,7 @@
 		</control>
 		<control type="image">
 			<description>ac3 Image</description>
-			<width>98</width>
+			<width>75</width>
 			<height>28</height>
 			<aspectratio>keep</aspectratio>
 			<texture>flagging/audio/ac3.png</texture>
@@ -262,7 +269,7 @@
 		</control>
 		<control type="image">
 			<description>aac Image</description>
-			<width>90</width>
+			<width>94</width>
 			<height>28</height>
 			<aspectratio>keep</aspectratio>
 			<texture>flagging/audio/aac.png</texture>
@@ -270,7 +277,7 @@
 		</control>
 		<control type="image">
 			<description>Dolby Digital Image</description>
-			<width>98</width>
+			<width>75</width>
 			<height>28</height>
 			<aspectratio>keep</aspectratio>
 			<texture>flagging/audio/dolbydigital.png</texture>
@@ -278,7 +285,7 @@
 		</control>
 		<control type="image">
 			<description>WMA Pro Codec Image</description>
-			<width>90</width>
+			<width>82</width>
 			<height>28</height>
 			<aspectratio>keep</aspectratio>
 			<texture>flagging/audio/wmapro.png</texture>
@@ -286,7 +293,7 @@
 		</control>
 		<control type="image">
 			<description>Audio Channels Image</description>
-			<width>45</width>
+			<width>65</width>
 			<height>28</height>
 			<aspectratio align="left">keep</aspectratio>
 			<texture>$INFO[ListItem.AudioChannels,flagging/audio/,.png]</texture>
@@ -295,7 +302,7 @@
 	<include name="AspectCodecFlaggingConditions">
 		<control type="image">
 			<description>Aspectratio Image</description>
-			<width>56</width>
+			<width>48</width>
 			<height>28</height>
 			<aspectratio>keep</aspectratio>
 			<texture>$INFO[ListItem.VideoAspect,flagging/aspectratio/,.png]</texture>
