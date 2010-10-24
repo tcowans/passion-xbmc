@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <addons>
   <addon id="repository.passion.xbmc.org"
-    name="Passion-XBMC.org Add-ons"
-    version="1.0.4"
-    provider-name="Team Passion-XBMC">
+      name="Passion-XBMC.org Add-ons"
+      version="1.0.4"
+      provider-name="Team Passion-XBMC">
     <extension point="xbmc.addon.repository"
       name="Passion-XBMC Add-on Repository">
       <info compressed="true">http://passion-xbmc.org/addons/addons.php</info>
@@ -14,7 +14,7 @@
       <summary>Install Add-ons from passion-xbmc.org</summary>
       <summary lang="fr">Installez des Add-ons depuis passion-xbmc.org</summary>
       <description>Download and install Add-ons from passion-xbmc.org</description>
-      <description lang="fr">Téléchargez et installez des Add-ons depuis passion-xbmc.org</description>
+      <description lang="fr">TÃ©lÃ©chargez et installez des Add-ons depuis passion-xbmc.org</description>
       <platform>all</platform>
     </extension>
   </addon>
