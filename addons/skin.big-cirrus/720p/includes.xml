@@ -25,7 +25,7 @@
       <posy>0</posy>
       <width>1280</width>
       <height>720</height>
-      <visible>Player.HasAudio + !Skin.HasSetting(ShowBackgroundVis)</visible>
+      <visible>Player.HasAudio + !Skin.HasSetting(ShowBackgroundVis) + !Container.Content(Episodes) + !Container.Content(Seasons)</visible>
     </control>
     <control type="videowindow">
       <posx>0</posx>
@@ -258,12 +258,12 @@
   <include name="CommonPageCount">
 <!-- TIME AND STUFF FOR WHATEVER IS PLAYING (UNDER SECTION TITLE) -->
   <control type="label">
-      <posx>25r</posx>
-      <posy>25r</posy>
+      <posx>150</posx>
+      <posy>10</posy>
       <width>500</width>
       <height>20</height>
       <label>([COLOR=orange]$INFO[Player.Time] / $INFO[Player.Duration,][/COLOR]) - $INFO[MusicPlayer.Title]$INFO[VideoPlayer.Title]</label>
-      <align>right</align>
+      <align>left</align>
       <aligny>center</aligny>
       <font>font12</font>
       <textcolor>grey</textcolor>

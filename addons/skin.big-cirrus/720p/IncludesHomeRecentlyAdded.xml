@@ -84,9 +84,9 @@
 						</control>
 					</control>
 					<control type="list" id="8000">
-						<posx>800r</posx>
+						<posx>820r</posx>
 						<posy>55</posy>
-						<width>300</width>
+						<width>320</width>
 						<height>200</height>
 						<onleft>9000</onleft>
 						<onright>8001</onright>
@@ -95,11 +95,11 @@
 						<viewtype label="535">list</viewtype>
 						<pagecontrol>-</pagecontrol>
 						<scrolltime>0</scrolltime>
-						<itemlayout height="40" width="300">
+						<itemlayout height="40" width="320">
 							<control type="label">
-								<posx>290</posx>
+								<posx>320</posx>
 								<posy>0</posy>
-								<width>300</width>
+								<width>320</width>
 								<height>40</height>
 								<font>cirrus_24</font>
 								<textcolor>white</textcolor>
@@ -110,7 +110,7 @@
 								<label>$INFO[ListItem.Label]</label>
 							</control>
 						</itemlayout>
-						<focusedlayout height="40" width="300">
+						<focusedlayout height="40" width="320">
 							<control type="image">
 								<posx>0</posx>
 								<posy>0</posy>
@@ -121,9 +121,9 @@
 								<include>VisibleFadeEffect</include>
 							</control>
 							<control type="label">
-								<posx>290</posx>
+								<posx>320</posx>
 								<posy>0</posy>
-								<width>300</width>
+								<width>320</width>
 								<height>40</height>
 								<font>cirrus_24</font>
 								<textcolor>white</textcolor>
@@ -412,9 +412,9 @@
 						</control>
 					</control>
 					<control type="list" id="8002">
-						<posx>800r</posx>
+						<posx>820r</posx>
 						<posy>55</posy>
-						<width>300</width>
+						<width>320</width>
 						<height>200</height>
 						<onleft>9000</onleft>
 						<onright>9000</onright>
@@ -423,11 +423,11 @@
 						<viewtype label="535">list</viewtype>
 						<pagecontrol>-</pagecontrol>
 						<scrolltime>0</scrolltime>
-						<itemlayout height="40" width="300">
+						<itemlayout height="40" width="320">
 							<control type="label">
-								<posx>290</posx>
+								<posx>320</posx>
 								<posy>0</posy>
-								<width>300</width>
+								<width>320</width>
 								<height>40</height>
 								<font>cirrus_24</font>
 								<textcolor>white</textcolor>
@@ -438,7 +438,7 @@
 								<label>$INFO[ListItem.Label]</label>
 							</control>
 						</itemlayout>
-						<focusedlayout height="40" width="300">
+						<focusedlayout height="40" width="320">
 							<control type="image">
 								<posx>0</posx>
 								<posy>0</posy>
@@ -449,9 +449,9 @@
 								<include>VisibleFadeEffect</include>
 							</control>
 							<control type="label">
-								<posx>290</posx>
+								<posx>320</posx>
 								<posy>0</posy>
-								<width>300</width>
+								<width>320</width>
 								<height>40</height>
 								<font>cirrus_24</font>
 								<textcolor>white</textcolor>
@@ -460,6 +460,8 @@
 								<align>right</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label]</label>
+								
+
 							</control>
 						</focusedlayout>
 						<content>

@@ -1,4 +1,12 @@
+1.1.8
+-- keep only the slim rightlist, star rating was removed.
+-- Add small fontset (font size -5).
+-- Add support for TvTunes script.
+-- some bugfix.
+
 1.1.7
+-- fix left menu don't appair in music library.
+-- fix recently added movie label size. 
 -- Add list id 6 in dialogselect.
 -- Add trailer overlay icon in rightlist, add skin setting for activate it.
 -- Add skin setting for disable plot in fullscreen Info.
