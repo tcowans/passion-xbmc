@@ -1,3 +1,14 @@
+v0.5.3:
+- added sound setting decrease from 0 to 60 in setting, automatically raising when script exit.
+- moved running control into default.py
+
+v0.5.2:
+- fixed problem for flatten tvshow option
+- change the visible condition to : !"Window(10025).Property(TvTunesIsAlive)" it's "true" when script is running
+
+v0.5.1:
+- moved loop in addon setting.
+
 v0.5.0:
 - added backend to play theme when entering a show. this will play theme.mp3 in your tv show folder
 - Skinners informations:
@@ -16,7 +27,7 @@ change the defaultcontrol to 9999 (or id you want for this control) and put your
 loop can be True or False if you want or not to repeat the theme in loop while browsing in the tv show.
 
 you can also use this visible condition to prevent activating visualisation or music baground fanart:
-        !substring(MusicPlayer.Title,-theme)
+        !"Window(10025).Property(TvTunesIsAlive)"
         
 v0.1.0:
 -initial release
