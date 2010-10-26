@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+<setting id="loop" type="bool" label="Play theme in loop" default="False"/>
+<setting id="downvolume" label="Lower sound value" type="slider" default="0" range="0,1,60" format="%1.f db" />
+</settings>
