@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <!-- $Revision$ -->
 <addon id="script.module.dialogaddonscan" name="Dialog Addon Scan"
-       version="1.0.5" date="22.10.2010"
+       version="1.0.6" date="27.10.2010"
        provider-name="Frost (passion-xbmc.org)">
   <requires>
     <import addon="xbmc.python" version="1.0"/>

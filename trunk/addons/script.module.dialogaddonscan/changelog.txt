@@ -1,3 +1,6 @@
+1.0.6
+ - fixed: gui.py cause conflict with other addons, renamed in AddonScan.py
+
 1.0.5
  - fixed-changed: xbmcguiWindowError( Exception )
 
