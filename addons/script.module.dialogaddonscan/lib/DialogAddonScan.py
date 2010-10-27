@@ -6,8 +6,8 @@ from traceback import print_exc
 import xbmc
 from xbmcaddon import Addon
 
-from gui import Window
-from gui import xbmcguiWindowError
+from AddonScan import Window
+from AddonScan import xbmcguiWindowError
 
 
 __settings__  = Addon( "script.module.dialogaddonscan" )
