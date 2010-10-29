@@ -1,3 +1,13 @@
+v0.6.6:
+- fix the video stopped by script exiting.
+
+v0.6.5:
+- changed log volume display (all in %)
+- changed container and playing conditions
+- log steps
+- now compense volume during theme playing (when going back to original volume, your volume change will be take in count)
+- fixed loop
+
 v0.6.0:
 - change volume setting
 - rewrite code
