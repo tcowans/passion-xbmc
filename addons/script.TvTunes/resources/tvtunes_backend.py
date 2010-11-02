@@ -11,8 +11,11 @@ import sys
 
 try:
     # parse sys.argv for params
+    print sys.argv[ 1 ]
     try:params = dict( arg.split( "=" ) for arg in sys.argv[ 1 ].split( "&" ) )
-    except:params =  dict( sys.argv[ 1 ].split( "=" ))
+    except:
+        print_exc()
+        params =  dict( sys.argv[ 1 ].split( "=" ))
 except:
     # no params passed
     print_exc()
@@ -34,7 +37,7 @@ class mythread( threading.Thread ):
             while not self._stop:           # le code                
                 if not xbmc.getCondVisibility( "Window.IsVisible(10025)"): self.stop()      #destroy threading
                     
-                if xbmc.getCondVisibility( "Container.Content(Seasons)" ) or xbmc.getCondVisibility( "Container.Content(Episodes)" ) and not xbmc.Player().isPlaying():
+                if xbmc.getCondVisibility( "Container.Content(Seasons)" ) or xbmc.getCondVisibility( "Container.Content(Episodes)" ) and not xbmc.Player().isPlaying() and not xbmc.getInfoLabel( "container.folderpath" ) == "videodb://5/":
                     self.newpath = xbmc.getInfoLabel( "ListItem.Path" )
                     if not self.newpath == self.oldpath and not self.newpath == "" and not self.newpath == "videodb://2/2/":
                         print "### old path: %s" % self.oldpath
@@ -44,7 +47,7 @@ class mythread( threading.Thread ):
                         else: print "### player already playing"
                         
                 if xbmc.getInfoLabel( "Window(10025).Property(TvTunesIsAlive)" ) == "true" and not xbmc.Player().isPlaying():
-                    print "playing ends"
+                    print "### playing ends"
                     if self.loud: self.raise_volume()
                     xbmcgui.Window( 10025 ).clearProperty('TvTunesIsAlive')
                     
@@ -89,13 +92,16 @@ class mythread( threading.Thread ):
         xbmc.executebuiltin( 'XBMC.SetVolume(%d)' % vol )  
         self.loud = False
         
-    def start_playing( self ):        
+    def start_playing( self ):     
+        if params.get("smb", "false" ) == "true" and self.newpath.startswith("smb://") : 
+            print "### Try authentification share"
+            self.newpath = self.newpath.replace("smb://", "smb://%s:%s@" % (params.get("user", "guest" ) , params.get("password", "guest" )) )
+            print "### %s" % self.newpath
         if os.path.exists( os.path.join (self.newpath , "theme.mp3" ) ):
             self.playpath = os.path.join (self.newpath , "theme.mp3" )
         elif os.path.exists(os.path.join(os.path.dirname( os.path.dirname( self.newpath ) ) , "theme.mp3")):                                
             self.playpath = (os.path.join(os.path.dirname( os.path.dirname( self.newpath ) ) , "theme.mp3"))
         else: self.playpath = False
-
         if self.playpath:
             if not self.loud: self.lower_volume()
             xbmcgui.Window( 10025 ).setProperty( "TvTunesIsAlive", "true" )

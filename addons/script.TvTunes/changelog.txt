@@ -1,3 +1,16 @@
+v0.7.2
+- added Spanish translation. 
+
+v0.7.1
+- corrected float conversion error between linux and windows.
+
+v0.7.0
+- added support for protected smb share 'activate in settings'.
+
+v0.6.7:
+- fix theme playing on recently added episodes
+- fix error on start with volume parameter
+
 v0.6.6:
 - fix the video stopped by script exiting.
 
@@ -47,7 +60,7 @@ change the defaultcontrol to 9999 (or id you want for this control) and put your
 loop can be True or False if you want or not to repeat the theme in loop while browsing in the tv show.
 
 you can also use this visible condition to prevent activating visualisation or music baground fanart:
-        !"Window(10025).Property(TvTunesIsAlive)"
+        !SubString(Window(10025).Property(TvTunesIsAlive),True)
         
 v0.1.0:
 -initial release
