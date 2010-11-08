@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+    <!-- GENERAL -->
+    <setting id="first_run" type="bool" visible="false" label="first_run" default="true"/>
+</settings>
