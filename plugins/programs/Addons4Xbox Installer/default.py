@@ -15,7 +15,7 @@ __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/program
 __credits__      = "Team XBMC Passion"
 __platform__     = "xbmc media center"
 __date__         = "08-11-2010"
-__version__      = "0.1"
+__version__      = "0.2"
 __svn_revision__ = 0
 
 
@@ -106,6 +106,7 @@ class Addons4xboxInstallerPlugin:
         self.fileMgr = fileMgr()
         #self.fileMgr.verifrep( get_install_path( TYPE_ADDON ) )
         self.fileMgr.verifrep( DIR_ADDON_MODULE )
+        self.fileMgr.verifrep( DIR_CACHE )
         
         # Check settings
         if ( xbmcplugin.getSetting('first_run') == 'true' ):
@@ -124,59 +125,61 @@ class Addons4xboxInstallerPlugin:
             except ImportError:
                 self.installLibs()
 
-        def installLibs(self):
-            try:
-                dialog = xbmcgui.Dialog()
-                if ( dialog.ok( __language__(30021), __language__(30003) ) ):
-                    # Install XBMC Addons librairies
-                    #lib_xbmcaddon = "special://xbmc/system/python/Lib/xbmcaddon.py"
-                    lib_source = os.path.join( ROOTDIR, "resources", "script.modules" )
-                    dialogProg = xbmcgui.DialogProgress()
-                    dialogProg.create( __language__( 30000 ) ) 
-                    dialogProg.update(0, __language__ ( 30001 ) )
-                    #try: os.mkdirs( "special://xbmc/system/python/Lib" )
-                    #except: pass
-                    try:
-                        #xbmc.executehttpapi( "FileCopy(%s,%s)" % ( lib_source, lib_xbmcaddon ) )
-                        if os.path.exists( lib_source ):
-                            copy_dir( lib_source, DIR_ADDON_MODULE )
-                            xbmcplugin.setSetting('first_run','false')
-                            self.select()
-                        else:
-                            dialogProg.close()
-                            dialog = xbmcgui.Dialog()
-                            dialog.ok( __language__(30000), __language__(30006), __language__(30007) )
-                            print "ERROR: impossible to copy xbmc addon librairies"
-                            print "Librairies are missing in the plugin structure"
-                        
-                        dialogProg.update(100, __language__ ( 30001 ) )
-                        dialogProg.close()
-                        dialog = xbmcgui.Dialog()
-                        dialog.ok( __language__(30000), __language__(30005) )
-                        print "SUCCESS: xbmcaddon.py copied to special://xbmc/system/python/Lib/xbmcaddon.py"
-                    except:
+    def installLibs(self):
+        try:
+            dialog = xbmcgui.Dialog()
+            if ( dialog.ok( __language__(30021), __language__(30003) ) ):
+                # Install XBMC Addons librairies
+                #lib_xbmcaddon = "special://xbmc/system/python/Lib/xbmcaddon.py"
+                lib_source = os.path.join( ROOTDIR, "resources", "script.modules" )
+                dialogProg = xbmcgui.DialogProgress()
+                dialogProg.create( __language__( 30000 ) ) 
+                dialogProg.update(0, __language__ ( 30001 ) )
+                #try: os.mkdirs( "special://xbmc/system/python/Lib" )
+                #except: pass
+                try:
+                    #xbmc.executehttpapi( "FileCopy(%s,%s)" % ( lib_source, lib_xbmcaddon ) )
+                    if os.path.exists( lib_source ):
+                        copy_dir( lib_source, DIR_ADDON_MODULE )
+                        xbmcplugin.setSetting('first_run','false')
+                        self.select()
+                    else:
                         dialogProg.close()
                         dialog = xbmcgui.Dialog()
                         dialog.ok( __language__(30000), __language__(30006), __language__(30007) )
-                        print "ERROR: impossible to copy xbmcaddon.py to special://xbmc/system/python/Lib/xbmcaddon.py"
-                        print_exc()
-                else:
+                        print "ERROR: impossible to copy xbmc addon librairies"
+                        print "Librairies are missing in the plugin structure"
+                   
+                    dialogProg.update(100, __language__ ( 30001 ) )
+                    dialogProg.close()
                     dialog = xbmcgui.Dialog()
-                    dialog.ok( __language__(30000), __language__(30004) )
-            except:
-                print_exc()
- 
+                    dialog.ok( __language__(30000), __language__(30005) )
+                    print "SUCCESS: xbmcaddon.py copied to special://xbmc/system/python/Lib/xbmcaddon.py"
+                except:
+                    dialogProg.close()
+                    dialog = xbmcgui.Dialog()
+                    dialog.ok( __language__(30000), __language__(30006), __language__(30007) )
+                    print "ERROR: impossible to copy xbmcaddon.py to special://xbmc/system/python/Lib/xbmcaddon.py"
+                    print_exc()
+            else:
+                dialog = xbmcgui.Dialog()
+                dialog.ok( __language__(30000), __language__(30004) )
+        except:
+            print_exc()
+
 
     def createRootDir ( self ):
         paramsDicZip = {}
         paramsDicZip[self.PARAM_INSTALL_FROM_ZIP] = "true"
         urlZip = self._create_param_url( paramsDicZip )
-        self._addLink( __language__( 30203 ), urlZip )
+        if urlZip:
+            self._addLink( __language__( 30203 ), urlZip )
         
         paramsDicRepo = {}
         paramsDicRepo[self.PARAM_LISTTYPE] = self.VALUE_LIST_LOCAL_REPOS
         urlRepo = self._create_param_url( paramsDicRepo )
-        self._addDir( __language__( 30204 ), urlRepo )
+        if urlRepo:
+            self._addDir( __language__( 30204 ), urlRepo )
         
         self._end_of_directory( True )
 
@@ -188,7 +191,8 @@ class Addons4xboxInstallerPlugin:
             paramsRepo[self.PARAM_REPO_ID] = str(self.repoList.index(repo))
             paramsRepo[self.PARAM_LISTTYPE] = self.VALUE_LIST_CATEGORY
             urlRepo = self._create_param_url( paramsRepo )
-            self._addDir( repo['name'], urlRepo )
+            if urlRepo:
+                self._addDir( repo['name'], urlRepo )
         self._end_of_directory( True )
 
 
@@ -198,7 +202,8 @@ class Addons4xboxInstallerPlugin:
         params[self.PARAM_LISTTYPE] = self.VALUE_LIST_ADDONS
         params[self.PARAM_TYPE] = self.VALUE_LIST_ALL_ADDONS
         url = self._create_param_url( params )
-        self._addDir( __language__( 30107 ), url )        
+        if url:
+            self._addDir( __language__( 30107 ), url )        
         
         params = {}
         params[self.PARAM_REPO_ID] = str(repoId)
@@ -212,35 +217,40 @@ class Addons4xboxInstallerPlugin:
         params[self.PARAM_LISTTYPE] = self.VALUE_LIST_ADDONS
         params[self.PARAM_TYPE] = TYPE_ADDON_MUSIC
         url = self._create_param_url( params )
-        self._addDir( __language__( 30102 ), url )        
+        if url:
+            self._addDir( __language__( 30102 ), url )        
         
         params = {}
         params[self.PARAM_REPO_ID] = str(repoId)
         params[self.PARAM_LISTTYPE] = self.VALUE_LIST_ADDONS
         params[self.PARAM_TYPE] = TYPE_ADDON_PICTURES
         url = self._create_param_url( params )
-        self._addDir( __language__( 30103 ), url )        
+        if url:
+            self._addDir( __language__( 30103 ), url )        
         
         params = {}
         params[self.PARAM_REPO_ID] = str(repoId)
         params[self.PARAM_LISTTYPE] = self.VALUE_LIST_ADDONS
         params[self.PARAM_TYPE] = TYPE_ADDON_PROGRAMS
         url = self._create_param_url( params )
-        self._addDir( __language__( 30104 ), url )        
+        if url:
+            self._addDir( __language__( 30104 ), url )        
         
         params = {}
         params[self.PARAM_REPO_ID] = str(repoId)
         params[self.PARAM_LISTTYPE] = self.VALUE_LIST_ADDONS
         params[self.PARAM_TYPE] = TYPE_ADDON_VIDEO
         url = self._create_param_url( params )
-        self._addDir( __language__( 30105 ), url )        
+        if url:
+            self._addDir( __language__( 30105 ), url )        
         
         params = {}
         params[self.PARAM_REPO_ID] = str(repoId)
         params[self.PARAM_LISTTYPE] = self.VALUE_LIST_ADDONS
         params[self.PARAM_TYPE] = TYPE_ADDON_MODULE
         url = self._create_param_url( params )
-        self._addDir( __language__( 30108 ), url )        
+        if url:
+            self._addDir( __language__( 30108 ), url )        
         
         
         # for addonType in self.supportedAddonList:
@@ -293,7 +303,8 @@ class Addons4xboxInstallerPlugin:
                         paramsAddons[self.PARAM_URL] = downloadUrl
                         paramsAddons[self.PARAM_TYPE] = self.repoList[repoId]['format']
                         url = self._create_param_url( paramsAddons )
-                        self._addLink( item['name'], url)
+                        if url:
+                            self._addLink( item['name'], url)
                 else:
                     keepParsing = False
         self._end_of_directory( True )
@@ -386,7 +397,8 @@ class Addons4xboxInstallerPlugin:
                         paramsDic[self.PARAM_LOCALPATH] = addon_dir
                         
                         url = self._create_param_url( paramsDic )
-                        self._addLink( addon_dir, url, iconimage=thumbnail_path )
+                        if url:
+                            self._addLink( addon_dir, url, iconimage=thumbnail_path )
                     self._end_of_directory( True )
                         
                 elif TYPE_ADDON_SCRIPT == addon_type:
@@ -407,7 +419,8 @@ class Addons4xboxInstallerPlugin:
                             paramsDic[self.PARAM_LOCALPATH] = addon_dir
                             
                             url = self._create_param_url( paramsDic )
-                            self._addLink( addon_dir, url, iconimage=thumbnail_path )
+                            if url:
+                                self._addLink( addon_dir, url, iconimage=thumbnail_path )
                     self._end_of_directory( True )
 
                 elif TYPE_ADDON_MUSIC == addon_type:
@@ -428,7 +441,8 @@ class Addons4xboxInstallerPlugin:
                             paramsDic[self.PARAM_LOCALPATH] = addon_dir
 
                             url = self._create_param_url( paramsDic )
-                            self._addLink( addon_dir, url, iconimage=thumbnail_path )
+                            if url:
+                                self._addLink( addon_dir, url, iconimage=thumbnail_path )
                     self._end_of_directory( True )
 
                 elif TYPE_ADDON_PICTURES == addon_type:
@@ -449,7 +463,8 @@ class Addons4xboxInstallerPlugin:
                             paramsDic[self.PARAM_LOCALPATH] = addon_dir
 
                             url = self._create_param_url( paramsDic )
-                            self._addLink( addon_dir, url, iconimage=thumbnail_path )
+                            if url:
+                                self._addLink( addon_dir, url, iconimage=thumbnail_path )
                     self._end_of_directory( True )
 
                 elif TYPE_ADDON_PROGRAMS == addon_type:
@@ -470,7 +485,8 @@ class Addons4xboxInstallerPlugin:
                             paramsDic[self.PARAM_LOCALPATH] = addon_dir
 
                             url = self._create_param_url( paramsDic )
-                            self._addLink( addon_dir, url, iconimage=thumbnail_path )
+                            if url:
+                                self._addLink( addon_dir, url, iconimage=thumbnail_path )
                     self._end_of_directory( True )
 
                 elif TYPE_ADDON_VIDEO == addon_type:
@@ -491,7 +507,8 @@ class Addons4xboxInstallerPlugin:
                             paramsDic[self.PARAM_LOCALPATH] = addon_dir
 
                             url = self._create_param_url( paramsDic )
-                            self._addLink( addon_dir, url, iconimage=thumbnail_path )
+                            if url:
+                                self._addLink( addon_dir, url, iconimage=thumbnail_path )
 
                     self._end_of_directory( True )
                     
@@ -709,9 +726,14 @@ class Addons4xboxInstallerPlugin:
         url = sys.argv[ 0 ]
         sep = '?'
         print paramsDic
-        for param in paramsDic:
-            url = url + sep + urllib.quote_plus( param ) + '=' + urllib.quote_plus( paramsDic[param] )
-            sep = '&'
+        try:
+            for param in paramsDic:
+                #TODO: solve error on name with non ascii char (generate exception)
+                url = url + sep + urllib.quote_plus( param ) + '=' + urllib.quote_plus( paramsDic[param] )
+                sep = '&'
+        except:
+            url = None
+            print_exc()
         return url
 
     def _get_settings( self ):
