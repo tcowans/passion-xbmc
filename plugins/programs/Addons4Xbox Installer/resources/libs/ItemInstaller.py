@@ -56,7 +56,7 @@ class ItemInstaller:
         # raw_item_sys_type: file | archive | dir
         # raw_item_path
         # install_path
-        # extracted_path
+        # temp_item_path
         # provides
         # required_lib
         
@@ -194,21 +194,40 @@ class ItemInstaller:
             print "renameInstalledItem: Item invalid - error"
         return result
 
+    def copyItem( self, msgFunc=None,progressBar=None ):
+        """
+        Install item from extracted archive
+        Needs to be called after extractItem
+        """
+        #TODO: update a progress bar during copy
+        import extractor
+        OK = False
+        # get install path
+        process_error = False
+        percent = 0
+        if progressBar != None:
+            progressBar.update( percent, _( 176 ), self.itemInfo [ "temp_item_path" ] )
+        if ( ( self.itemInfo [ "temp_item_path" ] != None ) and ( self.itemInfo [ "install_path" ] != None ) ):
+            # Let's get the dir name in the archive
+            print "ItemInstaller::installItem - Starting item copy"
+            try:
+                #if ( OK == bool( self.itemInfo [ "temp_item_path" ] ) ) and os.path.exists( self.itemInfo [ "temp_item_path" ] ):
+                if os.path.exists( self.itemInfo [ "temp_item_path" ] ):
+                    copy_dir( self.itemInfo [ "temp_item_path" ], self.itemInfo [ "install_path" ] )
+                    OK = True
+                else:
+                    print "ItemInstaller::installItem - self.itemInfo [ 'temp_item_path' ] does not exist"
+            except Exception, e:        
+                print "ItemInstaller::installItem - Exception during copy of the directory %s" % self.itemInfo [ "temp_item_path" ]
+                print_exc()
+                process_error = True
+            print "Install item completed"
 
-
-class ArchItemInstaller(ItemInstaller):
-    """
-    Installer from an archive
-    """
-
-    #def __init__( self , itemId, type, filesize ):
-    #def __init__( self , name, type ):
-    def __init__( self ):
-        #ItemInstaller.__init__( self, itemId, type, filesize )
-        ItemInstaller.__init__( self )
-        self.itemInfo [ "install_path" ] = None
-
-        #TODO: support progress bar display
+        del extractor
+        percent = 100
+        if progressBar != None:
+            progressBar.update( percent, _( 176 ), ( self.itemInfo [ "temp_item_path" ] ) )
+        return OK
 
     def _prepareItem4xbox( self, item ):
         """
@@ -219,8 +238,8 @@ class ArchItemInstaller(ItemInstaller):
         if TYPE_ADDON_MODULE != item[ "type" ]:
             print "Renaming addon elements"
             # Rename python script
-            oldScriptPath = os.path.join( item[ "extracted_path" ], item[ "library" ] )
-            newScriptPath = os.path.join( item[ "extracted_path" ], "default.py" )
+            oldScriptPath = os.path.join( item[ "temp_item_path" ], item[ "library" ] )
+            newScriptPath = os.path.join( item[ "temp_item_path" ], "default.py" )
             if ( oldScriptPath != newScriptPath and os.path.exists( oldScriptPath ) ):
                 result = self.fileMgr.renameItem( None, oldScriptPath, newScriptPath )
                 if result == False:
@@ -229,25 +248,25 @@ class ArchItemInstaller(ItemInstaller):
                     item[ "library" ] = "default.py"
                 
             # Rename logo
-            oldLogoPath = os.path.join( item[ "extracted_path" ], "icon.png" )
-            newLogoPath = os.path.join( item[ "extracted_path" ], "default.tbn" )
+            oldLogoPath = os.path.join( item[ "temp_item_path" ], "icon.png" )
+            newLogoPath = os.path.join( item[ "temp_item_path" ], "default.tbn" )
             if ( oldScriptPath != newScriptPath and os.path.exists( oldLogoPath ) ):
                 result = self.fileMgr.renameItem( None, oldLogoPath, newLogoPath )
                 if result == False:
                     status = "ERROR"
                     
             # Rename directory
-            newItemPath = item[ "extracted_path" ].replace(os.path.basename( item[ "extracted_path" ] ) , item[ "name" ] )
-            #print "itemPath: %s"%item[ "extracted_path" ]    
+            newItemPath = item[ "temp_item_path" ].replace(os.path.basename( item[ "temp_item_path" ] ) , item[ "name" ] )
+            #print "itemPath: %s"%item[ "temp_item_path" ]    
             #print "newItemPath: %s"%newItemPath    
             try:
-                if ( os.path.exists( item[ "extracted_path" ] ) ):
-                    result = self.fileMgr.renameItem( None, item[ "extracted_path" ], newItemPath )
+                if ( os.path.exists( item[ "temp_item_path" ] ) ):
+                    result = self.fileMgr.renameItem( None, item[ "temp_item_path" ], newItemPath )
                     if result == False:
                             status = "ERROR"
             except Exception, e:
                 status = "ERROR"
-                print("Exception while renaming folder " + item[ "extracted_path" ])
+                print("Exception while renaming folder " + item[ "temp_item_path" ])
                 print(str(e))
                 print_exc()
     
@@ -255,7 +274,7 @@ class ArchItemInstaller(ItemInstaller):
             status = "UNCHANGED"
             
         if ( "OK" == status ):
-            item [ "extracted_path" ] = newItemPath 
+            item [ "temp_item_path" ] = newItemPath 
         print item
         return status
 
@@ -280,11 +299,11 @@ class ArchItemInstaller(ItemInstaller):
         # raw_item_sys_type: file | archive | dir
         # raw_item_path
         # install_path
-        # extracted_path
+        # temp_item_path
         # provides
         # required_lib
         
-        itemExtractedPath = self.itemInfo [ "extracted_path" ]
+        itemExtractedPath = self.itemInfo [ "temp_item_path" ]
         
         status = 'OK'
         try:
@@ -302,7 +321,7 @@ class ArchItemInstaller(ItemInstaller):
                     if ( "OK" == status ):
                         self.itemInfo [ "install_path" ] = os.path.join( typeInstallPath, self.itemInfo [ "name" ] )
                     else:
-                        self.itemInfo [ "install_path" ] = os.path.join( typeInstallPath, os.path.basename( self.itemInfo [ "extracted_path" ] ) )
+                        self.itemInfo [ "install_path" ] = os.path.join( typeInstallPath, os.path.basename( self.itemInfo [ "temp_item_path" ] ) )
                 else:
                     print "Error parsing addon.xml"
                     status = 'ERROR'
@@ -318,11 +337,27 @@ class ArchItemInstaller(ItemInstaller):
         return status
 
 
+
+class ArchItemInstaller(ItemInstaller):
+    """
+    Installer from an archive
+    """
+
+    #def __init__( self , itemId, type, filesize ):
+    #def __init__( self , name, type ):
+    def __init__( self ):
+        #ItemInstaller.__init__( self, itemId, type, filesize )
+        ItemInstaller.__init__( self )
+        self.itemInfo [ "install_path" ] = None
+
+        #TODO: support progress bar display
+
+
     def extractItem( self, msgFunc=None,progressBar=None ):
         """
         Extract item in temp location
         Update:
-        extracted_path
+        temp_item_path
         install_path
         name
         """
@@ -350,7 +385,7 @@ class ArchItemInstaller(ItemInstaller):
                     status = "ERROR"
                 else:
                     # Extraction successful
-                    self.itemInfo[ "extracted_path" ] = file_path
+                    self.itemInfo[ "temp_item_path" ] = file_path
                     
                     #TODO: check error case
                     if "ERROR" == self.setItemInfo():
@@ -368,41 +403,6 @@ class ArchItemInstaller(ItemInstaller):
         return status
 
     
-    def copyItem( self, msgFunc=None,progressBar=None ):
-        """
-        Install item from extracted archive
-        Needs to be called after extractItem
-        """
-        #TODO: update a progress bar during copy
-        import extractor
-        OK = False
-        # get install path
-        process_error = False
-        percent = 0
-        if progressBar != None:
-            progressBar.update( percent, _( 176 ), self.itemInfo [ "extracted_path" ] )
-        if ( ( self.itemInfo [ "extracted_path" ] != None ) and ( self.itemInfo [ "install_path" ] != None ) ):
-            # Let's get the dir name in the archive
-            print "ItemInstaller::installItem - Starting item copy"
-            try:
-                #if ( OK == bool( self.itemInfo [ "extracted_path" ] ) ) and os.path.exists( self.itemInfo [ "extracted_path" ] ):
-                if os.path.exists( self.itemInfo [ "extracted_path" ] ):
-                    copy_dir( self.itemInfo [ "extracted_path" ], self.itemInfo [ "install_path" ] )
-                    OK = True
-                else:
-                    print "ItemInstaller::installItem - self.itemInfo [ 'extracted_path' ] does not exist"
-            except Exception, e:        
-                print "ItemInstaller::installItem - Exception during copy of the directory %s" % self.itemInfo [ "extracted_path" ]
-                print_exc()
-                process_error = True
-            print "Install item completed"
-
-        del extractor
-        percent = 100
-        if progressBar != None:
-            progressBar.update( percent, _( 176 ), ( self.itemInfo [ "extracted_path" ] ) )
-        return OK
-
     def installItem( self, msgFunc=None,progressBar=None ):
         """
         Install item (download + extract + copy)
@@ -419,7 +419,7 @@ class ArchItemInstaller(ItemInstaller):
             #statusDownload = self.GetRawItem( msgFunc=msgFunc, progressBar=progressBar )
             #statusDownload, self.itemInfo [ "raw_item_path" ] = self.GetRawItem( progressBar=progressBar )
             statusDownload = self.GetRawItem( progressBar=progressBar )
-            print "installItem: statusDownload and rawItemPath"
+            print "installItem: statusDownload"
             print statusDownload
             print self.itemInfo [ "raw_item_path" ]
             print 
@@ -479,53 +479,18 @@ class DirItemInstaller(ItemInstaller):
     """
 
     #def __init__( self , itemId, type, filesize ):
-    def __init__( self , name, type ):
+    def __init__( self ):
         #ItemInstaller.__init__( self, itemId, type, filesize )
         #ItemInstaller.__init__( self, name, type )
         ItemInstaller.__init__( self )
+        self.itemInfo [ "install_path" ] = None
 
         #TODO: support progress bar display
         #self.rawItemPath = None # Path of the archive to extract
         #self.destinationPath     = None # Path of the destination directory
         #self.downloadDirPath     = None # Path of the extracted item
-        self.status              = "INIT" # Status of install :[INIT | OK | ERROR | ALREADYINSTALLED |CANCELED]       
+        #self.status              = "INIT" # Status of install :[INIT | OK | ERROR | ALREADYINSTALLED |CANCELED]       
 
-    def copyItem( self, msgFunc=None,progressBar=None ):
-        """
-        Install item from extracted archive
-        Needs to be called after extractItem
-        """
-        #TODO: update a progress bar during copy
-        import extractor
-        OK = False
-        # get install path
-        process_error = False
-        percent = 0
-        if progressBar != None:
-            progressBar.update( percent, _( 176 ), ( self.downloadDirPath ) )
-        if ( ( self.downloadDirPath != None ) and ( self.destinationPath != None ) ):
-            # Cas des scripts et plugins
-            # --------------------------
-            # Recuperons le nom du repertorie a l'interieur de l'archive:
-            print "ItemInstaller::installItem - Starting item copy"
-            try:
-                #if ( OK == bool( self.downloadDirPath ) ) and os.path.exists( self.downloadDirPath ):
-                if os.path.exists( self.downloadDirPath ):
-                    copy_dir( self.downloadDirPath, self.destinationPath )
-                    OK = True
-                else:
-                    print "ItemInstaller::installItem - self.downloadDirPath does not exist"
-            except Exception, e:        
-                print "ItemInstaller::installItem - Exception during copy of the directory %s"%self.downloadDirPath
-                print_exc()
-                process_error = True
-            print "Install item completed"
-
-        del extractor
-        percent = 100
-        if progressBar != None:
-            progressBar.update( percent, _( 176 ), ( self.downloadDirPath ) )
-        return OK
 
     def installItem( self, msgFunc=None,progressBar=None ):
         """
@@ -535,39 +500,40 @@ class DirItemInstaller(ItemInstaller):
         print "installItem: Download and install case"
         percent = 0
         result  = "OK" # result after install :[ OK | ERROR | ALREADYINSTALLED |CANCELED]
-        print self.destinationPath
         print "installItem: Download via itemInstaller"
         if ( self.status == "INIT" ) or ( self.status == "ERROR" ):
             #TODO: support message callback in addition of pb callback
-            statusDownload, self.downloadDirPath = self.GetRawItem( progressBar=progressBar )
-            print "installItem: statusDownload and downloadDirPath"
-            print statusDownload
-            print self.downloadDirPath
+            statusGetFile = self.GetRawItem( progressBar=progressBar )
+            print "installItem: statusGetFile"
+            print statusGetFile
+            print self.itemInfo [ "raw_item_path" ]
             print 
-            self.installName = os.path.basename( self.downloadDirPath )
-            self.destinationPath = os.path.join( self.typeInstallPath, self.installName )
-            if statusDownload == "OK":
-                #TODO: check is dir exist
-                #if self.extractItem( msgFunc=msgFunc, progressBar=progressBar ) == "OK":
-                if os.path.exists( self.downloadDirPath ):
-                    if not self.isAlreadyInstalled():
-                        if not self.isInUse():
-                            print "installItem - Item is not yet installed - installing"
-                            # TODO: in case of skin check skin is not the one currently used
-                            if self.copyItem( msgFunc=msgFunc, progressBar=progressBar ) == False:
-                                result = "ERROR"
-                                print "installItem - Error during copy"
-                            else:
-                                self.status = "INSTALL_DONE"
-                        else:
-                            print "installItem - Item is already currently used by XBMC - stopping install"
-                            result = "ALREADYINUSE"
-                            self.status = "EXTRACTED"
+            self.itemInfo [ "temp_item_path" ] = self.itemInfo [ "raw_item_path" ] #Since it is an directory those 2 path are identical
+            if statusGetFile == "OK":
+                if os.path.exists( self.itemInfo [ "temp_item_path" ] ):
+                    # Download successful
+                    if "ERROR" == self.setItemInfo():
+                        print "installItem - Impossible to retrieve data from addon.xml or transform the addon"
+                        status = "ERROR"
                     else:
-                        print "installItem - Item is already installed - stopping install"
-                        result = "ALREADYINSTALLED"
-                        self.status = "DOWNLOADED"
-            elif statusDownload == "CANCELED":
+                        if not self.isAlreadyInstalled():
+                            if not self.isInUse():
+                                print "installItem - Item is not yet installed - installing"
+                                # TODO: in case of skin check skin is not the one currently used
+                                if self.copyItem( msgFunc=msgFunc, progressBar=progressBar ) == False:
+                                    result = "ERROR"
+                                    print "installItem - Error during copy"
+                                else:
+                                    self.status = "INSTALL_DONE"
+                            else:
+                                print "installItem - Item is already currently used by XBMC - stopping install"
+                                result = "ALREADYINUSE"
+                                self.status = "EXTRACTED"
+                        else:
+                            print "installItem - Item is already installed - stopping install"
+                            result = "ALREADYINSTALLED"
+                            self.status = "DOWNLOADED"
+            elif statusGetFile == "CANCELED":
                 result      = "CANCELED"
                 self.status = "CANCELED"
                 print "installItem - Install cancelled by the user"
@@ -586,6 +552,6 @@ class DirItemInstaller(ItemInstaller):
                 self.status = "INSTALL_DONE"
             
 
-        return result, self.destinationPath
+        return result, self.itemInfo [ "install_path" ]
              
 
