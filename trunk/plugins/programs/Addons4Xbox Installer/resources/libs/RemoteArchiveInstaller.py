@@ -8,14 +8,18 @@ import sys
 import httplib
 import urllib2
 from traceback import print_exc
+import urllib
+import re
+
 
 # Modules XBMC
 import xbmc
+import xbmcgui
 
 # Modules custom
 from utilities import *
 try:
-    from ItemInstaller import ArchItemInstaller, cancelRequest
+    from ItemInstaller import ArchItemInstaller, DirItemInstaller, cancelRequest
     from Item import *
 except:
     print_exc()
@@ -26,9 +30,49 @@ httplib.HTTPConnection.debuglevel = 1
 _ = sys.modules[ "__main__" ].__language__
 
 
+class Parser:
+    """ Parser Class: grabs all tag versions and urls """
+    # regexpressions
+    revision_regex = re.compile( '<h2>.+?Revision ([0-9]*): ([^<]*)</h2>' )
+    asset_regex = re.compile( '<li><a href="([^"]*)">([^"]*)</a></li>' )
+
+    def __init__( self, htmlSource ):
+        # set our initial status
+        self.dict = { "status": "fail", "revision": 0, "assets": [], "url": "" }
+        # fetch revision number
+        self._fetch_revision( htmlSource )
+        # if we were successful, fetch assets
+        if ( self.dict[ "revision" ] != 0 ):
+            self._fetch_assets( htmlSource )
+
+    def _fetch_revision( self, htmlSource ):
+        try:
+            # parse revision and current dir level
+            revision, url = self.revision_regex.findall( htmlSource )[ 0 ]
+            # we succeeded :), set our info
+            urlParts = url.split( "/" )
+            baseUrl = urlParts[len(urlParts)-1]
+            self.dict[ "url" ] = baseUrl
+            self.dict[ "revision" ] = int( revision )
+        except:
+            pass
+
+    def _fetch_assets( self, htmlSource ):
+        try:
+            assets = self.asset_regex.findall( htmlSource )
+            if ( len( assets ) ):
+                for asset in assets:
+                    if ( asset[ 0 ] != "../" ):
+                        self.dict[ "assets" ] += [ unescape( asset[ 0 ] ) ]
+                self.dict[ "status" ] = "ok"
+            print self.dict[ "assets" ]
+        except:
+            pass
+
+
 class RemoteArchiveInstaller(ArchItemInstaller):
     """
-    Download an item on Passion XBMC http server and install it
+    Download an zip addons and install it
     """
 
     def __init__( self , name, url ):
@@ -46,11 +90,12 @@ class RemoteArchiveInstaller(ArchItemInstaller):
 
     def GetRawItem( self, msgFunc=None,progressBar=None ):
         """
-        Download an item form the server
+        Download an item from the server
         Returns the status of the download attempts : OK | ERROR
         """
         # Get ItemId
         percent = 0
+        status = "OK"
         
         if progressBar != None:
             #progressBar.update( percent, unicode(_( 122 )) % ( self.itemInfo [ "name" ] ), unicode(_( 123 )) % percent )
@@ -71,6 +116,7 @@ class RemoteArchiveInstaller(ArchItemInstaller):
             print e
             print_exc()
             self.itemInfo [ "raw_item_path" ] = None
+            status = "ERROR"
         if progressBar != None:
             progressBar.update( percent, ( self.itemInfo [ "name" ] ), _( 134 ) )
         #return status, self.itemInfo [ "raw_item_path" ]
@@ -251,3 +297,178 @@ class RemoteArchiveInstaller(ArchItemInstaller):
                 
         return status, destination
         
+class RemoteDirInstaller(DirItemInstaller):
+    """
+    Download an directory and its content and install it
+    """
+
+    def __init__( self , name, url, repoUrl ):
+        DirItemInstaller.__init__( self )
+
+        self.itemInfo [ "name" ] = name
+        #self.itemInfo [ "name" ] = unicode( name, 'ISO 8859-1', errors='ignore')
+        
+        self.itemInfo [ "url" ] = url
+        self.itemInfo [ "raw_item_sys_type" ] = TYPE_SYSTEM_DIRECTORY
+        
+        self._create_title()
+        self.REPO_URL = repoUrl
+        print self.itemInfo
+        
+        #TODO: pass progress bar callback instead
+        self.dialog = xbmcgui.DialogProgress()
+
+    def GetRawItem( self, msgFunc=None,progressBar=None ):
+        """
+        Download an item from the server
+        Returns the status of the download attempts : OK | ERROR
+        """
+        # Get ItemId
+        percent = 0
+        status = "OK"
+        
+        if progressBar != None:
+            #progressBar.update( percent, unicode(_( 122 )) % ( self.itemInfo [ "name" ] ), unicode(_( 123 )) % percent )
+            progressBar.update( percent, ( self.itemInfo [ "name" ] ), _( 123 ) % percent )
+        try:            
+            print "HTTPInstaller::GetRawItem "
+            # Download file (to cache dir) and get destination directory
+            #status, self.itemInfo [ "raw_item_path" ] = self._downloadFile( progressBar=progressBar )
+            status, self.itemInfo [ "raw_item_path" ] = self._download_item( )
+        
+        except Exception, e:
+            print "Exception during downlaodItem"
+            print e
+            print_exc()
+            self.itemInfo [ "raw_item_path" ] = None
+            status = "ERROR"
+        if progressBar != None:
+            progressBar.update( percent, ( self.itemInfo [ "name" ] ), _( 134 ) )
+        #return status, self.itemInfo [ "raw_item_path" ]
+        return status
+
+    def _create_title( self ):
+        # create the script/plugin/skin title
+        #parts = self.itemInfo[ "url" ].split( "/" )
+        #version = ""
+        #self.title = parts[ -2 ].replace( "%20", " " ) + version
+        
+        self.title = self.itemInfo [ "name" ]
+
+    def _download_item( self, forceInstall=False ):
+        print("> _download_item() forceInstall=%s" % forceInstall)
+        status = "OK"
+        finished_path = None
+        try:
+            #if ( forceInstall or xbmcgui.Dialog().yesno( self.title, _( 30050 ), "", "", _( 30020 ), _( 30021 ) ) ):
+            if ( forceInstall or xbmcgui.Dialog().yesno( self.title, _( 30050 ), "", "" ) ):
+                self.dialog.create( self.title, _( 30052 ), _( 30053 ) )
+                asset_files = []
+                folders = [ self.itemInfo[ "url" ].replace(self.REPO_URL + "/", "").replace( " ", "%20" ) ]
+                while folders:
+                    try:
+                        htmlsource = readURL( self.REPO_URL + "/" + folders[ 0 ] )
+                        if ( not htmlsource ): raise
+                        items = self._parse_html_source( htmlsource )
+                        if ( not items or items[ "status" ] == "fail" ): raise
+                        files, dirs = self._parse_items( items )
+                        print files
+                        print dirs
+                        for file in files:
+                            print "Item url = %s"%items[ "url" ]
+                            print " file = %s"%file
+                            #asset_files.append( "%s/%s" % ( items[ "url" ], file, ) )
+                            asset_files.append( folders[ 0 ] + "/" +  file )
+                            
+                        for folder in dirs:
+                            folders.append( folders[ 0 ] + "/" + folder )
+                        print "_download_item - folders BEFORE:"
+                        print folders
+                        folders = folders[ 1 : ]
+                        print "_download_item - asset_files:"
+                        print asset_files
+                        print "_download_item - folders AFTER:"
+                        print folders
+                    except:
+                        folders = []
+                print 'folders'
+                print folders
+                print 'asset_files'
+                print asset_files
+                finished_path = self._get_files( asset_files )
+                self.dialog.close()
+                #if finished_path and not forceInstall:
+                #    xbmcgui.Dialog().ok( self.title, _( 30058 ), finished_path )
+                    # force list refresh
+                    # xbmc.executebuiltin('Container.Refresh')
+        except:
+            # oops print error message
+            print "ERROR: %s::%s (%d) - %s" % ( self.__class__.__name__, sys.exc_info()[ 2 ].tb_frame.f_code.co_name, sys.exc_info()[ 2 ].tb_lineno, sys.exc_info()[ 1 ], )
+            self.dialog.close()
+            #xbmcgui.Dialog().ok( self.title, _( 30090 ) )
+            status = "ERROR"
+        return status, finished_path
+        
+    def _get_files( self, asset_files ):
+        """ fetch the files """
+        try:
+            finished_path = ""
+            for cnt, url in enumerate( asset_files ):
+                #items = os.path.split( url )
+                #print "items"
+                #print items
+                # base path
+                #drive = xbmc.translatePath( "/".join( [ "special://home", self.args.install ] ) )
+                drive = self.CACHEDIR
+                print "drive = %s"%drive
+                # create the script/plugin/skin title
+                #parts = items[ 0 ].split( "/" )
+                #print parts
+                version = ""
+                # path = os.path.join( drive, os.path.sep.join( parts[ self.args.ioffset : ] ).replace( "%20", " " ) )
+                #path = os.path.join( drive, parts[ len(parts)-1 ].replace( "%20", " " ) )
+                path = os.path.dirname( xbmc.translatePath( os.path.join( drive, url.replace( "%20", " " ) ) ) )
+                print "path = %s"%path
+                if ( not finished_path ): finished_path = path
+                #file = items[ 1 ].replace( "%20", " " )
+                file = os.path.basename(url).replace( "%20", " " )
+                pct = int( ( float( cnt ) / len( asset_files ) ) * 100 )
+                self.dialog.update( pct, "%s %s" % ( _( 30055 ), url, ), "%s %s" % ( _( 30056 ), path, ), "%s %s" % ( _( 30007 ), file, ) )
+                if ( self.dialog.iscanceled() ): raise
+                if ( not os.path.isdir( path ) ): os.makedirs( path )
+                url = self.REPO_URL + "/" + url.replace( " ", "%20" )
+                fpath = os.path.join( path, file )
+                
+                print self.REPO_URL
+                print fpath
+                print url
+                
+                urllib.urlretrieve( url, fpath )
+        except:
+            finished_path = ""
+            # oops print error message
+            print "ERROR: %s::%s (%d) - %s" % ( self.__class__.__name__, sys.exc_info()[ 2 ].tb_frame.f_code.co_name, sys.exc_info()[ 2 ].tb_lineno, sys.exc_info()[ 1 ], )
+            print_exc()
+            raise
+
+        return finished_path
+            
+    def _parse_html_source( self, htmlsource ):
+        """ parse html source for tagged version and url """
+        try:
+            parser = Parser( htmlsource )
+            print parser.dict
+            return parser.dict
+        except:
+            return {}
+            
+    def _parse_items( self, items ):
+        """ separates files and folders """
+        folders = []
+        files = []
+        for item in items[ "assets" ]:
+            if ( item.endswith( "/" ) ):
+                folders.append( item )
+            else:
+                files.append( item )
+        return files, folders

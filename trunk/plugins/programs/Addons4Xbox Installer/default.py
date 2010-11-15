@@ -14,14 +14,14 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/programs/Addons4xbox/"
 __credits__      = "Team XBMC Passion"
 __platform__     = "xbmc media center"
-__date__         = "08-11-2010"
-__version__      = "0.2"
+__date__         = "11-14-2010"
+__version__      = "0.3"
 __svn_revision__ = 0
 
 
 import os
 import urllib
-#import xbmc
+import xbmc
 import xbmcplugin
 import xbmcgui
 from traceback import print_exc
@@ -91,10 +91,59 @@ class Addons4xboxInstallerPlugin:
                            TYPE_ADDON_VIDEO,
                            TYPE_ADDON_MODULE,
                            TYPE_ADDON_REPO ]
-                           
+    
+    #TODO: retrieve repo info from an XML file                       
+
+    # List of repositories
+    # In order to add one, follow the same syntax
+    # If the repo use zip file:
+    #'format': "zip",
+    # If the repo use directories (i.e google code):
+    #'format': "dir",
+    # No '/' at the end of the datadir url
     repoList = [
-                 {'id': "xbmc.addon.repository", 'name': "Official XBMC.org Add-on Repository", 'url': "http://mirrors.xbmc.org/addons/dharma-pre/addons.xml", 'format': "zip", 'datadir': "http://mirrors.xbmc.org/addons/dharma-pre"},
-                 {'id': "repository.googlecode.xbmc-addons", 'name': "Passion-XBMC Add-on Repository", 'url': "http://passion-xbmc.org/addons/addons.php", 'format': "zip", 'datadir': "http://passion-xbmc.org/addons/Download.php"}
+                 {'id': "xbmc.addon.repository", 
+                  'name': "Official XBMC.org Add-on Repository", 
+                  'url': "http://mirrors.xbmc.org/addons/dharma-pre/addons.xml", 
+                  'format': "zip", 
+                  'datadir': "http://mirrors.xbmc.org/addons/dharma-pre"},
+                  
+                 {'id': "repository.passion.xbmc.org", 
+                  'name': "Passion-XBMC Add-on Repository", 
+                  'url': "http://passion-xbmc.org/addons/addons.php", 
+                  'format': "zip", 
+                  'datadir': "http://passion-xbmc.org/addons/Download.php"},
+                  
+                 {'id': "repository.googlecode.xbmc-addons", 
+                  'name': "Google Code xbmc-addons Add-ons", 
+                  'url': "http://xbmc-addons.googlecode.com/svn/addons/addons.xml", 
+                  'format': "dir", 
+                  'datadir': "http://xbmc-addons.googlecode.com/svn/addons"},
+                  
+                 {'id': "repository.bluecop.xbmc-plugins", 
+                  'name': "bluecop Add-on Repository", 
+                  'url': "http://bluecop-xbmc-repo.googlecode.com/svn/trunk/addons.xml", 
+                  'format': "dir", 
+                  'datadir': "http://bluecop-xbmc-repo.googlecode.com/svn/trunk"},
+
+                 {'id': "repository.googlecode.dandar3-xbmc-addons", 
+                  'name': "Dan Dar3 Add-ons", 
+                  'url': "http://dandar3-xbmc-addons.googlecode.com/svn/trunk/addons/addons.xml", 
+                  'format': "dir", 
+                  'datadir': "http://dandar3-xbmc-addons.googlecode.com/svn/trunk/addons"},
+
+                 {'id': "repository.queeup", 
+                  'name': "queeup Add-ons", 
+                  'url': "http://queeup.googlecode.com/svn/addons/dharma-pre/addons.xml", 
+                  'format': "dir", 
+                  'datadir': "http://queeup.googlecode.com/svn/addons/dharma-pre"},
+
+                 {'id': "repository.seppius", 
+                  'name': "Seppius XBMC Add-ons", 
+                  'url': "http://seppius-xbmc-repo.googlecode.com/svn/trunk/addons/addons.xml", 
+                  'format': "dir", 
+                  'datadir': "http://seppius-xbmc-repo.googlecode.com/svn/trunk/addons"},
+                  
                ]
     
 
@@ -154,12 +203,12 @@ class Addons4xboxInstallerPlugin:
                     dialogProg.close()
                     dialog = xbmcgui.Dialog()
                     dialog.ok( __language__(30000), __language__(30005) )
-                    print "SUCCESS: xbmcaddon.py copied to special://xbmc/system/python/Lib/xbmcaddon.py"
+                    print "SUCCESS: Libraries copied %s"%DIR_ADDON_MODULE
                 except:
                     dialogProg.close()
                     dialog = xbmcgui.Dialog()
                     dialog.ok( __language__(30000), __language__(30006), __language__(30007) )
-                    print "ERROR: impossible to copy xbmcaddon.py to special://xbmc/system/python/Lib/xbmcaddon.py"
+                    print "ERROR: impossible to copy librairies to %s"%DIR_ADDON_MODULE
                     print_exc()
             else:
                 dialog = xbmcgui.Dialog()
@@ -295,13 +344,19 @@ class Addons4xboxInstallerPlugin:
                 print item
                 if item:
                     if eval(filter):
-                        downloadUrl = self.repoList[repoId]['datadir'] + '/' + item["id"] + '/' + item["id"] + '-' + item["version"] + ".zip"
+                        if 'zip' == self.repoList[repoId]['format']:
+                            downloadUrl = self.repoList[repoId]['datadir'] + '/' + item["id"] + '/' + item["id"] + '-' + item["version"] + ".zip"
+                        else:
+                            downloadUrl = self.repoList[repoId]['datadir'] + '/' + item["id"] + '/' 
+                            
                         print downloadUrl
                         paramsAddons = {}
                         paramsAddons[self.PARAM_INSTALL_FROM_REPO] = "true"
                         paramsAddons[self.PARAM_ADDON_NAME] = item['name']
                         paramsAddons[self.PARAM_URL] = downloadUrl
                         paramsAddons[self.PARAM_TYPE] = self.repoList[repoId]['format']
+                        paramsAddons[self.PARAM_REPO_ID] = str(repoId)
+
                         url = self._create_param_url( paramsAddons )
                         if url:
                             self._addLink( item['name'], url)
@@ -325,7 +380,9 @@ class Addons4xboxInstallerPlugin:
                 addonName = unicode(self.parameters[self.PARAM_ADDON_NAME] , 'ISO 8859-1', errors='ignore') 
                 addonUrl = self.parameters[self.PARAM_URL].replace(' ', '%20')
                 addonFormat = self.parameters[self.PARAM_TYPE]
-                status, itemName, destination, addonInstaller = self._install_from_repo(addonName, addonUrl, addonFormat)
+                repoId = int(self.parameters[self.PARAM_REPO_ID])
+                dataDir = self.repoList[repoId]['datadir']
+                status, itemName, destination, addonInstaller = self._install_from_repo(addonName, addonUrl, addonFormat, dataDir)
                 
                 #Check if install went well
                 self._check_install(status, itemName, destination, addonInstaller)
@@ -480,7 +537,7 @@ class Addons4xboxInstallerPlugin:
                                 thumbnail_path = "DefaultVideo.png"
                             #listItemObj = ListItemObject( type = addon_type, name = addon_dir, local_path = addon_path, thumb = thumbnail_path )
                             #self.currentItemList.append( listItemObj )
-                            paramsDic[self.PARAM_TYPE]           = addon_type
+                            paramsDic[self.PARAM_TYPE]      = addon_type
                             paramsDic[self.PARAM_TITLE]     = addon_dir
                             paramsDic[self.PARAM_LOCALPATH] = addon_dir
 
@@ -557,14 +614,14 @@ class Addons4xboxInstallerPlugin:
                 paramDic[key]=value
         return paramDic        
 
-    def _install_from_repo( self, addonName, addonUrl, addonFormat ):
+    def _install_from_repo( self, addonName, addonUrl, addonFormat, repoUrl ):
         
         # install from zip file
         if addonFormat == "zip":
             addonInstaller = RemoteArchiveInstaller.RemoteArchiveInstaller( addonName, addonUrl )
         else:
             # Remote dir installer
-            raise
+            addonInstaller = RemoteArchiveInstaller.RemoteDirInstaller( addonName, addonUrl, repoUrl )
         dp = xbmcgui.DialogProgress()
         dp.create(__language__( 137 ))
         status, destination = addonInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )

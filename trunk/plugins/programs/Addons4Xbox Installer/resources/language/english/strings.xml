@@ -74,6 +74,19 @@
     <string id="30020">Add-on Zip path</string>
     <string id="30021">First plugin startup</string>
     
+    <string id="30050">Would you like to install this item?</string>
+    <string id="30051">Fetching file ...</string>
+    <string id="30052">Fetching file list...</string>
+    <string id="30053">Please wait...</string>
+    <string id="30054">Backup Created</string>
+    <string id="30055">Fetching:</string>
+    <string id="30056">Path:</string>
+    <string id="30057">File:</string>
+    <string id="30058">Your new item was installed to:</string>
+
+    <!-- Update error messages -->
+    <string id="30090">There was an error installing item!</string>
+    
     <!--ADDONS TYPE STRINGS -->
     <string id="30100">Add-ons</string>
     <string id="30101">Scripts Add-ons</string>
