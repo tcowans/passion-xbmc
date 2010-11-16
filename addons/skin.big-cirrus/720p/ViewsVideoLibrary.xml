@@ -168,12 +168,18 @@
 					<textureslidernib>ScrollBarNib.png</textureslidernib>
 					<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
 					<onleft>569</onleft>
-					<onright>569</onright>
+					<onright>XBMC.PlayMedia($INFO[ListItem.Trailer],0,noresume)</onright>
 					<showonepage>true</showonepage>
 					<orientation>vertical</orientation>
 				</control>
 			</control>
-			
+			<control type="button" id="62">
+					<description>Playing trailer</description>
+					<onfocus>XBMC.RunScript(script.TvTunes,backend=True)</onfocus>
+					<onfocus>SetFocus(569)</onfocus>
+					<texturenofocus>-</texturenofocus>
+					<texturefocus>-</texturefocus>
+			</control>
 			<control type="group">
 				<visible>!Control.HasFocus(61)</visible>
 				<include>VisibleFadeEffect</include>
@@ -543,6 +549,20 @@
 				<control type="group">
 					<posx>250</posx>
 					<posy>210</posy>
+					<control type="label"> <!-- Movie sets label -->
+						<description>Movie sets Label</description>
+						<visible>!stringcompare(ListItem.Label,..) + ListItem.IsFolder</visible>
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>320</width>
+						<height>25</height>
+						<label>$INFO[ListItem.label]</label>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>cirrus_40</font>
+						<textcolor>orange</textcolor>
+						<shadowcolor>black</shadowcolor>
+					</control>
 					<control type="label"> <!-- ANNEE -->
 						<description>Year Label</description>
 						<posx>0</posx>
@@ -581,7 +601,7 @@
 						<font>cirrus_24</font>
 						<textcolor>white</textcolor>
 						<shadowcolor>black</shadowcolor>
-						<visible>!SubString(ListItem.Duration,mins) + !stringcompare(ListItem.Label,..)</visible>
+						<visible>!SubString(ListItem.Duration,mins) + !stringcompare(ListItem.Label,..) + !ListItem.IsFolder</visible>
 					</control>
 					<control type="label"> <!-- RUNTIME -->
 						<description>Runtime label</description>
@@ -607,6 +627,18 @@
 						<align>right</align>
 						<aligny>up</aligny>
 						<texture>$INFO[listitem.Studio,flagging/studios/,.png]</texture>
+					</control>
+					<control type="grouplist">
+						<description>MPAA Rating Flagging Images</description>
+						<posx>480</posx>
+						<posy>60r</posy>
+						<width>400</width>
+						<height>57</height>
+						<align>center</align>
+						<aligny>center</aligny>
+						<itemgap>0</itemgap>
+						<orientation>horizontal</orientation>
+						<include>VideoMPAAFlaggingConditions</include>
 					</control>
 					<control type="grouplist">
 						<description>Media Codec Flagging Images</description>

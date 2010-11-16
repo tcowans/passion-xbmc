@@ -75,13 +75,15 @@
   <string id="31123">Use "Posters" instead of "Banners" for TV Shows</string>
   <string id="31124">Show Background "Now Playing" Video</string>
   <string id="31125">Show Background "Now Playing" Visualization</string>
-
   <string id="31126">Enable Lyrics in Music OSD</string>
   <string id="31127">PATH TO LYRICS SCRIPT</string>
   <string id="31128">XBMC Lyrics</string>
   <string id="31129">Enable Subtitle Download in Video OSD</string>
   <string id="31130">PATH TO SUBTITLE SCRIPT</string>
-
+  <string id="31131">Enable TvTunes</string>
+  <string id="31132">Enable overlay trailer icon in rightlist</string>
+  <string id="31133">Enable Plot in fullscreen video info</string>
+  
   <string id="31140">Music OSD</string>
   <string id="31141">Video OSD</string>
 

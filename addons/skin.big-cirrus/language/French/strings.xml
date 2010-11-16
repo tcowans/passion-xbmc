@@ -46,6 +46,7 @@
   <string id="31058">Système de fichiers de musique</string>
   <string id="31059">Playliste actuelle</string>
   <string id="31060">Ce fichier est empilé, sélectionnez la partie que vous souhaitez lire.</string>
+  <string id="31061">Sélection</string>
   
   <!-- Skin Settings labels -->
   <string id="31100"></string>
@@ -74,11 +75,15 @@
   <string id="31123">Préférer les "Affiches" aux "Bannières" pour les émissions TV</string>
   <string id="31124">Afficher la vidéo en cours de lecture en arrière-plan</string>
   <string id="31125">Afficher la visualisation en cours de lecture en arrière-plan</string>
-
   <string id="31126">Activer le script Lyrics sur l'OSD musique</string>
   <string id="31127">CHEMIN DU SCRIPT LYRICS</string>
   <string id="31128">XBMC Lyrics</string>
-
+  <string id="31129">Activer le téléchargement de sous-titre dans l'OSD vidéo</string>
+  <string id="31130">CHEMIN DU SCRIPT DE SOUS-TITRE</string>
+  <string id="31131">Activer TvTunes</string>
+  <string id="31132">Afficher l'icone de bande annonce dans la vue rightlist</string>
+  <string id="31133">Afficher le synopsis dans les infos vidéo plein ecran</string>
+  
   <!-- Script labels -->
   <string id="31200">Raccourcis</string>
   <string id="31201">Catégories</string>
