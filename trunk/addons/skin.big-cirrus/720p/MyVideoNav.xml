@@ -3,14 +3,15 @@
   <allowoverlay>no</allowoverlay>
   <views>50,508,511,569,513,514,519</views>
   <controls>
+  
 	<control type="button" id="9999">
-            <description>trigger</description>
-            <onfocus>XBMC.RunScript(script.TvTunes,backend=True&amploop=False)</onfocus>
-            <onfocus>SetFocus(50)</onfocus>
-            <texturenofocus>-</texturenofocus>
-            <texturefocus>-</texturefocus>
-        </control>	
-    <include>CommonVideoBackground</include>
+			<description>TvTunes Script</description>
+			<include condition="Skin.HasSetting(TvTunes)">TvTunes</include>
+			<include condition="!Skin.HasSetting(TvTunes)">NoTvTunes</include>
+			<texturenofocus>-</texturenofocus>
+			<texturefocus>-</texturefocus>
+	</control>
+	<include>CommonVideoBackground</include>
 	<control type="group">
       <include>Window_OpenClose_Animation</include>    
       <control type="image">

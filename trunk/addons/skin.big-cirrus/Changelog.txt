@@ -1,10 +1,15 @@
+1.1.9
+-- Add localised skin option string
+-- Add setting for activate TvTunes
+-- Add movie set label in rightlist
+-- Add playing trailer if right key is presssed twice in rightlist
+
 1.1.8
 -- moved now playing label on top in video nav.
 -- keep only the slim rightlist, star rating was removed.
 -- Add small fontset (font size -5).
 -- Add support for TvTunes script.
 -- some bugfix.
-
 
 1.1.7
 -- fix left menu don't appair in music library.

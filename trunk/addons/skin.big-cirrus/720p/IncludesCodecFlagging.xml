@@ -84,6 +84,39 @@
 	</include>
 <!-- ============== MPAA RATINGS FLAGS ============= -->
 	<include name="VideoMPAAFlaggingConditions">
+	<!-- FRENCH -->
+	<control type="image">
+			<description>France:-10</description>
+			<width>90</width>
+			<height>33</height>
+			<aspectratio>keep</aspectratio>
+			<texture>flagging/ratings/csa10.png</texture>
+			<visible>substring(listitem.mpaa,France:-10)</visible>
+		</control>
+		<control type="image">
+			<description>France:-12</description>
+			<width>90</width>
+			<height>33</height>
+			<aspectratio>keep</aspectratio>
+			<texture>flagging/ratings/csa12.png</texture>
+			<visible>substring(listitem.mpaa,France:-12)</visible>
+		</control>
+		<control type="image">
+			<description>France:-16</description>
+			<width>90</width>
+			<height>33</height>
+			<aspectratio>keep</aspectratio>
+			<texture>flagging/ratings/csa16.png</texture>
+			<visible>substring(listitem.mpaa,France:-16)</visible>
+		</control>
+		<control type="image">
+			<description>France:-18</description>
+			<width>90</width>
+			<height>33</height>
+			<aspectratio>keep</aspectratio>
+			<texture>flagging/ratings/csa18.png</texture>
+			<visible>substring(listitem.mpaa,France:-18)</visible>
+		</control>
 	<!-- AUSTRALIAN -->
 	<control type="image">
 			<description>Australia Rated G</description>
@@ -238,7 +271,7 @@
 			<height>57</height>
 			<aspectratio>keep</aspectratio>
 			<texture>flagging/ratings/mpaa_notrated.png</texture>
-			<visible>isEmpty(listitem.mpaa)</visible>
+			<visible>isEmpty(listitem.mpaa) + !ListItem.IsFolder + !stringcompare(ListItem.Label,..)</visible>
 		</control>
 	</include>
 <!-- ========= AUDIO FLAGING ============= -->

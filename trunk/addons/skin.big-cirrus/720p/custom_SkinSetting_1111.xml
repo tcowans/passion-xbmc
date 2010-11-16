@@ -178,7 +178,7 @@
             <width>750</width>
             <height>40</height>
             <font>cirrus_20</font>
-            <label>Enable Plot in fullscreen video info</label>
+            <label>31133</label>
             <textcolor>grey2</textcolor>
             <focusedcolor>white</focusedcolor>
             <texturefocus flipx="true">listwhitegradient.png</texturefocus>
@@ -186,11 +186,23 @@
             <onclick>Skin.ToggleSetting(plotfi)</onclick>
             <selected>Skin.HasSetting(plotfi)</selected>
           </control>
+		  <control type="radiobutton" id="1014">
+            <width>750</width>
+            <height>40</height>
+            <font>cirrus_20</font>
+            <label>31131</label>
+            <textcolor>grey2</textcolor>
+            <focusedcolor>white</focusedcolor>
+            <texturefocus flipx="true">listwhitegradient.png</texturefocus>
+            <texturenofocus>menuitemNF.png</texturenofocus>
+            <onclick>Skin.ToggleSetting(TvTunes)</onclick>
+            <selected>Skin.HasSetting(TvTunes)</selected>
+          </control>
 		  <control type="radiobutton" id="1013">
             <width>750</width>
             <height>40</height>
             <font>cirrus_20</font>
-            <label>Enable overlay trailer icon in rightlist</label>
+            <label>31132</label>
             <textcolor>grey2</textcolor>
             <focusedcolor>white</focusedcolor>
             <texturefocus flipx="true">listwhitegradient.png</texturefocus>
