@@ -173,13 +173,6 @@
 					<orientation>vertical</orientation>
 				</control>
 			</control>
-			<control type="button" id="62">
-					<description>Playing trailer</description>
-					<onfocus>XBMC.RunScript(script.TvTunes,backend=True)</onfocus>
-					<onfocus>SetFocus(569)</onfocus>
-					<texturenofocus>-</texturenofocus>
-					<texturefocus>-</texturefocus>
-			</control>
 			<control type="group">
 				<visible>!Control.HasFocus(61)</visible>
 				<include>VisibleFadeEffect</include>
@@ -554,7 +547,7 @@
 						<visible>!stringcompare(ListItem.Label,..) + ListItem.IsFolder</visible>
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>320</width>
+						<width>820</width>
 						<height>25</height>
 						<label>$INFO[ListItem.label]</label>
 						<align>left</align>
@@ -803,7 +796,7 @@
 					<posy>70</posy>
 					<width>800</width>
 					<align>right</align>
-					<itemgap>0</itemgap>
+					<itemgap>10</itemgap>
 					<orientation>horizontal</orientation>
 					<include>VideoCodecFlaggingConditions</include>
 					<include>AudioCodecFlaggingConditions</include>
@@ -844,13 +837,13 @@
 				<aspectratio>stretch</aspectratio>
 			</control>
 			<control type="group">
-				<posx>80</posx>
+				<posx>40</posx>
 				<posy>20</posy>
 				<visible>Container.Content(Movies)</visible>
 				<control type="fadelabel">
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>470</width>
+					<width>540</width>
 					<height>30</height>
 					<font>cirrus_40</font>
 					<textcolor>white</textcolor>
@@ -865,7 +858,7 @@
 				<control type="label">
 					<posx>0</posx>
 					<posy>50</posy>
-					<width>470</width>
+					<width>540</width>
 					<height>30</height>
 					<font>cirrus_24</font>
 					<textcolor>white</textcolor>
@@ -907,14 +900,14 @@
 					<label>[COLOR=orange]$INFO[ListItem.Year][/COLOR] $INFO[ListItem.Duration] mins</label>
 					<scrollout>false</scrollout>
 					<pauseatend>2000</pauseatend>
-					<visible>!SubString(ListItem.Duration,mins)</visible>
+					<visible>!SubString(ListItem.Duration,mins) + !stringcompare(ListItem.Label,..) + !ListItem.IsFolder</visible>
 				</control>
 				<control type="textbox">
 					<description>Movie Plot</description>
 					<posx>0</posx>
 					<posy>160</posy>
-					<width>470</width>
-					<height>100</height>
+					<width>540</width>
+					<height>118</height>
 					<font>cirrus_16</font>
 					<align>justify</align>
 					<textcolor>white</textcolor>
@@ -923,7 +916,7 @@
 				</control>
 			</control>
 			<control type="group">
-			<posx>-60</posx>
+			<posx>-30</posx>
 				<control type="image">
 					<posx>630</posx>
 					<posy>10</posy>
@@ -955,7 +948,7 @@
 				</control>
 				<control type="image">
 					<posx>630</posx>
-					<posy>11</posy>
+					<posy>28</posy>
 					<width>640</width>
 					<height>360</height>
 					<aspectratio>keep</aspectratio>
@@ -1169,7 +1162,7 @@
 						<font>cirrus_40</font>
 						<textcolor>white</textcolor>
 						<shadowcolor>black</shadowcolor>
-						<visible>!SubString(ListItem.Duration,mins)</visible>
+						<visible>!SubString(ListItem.Duration,mins) + !stringcompare(ListItem.Label,..) + !ListItem.IsFolder</visible>
 					</control>
 					<control type="label">
 						<description>Genre label</description>
@@ -1212,7 +1205,7 @@
 					<posy>300</posy>
 					<width>490</width>
 					<align>right</align>
-					<itemgap>0</itemgap>
+					<itemgap>10</itemgap>
 					<orientation>horizontal</orientation>
 					<include>VideoCodecFlaggingConditions</include>
 					<include>AudioCodecFlaggingConditions</include>
@@ -1228,7 +1221,7 @@
 				<control type="label">
 					<description>Genre</description>
 					<posx>1180</posx>
-					<posy>-510</posy>
+					<posy>-550</posy>
 					<width>700</width>
 					<height>25</height>
 					<label fallback="416">$INFO[listitem.genre]</label>
@@ -1236,6 +1229,8 @@
 					<aligny>center</aligny>
 					<font>cirrus_24</font>
 					<scroll>true</scroll>
+					<textcolor>orange</textcolor>
+					<shadowcolor>black</shadowcolor>
 				</control>
 				<control type="label">
 					<description>Episodes</description>
@@ -1387,159 +1382,163 @@
 					</control>
 				</focusedlayout>
 			</control>
-			<control type="group"> <!-- Labels -->
-				<posx>20</posx>
-				<posy>120</posy>
-				<visible>Container.Content(Movies)</visible>
-				<control type="fadelabel">
-					<posx>0</posx>
-					<posy>0</posy>
-					<width>620</width>
-					<height>30</height>
-					<font>cirrus_40</font>
-					<textcolor>white</textcolor>
-					<shadowcolor>black</shadowcolor>
-					<scroll>true</scroll>
-					<align>left</align>
-					<aligny>center</aligny>
-					<label>$INFO[ListItem.Title]</label>
-					<scrollout>false</scrollout>
-					<pauseatend>2000</pauseatend>
-				</control>
-				<control type="label">
-					<posx>0</posx>
-					<posy>40</posy>
-					<width>380</width>
-					<height>30</height>
-					<font>cirrus_24</font>
-					<textcolor>white</textcolor>
-					<shadowcolor>black</shadowcolor>
-					<scroll>false</scroll>
-					<align>left</align>
-					<aligny>center</aligny>
-					<label>$INFO[ListItem.Genre,[COLOR=orange]$LOCALIZE[515]:[/COLOR] ]</label>
-					<scrollout>false</scrollout>
-					<pauseatend>2000</pauseatend>
-				</control>
-				<control type="fadelabel">
-					<posx>0</posx>
-					<posy>80</posy>
-					<width>220</width>
-					<height>30</height>
-					<font>cirrus_30</font>
-					<textcolor>white</textcolor>
-					<shadowcolor>black</shadowcolor>
-					<scroll>true</scroll>
-					<align>left</align>
-					<aligny>center</aligny>
-					<label>[COLOR=orange]$INFO[ListItem.Year][/COLOR] $INFO[ListItem.Duration]</label>
-					<scrollout>false</scrollout>
-					<pauseatend>2000</pauseatend>
-					<visible>SubString(ListItem.Duration,mins)</visible>
-				</control>
-				<control type="fadelabel">
-					<posx>0</posx>
-					<posy>80</posy>
-					<width>220</width>
-					<height>30</height>
-					<font>cirrus_30</font>
-					<textcolor>white</textcolor>
-					<shadowcolor>black</shadowcolor>
-					<scroll>true</scroll>
-					<align>left</align>
-					<aligny>center</aligny>
-					<label>[COLOR=orange]$INFO[ListItem.Year][/COLOR] $INFO[ListItem.Duration] mins</label>
-					<scrollout>false</scrollout>
-					<pauseatend>2000</pauseatend>
-					<visible>!SubString(ListItem.Duration,mins)</visible>
-				</control>
-				<control type="textbox">
-					<description>Movie Plot</description>
-					<posx>0</posx>
+			<control type="group">
+				<visible>!stringcompare(ListItem.Label,..) + !ListItem.IsFolder</visible>
+				<include>VisibleFadeEffect</include>
+				<control type="group"> <!-- Labels -->
+					<posx>20</posx>
 					<posy>120</posy>
-					<width>620</width>
-					<height>90</height>
-					<font>cirrus_16</font>
-					<align>justify</align>
-					<textcolor>white</textcolor>
-					<label>$INFO[ListItem.Plot]</label>
-					<autoscroll time="2000" delay="3000" repeat="5000">Skin.HasSetting(AutoScroll)</autoscroll>
-				</control>
-			</control>
-			<control type="grouplist">
-				<description>MPAA Rating Flagging Images</description>
-				<posx>390</posx>
-				<posy>20</posy>
-				<width>249</width>
-				<align>left</align>
-				<itemgap>0</itemgap>
-				<orientation>horizontal</orientation>
-				<include>VideoMPAAFlaggingConditions</include>
-			</control>
-			<control type="group"> <!-- Fanart and media flags -->
-				<posx>10</posx>
-				<posy>330</posy>
-				<width>640</width>
-				<height>360</height>
-				<control type="image">
-					<posx>0</posx>
-					<posy>10</posy>
-					<width>640</width>
-					<height>360</height>
-					<aspectratio aligny="bottom">stretch</aspectratio>
-					<fadetime>IconCrossfadeTime</fadetime>
-					<texture background="true" diffuse="maskfanart.png">$INFO[ListItem.Property(Fanart_Image)]</texture>
-				</control>
-				<control type="image">
-					<posx>0</posx>
-					<posy>10</posy>
-					<width>640</width>
-					<height>360</height>
-					<aspectratio aligny="top">stretch</aspectratio>
-					<fadetime>IconCrossfadeTime</fadetime>
-					<texture diffuse="maskfanart.png">GlassOverlay2.png</texture>
-				</control>
-				<control type="image">
-					<posx>0</posx>
-					<posy>11</posy>
-					<width>640</width>
-					<height>360</height>
-					<aspectratio aligny="bottom">keep</aspectratio>
-					<fadetime>IconCrossfadeTime</fadetime>
-					<texture background="true" diffuse="maskfanart.png">videoinfobottom.png</texture>
-				</control>
-				<control type="image">
-					<posx>0</posx>
-					<posy>10</posy>
-					<width>640</width>
-					<height>360</height>
-					<aspectratio aligny="bottom">stretch</aspectratio>
-					<fadetime>IconCrossfadeTime</fadetime>
-					<texture>border-fanart.png</texture>
+					<visible>Container.Content(Movies)</visible>
+					<control type="fadelabel">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>620</width>
+						<height>30</height>
+						<font>cirrus_40</font>
+						<textcolor>white</textcolor>
+						<shadowcolor>black</shadowcolor>
+						<scroll>true</scroll>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Title]</label>
+						<scrollout>false</scrollout>
+						<pauseatend>2000</pauseatend>
+					</control>
+					<control type="label">
+						<posx>0</posx>
+						<posy>40</posy>
+						<width>380</width>
+						<height>30</height>
+						<font>cirrus_24</font>
+						<textcolor>white</textcolor>
+						<shadowcolor>black</shadowcolor>
+						<scroll>false</scroll>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Genre,[COLOR=orange]$LOCALIZE[515]:[/COLOR] ]</label>
+						<scrollout>false</scrollout>
+						<pauseatend>2000</pauseatend>
+					</control>
+					<control type="fadelabel">
+						<posx>0</posx>
+						<posy>80</posy>
+						<width>220</width>
+						<height>30</height>
+						<font>cirrus_30</font>
+						<textcolor>white</textcolor>
+						<shadowcolor>black</shadowcolor>
+						<scroll>true</scroll>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>[COLOR=orange]$INFO[ListItem.Year][/COLOR] $INFO[ListItem.Duration]</label>
+						<scrollout>false</scrollout>
+						<pauseatend>2000</pauseatend>
+						<visible>SubString(ListItem.Duration,mins)</visible>
+					</control>
+					<control type="fadelabel">
+						<posx>0</posx>
+						<posy>80</posy>
+						<width>220</width>
+						<height>30</height>
+						<font>cirrus_30</font>
+						<textcolor>white</textcolor>
+						<shadowcolor>black</shadowcolor>
+						<scroll>true</scroll>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>[COLOR=orange]$INFO[ListItem.Year][/COLOR] $INFO[ListItem.Duration] mins</label>
+						<scrollout>false</scrollout>
+						<pauseatend>2000</pauseatend>
+						<visible>!SubString(ListItem.Duration,mins)+ !stringcompare(ListItem.Label,..) + !ListItem.IsFolder</visible>
+					</control>
+					<control type="textbox">
+						<description>Movie Plot</description>
+						<posx>0</posx>
+						<posy>120</posy>
+						<width>620</width>
+						<height>98</height>
+						<font>cirrus_16</font>
+						<align>justify</align>
+						<textcolor>white</textcolor>
+						<label>$INFO[ListItem.Plot]</label>
+						<autoscroll time="2000" delay="3000" repeat="5000">Skin.HasSetting(AutoScroll)</autoscroll>
+					</control>
 				</control>
 				<control type="grouplist">
-					<description>Media Codec Flagging Images</description>
-					<posx>0</posx>
-					<posy>332</posy>
-					<width>640</width>
-					<align>center</align>
-					<itemgap>15</itemgap>
+					<description>MPAA Rating Flagging Images</description>
+					<posx>390</posx>
+					<posy>20</posy>
+					<width>249</width>
+					<align>left</align>
+					<itemgap>0</itemgap>
 					<orientation>horizontal</orientation>
-					<include>VideoCodecFlaggingConditions</include>
-					<include>AudioCodecFlaggingConditions</include>
-					<include>AspectCodecFlaggingConditions</include>
-					<include>VideoTypeHackFlaggingConditions</include>
+					<include>VideoMPAAFlaggingConditions</include>
 				</control>
-			</control>
-			<control type="image">
-				<description>Rating value</description>
-				<posx>390</posx>
-				<posy>190</posy>
-				<align>center</align>
-				<width>249</width>
-				<height>40</height>
-				<aspectratio>keep</aspectratio>
-				<texture>$INFO[Listitem.StarRating]</texture>
+				<control type="group"> <!-- Fanart and media flags -->
+					<posx>10</posx>
+					<posy>340</posy>
+					<width>640</width>
+					<height>360</height>
+					<control type="image">
+						<posx>0</posx>
+						<posy>10</posy>
+						<width>640</width>
+						<height>360</height>
+						<aspectratio aligny="bottom">stretch</aspectratio>
+						<fadetime>IconCrossfadeTime</fadetime>
+						<texture background="true" diffuse="maskfanart.png">$INFO[ListItem.Property(Fanart_Image)]</texture>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>10</posy>
+						<width>640</width>
+						<height>360</height>
+						<aspectratio aligny="top">stretch</aspectratio>
+						<fadetime>IconCrossfadeTime</fadetime>
+						<texture diffuse="maskfanart.png">GlassOverlay2.png</texture>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>11</posy>
+						<width>640</width>
+						<height>360</height>
+						<aspectratio aligny="bottom">keep</aspectratio>
+						<fadetime>IconCrossfadeTime</fadetime>
+						<texture background="true" diffuse="maskfanart.png">videoinfobottom.png</texture>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>10</posy>
+						<width>640</width>
+						<height>360</height>
+						<aspectratio aligny="bottom">stretch</aspectratio>
+						<fadetime>IconCrossfadeTime</fadetime>
+						<texture>border-fanart.png</texture>
+					</control>
+					<control type="grouplist">
+						<description>Media Codec Flagging Images</description>
+						<posx>0</posx>
+						<posy>332</posy>
+						<width>640</width>
+						<align>center</align>
+						<itemgap>15</itemgap>
+						<orientation>horizontal</orientation>
+						<include>VideoCodecFlaggingConditions</include>
+						<include>AudioCodecFlaggingConditions</include>
+						<include>AspectCodecFlaggingConditions</include>
+						<include>VideoTypeHackFlaggingConditions</include>
+					</control>
+				</control>
+				<control type="image">
+					<description>Rating value</description>
+					<posx>390</posx>
+					<posy>190</posy>
+					<align>center</align>
+					<width>249</width>
+					<height>40</height>
+					<aspectratio>keep</aspectratio>
+					<texture>$INFO[Listitem.StarRating]</texture>
+				</control>
 			</control>
 			<control type="scrollbar" id="60">
 				<posx>1249</posx>
