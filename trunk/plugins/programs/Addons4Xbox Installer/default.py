@@ -14,8 +14,8 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/programs/Addons4xbox/"
 __credits__      = "Team XBMC Passion"
 __platform__     = "xbmc media center"
-__date__         = "11-14-2010"
-__version__      = "0.3"
+__date__         = "11-28-2010"
+__version__      = "0.4"
 __svn_revision__ = 0
 
 
@@ -47,17 +47,17 @@ __platform__ = "xbmc media center, [%s]" % xbmc.__platform__
 __language__ = xbmc.Language( ROOTDIR ).getLocalizedString
 
 # append the proper libs folder to our path
-sys.path.append( LIBS )
+#sys.path.append( LIBS )
 
 #modules custom
 try:
-    from specialpath import *
-    from Item import *
-    from FileManager import *
-    import LocalArchiveInstaller #,ItemInstaller
-    import RemoteArchiveInstaller
-    from utilities import copy_dir, copy_inside_dir, readURL
-    from XmlParser import ListItemFromXML
+    from resources.libs.specialpath import *
+    from resources.libs.Item import *
+    from resources.libs.FileManager import *
+    import resources.libs.LocalArchiveInstaller as LocalArchiveInstaller#,ItemInstaller
+    import resources.libs.RemoteArchiveInstaller as RemoteArchiveInstaller
+    from resources.libs.utilities import copy_dir, copy_inside_dir, readURL
+    from resources.libs.XmlParser import ListItemFromXML
 except:
     print_exc()
 
@@ -907,8 +907,8 @@ class Addons4xboxInstallerPlugin:
 # BEGIN !
 #######################################################################################################################
 
-
-try:
-    Addons4xboxInstallerPlugin()
-except:
-    print_exc()
+if ( __name__ == "__main__" ):
+    try:
+        Addons4xboxInstallerPlugin()
+    except:
+        print_exc()

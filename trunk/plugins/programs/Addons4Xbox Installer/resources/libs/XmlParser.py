@@ -189,11 +189,6 @@ class ListItemFromXML:
                 
                 if ( rootXmlElt ):
                     self.addons = rootXmlElt.findall("addon")
-#                    for addon in addons:
-#                        # dictionary to hold addon info
-#                        itemInfo = {}
-#                        status = parseAddonElt( addon, itemInfo )
-#                        list.append(itemInfo)
         except:
             status = 'ItemList::__init__: ERROR'
             print_exc()

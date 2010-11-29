@@ -61,20 +61,10 @@ class ItemInstaller:
         # required_lib
         
     def __init__( self ):
-        #self.name            = None                 # Name of the item - Need to be determine in subclass or in a method
-        #self.type            = None         # XBMC Type of the item - Need to be determine in subclass or in a method
-        #self.typeInstallPath = Item.get_install_path( type )  # Install Path for this type of item
-        #self.typeInstallPath = None                 # Install Path for this type of item - Need to be determine in subclass or in a method
-        #self.filesize        = filesize     # Size of the file to download
         
         self.CACHEDIR = DIR_CACHE
         self.fileMgr  = fileMgr()
-        
-        # NOTE: need to be set in a subclass before calling isAlreadyInstalled or deleteInstalledItem
-        #self.installName     = None # Name of the addon used by XBMC: i.e script dir name, plugin dir name, skin dir name, scraper xml file name
-        self.status          = "INIT" # Status of install :[ INIT | OK | ERROR | DOWNLOADED | EXTRACTED | ALREADYINSTALLED | ALREADYINUSE | CANCELED | INSTALL_DONE ]       
-        #self.rawItemSysType  = None
-        #self.rawItemPath     = None
+        self.status   = "INIT" # Status of install :[ INIT | OK | ERROR | DOWNLOADED | EXTRACTED | ALREADYINSTALLED | ALREADYINUSE | CANCELED | INSTALL_DONE ]       
         
         # Clean cache directory
         self.fileMgr.delDirContent(self.CACHEDIR)
@@ -184,7 +174,7 @@ class ItemInstaller:
 
         if len( item_paths ) > None:
             for path in item_paths:
-                print "Renaming %s by %s"%(path, path.replace( os.path.basename( path ), inputText))
+                print u"Renaming %s by %s"%(path, path.replace( os.path.basename( path ), inputText))
                 result = self.fileMgr.renameItem( None, path, path.replace( os.path.basename( path ), inputText) )
                 if result == False:
                     print "renameInstalledItem: Impossible to rename one of the element in the item: %s" % path
