@@ -5,6 +5,7 @@ import urllib2
 import gzip
 import StringIO
 import os
+import re
 
 class HTTPCommunicator :
     """
@@ -95,3 +96,64 @@ def url_join(*args):
         joined = reduce(os.path.join, work)
 
     return joined.replace("\\", "/")
+
+
+def convertStrDate( dateTxt):
+    dateResult = "00-00-00"
+    monthTxt2Int = { u'janvier'  : 1, 
+                     u'février'  : 2, 
+                     u'fevrier'  : 2, 
+                     u'mars'     : 3, 
+                     u'avril'    : 4, 
+                     u'mai'      : 5, 
+                     u'juin'     : 6, 
+                     u'juillet'  : 7, 
+                     u'août'     : 8, 
+                     u'aout'     : 8, 
+                     u'septembre': 9, 
+                     u'octobre'  : 10, 
+                     u'novembre' : 11, 
+                     u'décembre' : 12, 
+                     u'decembre' : 12 
+                    }
+    
+    u'Février'.lower()
+    splittedDate = dateTxt.split(" ") #u'Jeudi, 04 F\xe9vrier 2010 12:43' --> [u'Jeudi,', u'04', u'F\xe9vrier', u'2010', u'12:43']
+    try:
+        weekDay    = splittedDate[0]
+        dayOfMonth = int( splittedDate[1] )
+        monthTxt   = splittedDate[2]
+        year       = int(splittedDate[3])
+        timeTxt    = splittedDate[4]
+        
+        # Convert Month to int
+        month = int(monthTxt2Int[monthTxt.lower()])
+        
+        # Create date to return i.e: (2008-12-07)
+        #dateResult = "{yyyy}-{mm:0{digits}n}-{dd:0{digits}n}".format(yyyy=year,mm=12, dd=9, digits=2)
+        dateResult = str(year).rjust(4, '0') + "-" + str(month).rjust(2, '0') + "-" + str(dayOfMonth).rjust(2, '0')
+        
+    except:
+        print "Error converting Date: %s"%repr(dateTxt)
+        print_exc()
+    print dateResult
+    return dateResult
+
+
+def set_xbmc_carriage_return( text ):
+    """ only for xbmc """
+    text = text.replace( "\r\n", "[CR]" )
+    text = text.replace( "\n\n", "[CR]" )
+    text = text.replace( "\n",   "[CR]" )
+    text = text.replace( "\r\r", "[CR]" )
+    text = text.replace( "\r",   "[CR]" )
+    text = text.replace( "</br>",   "[CR]" )
+    return text
+
+
+def strip_off( text, by="", xbmc_labels_formatting=False ):
+    """ FONCTION POUR RECUPERER UN TEXTE D'UN TAG """
+    if xbmc_labels_formatting:
+        #text = re.sub( "\[url[^>]*?\]|\[/url\]", by, text )
+        text = text.replace( "[", "<" ).replace( "]", ">" )
+    return re.sub( "(?s)<[^>]*>", by, text )
