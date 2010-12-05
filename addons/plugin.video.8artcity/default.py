@@ -1,5 +1,13 @@
+# -*- coding: cp1252 -*-
 """
    Video Addon (plugin type) allowing to watch 8 Art City Blogs' videos
+   
+   Changelog:
+   25-11-2010 Version 1.0 par Temhil
+      - Creation
+      
+   05-12-2010 Version 1.1 par Temhil 
+      - Ajout de la date et de la description pour chaque video
 """
 
 REMOTE_DBG       = False # For remote debugging with PyDev (Eclipse)
@@ -13,8 +21,8 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/addons/plugin.video.8artcity/"
 __credits__      = "Team XBMC Passion"
 __platform__     = "xbmc media center"
-__date__         = "11-25-2010"
-__version__      = "1.0"
+__date__         = "12-05-2010"
+__version__      = "1.1"
 __svn_revision__ = 0
 
 
@@ -60,7 +68,7 @@ MEDIA_PATH = os.path.join( BASE_RESOURCE_PATH, "media" )
 #modules custom
 try:
     import resources.lib.huitartcity as huitartcity
-    from resources.lib.utils import url_join
+    from resources.lib.utils import url_join, convertStrDate
 except:
     print_exc()
 
@@ -165,7 +173,7 @@ class HuitArtCityPlugin:
                 
                 if listType == self.VALUE_LIST_VIDEO:
                     self.createVideoList(rel_url)
-                
+            else:   
                 self._end_of_directory( True, update=False )
 
         except:
@@ -234,11 +242,13 @@ class HuitArtCityPlugin:
         else:
             icon = "DefaultVideo.png"
             
-        liz=xbmcgui.ListItem( itemInfo["title"], iconImage=icon, thumbnailImage=icon )
+        liz=xbmcgui.ListItem( label=itemInfo["title"], label2=itemInfo["create_date"], iconImage=icon, thumbnailImage=icon )
         liz.setInfo( type="Video", 
                      infoLabels={ "title": itemInfo["title"], 
-                                  #"plot" : itemInfo["description"], 
-                                  "aired": itemInfo["create_date"] } )
+                                  "plotoutline": itemInfo["create_date"],
+                                  "plot" : itemInfo["description"], 
+                                  "aired": convertStrDate(itemInfo["create_date"]) } )
+        liz.setProperty('mimetype', 'video/x-flv')
                                   
         url = url_join(self.BASE_URL, itemInfo["url_video"])
         if url:
@@ -322,6 +332,7 @@ class HuitArtCityPlugin:
             dialogYesNo = xbmcgui.Dialog()
             result = dialogYesNo.yesno(title, message1, message2, message3)
         return result
+
 
 #######################################################################################################################    
 # BEGIN !

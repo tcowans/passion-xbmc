@@ -9,7 +9,7 @@ from traceback import print_exc
 import re
 
 # Modules custom
-from utils import HTTPCommunicator
+from utils import HTTPCommunicator, set_xbmc_carriage_return, strip_off
 
 #
 # Constants
@@ -100,8 +100,12 @@ def getVideoList(pageUrl, addItemFunc=None, progressBar=None,  msgFunc=None ):
                 #info = itemInfo.find ("style", { "type" : "text/javascript"} )
                 re_descript = re.compile(r"</p>(.*?)</div>", re.DOTALL)
                 #print video_info.findParent().findParent()
-                itemInfo["description"] = re_descript.findall(str(video_info.findParent().findParent()))
-                
+                try:
+                    itemInfo["description"] = strip_off( set_xbmc_carriage_return( re_descript.findall(str(video_info.findParent().findParent()))[0].replace("\n<br />", "") ) )
+                except:
+                    itemInfo["description"] = ""
+                    print "Error while retrieving Item info: %s"%itemInfo["title"]
+                    print_exc()
                 
                 #video_info = info.p.script
                 re_video_url = re.compile(r"'file=(.*?)['|&]", re.DOTALL) 
