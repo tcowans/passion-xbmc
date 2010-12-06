@@ -106,7 +106,9 @@ def get_themes():
         try:
             theme_id = int( theme.findtext( "ID" ) )
             theme_nom = theme.findtext( "NOM" )
-            themes.append( [theme_id, theme_nom] )
+            theme_color = theme.findtext( "COULEUR" ).replace("#","")
+            
+            themes.append( [theme_id, theme_nom.strip(), theme_color] )
         except:
             print "get_themes- Erreur durant le parcorus des themes"
             traceback.print_exc()
@@ -134,7 +136,7 @@ def get_subthemes(theme_id):
                 for subtheme in theme.find("SELECTIONS").findall("SELECTION"): 
                     subtheme_id = int( subtheme.findtext( "ID" ) )
                     subtheme_nom = subtheme.findtext( "NOM" )
-                    subthemes.append( [subtheme_id, subtheme_nom] )
+                    subthemes.append( [subtheme_id, subtheme_nom.strip()] )
                 break
         except:
             print "get_subthemes - Erreur durant le parcorus des themes"
@@ -171,9 +173,9 @@ def get_videos( subtheme_id,keyword='' ):
         try:
             videoID         = int( vid.findtext( "ID" ) )
             #title           = vid.find( "INFOS" ).find( "TITRAGE" ).findtext( "TITRE" ) + ': ' + vid.find( "INFOS" ).find( "TITRAGE" ).findtext( "SOUS_TITRE" )
-            title           = vid.find( "INFOS" ).find( "TITRAGE" ).findtext( "TITRE" ) + ': ' #+ vid.find( "INFOS" ).find( "TITRAGE" ).findtext( "SOUS_TITRE" )
+            title           = vid.find( "INFOS" ).find( "TITRAGE" ).findtext( "TITRE" ).strip() + ': ' #+ vid.find( "INFOS" ).find( "TITRAGE" ).findtext( "SOUS_TITRE" )
             publicationDate = vid.find( "INFOS" ).find( "TITRAGE" ).findtext( "SOUS_TITRE" )
-            description     = vid.find( "INFOS" ).findtext( "DESCRIPTION" )
+            description     = vid.find( "INFOS" ).findtext( "DESCRIPTION" ).strip()
             note            = float( vid.find( "INFOS" ).find( "NOTE" ).findtext( "MOYENNE" ) )
             imageURL        = vid.find( "MEDIA" ).find( "IMAGES" ).findtext( "GRAND" )
             
@@ -209,9 +211,6 @@ def get_info( videoID ):
     #print ET.tostring(elems)
     #print elems.find( "VIDEO" )
     for videoinfos in elems.findall( "VIDEO" ):
-        #print 'videoinfos'
-        #print videoinfos
-        
         videoinfos_id = int ( videoinfos.findtext( "ID" ) )
         videoinfos_type = videoinfos.findtext( "TYPE" )
         videoinfos_title = videoinfos.findtext( "INFOS/TITRAGE/TITRE" )#.encode("cp1252")
@@ -222,12 +221,6 @@ def get_info( videoID ):
         videoinfos_image = videoinfos.findtext( "MEDIA/IMAGES/GRAND" )
         videoinfos_smallimage = videoinfos.findtext( "MEDIA/IMAGES/PETIT" )
         videoinfos_categorie = videoinfos.findtext( "RUBRIQUAGE/CATEGORIE" )
-        #print "videoinfos_id"
-        #print videoinfos_id
-        #print videoinfos_type
-        #print videoinfos_description
-        #print videoinfos_videoHD
-        #print videoinfos_videoBD
         if videoinfos_id == videoID:
             # Found
             print "Video ID found"

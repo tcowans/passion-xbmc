@@ -1,0 +1,7 @@
+Version 3.0
+
+- Amelioration du chargement des listes de videos
+ (on recupere l'URL de la video lors d'une 2eme etape invisble pour l'utilsateur)
+- Reorganisation du code du code
+- Suppression des threads (plus necessaire desormais)
+- Affiche les couleurs correspondant aux rubriques (provenant de www.color-hex.com)

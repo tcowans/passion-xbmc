@@ -16,6 +16,8 @@
     <string id="30021">Korkea</string>
     <string id="30022">Matala</string>
 
+    <string id="30030">Use cached images</string>
+
     <!--CONTEXT MENU STRINGS -->
     <string id="30100">Tallenna (korkealaatu)</string>
     <string id="30101">Tallenna (matalalaatu)</string>
