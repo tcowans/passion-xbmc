@@ -16,6 +16,8 @@
     <string id="30021">Haute</string>
     <string id="30022">Basse</string>
 
+    <string id="30030">Utiliser les images en mémoire cache</string>
+
     <!--CONTEXT MENU STRINGS -->
     <string id="30100">Enregistrer (Haute Qualité)</string>
     <string id="30101">Enregistrer (Basse Qualité)</string>
