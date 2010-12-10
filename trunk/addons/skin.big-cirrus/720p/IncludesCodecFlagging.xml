@@ -85,7 +85,15 @@
 <!-- ============== MPAA RATINGS FLAGS ============= -->
 	<include name="VideoMPAAFlaggingConditions">
 	<!-- FRENCH -->
-	<control type="image">
+		<control type="image">
+			<description>France:tout public</description>
+			<width>90</width>
+			<height>33</height>
+			<aspectratio>keep</aspectratio>
+			<texture>flagging/ratings/csaU.png</texture>
+			<visible>substring(listitem.mpaa,France:U)</visible>
+		</control>
+		<control type="image">
 			<description>France:-10</description>
 			<width>90</width>
 			<height>33</height>
