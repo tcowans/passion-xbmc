@@ -1,4 +1,6 @@
 1.1.9
+-- Fix custom favorites
+-- Add France:U mpaa rating (tout public)
 -- Add localised skin option string
 -- Add setting for activate TvTunes
 -- Add movie set label in rightlist
