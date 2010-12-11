@@ -314,7 +314,7 @@
             <focusedcolor>white</focusedcolor>
             <label>15311</label>
             <label2>$INFO[Skin.String(Startup_Playlist_Path)]</label2>
-            <onclick>Skin.SetFile(Startup_Playlist_Path,.m3u,t:\playlists\music\)</onclick>
+            <onclick>Skin.SetFile(Startup_Playlist_Path,,special://profile/playlists)</onclick>
             <texturefocus flipx="true">listwhitegradient.png</texturefocus>
             <texturenofocus>menuitemNF.png</texturenofocus>
             <enable>Skin.HasSetting(Use_Startup_Playlist)</enable>
@@ -2615,7 +2615,7 @@
 							<focusedcolor>white</focusedcolor>
 							<texturefocus>MenuItemFO.png</texturefocus>
 							<texturenofocus>MenuItemNF.png</texturenofocus>
-							<onclick>Skin.SetFile(Menu_Custom4_Path,.xsp,special://videoplaylists)</onclick>
+							<onclick>Skin.SetFile(Menu_Custom4_Path,,special://profile/playlists)</onclick>
 							<visible>Skin.HasSetting(Menu_Custom4) + Skin.String(MoviesCustom,4)</visible>
 						</control>
 						
@@ -2659,7 +2659,7 @@
 							<focusedcolor>white</focusedcolor>
 							<texturefocus>MenuItemFO.png</texturefocus>
 							<texturenofocus>MenuItemNF.png</texturenofocus>
-							<onclick>Skin.SetFile(Menu_Custom5_Path,.xsp,special://videoplaylists)</onclick>
+							<onclick>Skin.SetFile(Menu_Custom5_Path,.xsp,special://profile/playlists)</onclick>
 							<visible>Skin.HasSetting(Menu_Custom5) + Skin.String(MoviesCustom,5)</visible>
 						</control>
 						
@@ -2703,7 +2703,7 @@
 							<focusedcolor>white</focusedcolor>
 							<texturefocus>MenuItemFO.png</texturefocus>
 							<texturenofocus>MenuItemNF.png</texturenofocus>
-							<onclick>Skin.SetFile(Menu_Custom6_Path,.xsp,special://videoplaylists)</onclick>
+							<onclick>Skin.SetFile(Menu_Custom6_Path,,special://profile/playlists)</onclick>
 							<visible>Skin.HasSetting(Menu_Custom6) + Skin.String(MoviesCustom,6)</visible>
 						</control>
 						
@@ -2747,7 +2747,7 @@
 							<focusedcolor>white</focusedcolor>
 							<texturefocus>MenuItemFO.png</texturefocus>
 							<texturenofocus>MenuItemNF.png</texturenofocus>
-							<onclick>Skin.SetFile(Menu_Custom9_Path,.xsp,special://videoplaylists)</onclick>
+							<onclick>Skin.SetFile(Menu_Custom9_Path,,special://profile/playlists)</onclick>
 							<visible>Skin.HasSetting(Menu_Custom9) + Skin.String(MoviesCustom,9)</visible>
 						</control>
 						
@@ -2791,7 +2791,7 @@
 							<focusedcolor>white</focusedcolor>
 							<texturefocus>MenuItemFO.png</texturefocus>
 							<texturenofocus>MenuItemNF.png</texturenofocus>
-							<onclick>Skin.SetFile(Menu_Custom10_Path,.xsp,special://videoplaylists)</onclick>
+							<onclick>Skin.SetFile(Menu_Custom10_Path,,special://profile/playlists)</onclick>
 							<visible>Skin.HasSetting(Menu_Custom10) + Skin.String(MoviesCustom,10)</visible>
 						</control>
 					</control>
