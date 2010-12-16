@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <!--$Revision$-->
 <addon id="script.game.arkanoid" name="Arkanoid"
-       version="1.0.4" date="11.09.2010"
+       version="1.0.5" date="16.12.2010"
        provider-name="Frost (passion-xbmc.org)">
   <requires>
     <import addon="xbmc.python" version="1.0"/>
@@ -10,6 +10,7 @@
              library="default.py"/>
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>
+    <nochangelog>true</nochangelog>
     <summary>Replica of the famous game Arkanoid</summary>
     <description>Replica of the famous game Arkanoid (1986) and Tournament Arkanoid (1987) ported on XBMC with a few variables
 

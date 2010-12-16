@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="plugin.video.astral.media"
        name="Astral Media"
-       version="1.0.6"
+       version="1.0.7"
        provider-name="Frost (passion-xbmc.org)">
   <requires>
     <import addon="xbmc.python" version="1.0"/>
@@ -29,5 +29,7 @@
 
 Et plus...[CR]</description>
     <platform>all</platform>
+    <nofanart>true</nofanart>
+    <nochangelog>true</nochangelog>
   </extension>
 </addon>

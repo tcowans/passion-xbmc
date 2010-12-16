@@ -7,8 +7,8 @@ __url__           = "http://code.google.com/p/passion-xbmc/"
 __svn_url__       = "http://passion-xbmc.googlecode.com/svn/trunk/addons/plugin.video.astral.media/"
 __credits__       = "Team XBMC, http://xbmc.org/"
 __platform__      = "xbmc media center, [ALL]"
-__date__          = "07-09-2010"
-__version__       = "1.0.6"
+__date__          = "16-12-2010"
+__version__       = "1.0.7"
 __svn_revision__  = "$Revision$"
 
 

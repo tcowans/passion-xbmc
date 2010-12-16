@@ -7,8 +7,8 @@ __url__          = "http://code.google.com/p/passion-xbmc/"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/addons/script.game.tic.tac.toe/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center, [ALL]"
-__date__         = "06-09-2010"
-__version__      = "1.0.1"
+__date__         = "16-12-2010"
+__version__      = "1.0.2"
 __svn_revision__ = "$Revision$"
 
 

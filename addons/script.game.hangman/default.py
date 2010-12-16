@@ -9,8 +9,8 @@ __url__          = "http://passion-xbmc.org/"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/addons/script.game.hangman/"
 __credits__      = "Team XBMC, http://xbmc.org/"
 __platform__     = "xbmc media center"
-__date__         = "10-06-2010"
-__version__      = "1.0.3"
+__date__         = "16-12-2010"
+__version__      = "1.0.6"
 __svn_revision__ = "$Revision$"
 
 __hangman__   = r'''

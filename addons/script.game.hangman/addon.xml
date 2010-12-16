@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <!--$Revision$-->
 <addon id="script.game.hangman" name="HangMan"
-       version="1.0.5" date="11.10.2010"
+       version="1.0.6" date="16.12.2010"
        provider-name="Frost (passion-xbmc.org)">
   <requires>
     <import addon="xbmc.python" version="1.0"/>
@@ -10,6 +10,8 @@
              library="default.py"/>
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>
+    <nofanart>true</nofanart>
+    <nochangelog>true</nochangelog>
     <summary>Jeu du bonhomme pendu pour XBMC</summary>
     <description>Le pendu est un jeu consistant à trouver un mot en devinant quelles sont les lettres qui le composent. Le jeu se joue traditionnellement à deux, avec un papier et un crayon, selon un déroulement bien particulier.</description>
   </extension>
