@@ -1,0 +1,9 @@
+Version 1.0.1 (15/12/10) par Temhil
+- Reparation des liens 'page suivante'
+- ajout des images pour les videos
+- ajout des images pour les chaines
+- ajout du logo
+- ajout lien 'toutes les videos' pour les chaines en plus de 'notre selection'
+
+Version 1.0.0 (05/11/10) par mighty_bombero
+- Creation
