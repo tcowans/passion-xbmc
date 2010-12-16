@@ -174,6 +174,7 @@ class Main:
                 OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=True )
                 if ( not OK ): raise
 
+            ''' BROKEN
             #Unofficial Nightly Builds
             title = "Unofficial Nightly Builds From SVN"
             icon = XBMC_ICON#"DefaultNetwork.png"
@@ -188,7 +189,7 @@ class Main:
             listitem = self.addContextMenuAction( listitem, c_items )
             url = '%s?listurl="unofficial"&cat="%s"' % ( sys.argv[ 0 ], title )
             OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=True )
-            if ( not OK ): raise
+            if ( not OK ): raise'''
 
             #browse
             title = "Update from custom build"

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="script.game.lucky7"
        name="Lucky $even"
-       version="2.0.1"
+       version="2.0.2"
        provider-name="Frost (passion-xbmc.org)">
   <requires>
     <import addon="xbmc.python" version="1.0"/>
@@ -10,6 +10,7 @@
              library="default.py"/>
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>
+    <nochangelog>true</nochangelog>
     <summary>Machine à sous ou Machine Slots</summary>
     <description>Petit jeux qui simule les 7 Chanceux "machine à sous ou Machine Slots" qu'on peut retrouver dans les Casinos. Les sous sont virtuel bien sure.[CR][CR]Warning: PAL Resolution is only supported</description>
   </extension>

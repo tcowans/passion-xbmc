@@ -8,7 +8,7 @@ from traceback import print_exc
 
 canals = {
     "canald":     ( "Canal D", "http://www.canald.com", "Canal D vous propose des documentaires divers dont des documentaires animaliers, des biographies, des enquêtes policières et des émissions d'humour." ),
-    "canalvie":   ( "Canal Vie", "http://www.canalvie.com", "Canal Vie vous présente des émissions et vous propose de la webtélé." ),
+    #"canalvie":   ( "Canal Vie", "http://www.canalvie.com", "Canal Vie vous présente des émissions et vous propose de la webtélé." ),
     "historiatv": ( "HiSToriA TV", "http://www.historiatv.com", "HiSToRiA TV - Chaîne de télévision francophone spécialisée sur l'histoire" ),
     "seriesplus": ( "Séries+", "http://www.seriesplus.com", "Séries+ propose des séries télé ayant comme genres le drame, la comédie, les enquêtes policières et le suspense ainsi que des nouvelles et potins de stars." ),
     #"vraktv":     ( "VRAK.TV", "http://www.vrak.tv", "VRAK.TV propose des émissions!" ),

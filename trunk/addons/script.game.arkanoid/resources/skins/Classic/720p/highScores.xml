@@ -332,6 +332,7 @@
 						<texturenofocus border="5">arkanoid-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
 						<label>Classic[CR]Online</label>
+						<visible>false</visible>
 					</control>
 					<control type="button" id="7">
 						<description>1987 local button</description>
@@ -358,6 +359,7 @@
 						<texturenofocus border="5">arkanoid-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
 						<label>Tournament[CR]Online</label>
+						<visible>false</visible>
 					</control>
 					<control type="button" id="10">
 						<description>Refresh Online Only</description>

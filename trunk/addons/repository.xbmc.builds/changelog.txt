@@ -1,3 +1,6 @@
+1.0.2
+ - disabled: Unofficial Nightly Builds, the scraper is broken and I have not time to fixe it. sorry
+
 1.0.1
  - fixed: bad info of creator on unofficial releases
 
