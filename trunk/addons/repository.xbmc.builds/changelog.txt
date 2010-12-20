@@ -1,3 +1,9 @@
+1.0.3
+ - added: select mirrors list of xbmc (but not all work correctly)
+ - fixed: sort method by date
+ - changed: [xbox] hide function if is not supported
+ - cleanup code
+
 1.0.2
  - disabled: Unofficial Nightly Builds, the scraper is broken and I have not time to fixe it. sorry
 

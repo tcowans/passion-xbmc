@@ -127,13 +127,32 @@ def Main():
         fpath = None
         kill_xbmc = False
 
-        if ( args.get( "action" ) == "DL" ):
+        if ( args.get( "action" ) == "selectmirror" ):
+            xbmc.executebuiltin( "ActivateWindow(busydialog)" )
+            try:
+                from repo import getMirrors
+                mirrors = [ ( "[Default] xbmc.org", "http://mirrors.xbmc.org/" ) ] + getMirrors()
+            except:
+                print_exc()
+            xbmc.executebuiltin( "Dialog.Close(busydialog)" )
+            selected = xbmcgui.Dialog().select( "List of all mirrors", [ m for m, uri in mirrors ] )
+            __settings__  = sys.modules[ "__main__" ].__settings__
+            if selected != -1:
+                xbmc.executebuiltin( "Dialog.Close(10140,true)" )
+                mirror, url = mirrors[ selected ]
+                if not url.endswith( "/" ): url += "/"
+                __settings__.setSetting( "mirror_name", mirror )
+                __settings__.setSetting( "mirror_url", url )
+                __settings__.openSettings()
+
+        elif ( args.get( "action" ) == "DL" ):
             #run downloader
             dlpath = xbmc.getInfoLabel( "ListItem.Property(Addon.Path)" )
             filename = xbmc.getInfoLabel( "ListItem.Property(filename)" )
             print "DL: %s" % dlpath
             try:
-                script = os.path.join( os.getcwd(), "resources", "addonAPI", "downloader.py" )
+                __settings__  = sys.modules[ "__main__" ].__settings__
+                script = os.path.join( __settings__.getAddonInfo( "path" ), "resources", "addonAPI", "downloader.py" )
                 xbmc.executebuiltin( "RunScript(%s,%s,%s)" % ( script, dlpath, filename ) )
             except:
                 print_exc()

@@ -1,13 +1,14 @@
 
 # Modules general
 import os
-import re
-import sys
 from traceback import print_exc
 
 # Modules XBMC
-import xbmc
 import xbmcgui
+from xbmcaddon import Addon
+
+__addonID__  = "repository.xbmc.builds"
+__settings__ = Addon( __addonID__ )
 
 
 class DialogTextViewer( xbmcgui.WindowXMLDialog ):
@@ -35,6 +36,6 @@ class DialogTextViewer( xbmcgui.WindowXMLDialog ):
 
 
 def showText( heading="", text="" ):
-    w = DialogTextViewer( "DialogTextViewer.xml", os.getcwd(), heading=heading, text=text )
+    w = DialogTextViewer( "DialogTextViewer.xml", __settings__.getAddonInfo( "path" ), heading=heading, text=text )
     w.doModal()
     del w

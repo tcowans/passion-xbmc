@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings>
+    <setting type="lsep" label="XBMC Mirrors" />
+    <setting label="Mirror" type="action" id="mirror_name" default="xbmc.org" action="XBMC.RunPlugin(plugin://repository.xbmc.builds?action='selectmirror')" />
+    <setting label="Mirror Url" type="text" id="mirror_url" default="http://mirrors.xbmc.org/" visible="false" />
     <!-- Downloadings -->
     <setting type="lsep" label="30400" />
     <!--<setting id="RenameDl" type="bool" label="30401" default="false" />-->
