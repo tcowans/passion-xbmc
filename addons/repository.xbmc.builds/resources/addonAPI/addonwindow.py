@@ -9,7 +9,7 @@ import xbmcplugin
 from xbmcaddon import Addon
 
 # addon constants
-__settings__  = Addon( os.path.basename( os.getcwd() ) ) # get Addon object
+__settings__  = Addon( "repository.xbmc.builds" ) # get Addon object
 __addonName__ = __settings__.getAddonInfo( "name" ) # get Addon Name
 __addonId__   = __settings__.getAddonInfo( "id" ) # get Addon Name
 

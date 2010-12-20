@@ -18,6 +18,9 @@ except:
     DIALOG_PROGRESS = None
 
 
+UNDER_XBOX = ( os.environ.get( "OS", "xbox" ) == "xbox" )
+
+
 class progressCanceled( Exception ):
     def __init__( self, errmsg="Downloading was canceled by user!" ):
         self.msg = errmsg
@@ -267,12 +270,16 @@ class Main:
                 except: print_exc()
                 print fp, h
                 if fp and os.path.exists( fp ):
-                    try:
-                        if xbmcgui.Dialog().yesno( "Confirm executing...", "Do you want execute file?", os.path.basename( fp ), "Remember XBMC will be closed!" ):
-                            from action import start_file
-                            start_file( fp.decode( "utf-8" ), kill_xbmc=True )
-                    except:
-                        print_exc()
+                    if fp.endswith( ".txt" ):
+                        from TextViewer import showText
+                        showText( os.path.basename( fp ), file( fp, "r" ).read() )
+                    elif not UNDER_XBOX:
+                        try:
+                            if xbmcgui.Dialog().yesno( "Confirm executing...", "Do you want execute file?", os.path.basename( fp ), "Remember XBMC will be closed!" ):
+                                from action import start_file
+                                start_file( fp.decode( "utf-8" ), kill_xbmc=True )
+                        except:
+                            print_exc()
                     xbmc.executebuiltin( "Container.Refresh" )
         except:
             print_exc()

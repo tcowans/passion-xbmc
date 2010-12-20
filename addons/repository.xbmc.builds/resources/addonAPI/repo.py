@@ -8,12 +8,12 @@ import urllib
 from StringIO import StringIO
 from traceback import print_exc
 
-import elementtree.ElementTree as HTB
 
 # base url
-repo_url = "http://mirrors.xbmc.org/"
+try: repo_url = sys.modules[ "__main__" ].__settings__.getSetting( "mirror_url" )
+except: repo_url = ( "http://mirrors.xbmc.org/", "http://mirror.its.dal.ca/xbmc/" )[ 0 ]
 # jump directly
-releases_url = repo_url + "releases/"
+releases_url = repo_url + "releases/" #+ "win32/"
 nightlies_url = repo_url + "nightlies/"
 
 
@@ -66,11 +66,18 @@ def setSize( txt ):
     return size
 
 
-def getListing( url ):
+def getListing( url, default="http://mirrors.xbmc.org/" ):
     source = get_html_source( url )
+    pre = re.compile( "(<pre>.*?</pre>)", re.S ).findall( source ) or [ "" ]
     regexp = '<img src="/icons/((?:[a-z][a-z\\.\\d_]+)\\.(?:[a-z\\d]{3}))(?![\\w\\.])" alt="(\\[.*?\\])"'
-    regexp += ' width="16" height="16" /> <a href="(.*?)">(.*?)</a>\\s+(.*?)   [ \-|<]'
-    links = re.compile( regexp ).findall( source )
+    regexp += '.*?<a href="(.*?)">(.*?)</a>(.*?)\n'
+    links = re.compile( regexp ).findall( pre[ 0 ] )
+    if not links:
+        print "Error: for retrieving listing"
+        print links, url,
+        if default:
+            url = url.replace( repo_url, default )
+            return getListing( url, "" )
 
     LIST = []
     #remove Parent Directory
@@ -86,8 +93,8 @@ def getListing( url ):
             #date modified
             date = setDate( d )
             # datetime added
-            x = time.mktime( time.strptime( date+t, "%d.%m.%Y%H:%M" ) )
-            lastplayed = time.strftime( "%Y-%m-%d %H:%M:%S", time.localtime( x ) )
+            itime = time.mktime( time.strptime( date+t, "%d.%m.%Y%H:%M" ) )
+            lastplayed = time.strftime( "%Y-%m-%d %H:%M:%S", time.localtime( itime ) )
             #size
             size = setSize( s )
             #revision
@@ -96,17 +103,19 @@ def getListing( url ):
             else: rev = ""
 
             link = { "title": title, "revision": rev, "date": date, "size": size, "icon": icon, "type": type,
-                "isFolder": isFolder, "link": url+uri, "year": int( lastplayed[ :4 ] ), "lastplayed": lastplayed }
+                "isFolder": isFolder, "link": url+uri, "year": int( lastplayed[ :4 ] ),
+                "lastplayed": lastplayed, "itime": itime }
             LIST.append( link )
             #print link
             #print
         except:
             print_exc()
+    LIST = sorted( LIST, key=lambda i: i[ "itime" ] )
     LIST.reverse()
     return LIST
 
 
-def getAvailableUpdates( platform="win32", revision=33300 ):
+def getAvailableUpdates( platform="win32", revision=35567 ):
     LIST = []
     def _get( url ):
         for link in getListing( url ):
@@ -157,6 +166,7 @@ def getChangelog():
         #html = get_html_source( "http://trac.xbmc.org/timeline?changeset=on&max=150&daysback=90&format=rss" )
 
         html = html.replace( "dc:creator", "dcCreator" )
+        import elementtree.ElementTree as HTB
         root = HTB.parse( StringIO( html ) ).find( "channel" ).findall( "item" )
         #print len( root )
         #d = {}
@@ -179,14 +189,32 @@ def getChangelog():
     return changelog.replace( "&lt;", "<" ).replace( "&gt;", ">" ).replace( "\t", "    " )
 
 
+def getMirrors():
+    mirrors = []
+    try:
+        s = get_html_source( "http://mirrors.xbmc.org/list.html" )#'list.html' )
+        regexp = '<td> <img src="(flags/.*?)".*?/>\s(.*?)</td>'
+        regexp += '.*?<td><a href="(.*?)">(.*?)</a></td>'
+        regexp += '.*?<td><a href="(.*?)">(.*?)</a></td>'
+        regexp += '.*?<td>(.*?)</td>'
+        for icon, country, op_url, op, http_url, http, ftp in re.compile( regexp, re.S ).findall( s ):
+            mirror = "[%s] %s" % ( country, op ), http_url
+            mirrors.append( mirror )
+    except:
+        print_exc()
+    return mirrors
+
+
 if ( __name__ == "__main__" ):
-    file( "changelog.txt", "w" ).write( getChangelog().encode( "utf-8" ) )
+    #file( "changelog.txt", "w" ).write( getChangelog().encode( "utf-8" ) )
 
     #for build in getUnofficialBuilds():
     #    print build
     #    print
 
-    #l = getListing( repo_url )
+
+    print getMirrors()
+    #l = getListing( releases_url )
     #l = getAvailableUpdates()
     #for news in l:
     #    print news

@@ -3,7 +3,6 @@
 import os
 import re
 import sys
-import time
 import urllib
 from traceback import print_exc
 
@@ -16,18 +15,14 @@ from xbmcaddon import Addon
 
 #Modules Custom
 import repo
-
 from addonwindow import addonWindow
 
 
-url_base = "http://mirrors.xbmc.org/"
-
 XBMC_ICON = Addon( "repository.xbmc.org" ).getAddonInfo( "icon" )
 
-
-__settings__  = sys.modules[ "__main__" ].__settings__
-__language__  = __settings__.getLocalizedString # Add-on strings
-__string__    = xbmc.getLocalizedString # XBMC strings
+__settings__ = sys.modules[ "__main__" ].__settings__
+__language__ = __settings__.getLocalizedString # Add-on strings
+__string__   = xbmc.getLocalizedString # XBMC strings
 
 FANART = __settings__.getAddonInfo( "fanart" )
 #releases icons
@@ -36,10 +31,11 @@ MEDIA_PATH = os.path.join( __settings__.getAddonInfo( "path" ), "resources", "me
 PROFILE_PATH = xbmc.translatePath( __settings__.getAddonInfo( "profile" ) )
 DL_INFO_PATH = os.path.join( PROFILE_PATH, "iddl_data" )
 if not os.path.exists( DL_INFO_PATH ): os.makedirs( DL_INFO_PATH )
-DIALOG_DL_PROGRESS = 'RunScript(%s)' % os.path.join( os.getcwd(), "resources", "addonAPI", "DialogDLProgress.py" )
+DIALOG_DL_PROGRESS = 'RunScript(%s)' % os.path.join( __settings__.getAddonInfo( "path" ), "resources", "addonAPI", "DialogDLProgress.py" )
 
 xbmc_rev, xbmc_date = xbmc.getInfoLabel( "System.BuildVersion" ), xbmc.getInfoLabel( "System.BuildDate" )
 CURRENT_XBMC = "[B]Your current XBMC[/B][CR][B]Version:[/B] %s[CR][B]Compiled:[/B] %s" % ( xbmc_rev, xbmc_date )
+UNDER_XBOX = ( os.environ.get( "OS", "xbox" ) == "xbox" )
 
 # used in setAddonInfo
 ADDON_PROPERTIES = [ 'broken', 'changelog', 'creator', 'description', 'disclaimer',
@@ -120,7 +116,8 @@ class Main:
             listitem.setProperty( "Addon.Type", "Live / OSX / Win32" )
             listitem.setProperty( "Addon.Version", "Stable" )
             # ContextMenu: add open and visit repo
-            c_items = [ ( "Visit Official Repo", 'RunPlugin(%s?action="\'visitrepo\'")' % sys.argv[ 0 ] ) ]
+            if UNDER_XBOX: c_items = []
+            else: c_items = [ ( "Visit Official Repo", 'RunPlugin(%s?action="\'visitrepo\'")' % sys.argv[ 0 ] ) ]
             listitem = self.addContextMenuAction( listitem, c_items )
             url = '%s?listurl="%s"&cat="%s"' % ( sys.argv[ 0 ], urllib.quote_plus( repo.releases_url ), title )
             OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=True )
@@ -137,7 +134,8 @@ class Main:
             listitem.setProperty( "Addon.Type", "Live / OSX / Win32" )
             listitem.setProperty( "Addon.Version", "SVN" )
             # ContextMenu: add open and visit repo
-            c_items = [ ( "Visit Official Repo", 'RunPlugin(%s?action="\'visitrepo\'")' % sys.argv[ 0 ] ) ]
+            if UNDER_XBOX: c_items = []
+            else: c_items = [ ( "Visit Official Repo", 'RunPlugin(%s?action="\'visitrepo\'")' % sys.argv[ 0 ] ) ]
             listitem = self.addContextMenuAction( listitem, c_items )
             url = '%s?listurl="%s"&cat="%s"' % ( sys.argv[ 0 ], urllib.quote_plus( repo.nightlies_url ), title )
             OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=True )
@@ -185,7 +183,8 @@ class Main:
             listitem.setProperty( "Addon.Description", CURRENT_XBMC )
             listitem.setProperty( "Addon.Type", "All" )
             listitem.setProperty( "Addon.Version", "SVN" )
-            c_items = [ ( "Visit Unofficial Repo", 'RunPlugin(%s?action="\'visitunorepo\'")' % sys.argv[ 0 ] ) ]
+            if UNDER_XBOX: c_items = []
+            else: c_items = [ ( "Visit Unofficial Repo", 'RunPlugin(%s?action="\'visitunorepo\'")' % sys.argv[ 0 ] ) ]
             listitem = self.addContextMenuAction( listitem, c_items )
             url = '%s?listurl="unofficial"&cat="%s"' % ( sys.argv[ 0 ], title )
             OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=True )
@@ -211,12 +210,13 @@ class Main:
     def _getAvailableUpdates( self ):
         #Available Updates ( only for official repo )
         hasNew = []
-        try :
-            rev = int( re.search( "r(\d+)", xbmc_rev ).group( 1 ) )
-            platform = ( "osx", "win32" )[ sys.platform == "win32" ]
-            hasNew = repo.getAvailableUpdates( platform, rev )
-        except:
-            print_exc()
+        if not UNDER_XBOX:
+            try:
+                rev = int( re.search( "r(\d+)", xbmc_rev ).group( 1 ) )
+                platform = ( "osx", "win32" )[ sys.platform == "win32" ]
+                hasNew = repo.getAvailableUpdates( platform, rev )
+            except:
+                print_exc()
         return hasNew
 
     def _add_releases_items( self, lasted=False ):
@@ -236,7 +236,7 @@ class Main:
             #self.releases.reverse()
             StarRating = 5
             for release in self.releases:
-                title = os.path.splitext( release[ "title" ].replace( "-", " " ).replace( "_", " " ) )[ 0 ]#.replace( ".exe", "" )
+                title = os.path.splitext( release[ "title" ].replace( "-", " " ).replace( "_", " " ) )[ 0 ].strip( "/" )#.replace( ".exe", "" )
                 icon = ( XBMC_ICON, "" )[ release[ "isFolder" ] ]
                 icon2 = os.path.join( MEDIA_PATH, release[ "icon" ] )
                 icon = ( icon, icon2 )[ bool( release[ "icon" ] ) ]
@@ -283,7 +283,7 @@ class Main:
                 c_items = []
                 if not isFolder:
                     c_items += [ ( "Download", 'RunPlugin(%s?action="\'%s\'")' % ( sys.argv[ 0 ], "DL" ) ) ]
-                    c_items += [ ( "Open Release", 'RunPlugin(%s?action="\'open\'")' % sys.argv[ 0 ] ) ]
+                    if not UNDER_XBOX: c_items += [ ( "Open Release", 'RunPlugin(%s?action="\'open\'")' % sys.argv[ 0 ] ) ]
                     url = '%s?action="%s"' % ( sys.argv[ 0 ], "DL" )
                 else:
                     url = '%s?listurl="%s"&cat="%s"' % ( sys.argv[ 0 ], urllib.quote_plus( release[ "link" ] ), release[ "type" ].title() )
