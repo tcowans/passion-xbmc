@@ -1,0 +1,7 @@
+[B]1.1.0 (20-12-2010) [I]par Temhil[/I][/B]
+- Merge avec le add-on M6 replay 1.3.0
+- Convertion uf format Add-on compatible Dharma
+- Permet l'acces aux videos en dehors de la France
+
+[B]1.0.0 (16-06-2010) [I]par PECK[/I][/B]
+- Creation
