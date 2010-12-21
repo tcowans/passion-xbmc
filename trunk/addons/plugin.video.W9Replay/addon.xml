@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.video.W9Replay"
+       name="W9 Replay"
+       version="1.1.0"
+       provider-name="PECK, Temhil (passion-xbmc.org)">
+  <requires>
+    <import addon="xbmc.python" version="1.0"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource"
+            library="default.py">
+        <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary>Rattrapage W9</summary>
+    <description>Plugin vidéo donnant accès aux vidéos de rattrapage de la chaîne française W9.</description>
+  </extension>
+</addon>

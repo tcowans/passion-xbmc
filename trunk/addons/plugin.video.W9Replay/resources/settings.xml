@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+    <!-- GENERAL -->
+    <--
+    <setting id="catalog_refresh_rate" type="text" label="30000" default="18000" />
+    -->
+</settings>
