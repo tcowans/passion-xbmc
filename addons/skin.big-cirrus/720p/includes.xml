@@ -7,7 +7,10 @@
   <include file="IncludesCodecFlagging.xml" />
   <include file="IncludesHomeRecentlyAdded.xml" />
   <include file="ViewsAddonBrowser.xml" />
-
+  <include file="IncludesHomeMenu.xml" />
+  <include file="IncludesHomeNowPlaying.xml" />
+  <include file="IncludesHomeMenuHoriz.xml" />
+  
   <constant name="FanartCrossfadeTime">400</constant>
   <constant name="IconCrossfadeTime">400</constant>
 	<include name="TvTunes">

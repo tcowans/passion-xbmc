@@ -173,10 +173,10 @@
 					<visible>Library.HasContent(TVShows)</visible>
 					<control type="image">
 						<description>background</description>
-						<posx>920r</posx>
+						<posx>720r</posx>
 						<aspectratio alignx="left">stretch</aspectratio>
 						<posy>0</posy>
-						<width>920</width>
+						<width>720</width>
 						<height>240</height>
 						<texture border="10" flipy="true" diffuse="recentlyaddeddiffuse.png">rightlistbackground.png</texture>
 					</control>
