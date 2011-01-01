@@ -1,0 +1,616 @@
+<includes>
+	<include name="HomeNowPlaying">
+		<!-- Music Info -->
+		<control type="group">
+		  <posx>30r</posx>
+		  <posy>480</posy>
+		  <visible>Player.HasAudio + !Skin.HasSetting(homepageMusicinfo) + !Skin.HasSetting(horzHomeMenu)</visible>
+		  <include>VisibleFadeEffect</include>
+		  <include>Window_OpenClose_Animation</include>
+		  <animation effect="slide" end="0,30" time="0" condition="!system.getbool(lookandfeel.enablerssfeeds)">conditional</animation>
+		  <control type="image">
+			<description>background</description>
+			<posx>550r</posx>
+			<aspectratio alignx="left">stretch</aspectratio>
+			<posy>0</posy>
+			<width>820</width>
+			<height>210</height>
+			<texture border="10" flipy="true" diffuse="recentlyaddeddiffuse.png">rightlistbackground.png</texture>
+		  </control>
+		  <control type="image">
+			<description>Cover image</description>
+			<posx>200r</posx>
+			<posy>15</posy>
+			<width>180</width>
+			<height>180</height>
+			<aspectratio aligny="bottom">stretch</aspectratio>
+			<texture diffuse="masksquare.png">$INFO[MusicPlayer.Cover]</texture>
+		  </control>
+		  <control type="image">
+			<posx>200r</posx>
+			<posy>20</posy>
+			<width>160</width>
+			<height>160</height>
+			<aspectratio aligny="top">keep</aspectratio>
+			<texture background="true" diffuse="masksquare.png">GlassOverlay2.png</texture>
+		  </control>
+		  <control type="label">
+			<description>NowPlaying label</description>
+			<posx>210r</posx>
+			<posy>10</posy>
+			<height>30</height>
+			<width>660</width>
+			<label>[COLOR=orange]$LOCALIZE[31040][/COLOR]</label>
+			<align>right</align>
+			<aligny>center</aligny>
+			<font>cirrus_24</font>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+		  </control>
+		  <control type="label">
+			<description>Artist label</description>
+			<posx>210r</posx>
+			<posy>45</posy>
+			<height>30</height>
+			<width>660</width>
+			<label>$INFO[MusicPlayer.Artist]</label>
+			<align>right</align>
+			<aligny>center</aligny>
+			<font>cirrus_24</font>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+		  </control>
+		  <control type="label">
+			<description>Album Label</description>
+			<posx>210r</posx>
+			<posy>78</posy>
+			<height>30</height>
+			<width>660</width>
+			<label>$INFO[MusicPlayer.Album]$INFO[musicplayer.discnumber, - $LOCALIZE[427]:]</label>
+			<align>right</align>
+			<aligny>center</aligny>
+			<font>cirrus_20</font>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+		  </control>
+		  <control type="label">
+			<description>Title label</description>
+			<posx>210r</posx>
+			<posy>110</posy>
+			<height>30</height>
+			<width>660</width>
+			<label>$INFO[MusicPlayer.Title]</label>
+			<align>right</align>
+			<aligny>center</aligny>
+			<font>cirrus_24</font>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+		  </control>
+		  <control type="label">
+			<description>Time Label</description>
+			<posx>210r</posx>
+			<posy>150</posy>
+			<height>30</height>
+			<width>325</width>
+			<label>$INFO[Player.Time]$INFO[Player.Duration, / ]</label>
+			<align>right</align>
+			<aligny>center</aligny>
+			<font>cirrus_30</font>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+		  </control>
+		</control>
+		<!-- Video Info -->
+		<control type="group">
+		  <posx>0</posx>
+		  <posy>480</posy>
+		  <visible>Player.HasVideo + !Skin.HasSetting(homepageVideoinfo) + !Skin.HasSetting(horzHomeMenu)</visible>
+		  <include>VisibleFadeEffect</include>
+		  <include>Window_OpenClose_Animation</include>
+		  <animation effect="slide" end="0,30" time="0" condition="!system.getbool(lookandfeel.enablerssfeeds)">conditional</animation>
+		  <control type="image">
+			<description>background</description>
+			<posx>550r</posx>
+			<aspectratio alignx="left">stretch</aspectratio>
+			<posy>0</posy>
+			<width>820</width>
+			<height>210</height>
+			<texture border="10" flipy="true" diffuse="recentlyaddeddiffuse.png">rightlistbackground.png</texture>
+		  </control>
+		  <control type="group">
+			<visible>!VideoPlayer.Content(Movies) + !VideoPlayer.Content(Episodes)</visible>
+			<control type="image">
+			  <description>Cover image</description>
+			  <posx>200r</posx>
+			  <posy>10</posy>
+			  <width>180</width>
+			  <height>180</height>
+			  <aspectratio aligny="top">keep</aspectratio>
+			  <texture diffuse="maskposter.png">$INFO[VideoPlayer.Cover]</texture>
+			</control>
+			<control type="label">
+			  <description>NowPlaying label</description>
+			  <posx>210r</posx>
+			  <posy>0</posy>
+			  <height>30</height>
+			  <width>660</width>
+			  <label>$LOCALIZE[31040]</label>
+			  <align>right</align>
+			  <aligny>center</aligny>
+			  <font>font12caps_title</font>
+			  <textcolor>blue</textcolor>
+			  <shadowcolor>black</shadowcolor>
+			</control>
+			<control type="label">
+			  <description>Title label</description>
+			  <posx>210r</posx>
+			  <posy>285</posy>
+			  <height>30</height>
+			  <width>660</width>
+			  <label>$INFO[VideoPlayer.Title]</label>
+			  <align>right</align>
+			  <aligny>center</aligny>
+			  <font>font13caps_title</font>
+			  <textcolor>white</textcolor>
+			  <shadowcolor>black</shadowcolor>
+			</control>
+			<control type="label">
+			  <description>Time Label</description>
+			  <posx>210r</posx>
+			  <posy>310</posy>
+			  <height>30</height>
+			  <width>325</width>
+			  <label>$INFO[Player.Time]$INFO[Player.Duration, / ]</label>
+			  <align>right</align>
+			  <aligny>center</aligny>
+			  <font>font12</font>
+			  <textcolor>white</textcolor>
+			  <shadowcolor>black</shadowcolor>
+			</control>
+		  </control>
+		<!-- NOW PLAYING INFO MOVIES -->
+		  <control type="group">
+			<visible>VideoPlayer.Content(Movies)</visible>
+			<control type="image">
+			  <description>Cover image</description>
+			  <posx>180r</posx>
+			  <posy>10</posy>
+			  <width>180</width>
+			  <height>190</height>
+			  <aspectratio aligny="top">keep</aspectratio>
+			  <texture diffuse="maskposter.png">$INFO[VideoPlayer.Cover]</texture>
+			</control>
+			
+			<control type="label">
+			  <description>NowPlaying label</description>
+			  <posx>190r</posx>
+			  <posy>10</posy>
+			  <height>30</height>
+			  <width>660</width>
+			  <label>[COLOR=orange]$LOCALIZE[31040][/COLOR]</label>
+			  <align>right</align>
+			  <aligny>center</aligny>
+			  <font>cirrus_24</font>
+			  <textcolor>blue</textcolor>
+			  <shadowcolor>black</shadowcolor>
+			</control>
+			<control type="label">
+			  <description>Title label</description>
+			  <posx>190r</posx>
+			  <posy>50</posy>
+			  <height>30</height>
+			  <width>660</width>
+			  <label>$INFO[VideoPlayer.Title]$INFO[VideoPlayer.Year,[COLOR=grey] (,)[/COLOR]]</label>
+			  <align>right</align>
+			  <aligny>center</aligny>
+			  <font>cirrus_30</font>
+			  <textcolor>white</textcolor>
+			  <shadowcolor>black</shadowcolor>
+			</control>
+			<control type="label">
+			  <description>Genre Label</description>
+			  <posx>190r</posx>
+			  <posy>85</posy>
+			  <height>30</height>
+			  <width>660</width>
+			  <label>$INFO[VideoPlayer.Genre]</label>
+			  <align>right</align>
+			  <aligny>center</aligny>
+			  <font>cirrus_20</font>
+			  <textcolor>white</textcolor>
+			  <shadowcolor>black</shadowcolor>
+			</control>
+			<control type="label">
+			  <description>Time Label</description>
+			  <posx>190r</posx>
+			  <posy>125</posy>
+			  <height>30</height>
+			  <width>425</width>
+			  <label>$INFO[Player.Time]$INFO[Player.Duration, / ]</label>
+			  <align>right</align>
+			  <aligny>center</aligny>
+			  <font>cirrus_30</font>
+			  <textcolor>white</textcolor>
+			  <shadowcolor>black</shadowcolor>
+			</control>
+		  </control>
+		<!-- BELOW IS NOW PLAYING EPISODES -->
+		  <control type="group">
+			<visible>VideoPlayer.Content(Episodes)</visible>
+			<control type="image">
+			  <description>Cover image</description>
+			  <posx>295r</posx>
+			  <posy>10</posy>
+			  <width>275</width>
+			  <height>140</height>
+			  <aspectratio aligny="top">stretch</aspectratio>
+			  <texture diffuse="maskposterlandscape.png">$INFO[VideoPlayer.Cover]</texture>
+			</control>
+			<control type="image">
+			  <posx>295r</posx>
+			  <posy>10</posy>
+			  <width>255</width>
+			  <height>120</height>
+			  <aspectratio aligny="top">stretch</aspectratio>
+			  <fadetime>IconCrossfadeTime</fadetime>
+			  <texture background="true" diffuse="maskposterlandscape.png">GlassOverlay2.png</texture>
+			</control>
+			<control type="label">
+			  <description>NowPlaying label</description>
+			  <posx>310r</posx>
+			  <posy>10</posy>
+			  <height>30</height>
+			  <width>610</width>
+			  <label>$LOCALIZE[31040]</label>
+			  <align>right</align>
+			  <aligny>center</aligny>
+			  <font>cirrus_24</font>
+			  <textcolor>orange</textcolor>
+			  <shadowcolor>black</shadowcolor>
+			</control>
+			<control type="label">
+			  <description>TV Show label</description>
+			  <posx>310r</posx>
+			  <posy>50</posy>
+			  <height>30</height>
+			  <width>610</width>
+			  <label>$INFO[VideoPlayer.TVShowTitle]</label>
+			  <align>right</align>
+			  <aligny>center</aligny>
+			  <font>cirrus_24</font>
+			  <textcolor>white</textcolor>
+			  <shadowcolor>black</shadowcolor>
+			</control>
+			<control type="label">
+			  <description>Season Ep Label</description>
+			  <posx>310r</posx>
+			  <posy>80</posy>
+			  <height>30</height>
+			  <width>610</width>
+			  <label>$LOCALIZE[20373] $INFO[VideoPlayer.Season] - $LOCALIZE[20359] $INFO[VideoPlayer.episode]</label>
+			  <align>right</align>
+			  <aligny>center</aligny>
+			  <font>cirrus_20</font>
+			  <textcolor>white</textcolor>
+			  <shadowcolor>black</shadowcolor>
+			</control>
+			<control type="label">
+			  <description>Title label</description>
+			  <posx>290r</posx>
+			  <posy>160</posy>
+			  <height>30</height>
+			  <width>280</width>
+			  <label>$INFO[VideoPlayer.Title]</label>
+			  <align>left</align>
+			  <aligny>center</aligny>
+			  <font>cirrus_20</font>
+			  <textcolor>white</textcolor>
+			  <shadowcolor>black</shadowcolor>
+			</control>
+			<control type="label">
+			  <description>Time Label</description>
+			  <posx>310r</posx>
+			  <posy>120</posy>
+			  <height>30</height>
+			  <width>325</width>
+			  <label>$INFO[Player.Time]$INFO[Player.Duration, / ]</label>
+			  <align>right</align>
+			  <aligny>center</aligny>
+			  <font>cirrus_30</font>
+			  <textcolor>white</textcolor>
+			  <shadowcolor>black</shadowcolor>
+			</control>
+		  </control>
+		</control>
+	<!-- END OF NOW PLAYING CONTROLS -->
+		
+		<!-- Music Info Horiz menu-->
+		<control type="group">
+		  <posx>0</posx>
+		  <posy>390r</posy>
+		  <visible>Player.HasAudio + !Skin.HasSetting(homepageMusicinfo) + Skin.HasSetting(horzHomeMenu)</visible>
+		  <include>VisibleFadeEffect</include>
+		  <include>Window_OpenClose_Animation</include>
+		  <animation effect="slide" start="0,0" end="0,-40" time="500" condition="ControlGroup(9001).HasFocus">conditional</animation>
+		  <control type="image">
+			<description>background</description>
+			<posx>0</posx>
+			<!--<aspectratio alignx="left">stretch</aspectratio>-->
+			<posy>0</posy>
+			<width>520</width>
+			<height>190</height>
+			<texture border="10" flipy="true" flipx="true" diffuse="recentlyaddeddiffuse.png">rightlistbackground.png</texture>
+		  </control>
+		  <control type="image">
+			<description>Cover image</description>
+			<posx>10</posx>
+			<posy>-195</posy>
+			<width>180</width>
+			<height>180</height>
+			<aspectratio aligny="bottom">stretch</aspectratio>
+			<texture diffuse="masksquare.png">$INFO[MusicPlayer.Cover]</texture>
+		  </control>
+		  <control type="label">
+			<description>NowPlaying label</description>
+			<posx>10</posx>
+			<posy>10</posy>
+			<height>30</height>
+			<width>660</width>
+			<label>[COLOR=orange]$LOCALIZE[31040][/COLOR]</label>
+			<aligny>center</aligny>
+			<font>cirrus_24</font>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+		  </control>
+		  <control type="label">
+			<description>Artist label</description>
+			<posx>10</posx>
+			<posy>45</posy>
+			<height>30</height>
+			<width>660</width>
+			<label>$INFO[MusicPlayer.Artist]</label>
+			<aligny>center</aligny>
+			<font>cirrus_24</font>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+		  </control>
+		  <control type="label">
+			<description>Album Label</description>
+			<posx>10</posx>
+			<posy>78</posy>
+			<height>30</height>
+			<width>660</width>
+			<label>$INFO[MusicPlayer.Album]$INFO[musicplayer.discnumber, - $LOCALIZE[427]:]</label>
+			<aligny>center</aligny>
+			<font>cirrus_20</font>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+		  </control>
+		  <control type="label">
+			<description>Title label</description>
+			<posx>10</posx>
+			<posy>110</posy>
+			<height>30</height>
+			<width>660</width>
+			<label>$INFO[MusicPlayer.Title]</label>
+			<aligny>center</aligny>
+			<font>cirrus_24</font>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+		  </control>
+		  <control type="label">
+			<description>Time Label</description>
+			<posx>10</posx>
+			<posy>150</posy>
+			<height>30</height>
+			<width>325</width>
+			<label>$INFO[Player.Time]$INFO[Player.Duration, / ]</label>
+			<aligny>center</aligny>
+			<font>cirrus_30</font>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+		  </control>
+		</control>
+		<!-- Video Info Horiz menu -->
+		<control type="group">
+		  <posx>0</posx>
+		  <posy>370r</posy>
+		  <visible>Player.HasVideo + !Skin.HasSetting(homepageVideoinfo) + Skin.HasSetting(horzHomeMenu)</visible>
+		  <include>VisibleFadeEffect</include>
+		  <include>Window_OpenClose_Animation</include>
+		  <animation effect="slide" end="0,-40" time="500" condition="ControlGroup(9001).HasFocus">conditional</animation>
+		  <control type="image">
+			<description>background</description>
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>520</width>
+			<height>170</height>
+			<texture border="10" flipy="true" flipx="true" diffuse="recentlyaddeddiffuse.png">rightlistbackground.png</texture>
+		  </control>
+		  <control type="group">
+			<visible>!VideoPlayer.Content(Movies) + !VideoPlayer.Content(Episodes)</visible>
+			<control type="image">
+			  <description>Cover image</description>
+			  <posx>20</posx>
+			  <posy>-195</posy>
+			  <width>180</width>
+			  <height>180</height>
+			  <aspectratio aligny="top">keep</aspectratio>
+			  <texture diffuse="maskposter.png">$INFO[VideoPlayer.Cover]</texture>
+			</control>
+			<control type="label">
+			  <description>NowPlaying label</description>
+			  <posx>10</posx>
+			  <posy>0</posy>
+			  <height>30</height>
+			  <width>660</width>
+			  <label>$LOCALIZE[31040]</label>
+			  <aligny>center</aligny>
+			  <font>font12caps_title</font>
+			  <textcolor>blue</textcolor>
+			  <shadowcolor>black</shadowcolor>
+			</control>
+			<control type="label">
+			  <description>Title label</description>
+			  <posx>10</posx>
+			  <posy>285</posy>
+			  <height>30</height>
+			  <width>660</width>
+			  <label>$INFO[VideoPlayer.Title]</label>
+			  <aligny>center</aligny>
+			  <font>font13caps_title</font>
+			  <textcolor>white</textcolor>
+			  <shadowcolor>black</shadowcolor>
+			</control>
+			<control type="label">
+			  <description>Time Label</description>
+			  <posx>10</posx>
+			  <posy>310</posy>
+			  <height>30</height>
+			  <width>325</width>
+			  <label>$INFO[Player.Time]$INFO[Player.Duration, / ]</label>
+			  <aligny>center</aligny>
+			  <font>font12</font>
+			  <textcolor>white</textcolor>
+			  <shadowcolor>black</shadowcolor>
+			</control>
+		  </control>
+		<!-- NOW PLAYING INFO MOVIES -->
+		  <control type="group">
+			<visible>VideoPlayer.Content(Movies)</visible>
+			<control type="image">
+			  <description>Cover image</description>
+			  <posx>10</posx>
+			  <posy>-195</posy>
+			  <width>180</width>
+			  <height>190</height>
+			  <aspectratio align="left">keep</aspectratio>
+			  <texture diffuse="maskposter.png">$INFO[VideoPlayer.Cover]</texture>
+			</control>
+			
+			<control type="label">
+			  <description>NowPlaying label</description>
+			  <posx>10</posx>
+			  <posy>10</posy>
+			  <height>30</height>
+			  <width>660</width>
+			  <label>[COLOR=orange]$LOCALIZE[31040][/COLOR]</label>
+			  <aligny>center</aligny>
+			  <font>cirrus_24</font>
+			  <textcolor>blue</textcolor>
+			  <shadowcolor>black</shadowcolor>
+			</control>
+			<control type="label">
+			  <description>Title label</description>
+			  <posx>10</posx>
+			  <posy>50</posy>
+			  <height>30</height>
+			  <width>660</width>
+			  <label>$INFO[VideoPlayer.Title]$INFO[VideoPlayer.Year,[COLOR=grey] (,)[/COLOR]]</label>
+			  <aligny>center</aligny>
+			  <font>cirrus_30</font>
+			  <textcolor>white</textcolor>
+			  <shadowcolor>black</shadowcolor>
+			</control>
+			<control type="label">
+			  <description>Genre Label</description>
+			  <posx>10</posx>
+			  <posy>85</posy>
+			  <height>30</height>
+			  <width>660</width>
+			  <label>$INFO[VideoPlayer.Genre]</label>
+			  <aligny>center</aligny>
+			  <font>cirrus_20</font>
+			  <textcolor>white</textcolor>
+			  <shadowcolor>black</shadowcolor>
+			</control>
+			<control type="label">
+			  <description>Time Label</description>
+			  <posx>10</posx>
+			  <posy>125</posy>
+			  <height>30</height>
+			  <width>425</width>
+			  <label>$INFO[Player.Time]$INFO[Player.Duration, / ]</label>
+			  <aligny>center</aligny>
+			  <font>cirrus_30</font>
+			  <textcolor>white</textcolor>
+			  <shadowcolor>black</shadowcolor>
+			</control>
+		  </control>
+		<!-- BELOW IS NOW PLAYING EPISODES -->
+		  <control type="group">
+			<visible>VideoPlayer.Content(Episodes)</visible>
+			<control type="image">
+			  <description>Cover image</description>
+			  <posx>10</posx>
+			  <posy>-145</posy>
+			  <width>275</width>
+			  <height>140</height>
+			  <aspectratio aligny="top">stretch</aspectratio>
+			  <texture diffuse="maskposterlandscape.png">$INFO[VideoPlayer.Cover]</texture>
+			</control>
+			<control type="label">
+			  <description>NowPlaying label</description>
+			  <posx>10</posx>
+			  <posy>10</posy>
+			  <height>30</height>
+			  <width>610</width>
+			  <label>$LOCALIZE[31040]</label>
+			  <aligny>center</aligny>
+			  <font>cirrus_24</font>
+			  <textcolor>orange</textcolor>
+			  <shadowcolor>black</shadowcolor>
+			</control>
+			<control type="label">
+			  <description>TV Show label</description>
+			  <posx>10</posx>
+			  <posy>50</posy>
+			  <height>30</height>
+			  <width>610</width>
+			  <label>$INFO[VideoPlayer.TVShowTitle]</label>
+			  <aligny>center</aligny>
+			  <font>cirrus_24</font>
+			  <textcolor>white</textcolor>
+			  <shadowcolor>black</shadowcolor>
+			</control>
+			<control type="label">
+			  <description>Season Ep Label</description>
+			  <posx>10</posx>
+			  <posy>80</posy>
+			  <height>30</height>
+			  <width>610</width>
+			  <label>$LOCALIZE[20373] $INFO[VideoPlayer.Season] - $LOCALIZE[20359] $INFO[VideoPlayer.episode]</label>
+			  <aligny>center</aligny>
+			  <font>cirrus_20</font>
+			  <textcolor>white</textcolor>
+			  <shadowcolor>black</shadowcolor>
+			</control>
+			<!--<control type="label">
+			  <description>Title label</description>
+			  <posx>10</posx>
+			  <posy>160</posy>
+			  <height>30</height>
+			  <width>280</width>
+			  <label>$INFO[VideoPlayer.Title]</label>
+			  <aligny>center</aligny>
+			  <font>cirrus_20</font>
+			  <textcolor>white</textcolor>
+			  <shadowcolor>black</shadowcolor>
+			</control>-->
+			<control type="label">
+			  <description>Time Label</description>
+			  <posx>10</posx>
+			  <posy>120</posy>
+			  <height>30</height>
+			  <width>325</width>
+			  <label>$INFO[Player.Time]$INFO[Player.Duration, / ]</label>
+			  <aligny>center</aligny>
+			  <font>cirrus_30</font>
+			  <textcolor>white</textcolor>
+			  <shadowcolor>black</shadowcolor>
+			</control>
+		  </control>
+		</control>
+	<!-- END OF NOW PLAYING CONTROLS -->
+	</include>
+</includes>

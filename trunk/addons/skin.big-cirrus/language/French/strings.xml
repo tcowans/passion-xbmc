@@ -83,6 +83,8 @@
   <string id="31131">Activer TvTunes</string>
   <string id="31132">Afficher l'icone de bande annonce dans la vue rightlist</string>
   <string id="31133">Afficher le synopsis dans les infos vidéo plein ecran</string>
+  <string id="31134">Cacher bouton du bas et logo de la page d'accueil</string>
+  <string id="31135">Menu principal horizontal</string>
   
   <!-- Script labels -->
   <string id="31200">Raccourcis</string>

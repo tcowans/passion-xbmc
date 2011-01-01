@@ -174,7 +174,7 @@
             <align>left</align>
             <aligny>center</aligny>
           </control>
-          <control type="radiobutton" id="1010">
+          <control type="radiobutton" id="101">
             <width>750</width>
             <height>40</height>
             <font>cirrus_20</font>
@@ -186,19 +186,31 @@
             <onclick>Skin.ToggleSetting(plotfi)</onclick>
             <selected>Skin.HasSetting(plotfi)</selected>
           </control>
-		  <control type="radiobutton" id="1014">
-            <width>750</width>
-            <height>40</height>
-            <font>cirrus_20</font>
-            <label>31131</label>
-            <textcolor>grey2</textcolor>
-            <focusedcolor>white</focusedcolor>
-            <texturefocus flipx="true">listwhitegradient.png</texturefocus>
-            <texturenofocus>menuitemNF.png</texturenofocus>
-            <onclick>Skin.ToggleSetting(TvTunes)</onclick>
-            <selected>Skin.HasSetting(TvTunes)</selected>
-          </control>
-		  <control type="radiobutton" id="1013">
+		  <control type="radiobutton" id="102">
+			<width>750</width>
+			<height>40</height>
+			<font>cirrus_20</font>
+			<label>Enable CDArt animation on music visualization screen</label>
+			<textcolor>grey2</textcolor>
+			<focusedcolor>white</focusedcolor>
+			<texturefocus flipx="true">listwhitegradient.png</texturefocus>
+			<texturenofocus>menuitemNF.png</texturenofocus>
+			<onclick>Skin.ToggleSetting(cdart)</onclick>
+			<selected>Skin.HasSetting(cdart)</selected>
+		  </control>
+		  <control type="radiobutton" id="103">
+			<width>750</width>
+			<height>40</height>
+			<font>cirrus_20</font>
+			<label>Enable ClearArt</label>
+			<textcolor>grey2</textcolor>
+			<focusedcolor>white</focusedcolor>
+			<texturefocus flipx="true">listwhitegradient.png</texturefocus>
+			<texturenofocus>menuitemNF.png</texturenofocus>
+			<onclick>Skin.ToggleSetting(clearart)</onclick>
+			<selected>Skin.HasSetting(clearart)</selected>
+		  </control>
+		  <control type="radiobutton" id="104">
             <width>750</width>
             <height>40</height>
             <font>cirrus_20</font>
@@ -210,44 +222,19 @@
             <onclick>Skin.ToggleSetting(otlist)</onclick>
             <selected>Skin.HasSetting(otlist)</selected>
           </control>
-          <control type="radiobutton" id="2021">
-            <description>Clean Home Screen</description>
+		  <control type="radiobutton" id="105">
             <width>750</width>
             <height>40</height>
             <font>cirrus_20</font>
-            <textcolor>grey2</textcolor>
-            <focusedcolor>white</focusedcolor>
-            <label>Clean Home Screen (remove logo and buttons)</label>
-            <onclick>Skin.ToggleSetting(cleanHome)</onclick>
-            <selected>Skin.HasSetting(cleanHome)</selected>
-            <texturefocus flipx="true">listwhitegradient.png</texturefocus>
-            <texturenofocus>menuitemNF.png</texturenofocus>
-          </control>
-          <control type="radiobutton" id="1011">
-            <width>750</width>
-            <height>40</height>
-            <font>cirrus_20</font>
-            <label>Enable CDArt animation on music visualization screen</label>
+            <label>31131</label>
             <textcolor>grey2</textcolor>
             <focusedcolor>white</focusedcolor>
             <texturefocus flipx="true">listwhitegradient.png</texturefocus>
             <texturenofocus>menuitemNF.png</texturenofocus>
-            <onclick>Skin.ToggleSetting(cdart)</onclick>
-            <selected>Skin.HasSetting(cdart)</selected>
+            <onclick>Skin.ToggleSetting(TvTunes)</onclick>
+            <selected>Skin.HasSetting(TvTunes)</selected>
           </control>
-          <control type="radiobutton" id="1012">
-            <width>750</width>
-            <height>40</height>
-            <font>cirrus_20</font>
-            <label>Enable ClearArt</label>
-            <textcolor>grey2</textcolor>
-            <focusedcolor>white</focusedcolor>
-            <texturefocus flipx="true">listwhitegradient.png</texturefocus>
-            <texturenofocus>menuitemNF.png</texturenofocus>
-            <onclick>Skin.ToggleSetting(clearart)</onclick>
-            <selected>Skin.HasSetting(clearart)</selected>
-          </control>
-          <control type="radiobutton" id="101">
+          <control type="radiobutton" id="106">
             <width>750</width>
             <height>40</height>
             <font>cirrus_20</font>
@@ -259,7 +246,7 @@
             <onclick>Skin.ToggleSetting(AutoScroll)</onclick>
             <selected>Skin.HasSetting(AutoScroll)</selected>
           </control>
-          <control type="radiobutton" id="102">
+          <control type="radiobutton" id="107">
             <width>750</width>
             <height>40</height>
             <font>cirrus_20</font>
@@ -271,7 +258,7 @@
             <onclick>Skin.ToggleSetting(Show_SlideShow_Paused)</onclick>
             <selected>!Skin.HasSetting(Show_SlideShow_Paused)</selected>
           </control>
-          <control type="radiobutton" id="103">
+          <control type="radiobutton" id="108">
             <width>750</width>
             <height>40</height>
             <font>cirrus_20</font>
@@ -283,7 +270,7 @@
             <onclick>Skin.ToggleSetting(No_Media_Titles_In_Scanner)</onclick>
             <selected>!Skin.HasSetting(No_Media_Titles_In_Scanner)</selected>
           </control>
-          <control type="label" id="106">
+          <control type="label" id="109">
             <width>750</width>
             <height>45</height>
             <font>cirrus_20</font>
@@ -293,7 +280,7 @@
             <align>left</align>
             <aligny>center</aligny>
           </control>
-          <control type="radiobutton" id="107">
+          <control type="radiobutton" id="110">
             <width>750</width>
             <height>40</height>
             <font>cirrus_20</font>
@@ -305,7 +292,7 @@
             <onclick>Skin.ToggleSetting(Use_Startup_Playlist)</onclick>
             <selected>Skin.HasSetting(Use_Startup_Playlist)</selected>
           </control>
-          <control type="button" id="108">
+          <control type="button" id="111">
             <description>Startup Playlist Path</description>
             <width>750</width>
             <height>40</height>
@@ -319,7 +306,7 @@
             <texturenofocus>menuitemNF.png</texturenofocus>
             <enable>Skin.HasSetting(Use_Startup_Playlist)</enable>
           </control>
-          <control type="label" id="109">
+          <control type="label" id="112">
             <width>750</width>
             <height>45</height>
             <font>cirrus_20</font>
@@ -329,7 +316,7 @@
             <align>left</align>
             <aligny>center</aligny>
           </control>
-          <control type="radiobutton" id="110">
+          <control type="radiobutton" id="113">
             <width>750</width>
             <height>40</height>
             <font>cirrus_20</font>
@@ -341,7 +328,7 @@
             <onclick>Skin.ToggleSetting(ShowBackgroundVideo)</onclick>
             <selected>!Skin.HasSetting(ShowBackgroundVideo)</selected>
           </control>
-          <control type="radiobutton" id="111">
+          <control type="radiobutton" id="114">
             <width>750</width>
             <height>40</height>
             <font>cirrus_20</font>
@@ -376,7 +363,33 @@
             <align>left</align>
             <aligny>center</aligny>
           </control>
-          <control type="radiobutton" id="202">
+		  <control type="radiobutton" id="201">
+            <description>Clean Home Screen</description>
+            <width>750</width>
+            <height>40</height>
+            <font>cirrus_20</font>
+            <textcolor>grey2</textcolor>
+            <focusedcolor>white</focusedcolor>
+            <label>31134</label>
+            <onclick>Skin.ToggleSetting(cleanHome)</onclick>
+            <selected>Skin.HasSetting(cleanHome)</selected>
+            <texturefocus flipx="true">listwhitegradient.png</texturefocus>
+            <texturenofocus>menuitemNF.png</texturenofocus>
+          </control>
+		  <control type="radiobutton" id="202">
+            <description>Horizontal Home Menu</description>
+            <width>750</width>
+            <height>40</height>
+            <font>cirrus_20</font>
+            <textcolor>grey2</textcolor>
+            <focusedcolor>white</focusedcolor>
+            <label>31135</label>
+            <onclick>Skin.ToggleSetting(horzHomeMenu)</onclick>
+            <selected>Skin.HasSetting(horzHomeMenu)</selected>
+            <texturefocus flipx="true">listwhitegradient.png</texturefocus>
+            <texturenofocus>menuitemNF.png</texturenofocus>
+          </control>
+          <control type="radiobutton" id="203">
             <description>enable video info</description>
             <width>750</width>
             <height>40</height>
@@ -389,7 +402,7 @@
             <texturefocus flipx="true">listwhitegradient.png</texturefocus>
             <texturenofocus>menuitemNF.png</texturenofocus>
           </control>
-          <control type="radiobutton" id="203">
+          <control type="radiobutton" id="204">
             <description>enable music info</description>
             <width>750</width>
             <height>40</height>
@@ -402,7 +415,7 @@
             <texturefocus flipx="true">listwhitegradient.png</texturefocus>
             <texturenofocus>menuitemNF.png</texturenofocus>
           </control>
-          <control type="radiobutton" id="204">
+          <control type="radiobutton" id="205">
             <description>enable weather info</description>
             <width>750</width>
             <height>40</height>
@@ -415,7 +428,7 @@
             <texturefocus flipx="true">listwhitegradient.png</texturefocus>
             <texturenofocus>menuitemNF.png</texturenofocus>
           </control>
-          <control type="radiobutton" id="205">
+          <control type="radiobutton" id="206">
             <description>Show Recently added info</description>
             <width>750</width>
             <height>40</height>
@@ -428,7 +441,7 @@
             <texturefocus flipx="true">listwhitegradient.png</texturefocus>
             <texturenofocus>menuitemNF.png</texturenofocus>
           </control>
-          <control type="label" id="206">
+          <control type="label" id="207">
             <width>750</width>
             <height>45</height>
             <font>cirrus_20</font>
@@ -438,7 +451,7 @@
             <align>left</align>
             <aligny>center</aligny>
           </control>
-          <control type="radiobutton" id="207">
+          <control type="radiobutton" id="208">
             <description>Hide Videos Button</description>
             <width>750</width>
             <height>40</height>
@@ -451,7 +464,7 @@
             <texturefocus flipx="true">listwhitegradient.png</texturefocus>
             <texturenofocus>menuitemNF.png</texturenofocus>
           </control>
-          <control type="radiobutton" id="217">
+          <control type="radiobutton" id="209">
             <description>Hide Movies Button</description>
             <width>750</width>
             <height>40</height>
@@ -465,7 +478,7 @@
             <texturenofocus>menuitemNF.png</texturenofocus>
             <enable>Library.HasContent(Movies)</enable>
           </control>
-          <control type="radiobutton" id="218">
+          <control type="radiobutton" id="210">
             <description>Hide TV Shows Button</description>
             <width>750</width>
             <height>40</height>
@@ -479,7 +492,7 @@
             <texturenofocus>menuitemNF.png</texturenofocus>
             <enable>Library.HasContent(TVShows)</enable>
           </control>
-          <control type="radiobutton" id="208">
+          <control type="radiobutton" id="211">
             <description>Hide Music Button</description>
             <width>750</width>
             <height>40</height>
@@ -492,7 +505,7 @@
             <texturefocus flipx="true">listwhitegradient.png</texturefocus>
             <texturenofocus>menuitemNF.png</texturenofocus>
           </control>
-          <control type="radiobutton" id="209">
+          <control type="radiobutton" id="212">
             <description>Hide Pictures Button</description>
             <width>750</width>
             <height>40</height>
@@ -505,7 +518,7 @@
             <texturefocus flipx="true">listwhitegradient.png</texturefocus>
             <texturenofocus>menuitemNF.png</texturenofocus>
           </control>
-          <control type="radiobutton" id="210">
+          <control type="radiobutton" id="213">
             <description>Hide Programs Button</description>
             <width>750</width>
             <height>40</height>
@@ -518,7 +531,7 @@
             <texturefocus flipx="true">listwhitegradient.png</texturefocus>
             <texturenofocus>menuitemNF.png</texturenofocus>
           </control>
-          <control type="radiobutton" id="211">
+          <control type="radiobutton" id="214">
             <description>Hide Scripts Button</description>
             <width>750</width>
             <height>40</height>
@@ -531,7 +544,7 @@
             <texturefocus flipx="true">listwhitegradient.png</texturefocus>
             <texturenofocus>menuitemNF.png</texturenofocus>
           </control>
-          <control type="radiobutton" id="212">
+          <control type="radiobutton" id="215">
             <description>Hide Weather Button</description>
             <width>750</width>
             <height>40</height>
