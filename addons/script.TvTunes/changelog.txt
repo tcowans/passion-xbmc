@@ -1,3 +1,6 @@
+v0.7.3
+- prevent theme script to be activated when browsing plugins
+
 v0.7.2
 - added Spanish translation. 
 
