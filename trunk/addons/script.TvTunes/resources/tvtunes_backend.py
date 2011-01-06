@@ -37,7 +37,7 @@ class mythread( threading.Thread ):
             while not self._stop:           # le code                
                 if not xbmc.getCondVisibility( "Window.IsVisible(10025)"): self.stop()      #destroy threading
                     
-                if xbmc.getCondVisibility( "Container.Content(Seasons)" ) or xbmc.getCondVisibility( "Container.Content(Episodes)" ) and not xbmc.Player().isPlaying() and not xbmc.getInfoLabel( "container.folderpath" ) == "videodb://5/":
+                if xbmc.getCondVisibility( "Container.Content(Seasons)" ) or xbmc.getCondVisibility( "Container.Content(Episodes)" ) and not xbmc.Player().isPlaying() and "plugin://" not in xbmc.getInfoLabel( "ListItem.Path" ) and not xbmc.getInfoLabel( "container.folderpath" ) == "videodb://5/":
                     self.newpath = xbmc.getInfoLabel( "ListItem.Path" )
                     if not self.newpath == self.oldpath and not self.newpath == "" and not self.newpath == "videodb://2/2/":
                         print "### old path: %s" % self.oldpath
