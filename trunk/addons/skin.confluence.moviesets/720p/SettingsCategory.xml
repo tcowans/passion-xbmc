@@ -488,7 +488,7 @@
 					<texturefocus>MenuItemFO.png</texturefocus>
 					<texturenofocus>MenuItemNF.png</texturenofocus>
 					<onclick>Skin.SetAddon(LyricScript_Path,xbmc.python.lyrics)</onclick>
-					<visible>StringCompare(Control.GetLabel(2),$LOCALIZE[2])</visible>
+					<visible>Control.IsVisible(500)</visible>
 				</control>
 				<control type="button" id="502">
 					<description>open setting LyricScript</description>
@@ -502,7 +502,7 @@
 					<texturenofocus>MenuItemNF.png</texturenofocus>
 					<onclick>Addon.OpenSettings($INFO[Skin.String(LyricScript_Path)])</onclick>
 					<enable>!IsEmpty(Skin.String(LyricScript_Path))</enable>
-					<visible>StringCompare(Control.GetLabel(2),$LOCALIZE[2])</visible>
+					<visible>Control.IsVisible(500)</visible>
 				</control>
 
 				<control type="label" id="520">
@@ -523,12 +523,12 @@
 					<font>font13</font>
 					<textcolor>grey2</textcolor>
 					<focusedcolor>white</focusedcolor>
-					<label>$ADDON[script.moviesets 30100]</label>
-					<onclick>Skin.ToggleSetting(ShowInfoMovieSets)</onclick>
-					<selected>Skin.HasSetting(ShowInfoMovieSets)</selected>
+					<label>$ADDON[script.moviesets 33100]</label>
+					<onclick>Skin.ToggleSetting(HideInfoMovieSets)</onclick>
+					<selected>!Skin.HasSetting(HideInfoMovieSets)</selected>
 					<texturefocus>MenuItemFO.png</texturefocus>
 					<texturenofocus>MenuItemNF.png</texturenofocus>
-					<visible>System.HasAddon(script.moviesets) + StringCompare(Control.GetLabel(2),$LOCALIZE[3])</visible>
+					<visible>Control.IsVisible(520)</visible>
 				</control>
 				<control type="button" id="522">
 					<description>open setting MovieSets</description>
@@ -541,8 +541,51 @@
 					<texturefocus>MenuItemFO.png</texturefocus>
 					<texturenofocus>MenuItemNF.png</texturenofocus>
 					<onclick>Addon.OpenSettings(script.moviesets)</onclick>
-					<enable>Skin.HasSetting(ShowInfoMovieSets)</enable>
-					<visible>System.HasAddon(script.moviesets) + StringCompare(Control.GetLabel(2),$LOCALIZE[3])</visible>
+					<enable>!Skin.HasSetting(HideInfoMovieSets)</enable>
+					<visible>Control.IsVisible(520)</visible>
+				</control>
+				<control type="label" id="523">
+					<width>750</width>
+					<height>40</height>
+					<font>font12_title</font>
+					<label>$ADDON[script.moviesets 33101]</label>
+					<textcolor>blue</textcolor>
+					<shadowcolor>black</shadowcolor>
+					<disabledcolor>grey3</disabledcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<enable>!Skin.HasSetting(HideInfoMovieSets)</enable>
+					<visible>Control.IsVisible(520)</visible>
+				</control>
+				<control type="radiobutton" id="524">
+					<description>Enable Manager button</description>
+					<width>750</width>
+					<height>40</height>
+					<font>font13</font>
+					<textcolor>grey2</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<label>$ADDON[script.moviesets 33102]</label>
+					<onclick>Skin.ToggleSetting(ManagerMovieSets)</onclick>
+					<selected>Skin.HasSetting(ManagerMovieSets)</selected>
+					<texturefocus>MenuItemFO.png</texturefocus>
+					<texturenofocus>MenuItemNF.png</texturenofocus>
+					<enable>!Skin.HasSetting(HideInfoMovieSets)</enable>
+					<visible>Control.IsVisible(520)</visible>
+				</control>
+				<control type="radiobutton" id="525">
+					<description>Enable button "Info Set" in contextmenu (Available with the mouse only)</description>
+					<width>750</width>
+					<height>40</height>
+					<font>font13</font>
+					<textcolor>grey2</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<label>$ADDON[script.moviesets 33103] [COLOR=grey3]$ADDON[script.moviesets 33104][/COLOR]</label>
+					<onclick>Skin.ToggleSetting(ContextMenuInfoMovieSet)</onclick>
+					<selected>Skin.HasSetting(ContextMenuInfoMovieSet)</selected>
+					<texturefocus>MenuItemFO.png</texturefocus>
+					<texturenofocus>MenuItemNF.png</texturenofocus>
+					<enable>!Skin.HasSetting(HideInfoMovieSets)</enable>
+					<visible>Control.IsVisible(520)</visible>
 				</control>
 
 				<control type="label" id="510">
@@ -567,7 +610,7 @@
 					<texturefocus>MenuItemFO.png</texturefocus>
 					<texturenofocus>MenuItemNF.png</texturenofocus>
 					<onclick>Skin.SetAddon(SubtitleScript_Path,xbmc.python.subtitles)</onclick>
-					<visible>StringCompare(Control.GetLabel(2),$LOCALIZE[3])</visible>
+					<visible>Control.IsVisible(510)</visible>
 				</control>
 				<control type="button" id="512">
 					<description>open setting SubtitleScript</description>
@@ -581,7 +624,7 @@
 					<texturenofocus>MenuItemNF.png</texturenofocus>
 					<onclick>Addon.OpenSettings($INFO[Skin.String(SubtitleScript_Path)])</onclick>
 					<enable>!IsEmpty(Skin.String(SubtitleScript_Path))</enable>
-					<visible>StringCompare(Control.GetLabel(2),$LOCALIZE[3])</visible>
+					<visible>Control.IsVisible(510)</visible>
 				</control>
 
 			</control>

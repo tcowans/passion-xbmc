@@ -1,3 +1,6 @@
+1.0.3
+ - changed/fixed: strings language
+
 1.0.2
  - changed: now use jsonrpc for showing info. (HTTPAPI is used only in manager)
  - added: Dialog Movie Set Info (<onclick>RunScript(script.moviesets,moviesetinfo)</onclick>)

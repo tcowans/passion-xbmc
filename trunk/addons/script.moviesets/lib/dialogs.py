@@ -114,7 +114,7 @@ class Browser( xbmcgui.WindowXMLDialog ):
         try:
             # set controls label
             self.getControl( self.CONTROL_HEADING ).setLabel( self.heading )
-            label = ( __language__( 33121 ), __language__( 33131 ) )[ self.thumb_type == "thumb" ]
+            label = ( __language__( 32121 ), __language__( 32131 ) )[ self.thumb_type == "thumb" ]
             self.getControl( self.CONTROL_LABEL_PATH ).setLabel( label )#"Select one %s or more for extra%s"
             #self.getControl( self.CONTROL_RADIOBUTTON ).setLabel( __string__( 13206 ) )#"Overwrite"
             self.getControl( self.CONTROL_RADIOBUTTON ).setEnabled( self.thumb_type == "fanart" )
@@ -197,11 +197,11 @@ class Browser( xbmcgui.WindowXMLDialog ):
         try:
             selected = [ l for l in self.listitems if l.isSelected() ]
             t_selected, t_movies = len( selected ), len( self.listitems )
-            if selected and xbmcgui.Dialog().yesno( self.heading, __language__( 33122 ), __language__( 33123 ) % ( t_selected, t_movies ), __language__( 33124 ) ):
+            if selected and xbmcgui.Dialog().yesno( self.heading, __language__( 32122 ), __language__( 32123 ) % ( t_selected, t_movies ), __language__( 32124 ) ):
                 is_cached_thumb = False
                 if t_selected > 1:
                     # if multi download to user folder
-                    heading = __language__( 33126 )+( __language__( 33127 ), __language__( 33128 ) )[ self.thumb_type == "thumb" ]
+                    heading = __language__( 32126 )+( __language__( 32127 ), __language__( 32128 ) )[ self.thumb_type == "thumb" ]
                     dpath = xbmc.translatePath( get_browse_dialog( heading=heading ) )
                     if not dpath and not os.path.exists( dpath ): return
                     overwrite = xbmcgui.Dialog().yesno( "Confirm overwrite...", "Do you want overwite your existing files?" )
@@ -229,7 +229,7 @@ class Browser( xbmcgui.WindowXMLDialog ):
                     if is_cached_thumb: dest = "special://temp/" + os.path.basename( url )
                     else: dest = os.path.join( dpath, os.path.basename( url ) )
                     percent += diff
-                    line1 = __language__( 33125 ) % ( count+1, t_selected, percent )
+                    line1 = __language__( 32125 ) % ( count+1, t_selected, percent )
                     DIALOG_PROGRESS.update( 0, line1, url, dest )
                     if not overwrite and os.path.exists( dest ):
                         listitem.select( False )

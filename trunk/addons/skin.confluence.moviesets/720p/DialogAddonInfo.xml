@@ -350,7 +350,7 @@
 					<texturefocus border="5">MenuItemFO.png</texturefocus>
 					<onleft>60</onleft>
 					<onright>60</onright>
-					<onup>10</onup>
+					<onup>11</onup>
 					<ondown>7</ondown>
 				</control>
 				<control type="button" id="7">
@@ -419,7 +419,165 @@
 					<onleft>60</onleft>
 					<onright>60</onright>
 					<onup>8</onup>
-					<ondown>6</ondown>
+					<ondown>11</ondown>
+				</control>
+				<control type="group">
+					<description>launcher button</description>
+					<posy>250</posy>
+					<control type="button" id="11">
+						<description>Launch Script button</description>
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>255</width>
+						<height>51</height>
+						<textoffsetx>20</textoffsetx>
+						<font>font13_title</font>
+						<align>right</align>
+						<texturenofocus border="5">MenuItemNF.png</texturenofocus>
+						<texturefocus border="5">MenuItemFO.png</texturefocus>
+						<onleft>60</onleft>
+						<onright>60</onright>
+						<onup>10</onup>
+						<ondown>6</ondown>
+						<label>518</label>
+						<onclick>PreviousMenu</onclick>
+						<onclick>XBMC.RunScript($INFO[ListItem.Property(Addon.ID)])</onclick>
+						<visible>StringCompare(ListItem.Property(Addon.Type),$LOCALIZE[24009])</visible>
+						<enable>!StringCompare(ListItem.Property(Addon.Status),)</enable>
+					</control>
+					<control type="group">
+						<visible>!StringCompare(ListItem.Property(Addon.Type),$LOCALIZE[24009])</visible>
+						<control type="button" id="11">
+							<description>Launch Video library Add-on button</description>
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>255</width>
+							<height>51</height>
+							<textoffsetx>20</textoffsetx>
+							<font>font13_title</font>
+							<align>right</align>
+							<texturenofocus border="5">MenuItemNF.png</texturenofocus>
+							<texturefocus border="5">MenuItemFO.png</texturefocus>
+							<onleft>60</onleft>
+							<onright>60</onright>
+							<onup>10</onup>
+							<ondown>6</ondown>
+							<label>518</label>
+							<onclick>PreviousMenu</onclick>
+							<onclick>ActivateWindow(VideoLibrary,plugin://$INFO[ListItem.Property(Addon.ID)]/,return)</onclick>
+							<visible>Library.HasContent(Video)</visible>
+							<visible>StringCompare(Container.Property(AddonCategory),$LOCALIZE[1037])</visible>
+							<enable>!StringCompare(ListItem.Property(Addon.Status),)</enable>
+						</control>
+						<control type="button" id="11">
+							<description>Launch Video Files Add-ons button</description>
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>255</width>
+							<height>51</height>
+							<textoffsetx>20</textoffsetx>
+							<font>font13_title</font>
+							<align>right</align>
+							<texturenofocus border="5">MenuItemNF.png</texturenofocus>
+							<texturefocus border="5">MenuItemFO.png</texturefocus>
+							<onleft>60</onleft>
+							<onright>60</onright>
+							<onup>10</onup>
+							<ondown>6</ondown>
+							<label>518</label>
+							<onclick>PreviousMenu</onclick>
+							<onclick>ActivateWindow(VideoFiles,plugin://$INFO[ListItem.Property(Addon.ID)]/,return)</onclick>
+							<visible>!Library.HasContent(Video)</visible>
+							<visible>StringCompare(Container.Property(AddonCategory),$LOCALIZE[1037])</visible>
+							<enable>!StringCompare(ListItem.Property(Addon.Status),)</enable>
+						</control>
+						<control type="button" id="11">
+							<description>Launch Music library Add-on button</description>
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>255</width>
+							<height>51</height>
+							<textoffsetx>20</textoffsetx>
+							<font>font13_title</font>
+							<align>right</align>
+							<texturenofocus border="5">MenuItemNF.png</texturenofocus>
+							<texturefocus border="5">MenuItemFO.png</texturefocus>
+							<onleft>60</onleft>
+							<onright>60</onright>
+							<onup>10</onup>
+							<ondown>6</ondown>
+							<label>518</label>
+							<onclick>PreviousMenu</onclick>
+							<onclick>ActivateWindow(MusicLibrary,plugin://$INFO[ListItem.Property(Addon.ID)]/,return)</onclick>
+							<visible>Library.HasContent(Music)</visible>
+							<visible>StringCompare(Container.Property(AddonCategory),$LOCALIZE[1038])</visible>
+							<enable>!StringCompare(ListItem.Property(Addon.Status),)</enable>
+						</control>
+						<control type="button" id="11">
+							<description>Launch Music Files Add-ons button</description>
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>255</width>
+							<height>51</height>
+							<textoffsetx>20</textoffsetx>
+							<font>font13_title</font>
+							<align>right</align>
+							<texturenofocus border="5">MenuItemNF.png</texturenofocus>
+							<texturefocus border="5">MenuItemFO.png</texturefocus>
+							<onleft>60</onleft>
+							<onright>60</onright>
+							<onup>10</onup>
+							<ondown>6</ondown>
+							<label>518</label>
+							<onclick>PreviousMenu</onclick>
+							<onclick>ActivateWindow(MusicFiles,plugin://$INFO[ListItem.Property(Addon.ID)]/,return)</onclick>
+							<visible>!Library.HasContent(Music)</visible>
+							<visible>StringCompare(Container.Property(AddonCategory),$LOCALIZE[1038])</visible>
+							<enable>!StringCompare(ListItem.Property(Addon.Status),)</enable>
+						</control>
+						<control type="button" id="11">
+							<description>Launch Picture Add-on button</description>
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>255</width>
+							<height>51</height>
+							<textoffsetx>20</textoffsetx>
+							<font>font13_title</font>
+							<align>right</align>
+							<texturenofocus border="5">MenuItemNF.png</texturenofocus>
+							<texturefocus border="5">MenuItemFO.png</texturefocus>
+							<onleft>60</onleft>
+							<onright>60</onright>
+							<onup>10</onup>
+							<ondown>6</ondown>
+							<label>518</label>
+							<onclick>PreviousMenu</onclick>
+							<onclick>ActivateWindow(Pictures,plugin://$INFO[ListItem.Property(Addon.ID)]/,return)</onclick>
+							<visible>StringCompare(Container.Property(AddonCategory),$LOCALIZE[1039])</visible>
+							<enable>!StringCompare(ListItem.Property(Addon.Status),)</enable>
+						</control>
+						<control type="button" id="11">
+							<description>Launch Program Add-on button</description>
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>255</width>
+							<height>51</height>
+							<textoffsetx>20</textoffsetx>
+							<font>font13_title</font>
+							<align>right</align>
+							<texturenofocus border="5">MenuItemNF.png</texturenofocus>
+							<texturefocus border="5">MenuItemFO.png</texturefocus>
+							<onleft>60</onleft>
+							<onright>60</onright>
+							<onup>10</onup>
+							<ondown>6</ondown>
+							<label>518</label>
+							<onclick>PreviousMenu</onclick>
+							<onclick>ActivateWindow(Programs,plugin://$INFO[ListItem.Property(Addon.ID)]/,return)</onclick>
+							<visible>StringCompare(Container.Property(AddonCategory),$LOCALIZE[1043])</visible>
+							<enable>!StringCompare(ListItem.Property(Addon.Status),)</enable>
+						</control>
+					</control>
 				</control>
 			</control>
 			<control type="group">

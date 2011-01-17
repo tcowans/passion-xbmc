@@ -45,7 +45,7 @@ class Manager:
         # add dialog select, GUI manager is not started :)
 
         pre_heading = ""
-        self.heading = __language__( 33000 ) #"Manager Movie Sets"
+        self.heading = __language__( 32001 ) #"Manager Movie Sets"
         buttons, choices = [], []
 
         if self.IS_CONTENT_MOVIES and not self.PATH:
@@ -56,37 +56,37 @@ class Manager:
             # on set
             self.idSet, self.strSet = database.getSet( self.CURRENT_LABEL )
             self.heading = ( self.strSet or self.CURRENT_LABEL )
-            pre_heading = __language__( 33002 )#"[Set] "
+            pre_heading = __language__( 32003 )#"[Set] "
             if ( self.idSet > -1 ):
                 buttons = [ 1000, 1001, 1002, 1003, 1004 ]
                 #choices = [ "Add Movie", "Remove Movie", "Set movieset fanart", "Set movieset thumb", "Remove this movieset [%s]" % self.strSet ]
-                choices = [ __language__( 33100 ), __language__( 33110 ), __language__( 33120 ),
-                    __language__( 33130 ), __language__( 33140 ) % _unicode( self.strSet ) ]
+                choices = [ __language__( 32100 ), __language__( 32110 ), __language__( 32120 ),
+                    __language__( 32130 ), __language__( 32140 ) % _unicode( self.strSet ) ]
 
         elif self.IS_CONTENT_MOVIES:
             # on movie
             self.idMovie, self.strTitle, self.strSortTitle = database.getMovie( self.PATH+self.FILENAME, self.CURRENT_LABEL )
             self.heading = ( self.strTitle or self.CURRENT_LABEL )
-            pre_heading = __language__( 33003 )#"[Movie] "
+            pre_heading = __language__( 32004 )#"[Movie] "
             if ( self.idMovie > -1 ):
                 self.idSet, self.strSet = database.getSetByIdMovie( self.idMovie )
                 if ( self.idSet == -1 ):
                      # add to movieset
                     buttons.append( 2000 )
-                    choices.append( __language__( 33200 ) )#"Add to movieset"
+                    choices.append( __language__( 32200 ) )#"Add to movieset"
                 else:
                     # remove from movieset
                     buttons.append( 2001 )
-                    choices.append( __language__( 33210 ) % _unicode( self.strSet ) )#"Remove movie of set [%s]"
+                    choices.append( __language__( 32210 ) % _unicode( self.strSet ) )#"Remove movie of set [%s]"
                     #
                     buttons.append( 2002 )
                     button1008 = ( " [%s]" % self.strSortTitle, "" )[ not self.strSortTitle ]
-                    choices.append( __language__( 33220 ) + _unicode( button1008 ) )#"Edit sorttitle movie%s"
+                    choices.append( __language__( 32220 ) + _unicode( button1008 ) )#"Edit sorttitle movie%s"
 
         # defaults buttons for all view
         buttons += [ 3000, 3001, 3002, 3003 ]
         #choices += [ "Add movies to existing movieset", "Remove movies to existing movieset", "Remove existing movieset", "Create new movieset" ]
-        choices += [ __language__( 33300 ), __language__( 33310 ), __language__( 33320 ), __language__( 33330 ) ]
+        choices += [ __language__( 32300 ), __language__( 32310 ), __language__( 32320 ), __language__( 32330 ) ]
 
         xbmc.executebuiltin( "Dialog.Close(busydialog)" )
         while True:
@@ -100,40 +100,40 @@ class Manager:
 
             elif button == 1004:
                 # Remove this movieset "Remove movieset from library"
-                if xbmcgui.Dialog().yesno( __language__( 33141 ), __string__( 433 ) % self.heading ):
+                if xbmcgui.Dialog().yesno( __language__( 32141 ), __string__( 433 ) % self.heading ):
                     if database.deleteSet( self.idSet ):
-                        pre_heading, self.heading = "", __language__( 33000 )#"Manager Movie Sets"
+                        pre_heading, self.heading = "", __language__( 32001 )#"Manager Movie Sets"
                         self.idSet, self.strSet = -1, ""
                         buttons = buttons[ -4: ]
                         choices = choices[ -4: ]
 
             elif button == 3002:
                 # Remove existing movieset
-                idSet, strSet = self.selectSet( __language__( 33321 ) )#"Select movieset to remove"
-                if ( idSet > 0 ) and xbmcgui.Dialog().yesno( __language__( 33141 ), __string__( 433 ) % strSet ):
+                idSet, strSet = self.selectSet( __language__( 32321 ) )#"Select movieset to remove"
+                if ( idSet > 0 ) and xbmcgui.Dialog().yesno( __language__( 32141 ), __string__( 433 ) % strSet ):
                     OK = database.deleteSet( idSet )
 
             elif button == 1001:
                 # Remove movie to current movieset
-                idMovie, strTitle, strSortTitle = self.selectMovieOfSet( self.idSet, __language__( 33111 ) % _unicode( self.strSet ) )#"Remove movie of set [%s]"
-                if ( idMovie > 0 ) and xbmcgui.Dialog().yesno( __language__( 33112 ), __string__( 750 ), __language__( 33113 ) % _unicode( strTitle ), __language__( 33114 ) % _unicode( self.strSet ) ):
+                idMovie, strTitle, strSortTitle = self.selectMovieOfSet( self.idSet, __language__( 32111 ) % _unicode( self.strSet ) )#"Remove movie of set [%s]"
+                if ( idMovie > 0 ) and xbmcgui.Dialog().yesno( __language__( 32112 ), __string__( 750 ), __language__( 32113 ) % _unicode( strTitle ), __language__( 32114 ) % _unicode( self.strSet ) ):
                     OK = database.deleteMovieOfSet( idMovie, self.idSet )
 
             elif button == 3003:
                 # Create new movieset
-                strSet = self.keyboard( self.heading, __language__( 33331 ) )#'Enter title of set'#.replace( __language__( 33000 ), "" )
+                strSet = self.keyboard( self.heading, __language__( 32331 ) )#'Enter title of set'#.replace( __language__( 32001 ), "" )
                 if strSet:
                     idSet = database.addSet( strSet )
 
             elif button == 2001:
                 # Remove movie of movieset
-                if xbmcgui.Dialog().yesno( __language__( 33112 ), __string__( 750 ), __language__( 33113 ) % _unicode( self.strTitle ), __language__( 33114 ) % _unicode( self.strSet ) ):
+                if xbmcgui.Dialog().yesno( __language__( 32112 ), __string__( 750 ), __language__( 32113 ) % _unicode( self.strTitle ), __language__( 32114 ) % _unicode( self.strSet ) ):
                     OK = database.deleteMovieOfSet( self.idMovie, self.idSet )
                     if OK:
                         self.idSet, self.strSet = -1, ""
                         try:
                             buttons[ 0 ] = 2000
-                            choices[ 0 ] = __language__( 33200 )#"Add to movieset"
+                            choices[ 0 ] = __language__( 32200 )#"Add to movieset"
                             if buttons[ 1 ] == 2002:
                                 del buttons[ 1 ], choices[ 1 ]
                         except: log.error.exc_info( sys.exc_info() )
@@ -141,74 +141,74 @@ class Manager:
             elif button == 3001:
                 # Remove movies to existing movieset
                 while True:
-                    idSet, strSet = self.selectSet( __language__( 33311 ), True )#"Select movieset"
+                    idSet, strSet = self.selectSet( __language__( 32311 ), True )#"Select movieset"
                     if idSet == -1: break
                     while True:
-                        idMovie, strTitle, strSortTitle = self.selectMovieOfSet( idSet, __language__( 33210 ) % _unicode( strSet ) )#"Remove movie of set [%s]"
+                        idMovie, strTitle, strSortTitle = self.selectMovieOfSet( idSet, __language__( 32210 ) % _unicode( strSet ) )#"Remove movie of set [%s]"
                         if idMovie == -1: break
-                        if ( idMovie > 0 ) and xbmcgui.Dialog().yesno( __language__( 33112 ), __string__( 750 ), __language__( 33113 ) % _unicode( strTitle ), __language__( 33114 ) % _unicode( strSet ) ):
+                        if ( idMovie > 0 ) and xbmcgui.Dialog().yesno( __language__( 32112 ), __string__( 750 ), __language__( 32113 ) % _unicode( strTitle ), __language__( 32114 ) % _unicode( strSet ) ):
                             OK = database.deleteMovieOfSet( idMovie, idSet )
                 
             elif button == 2000:
                 # Add to movieset
-                idSet, strSet = self.selectSet( __language__( 33201 ) % _unicode( self.heading ), create=self.heading )#"Select movieset for [%s]"
-                if ( idSet > 0 ) and xbmcgui.Dialog().yesno( __language__( 33102 ), __string__( 750 ), __language__( 33103 ) % _unicode( self.heading ), __language__( 33104 ) % _unicode( strSet ) ):
+                idSet, strSet = self.selectSet( __language__( 32201 ) % _unicode( self.heading ), create=self.heading )#"Select movieset for [%s]"
+                if ( idSet > 0 ) and xbmcgui.Dialog().yesno( __language__( 32102 ), __string__( 750 ), __language__( 32103 ) % _unicode( self.heading ), __language__( 32104 ) % _unicode( strSet ) ):
                     if database.addSetToMovie( self.idMovie, idSet ):
                         self.idSet, self.strSet = idSet, strSet
                         try:
                             buttons[ 0 ] = 2001
-                            choices[ 0 ] = __language__( 33111 ) % _unicode( self.strSet )#"Remove movie of set [%s]"
+                            choices[ 0 ] = __language__( 32111 ) % _unicode( self.strSet )#"Remove movie of set [%s]"
                             if buttons[ 1 ] != 2002:
                                 buttons.insert( 1, 2002 )
                                 button1008 = ( " [%s]" % self.strSortTitle, "" )[ not self.strSortTitle ]
-                                choices.insert( 1, __language__( 33220 ) + _unicode( button1008 ) )#"Edit sorttitle movie%s"
+                                choices.insert( 1, __language__( 32220 ) + _unicode( button1008 ) )#"Edit sorttitle movie%s"
                         except: log.error.exc_info( sys.exc_info() )
                         #
                         sortTitle = self.strSortTitle or self.strTitle
-                        newSortTitle = self.keyboard( sortTitle, __language__( 33220 ) )#"Edit sorttitle movie"
+                        newSortTitle = self.keyboard( sortTitle, __language__( 32220 ) )#"Edit sorttitle movie"
                         if newSortTitle is not None and newSortTitle != self.strSortTitle:
                             OK = database.editMovieSortTitle( newSortTitle, self.idMovie )
                             if OK:
                                 self.strSortTitle = newSortTitle
                                 button1008 = ( " [%s]" % self.strSortTitle, "" )[ not self.strSortTitle ]
-                                try: choices[ 1 ] = __language__( 33220 ) + _unicode( button1008 )#"Edit sorttitle movie%s"
+                                try: choices[ 1 ] = __language__( 32220 ) + _unicode( button1008 )#"Edit sorttitle movie%s"
                                 except: log.error.exc_info( sys.exc_info() )
 
             elif button == 2002:
                 # Edit sorttitle movie
                 sortTitle = self.strSortTitle or self.strTitle
-                newSortTitle = self.keyboard( sortTitle, __language__( 33220 ) )#"Edit sorttitle movie"
+                newSortTitle = self.keyboard( sortTitle, __language__( 32220 ) )#"Edit sorttitle movie"
                 if newSortTitle is not None and newSortTitle != self.strSortTitle:
                     OK = database.editMovieSortTitle( newSortTitle, self.idMovie )
                     if OK:
                         self.strSortTitle = newSortTitle
                         button1008 = ( " [%s]" % self.strSortTitle, "" )[ not self.strSortTitle ]
-                        try: choices[ 1 ] = __language__( 33220 ) + _unicode( button1008 )#"Edit sorttitle movie%s"
+                        try: choices[ 1 ] = __language__( 32220 ) + _unicode( button1008 )#"Edit sorttitle movie%s"
                         except: log.error.exc_info( sys.exc_info() )
 
             elif button == 1000:
                 # Add Movie to current movieset
-                idMovie, strTitle, strSortTitle = self.selectMovie( __language__( 33101 ) % _unicode( self.strSet ) )#"Select movie for set [%s]"
-                if ( idMovie > 0 ) and xbmcgui.Dialog().yesno( __language__( 33102 ), __string__( 750 ), __language__( 33103 ) % _unicode( strTitle ), __language__( 33104 ) % _unicode( self.strSet ) ):
+                idMovie, strTitle, strSortTitle = self.selectMovie( __language__( 32101 ) % _unicode( self.strSet ) )#"Select movie for set [%s]"
+                if ( idMovie > 0 ) and xbmcgui.Dialog().yesno( __language__( 32102 ), __string__( 750 ), __language__( 32103 ) % _unicode( strTitle ), __language__( 32104 ) % _unicode( self.strSet ) ):
                     #
                     if database.addSetToMovie( idMovie, self.idSet ):
                         #
                         sortTitle = strSortTitle or strTitle
-                        newSortTitle = self.keyboard( sortTitle, __language__( 33220 ) )#"Edit sorttitle movie"
+                        newSortTitle = self.keyboard( sortTitle, __language__( 32220 ) )#"Edit sorttitle movie"
                         if newSortTitle is not None and newSortTitle != strSortTitle:
                             OK = database.editMovieSortTitle( newSortTitle, idMovie )
 
             elif button == 3000:
                 # Add movies to existing movieset
-                idMovie, strTitle, strSortTitle = self.selectMovie( __language__( 33301 ) )#"Select movie"
+                idMovie, strTitle, strSortTitle = self.selectMovie( __language__( 32301 ) )#"Select movie"
                 if ( idMovie > 0 ):
-                    idSet, strSet = self.selectSet( __language__( 33302 ) % _unicode( strTitle ), create=strTitle )#"Select movieset for movie [%s]"
-                    if ( idSet > 0 ) and xbmcgui.Dialog().yesno( __language__( 33102 ), __string__( 750 ), __language__( 33103 ) % _unicode( strTitle ), __language__( 33104 ) % _unicode( strSet ) ):
+                    idSet, strSet = self.selectSet( __language__( 32302 ) % _unicode( strTitle ), create=strTitle )#"Select movieset for movie [%s]"
+                    if ( idSet > 0 ) and xbmcgui.Dialog().yesno( __language__( 32102 ), __string__( 750 ), __language__( 32103 ) % _unicode( strTitle ), __language__( 32104 ) % _unicode( strSet ) ):
                         #
                         if database.addSetToMovie( idMovie, idSet ):
                             #
                             strSortTitle = strSortTitle or strTitle
-                            newSortTitle = self.keyboard( strSortTitle, __language__( 33220 ) )#"Edit sorttitle movie"
+                            newSortTitle = self.keyboard( strSortTitle, __language__( 32220 ) )#"Edit sorttitle movie"
                             if newSortTitle is not None and newSortTitle != strSortTitle:
                                 OK = database.editMovieSortTitle( newSortTitle, idMovie )
 
@@ -269,13 +269,13 @@ class Manager:
                 moviesets = database.getSets( True )
                 choice = [ s for i, s in moviesets ]
 
-            if create: choice.append( "[B]%s[/B]" % __language__( 33330 ) )#"Create new movieset"
+            if create: choice.append( "[B]%s[/B]" % __language__( 32330 ) )#"Create new movieset"
             while True:
                 selected = xbmcgui.Dialog().select( heading, choice )
                 if selected == -1: break
                 if create and selected >= len( moviesets ):
                     # Create new movieset
-                    strSet = self.keyboard( create, __language__( 33331 ) )#'Enter title of set'
+                    strSet = self.keyboard( create, __language__( 32331 ) )#'Enter title of set'
                     if not strSet: continue
                     if database.addSet( strSet ) > -1:
                         return self.selectSet( heading, showCount, create )

@@ -1,11 +1,11 @@
 <includes>
 	<!-- REQUIRED FOR SETUP INFOS OF MOVIE SETS -->
 	<include name="MovieSetsAddonButton7777">
-		<include condition="System.HasAddon(script.moviesets)">MovieSetsStartButton</include>
+		<include condition="[System.HasAddon(script.moviesets) + !Skin.HasSetting(HideInfoMovieSets)]">MovieSetsStartButton</include>
 		<control type="button" id="7777">
 			<description>Don't Run Movie Sets</description>
 			<include>MovieSetsBaseButton</include>
-			<include condition="System.HasAddon(script.moviesets)">MovieSetsIsAliveCondition</include>
+			<include condition="[System.HasAddon(script.moviesets) + !Skin.HasSetting(HideInfoMovieSets)]">MovieSetsIsAliveCondition</include>
 		</control>
 	</include>
 	<include name="MovieSetsStartButton">
@@ -51,7 +51,7 @@
 			<pagecontrol>-</pagecontrol>
 			<itemlayout height="1" width="1" />
 			<focusedlayout height="1" width="1" />
-			<visible>System.HasAddon(script.moviesets)</visible>
+			<visible>System.HasAddon(script.moviesets) + Skin.HasSetting(ManagerMovieSets) + !Skin.HasSetting(HideInfoMovieSets)</visible>
 		</control>
 	</include>
 	<!-- END REQUIRED -->
@@ -67,7 +67,7 @@
 		<control type="label">
 			<include>WindowTitleCommons</include>
 			<posx>220</posx>
-			<label>$ADDON[script.moviesets 30001]</label>
+			<label>$ADDON[script.moviesets 33001]</label>
 			<visible>!IsEmpty(Container(7000).ListItem.Property(HasMovieSets))</visible>
 		</control>
 	</include>
@@ -472,20 +472,7 @@
 			<visible>Control.IsVisible(7700)</visible>
 			<include>VisibleFadeEffect</include>
 			<control type="list" id="7700">
-				<!-- <animation effect="slide" start="0,0" end="0,520" condition="StringCompare(Container.NumItems,1)">Conditional</animation>
-				<animation effect="slide" start="0,0" end="0,480" condition="StringCompare(Container.NumItems,2)">Conditional</animation>
-				<animation effect="slide" start="0,0" end="0,440" condition="StringCompare(Container.NumItems,3)">Conditional</animation>
-				<animation effect="slide" start="0,0" end="0,400" condition="StringCompare(Container.NumItems,4)">Conditional</animation>
-				<animation effect="slide" start="0,0" end="0,360" condition="StringCompare(Container.NumItems,5)">Conditional</animation>
-				<animation effect="slide" start="0,0" end="0,320" condition="StringCompare(Container.NumItems,6)">Conditional</animation>
-				<animation effect="slide" start="0,0" end="0,280" condition="StringCompare(Container.NumItems,7)">Conditional</animation>
-				<animation effect="slide" start="0,0" end="0,240" condition="StringCompare(Container.NumItems,8)">Conditional</animation>
-				<animation effect="slide" start="0,0" end="0,200" condition="StringCompare(Container.NumItems,9)">Conditional</animation>
-				<animation effect="slide" start="0,0" end="0,160" condition="StringCompare(Container.NumItems,10)">Conditional</animation>
-				<animation effect="slide" start="0,0" end="0,120" condition="StringCompare(Container.NumItems,11)">Conditional</animation>
-				<animation effect="slide" start="0,0" end="0,80" condition="StringCompare(Container.NumItems,12)">Conditional</animation>
-				<animation effect="slide" start="0,0" end="0,40" condition="StringCompare(Container.NumItems,13)">Conditional</animation>
-				<animation effect="slide" start="0,0" end="0,40" condition="!StringCompare(Container(7700).ListItem(0).Label,..)">Conditional</animation> -->
+				<visible>Control.IsVisible(7000)</visible>
 				<posx>660</posx>
 				<posy>60</posy>
 				<width>580</width>
@@ -641,13 +628,6 @@
 				<control type="group">
 					<visible>ListItem.IsFolder + IsEmpty(Container(7000).ListItem.Property(HasMovieSets)) | StringCompare(Container(7998).NumItems,0)</visible>
 					<posx>0</posx>
-					<!--<animation effect="slide" start="0,0" end="220,0" condition="StringCompare(Container(7998).NumItems,7)">Conditional</animation>
-					<animation effect="slide" start="0,0" end="180,0" condition="StringCompare(Container(7998).NumItems,6)">Conditional</animation>
-					<animation effect="slide" start="0,0" end="150,0" condition="StringCompare(Container(7998).NumItems,5)">Conditional</animation>
-					<animation effect="slide" start="0,0" end="120,0" condition="StringCompare(Container(7998).NumItems,4)">Conditional</animation>
-					<animation effect="slide" start="0,0" end="90,0" condition="StringCompare(Container(7998).NumItems,3)">Conditional</animation>
-					<animation effect="slide" start="0,0" end="60,0" condition="StringCompare(Container(7998).NumItems,2)">Conditional</animation>
-					<animation effect="slide" start="0,0" end="30,0" condition="StringCompare(Container(7998).NumItems,1)">Conditional</animation>-->
 					<control type="image">
 						<posx>0</posx>
 						<posy>30</posy>
