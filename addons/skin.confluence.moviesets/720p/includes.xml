@@ -99,7 +99,7 @@
 			<texture fallback="special://skin/backgrounds/videos.jpg" background="true">$INFO[Container(7000).ListItem.Property(Fanart_Image)]</texture>
 			<include>backgroundfade</include>
 			<fadetime>FanartCrossfadeTime</fadetime>
-			<visible>!IsEmpty(container(7000).ListItem.Property(HasMovieSets))</visible>
+			<visible>!IsEmpty(container(7000).ListItem.Property(HasMovieSets)) + [Container.Content(Movies) | !IsEmpty(Window(10025).Property(Content.MovieSets))]</visible>
 		</control>
 	</include>
 	<include name="CommonMusicBackground">

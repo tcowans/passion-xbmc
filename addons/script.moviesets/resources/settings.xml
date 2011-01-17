@@ -3,20 +3,20 @@
   <!-- General -->
   <category label="$LOCALIZE[128]">
     <setting type="lsep" label="$LOCALIZE[15100]" />
-    <setting id="separator" label="$ADDON[script.moviesets 30052]" type="text" default="/" />
-    <setting id="order" label="$ADDON[script.moviesets 30053]" type="enum" lvalues="584|585" default="0" />
+    <setting id="separator" label="$ADDON[script.moviesets 32052]" type="text" default="/" />
+    <setting id="order" label="$ADDON[script.moviesets 32053]" type="enum" lvalues="584|585" default="0" />
     <setting type="lsep" label="$LOCALIZE[15101]" />
-    <setting id="busydialog" label="$ADDON[script.moviesets 30051]" type="bool" default="false" />
+    <setting id="busydialog" label="$ADDON[script.moviesets 32051]" type="bool" default="false" />
   </category>
 
   <!-- Skinning -->
   <category label="Skinning">
     <setting type="lsep" label="Skinners" />
-    <setting type="action" label="$ADDON[script.moviesets 30062]" action="RunScript($CWD/lib/viewer.py,infolabels)" default="" />
+    <setting type="action" label="$ADDON[script.moviesets 32062]" action="RunScript($CWD/lib/viewer.py,infolabels)" default="" />
   </category>
 
   <!-- Misc -->
-  <category label="$ADDON[script.moviesets 30060]">
+  <category label="$ADDON[script.moviesets 32060]">
     <setting type="sep" />
     <setting type="lsep" label="$LOCALIZE[21863]: [COLOR=88FFFFFF]Frost (passion-xbmc.org)[/COLOR]" />
     <setting type="sep" />
@@ -29,7 +29,7 @@
     <setting type="action" label="Français [COLOR=88FFFFFF]- Forum Passion-XBMC.org[/COLOR]" action="RunScript($CWD/lib/viewer.py,webbrowser,http://passion-xbmc.org/skins-pour-xbmc/%28release%29-moviesets-%28saga%29-show-info-saga-pour-skins-skinners/)" default="" />
     <setting type="sep" />
     <setting type="lsep" label="Infos" />
-    <setting type="action" label="$ADDON[script.moviesets 30061]" action="RunScript($CWD/lib/viewer.py,changelog)" default="" />
-    <setting type="action" label="$ADDON[script.moviesets 30063]" action="RunScript($CWD/lib/viewer.py,license)" default="" />
+    <setting type="action" label="$ADDON[script.moviesets 32061]" action="RunScript($CWD/lib/viewer.py,changelog)" default="" />
+    <setting type="action" label="$ADDON[script.moviesets 32063]" action="RunScript($CWD/lib/viewer.py,license)" default="" />
   </category>
 </settings>

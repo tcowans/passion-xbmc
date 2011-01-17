@@ -1,3 +1,7 @@
+[B]1.1.1[/B]
+
+- fixed: skin settings for add-on moviesets
+
 [B]1.1.0[/B]
 
 - Redesigned the video and Music OSD Info and controls

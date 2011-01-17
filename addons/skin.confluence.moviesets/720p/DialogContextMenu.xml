@@ -50,9 +50,9 @@
 			<description>background bottom image</description>
 			<posx>0</posx>
 			<width>370</width>
-			<include condition="!system.getbool(input.enablemouse)">NormalDialogContextBottom</include>
-			<include condition="[!Window.isVisible(10025) + system.getbool(input.enablemouse)]">NormalDialogContextBottom</include>
-			<include condition="[Window.isVisible(10025) + system.getbool(input.enablemouse)]">CustomDialogContextBottom</include>
+			<include condition="![System.HasAddon(script.moviesets) | system.getbool(input.enablemouse)]">NormalDialogContextBottom</include>
+			<include condition="[System.HasAddon(script.moviesets) + ![Skin.HasSetting(ContextMenuInfoMovieSet) + !Skin.HasSetting(HideInfoMovieSets) + Window.isVisible(10025)]]">NormalDialogContextBottom</include>
+			<include condition="[System.HasAddon(script.moviesets) + Skin.HasSetting(ContextMenuInfoMovieSet) + !Skin.HasSetting(HideInfoMovieSets) + Window.isVisible(10025) + system.getbool(input.enablemouse)]">CustomDialogContextBottom</include>
 		</control>
 
 		<control type="grouplist" id="9000">
@@ -61,7 +61,7 @@
 			<posy>0</posy>
 			<width>297</width>
 			<height>38</height>
-			<visible>Window.isVisible(10025) + system.getbool(input.enablemouse)</visible>
+			<visible>System.HasAddon(script.moviesets) + Skin.HasSetting(ContextMenuInfoMovieSet) + !Skin.HasSetting(HideInfoMovieSets) + Window.isVisible(10025) + system.getbool(input.enablemouse)</visible>
 			<animation effect="slide" start="0,0" end="0,40" condition="Control.IsVisible(1001)">Conditional</animation>
 			<animation effect="slide" start="0,0" end="0,40" condition="Control.IsVisible(1002)">Conditional</animation>
 			<animation effect="slide" start="0,0" end="0,40" condition="Control.IsVisible(1003)">Conditional</animation>
@@ -91,7 +91,7 @@
 			<control type="button" id="1014"><visible>false</visible></control>
 			<control type="button" id="1015"><visible>false</visible></control>
 			<control type="button" id="2000">
-				<description>moviesets manager button (work with mouse only)</description>
+				<description>moviesets custom button (work with mouse only)</description>
 				<posx>34</posx>
 				<posy>0</posy>
 				<width>297</width>
@@ -102,7 +102,7 @@
 				<focusedcolor>white</focusedcolor>
 				<texturefocus border="5">button-focus.png</texturefocus>
 				<texturenofocus>-</texturenofocus>
-				<label>Info $ADDON[script.moviesets 30001]</label>
+				<label>$ADDON[script.moviesets 33002]</label>
 				<onclick>RunScript(script.moviesets,moviesetinfo)</onclick>
 			</control>
 		</control>

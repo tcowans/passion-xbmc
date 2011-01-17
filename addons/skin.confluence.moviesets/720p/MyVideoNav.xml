@@ -108,7 +108,7 @@
 			<include>MusicVideoInfoListView</include> <!-- view id = 511 -->
 			<include>AddonInfoListView1</include> <!-- view id = 550 -->
 			<include>LiveTVView1</include> <!-- view id = 560 -->
-			<include>MovieSetsListView7700</include> <!-- view id = 7700 -->
+			<include condition="!Skin.HasSetting(HideInfoMovieSets)">MovieSetsListView7700</include> <!-- view id = 7700 -->
 		</control>
 		<include>CommonPageCount</include>
 		<include>BehindDialogFadeOut</include>
@@ -210,6 +210,7 @@
 						<label>$ADDON[script.moviesets 33000]</label>
 						<onclick>RunScript(script.moviesets)</onclick>
 						<onclick>SetFocus(50)</onclick>
+						<visible>System.HasAddon(script.moviesets) + Skin.HasSetting(ManagerMovieSets) + !Skin.HasSetting(HideInfoMovieSets)</visible>
 					</control>
 					<control type="label" id="200">
 						<width>220</width>
