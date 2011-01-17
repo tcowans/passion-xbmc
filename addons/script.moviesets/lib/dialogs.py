@@ -201,10 +201,10 @@ class Browser( xbmcgui.WindowXMLDialog ):
                 is_cached_thumb = False
                 if t_selected > 1:
                     # if multi download to user folder
-                    heading = __language__( 32126 )+( __language__( 32127 ), __language__( 32128 ) )[ self.thumb_type == "thumb" ]
+                    heading = __language__( 32126 ) + ( __language__( 32127 ), __language__( 32128 ) )[ self.thumb_type == "thumb" ]
                     dpath = xbmc.translatePath( get_browse_dialog( heading=heading ) )
                     if not dpath and not os.path.exists( dpath ): return
-                    overwrite = xbmcgui.Dialog().yesno( "Confirm overwrite...", "Do you want overwite your existing files?" )
+                    overwrite = xbmcgui.Dialog().yesno( __language__( 32135 ), __language__( 32136 ) )
                 else:
                     # otherwise, download to cached thumb
                     overwrite = True
