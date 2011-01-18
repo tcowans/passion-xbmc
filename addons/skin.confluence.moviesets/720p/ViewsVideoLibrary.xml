@@ -464,7 +464,7 @@
 		<control type="group">
 			<posx>180</posx>
 			<posy>30</posy>
-			<visible>[!ListItem.IsFolder + Container.Content(Movies)] | [ListItem.IsFolder + Control.IsVisible(7000)] + Control.IsVisible(508) + !Skin.HasSetting(View508HideInfo) + !Window.IsVisible(VideoFiles) + !StringCompare(ListItem.Label,..)</visible>
+			<visible>[[!ListItem.IsFolder + Container.Content(Movies)] | [ListItem.IsFolder + Control.IsVisible(7000)]] + Control.IsVisible(508) + !Skin.HasSetting(View508HideInfo) + !Window.IsVisible(VideoFiles) + !StringCompare(ListItem.Label,..)</visible>
 			<include>VisibleFadeEffect</include>
 			<control type="image">
 				<posx>0</posx>
