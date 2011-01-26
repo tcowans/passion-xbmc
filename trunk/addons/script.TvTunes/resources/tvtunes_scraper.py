@@ -7,6 +7,18 @@ import re
 import xbmc
 import xbmcgui
 
+try:
+    # parse sys.argv for params
+    print sys.argv[ 1 ]
+    try:params = dict( arg.split( "=" ) for arg in sys.argv[ 1 ].split( "&" ) )
+    except:
+        print_exc()
+        params =  dict( sys.argv[ 1 ].split( "=" ))
+except:
+    # no params passed
+    print_exc()
+    params = {} 
+
 
 SOURCEPATH = os.getcwd()
 
@@ -40,14 +52,16 @@ class TvTunes:
         self.TVlist = self.listing()
         self.DIALOG_PROGRESS = xbmcgui.DialogProgress()
         self.ERASE = xbmcgui.Dialog().yesno("TvTune downloader","Replace existing theme?")
-        #self.search_theme_list()
-        #print self.TVlist
         self.DIALOG_PROGRESS.create( "TelevisionTunes script in action ..." , "Getting informations ..." )
-        self.scan()       
+        if params.get("mode", "false" ) == "solo" : self.scan(params.get("name", "" ),params.get("path", "false" ))    
+        else: self.scan()
         
-    def scan(self):
+    def scan(self , cur_name=False , cur_path=False):
         count = 0
-        total = len(self.TVlist)
+        if cur_name and cur_path: 
+            print "solo mode"
+            self.TVlist = [[cur_name,cur_path.encode('utf-8')]]
+        total = len(self.TVlist)        
         for show in self.TVlist:
             count = count + 1
             if not self.ERASE and os.path.exists(os.path.join(show[1],"theme.mp3")):
@@ -164,9 +178,11 @@ class TvTunes:
         except:
             print "### nothing in get db"
             return False
-            print_exc()        
-TvTunes()
-xbmcgui.Dialog().ok('TvTunes','You can help to get more theme on:' , "http://www.televisiontunes.com/")
+            print_exc()    
+              
+if ( __name__ == "__main__" ):
+    TvTunes()
+    xbmcgui.Dialog().ok('TvTunes','You can help to get more theme on:' , "http://www.televisiontunes.com/")
 # fp , h = urllib.urlretrieve("http://www.televisiontunes.com/download.php?f=Alias 1".replace(" " , "_" ) , os.path.join(SOURCEPATH , "theme.mp3"))
 # print fp,h
 
