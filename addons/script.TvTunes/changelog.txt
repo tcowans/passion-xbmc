@@ -1,3 +1,8 @@
+v0.8.0:
+- added solo mode, use this line with a button on dialogvideoinfo for tvshow:
+<onclick>XBMC.RunScript(script.TvTunes,mode=solo&tvpath=$INFO[ListItem.FilenameAndPath]&tvname=$INFO[ListItem.TVShowTitle])</onclick>
+probably won't work on episode level.
+
 v0.7.3
 - prevent theme script to be activated when browsing plugins
 

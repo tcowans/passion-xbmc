@@ -24,6 +24,11 @@ if params.get("backend", False ):
     if xbmc.getInfoLabel( "Window(10025).Property(TvTunesIsRunning)" ) != "true":
         #print '########################################################################%s,loop=%s&downvolume=%s&smb=%s&user=%spassword=%s' % (os.path.join( RESOURCES_PATH , "tvtunes_backend.py"), loop , downvolume , smb , username , password)
         xbmc.executebuiltin('XBMC.RunScript(%s,loop=%s&downvolume=%s&smb=%s&user=%s&password=%s)' % (os.path.join( RESOURCES_PATH , "tvtunes_backend.py"), loop , downvolume , smb , username , password))
+
+elif params.get("mode", False ) == "solo":
+    print params
+    xbmc.executebuiltin('XBMC.RunScript(%s,mode=solo&name=%s&path=%s)' % (os.path.join( RESOURCES_PATH , "tvtunes_scraper.py") , params.get("tvname", False ) , params.get("tvpath", False ) ) )
+
 else: 
     print " %s v%s" % ( __settings__.getAddonInfo("id") , __settings__.getAddonInfo("version") )
-    import tvtunes_scraper
+    xbmc.executebuiltin('XBMC.RunScript(%s)' % os.path.join( RESOURCES_PATH , "tvtunes_scraper.py"))
