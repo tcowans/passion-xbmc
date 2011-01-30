@@ -13,10 +13,11 @@ except: xbmc = None
 def xbmc_log( level, format, *args ):
     try:
         line = "[MovieSets] %s" % ( format % args, )
+        level = [ "debug", "info", "notice", "warning", "error", "severe", "fatal", "none" ].index( level )
         if not xbmc:
-            print level, line
+            level = [ "debug", "info", "notice", "warning", "error", "severe", "fatal", "none" ][ level ]
+            print "%s: %s" % ( level, line )
         else:
-            level = [ "debug", "info", "notice", "warning", "error", "severe", "fatal", "none" ].index( level )
             xbmc.log( line.strip( "\r\n" ), level )
     except:
         print_exc()

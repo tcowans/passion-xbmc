@@ -60,7 +60,7 @@ class Viewer:
             elif sys.argv[ 1 ] == "license":
                 return "License", self.readFile( "LICENSE.txt" )
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
         return "", ""
 
     def readFile( self, filename ):
@@ -79,7 +79,7 @@ class WebBrowser:
             # launch url
             self.launchUrl( url )
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
     
     def launchUrl( self, url ):
         import webbrowser

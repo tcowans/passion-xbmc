@@ -55,7 +55,7 @@ class Main:
             self.backend.setDaemon( True )
             self.backend.start()
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
         log.notice.LOG( "initialized took %s", time_took( START_TIME ) )
 
     def setContent( self ):
@@ -83,7 +83,7 @@ class Main:
                 if ( 0 <= cur_pos <> new_pos ):
                     self.container.selectItem( new_pos )
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
 
 
 class Backend( Thread ):
@@ -105,10 +105,10 @@ class Backend( Thread ):
                 self.updates()
                 time.sleep( .025 )
         except SystemExit:
-            #log.error.exc_info( sys.exc_info() )
+            #log.error.exc_info( sys.exc_info(), self )
             self.stop()
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
             self.stop()
 
     def updates( self ):
@@ -155,7 +155,7 @@ class Backend( Thread ):
             self.window.clearProperty( "MovieSets.IsAlive" )
             self.window.clearProperty( "Content.MovieSets" )
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
 
 
 

@@ -62,7 +62,7 @@ class Records:
     def commit( self, sql ):
         done = False
         try: done = ( "done" in xbmcdb( "ExecVideoDatabase(%s)" % quote_plus( sql ), ).lower() )
-        except: log.error.exc_info( sys.exc_info() )
+        except: log.error.exc_info( sys.exc_info(), self )
         return done
 
     def fetch( self, sql, keys=None, index=None ):
@@ -71,7 +71,7 @@ class Records:
             records_xml = xbmcdb( "QueryVideoDatabase(%s)" % quote_plus( sql ), )
             records = findall( "<records>(.+?)</records>", records_xml, DOTALL )
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
         return self.parseFields( records, keys, index )
 
     def parseFields( self, records, keys=None, index=None ):
@@ -82,10 +82,10 @@ class Records:
                 if keys: record = dict( zip( keys, record ) )
                 fields.append( record )
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
         if fields and index is not None:
             try: fields = fields[ index ]
-            except: log.error.exc_info( sys.exc_info() )
+            except: log.error.exc_info( sys.exc_info(), self )
         return fields
 
 
@@ -107,7 +107,7 @@ class Database( Records ):
                 id = "".join( self.fetch( sql, index=0 ) )
             return int( id )
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
         return -1
 
     def addSetToMovie( self, idMovie, idSet ):
@@ -121,7 +121,7 @@ class Database( Records ):
                 # insert not exists
                 OK = self.commit( "insert into setlinkmovie (idSet,idMovie) values(%i,%i)" % ( int( idSet ), int( idMovie ), ) )
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
         return OK
 
     def deleteMovieOfSet( self, idMovie, idSet ):
@@ -131,7 +131,7 @@ class Database( Records ):
             else: sql = "delete from setlinkmovie where idSet=%i and idMovie=%i" % ( int( idSet ), int( idMovie ), )
             OK = self.commit( sql )
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
         return OK
 
     def deleteSet( self, idSet ):
@@ -145,13 +145,13 @@ class Database( Records ):
                 if os.path.exists( fanart ): os.remove( fanart )
                 OK = self.deleteMovieOfSet( -1, idSet )
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
         return OK
 
     def editMovieSortTitle( self, sortTitle, idMovie ):
         OK = False
         try: OK = self.commit( "update movie set c10='%s' where idMovie=%i" % ( sortTitle, int( idMovie ) ) )
-        except: log.error.exc_info( sys.exc_info() )
+        except: log.error.exc_info( sys.exc_info(), self )
         return OK
 
     def getFileId( self, strFilenameAndPath ):
@@ -165,7 +165,7 @@ class Database( Records ):
                 idFile = "".join( self.fetch( sql, index=0 ) )
                 return int( idFile )
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
         return -1
 
     def getPathId( self, strPath ):
@@ -181,7 +181,7 @@ class Database( Records ):
             if idPath:
                 return int( idPath )
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
         return -1
 
     def getMovie( self, strFilenameAndPath, strTitle ):
@@ -194,7 +194,7 @@ class Database( Records ):
             movie = self.fetch( sql, index=0 )
             return int( movie[ 0 ] ), movie[ 1 ], movie[ 2 ]
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
         return -1, "", ""
 
     def getSet( self, strSet ):
@@ -204,7 +204,7 @@ class Database( Records ):
                 idSet, strSet = movieset
                 return int( idSet ), strSet
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
         return -1, ""
 
     def getSetByIdMovie( self, idMovie ):
@@ -220,7 +220,7 @@ class Database( Records ):
                 idSet, strSet = movieset
                 return int( idSet ), strSet
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
         return -1, ""
 
     def getSets( self, order=False, count=False, keys=None ):
@@ -234,7 +234,7 @@ class Database( Records ):
                 sql = "SELECT * FROM sets"
             moviesets = self.fetch( sql + ( "", " ORDER BY strSet" )[ order ], keys )
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
         return moviesets
 
     def getMovies( self, idSet=None, keys=None ):
@@ -252,7 +252,7 @@ class Database( Records ):
                     """ % int( idSet )
             movies = self.fetch( sql, keys )
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
         return movies
 
     def getThumbsOfSet( self, idSet ):
@@ -266,7 +266,7 @@ class Database( Records ):
             keys = [ "strSortTitle", "strThumbs", "strFanarts" ]
             movieset = self.fetch( sql % int( idSet ), keys )
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
         return movieset
 
     def getDurationOfSet( self, idSet ):
@@ -281,7 +281,7 @@ class Database( Records ):
             duration = self.fetch( sql % int( idSet ), index=0 )
             if duration: duration = "".join( duration ).split( "." )[ 0 ]
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
         return duration
 
     def getCastAndRoleOfSet( self, idSet ):
@@ -297,7 +297,7 @@ class Database( Records ):
             keys = [ "cast", "role", "movie" ]
             castandrole = self.fetch( sql % int( idSet ) )#, keys )
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
         return castandrole
 
     def get_cached_thumb( self, fpath ):
@@ -424,7 +424,7 @@ class Database( Records ):
                         fanartset += ( "/", "\\" )[ not fanartset.count( "/" ) ] + "extrafanart"
                         if os.path.exists( fanartset ): listitem.setProperty( "ExtraFanart", fanartset )
                     except:
-                        log.error.exc_info( sys.exc_info() )
+                        log.error.exc_info( sys.exc_info(), self )
 
                 # set movieset properties
                 listitem.setProperty( "HasMovieSets",    "true" )
@@ -463,6 +463,6 @@ class Database( Records ):
                     moviesets[ movieset[ 'label' ] ] = 0
                     break # get only one user want info
             except:
-                log.error.exc_info( sys.exc_info() )
+                log.error.exc_info( sys.exc_info(), self )
         return listitems, moviesets
 

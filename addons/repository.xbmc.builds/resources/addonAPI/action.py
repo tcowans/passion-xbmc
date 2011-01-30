@@ -147,8 +147,17 @@ def Main():
 
         elif ( args.get( "action" ) == "DL" ):
             #run downloader
-            dlpath = xbmc.getInfoLabel( "ListItem.Property(Addon.Path)" )
-            filename = xbmc.getInfoLabel( "ListItem.Property(filename)" )
+            if args.get( "listurl" ) == "unofficial":
+                import repo
+                revision = repo.getUnofficialRevision()
+                choice = [ "Windows XBMC DirectX with Installer", "Windows XBMC DirectX without Installer", "Windows XBMC DirectX Diff Package" ]
+                selected = xbmcgui.Dialog().select( "Unofficial Nightly Builds From Git:%s" % revision, choice )
+                if selected == -1: return
+                dlpath = repo.getUnofficialBuildLlink( revision, selected )
+                filename = os.path.basename( dlpath )
+            else:
+                dlpath = xbmc.getInfoLabel( "ListItem.Property(Addon.Path)" )
+                filename = xbmc.getInfoLabel( "ListItem.Property(filename)" )
             print "DL: %s" % dlpath
             try:
                 __settings__  = sys.modules[ "__main__" ].__settings__

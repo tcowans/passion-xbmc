@@ -140,7 +140,7 @@ class Browser( xbmcgui.WindowXMLDialog ):
             try: self.getControl( self.CONTROL_LIST_451 ).setVisible( 0 )
             except: pass
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
 
     def onFocus( self, controlID ):
         pass
@@ -173,7 +173,7 @@ class Browser( xbmcgui.WindowXMLDialog ):
                         try:
                             os.remove( icon )
                             listitem.setThumbnailImage( "DefaultVideoCover.png" )
-                        except: log.error.exc_info( sys.exc_info() )
+                        except: log.error.exc_info( sys.exc_info(), self )
                     listitem.select( False )
                 else:
                     listitem.select( not listitem.isSelected() )
@@ -190,7 +190,7 @@ class Browser( xbmcgui.WindowXMLDialog ):
                 self._download()
 
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
 
     def _download( self ):
         DIALOG_PROGRESS = xbmcgui.DialogProgress()
@@ -242,7 +242,7 @@ class Browser( xbmcgui.WindowXMLDialog ):
                         self.delete_files.add( dest )
                         log.error.LOG( dest )
                         dest = None
-                        log.error.exc_info( sys.exc_info() )
+                        log.error.exc_info( sys.exc_info(), self )
                     listitem.select( False )
                     if DIALOG_PROGRESS.iscanceled():
                         break
@@ -261,7 +261,7 @@ class Browser( xbmcgui.WindowXMLDialog ):
 
                 DIALOG_PROGRESS.update( 100 )
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
         _delete_files( self.delete_files )
         try: DIALOG_PROGRESS.close()
         except: pass
@@ -318,13 +318,13 @@ class MovieSetInfo( xbmcgui.WindowXMLDialog ):
                         listitems.append( xbmcgui.ListItem( label, "", icon, icon ) )
                     self.getControl( 150 ).addItems( listitems )
                 except:
-                    log.error.exc_info( sys.exc_info() )
+                    log.error.exc_info( sys.exc_info(), self )
                     self.getControl( 5 ).setEnabled( 0 )
 
                 if self.setfocus:
                     self.setFocusId( self.setfocus )
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
             self._close_dialog()
 
     def onFocus( self, controlID ):
@@ -384,7 +384,7 @@ class MovieSetInfo( xbmcgui.WindowXMLDialog ):
                 # Set movieset fanart or Set movieset thumb
                 self.browse( ( "fanart", "thumb" )[ controlID == 10 ] )
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
 
     def browse( self, type ):
         w = Browser( "FileBrowser.xml", ADDON_DIR, heading=xbmc.getInfoLabel( "ListItem.Label" ), idset=self.idset, type=type )
