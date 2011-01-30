@@ -1,3 +1,6 @@
+1.0.4
+ - re-added: Unofficial Nightly Builds for "Windows DX" only
+
 1.0.3
  - added: select mirrors list of xbmc (but not all work correctly)
  - fixed: sort method by date

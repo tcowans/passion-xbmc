@@ -136,7 +136,7 @@ class Manager:
                             choices[ 0 ] = __language__( 32200 )#"Add to movieset"
                             if buttons[ 1 ] == 2002:
                                 del buttons[ 1 ], choices[ 1 ]
-                        except: log.error.exc_info( sys.exc_info() )
+                        except: log.error.exc_info( sys.exc_info(), self )
 
             elif button == 3001:
                 # Remove movies to existing movieset
@@ -162,7 +162,7 @@ class Manager:
                                 buttons.insert( 1, 2002 )
                                 button1008 = ( " [%s]" % self.strSortTitle, "" )[ not self.strSortTitle ]
                                 choices.insert( 1, __language__( 32220 ) + _unicode( button1008 ) )#"Edit sorttitle movie%s"
-                        except: log.error.exc_info( sys.exc_info() )
+                        except: log.error.exc_info( sys.exc_info(), self )
                         #
                         sortTitle = self.strSortTitle or self.strTitle
                         newSortTitle = self.keyboard( sortTitle, __language__( 32220 ) )#"Edit sorttitle movie"
@@ -172,7 +172,7 @@ class Manager:
                                 self.strSortTitle = newSortTitle
                                 button1008 = ( " [%s]" % self.strSortTitle, "" )[ not self.strSortTitle ]
                                 try: choices[ 1 ] = __language__( 32220 ) + _unicode( button1008 )#"Edit sorttitle movie%s"
-                                except: log.error.exc_info( sys.exc_info() )
+                                except: log.error.exc_info( sys.exc_info(), self )
 
             elif button == 2002:
                 # Edit sorttitle movie
@@ -184,7 +184,7 @@ class Manager:
                         self.strSortTitle = newSortTitle
                         button1008 = ( " [%s]" % self.strSortTitle, "" )[ not self.strSortTitle ]
                         try: choices[ 1 ] = __language__( 32220 ) + _unicode( button1008 )#"Edit sorttitle movie%s"
-                        except: log.error.exc_info( sys.exc_info() )
+                        except: log.error.exc_info( sys.exc_info(), self )
 
             elif button == 1000:
                 # Add Movie to current movieset
@@ -228,7 +228,7 @@ class Manager:
                 if os.path.exists( dl ):
                     os.remove( dl )
             except:
-                log.error.exc_info( sys.exc_info() )
+                log.error.exc_info( sys.exc_info(), self )
 
     def keyboard( self, default="", heading=__string__( 528 ) ):
         kb = xbmc.Keyboard( default, heading )
@@ -245,7 +245,7 @@ class Manager:
                 movie = movies[ selected ]
                 return int( movie[ 0 ] ), movie[ 1 ], movie[ 2 ]
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
         return -1, "", ""
 
     def selectMovieOfSet( self, idSet, heading ):
@@ -257,7 +257,7 @@ class Manager:
                 movie = movies[ selected ]
                 return int( movie[ "idMovie" ] ), movie[ "strTitle" ], movie[ "strSort" ]
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
         return -1, "", ""
 
     def selectSet( self, heading, showCount=False, create="" ):
@@ -284,7 +284,7 @@ class Manager:
                     return int( idSet ), strSet
                 break
         except:
-            log.error.exc_info( sys.exc_info() )
+            log.error.exc_info( sys.exc_info(), self )
         return -1, ""
 
 

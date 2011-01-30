@@ -4,8 +4,8 @@ __url__          = ""
 __svn_url__      = ""
 __credits__      = ""
 __platform__     = "xbmc media center, [LINUX, OS X, WIN32, XBOX]"
-__date__         = "20-08-2010"
-__version__      = "0.0.2"
+__date__         = "30-01-2011"
+__version__      = "0.0.3"
 __svn_revision__  = "$Revision: 000 $"
 __XBMC_Revision__ = "30000" #XBMC Babylon
 __useragent__ = "Edit Movie %s" % __version__
@@ -22,53 +22,64 @@ SOURCEPATH = os.getcwd()
 RESOURCES_PATH = os.path.join( SOURCEPATH , "resources" )
 sys.path.append( os.path.join( RESOURCES_PATH, "lib" ) )
 
-def m(txt):
-        xbmcgui.Dialog().ok("Msg" ,str(txt) )
-        
+
+g_tvshow_title = unicode( xbmc.getInfoLabel( "ListItem.TVShowTitle" ), "utf-8" )
+g_title = unicode( xbmc.getInfoLabel( "ListItem.Title" ), "utf-8" ) or g_tvshow_title
+g_filename = ( unicode( xbmc.getInfoLabel( "ListItem.FileName" ), "utf-8" ), "TVShow" )[ bool( g_tvshow_title ) ]
+
+
 class Edit(xbmcgui.WindowXMLDialog):
     def __init__(self, *args, **kwargs ):
         self.ex = 0
-    
+
     def onFocus( self, controlId ):
-        pass  
-        
+        pass
+
     def onInit( self ):
         try:
-            self.title = sys.argv[1]
-            self.file = sys.argv[2]
+            try:
+                self.title = "".join( sys.argv[ 1:2 ] ) or g_title    #sys.argv[1]
+                self.file  = "".join( sys.argv[ 2:3 ] ) or g_filename #sys.argv[2]
+                if ( "$INFO" in self.title ) or ( "$INFO" in self.file ):
+                    self.title, self.file = g_title, g_filename
+            except:
+                print_exc()
+                xbmcgui.Dialog().ok("Error" ,"Arguments missing!")
+                self.close()
+                return
+
+            self.visMov = xbmc.getCondVisibility('container.content(movies)')
+            self.visTv = xbmc.getCondVisibility('container.content(tvshows) | container.content(episodes) | container.content(seasons)')
+            if self.visMov:
+                self.mode = "movie"
+            elif self.visTv:
+                self.mode = "tvshow"
+            else:
+                xbmcgui.Dialog().ok("Error" ,"Run only on movie or tvshow container!")
+                self.close()
+                return
+
+            if self.mode == "movie":
+                sql_data = 'SELECT movie.idMovie, strFilename FROM movie,files WHERE movie.idFile=files.idFile AND strFilename=\"%s\" AND movie.c00=\"%s\"' % (self.file, self.title)
+            else:
+                sql_data = 'SELECT tvshow.idShow, tvshow.c00 FROM tvshow WHERE tvshow.c00=\"%s\"' % (self.title)
+            xml_data = xbmc.executehttpapi( "QueryVideoDatabase(%s)" % urllib.quote_plus( sql_data ), )
+            match = re.findall( "<field>(.*?)</field><field>(.*?)</field>", xml_data, re.DOTALL )
+            try:
+                self.idfilm = match[0][0]
+            except:
+                xbmcgui.Dialog().ok("Error" ,"Movie not found in DB!")
+                self.idfilm = 0
+            if self.idfilm == 0:
+                self.close()
+                return
+            self.getGenres()
+            self.getMovieGenres()
+            self.displayGenre()
         except:
-            xbmcgui.Dialog().ok("Error" ,"Arguments missing!")
+            print_exc()
             self.close()
-            return
-        self.visMov = xbmc.getCondVisibility('container.content(movies)')
-        self.visTv = xbmc.getCondVisibility('container.content(tvshows) | container.content(episodes) | container.content(seasons)')
-        if self.visMov:
-            self.mode = "movie"
-        elif self.visTv:
-            self.mode = "tvshow"
-        else:
-            xbmcgui.Dialog().ok("Error" ,"Run only on movie or tvshow container!")
-            self.close()
-            return
-            
-        if self.mode == "movie":
-            sql_data = 'SELECT movie.idMovie, strFilename FROM movie,files WHERE movie.idFile=files.idFile AND strFilename=\"%s\" AND movie.c00=\"%s\"' % (self.file, self.title)
-        else:
-            sql_data = 'SELECT tvshow.idShow, tvshow.c00 FROM tvshow WHERE tvshow.c00=\"%s\"' % (self.title)
-        xml_data = xbmc.executehttpapi( "QueryVideoDatabase(%s)" % urllib.quote_plus( sql_data ), )
-        match = re.findall( "<field>(.*?)</field><field>(.*?)</field>", xml_data, re.DOTALL )
-        try:
-            self.idfilm = match[0][0]
-        except:
-            xbmcgui.Dialog().ok("Error" ,"Movie not found in DB!")
-            self.idfilm = 0
-        if self.idfilm == 0:
-            self.close()
-            return
-        self.getGenres()
-        self.getMovieGenres()
-        self.displayGenre()
-            
+
     def displayGenre( self ):
         self.listGenre = self.getControl( 120 )
         for g in self.genres:
@@ -79,7 +90,7 @@ class Edit(xbmcgui.WindowXMLDialog):
                 listitem = xbmcgui.ListItem(g[1], g[0])
                 listitem.setIconImage("")
             self.listGenre.addItem( listitem )
-        
+
     def getMovieGenres(self):
         if self.mode == "movie":
             sql_data = 'SELECT idGenre FROM genrelinkmovie WHERE genrelinkmovie.idMovie=%s' % (self.idfilm)
@@ -87,14 +98,14 @@ class Edit(xbmcgui.WindowXMLDialog):
             sql_data = 'SELECT idGenre FROM genrelinktvshow WHERE genrelinktvshow.idShow=%s' % (self.idfilm)
         xml_data = xbmc.executehttpapi( "QueryVideoDatabase(%s)" % urllib.quote_plus( sql_data ), )
         self.movieGenres = re.findall( "<field>(.*?)</field>", xml_data, re.DOTALL ) # id of movie's genre
-        
-        
+
+
     def getGenres(self):
         sql_data = 'SELECT idGenre, strGenre FROM genre ORDER BY strGenre'
         xml_data = xbmc.executehttpapi( "QueryVideoDatabase(%s)" % urllib.quote_plus( sql_data ), )
         self.genres = re.findall( "<field>(.*?)</field><field>(.*?)</field>", xml_data, re.DOTALL )
         #genre[0][0]:id 1er genre, genre[0][1]:nom 1er genre
-       
+
     def onClick( self, controlId ):
         if controlId == 120: #List genre
             idSelGenre = self.genres[self.listGenre.getSelectedPosition()][0]
@@ -104,15 +115,15 @@ class Edit(xbmcgui.WindowXMLDialog):
             else:
                 self.movieGenres.append(idSelGenre)
                 self.listGenre.getSelectedItem().setIconImage("GenreEditorSel.png")
-        
-        if controlId == 23: #Cancel button
+
+        elif controlId == 23: #Cancel button
             if xbmcgui.Dialog().yesno('Confirm', 'If you choose yes, informations will not be save',"Are you sure ?"):
                 self.close()
-            
-        if controlId == 22: #save button
+
+        elif controlId == 22: #save button
             self.saving()
 
-        if controlId == 24: #Add button
+        elif controlId == 24: #Add button
             kb = xbmc.Keyboard('', 'Enter desired new genre', False)
             kb.doModal()
             if (kb.isConfirmed()):
@@ -123,26 +134,26 @@ class Edit(xbmcgui.WindowXMLDialog):
                     xbmcgui.Dialog().ok("Error" ,"Genre already exist!")
                 else:
                     sql_data = 'INSERT INTO genre ("strGenre") VALUES (\"%s\")' % (text)
-                    xml_data = xbmc.executehttpapi( "ExecVideoDatabase(%s)" % urllib.quote_plus( sql_data ), ) 
+                    xml_data = xbmc.executehttpapi( "ExecVideoDatabase(%s)" % urllib.quote_plus( sql_data ), )
                     self.listGenre.reset()
                     self.getGenres()
                     self.displayGenre()
-        if controlId == 25: #Del button
+        elif controlId == 25: #Del button
             idSelGenre = self.genres[self.listGenre.getSelectedPosition()][0]
             genreSel = self.listGenre.getSelectedItem().getLabel()
             sql_data = 'SELECT count(*) FROM genrelinkmovie WHERE idGenre=%s' % (idSelGenre)
             xml_data = xbmc.executehttpapi( "QueryVideoDatabase(%s)" % urllib.quote_plus( sql_data ), )
-            nbmov = re.findall( "<field>(.*?)</field>", xml_data, re.DOTALL )[0] # 
-            
+            nbmov = re.findall( "<field>(.*?)</field>", xml_data, re.DOTALL )[0] #
+
             sql_data = 'SELECT count(*) FROM genrelinktvshow WHERE idGenre=%s' % (idSelGenre)
             xml_data = xbmc.executehttpapi( "QueryVideoDatabase(%s)" % urllib.quote_plus( sql_data ), )
-            nbtv = re.findall( "<field>(.*?)</field>", xml_data, re.DOTALL )[0] # 
-            
+            nbtv = re.findall( "<field>(.*?)</field>", xml_data, re.DOTALL )[0] #
+
             sql_data = 'SELECT count(*) FROM genrelinkmusicvideo WHERE idGenre=%s' % (idSelGenre)
             xml_data = xbmc.executehttpapi( "QueryVideoDatabase(%s)" % urllib.quote_plus( sql_data ), )
-            nbmus = re.findall( "<field>(.*?)</field>", xml_data, re.DOTALL )[0] # 
-            
-            line1 = 'Delete ' + genreSel + ' genre of DB and of' 
+            nbmus = re.findall( "<field>(.*?)</field>", xml_data, re.DOTALL )[0] #
+
+            line1 = 'Delete ' + genreSel + ' genre of DB and of'
             line2 = nbmov + ' movie(s), ' + nbtv + ' TvShow(s) and ' + nbmus + ' musicvideo(s)'
             line3 = 'who use it ?'
             dialog = xbmcgui.Dialog().yesno('Confirm', line1, line2, line3 )
@@ -154,11 +165,11 @@ class Edit(xbmcgui.WindowXMLDialog):
                 sql_data = 'DELETE FROM genrelinkmusicvideo WHERE idGenre=%s' % (idSelGenre)
                 xml_data = xbmc.executehttpapi( "ExecVideoDatabase(%s)" % urllib.quote_plus( sql_data ), )
                 sql_data = 'DELETE FROM genre WHERE idGenre=%s' % (idSelGenre)
-                xml_data = xbmc.executehttpapi( "ExecVideoDatabase(%s)" % urllib.quote_plus( sql_data ), ) 
+                xml_data = xbmc.executehttpapi( "ExecVideoDatabase(%s)" % urllib.quote_plus( sql_data ), )
                 self.listGenre.reset()
                 self.getGenres()
                 self.displayGenre()
-            
+
     def saving(self):
         listIdGenres = []
         listStrGenres = []
@@ -188,9 +199,9 @@ class Edit(xbmcgui.WindowXMLDialog):
         self.close()
 
 
-if ( __name__ == "__main__" ): 
-    
-    
+if ( __name__ == "__main__" ):
+
+
     ui = Edit( "Script-GenreEditor.xml", os.getcwd(), "Default" )
     ui.doModal()
     ex = ui.ex
@@ -203,7 +214,5 @@ if ( __name__ == "__main__" ):
         xbmc.executebuiltin( 'Container.Refresh' )
         if wid == 12003:
             xbmc.executebuiltin( "Action(Info)")
-    
+
     #xbmc.executebuiltin('ActivateWindow(2003)')
-    
-    
