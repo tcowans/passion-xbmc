@@ -1,3 +1,7 @@
+1.0.5
+ - fixed: getUnofficialRevision
+ - added: label2 on AddonInfoList
+
 1.0.4
  - re-added: Unofficial Nightly Builds for "Windows DX" only
 

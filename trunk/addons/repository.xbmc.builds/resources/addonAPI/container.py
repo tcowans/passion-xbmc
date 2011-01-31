@@ -115,6 +115,7 @@ class Main:
             listitem.setProperty( "Addon.Description", CURRENT_XBMC )
             listitem.setProperty( "Addon.Type", "Live / OSX / Win32" )
             listitem.setProperty( "Addon.Version", "Stable" )
+            listitem.setProperty( "Addon.Status", "Stable" )
             # ContextMenu: add open and visit repo
             if UNDER_XBOX: c_items = []
             else: c_items = [ ( "Visit Official Repo", 'RunPlugin(%s?action="\'visitrepo\'")' % sys.argv[ 0 ] ) ]
@@ -124,7 +125,7 @@ class Main:
             if ( not OK ): raise
 
             #Nightlies (SVN)
-            title = "Nightlies (Git / SVN)"
+            title = "Nightlies (Git - SVN)"
             icon = XBMC_ICON#"DefaultNetwork.png"
             listitem = xbmcgui.ListItem( title, "", icon )
             listitem.setProperty( "Addon.Name", title )
@@ -132,7 +133,8 @@ class Main:
             listitem.setProperty( "Addon.StarRating", "rating4.png" )
             listitem.setProperty( "Addon.Description", CURRENT_XBMC )
             listitem.setProperty( "Addon.Type", "Live / OSX / Win32" )
-            listitem.setProperty( "Addon.Version", "Git / SVN" )
+            listitem.setProperty( "Addon.Version", "Git - SVN" )
+            listitem.setProperty( "Addon.Status", "Git - SVN" )
             # ContextMenu: add open and visit repo
             if UNDER_XBOX: c_items = []
             else: c_items = [ ( "Visit Official Repo", 'RunPlugin(%s?action="\'visitrepo\'")' % sys.argv[ 0 ] ) ]
@@ -159,7 +161,28 @@ class Main:
             #    OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=True )
             #    if ( not OK ): raise
 
-            if os.listdir( DL_INFO_PATH ):
+            #Unofficial Nightly Builds
+            uoRevision = repo.getUnofficialRevision()
+            if uoRevision:
+                title = "Unofficial Nightly Builds From Git"
+                icon = os.path.join( MEDIA_PATH, "win.png" )#XBMC_ICON#"DefaultNetwork.png"
+                listitem = xbmcgui.ListItem( title, "", icon )
+                listitem.setProperty( "Addon.Name", title )
+                listitem.setProperty( "Addon.Creator", "xbmcsvn.com" )
+                listitem.setProperty( "Addon.StarRating", "rating4.png" )
+                listitem.setProperty( "Addon.Description", CURRENT_XBMC )
+                listitem.setProperty( "Addon.Type", "Windows DX" )
+                listitem.setProperty( "Addon.Version", "Git:%s" % uoRevision )
+                listitem.setProperty( "Addon.Status", "Git:%s" % uoRevision )
+                if UNDER_XBOX: c_items = []
+                else: c_items = [ ( "Visit Unofficial Repo", 'RunPlugin(%s?action="\'visitunorepo\'")' % sys.argv[ 0 ] ) ]
+                listitem = self.addContextMenuAction( listitem, c_items )
+                url = '%s?action="DL"&listurl="unofficial"' % ( sys.argv[ 0 ] )
+                OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=True )
+                if ( not OK ): raise
+
+            dlprogress = len( os.listdir( DL_INFO_PATH ) )
+            if dlprogress:
                 # download progress
                 title = "Téléchargements en cours"
                 icon = "DefaultHardDisk.png"
@@ -167,27 +190,11 @@ class Main:
                 listitem.setProperty( "Addon.Name", title )
                 listitem.setProperty( "Addon.StarRating", "rating0.png" )
                 listitem.setProperty( "Addon.Description", CURRENT_XBMC )
+                listitem.setProperty( "Addon.Status", "[B](%i)[/B]" % ( dlprogress, ) )
                 listitem = self.addContextMenuAction( listitem, [] )
                 url = '%s?action="dlprogress"' % ( sys.argv[ 0 ] )
                 OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=True )
                 if ( not OK ): raise
-
-            #Unofficial Nightly Builds
-            title = "Unofficial Nightly Builds From Git"
-            icon = os.path.join( MEDIA_PATH, "win.png" )#XBMC_ICON#"DefaultNetwork.png"
-            listitem = xbmcgui.ListItem( title, "", icon )
-            listitem.setProperty( "Addon.Name", title )
-            listitem.setProperty( "Addon.Creator", "xbmcsvn.com" )
-            listitem.setProperty( "Addon.StarRating", "rating4.png" )
-            listitem.setProperty( "Addon.Description", CURRENT_XBMC )
-            listitem.setProperty( "Addon.Type", "Windows DX" )
-            listitem.setProperty( "Addon.Version", "Git:%s" % repo.getUnofficialRevision() )
-            if UNDER_XBOX: c_items = []
-            else: c_items = [ ( "Visit Unofficial Repo", 'RunPlugin(%s?action="\'visitunorepo\'")' % sys.argv[ 0 ] ) ]
-            listitem = self.addContextMenuAction( listitem, c_items )
-            url = '%s?action="DL"&listurl="unofficial"' % ( sys.argv[ 0 ] )
-            OK = xbmcplugin.addDirectoryItem( handle=int( sys.argv[ 1 ] ), url=url, listitem=listitem, isFolder=True )
-            if ( not OK ): raise
 
             #browse
             title = "Update from custom build"

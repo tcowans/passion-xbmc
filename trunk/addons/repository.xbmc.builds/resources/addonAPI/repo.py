@@ -133,7 +133,9 @@ def getAvailableUpdates( platform="win32", revision=35567 ):
 
 def getUnofficialRevision():
     html = get_html_source( "http://www.sshcs.com/xbmc/?mode=DXB" )
-    return "".join( re.compile( '<title>.*?((?:[a-z][a-z]*[0-9]+[a-z0-9]*)).*?</title>' ).findall( html )[ :1 ] )
+    rev = re.compile( '<meta name="description" content=".*?((?:[a-z][a-z]*[0-9]+[a-z0-9]*))' ).search( html )
+    if rev: return rev.group( 1 ).replace( "r", "", 1 )#.lstrip( "r" )
+    return ""
 
 def getUnofficialBuildLlink( revision, selected ):
     revision = revision or getUnofficialRevision()
@@ -141,7 +143,7 @@ def getUnofficialBuildLlink( revision, selected ):
     tf = ( "rar", "rar", "zip" )[ selected ]
     url_build = "http://www.sshcs.com/xbmc/Binaries/Builds/XBMC_%s_%s.%s"
     return url_build % ( ft, revision, tf )
-
+'''
 def getUnofficialBuilds( url="http://www.sshcs.com/xbmc/" ):
     """ Unofficial Nightly Builds From SVN """
     builds = []
@@ -165,7 +167,7 @@ def getUnofficialBuilds( url="http://www.sshcs.com/xbmc/" ):
             "filename": filename, "isFolder": False, "date": "", "size": 0, "year": 0, "lastplayed": "" }
         builds.append( link )
     return builds
-
+'''
 
 def getChangelog():
     changelog = ""
