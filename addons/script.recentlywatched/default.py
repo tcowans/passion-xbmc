@@ -44,6 +44,7 @@ class Main:
             params = {}
         # set our preferences
         self.LIMIT = int( params.get( "limit", "5" ) )
+        self.ACTOR_LIMIT  = int( params.get( "actorlimit", "25" ) )
 #         self.ALBUMS = params.get( "albums", "" ) == "True"
 #         self.UNPLAYED = params.get( "unplayed", "" ) == "True"
         self.PLAY_TRAILER = params.get( "trailer", "" ) == "True"
@@ -208,8 +209,8 @@ class Main:
     def _fetch_actors_info( self ):
         print "### MOST REPRESENTED ACTOR"
         # sql statement for actors
-        #sql_actors ="SELECT COUNT(actorlinkmovie.idActor), actorlinkmovie.idActor, actors.strActor, actors.strThumb FROM actorlinkmovie INNER JOIN actors ON actorlinkmovie.idActor=actors.idActor GROUP BY actorlinkmovie.idActor order by RANDOM() DESC LIMIT %s" % ( self.LIMIT, ) #order by  COUNT(actorlinkmovie.idActor)
-        sql_actors ="SELECT COUNT(actorlinkmovie.idActor), actorlinkmovie.idActor, actors.strActor, actors.strThumb FROM actorlinkmovie INNER JOIN actors ON actorlinkmovie.idActor=actors.idActor GROUP BY actorlinkmovie.idActor order by COUNT(actorlinkmovie.idActor) DESC LIMIT %s" % ( self.LIMIT, ) #
+        #sql_actors ="SELECT COUNT(actorlinkmovie.idActor), actorlinkmovie.idActor, actors.strActor, actors.strThumb FROM actorlinkmovie INNER JOIN actors ON actorlinkmovie.idActor=actors.idActor GROUP BY actorlinkmovie.idActor order by RANDOM() DESC LIMIT %s" % ( self.ACTOR_LIMIT, ) #order by  COUNT(actorlinkmovie.idActor)
+        sql_actors ="SELECT COUNT(actorlinkmovie.idActor), actorlinkmovie.idActor, actors.strActor, actors.strThumb FROM actorlinkmovie INNER JOIN actors ON actorlinkmovie.idActor=actors.idActor GROUP BY actorlinkmovie.idActor order by COUNT(actorlinkmovie.idActor) DESC LIMIT %s" % ( self.ACTOR_LIMIT, ) #
         # query the database
         actors_xml = xbmc.executehttpapi( "QueryVideoDatabase(%s)" % quote_plus( sql_actors ), ) 
         # separate the records
@@ -219,13 +220,16 @@ class Main:
         for actor in actors :
             # separate individual fields
             fields = re.findall( "<field>(.*?)</field>", actor, re.DOTALL )
-            # set properties  
-            print "### %s - %s" % (fields[ 2 ] ,fields[ 0 ] )
-            actor_data = self._get_actor_page( fields[ 2 ] )
+            # set properties
+            print "### %s %s - %s" % (fields [ 1 ], fields[ 2 ] ,fields[ 0 ] )
+            actor_data = self._get_actor_page( fields[ 2 ], fields[ 1 ] )
             all_actors.append(actor_data)
+			
             
         for gencount , i in enumerate(all_actors):
             self.WINDOW.setProperty( "ActorStuff.%d.name" % ( gencount + 1, ), i.get("name", "" ) ) 
+            self.WINDOW.setProperty( "ActorStuff.%d.ID" % ( gencount + 1, ), i.get("actorID", "" ) )
+            print "### DJP!! %s" % i.get("actorID", "" )
             if len(i.get("images", "" )) >> 1:
                 for count, image in enumerate( i.get("images", "" ) ): self.WINDOW.setProperty( "ActorStuff.%d.images%d" % ( gencount + 1, count + 1 ), image )
             elif len(i.get("images", "" )) == 1: self.WINDOW.setProperty( "ActorStuff.%d.images1" % ( gencount + 1, ), i.get("images", "" )[0] )
@@ -237,7 +241,7 @@ class Main:
                     self.WINDOW.setProperty( "ActorStuff.%d.info%d" % ( gencount + 1, count + 1 ), info + ":" + i["bloc"][info] )
             print "######################"
      
-    def _get_actor_page( self, actorname ):
+    def _get_actor_page( self, actorname, actorID ):
         lang = "en"
         url = "http://%s.wikipedia.org/wiki/" % lang + actorname.replace(" " , "_" )
         data = self.get_html_source(url)
@@ -245,6 +249,7 @@ class Main:
         result = re.findall(r'(?s)<tr class="">\s+<th scope="row" style="text-align:left;">(.*?)</th>\s+<td class=".*?" style="">(.*?)</td>\s+</tr>', data)
         actor_dic = {}
         actor_dic["name"] = actorname
+        actor_dic["actorID"] = actorID
         block_dic = {}
         for item in result:
             try:
