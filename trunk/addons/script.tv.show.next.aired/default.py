@@ -8,7 +8,7 @@ __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/addons/script.t
 __credits__      = "Team Passion-XBMC, http://passion-xbmc.org/"
 __platform__     = "xbmc media center, [ALL]"
 __date__         = "17-10-2010"
-__version__      = "2.1.2"
+__version__      = "2.1.3"
 __svn_revision__ = "$Revision$"
 __useragent__ = "Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.0.1) Gecko/2008070208 Firefox/3.6"
 
@@ -174,6 +174,7 @@ class NextAired:
                 self.WINDOW.setProperty( "NextAired.%d.airday" % ( count + 1, ), airday)
                 self.WINDOW.setProperty( "NextAired.%d.shortime" % ( count + 1, ), shortime)
             except: print "### %s" % current_show.get("Airtime", "  at  " )
+            print current_show.get( "librarypath" , "False")
             #print airday, shortime
             
             
@@ -208,6 +209,7 @@ class NextAired:
             print "###%s" % show[0]
             current_show["localname"] = show[0]
             current_show["path"] = show[1]
+            current_show["librarypath"] = show[2]
             if show[0] in self.canceled: print "### %s canceled/Ended" % show[0]
             else:
                 self.get_show_info( current_show )
@@ -263,13 +265,13 @@ class NextAired:
         
     def listing(self):
         # sql statement for tv shows
-        sql_data = "select tvshow.c00 , path.strPath from tvshow , path , tvshowlinkpath where path.idPath = tvshowlinkpath.idPath AND tvshow.idShow = tvshowlinkpath.idShow GROUP BY tvshow.c00"
+        sql_data = "select tvshow.c00 , path.strPath , tvShow.idShow from tvshow , path , tvshowlinkpath where path.idPath = tvshowlinkpath.idPath AND tvshow.idShow = tvshowlinkpath.idShow GROUP BY tvshow.c00"
         xml_data = xbmc.executehttpapi( "QueryVideoDatabase(%s)" % urllib.quote_plus( sql_data ), )
-        match = re.findall( "<field>(.*?)</field><field>(.*?)</field>", xml_data, re.DOTALL )
+        match = re.findall( "<field>(.*?)</field><field>(.*?)</field><field>(.*?)</field>", xml_data, re.DOTALL )
         try:
             self.TVlist = []
             for import_base in match:
-                try: self.TVlist.append( (import_base[0] , import_base[1] ) )
+                try: self.TVlist.append( (import_base[0] , import_base[1], import_base[2] ) )
                 except:
                     print "### error in listing()"
                     print_exc()
