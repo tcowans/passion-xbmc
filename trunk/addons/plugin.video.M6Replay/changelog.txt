@@ -1,4 +1,7 @@
-1.4.1(22-02-2011) par Temhil et beenje
+1.4.2 (23-02-2011) par Temhil
++ Configure le serveur 2 par defaut (a la place sur serveur 1)
+
+1.4.1 (22-02-2011) par Temhil et beenje
 + Ajout de pycrypto pour ATV2 (patch de beenje)
 + Correction bug encodage (patch de beenje)
 + Correction bug affichage des jours de la semaines (decalage)
