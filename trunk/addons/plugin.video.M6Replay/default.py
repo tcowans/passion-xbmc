@@ -1,7 +1,13 @@
+# -*- coding: utf-8 -*-
 """
 
 plugin video M6 Replay pour XBMC 
 
+22-02-2011 Version 1.4.1 par Temhil et beenje
+    + Ajout de pycrypto pour ATV2 (patch de beenje)
+    + Correction bug encodage (patch de beenje)
+    + Correction bug affichage des jours de la semaines (decalage)
+    
 02-01-2011 Version 1.4.0 par Temhil
     + Ajout du choix du serveur dans les parametres du plugin
     + Utilisation de setResolvedUrl permettant d'utiliser le player par defaut d'XBMC:
@@ -29,8 +35,8 @@ __addonID__      = "plugin.video.M6Replay"
 __author__       = "PECK, mighty_bombero, merindol, Temhil"
 __url__          = "http://passion-xbmc.org/index.php"
 __credits__      = "Team XBMC Passion"
-__date__         = "02-01-2010"
-__version__      = "1.4.0"
+__date__         = "22-02-2010"
+__version__      = "1.4.1"
 
 import urllib,sys,os,platform
 import base64
@@ -89,7 +95,7 @@ dirCheckList   = ( CACHEDIR, )
 # Check the platform
 SYSTEM_PLATFORM = None
 CRYPTO_PATH = None
-if xbmc.getCondVisibility( "system.platform.linux" ) or xbmc.getCondVisibility( "system.platform.osx" ):
+if xbmc.getCondVisibility( "system.platform.linux" ):
     SYSTEM_PLATFORM = "linux"
     CRYPTO_PATH = os.path.join( __addonDir__, "resources", "platform_libraries", platform.system(), platform.architecture()[0] )
 elif xbmc.getCondVisibility( "system.platform.xbox" ):
@@ -100,12 +106,18 @@ elif xbmc.getCondVisibility( "system.platform.windows" ):
     # Only 32bits on Windows for timebeing
     CRYPTO_PATH = os.path.join( __addonDir__, "resources", "platform_libraries", "Windows", "32bit" )
 elif xbmc.getCondVisibility( "system.platform.osx" ):
-    SYSTEM_PLATFORM = "osx"
-    CRYPTO_PATH = os.path.join( __addonDir__, "resources", "platform_libraries", "Windows", "32bit" )
+    SYSTEM_PLATFORM = "darwin"
+    if 'RELEASE_ARM' in os.uname()[3]:
+        architecture = 'arm'
+    else:
+        architecture = platform.architecture()[0]
+    CRYPTO_PATH = os.path.join( __addonDir__, "resources", "platform_libraries", os.uname()[0], architecture )
 if CRYPTO_PATH:
     sys.path.append(CRYPTO_PATH)
 else:
     print "Impossible to determine the platform and set an import path"
+
+#print "CRYPTO_PATH: %s"%CRYPTO_PATH
 
 # Import Crypto lib
 from Crypto.Cipher import DES
