@@ -37,8 +37,7 @@ def convertTime2FrenchString(time):
                          u'DECEMBRE'  
                         ]
         
-        int2wdayTxt =  [ u'INVALIDE' ,
-                         u'LUNDI'   , # We start at 1
+        int2wdayTxt =  [ u'LUNDI'   , # We start at 0
                          u'MARDI'   , 
                          u'MERCREDI', 
                          u'JEUDI'   , 

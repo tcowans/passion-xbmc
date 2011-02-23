@@ -1,7 +1,13 @@
+# -*- coding: utf-8 -*-
 """
 
 Add-on plugin video W9 Replay pour XBMC 
 
+23-02-2011 Version 1.2.1 par Temhil
+    + Configure le serveur 2 par defaut (a la place sur serveur 1)
+    + Correction bug affichage des jours de la semaines (decalage)
+    + Correction bug encodage
+    
 02-01-2011 Version 1.2.0 par Temhil
     + Ajout du choix du serveur dans les parametres du plugin
     + Utilisation de setResolvedUrl permettant d'utiliser le player par defaut d'XBMC:
@@ -31,7 +37,7 @@ __author__       = "PECK, mighty_bombero, merindol, Temhil (passion-xbmc.org)"
 __url__          = "http://passion-xbmc.org/index.php"
 __credits__      = "Team XBMC Passion"
 __date__         = "02-01-2010"
-__version__      = "1.3.0"
+__version__      = "1.2.1"
 
 import urllib,sys,os,platform
 import string
