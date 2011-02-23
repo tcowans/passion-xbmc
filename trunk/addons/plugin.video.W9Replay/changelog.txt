@@ -1,4 +1,9 @@
-[B]1.2.0 (02-01-2011) [I]par Temhil[/I][/B]
+1.2.1 (23-02-2011) par Temhil
++ Configure le serveur 2 par defaut (a la place sur serveur 1)
++ Correction bug affichage des jours de la semaines (decalage)
++ Correction bug encodage
+
+1.2.0 (02-01-2011) par Temhil
 + Ajout du choix du serveur dans les parametres du plugin
 + Utilisation de setResolvedUrl permettant d'utiliser le player par defaut d'XBMC:
   . Cela evite des problemes d'affichage lors du chargement de la video
@@ -10,10 +15,10 @@
   lent, mais a moins de faire d'importantes modification du design actuel, cette solution reste
   un bon compromis 
 
-[B]1.1.0 (20-12-2010) [I]par Temhil[/I][/B]
-- Merge avec le add-on M6 replay 1.3.0
-- Convertion uf format Add-on compatible Dharma
-- Permet l'acces aux videos en dehors de la France
+1.1.0 (20-12-2010) par Temhil
++ Merge avec le add-on M6 replay 1.3.0
++ Convertion uf format Add-on compatible Dharma
++ Permet l'acces aux videos en dehors de la France
 
-[B]1.0.0 (16-06-2010) [I]par PECK[/I][/B]
-- Creation
+1.0.0 (16-06-2010) par PECK
++ Creation
