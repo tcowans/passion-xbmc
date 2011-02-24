@@ -172,7 +172,8 @@ def unzip( filename, destination=None, report=False ):
                 root, name = os.path.split( item )
                 directory = os.path.normpath( os.path.join( destination, root ) )
                 if not os.path.isdir( directory ): os.makedirs( directory )
-                file( os.path.join( directory, name ), "wb" ).write( zip.read( item ) )
+                filename = xbmc.makeLegalFilename( os.path.join( directory, name ), True )
+                file( filename, "wb" ).write( zip.read( item ) )
         zip.close()
         del zip
         return base_dir, True

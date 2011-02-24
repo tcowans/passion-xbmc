@@ -13,10 +13,11 @@ __author__       = "Frost & Temhil (http://passion-xbmc.org)"
 __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/programs/Addons4xbox/"
 __credits__      = "Team XBMC Passion"
-__platform__     = "xbmc media center"
+__platform__     = "xbmc media center [XBOX]]"
 __date__         = "11-28-2010"
-__version__      = "0.4"
+__version__      = "dev0.5"
 __svn_revision__ = 0
+__XBMC_Revision__= 30805
 
 
 import os
@@ -61,7 +62,8 @@ try:
 except:
     print_exc()
 
-
+# get xbmc run under?
+platform = os.environ.get( "OS", "xbox" )
 
 class Addons4xboxInstallerPlugin:
     """
@@ -148,31 +150,73 @@ class Addons4xboxInstallerPlugin:
     
 
     def __init__( self, *args, **kwargs ):
-        self._get_settings()
-        self.parameters = self._parse_params()
+        if _check_compatible():
+            self._get_settings()
+            self.parameters = self._parse_params()
 
-        #TODO: if 1st start create missing dir
-        self.fileMgr = fileMgr()
-        #self.fileMgr.verifrep( get_install_path( TYPE_ADDON ) )
-        self.fileMgr.verifrep( DIR_ADDON_MODULE )
-        self.fileMgr.verifrep( DIR_CACHE )
-        
-        # Check settings
-        if ( xbmcplugin.getSetting('first_run') == 'true' ):
-            #xbmcplugin.openSettings(sys.argv[0])
-            print "First run of Addons Installer Plugin, ckeling if Addon Libraries are installed"
-            self.installLibs()
-        else:
+            #TODO: if 1st start create missing dir
+            self.fileMgr = fileMgr()
+            #self.fileMgr.verifrep( get_install_path( TYPE_ADDON ) )
+            self.fileMgr.verifrep( DIR_ADDON_MODULE )
+            self.fileMgr.verifrep( DIR_CACHE )
+            
+            # # Check settings
+            # if ( xbmcplugin.getSetting('first_run') == 'true' ):
+                # #xbmcplugin.openSettings(sys.argv[0])
+                # print "First run of Addons Installer Plugin, ckeling if Addon Libraries are installed"
+                # self.installLibs()
+            # else:
+                # try:
+                    # import xbmcaddon
+                    # #TODO: add import on each module or none
+                    # #dialog = xbmcgui.Dialog()
+                    # #dialog.ok( __language__(30000), __language__(30002) )
+                    # print "XBMC Addon 4 XBOX Addon Library already installed"
+                    # xbmcplugin.setSetting('first_run','false')
+                    # self.select()
+                # except ImportError:
+                    # self.installLibs()
             try:
                 import xbmcaddon
-                #TODO: add import on each module or none
-                #dialog = xbmcgui.Dialog()
-                #dialog.ok( __language__(30000), __language__(30002) )
-                print "XBMC Addon 4 XBOX Addon Library already installed"
+                xbmc.log( "     **XBMC Addon 4 XBOX Addon Library already installed"
                 xbmcplugin.setSetting('first_run','false')
                 self.select()
             except ImportError:
+                dialog = xbmcgui.Dialog()
+                dialog.ok( __language__(30000), __language__(30091) )
                 self.installLibs()
+
+
+
+
+    def _check_compatible(self):
+        xbmcgui = None
+        try:
+            # spam plugin statistics to log
+            xbmc.log( "[PLUGIN] '%s: Version - %s-r%s' initialized!" % ( __plugin__, __version__, __svn_revision__.replace( "$", "" ).replace( "Revision", "" ).strip( ": " ) ), xbmc.LOGNOTICE )
+            # get xbmc revision
+            xbmc_version = xbmc.getInfoLabel( "System.BuildVersion" )
+            xbmc_rev = int( xbmc_version.split( " " )[ 1 ].replace( "r", "" ) )
+            # compatible?
+            ok = xbmc_rev >= int( __XBMC_Revision__ )
+        except:
+            # error, so unknown, allow to run
+            xbmc_rev = 0
+            ok = 2
+        # spam revision info
+        xbmc.log( "     ** Required XBMC Revision: r%s **" % ( __XBMC_Revision__, ), xbmc.LOGNOTICE )
+        xbmc.log( "     ** Found XBMC Revision: r%d [%s] **" % ( xbmc_rev, ( "Not Compatible", "Compatible", "Unknown", )[ ok ], ), xbmc.LOGNOTICE )
+        # if not compatible, inform user
+        if ( not ok ):
+            xbmcgui.Dialog().ok( "%s - %s: %s" % ( __plugin__, xbmc.getLocalizedString( 30900 ), __version__, ), xbmc.getLocalizedString( 30901 ) % ( __plugin__, ), xbmc.getLocalizedString( 30902 ) % ( __XBMC_Revision__, ), xbmc.getLocalizedString( 30903 ) )
+        #if not xbmc run under xbox, inform user
+        if ( platform.upper() not in __platform__ ):
+            ok = 0
+            xbmc.log( "system::os.environ [%s], This plugin run under %s only." % ( platform, __platform__, ), xbmc.LOGERROR )
+            if xbmcgui is None:
+                xbmcgui.Dialog().ok( __plugin__, "%s: system::os.environ [[COLOR=ffe2ff43]%s[/COLOR]]" % ( xbmc.getLocalizedString( 30904 ), platform, ), xbmc.getLocalizedString( 30905 ) % __platform__ )
+        #return result
+        return ok
 
     def installLibs(self):
         try:

@@ -86,6 +86,8 @@
 
     <!-- Update error messages -->
     <string id="30090">There was an error installing item!</string>
+    <string id="30091">xbmcaddon missing the version of XBMC4XBOX you are running is probably too old</string>
+    
     
     <!--ADDONS TYPE STRINGS -->
     <string id="30100">Add-ons</string>
@@ -106,4 +108,11 @@
     <string id="30203">Install from zip file</string>
     <string id="30204">Get Add-ons</string>
     
+    <!-- compatible messages -->
+    <string id="30900">version</string>
+    <string id="30901">This version of %s requires an</string>
+    <string id="30902">XBMC revision of %s or greater to run.</string>
+    <string id="30903">Please update your XBMC.</string>
+    <string id="30904">Error</string>
+    <string id="30905">This plugin run under[CR][COLOR=ffe2ff43]%s[/COLOR] only.</string>    
 </strings>
