@@ -14,7 +14,7 @@ from traceback import print_exc
 
 # Modules XBMC
 from xbmcgui import DialogProgress
-from xbmc import executebuiltin, sleep
+from xbmc import executebuiltin, sleep, makeLegalFilename
 
 # Modules Custom
 import shutil2
@@ -172,7 +172,7 @@ def unzip( filename, destination=None, report=False ):
                 root, name = os.path.split( item )
                 directory = os.path.normpath( os.path.join( destination, root ) )
                 if not os.path.isdir( directory ): os.makedirs( directory )
-                filename = xbmc.makeLegalFilename( os.path.join( directory, name ), True )
+                filename = makeLegalFilename( os.path.join( directory, name ), True )
                 file( filename, "wb" ).write( zip.read( item ) )
         zip.close()
         del zip

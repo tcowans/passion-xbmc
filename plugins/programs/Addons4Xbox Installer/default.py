@@ -1,5 +1,6 @@
 """
    Simulating xbmcaddon library for XBox
+   Special thanks to Frost
 """
 
 REMOTE_DBG       = False 
@@ -9,13 +10,13 @@ REMOTE_DBG       = False
 __script__       = "Unknown"
 __plugin__       = "Addons4Xbox Installer"
 #__author__       = authorUI + " and " + authorCore
-__author__       = "Frost & Temhil (http://passion-xbmc.org)"
+__author__       = "Temhil (http://passion-xbmc.org)"
 __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/programs/Addons4xbox/"
 __credits__      = "Team XBMC Passion"
-__platform__     = "xbmc media center [XBOX]]"
-__date__         = "11-28-2010"
-__version__      = "dev0.5"
+__platform__     = "xbmc media center [XBOX]"
+__date__         = "02-25-2010"
+__version__      = "0.5"
 __svn_revision__ = 0
 __XBMC_Revision__= 30805
 
@@ -150,7 +151,7 @@ class Addons4xboxInstallerPlugin:
     
 
     def __init__( self, *args, **kwargs ):
-        if _check_compatible():
+        if True: #self._check_compatible():
             self._get_settings()
             self.parameters = self._parse_params()
 
@@ -178,7 +179,7 @@ class Addons4xboxInstallerPlugin:
                     # self.installLibs()
             try:
                 import xbmcaddon
-                xbmc.log( "     **XBMC Addon 4 XBOX Addon Library already installed"
+                print( "     **XBMC Addon 4 XBOX Addon Library already installed")
                 xbmcplugin.setSetting('first_run','false')
                 self.select()
             except ImportError:
@@ -193,26 +194,29 @@ class Addons4xboxInstallerPlugin:
         xbmcgui = None
         try:
             # spam plugin statistics to log
-            xbmc.log( "[PLUGIN] '%s: Version - %s-r%s' initialized!" % ( __plugin__, __version__, __svn_revision__.replace( "$", "" ).replace( "Revision", "" ).strip( ": " ) ), xbmc.LOGNOTICE )
+            print( "[PLUGIN] '%s: Version - %s-r%s' initialized!" % ( __plugin__, __version__, __svn_revision__.replace( "$", "" ).replace( "Revision", "" ).strip( ": " ) ) )
             # get xbmc revision
             xbmc_version = xbmc.getInfoLabel( "System.BuildVersion" )
             xbmc_rev = int( xbmc_version.split( " " )[ 1 ].replace( "r", "" ) )
             # compatible?
             ok = xbmc_rev >= int( __XBMC_Revision__ )
+            print xbmc_rev
+            print __XBMC_Revision__
         except:
             # error, so unknown, allow to run
+            print_exc()
             xbmc_rev = 0
             ok = 2
         # spam revision info
-        xbmc.log( "     ** Required XBMC Revision: r%s **" % ( __XBMC_Revision__, ), xbmc.LOGNOTICE )
-        xbmc.log( "     ** Found XBMC Revision: r%d [%s] **" % ( xbmc_rev, ( "Not Compatible", "Compatible", "Unknown", )[ ok ], ), xbmc.LOGNOTICE )
+        print( "     ** Required XBMC Revision: r%s **" % ( __XBMC_Revision__, ) )
+        print( "     ** Found XBMC Revision: r%d [%s] **" % ( xbmc_rev, ( "Not Compatible", "Compatible", "Unknown", )[ ok ], ) )
         # if not compatible, inform user
         if ( not ok ):
             xbmcgui.Dialog().ok( "%s - %s: %s" % ( __plugin__, xbmc.getLocalizedString( 30900 ), __version__, ), xbmc.getLocalizedString( 30901 ) % ( __plugin__, ), xbmc.getLocalizedString( 30902 ) % ( __XBMC_Revision__, ), xbmc.getLocalizedString( 30903 ) )
         #if not xbmc run under xbox, inform user
         if ( platform.upper() not in __platform__ ):
             ok = 0
-            xbmc.log( "system::os.environ [%s], This plugin run under %s only." % ( platform, __platform__, ), xbmc.LOGERROR )
+            print( "system::os.environ [%s], This plugin run under %s only." % ( platform, __platform__, ) )
             if xbmcgui is None:
                 xbmcgui.Dialog().ok( __plugin__, "%s: system::os.environ [[COLOR=ffe2ff43]%s[/COLOR]]" % ( xbmc.getLocalizedString( 30904 ), platform, ), xbmc.getLocalizedString( 30905 ) % __platform__ )
         #return result
