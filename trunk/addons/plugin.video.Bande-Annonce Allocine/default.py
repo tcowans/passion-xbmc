@@ -140,7 +140,7 @@ def get_film_list( url , database = False):
     pager = 1
     try: nbpage = int(re.findall( '<span class="navcurrpage">.*</span>(.*?)</li>', page_data )[0].strip( " / "))
     except:
-        nbpage = "error"
+        nbpage = 10
         print "impossible de trouver le nb de page"
         print_exc()
     print "nb pages: %s" % nbpage
@@ -202,7 +202,8 @@ def get_film_list( url , database = False):
                 print "###################type#############################"
                 print film["type"]
                 count = count+1
-                ratio= int(100*float(count)/float(total_item))
+                try: ratio= int(100*float(count)/float(total_item))
+                except: ratio=0
                 
                 
                 
