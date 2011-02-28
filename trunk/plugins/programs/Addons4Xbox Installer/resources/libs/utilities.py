@@ -26,6 +26,8 @@ __all__ = [
     "get_infos_path",
     "replaceStrs",
     "set_cache_thumb_name",
+    "RecursiveDialogProgress",
+    "checkURL",
     ]
 
 #Modules general
@@ -37,6 +39,9 @@ import htmllib
 import urllib
 
 from traceback import print_exc
+#from httplib import HTTP
+#from urlparse import urlparse
+import urllib2 
 
 #modules XBMC
 import xbmc
@@ -55,13 +60,13 @@ RSS_FEEDS_XML = os.path.join( CWD, "resources", "RssFeeds.xml" )
 BASE_THUMBS_PATH = os.path.join( sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA, "Thumbnails" )
 
 
-def copy_dir( dirname, destination, overwrite=True ):
+def copy_dir( dirname, destination, overwrite=True, progressBar=None, percentage=100 ):
     if not overwrite and os.path.isdir( destination ):
         shutil2.rmtree( destination )
-    shutil2.copytree( dirname, destination, overwrite=overwrite )
+    shutil2.copytree( dirname, destination, overwrite=overwrite, progressBar=progressBar, percentage=percentage )
 
 
-def copy_inside_dir( dirname, destination, overwrite=True ):
+def copy_inside_dir( dirname, destination, overwrite=True, progressBar=None, percentage=100 ):
     list_dir = os.listdir( dirname )
     for file in list_dir:
         src = os.path.join( dirname, file )
@@ -71,11 +76,11 @@ def copy_inside_dir( dirname, destination, overwrite=True ):
                 os.makedirs( os.path.dirname( dst ) )
             if not overwrite and os.path.isfile( dst ):
                 os.unlink( dst )
-            shutil2.copyfile( src, dst, overwrite=overwrite )
+            shutil2.copyfile( src, dst, overwrite=overwrite, progressBar=progressBar, percentage=percentage )
         elif os.path.isdir( src ):
             if not overwrite and os.path.isdir( dst ):
                 shutil2.rmtree( dst )
-            shutil2.copytree( src, dst, overwrite=overwrite )
+            shutil2.copytree( src, dst, overwrite=overwrite, progressBar=progressBar, percentage=percentage )
 
 
 def readURL( url, save=False, localPath=None ):
@@ -252,3 +257,75 @@ def get_infos_path( path, get_size=False, report_progress=None ):
         size = "0.0 KB"
 
     return size, c_time, last_access, last_modification
+    
+
+class RecursiveDialogProgress:
+    """
+    Wrapper class for displayong progress
+    """
+    _xbmcdp = None
+    _heading = None
+    _line1 = None
+    _line2 = None
+    _line3 = None
+
+    def __init__( self, heading, line1=None, line2=None, line3=None ):
+        self._xbmcdp = xbmcgui.DialogProgress()
+        self._heading = heading
+        self._line1 = line1
+        self._line2 = line2
+        self._line3 = line3
+
+        if self._line1:
+            if self._line2:
+                if self._line3:
+                    self._xbmcdp.create(self._heading, self._line1, self._line2, self._line3)
+                else:
+                    self._xbmcdp.create(self._heading, self._line1, self._line2)
+            else:
+                self._xbmcdp.create(self._heading, self._line1)
+        else:
+            self._xbmcdp.create(self._heading)
+            
+        
+    def update( self, percent, itemname, line2=None, line3=None ):
+        """
+        Met a jour la barre de progression
+        """
+        #TODO Dans le futur, veut t'on donner la responsabilite a cette fonction le calcul du pourcentage????
+        try:
+            #xbmcdp.update( percent )
+            self._xbmcdp.update( percent, self._line1 % ( itemname ))
+            #xbmcdp.update( percent, _( 138 ) % ( filename ), _( 134 ) )
+        except:
+            percent = 100
+            self._xbmcdp.update( percent )
+            
+    def iscanceled(self):
+        return self._xbmcdp.iscanceled()
+            
+    def close(self):
+        self._xbmcdp.close()
+
+
+def checkURL(url): 
+    """
+    Check is a URL exists
+    """  
+    try:
+        f = urllib2.urlopen(urllib2.Request(url))
+        ok = True
+    except:
+        ok = False
+    return ok
+
+    #===========================================================================
+    # p = urlparse(url)
+    # h = HTTP(p[1])
+    # h.putrequest('HEAD', p[2])
+    # h.endheaders()
+    # if h.getreply()[0] == 200: 
+    #    return 1
+    # else: 
+    #    return 0
+    #===========================================================================
