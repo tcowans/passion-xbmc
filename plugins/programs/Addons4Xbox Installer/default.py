@@ -15,8 +15,8 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/programs/Addons4xbox/"
 __credits__      = "Team XBMC Passion"
 __platform__     = "xbmc media center [XBOX]"
-__date__         = "02-25-2010"
-__version__      = "0.5"
+__date__         = "02-27-2010"
+__version__      = "0.6"
 __svn_revision__ = 0
 __XBMC_Revision__= 30805
 
@@ -58,7 +58,7 @@ try:
     from resources.libs.FileManager import *
     import resources.libs.LocalArchiveInstaller as LocalArchiveInstaller#,ItemInstaller
     import resources.libs.RemoteArchiveInstaller as RemoteArchiveInstaller
-    from resources.libs.utilities import copy_dir, copy_inside_dir, readURL
+    from resources.libs.utilities import copy_dir, copy_inside_dir, readURL,RecursiveDialogProgress, checkURL
     from resources.libs.XmlParser import ListItemFromXML
 except:
     print_exc()
@@ -161,34 +161,33 @@ class Addons4xboxInstallerPlugin:
             self.fileMgr.verifrep( DIR_ADDON_MODULE )
             self.fileMgr.verifrep( DIR_CACHE )
             
-            # # Check settings
-            # if ( xbmcplugin.getSetting('first_run') == 'true' ):
-                # #xbmcplugin.openSettings(sys.argv[0])
-                # print "First run of Addons Installer Plugin, ckeling if Addon Libraries are installed"
-                # self.installLibs()
-            # else:
-                # try:
-                    # import xbmcaddon
-                    # #TODO: add import on each module or none
-                    # #dialog = xbmcgui.Dialog()
-                    # #dialog.ok( __language__(30000), __language__(30002) )
-                    # print "XBMC Addon 4 XBOX Addon Library already installed"
-                    # xbmcplugin.setSetting('first_run','false')
-                    # self.select()
-                # except ImportError:
-                    # self.installLibs()
-            try:
-                import xbmcaddon
+            # Check settings
+            if ( xbmcplugin.getSetting('first_run') == 'true' and self.check_addon_lib ):
                 print( "     **XBMC Addon 4 XBOX Addon Library already installed")
                 xbmcplugin.setSetting('first_run','false')
                 self.select()
-            except ImportError:
-                dialog = xbmcgui.Dialog()
-                dialog.ok( __language__(30000), __language__(30091) )
-                self.installLibs()
+            else:
+                print( "     **First run: it is possible that XBMC Addon 4 XBOX Addon Library is not installed")
+                if (self.check_addon_lib):
+                    print( "     **XBMC Addon 4 XBOX Addon Library already installed")
+                    xbmcplugin.setSetting('first_run','false')
+                    self.select()                   
+                else:
+                    dialog = xbmcgui.Dialog()
+                    dialog.ok( __language__(30000), __language__(30091) ,__language__(30092))
+                    if ( self.installLibs() ):
+                        self.select()
 
 
-
+    def check_addon_lib(self):
+        ok = 1
+        try:
+            import xbmcaddon
+            xbmcplugin.setSetting('first_run','false')
+        except ImportError:
+            ok = 0
+        return ok
+    
 
     def _check_compatible(self):
         xbmcgui = None
@@ -219,11 +218,11 @@ class Addons4xboxInstallerPlugin:
             print( "system::os.environ [%s], This plugin run under %s only." % ( platform, __platform__, ) )
             if xbmcgui is None:
                 xbmcgui.Dialog().ok( __plugin__, "%s: system::os.environ [[COLOR=ffe2ff43]%s[/COLOR]]" % ( xbmc.getLocalizedString( 30904 ), platform, ), xbmc.getLocalizedString( 30905 ) % __platform__ )
-        #return result
         return ok
 
     def installLibs(self):
         try:
+            ok = 0
             dialog = xbmcgui.Dialog()
             if ( dialog.ok( __language__(30021), __language__(30003) ) ):
                 # Install XBMC Addons librairies
@@ -239,7 +238,7 @@ class Addons4xboxInstallerPlugin:
                     if os.path.exists( lib_source ):
                         copy_dir( lib_source, DIR_ADDON_MODULE )
                         xbmcplugin.setSetting('first_run','false')
-                        self.select()
+                        ok = 1
                     else:
                         dialogProg.close()
                         dialog = xbmcgui.Dialog()
@@ -263,6 +262,7 @@ class Addons4xboxInstallerPlugin:
                 dialog.ok( __language__(30000), __language__(30004) )
         except:
             print_exc()
+        return ok
 
 
     def createRootDir ( self ):
@@ -392,10 +392,12 @@ class Addons4xboxInstallerPlugin:
                 print item
                 if item:
                     if eval(filter):
-                        if 'zip' == self.repoList[repoId]['format']:
+                        if ( 'zip' == self.repoList[repoId]['format'] ):
                             downloadUrl = self.repoList[repoId]['datadir'] + '/' + item["id"] + '/' + item["id"] + '-' + item["version"] + ".zip"
+                            iconimage   = self.repoList[repoId]['datadir'] + '/' + item["id"] + '/' + "icon.png" 
                         else:
                             downloadUrl = self.repoList[repoId]['datadir'] + '/' + item["id"] + '/' 
+                            iconimage   = self.repoList[repoId]['datadir'] + '/' + item["id"] + '/' + "icon.png"
                             
                         print downloadUrl
                         paramsAddons = {}
@@ -406,8 +408,9 @@ class Addons4xboxInstallerPlugin:
                         paramsAddons[self.PARAM_REPO_ID] = str(repoId)
 
                         url = self._create_param_url( paramsAddons )
-                        if url:
-                            self._addLink( item['name'], url)
+
+                        if ( url ):
+                            self._addLink( item['name'], url, iconimage=iconimage)
                 else:
                     keepParsing = False
         self._end_of_directory( True )
@@ -585,7 +588,7 @@ class Addons4xboxInstallerPlugin:
                                 thumbnail_path = "DefaultVideo.png"
                             #listItemObj = ListItemObject( type = addon_type, name = addon_dir, local_path = addon_path, thumb = thumbnail_path )
                             #self.currentItemList.append( listItemObj )
-                            paramsDic[self.PARAM_TYPE]      = addon_type
+                            paramsDic[self.PARAM_TYPE]      = addon_typecheckURL
                             paramsDic[self.PARAM_TITLE]     = addon_dir
                             paramsDic[self.PARAM_LOCALPATH] = addon_dir
 
@@ -607,7 +610,7 @@ class Addons4xboxInstallerPlugin:
                                 thumbnail_path = "DefaultVideo.png"
                             #listItemObj = ListItemObject( type = addon_type, name = addon_dir, local_path = addon_path, thumb = thumbnail_path )
                             #self.currentItemList.append( listItemObj )
-                            paramsDic[self.PARAM_TYPE]           = addon_type
+                            paramsDic[self.PARAM_TYPE]      = addon_type
                             paramsDic[self.PARAM_TITLE]     = addon_dir
                             paramsDic[self.PARAM_LOCALPATH] = addon_dir
 
@@ -663,35 +666,52 @@ class Addons4xboxInstallerPlugin:
         return paramDic        
 
     def _install_from_repo( self, addonName, addonUrl, addonFormat, repoUrl ):
+        """
+        Install an addon from a remote repository
+        """
+        status = "CANCELED"
+        destination = None
+        addonInstaller = None
         
-        # install from zip file
-        if addonFormat == "zip":
-            addonInstaller = RemoteArchiveInstaller.RemoteArchiveInstaller( addonName, addonUrl )
-        else:
-            # Remote dir installer
-            addonInstaller = RemoteArchiveInstaller.RemoteDirInstaller( addonName, addonUrl, repoUrl )
-        dp = xbmcgui.DialogProgress()
-        dp.create(__language__( 137 ))
-        status, destination = addonInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )
-
-        dp.close()
-        del dp
+        if ( xbmcgui.Dialog().yesno( addonName, __language__( 30050 ), "", "" ) ):
+            # install from zip file
+            if addonFormat == "zip":
+                addonInstaller = RemoteArchiveInstaller.RemoteArchiveInstaller( addonName, addonUrl )
+            else:
+                # Remote dir installer
+                addonInstaller = RemoteArchiveInstaller.RemoteDirInstaller( addonName, addonUrl, repoUrl )
+            #dp = xbmcgui.DialogProgress()
+            #dp.create(__language__( 137 ))
+            dp = RecursiveDialogProgress(__language__( 137 ), __language__( 138 ))
+            status, destination = addonInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )
+    
+            dp.close()
+            del dp
         return status, addonName, destination, addonInstaller
 
     def _install_from_zip(self):
-        dialog = xbmcgui.Dialog()
-        zipPath = dialog.browse(1, 'XBMC', 'files', '', False, False, SPECIAL_HOME_DIR)
-        print("installing %s"%zipPath)
+        """
+        Install an addon from a local zip file
+        """        
+        status = "CANCELED"
+        destination = None
+        addonInstaller = None
         
-        itemName = os.path.basename(zipPath)
-        # install from zip file
-        addonInstaller = LocalArchiveInstaller.LocalArchiveInstaller( zipPath )
-        dp = xbmcgui.DialogProgress()
-        dp.create(__language__( 137 ))
-        status, destination = addonInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )
-
-        dp.close()
-        del dp
+        if ( xbmcgui.Dialog().yesno( addonName, __language__( 30050 ), "", "" ) ):
+            dialog = xbmcgui.Dialog()
+            zipPath = dialog.browse(1, 'XBMC', 'files', '', False, False, SPECIAL_HOME_DIR)
+            print("installing %s"%zipPath)
+            
+            itemName = os.path.basename(zipPath)
+            # install from zip file
+            addonInstaller = LocalArchiveInstaller.LocalArchiveInstaller( zipPath )
+            #dp = xbmcgui.DialogProgress()
+            #dp.create(__language__( 137 ))
+            dp = RecursiveDialogProgress(__language__( 137 ), __language__( 138 ))
+            status, destination = addonInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )
+    
+            dp.close()
+            del dp
         return status, itemName, destination, addonInstaller
 
     def _check_install(self, status, itemName, destination, itemInstaller):
@@ -776,52 +796,56 @@ class Addons4xboxInstallerPlugin:
         continueInstall = True
 
         # Get Item install name
-        itemInstallName = itemInstaller.getItemInstallName()
-        
-        # Verifie se on telecharge un repertoire ou d'un fichier
-#        if os.path.isdir( localAbsDirPath ):
-#            # Repertoire
-        exit = False
-        while exit == False:
-            menuList = [ __language__( 150 ), __language__( 151 ), __language__( 152 ), __language__( 153 ) ]
-            dialog = xbmcgui.Dialog()
-            #chosenIndex = dialog.select( __language__( 149 ) % os.path.basename( localAbsDirPath ), menuList )
-            chosenIndex = dialog.select( __language__( 149 ) % itemInstallName, menuList )
-            if chosenIndex == 0:
-                # Delete
-                print "Deleting:"
-                OK = itemInstaller.deleteInstalledItem()
-                if OK == True:
-                    exit = True
-                else:
-                    xbmcgui.Dialog().ok( __language__(148), __language__( 117) )
-            elif chosenIndex == 1: 
-                # Rename
-                print "Renaming:"
-                #dp = xbmcgui.DialogProgress()
-                #dp.create(__language__( 157 ))
-                #dp.update(50)
-                keyboard = xbmc.Keyboard( itemInstallName, __language__( 154 ) )
-                keyboard.doModal()
-                if ( keyboard.isConfirmed() ):
-                    inputText = keyboard.getText()
-                    OK = itemInstaller.renameInstalledItem( inputText )
+        if itemInstaller:      
+            itemInstallName = itemInstaller.getItemInstallName()
+            
+            # Verifie se on telecharge un repertoire ou d'un fichier
+    #        if os.path.isdir( localAbsDirPath ):
+    #            # Repertoire
+            exit = False
+            while exit == False:
+                menuList = [ __language__( 150 ), __language__( 151 ), __language__( 152 ), __language__( 153 ) ]
+                dialog = xbmcgui.Dialog()
+                #chosenIndex = dialog.select( __language__( 149 ) % os.path.basename( localAbsDirPath ), menuList )
+                chosenIndex = dialog.select( __language__( 149 ) % itemInstallName, menuList )
+                if chosenIndex == 0:
+                    # Delete
+                    print "Deleting:"
+                    OK = itemInstaller.deleteInstalledItem()
                     if OK == True:
-                        xbmcgui.Dialog().ok( __language__( 155 ), inputText  )
                         exit = True
                     else:
-                        xbmcgui.Dialog().ok( __language__( 148 ), __language__( 117 ) )
-                        
-                del keyboard
-                #dp.close()
-            elif chosenIndex == 2: 
-                # Overwrite
-                print "Overwriting:"
-                exit = True
-            else:
-                # EXIT
-                exit = True
-                continueInstall = False
+                        xbmcgui.Dialog().ok( __language__(148), __language__( 117) )
+                elif chosenIndex == 1: 
+                    # Rename
+                    print "Renaming:"
+                    #dp = xbmcgui.DialogProgress()
+                    #dp.create(__language__( 157 ))
+                    #dp.update(50)
+                    keyboard = xbmc.Keyboard( itemInstallName, __language__( 154 ) )
+                    keyboard.doModal()
+                    if ( keyboard.isConfirmed() ):
+                        inputText = keyboard.getText()
+                        OK = itemInstaller.renameInstalledItem( inputText )
+                        if OK == True:
+                            xbmcgui.Dialog().ok( __language__( 155 ), inputText  )
+                            exit = True
+                        else:
+                            xbmcgui.Dialog().ok( __language__( 148 ), __language__( 117 ) )
+                            
+                    del keyboard
+                    #dp.close()
+                elif chosenIndex == 2: 
+                    # Overwrite
+                    print "Overwriting:"
+                    exit = True
+                else:
+                    # EXIT
+                    exit = True
+                    continueInstall = False
+        else:
+            continueInstall = False
+        
         return continueInstall
         
     def _create_param_url(self, paramsDic):
@@ -845,8 +869,15 @@ class Addons4xboxInstallerPlugin:
         self.settings = {}
 
 
-    def _addLink( self, name, url, iconimage="DefaultVideo.png" ):
+    def _addLink( self, name, url, iconimage="DefaultProgram.png" ):
         ok=True
+        print "_addLink"
+        print name
+        print url
+        print iconimage
+        if ( ( iconimage !="DefaultProgram.png" ) and ( not checkURL(iconimage) ) ):
+            iconimage  = "DefaultProgram.png"
+
         liz=xbmcgui.ListItem( name, iconImage=iconimage, thumbnailImage=iconimage )
         liz.setInfo( type="Program", infoLabels={ "Title": name } )
         ok=xbmcplugin.addDirectoryItem( handle=int(sys.argv[1]), url=url, listitem=liz )
@@ -951,6 +982,18 @@ class Addons4xboxInstallerPlugin:
             result = dialogYesNo.yesno(title, message1, message2, message3)
         return result
 
+    #===========================================================================
+    # def updateProgress_cb( self, percent, dp=None ):
+    #    """
+    #    Met a jour la barre de progression
+    #    """
+    #    #TODO Dans le futur, veut t'on donner la responsabilite a cette fonction le calcul du pourcentage????
+    #    try:
+    #        dp.update( percent )
+    #    except:
+    #        percent = 100
+    #        dp.update( percent )        
+    #===========================================================================
 #######################################################################################################################    
 # BEGIN !
 #######################################################################################################################

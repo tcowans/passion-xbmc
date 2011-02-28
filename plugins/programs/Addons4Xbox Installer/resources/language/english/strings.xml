@@ -86,7 +86,8 @@
 
     <!-- Update error messages -->
     <string id="30090">There was an error installing item!</string>
-    <string id="30091">xbmcaddon missing the version of XBMC4XBOX you are running is probably too old</string>
+    <string id="30091">xbmcaddon Library is missing</string>
+    <string id="30092">The version of XBMC4XBOX you are running is probably too old</string>
     
     
     <!--ADDONS TYPE STRINGS -->

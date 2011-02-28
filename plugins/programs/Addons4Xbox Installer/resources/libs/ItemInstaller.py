@@ -20,6 +20,10 @@ try:
 except:
     print_exc()
 
+# Modules XBMC
+import xbmc
+import xbmcgui
+
 httplib.HTTPConnection.debuglevel = 1
 
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
@@ -203,7 +207,7 @@ class ItemInstaller:
             try:
                 #if ( OK == bool( self.itemInfo [ "temp_item_path" ] ) ) and os.path.exists( self.itemInfo [ "temp_item_path" ] ):
                 if os.path.exists( self.itemInfo [ "temp_item_path" ] ):
-                    copy_dir( self.itemInfo [ "temp_item_path" ], self.itemInfo [ "install_path" ] )
+                    copy_dir( self.itemInfo [ "temp_item_path" ], self.itemInfo [ "install_path" ], progressBar=progressBar )
                     OK = True
                 else:
                     print "ItemInstaller::installItem - self.itemInfo [ 'temp_item_path' ] does not exist"
@@ -219,7 +223,7 @@ class ItemInstaller:
             progressBar.update( percent, _( 176 ), ( self.itemInfo [ "temp_item_path" ] ) )
         return OK
 
-    def _prepareItem4xbox( self, item ):
+    def _prepareItem4xbox( self, item, msgFunc=None,progressBar=None ):
         """
         Prepare an addon in order to be runnable on XBMC4XBOX
         (python script, icon renaming, folder renaming ...)
@@ -246,9 +250,33 @@ class ItemInstaller:
                     status = "ERROR"
                     
             # Rename directory
+            
             newItemPath = item[ "temp_item_path" ].replace(os.path.basename( item[ "temp_item_path" ] ) , item[ "name" ] )
             #print "itemPath: %s"%item[ "temp_item_path" ]    
-            #print "newItemPath: %s"%newItemPath    
+            #print "newItemPath: %s"%newItemPath
+                
+            if ( not self.fileMgr.renameItem( None, item[ "temp_item_path" ], newItemPath ) ):
+                print "  ** Impossible to rename the addon directory based on the name in addon.xml, need name from user"
+                # Rename
+                OK = False
+                inputText = item[ "name" ]
+                while (not OK):
+                    print "Renaming:"
+                    #dp = xbmcgui.DialogProgress()
+                    #dp.create(__language__( 157 ))
+                    #dp.update(50)
+                    keyboard = xbmc.Keyboard( inputText, _( 154 ) )
+                    keyboard.doModal()
+                    if ( keyboard.isConfirmed() ):
+                        inputText = keyboard.getText()
+                        newItemPath = item[ "temp_item_path" ].replace(os.path.basename( item[ "temp_item_path" ] ) , inputText )
+                        OK = self.fileMgr.renameItem( None, item[ "temp_item_path" ], newItemPath )
+                        if not OK :
+                            xbmcgui.Dialog().ok( _( 148 ), _( 117 ) )
+                        else:
+                            item [ "name" ] = inputText
+                            
+                    del keyboard
             try:
                 if ( os.path.exists( item[ "temp_item_path" ] ) ):
                     result = self.fileMgr.renameItem( None, item[ "temp_item_path" ], newItemPath )
@@ -308,7 +336,7 @@ class ItemInstaller:
                     typeInstallPath = get_install_path( self.itemInfo [ "type" ] )
                 
                     status = self._prepareItem4xbox( self.itemInfo )
-                    if ( "OK" == status ):
+                    if ( not ( "OK" == status ) ):
                         self.itemInfo [ "install_path" ] = os.path.join( typeInstallPath, self.itemInfo [ "name" ] )
                     else:
                         self.itemInfo [ "install_path" ] = os.path.join( typeInstallPath, os.path.basename( self.itemInfo [ "temp_item_path" ] ) )

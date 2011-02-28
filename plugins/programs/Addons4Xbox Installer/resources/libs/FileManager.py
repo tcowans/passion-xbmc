@@ -122,13 +122,22 @@ class fileMgr:
             if base_path == None:
                 # old_name and new_name are path and not just filename
                 print "renameItem - base_path == None"
-                os.rename( old_name, new_name )                
+                if ( os.path.exists( old_name ) ):
+                    if ( not os.path.exists( new_name ) ):
+                        os.rename( old_name, new_name ) 
+                    else:
+                        result = False  
+                        print "renameItem: Path matching to the new name of the Item already exist: %s - cannot create a item with the same name" % new_name            
+                else:
+                    result = False  
+                    print "renameItem: Path of Item to rename does not exist: %s" % old_name            
             else:
                 # old_name and new_name are just filename
                 # concatenating with base path
                 print "renameItem - base_path != None"
                 os.rename( os.path.join(base_path, old_name), os.path.join(base_path, new_name) )
         except OSError, err:
+            result = False  
             print "Couldn't rename %s to %s: %s!" % \
                     (old_name, new_name, err)
             print err.errno

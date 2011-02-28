@@ -361,7 +361,7 @@ class RemoteDirInstaller(DirItemInstaller):
         finished_path = None
         try:
             #if ( forceInstall or xbmcgui.Dialog().yesno( self.title, _( 30050 ), "", "", _( 30020 ), _( 30021 ) ) ):
-            if ( forceInstall or xbmcgui.Dialog().yesno( self.title, _( 30050 ), "", "" ) ):
+            if ( forceInstall ):
                 self.dialog.create( self.title, _( 30052 ), _( 30053 ) )
                 asset_files = []
                 folders = [ self.itemInfo[ "url" ].replace(self.REPO_URL + "/", "").replace( " ", "%20" ) ]

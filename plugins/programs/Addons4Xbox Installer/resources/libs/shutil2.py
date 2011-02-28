@@ -33,13 +33,17 @@ class ContentTooShortError(IOError):
         IOError.__init__(self, message)
         self.content = content
 
-def copyfileobj(fsrc, fdst, reportcopy=None, size=1, length=16*1024):
+def copyfileobj(fsrc, fdst, reportcopy=None, size=1, length=16*1024, progressBar=None, percentage=100):
     """copy data from file-like object fsrc to file-like object fdst"""
     result = "", str(size)
     read = 0
     blocknum = 0
     if reportcopy:
         reportcopy(blocknum, length, size)
+    if progressBar:
+        percent = int( (blocknum * length * percentage) / size )
+        #progressBar.update( percent, _( 122 ) % ( self.name ), _( 134 ) )
+        progressBar.update( percent )
     while 1:
         buf = fsrc.read(length)
         if not buf:
@@ -67,7 +71,7 @@ def _samefile(src, dst):
     return (os.path.normcase(os.path.abspath(src)) ==
             os.path.normcase(os.path.abspath(dst)))
 
-def copyfile(src, dst, reportcopy=None, overwrite=False):
+def copyfile(src, dst, reportcopy=None, overwrite=False, progressBar=None, percentage=100):
     """Copy data from src to dst"""
     if _samefile(src, dst):
         raise Error, "`%s` and `%s` are the same file" % (src, dst)
@@ -117,7 +121,7 @@ def copy(src, dst, reportcopy=None, overwrite=False):
     copyfile(src, dst, reportcopy, overwrite)
     copymode(src, dst)
 
-def copy2(src, dst, reportcopy=None, overwrite=False):
+def copy2(src, dst, reportcopy=None, overwrite=False, progressBar=None, percentage=100):
     """Copy data and all stat info ("cp -p src dst").
 
     The destination may be a directory.
@@ -125,7 +129,7 @@ def copy2(src, dst, reportcopy=None, overwrite=False):
     """
     if os.path.isdir(dst):
         dst = os.path.join(dst, os.path.basename(src))
-    copyfile(src, dst, reportcopy, overwrite)
+    copyfile(src, dst, reportcopy, overwrite, progressBar, percentage)
     copystat(src, dst)
 
 def ignore_patterns(*patterns):
@@ -140,7 +144,7 @@ def ignore_patterns(*patterns):
         return set(ignored_names)
     return _ignore_patterns
 
-def copytree(src, dst, symlinks=False, ignore=None, reportcopy=None, overwrite=False):
+def copytree(src, dst, symlinks=False, ignore=None, reportcopy=None, overwrite=False, progressBar=None, percentage=100):
     """Recursively copy a directory tree using copy2().
 
     The destination directory must not already exist.
@@ -174,6 +178,7 @@ def copytree(src, dst, symlinks=False, ignore=None, reportcopy=None, overwrite=F
     if not os.path.exists(dst) or not overwrite:
         os.makedirs(dst)
     errors = []
+    items_count = len(names)
     for name in names:
         if name in ignored_names:
             continue
@@ -184,9 +189,9 @@ def copytree(src, dst, symlinks=False, ignore=None, reportcopy=None, overwrite=F
                 linkto = os.readlink(srcname)
                 os.symlink(linkto, dstname)
             elif os.path.isdir(srcname):
-                copytree(srcname, dstname, symlinks, ignore, reportcopy, overwrite)
+                copytree(srcname, dstname, symlinks, ignore, reportcopy, overwrite, progressBar, percentage)
             else:
-                copy2(srcname, dstname, reportcopy, overwrite)
+                copy2(srcname, dstname, reportcopy, overwrite, progressBar, percentage)
             # XXX What about devices, sockets etc.?
         except (IOError, os.error), why:
             errors.append((srcname, dstname, str(why)))
