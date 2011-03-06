@@ -3,6 +3,9 @@
 
 plugin video M6 Replay pour XBMC 
 
+23-02-2011 Version 1.4.3 par Temhil
+    + Ajout du serveur 3
+	
 23-02-2011 Version 1.4.2 par Temhil
     + Configure le serveur 2 par defaut (a la place sur serveur 1)
 	
@@ -38,8 +41,8 @@ __addonID__      = "plugin.video.M6Replay"
 __author__       = "PECK, mighty_bombero, merindol, Temhil"
 __url__          = "http://passion-xbmc.org/index.php"
 __credits__      = "Team XBMC Passion"
-__date__         = "23-02-2010"
-__version__      = "1.4.2"
+__date__         = "02-03-2010"
+__version__      = "1.4.3"
 
 import urllib,sys,os,platform
 import base64
@@ -90,7 +93,8 @@ except:
 
 # Server List
 srv_list = [ {'rtmp': "rtmpe://m6replayfs.fplive.net/m6replay/streaming", 'app': "m6replay/streaming"}, # France (semble ne plus fonctionner)
-             {'rtmp': "rtmpe://m6dev.fcod.llnwd.net:443/a3100/d1",        'app': "a3100/d1"} ]          # International
+             {'rtmp': "rtmpe://m6dev.fcod.llnwd.net:443/a3100/d1",        'app': "a3100/d1"},           # International
+             {'rtmp': "rtmp://groupemsix.fcod.llnwd.net/a3100/d1",        'app': "a3100/d1"}]          # International
 
 # List of directories to check at startup
 dirCheckList   = ( CACHEDIR, ) 
