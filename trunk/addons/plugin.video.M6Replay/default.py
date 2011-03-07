@@ -7,6 +7,7 @@ plugin video M6 Replay pour XBMC
     + Ajout de pycrypto pour openELEC (patch de beenje)
     + Ajout selection de la plateforme dans les parametres
     + Configure le serveur 3 par defaut
+    + Support vue Media Info pour les videos
     
 23-02-2011 Version 1.4.3 par Temhil
     + Ajout du serveur 3
@@ -271,6 +272,7 @@ class M6Replay:
                     infoLabels={ "Title": dico['nom'][produit],#+ " " + video["publication_date"],
                                  #"Rating":5,
                                  "Date": extractDateString( dico['date'][produit] ), # Format: u'17-12-2010'
+                                 "Aired": extractDateString( dico['date'][produit] ), # Format: u'17-12-2010'
                                  "Duration": convertMin2Hour(dico['duree'][produit]),
                                  "Plot": bold_text( __language__ ( 30001 ) ) + add_pretty_color( self.convert_time_to_string( dico['date'][produit] ), color='FFFFCC00' ) + "[CR]" 
                                        + bold_text( __language__ ( 30002 ) ) + add_pretty_color( self.convert_time_to_string( dico['date_fin'][produit] ), color='FFFF0000' ) + "[CR][CR]" 
@@ -290,7 +292,10 @@ class M6Replay:
                 xbmcplugin.addSortMethod( handle=int( sys.argv[ 1 ] ), sortMethod=xbmcplugin.SORT_METHOD_LABEL )
                 xbmcplugin.addSortMethod( handle=int( sys.argv[ 1 ] ), sortMethod=xbmcplugin.SORT_METHOD_DATE )
                 xbmcplugin.addSortMethod( handle=int( sys.argv[ 1 ] ), sortMethod=xbmcplugin.SORT_METHOD_VIDEO_RUNTIME )
-        
+                #xbmcplugin.setContent(int(sys.argv[1]), "movies")
+                xbmcplugin.setContent(int(sys.argv[1]), "episodes")
+                
+                
         elif ( "stream=" in sys.argv[ 2 ] ): 
             # Resolve URL in order to play a video   
             server_id = int( __settings__.getSetting( 'server' ) )
