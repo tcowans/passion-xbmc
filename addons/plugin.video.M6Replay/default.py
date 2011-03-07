@@ -3,9 +3,14 @@
 
 plugin video M6 Replay pour XBMC 
 
+06-03-2011 Version 1.4.4 par Temhil et beenje
+    + Ajout de pycrypto pour openELEC (patch de beenje)
+    + Ajout selection de la plateforme dans les parametres
+    + Configure le serveur 3 par defaut
+    
 23-02-2011 Version 1.4.3 par Temhil
     + Ajout du serveur 3
-	
+    
 23-02-2011 Version 1.4.2 par Temhil
     + Configure le serveur 2 par defaut (a la place sur serveur 1)
 	
@@ -41,8 +46,8 @@ __addonID__      = "plugin.video.M6Replay"
 __author__       = "PECK, mighty_bombero, merindol, Temhil"
 __url__          = "http://passion-xbmc.org/index.php"
 __credits__      = "Team XBMC Passion"
-__date__         = "02-03-2010"
-__version__      = "1.4.3"
+__date__         = "06-03-2010"
+__version__      = "1.4.4"
 
 import urllib,sys,os,platform
 import base64
@@ -102,32 +107,63 @@ dirCheckList   = ( CACHEDIR, )
 # Check the platform
 SYSTEM_PLATFORM = None
 CRYPTO_PATH = None
-if xbmc.getCondVisibility( "system.platform.linux" ):
-    SYSTEM_PLATFORM = "linux"
-    CRYPTO_PATH = os.path.join( __addonDir__, "resources", "platform_libraries", platform.system(), platform.architecture()[0] )
-elif xbmc.getCondVisibility( "system.platform.xbox" ):
-    SYSTEM_PLATFORM = "xbox"
-    CRYPTO_PATH = os.path.join( __addonDir__, "resources", "platform_libraries", "Xbox" )
-elif xbmc.getCondVisibility( "system.platform.windows" ):
-    SYSTEM_PLATFORM = "windows"
-    # Only 32bits on Windows for timebeing
-    CRYPTO_PATH = os.path.join( __addonDir__, "resources", "platform_libraries", "Windows", "32bit" )
-elif xbmc.getCondVisibility( "system.platform.osx" ):
-    SYSTEM_PLATFORM = "darwin"
-    if 'RELEASE_ARM' in os.uname()[3]:
-        architecture = 'arm'
-    else:
-        architecture = platform.architecture()[0]
-    CRYPTO_PATH = os.path.join( __addonDir__, "resources", "platform_libraries", os.uname()[0], architecture )
+if ( __settings__.getSetting('autoplatform') == 'true'):
+    os_type_list = ['Windows', 'mac', 'mac_arm', 'Linux', 'Xbox']
+    cpu_type_list = ['32bit', '64bit']
+    paths = []
+    os_type_id  = int( __settings__.getSetting('ostype') )
+    cpu_type_id = int( __settings__.getSetting('cputype') )
+    print os_type_list[os_type_id]
+    print cpu_type_list[cpu_type_id]
+    if os_type_list[os_type_id] in ['Windows', 'Linux']:
+        CRYPTO_PATH = os.path.join( __addonDir__, "resources", "platform_libraries", os_type_list[os_type_id], cpu_type_list[cpu_type_id] )
+    elif os_type_list[os_type_id] == 'mac':
+        CRYPTO_PATH = os.path.join( __addonDir__, "resources", "platform_libraries","Darwin", cpu_type_list[cpu_type_id] )
+    elif os_type_list[os_type_id] == 'mac_arm':
+        CRYPTO_PATH = os.path.join( __addonDir__, "resources", "platform_libraries","Darwin", "arm" )
+    elif os_type_list[os_type_id] == 'Xbox':
+        CRYPTO_PATH = os.path.join( __addonDir__, "resources", "platform_libraries", "Xbox" )
+else:  
+    if xbmc.getCondVisibility( "system.platform.linux" ):
+        SYSTEM_PLATFORM = "linux"
+        #CRYPTO_PATH = os.path.join( __addonDir__, "resources", "platform_libraries", platform.system(), platform.architecture()[0] )
+        if os.uname()[4] == 'i686':
+            architecture = '32bit'
+        else:
+            architecture = '64bit'
+        CRYPTO_PATH = os.path.join( __addonDir__, "resources", "platform_libraries", os.uname()[0], architecture )     
+    elif xbmc.getCondVisibility( "system.platform.xbox" ):
+        SYSTEM_PLATFORM = "xbox"
+        CRYPTO_PATH = os.path.join( __addonDir__, "resources", "platform_libraries", "Xbox" )
+    elif xbmc.getCondVisibility( "system.platform.windows" ):
+        SYSTEM_PLATFORM = "windows"
+        # Only 32bits on Windows for timebeing
+        CRYPTO_PATH = os.path.join( __addonDir__, "resources", "platform_libraries", "Windows", "32bit" )
+    elif xbmc.getCondVisibility( "system.platform.osx" ):
+        SYSTEM_PLATFORM = "darwin"
+        if 'RELEASE_ARM' in os.uname()[3]:
+            architecture = 'arm'
+        else:
+            architecture = platform.architecture()[0]
+        CRYPTO_PATH = os.path.join( __addonDir__, "resources", "platform_libraries", os.uname()[0], architecture )
+
 if CRYPTO_PATH:
     sys.path.append(CRYPTO_PATH)
 else:
     print "Impossible to determine the platform and set an import path"
+    dialog = xbmcgui.Dialog()
+    dialog.ok( __language__(30201), __language__(30202) ,__language__(30203))
 
 #print "CRYPTO_PATH: %s"%CRYPTO_PATH
 
 # Import Crypto lib
-from Crypto.Cipher import DES
+try:
+    from Crypto.Cipher import DES
+except:
+    print "Impossible to import Crypto.Cipher"
+    dialog = xbmcgui.Dialog()
+    dialog.ok( __language__(30201), __language__(30204) ,__language__(30203))
+    
 
 def verifrep( folder ):
     """
@@ -239,7 +275,8 @@ class M6Replay:
                                  "Plot": bold_text( __language__ ( 30001 ) ) + add_pretty_color( self.convert_time_to_string( dico['date'][produit] ), color='FFFFCC00' ) + "[CR]" 
                                        + bold_text( __language__ ( 30002 ) ) + add_pretty_color( self.convert_time_to_string( dico['date_fin'][produit] ), color='FFFF0000' ) + "[CR][CR]" 
                                        + dico['description'][produit]}
-    
+                    #{ "TVShowTitle": "CNN Video", "Season": 1, "Episode": 1, "Title": video.title, "Genre": self.args.title, "Duration": video.duration, "Date": video.date, "Premiered": video.date }
+                    #{ "Title": pname, "Duration": duration, "Label": name, "SortLetter":sort_letter, "date": date, "Year": year, "Plot":plot, "Rating":rating, "Path":path, "Director":director, "Genre":genre, "Tagline":tagline, "Writer":writer, "Studio": str(id)  }
                     ok = self.add_menu_item(dico['nom'][produit], "stream="+dico['path'][produit], len(dico['nom']), dico['image'][produit], False, itemInfoLabels=infoLabels)
                     # if user cancels, call raise to exit loop
                     if ( not ok ): raise
