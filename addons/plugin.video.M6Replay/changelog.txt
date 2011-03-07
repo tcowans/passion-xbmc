@@ -2,6 +2,7 @@
 + Ajout de pycrypto pour openELEC (patch de beenje)
 + Ajout selection de la plateforme dans les parametres
 + Configure le serveur 3 par defaut 
++ Support vue Media Info pour les videos
 
 1.4.3 (23-02-2011) par Temhil
 + Ajout du serveur 3
