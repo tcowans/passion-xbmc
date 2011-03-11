@@ -1,3 +1,10 @@
+Version 1.0.2 (10/03/11) par Temhil
+- Utilisation de setResolvedUrl permettant d'utiliser le player par defaut d'XBMC:
+  . Cela evite des problemes d'affichage lors du chargement de la video
+  . permet le transfert automatique des informations (nom, icone) au player d'XBMC
+- Correction de l'encodage du fichier
+- Activation du Tri (tri par nom)
+
 Version 1.0.1 (15/12/10) par Temhil
 - Reparation des liens 'page suivante'
 - ajout des images pour les videos
