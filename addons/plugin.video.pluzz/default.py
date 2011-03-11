@@ -1,3 +1,31 @@
+# -*- coding: utf-8 -*-
+"""
+Version 1.0.2 (10/03/11) par Temhil
+    - Utilisation de setResolvedUrl permettant d'utiliser le player par defaut d'XBMC:
+      . Cela evite des problemes d'affichage lors du chargement de la video
+      . permet le transfert automatique des informations (nom, icone) au player d'XBMC
+    - Correction de l'encodage du fichier
+    - Activation du Tri (tri par nom)
+    
+Version 1.0.1 (15/12/10) par Temhil
+    - Reparation des liens 'page suivante'
+    - ajout des images pour les videos
+    - ajout des images pour les chaines
+    - ajout du logo
+    - ajout lien 'toutes les videos' pour les chaines en plus de 'notre selection'
+
+Version 1.0.0 (05/11/10) par mighty_bombero
+    - Creation
+    
+"""
+
+__addonID__      = "plugin.video.pluzz"
+__author__       = "mighty_bombero, merindol, Temhil (passion-xbmc.org)"
+__url__          = "http://passion-xbmc.org/index.php"
+__credits__      = "Team XBMC Passion"
+__date__         = "10-03-2011"
+__version__      = "1.0.2"
+
 import xbmcplugin
 import xbmcgui
 import xbmc
@@ -13,6 +41,7 @@ import os
 import re
 import time
 
+from traceback import print_exc
 from resources.libs.BeautifulSoup import BeautifulSoup
 from resources.libs.BeautifulSoup import BeautifulStoneSoup
 
@@ -187,11 +216,16 @@ def VIDEO(url, name):
         url, type = get_episode(url)
         if type == 'wmv':
             url = get_linux_url(url)
-        print url
-        item = xbmcgui.ListItem(name)
-        xbmc.Player(xbmc.PLAYER_CORE_AUTO).play(url, item)
-        xbmc.executebuiltin('XBMC.ActivateWindow(fullscreenvideo)')        
-                
+        #item = xbmcgui.ListItem(name)
+        #xbmc.Player(xbmc.PLAYER_CORE_AUTO).play(url, item)
+        #xbmc.executebuiltin('XBMC.ActivateWindow(fullscreenvideo)')        
+
+        # Play  video
+        item = xbmcgui.ListItem(path=url)
+    
+        #if self.debug_mode:
+        print "Lecture de la video %s with URL: %s"%(name, url)
+        xbmcplugin.setResolvedUrl(handle=int(sys.argv[1]), succeeded=True, listitem=item)
         
 def get_params():
         param=[]
@@ -216,6 +250,7 @@ def addLink(name,url,iconimage):
         ok=True
         liz=xbmcgui.ListItem(name, iconImage="DefaultVideo.png", thumbnailImage=iconimage)
         liz.setInfo( type="Video", infoLabels={ "Title": name } )
+        liz.setProperty('IsPlayable', 'true')
         ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=url,listitem=liz)
         return ok
 
@@ -229,42 +264,55 @@ def addDir(name,url,mode,iconimage):
         return ok
         
 
+#######################################################################################################################    
+# BEGIN !
+#######################################################################################################################
 
-params=get_params()
-url=None
-name=None
-mode=None
-try:
-        url=urllib.unquote_plus(params["url"])
-except:
-        pass
-try:
-        name=urllib.unquote_plus(params["name"])
-except:
-        pass
-try:
-        mode=int(params["mode"])
-except:
-        pass
-print "Mode: "+str(mode)
-print "URL: "+str(url)
-print "Name: "+str(name)
+if ( __name__ == "__main__" ):
+    try:
+        print "==============================="
+        print "  PLUZZ - Version: %s"%__version__
+        print "==============================="
+        print
 
-if mode==None or url==None or len(url)<1:
-        print "categories"
-        INDEX()
-elif mode==1:
-        print "index of : "+url
-        VIDEO(url, name)
-elif mode==2:
-        print "index of : "+url
-        SELECT_CATEGORY(url)
-elif mode==3:
-        print "index of : "+url
-        SELECT_EPISODE(url)
-elif mode==4:
-        print "index of : "+url
-        SELECT_EPISODE_FROM_ALL()        
+        params=get_params()
+        url=None
+        name=None
+        mode=None
+        try:
+                url=urllib.unquote_plus(params["url"])
+        except:
+                pass
+        try:
+                name=urllib.unquote_plus(params["name"])
+        except:
+                pass
+        try:
+                mode=int(params["mode"])
+        except:
+                pass
+        print "Mode: "+str(mode)
+        print "URL: "+str(url)
+        print "Name: "+str(name)
 
-        
-xbmcplugin.endOfDirectory(int(sys.argv[1]))
+        if mode==None or url==None or len(url)<1:
+                print "categories"
+                INDEX()
+        elif mode==1:
+                print "index of : "+url
+                VIDEO(url, name)
+        elif mode==2:
+                print "index of : "+url
+                SELECT_CATEGORY(url)
+        elif mode==3:
+                print "index of : "+url
+                SELECT_EPISODE(url)
+        elif mode==4:
+                print "index of : "+url
+                SELECT_EPISODE_FROM_ALL()        
+
+        #xbmcplugin.addSortMethod( handle=int( sys.argv[ 1 ] ), sortMethod=xbmcplugin.SORT_METHOD_UNSORTED)
+        xbmcplugin.addSortMethod( handle=int( sys.argv[ 1 ] ), sortMethod=xbmcplugin.SORT_METHOD_LABEL )
+        xbmcplugin.endOfDirectory(int(sys.argv[1]))
+    except:
+        print_exc()
