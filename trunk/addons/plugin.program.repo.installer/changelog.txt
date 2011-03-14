@@ -1,0 +1,4 @@
+﻿2011-03-13 - Version 1.0.0 by Temhil and Frost
+  - Creation  (installation part based on Frost work with script.addon.installer)
+
+

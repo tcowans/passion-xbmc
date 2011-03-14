@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+    <!-- Les strings de 30000 à 30999 sont réservées aux paramètres plug-in  -->
+    <!--GENERAL STRINGS -->
+    <string id="30000">Repositories Installer</string>
+
+    <!--SETTINGS STRINGS -->
+    <string id="30001">Add-ons Repositories</string>
+                                   
+    <string id="30005">Downloading: %s </string>
+    <string id="30006">to: %s</string>
+    <string id="30007">Repository Installed</string>
+    <string id="30010">XBMC requires to restart!</string>
+
+    <!--CONTEXT MENU STRINGS -->
+
+    <!--DIALOG STRINGS -->
+    <string id="30100">Are you sure you want to Install this repository?</string>
+    <string id="30101">This will overwrite any repository with the same name</string>
+    <string id="30110">This repository is already installed</string>
+    <string id="30111">Do you want to continue and overwrite the existing repository?</string>
+    
+    <string id="30200">Error!</string>
+    <string id="30201">Error during %s repository install</string>
+    <string id="30202">Please check the logs</string>
+</strings>
