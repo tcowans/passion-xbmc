@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+    <!-- GENERAL -->
+    <setting label="30500" type="lsep" />
+    <setting label="30501" type="enum" id="descolor" lvalues="30520|30521|30522|30523" default="3" />
+</settings>

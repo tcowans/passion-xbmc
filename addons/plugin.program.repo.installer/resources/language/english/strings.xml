@@ -23,4 +23,12 @@
     <string id="30200">Error!</string>
     <string id="30201">Error during %s repository install</string>
     <string id="30202">Please check the logs</string>
+    
+    <!--SETTINGS STRINGS -->
+    <string id="30500">Appearance</string>
+    <string id="30501">Text color of description:</string>
+    <string id="30520">Red</string>
+    <string id="30521">Green</string>
+    <string id="30522">Yellow</string>
+    <string id="30523">Light Blue</string>
 </strings>

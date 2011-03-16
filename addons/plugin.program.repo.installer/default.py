@@ -3,7 +3,12 @@
    Repository Installer Addon (plugin type) allowing to find and install addon repositories for XBMC
    
    Changelog:
-   03-13-2011 Version 1.0.0 by Temhil and Forst
+   
+   03-14-2011 Version 1.0.1 by Temhil
+      - Added Icon (thank to Willynuisance)
+      - Added settings allowing to change color of description
+      
+   03-13-2011 Version 1.0.0 by Temhil and Frost
       - Creation  (installation part based on Frost work with script.addon.installer)
 """
 
@@ -18,8 +23,8 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/addons/plugin.program.repository.installer/"
 __credits__      = "Team XBMC Passion"
 __platform__     = "xbmc media center"
-__date__         = "03-13-2011"
-__version__      = "1.0.0"
+__date__         = "03-14-2011"
+__version__      = "1.0.1"
 __svn_revision__ = 0
 
 
@@ -86,6 +91,9 @@ class RepoInstallerPlugin:
     # Constant
     BASE_URL = "http://www.8artcity.com"
     URL_LIST_BLOGS = "/le-videoblog-dalain-carraze"
+    
+    colorList = ["red", "green", "yellow", "lightblue"]
+
 
     def __init__( self, *args, **kwargs ):
         
@@ -231,8 +239,11 @@ class RepoInstallerPlugin:
         
         icon = "DefaultProgram.png"
         
+        descriptColor = self.colorList[ int( __settings__.getSetting( "descolor" ) ) ]
         
-        labelTxt = self._bold_text(itemInfo["name"] + ": ") + self._coloring( itemInfo["description"], "lightblue" ) 
+        #descriptColor = "lightblue"
+        
+        labelTxt = self._bold_text(itemInfo["name"] + ": ") + self._coloring( itemInfo["description"], descriptColor ) 
         liz=xbmcgui.ListItem( label=labelTxt, iconImage=icon, thumbnailImage=icon )
         liz.setInfo( type="Program", 
                      infoLabels={ "title": itemInfo["name"] + "\n" + itemInfo["description"], "Plot": itemInfo["description"] } )

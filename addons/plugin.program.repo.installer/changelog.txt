@@ -1,4 +1,8 @@
-﻿2011-03-13 - Version 1.0.0 by Temhil and Frost
-  - Creation  (installation part based on Frost work with script.addon.installer)
+﻿2011-03-15 - Version 1.0.1 by Temhil
+- Added Icon (thank to Willynuisance)
+- Added settings allowing to change color of description
+
+2011-03-13 - Version 1.0.0 by Temhil and Frost
+- Creation  (installation part based on Frost work with script.addon.installer)
 
 
