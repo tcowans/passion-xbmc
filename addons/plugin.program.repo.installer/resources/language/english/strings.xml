@@ -31,4 +31,7 @@
     <string id="30521">Green</string>
     <string id="30522">Yellow</string>
     <string id="30523">Light Blue</string>
+    <string id="30524">None</string>
+    
+    <string id="30530">Display description with title</string>
 </strings>

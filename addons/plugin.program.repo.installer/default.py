@@ -4,7 +4,12 @@
    
    Changelog:
    
-   03-14-2011 Version 1.0.1 by Temhil
+   03-17-2011 Version 1.0.2 by Temhil
+      - Added option to add or not description from title
+      - Added option for activating or not color of description (set it by default)
+      - Removed Bold Title
+      
+   03-15-2011 Version 1.0.1 by Temhil
       - Added Icon (thank to Willynuisance)
       - Added settings allowing to change color of description
       
@@ -23,8 +28,8 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/addons/plugin.program.repository.installer/"
 __credits__      = "Team XBMC Passion"
 __platform__     = "xbmc media center"
-__date__         = "03-14-2011"
-__version__      = "1.0.1"
+__date__         = "03-17-2011"
+__version__      = "1.0.2"
 __svn_revision__ = 0
 
 
@@ -82,17 +87,20 @@ class RepoInstallerPlugin:
     main plugin class
     """
     # define param key names
-    PARAM_NAME       = 'name'
-    PARAM_ACTION      = 'action'
-    PARAM_URL         = 'url'
-    PARAM_INSTALL_FROM_ZIP  = 'installfromzip'
-    PARAM_INSTALL_FROM_REPO = 'installfromrepo'
+    PARAM_NAME              = 'name'
+    PARAM_ACTION            = 'action'
+    PARAM_URL               = 'url'
+    VALUE_INSTALL_FROM_ZIP  = 'installfromzip'
+    VALUE_INSTALL_FROM_REPO = 'installfromrepo'
+    VALUE_INSTALL_ALL       = 'installfromzip'
 
     # Constant
     BASE_URL = "http://www.8artcity.com"
     URL_LIST_BLOGS = "/le-videoblog-dalain-carraze"
     
-    colorList = ["red", "green", "yellow", "lightblue"]
+    colorList = ["red", "green", "yellow", "lightblue", None]
+    debugMode = False
+    shortTitleDisplay = False
 
 
     def __init__( self, *args, **kwargs ):
@@ -105,6 +113,7 @@ class RepoInstallerPlugin:
         #    #xbmcplugin.openSettings(sys.argv[0])
         #else:
         #    self.select()
+        self._set_title_display()
         self.select()
 
 
@@ -120,7 +129,7 @@ class RepoInstallerPlugin:
     def install_repo(self, repoName, repoURL):
         """
         Install a repository in XBMC
-        -> will need XBMC restart in order to have teh new Repo taken in account by XBMC
+        -> will need XBMC restart in order to have the new Repo taken in account by XBMC
         """
         continueInstall = True
         dialogYesNo = xbmcgui.Dialog()
@@ -167,7 +176,7 @@ class RepoInstallerPlugin:
             if len(self.parameters) < 1:
                 self.create_root_dir()
                 
-            elif self.PARAM_ACTION in self.parameters.keys() and ( self.parameters[self.PARAM_ACTION] == self.PARAM_INSTALL_FROM_ZIP ):
+            elif self.PARAM_ACTION in self.parameters.keys() and ( self.parameters[self.PARAM_ACTION] == self.VALUE_INSTALL_FROM_ZIP ):
                 repoName = self.parameters[self.PARAM_NAME]
                 repoURL  = self.parameters[self.PARAM_URL]
                 #print repoName
@@ -231,6 +240,13 @@ class RepoInstallerPlugin:
             print_exc()
         return url
 
+    def _set_title_display(self):
+        descriptInTitle =__settings__.getSetting('desintitle')
+        if descriptInTitle == 'true':
+            self.shortTitleDisplay = False
+        else:
+            self.shortTitleDisplay = True
+        
     def _addLink( self, itemInfo ):
         """
         Add a link to the list of items
@@ -241,16 +257,17 @@ class RepoInstallerPlugin:
         
         descriptColor = self.colorList[ int( __settings__.getSetting( "descolor" ) ) ]
         
-        #descriptColor = "lightblue"
-        
-        labelTxt = self._bold_text(itemInfo["name"] + ": ") + self._coloring( itemInfo["description"], descriptColor ) 
+        if self.shortTitleDisplay:
+            labelTxt = itemInfo["name"]
+        else:
+            labelTxt = itemInfo["name"] + ": " + self._coloring( itemInfo["description"], descriptColor ) 
         liz=xbmcgui.ListItem( label=labelTxt, iconImage=icon, thumbnailImage=icon )
         liz.setInfo( type="Program", 
                      infoLabels={ "title": itemInfo["name"] + "\n" + itemInfo["description"], "Plot": itemInfo["description"] } )
                                   
         params = {}
         params[self.PARAM_NAME] = itemInfo["name"]
-        params[self.PARAM_ACTION] = self.PARAM_INSTALL_FROM_ZIP
+        params[self.PARAM_ACTION] = self.VALUE_INSTALL_FROM_ZIP
         params[self.PARAM_URL] = itemInfo["repoUrl"]
         urlRepo = self._create_param_url( params )
         if urlRepo:
@@ -270,11 +287,14 @@ class RepoInstallerPlugin:
                 print_exc()
     
     def _coloring( self, text , color  ):
-        if color == "red": color="FFFF0000"
-        if color == "green": color="FF00FF00"
-        if color == "yellow": color="FFFFFF00"
-        if color == "lightblue": color="FFB1C7EC"
-        colored_text = "[COLOR=%s]%s[/COLOR]" % ( color , text ) 
+        if color:
+            if color == "red": color="FFFF0000"
+            if color == "green": color="FF00FF00"
+            if color == "yellow": color="FFFFFF00"
+            if color == "lightblue": color="FFB1C7EC"
+            colored_text = "[COLOR=%s]%s[/COLOR]" % ( color , text )
+        else:
+            colored_text = text
         return colored_text
 
     def _bold_text( self, text ):
