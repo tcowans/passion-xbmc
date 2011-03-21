@@ -1,3 +1,6 @@
+1.0.6
+ - fixed: database path for grab last modification time
+
 1.0.5
  - fixed: missing requires addon import
  - fixed: typo french strings
