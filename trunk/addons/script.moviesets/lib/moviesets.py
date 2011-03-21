@@ -3,6 +3,7 @@
 import os
 import sys
 import time
+from glob import glob
 from threading import Lock, Thread
 
 #Modules XBMC
@@ -21,6 +22,7 @@ START_TIME = time.time()
 ADDON = Addon( "script.moviesets" )
 
 database = Database()
+db_paths = glob( xbmc.translatePath( "special://Database/MyVideos*.db" ) )
 
 
 def IsTrue( text ):
@@ -119,7 +121,7 @@ class Backend( Thread ):
             self.main.setContent()
 
     def updateContainer( self ):
-        mtime = os.path.getmtime( "special://Database/MyVideos34.db" )
+        mtime = sum( [ os.path.getmtime( db ) for db in db_paths ] )
         if ( mtime > self.last_mtime ) or IsTrue( self.window.getProperty( "MovieSets.Update" ) ):
             self.window.clearProperty( "MovieSets.Update" )
             self.last_mtime = mtime# + 180.0 # 3 min

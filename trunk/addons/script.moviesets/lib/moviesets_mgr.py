@@ -2,6 +2,7 @@
 # Modules general
 import os
 import sys
+from glob import glob
 
 # Modules XBMC
 import xbmc
@@ -15,6 +16,7 @@ from log import logAPI
 log = logAPI()
 
 database = Database()
+db_paths = glob( xbmc.translatePath( "special://Database/MyVideos*.db" ) )
 
 # constants
 ADDON      = Addon( "script.moviesets" )
@@ -292,10 +294,10 @@ def Main():
     xbmc.executebuiltin( "Skin.Reset(MovieSets.Sleep)" )
     xbmc.executebuiltin( "Skin.SetBool(MovieSets.Sleep)" )
     try:
-        mtime = os.path.getmtime( "special://Database/MyVideos34.db" )
+        mtime = sum( [ os.path.getmtime( db ) for db in db_paths ] )
         if Manager().movieset_update:
             xbmc.executebuiltin( "SetProperty(MovieSets.Update,true)" )
-        if os.path.getmtime( "special://Database/MyVideos34.db" ) > mtime:
+        if sum( [ os.path.getmtime( db ) for db in db_paths ] ) > mtime:
             xbmc.executebuiltin( "Container.Refresh" )
     except:
         log.error.exc_info( sys.exc_info() )
