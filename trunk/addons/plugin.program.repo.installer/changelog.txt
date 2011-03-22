@@ -1,4 +1,8 @@
-﻿2011-03-17 Version 1.0.2 by Temhil
+﻿2011-03-21 Version 1.0.3 by Temhil
+- Added Repository info window
+- Set default title display option without description
+
+2011-03-17 Version 1.0.2 by Temhil
 - Added option to add or not description from title
 - Added option for activating or not color of description (set it by default)
 - Removed Bold Title

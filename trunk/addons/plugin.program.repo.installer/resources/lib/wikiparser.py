@@ -38,18 +38,23 @@ def getRepoList(pageUrl, destination=None, addItemFunc=None, progressBar=None,  
             #print "----"
             repoInfo = {}
             tdList = repo.findAll ("td")
-            repoInfo["name"] = tdList[0].a.string.strip()
-            repoInfo["description"] = tdList[1].string.strip()
-            repoInfo["owner"] = tdList[2].string.strip()
-            repoInfo["repoUrl"] = tdList[3].a["href"]
-            #print repoInfo
-            
-            #if progressBar != None:
-            if addItemFunc != None:
-                if repoInfo["repoUrl"].endswith("zip"):
-                    addItemFunc( repoInfo )
-                else:
-                    print "Invalid URL for the repository %s - URL=%s"%(repoInfo["name"], repoInfo["repoUrl"])
+            if tdList:
+                repoInfo["name"] = tdList[0].a.string.strip()
+                repoInfo["description"] = tdList[1].string.strip()
+                repoInfo["owner"] = tdList[2].string.strip()
+                repoInfo["repoUrl"] = tdList[3].a["href"]
+                try:
+                    repoInfo["ImageUrl"] = tdList[4].a["href"]
+                except:
+                    repoInfo["ImageUrl"] = None
+                #print repoInfo
+                
+                #if progressBar != None:
+                if addItemFunc != None:
+                    if repoInfo["repoUrl"].endswith("zip"):
+                        addItemFunc( repoInfo )
+                    else:
+                        print "Invalid URL for the repository %s - URL=%s"%(repoInfo["name"], repoInfo["repoUrl"])
         except:
             print "getRepoList - error parsing html - impossible to retrieve Blog info"
             print_exc()

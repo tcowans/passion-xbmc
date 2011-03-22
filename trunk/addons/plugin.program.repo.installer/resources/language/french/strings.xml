@@ -3,14 +3,14 @@
     <!-- Les strings de 30000 à 30999 sont réservées aux paramètres plug-in  -->
     <!--GENERAL STRINGS -->
     <string id="30000">Repositories Installer</string>
-
-    <!--SETTINGS STRINGS -->
     <string id="30001">Repositories d'Add-ons </string>
                                    
     <string id="30005">Téléchargement: %s </string>
     <string id="30006">vers: %s</string>
     <string id="30007">Repository Installé</string>
     <string id="30010">XBMC doit redémarrer!</string>
+    <string id="30011">Repository</string>
+    <string id="30012">Infos Repository</string>
 
     <!--CONTEXT MENU STRINGS -->
 
