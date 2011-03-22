@@ -4,6 +4,10 @@
    
    Changelog:
    
+   03-21-2011 Version 1.0.3 by Temhil
+      - Added Repository info window
+      - Set default title display option without description
+      
    03-17-2011 Version 1.0.2 by Temhil
       - Added option to add or not description from title
       - Added option for activating or not color of description (set it by default)
@@ -28,8 +32,8 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/addons/plugin.program.repository.installer/"
 __credits__      = "Team XBMC Passion"
 __platform__     = "xbmc media center"
-__date__         = "03-17-2011"
-__version__      = "1.0.2"
+__date__         = "03-21-2011"
+__version__      = "1.0.3"
 __svn_revision__ = 0
 
 
@@ -93,11 +97,9 @@ class RepoInstallerPlugin:
     VALUE_INSTALL_FROM_ZIP  = 'installfromzip'
     VALUE_INSTALL_FROM_REPO = 'installfromrepo'
     VALUE_INSTALL_ALL       = 'installfromzip'
+    VALUE_DISPLAY_INFO      = 'displayinfo'
 
     # Constant
-    BASE_URL = "http://www.8artcity.com"
-    URL_LIST_BLOGS = "/le-videoblog-dalain-carraze"
-    
     colorList = ["red", "green", "yellow", "lightblue", None]
     debugMode = False
     shortTitleDisplay = False
@@ -133,21 +135,7 @@ class RepoInstallerPlugin:
         """
         continueInstall = True
         dialogYesNo = xbmcgui.Dialog()
-        if dialogYesNo.yesno(repoName, __language__( 30100 ), __language__( 30101 )):
-            # Check if the repo is already install
-#            try:
-#                repoId = os.path.basename( repoURL ).split('-')[0]
-#                
-#                repoPath = os.path.join(xbmc.translatePath( REPO_INSTALL_DIR ), repoId)
-#                print "Repo Id: %s"%repoId
-#                print "Repo Path: %s"%repoPath
-#                if os.path.isdir( repoPath ):
-#                    if not dialogYesNo.yesno(repoName, __language__( 30110 ), __language__( 30111 )):
-#                        continueInstall = False
-#            except:
-#                xbmcgui.Dialog().ok( __settings__.getAddonInfo( "name" ) + " - " + __language__( 30200 ), __language__( 30201 )%repoName,  __language__( 30202 ) )
-#                continueInstall = False
-            
+        if dialogYesNo.yesno(repoName, __language__( 30100 ), __language__( 30101 )):           
             if continueInstall:
                 ri = RepoInstaller()
                     
@@ -176,12 +164,24 @@ class RepoInstallerPlugin:
             if len(self.parameters) < 1:
                 self.create_root_dir()
                 
-            elif self.PARAM_ACTION in self.parameters.keys() and ( self.parameters[self.PARAM_ACTION] == self.VALUE_INSTALL_FROM_ZIP ):
-                repoName = self.parameters[self.PARAM_NAME]
-                repoURL  = self.parameters[self.PARAM_URL]
-                #print repoName
-                #print repoURL
-                self.install_repo(repoName, repoURL)
+            elif self.PARAM_ACTION in self.parameters.keys():
+                if self.parameters[self.PARAM_ACTION] == self.VALUE_INSTALL_FROM_ZIP:
+                    repoName = self.parameters[self.PARAM_NAME]
+                    repoURL  = self.parameters[self.PARAM_URL]
+                    #print repoName
+                    #print repoURL
+                    #xbmc.executebuiltin('XBMC.ActivateWindow(146)')
+                    #xbmc.executebuiltin( "Action(Info)")
+                    
+                    self.install_repo(repoName, repoURL)
+                elif self.parameters[self.PARAM_ACTION] == self.VALUE_DISPLAY_INFO:
+                    try:
+                        from resources.lib.DialogRepoInfo import DialogRepoInfo
+                        repoWindow = DialogRepoInfo( "DialogRepoInfo.xml", os.getcwd(), "Default", "720p" )
+                        del repoWindow
+                    except:
+                        print_exc()
+                    self._end_of_directory( False )
             else:   
                 self._end_of_directory( True, update=False )
 
@@ -253,7 +253,14 @@ class RepoInstallerPlugin:
         """
         ok=True
         
-        icon = "DefaultProgram.png"
+        print itemInfo
+        
+        if itemInfo["ImageUrl"]:
+            icon = itemInfo["ImageUrl"]
+        else:
+            #icon = "DefaultFolder.png"
+            #icon = "DefaultAddon.png"
+            icon = os.path.join(MEDIA_PATH, "DefaultAddonRepository.png")
         
         descriptColor = self.colorList[ int( __settings__.getSetting( "descolor" ) ) ]
         
@@ -262,9 +269,32 @@ class RepoInstallerPlugin:
         else:
             labelTxt = itemInfo["name"] + ": " + self._coloring( itemInfo["description"], descriptColor ) 
         liz=xbmcgui.ListItem( label=labelTxt, iconImage=icon, thumbnailImage=icon )
-        liz.setInfo( type="Program", 
-                     infoLabels={ "title": itemInfo["name"] + "\n" + itemInfo["description"], "Plot": itemInfo["description"] } )
-                                  
+        liz.setInfo( type="addons", 
+                     infoLabels={ "title": itemInfo["name"], "Plot": itemInfo["description"] } )
+        liz.setProperty("Addon.Name",itemInfo["name"])
+        liz.setProperty("Addon.Version"," ")
+        liz.setProperty("Addon.Summary", "")
+        liz.setProperty("Addon.Description", itemInfo["description"])
+        liz.setProperty("Addon.Type", __language__( 30011 ))
+        liz.setProperty("Addon.Creator", itemInfo["owner"])
+        liz.setProperty("Addon.Disclaimer","")
+        liz.setProperty("Addon.Changelog", "")
+        liz.setProperty("Addon.ID", "")
+        liz.setProperty("Addon.Status", "Stable")
+        liz.setProperty("Addon.Broken", "Stable")
+        liz.setProperty("Addon.Path","")
+        liz.setProperty("Addon.Icon",icon)
+           
+        
+        
+        #dirItem.addContextMenuItem( self.Addon.getLocalizedString( 30900 ), "XBMC.RunPlugin(%s?showtimes=%s)" % ( sys.argv[ 0 ], urllib.quote_plus( repr( video[ "title" ] ) ), ) )
+        paramsMenu = {}
+        paramsMenu[self.PARAM_NAME] = itemInfo["name"]
+        paramsMenu[self.PARAM_ACTION] = self.VALUE_DISPLAY_INFO
+        urlMenu = self._create_param_url( paramsMenu )
+        if urlMenu:
+            c_items = [ ( __language__( 30012 ), "XBMC.RunPlugin(%s)" % ( urlMenu)) ]
+            liz.addContextMenuItems( c_items )
         params = {}
         params[self.PARAM_NAME] = itemInfo["name"]
         params[self.PARAM_ACTION] = self.VALUE_INSTALL_FROM_ZIP
