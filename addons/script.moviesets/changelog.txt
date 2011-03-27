@@ -1,3 +1,6 @@
+1.0.7
+ - fixed: load movie sets infos, if database file is not found
+
 1.0.6
  - fixed: database path for grab last modification time
 

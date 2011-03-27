@@ -94,7 +94,7 @@ class Backend( Thread ):
         self.lock = lock
         self.main = main
         self.window = main.window
-        self.last_mtime = 0
+        self.last_mtime = -1
         self._stop = False
 
     def run( self ):
