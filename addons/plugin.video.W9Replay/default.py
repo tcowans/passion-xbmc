@@ -3,6 +3,9 @@
 
 Add-on plugin video W9 Replay pour XBMC 
 
+28-03-2011 Version 1.2.2 par Temhil
+    + Ajout du serveur 3
+    
 23-02-2011 Version 1.2.1 par Temhil
     + Configure le serveur 2 par defaut (a la place sur serveur 1)
     + Correction bug affichage des jours de la semaines (decalage)
@@ -36,8 +39,8 @@ __addonID__      = "plugin.video.W9Replay"
 __author__       = "PECK, mighty_bombero, merindol, Temhil (passion-xbmc.org)"
 __url__          = "http://passion-xbmc.org/index.php"
 __credits__      = "Team XBMC Passion"
-__date__         = "02-01-2010"
-__version__      = "1.2.1"
+__date__         = "28-03-2011"
+__version__      = "1.2.2"
 
 import urllib,sys,os,platform
 import string
@@ -85,8 +88,9 @@ except:
     print_exc()
 
 # Server List
-srv_list = [ {'rtmp': "rtmpe://m6replayfs.fplive.net/m6replay/streaming", 'app': "m6replay/streaming"}, # France
-             {'rtmp': "rtmpe://m6dev.fcod.llnwd.net:443/a3100/d1",        'app': "a3100/d1"} ]          # International
+srv_list = [ {'rtmp': "rtmpe://m6replayfs.fplive.net/m6replay/streaming", 'app': "m6replay/streaming"}, # France (semble ne plus fonctionner)
+             {'rtmp': "rtmpe://m6dev.fcod.llnwd.net:443/a3100/d1",        'app': "a3100/d1"},           # International (semble ne plus fonctionner)
+             {'rtmp': "rtmp://groupemsix.fcod.llnwd.net/a3100/d1",        'app': "a3100/d1"}]           # International
 
 # List of directories to check at startup
 dirCheckList   = ( CACHEDIR, ) 
