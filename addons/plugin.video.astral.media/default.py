@@ -7,8 +7,8 @@ __url__           = "http://code.google.com/p/passion-xbmc/"
 __svn_url__       = "http://passion-xbmc.googlecode.com/svn/trunk/addons/plugin.video.astral.media/"
 __credits__       = "Team XBMC, http://xbmc.org/"
 __platform__      = "xbmc media center, [ALL]"
-__date__          = "16-12-2010"
-__version__       = "1.0.7"
+__date__          = "02-04-2011"
+__version__       = "1.0.8"
 __svn_revision__  = "$Revision$"
 
 
@@ -248,7 +248,9 @@ class Main:
 
                 flvs = getWebVideoUrl( canal_url, videoid )
                 try: flv = flvs[ int( __settings__.getSetting( "quality" ) ) ]
-                except: flv = flvs[ 0 ]
+                except:
+                    try: flv = flvs[ 0 ]
+                    except: continue
 
                 c_items = [ ( __language__( 33003 ), "XBMC.RunPlugin(%s?dl_url=%s)" % ( sys.argv[ 0 ], repr( flv ) ) ) ]
                 c_items += [ ( __language__( 13346 ), "XBMC.Action(Info)", ) ]
