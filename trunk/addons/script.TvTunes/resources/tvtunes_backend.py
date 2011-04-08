@@ -7,7 +7,7 @@ import os
 #Modules XBMC
 import xbmc
 import xbmcgui
-import sys
+import sys         
 
 try:
     # parse sys.argv for params

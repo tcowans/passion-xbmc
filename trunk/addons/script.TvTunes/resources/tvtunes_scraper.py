@@ -4,7 +4,8 @@ import urllib
 import os
 from traceback import print_exc
 import re
-import xbmc
+import xbmc  
+import xbmcaddon
 import xbmcgui
 
 try:
@@ -19,8 +20,10 @@ except:
     print_exc()
     params = {} 
 
-
-SOURCEPATH = os.getcwd()
+__settings__ = xbmcaddon.Addon( "script.tvtunes" )
+__cwd__  = __settings__.getAddonInfo('path')
+RESOURCES_PATH = os.path.join( __cwd__ , "resources" )
+SOURCEPATH = __cwd__
 
 def get_html_source( url , save=False):
     """ fetch the html source """

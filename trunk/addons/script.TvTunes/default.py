@@ -2,8 +2,9 @@
 import sys
 import os
 import xbmcaddon
-__settings__ = xbmcaddon.Addon( "script.TvTunes" )
-RESOURCES_PATH = os.path.join( os.getcwd() , "resources" )
+__settings__ = xbmcaddon.Addon( "script.tvtunes" )
+__cwd__  = __settings__.getAddonInfo('path')
+RESOURCES_PATH = os.path.join( __cwd__ , "resources" )
 sys.path.append( RESOURCES_PATH )
 try:
     # parse sys.argv for params
