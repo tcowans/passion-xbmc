@@ -1,3 +1,6 @@
+v2.3.1
+- corrected bulk mode, xml wasn't downloading with logo off 
+
 v2.3.0
 - move to new fanart.tv API, also switch clearart and showthumb to download from fanart.tv
 - add readme file
