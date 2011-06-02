@@ -244,9 +244,9 @@ class downloader:
                     self.image_url = False
                     self.filename = False
                     
-#                 if self.clearart or self.show_thumb: 
-#                     if DEBUG: print "### get xbmcstuff xml"
-#                     self.get_xbmcstuff_xml()
+                if self.clearart or self.show_thumb and not self.lockstock_xml: 
+                    if DEBUG: print "### get lockstock xml"
+                    self.get_lockstock_xml()
                 
                 if self.clearart:
                     if DEBUG: print "### Search clearart for %s" % self.show_name
