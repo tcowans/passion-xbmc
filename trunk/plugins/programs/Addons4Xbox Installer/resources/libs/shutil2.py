@@ -71,7 +71,7 @@ def _samefile(src, dst):
     return (os.path.normcase(os.path.abspath(src)) ==
             os.path.normcase(os.path.abspath(dst)))
 
-def copyfile(src, dst, reportcopy=None, overwrite=False, progressBar=None, percentage=100):
+def copyfile(src, dst, reportcopy=None, overwrite=False, progressBar=None, curPercent=100):
     """Copy data from src to dst"""
     if _samefile(src, dst):
         raise Error, "`%s` and `%s` are the same file" % (src, dst)
@@ -121,7 +121,7 @@ def copy(src, dst, reportcopy=None, overwrite=False):
     copyfile(src, dst, reportcopy, overwrite)
     copymode(src, dst)
 
-def copy2(src, dst, reportcopy=None, overwrite=False, progressBar=None, percentage=100):
+def copy2(src, dst, reportcopy=None, overwrite=False, progressBar=None, percentage=100, coeff=1):
     """Copy data and all stat info ("cp -p src dst").
 
     The destination may be a directory.
@@ -144,7 +144,7 @@ def ignore_patterns(*patterns):
         return set(ignored_names)
     return _ignore_patterns
 
-def copytree(src, dst, symlinks=False, ignore=None, reportcopy=None, overwrite=False, progressBar=None, percentage=100):
+def copytree(src, dst, symlinks=False, ignore=None, reportcopy=None, overwrite=False, progressBar=None, curPercent=0, coeff=1):
     """Recursively copy a directory tree using copy2().
 
     The destination directory must not already exist.
@@ -179,19 +179,24 @@ def copytree(src, dst, symlinks=False, ignore=None, reportcopy=None, overwrite=F
         os.makedirs(dst)
     errors = []
     items_count = len(names)
+    localProgress = curPercent
     for name in names:
+        if progressBar and progressBar.iscanceled(): 
+            print "copytree - User cancelled"
+            break
         if name in ignored_names:
             continue
         srcname = os.path.join(src, name)
         dstname = os.path.join(dst, name)
+
         try:
             if symlinks and os.path.islink(srcname):
                 linkto = os.readlink(srcname)
                 os.symlink(linkto, dstname)
             elif os.path.isdir(srcname):
-                copytree(srcname, dstname, symlinks, ignore, reportcopy, overwrite, progressBar, percentage)
+                copytree(srcname, dstname, symlinks, ignore, reportcopy, overwrite, progressBar, curPercent, coeff)
             else:
-                copy2(srcname, dstname, reportcopy, overwrite, progressBar, percentage)
+                copy2(srcname, dstname, reportcopy, overwrite, progressBar, curPercent, coeff)
             # XXX What about devices, sockets etc.?
         except (IOError, os.error), why:
             errors.append((srcname, dstname, str(why)))
@@ -199,6 +204,12 @@ def copytree(src, dst, symlinks=False, ignore=None, reportcopy=None, overwrite=F
         # continue with other files
         except Error, err:
             errors.extend(err.args[0])
+            
+        # Compute Progress
+        if progressBar:
+            localProgress = min( localProgress + int( ( 100 )/( items_count * coeff ) ), 100 )
+            #TODO: pass string for progress window
+            progressBar.update(localProgress,  "","" )
     try:
         copystat(src, dst)
     except OSError, why:

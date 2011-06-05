@@ -42,6 +42,11 @@ from traceback import print_exc
 #from httplib import HTTP
 #from urlparse import urlparse
 import urllib2 
+import socket
+
+# timeout in seconds
+timeout = 3
+
 
 #modules XBMC
 import xbmc
@@ -312,11 +317,14 @@ def checkURL(url):
     """
     Check is a URL exists
     """  
+    print "Checking URL: %s"%url
     try:
+        socket.setdefaulttimeout(timeout)
         f = urllib2.urlopen(urllib2.Request(url))
         ok = True
     except:
         ok = False
+    print ok    
     return ok
 
     #===========================================================================

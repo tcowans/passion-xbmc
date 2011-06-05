@@ -22,10 +22,44 @@ except:
 _ = sys.modules[ "__main__" ].__language__
 
 
+# Types of Extension
+TYPE_EXT_UI_SKIN                = "xbmc.gui.skin"
+TYPE_EXT_REPO                   = "xbmc.addon.repository"
+TYPE_EXT_SERVICE                = "xbmc.service"
+TYPE_EXT_SCRAPER_ALBUMS         = "xbmc.metadata.scraper.albums"
+TYPE_EXT_SCRAPER_ARTISTS        = "xbmc.metadata.scraper.artists"
+TYPE_EXT_SCRAPER_MOVIES         = "xbmc.metadata.scraper.movies"
+TYPE_EXT_SCRAPER_MUSICVIDEOS    = "xbmc.metadata.scraper.musicvideos"
+TYPE_EXT_SCRAPER_TVSHOWS        = "xbmc.metadata.scraper.tvshows"
+TYPE_EXT_SCRAPER_LIB            = "xbmc.metadata.scraper.library"
+TYPE_EXT_UI_SCREENSAVER         = "xbmc.ui.screensaver"
+TYPE_EXT_PLAYER_MUSICVIZ        = "xbmc.player.musicviz"
+TYPE_EXT_PLUGINSOURCE           = "xbmc.python.pluginsource"
+TYPE_EXT_SCRIPT                 = "xbmc.python.script"
+TYPE_EXT_SCRIPT_WEATHER         = "xbmc.python.weather"
+TYPE_EXT_SCRIPT_SUBTITLE        = "xbmc.python.subtitles"
+TYPE_EXT_SCRIPT_LYRICS          = "xbmc.python.lyrics"
+TYPE_EXT_SCRIPT_LIB             = "xbmc.python.module"
+
+supportedExtList = [ TYPE_EXT_REPO,
+                     TYPE_EXT_PLUGINSOURCE,
+                     TYPE_EXT_SCRIPT,
+                     TYPE_EXT_SCRIPT_WEATHER,
+                     TYPE_EXT_SCRIPT_SUBTITLE,
+                     TYPE_EXT_SCRIPT_LYRICS,
+                     TYPE_EXT_SCRIPT_LIB,
+                   ]
+
+scriptExtList = [ TYPE_EXT_SCRIPT_WEATHER,
+                  TYPE_EXT_SCRIPT_SUBTITLE,
+                  TYPE_EXT_SCRIPT_LYRICS,
+                  TYPE_EXT_SCRIPT,
+                ]
 
 def parseAddonXml( xmlData, itemInfo ):
     """
     Get Item Info from addon.xml and set itemInfo object 
+    Look at http://wiki.xbmc.org/index.php?title=Add-ons_for_XBMC_(Developement) for XML format description
     """
     # id
     # name
@@ -88,25 +122,56 @@ def parseAddonElt( addonElt, itemInfo ):
     status = 'OK'
     try:
         if ( addonElt ):
+            #print "parseAddonElt"
+            #print ET.tostring(addonElt)
+            #print "--"
             libPoint = None
             itemInfo [ "id" ]      = addonElt.attrib.get( "id" )
             #itemInfo [ "name" ]    = addonElt.attrib.get( "name" ).encode( "utf8" )
             itemInfo [ "name" ]    = addonElt.attrib.get( "name" )
             itemInfo [ "version" ] = addonElt.attrib.get( "version" )
             itemInfo [ "author" ]  = addonElt.attrib.get( "provider-name" )
+            itemInfo [ "type" ]    = TYPE_ADDON # Unsupported type of addon (default value)
             extensions = addonElt.findall("extension")
             if extensions:
                 for extension in extensions:
-                    if extension.attrib.get("library"):
-                        # Info on lib
-                        itemInfo [ "library" ] = extension.attrib.get( "library" )
-                        itemInfo [ "provides" ] = extension.findtext( "provides" )
-                        libPoint = extension.attrib.get( "point" )
-                    elif ("xbmc.addon.metadata" == extension.attrib.get( "point" ) ):
+                    point = extension.attrib.get( "point" )
+                    if point in supportedExtList:
+                        # Map the type
+                        itemInfo [ "type" ] = _getType(itemInfo [ "id" ], point)
+                        if extension.attrib.get("library"):
+                            # Info on lib
+                            itemInfo [ "library" ] = extension.attrib.get( "library" )
+                            itemInfo [ "provides" ] = extension.findtext( "provides" )
+                            libPoint = extension.attrib.get( "point" )
+                            
+                        # Get repo info in case of repo:
+#                        <extension point="xbmc.addon.repository"
+#                            name="Passion-XBMC Add-on Repository">
+#                            <info compressed="true">http://passion-xbmc.org/addons/addons.php</info>
+#                            <checksum>http://passion-xbmc.org/addons/addons.xml.md5</checksum>
+#                            <datadir zip="true">http://passion-xbmc.org/addons/Download.php</datadir>
+#                        </extension>
+                        if point == TYPE_EXT_REPO:
+                            itemInfo [ "repo_url" ] = extension.findtext( "info" ) 
+                            datadir = extension.find( "datadir" )
+                            itemInfo [ "repo_datadir" ] = datadir.text 
+                            zip = datadir.attrib.get( "zip" )
+                            print "Repo format zip attribute: %s"%zip
+                            if zip == "true":
+                                itemInfo [ "repo_format" ] = "zip"
+                            else:
+                                itemInfo [ "repo_format" ] = "dir"
+                            
+                    elif point == "xbmc.addon.metadata":
                         # Metadata
-                        platform = extension.findtext( "platform" ) 
-                        nofanart = extension.findtext( "nofanart" ) 
-                        #TODO: parse metadata here
+                        itemInfo [ "platform" ]    = extension.findtext( "platform" ) 
+                        itemInfo [ "nofanart" ]    = extension.findtext( "nofanart" ) 
+                        itemInfo [ "description" ] = extension.findtext( "description" ) 
+                        itemInfo [ "disclaimer" ]  = extension.findtext( "disclaimer" ) 
+                        
+                        #TODO: Check case where tag is not present: what is returned?
+                        
             requires = addonElt.find("requires")
             if requires:
                 modules2import = requires.findall("import")
@@ -117,38 +182,60 @@ def parseAddonElt( addonElt, itemInfo ):
                     moduleInfo [ "version" ] = module.attrib.get( "version" )
                     itemInfo [ "required_lib" ] = requiredModuleList.append( moduleInfo )
                     
-            #itemInfo[ "icon" ] = os.path.join( cwd, "default.tbn" )
-            
-            # Determine the Type of the addon
-            itemInfo [ "type" ] = TYPE_ADDON # Unsupported type of addon
-            if libPoint:
-                if TYPE_ADDON_PLUGIN in libPoint:
-                    # Plugin: we need to check the addons id
-                    if TYPE_ADDON_MUSIC in itemInfo [ "id" ]:
-                        itemInfo [ "type" ] = TYPE_ADDON_MUSIC
-                    elif TYPE_ADDON_PICTURES in itemInfo [ "id" ]:
-                        itemInfo [ "type" ] = TYPE_ADDON_PICTURES
-                    elif TYPE_ADDON_PROGRAMS in itemInfo [ "id" ]:
-                        itemInfo [ "type" ] = TYPE_ADDON_PROGRAMS
-                    elif TYPE_ADDON_VIDEO in itemInfo [ "id" ]:
-                        itemInfo [ "type" ] = TYPE_ADDON_VIDEO
-                elif TYPE_ADDON_MODULE in itemInfo [ "id" ]: # xbmc.python.module
-                        itemInfo [ "type" ] = TYPE_ADDON_MODULE
-                elif TYPE_ADDON_SCRIPT in itemInfo [ "id" ]: # xbmc.python.script
-                        itemInfo [ "type" ] = TYPE_ADDON_SCRIPT
-                #TODO: add repo Addons
                 
+            if itemInfo [ "type" ] == TYPE_ADDON:
+                print "Not supported type of Addon"
+                #status = 'ERROR'
         else:
             print "addonElt not defined"
-            status = 'ERROR'
+            #status = 'ERROR'
 
     except:
-        status = 'ERROR'
+        #status = 'ERROR'
         print_exc()
 
     print itemInfo
     
     return status
+
+def _getType(id, extension):
+    """
+    Determine the Type of the addon
+    """
+    type = TYPE_ADDON # Unsupported type of addon
+    #print "id: __%s__ / extension: __%s__"%(id, extension)
+    #print "TYPE_EXT_REPO = __%s__"%TYPE_EXT_REPO
+    #print "TYPE_ADDON_REPO = __%s__"%TYPE_ADDON_REPO
+    if  extension == TYPE_EXT_PLUGINSOURCE:
+        # Plugin: we need to check the addons id
+        print "_getType - This is a Plugin"
+        if TYPE_ADDON_MUSIC in id:
+            type = TYPE_ADDON_MUSIC
+            print "_getType - This is a MUSIC Plugin"
+        elif TYPE_ADDON_PICTURES in id:
+            type = TYPE_ADDON_PICTURES
+            print "_getType - This is a PICTURES Plugin"
+        elif TYPE_ADDON_PROGRAMS in id:
+            type = TYPE_ADDON_PROGRAMS
+            print "_getType - This is a PROGRAMS Plugin"
+        elif TYPE_ADDON_VIDEO in id:
+            print "_getType - This is a VIDEO Plugin"
+            type = TYPE_ADDON_VIDEO
+    elif extension == TYPE_EXT_SCRIPT_LIB:
+        print "_getType - This is a LIB script"
+        type = TYPE_ADDON_MODULE
+    elif extension == TYPE_EXT_REPO:
+        print "_getType - This is a REPOSITORY"
+        type = TYPE_ADDON_REPO
+    elif extension in scriptExtList:
+        print "_getType - This is a SCRIPT"
+        type = TYPE_ADDON_SCRIPT
+    else:
+        print "_getType - unsupported type: %s"%type
+    #print "_getType - Type is: %s"%type
+    return type
+                        
+    
 
 def createItemListFromXml( xmlData ):
     """
@@ -169,7 +256,8 @@ def createItemListFromXml( xmlData ):
                     # dictionary to hold addon info
                     itemInfo = {}
                     status = parseAddonElt( addon, itemInfo )
-                    list.append(itemInfo)
+                    if status == 'OK':
+                        list.append(itemInfo)
     except:
         status = 'ERROR'
         print_exc()
@@ -189,6 +277,8 @@ class ListItemFromXML:
                 
                 if ( rootXmlElt ):
                     self.addons = rootXmlElt.findall("addon")
+                    #for i in range(len(self.addons)):
+                    #    print ET.tostring(self.addons[i])
         except:
             status = 'ItemList::__init__: ERROR'
             print_exc()
@@ -204,10 +294,15 @@ class ListItemFromXML:
             itemInfo = {}
             status = self._parseAddonElement( self.addons[self.currentParseIdx], itemInfo )
             self.currentParseIdx = self.currentParseIdx + 1
+            print "status = %s"%status
             if status == 'OK':
                 result = itemInfo
         else:
-            result = None
+            #result = None
+            itemInfo = {}
+            result = itemInfo
+        print "getNextItem - result:"
+        print result
         return result
     
     

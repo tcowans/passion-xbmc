@@ -85,12 +85,13 @@ class fileMgr:
     """
     File manager
     """
-    def verifrep(self, folder):
+    def verifrep(self, r_folder):
         """
         Check a folder exists and make it if necessary
         Return True if success, False otherwise
         """
         result = True
+        folder = xbmc.makeLegalFilename( r_folder )
         try:
             #print("verifrep check if directory: " + folder + " exists")
             if not os.path.exists(folder):
@@ -102,58 +103,62 @@ class fileMgr:
             print_exc()
         return result
 
-    def listDirFiles(self, path):
+    def listDirFiles(self, r_path):
         """
         List the files of a directory
         @param path: path of directory we want to list the content of
         """
+        path = xbmc.makeLegalFilename( r_path )
         print "listDirFiles: Liste le repertoire: %s" % path
         dirList = os.listdir( str( path ) )
 
         return dirList
 
-    def renameItem( self, base_path, old_name, new_name):
+    def renameItem( self, r_base_path, r_old_name, r_new_name):
         """
         Rename an item (file or directory)
         Return True if success, False otherwise
         """
         result = True
         try:
-            if base_path == None:
+            if r_base_path == None:
                 # old_name and new_name are path and not just filename
-                print "renameItem - base_path == None"
+                #old_name = xbmc.makeLegalFilename( r_old_name ) 
+                #new_name = xbmc.makeLegalFilename( r_new_name ) 
+                old_name = r_old_name 
+                new_name = r_new_name
                 if ( os.path.exists( old_name ) ):
                     if ( not os.path.exists( new_name ) ):
                         os.rename( old_name, new_name ) 
                     else:
                         result = False  
-                        print "renameItem: Path matching to the new name of the Item already exist: %s - cannot create a item with the same name" % new_name            
                 else:
                     result = False  
-                    print "renameItem: Path of Item to rename does not exist: %s" % old_name            
             else:
                 # old_name and new_name are just filename
                 # concatenating with base path
                 print "renameItem - base_path != None"
+                #base_path = xbmc.makeLegalFilename( r_base_path )
+                base_path = r_base_path
                 os.rename( os.path.join(base_path, old_name), os.path.join(base_path, new_name) )
         except OSError, err:
             result = False  
-            print "Couldn't rename %s to %s: %s!" % \
-                    (old_name, new_name, err)
+            print "renameItem - Couldn't rename"
             print err.errno
             print_exc()
         except:
             result = False
-            print "renameItem: Exception renaming Item: %s" % old_name
+            print "renameItem: Exception renaming Item"
             print_exc()
         return result
     
-    def deleteItem( self, item_path):
+    def deleteItem( self, r_item_path):
         """
         Delete an item (file or directory)
         Return True if success, False otherwise
         """
         result = None
+        item_path = xbmc.makeLegalFilename( r_item_path )
         if os.path.isdir(item_path):
             result = self.deleteDir(item_path)
         else:
@@ -161,32 +166,34 @@ class fileMgr:
             
         return result
 
-    def deleteFile(self, filename):
+    def deleteFile(self, r_file_path):
         """
-        Delete a file form download directory
+        Delete a file from download directory
         @param filename: name of the file to delete
         Return True if success, False otherwise
         """
         result = True
+        file_path = xbmc.makeLegalFilename( r_file_path )
         try:
-            if os.path.exists( filename ):
-                os.remove( filename )
+            if os.path.exists( file_path ):
+                os.remove( file_path )
             else:
-                print "deleteFile: File %s does NOT exist" % filename
+                print "deleteFile: File %s does NOT exist" % file_path
                 result = False
         except:
             result = False
-            print "deleteFile: Exception deleting file: %s" % filename
+            print "deleteFile: Exception deleting file: %s" % r_file_path
             print_exc()
         return result
 
-    def deleteDir( self, path ):
+    def deleteDir( self, r_path ):
         """
-        Delete a directory and all in content (files and subdirs)
+        Delete a directory and all its content (files and subdirs)
         Note: the directory does NOT need to be empty
         Return True if success, False otherwise
         """
         result = True
+        path = xbmc.makeLegalFilename( r_path )
         if os.path.isdir( path ):
             dirItems=os.listdir( path )
             for item in dirItems:
@@ -215,7 +222,7 @@ class fileMgr:
 
         return result
     
-    def delDirContent( self, path ):
+    def delDirContent( self, r_path ):
         """
         Delete the content of a directory ( file and sub direstories)
         but not the directory itself
@@ -224,6 +231,7 @@ class fileMgr:
         #print "delDirContent"
         #print path
         result = True
+        path = xbmc.makeLegalFilename( r_path )
         if os.path.isdir( path ):
             dirItems=os.listdir( path )
             for item in dirItems:
@@ -251,5 +259,38 @@ class fileMgr:
         """
         xbmc.executebuiltin('XBMC.Extract(%s,%s)'%(archive,targetDir) )
 
+    def copyDir( self, r_dir_src, r_dir_dest, overwrite=True, progressBar=None ):
+        """
+        Copy a directory to a new location
+        """
+        #dir_src  = xbmc.makeLegalFilename( r_dir_src )
+        #dir_dest = xbmc.makeLegalFilename( r_dir_dest )
+        dir_src  = r_dir_src
+        dir_dest = r_dir_dest
+        if not overwrite and os.path.isdir( dir_dest ):
+            shutil2.rmtree( dir_dest )
+        shutil2.copytree( dir_src, dir_dest, overwrite=overwrite, progressBar=progressBar, curPercent=100 )
+    
+    
+    def copyInsideDir( self, r_dir_src, r_dir_dest, overwrite=True, progressBar=None ):
+        """
+        Copy the content a directory to a new location
+        """
+        dir_src  = xbmc.makeLegalFilename( r_dir_src )
+        dir_dest = xbmc.makeLegalFilename( r_dir_dest )
+        list_dir = os.listdir( dir_src )
+        for file in list_dir:
+            src = os.path.join( dir_src, file )
+            dst = os.path.join( dir_dest, file )
+            if os.path.isfile( src ):
+                if not os.path.isdir( os.path.dirname( dst ) ):
+                    os.makedirs( os.path.dirname( dst ) )
+                if not overwrite and os.path.isfile( dst ):
+                    os.unlink( dst )
+                shutil2.copyfile( src, dst, overwrite=overwrite, progressBar=progressBar, curPercent=100 )
+            elif os.path.isdir( src ):
+                if not overwrite and os.path.isdir( dst ):
+                    shutil2.rmtree( dst )
+                shutil2.copytree( src, dst, overwrite=overwrite, progressBar=progressBar, curPercent=100 )
 
 

@@ -82,7 +82,7 @@ class RemoteArchiveInstaller(ArchItemInstaller):
         #self.itemInfo [ "name" ] = unicode( name, 'ISO 8859-1', errors='ignore')
         
         self.itemInfo [ "url" ] = url
-        self.itemInfo [ "filename" ] = os.path.basename(url)
+        self.itemInfo [ "filename" ] = os.path.basename(url.replace( "%20", " " ))
         self.itemInfo [ "filesize" ] = 0
         self.itemInfo [ "raw_item_sys_type" ] = TYPE_SYSTEM_ARCHIVE
         print self.itemInfo
@@ -186,7 +186,7 @@ class RemoteArchiveInstaller(ArchItemInstaller):
                                 if self.itemInfo [ "url" ] != realURL:
                                     # Redirection
                                     print "redirect url = %s"%realURL
-                                    self.itemInfo [ "filename" ] = os.path.basename(realURL)
+                                    self.itemInfo [ "filename" ] = os.path.basename(realURL.replace( " ", "%20" ))
                                     if not self.itemInfo [ "filename" ].lower().endswith('zip') and not self.itemInfo [ "filename" ].lower().endswith('rar'):
                                         self.itemInfo [ "filename" ] = "unknownfilename"
                                         status = "ERRORFILENAME"
@@ -355,12 +355,13 @@ class RemoteDirInstaller(DirItemInstaller):
         
         self.title = self.itemInfo [ "name" ]
 
-    def _download_item( self, forceInstall=False ):
+    def _download_item( self, forceInstall=True ):
         print("> _download_item() forceInstall=%s" % forceInstall)
         status = "OK"
         finished_path = None
         try:
             #if ( forceInstall or xbmcgui.Dialog().yesno( self.title, _( 30050 ), "", "", _( 30020 ), _( 30021 ) ) ):
+            #TODO CHECK why forceInstall?
             if ( forceInstall ):
                 self.dialog.create( self.title, _( 30052 ), _( 30053 ) )
                 asset_files = []
