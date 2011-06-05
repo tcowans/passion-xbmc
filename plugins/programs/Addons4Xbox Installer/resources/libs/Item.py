@@ -77,7 +77,14 @@ TYPE_ADDON_VIDEO       = "plugin.video." #"ADDON_VIDEO"
 TYPE_ADDON_WEATHER     = "weather"
 TYPE_ADDON_MODULE      = ".module" #"ADDON_SCRIPT"
 TYPE_ADDON_PLUGIN      = "pluginsource" 
-TYPE_ADDON_REPO        = "repository."
+TYPE_ADDON_REPO        = "repository"
+
+#  "xbmc.python.script"         This is the standard Script extension point
+#  "xbmc.python.weather"        Used for weather scripts
+#  "xbmc.python.subtitles"      Used for subtitle scripts
+#  "xbmc.python.lyrics"         Used for lyrics scripts
+#  "xbmc.python.library"        Used for skin dependent scripts (e.g. recently added script)
+
 
 TYPE_SYSTEM_FILE       = "file"
 TYPE_SYSTEM_ARCHIVE    = "archive"
@@ -94,6 +101,7 @@ TITLE_ADDON_PROGRAMS    = _( 30104 )
 TITLE_ADDON_VIDEO       = _( 30105 )
 TITLE_ADDON_WEATHER     = _( 30106 )
 TITLE_ADDON_MODULE      = _( 30108 )
+TITLE_ADDON_REPO        = _( 30109 )
 #TITLE_ADDON_NEW         = _( 22 )
 
 # Note: those indexes are also used in CONF.py careful with any changes
@@ -106,6 +114,7 @@ INDEX_ADDON_PROGRAMS   = 3
 INDEX_ADDON_VIDEO      = 4
 INDEX_ADDON_WEATHER    = 5
 INDEX_ADDON_MODULE     = 6
+INDEX_ADDON_REPO     = 7
 
 THUMB_NOT_AVAILABLE    = os.path.join( DIR_ROOT, "resources", "media", "IPX-NotAvailable2.png")
 THUMB_ADDON            = "IPX-defaultPlugin.png"
@@ -116,6 +125,7 @@ THUMB_ADDON_PROGRAMS   = "IPX-defaultPluginProgram.png"
 THUMB_ADDON_VIDEO      = "IPX-defaultPluginVideo.png"
 THUMB_ADDON_WEATHER    = "IPX-defaultPluginWeather.png"
 THUMB_ADDON_MODULE     = "IPX-NotAvailable2.png"
+THUMB_ADDON_REPO       = "IPX-defaultPlugin.png"
 THUMB_NEW              = "IPX-defaultNew.png"
 
 
@@ -127,7 +137,8 @@ item_path = { TYPE_ADDON          : DIR_ADDON,
               TYPE_ADDON_PROGRAMS : DIR_ADDON_PROGRAMS, 
               TYPE_ADDON_VIDEO    : DIR_ADDON_VIDEO,
               TYPE_ADDON_WEATHER  : DIR_ADDON_WEATHER,
-              TYPE_ADDON_MODULE   : DIR_ADDON_MODULE }
+              TYPE_ADDON_MODULE   : DIR_ADDON_MODULE,
+              TYPE_ADDON_REPO     : DIR_ADDON_REPO }
 
 item_thumb = { TYPE_ADDON          : THUMB_ADDON,
                TYPE_ADDON_SCRIPT   : THUMB_ADDON_SCRIPT, 
@@ -136,7 +147,8 @@ item_thumb = { TYPE_ADDON          : THUMB_ADDON,
                TYPE_ADDON_PROGRAMS : THUMB_ADDON_PROGRAMS, 
                TYPE_ADDON_VIDEO    : THUMB_ADDON_VIDEO,
                TYPE_ADDON_WEATHER  : THUMB_ADDON_WEATHER,
-               TYPE_ADDON_MODULE   : THUMB_ADDON_MODULE }
+               TYPE_ADDON_MODULE   : THUMB_ADDON_MODULE,
+               TYPE_ADDON_REPO     : THUMB_ADDON_REPO }
 
 item_title = { TYPE_ADDON          : TITLE_ADDON, 
                TYPE_ADDON_SCRIPT   : TITLE_ADDON_SCRIPT, 
@@ -145,7 +157,8 @@ item_title = { TYPE_ADDON          : TITLE_ADDON,
                TYPE_ADDON_PROGRAMS : TITLE_ADDON_PROGRAMS, 
                TYPE_ADDON_VIDEO    : TITLE_ADDON_VIDEO,
                TYPE_ADDON_WEATHER  : TITLE_ADDON_WEATHER,
-               TYPE_ADDON_MODULE   : TITLE_ADDON_MODULE }
+               TYPE_ADDON_MODULE   : TITLE_ADDON_MODULE,
+               TYPE_ADDON_REPO     : TITLE_ADDON_REPO }
 
 item_index = { TYPE_ADDON          : INDEX_ADDON,
                TYPE_ADDON_SCRIPT   : INDEX_ADDON_SCRIPT, 
@@ -154,7 +167,8 @@ item_index = { TYPE_ADDON          : INDEX_ADDON,
                TYPE_ADDON_PROGRAMS : INDEX_ADDON_PROGRAMS, 
                TYPE_ADDON_VIDEO    : INDEX_ADDON_VIDEO,
                TYPE_ADDON_WEATHER  : INDEX_ADDON_WEATHER,
-               TYPE_ADDON_MODULE   : INDEX_ADDON_MODULE }
+               TYPE_ADDON_MODULE   : INDEX_ADDON_MODULE,
+               TYPE_ADDON_REPO     : INDEX_ADDON_REPO }
 
 
 def get_install_path( type ):

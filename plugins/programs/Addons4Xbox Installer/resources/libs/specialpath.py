@@ -21,7 +21,8 @@ __all__ = [
     "DIR_ADDON_WEATHER",
     "DIR_ADDON_MODULE",
     "DIR_ROOT",
-    "DIR_CACHE"
+    "DIR_CACHE",
+    "DIR_ADDON_REPO"
     ]
 
 
@@ -75,4 +76,5 @@ DIR_ADDON_MODULE   = os.path.join( SPECIAL_HOME_DIR, "scripts", ".modules" )
 
 DIR_ROOT            = os.getcwd().replace( ";", "" )
 DIR_CACHE           = os.path.join( SPECIAL_SCRIPT_DATA, "cache" )
+DIR_ADDON_REPO      = os.path.join( SPECIAL_SCRIPT_DATA, "repositories")
 
