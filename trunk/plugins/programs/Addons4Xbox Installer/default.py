@@ -15,8 +15,8 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/programs/Addons4xbox/"
 __credits__      = "Team XBMC Passion"
 __platform__     = "xbmc media center [XBOX]"
-__date__         = "06-04-2011"
-__version__      = "0.7"
+__date__         = "06-12-2011"
+__version__      = "0.8"
 __svn_revision__ = 0
 __XBMC_Revision__= 30805
 
@@ -105,6 +105,8 @@ class Addons4xboxInstallerPlugin:
     Main plugin class
     """
     # define param key names
+    PARAM_NAME              = 'name'
+    PARAM_ACTION            = 'action'
     PARAM_TITLE             = "title"
     PARAM_TYPE              = 'type'
     PARAM_LISTTYPE          = 'listype'
@@ -121,6 +123,7 @@ class Addons4xboxInstallerPlugin:
     VALUE_LIST_LOCAL_REPOS  = 'listlocalrepos'
     VALUE_LIST_ALL_ADDONS   = 'alladdons'
     VALUE_LIST_ADDONS       = 'listaddons'
+    VALUE_DISPLAY_INFO      = 'displayinfo'
 
     # List of supported addons
     supportedAddonList = [ TYPE_ADDON_SCRIPT,
@@ -423,20 +426,6 @@ class Addons4xboxInstallerPlugin:
                 filter = "item['type'] in self.supportedAddonList"
             elif cat in self.supportedAddonList:
                 filter = "item['type'] == '%s'"%cat
-#            elif cat == TYPE_ADDON_SCRIPT:
-#                filter = "item['type'] == TYPE_ADDON_SCRIPT"
-#            elif cat == TYPE_ADDON_MUSIC:
-#                filter = "item['type'] == TYPE_ADDON_MUSIC"
-#            elif cat == TYPE_ADDON_PICTURES:
-#                filter = "item['type'] == TYPE_ADDON_PICTURES"
-#            elif cat == TYPE_ADDON_PROGRAMS:
-#                filter = "item['type'] == TYPE_ADDON_PROGRAMS"
-#            elif cat == TYPE_ADDON_VIDEO:
-#                filter = "item['type'] == TYPE_ADDON_VIDEO"
-#            elif cat == TYPE_ADDON_WEATHER:
-#                filter = "item['type'] == TYPE_ADDON_WEATHER"
-#            elif cat == TYPE_ADDON_MODULE:
-#                filter = "item['type'] == TYPE_ADDON_MODULE"
 
             keepParsing = True
             while (keepParsing):
@@ -448,9 +437,12 @@ class Addons4xboxInstallerPlugin:
                         if repoInfo [ "repo_format" ] ==  'zip':
                             downloadUrl = (repoInfo [ "repo_datadir" ] + '/' + item["id"] + '/' + item["id"] + '-' + item["version"] + ".zip").replace(' ', '%20')
                             iconimage   = (repoInfo [ "repo_datadir" ] + '/' + item["id"] + '/' + "icon.png").replace(' ', '%20') 
+                            item["ImageUrl"] = iconimage
+                            
                         else:
                             downloadUrl = (repoInfo [ "repo_datadir" ] + '/' + item["id"] + '/').replace(' ', '%20') 
                             iconimage   = (repoInfo [ "repo_datadir" ] + '/' + item["id"] + '/' + "icon.png").replace(' ', '%20')
+                            item["ImageUrl"] = iconimage
                             
                         print downloadUrl
                         paramsAddons = {}
@@ -464,7 +456,9 @@ class Addons4xboxInstallerPlugin:
                         url = self._create_param_url( paramsAddons )
 
                         if ( url ):
-                            self._addLink( item['name'], url, iconimage=iconimage)
+                            #self._addLink( item['name'], url, iconimage=iconimage)
+                            item["PluginUrl"] = url
+                            self._addLinkNew( item )
                             print "Link added"
                 else:
                     keepParsing = False
@@ -565,6 +559,14 @@ class Addons4xboxInstallerPlugin:
                 
                 self._end_of_directory( True )
 
+            elif self.PARAM_ACTION in self.parameters.keys() and self.VALUE_DISPLAY_INFO == self.parameters[self.PARAM_ACTION]:
+                try:
+                    from resources.libs.DialogRepoInfo import DialogRepoInfo
+                    repoWindow = DialogRepoInfo( "DialogRepoInfo.xml", os.getcwd(), "Default", "720p" )
+                    del repoWindow
+                except:
+                    print_exc()
+                self._end_of_directory( False )
         
 
         except:
@@ -859,22 +861,22 @@ class Addons4xboxInstallerPlugin:
             #icon = "DefaultAddon.png"
             icon = os.path.join(MEDIA_PATH, "DefaultAddonRepository.png")
         
-        descriptColor = self.colorList[ int( __settings__.getSetting( "descolor" ) ) ]
-        
-        if self.shortTitleDisplay:
-            labelTxt = itemInfo["name"]
-        else:
-            labelTxt = itemInfo["name"] + ": " + self._coloring( itemInfo["description"], descriptColor ) 
+        labelTxt = itemInfo["name"]
+#        descriptColor = self.colorList[ int( __settings__.getSetting( "descolor" ) ) ]       
+#        if self.shortTitleDisplay:
+#            labelTxt = itemInfo["name"]
+#        else:
+#            labelTxt = itemInfo["name"] + ": " + self._coloring( itemInfo["description"], descriptColor ) 
         liz=xbmcgui.ListItem( label=labelTxt, iconImage=icon, thumbnailImage=icon )
         liz.setInfo( type="addons", 
                      infoLabels={ "title": itemInfo["name"], "Plot": itemInfo["description"] } )
-        liz.setProperty("Addon.Name",itemInfo["name"])
-        liz.setProperty("Addon.Version"," ")
+        liz.setProperty("Addon.Name", itemInfo["name"])
+        liz.setProperty("Addon.Version", itemInfo["version"])
         liz.setProperty("Addon.Summary", "")
         liz.setProperty("Addon.Description", itemInfo["description"])
-        liz.setProperty("Addon.Type", __language__( 30011 ))
-        liz.setProperty("Addon.Creator", itemInfo["owner"])
-        liz.setProperty("Addon.Disclaimer","")
+        liz.setProperty("Addon.Type", itemInfo[ "type" ]) #TODO: create localized string base on the type
+        liz.setProperty("Addon.Creator", itemInfo["author"])
+        liz.setProperty("Addon.Disclaimer", "")
         liz.setProperty("Addon.Changelog", "")
         liz.setProperty("Addon.ID", "")
         liz.setProperty("Addon.Status", "Stable")
@@ -887,15 +889,16 @@ class Addons4xboxInstallerPlugin:
         paramsMenu[self.PARAM_ACTION] = self.VALUE_DISPLAY_INFO
         urlMenu = self._create_param_url( paramsMenu )
         if urlMenu:
-            c_items = [ ( __language__( 30012 ), "XBMC.RunPlugin(%s)" % ( urlMenu)) ]
+            c_items = [ ( __language__( 30300 ), "XBMC.RunPlugin(%s)" % ( urlMenu)) ]
             liz.addContextMenuItems( c_items )
-        params = {}
-        params[self.PARAM_NAME] = itemInfo["name"]
-        params[self.PARAM_ACTION] = self.VALUE_INSTALL_FROM_ZIP
-        params[self.PARAM_URL] = itemInfo["repoUrl"]
-        urlRepo = self._create_param_url( params )
-        if urlRepo:
-            ok=xbmcplugin.addDirectoryItem( handle=int(sys.argv[1]), url=urlRepo, listitem=liz, isFolder=False  )
+#        params = {}
+#        params[self.PARAM_NAME] = itemInfo["name"]
+#        params[self.PARAM_ACTION] = self.VALUE_INSTALL_FROM_ZIP
+#        params[self.PARAM_URL] = itemInfo["repoUrl"]
+#        urlItem = self._create_param_url( params )
+        urlItem = itemInfo["PluginUrl"]
+        if urlItem:
+            ok=xbmcplugin.addDirectoryItem( handle=int(sys.argv[1]), url=urlItem, listitem=liz, isFolder=False  )
         return ok
     
 

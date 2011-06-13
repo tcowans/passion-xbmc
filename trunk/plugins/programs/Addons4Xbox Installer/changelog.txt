@@ -1,4 +1,7 @@
-﻿2011-06-04 Version 0.7 by Temhil
+﻿2011-06-12 Version 0.8 by Temhil
+- Added Window info describing addons (via context menu)
+
+2011-06-04 Version 0.7 by Temhil
 - New plugin icon (Thank you to Maxoo)
 - Repositories are not anymore hardcoded but can be installed (from zip file)
 - Fixed install from zip
@@ -12,7 +15,7 @@
 
 2011-02-25 Version 0.5 by Temhil
 - Removed xbmcaddon library since it is part of xbmc4xbox, 
-- fixed filename lenght issue in extractor.
+- Fixed filename lenght issue in extractor.
 - Removed xbmcaddon install at 1st start
 
 2010-11-28 Version 0.4 by Temhil
@@ -22,7 +25,7 @@
 2010-11-14 Version 0.3 by Temhil
 - Added support of repositories using files instead of zip (i.e google code), reusing SVN repo installer code (still need to be fully adapted to current design)
 - Some fixes
-- Aadded few google code repos (hardcoded)
+- Added few google code repos (hardcoded)
 
 2010-11-08 Version 0.2 by Temhil
 - Quick fix on non ascii addon name, for now those addons are ignored (waiting for a better solution)
