@@ -109,6 +109,13 @@
     <string id="30203">Install from zip file</string>
     <string id="30204">Get Add-ons</string>
     
+    <string id="30300">Add-on Info</string>
+    <string id="30301">Repository Info</string>
+    <string id="30302">Type</string>
+    <string id="30303">Version</string>
+    <string id="30304">Creator</string>
+    <string id="30305">Description</string>
+    
     <!-- compatible messages -->
     <string id="30900">version</string>
     <string id="30901">This version of %s requires an</string>
