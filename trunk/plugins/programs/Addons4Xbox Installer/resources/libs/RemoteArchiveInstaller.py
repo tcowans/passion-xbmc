@@ -312,8 +312,11 @@ class RemoteDirInstaller(DirItemInstaller):
         self.itemInfo [ "raw_item_sys_type" ] = TYPE_SYSTEM_DIRECTORY
         
         self._create_title()
-        self.REPO_URL = repoUrl
         print self.itemInfo
+        if repoUrl.endswith( "/" ):
+            self.REPO_URL = repoUrl
+        else:
+            self.REPO_URL = repoUrl + "/"
         
         #TODO: pass progress bar callback instead
         self.dialog = xbmcgui.DialogProgress()
@@ -365,10 +368,12 @@ class RemoteDirInstaller(DirItemInstaller):
             if ( forceInstall ):
                 self.dialog.create( self.title, _( 30052 ), _( 30053 ) )
                 asset_files = []
-                folders = [ self.itemInfo[ "url" ].replace(self.REPO_URL + "/", "").replace( " ", "%20" ) ]
+                
+                #TODO: find cleaner solution in order to remove the / at the end of the folder name
+                folders = [ self.itemInfo[ "url" ].replace(self.REPO_URL, "").replace("//", "").replace("/", "").replace( " ", "%20" ) ]  
                 while folders:
                     try:
-                        htmlsource = readURL( self.REPO_URL + "/" + folders[ 0 ] )
+                        htmlsource = readURL( self.REPO_URL + folders[ 0 ] )
                         if ( not htmlsource ): raise
                         items = self._parse_html_source( htmlsource )
                         if ( not items or items[ "status" ] == "fail" ): raise
@@ -437,7 +442,7 @@ class RemoteDirInstaller(DirItemInstaller):
                 self.dialog.update( pct, "%s %s" % ( _( 30055 ), url, ), "%s %s" % ( _( 30056 ), path, ), "%s %s" % ( _( 30007 ), file, ) )
                 if ( self.dialog.iscanceled() ): raise
                 if ( not os.path.isdir( path ) ): os.makedirs( path )
-                url = self.REPO_URL + "/" + url.replace( " ", "%20" )
+                url = self.REPO_URL+ url.replace( " ", "%20" )
                 fpath = os.path.join( path, file )
                 
                 print self.REPO_URL
@@ -469,7 +474,7 @@ class RemoteDirInstaller(DirItemInstaller):
         files = []
         for item in items[ "assets" ]:
             if ( item.endswith( "/" ) ):
-                folders.append( item )
+                folders.append( item[:-1] ) # removing '/' at the end
             else:
                 files.append( item )
         return files, folders
