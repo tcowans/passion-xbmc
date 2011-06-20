@@ -1,3 +1,6 @@
+Version 1.0.3 (19/06/11) par Temhil et tom.net
+- Integration des changements faits par tom.net necessaires suite a une modification du site de pluzz (merci a Tom.net)
+
 Version 1.0.2 (10/03/11) par Temhil
 - Utilisation de setResolvedUrl permettant d'utiliser le player par defaut d'XBMC:
   . Cela evite des problemes d'affichage lors du chargement de la video

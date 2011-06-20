@@ -1,30 +1,11 @@
 # -*- coding: utf-8 -*-
-"""
-Version 1.0.2 (10/03/11) par Temhil
-    - Utilisation de setResolvedUrl permettant d'utiliser le player par defaut d'XBMC:
-      . Cela evite des problemes d'affichage lors du chargement de la video
-      . permet le transfert automatique des informations (nom, icone) au player d'XBMC
-    - Correction de l'encodage du fichier
-    - Activation du Tri (tri par nom)
-    
-Version 1.0.1 (15/12/10) par Temhil
-    - Reparation des liens 'page suivante'
-    - ajout des images pour les videos
-    - ajout des images pour les chaines
-    - ajout du logo
-    - ajout lien 'toutes les videos' pour les chaines en plus de 'notre selection'
-
-Version 1.0.0 (05/11/10) par mighty_bombero
-    - Creation
-    
-"""
 
 __addonID__      = "plugin.video.pluzz"
-__author__       = "mighty_bombero, merindol, Temhil (passion-xbmc.org)"
+__author__       = "mighty_bombero, merindol, Temhil (passion-xbmc.org), tom.net"
 __url__          = "http://passion-xbmc.org/index.php"
 __credits__      = "Team XBMC Passion"
-__date__         = "10-03-2011"
-__version__      = "1.0.2"
+__date__         = "19-06-2011"
+__version__      = "1.0.3"
 
 import xbmcplugin
 import xbmcgui
@@ -70,14 +51,14 @@ TYPES = {'categories' :{"Accueil":"/",
         "France 3":"/france3/",
         "France 4":"/france4/",
         "France 5":"/france5/",
-        "France Ô":"/franceo/"
+        "France Ã”":"/franceo/"
         }}
 
 IMAGES = {"France 2":"f2.png",
           "France 3":"f3.png",
           "France 4":"f4.png",
           "France 5":"f5.png",
-          "France Ô":"fo.png"
+          "France Ã”":"fo.png"
         }
 
 
@@ -90,7 +71,7 @@ def get_content_for_type(type):
 
 def get_category_episodes(url):
     html = urllib.urlopen(WEBSITE + url).read()
-    vignettes = re.findall("""<li class="vignette">\s+<h4 class="_titre">\s+<a class="" href="([^"]+)">([^<]+)</a>\s+</h4>\s+(?:<p class="date">(\d{2}/\d{2}/\d{4})</p>\s+)?<p class="mute pgm_id">[^<]*</p>\s+<img class="illustration" src="([^"]+)" alt=".*?" />\s+<img class="chaine" src="([^"]+)" alt="" />""",html)
+    vignettes = re.findall("""<li class="vignette">\s+<h4 class="_titre">\s+<a class="" href="([^"]+)">([^<]+)</a>\s+</h4>\s+(?:<p class="date">(\d{2}/\d{2}/\d{4})</p>\s+)?<p class="mute pgm_id">[^<]*</p>\s+<img class="illustration" src="([^"]+)"[^<]*/>\s+<img class="chaine" src="([^"]+)"[^<]*/>""",html)
 
     episode_list = list()
     for lien_em,titre,date,path_img,path_logoch in vignettes:
@@ -166,7 +147,8 @@ def pagination(url_emission):
     autres_pages= re.findall("""<a href="(.*?)">\d+</a></li>""",html)
     #suivant
     #match = re.search("""<a href="(\d+)">Suivant &nbsp; >></a>""",html)
-    match = re.search("""<a href="(.*?)">Suivant &nbsp; &gt;&gt;""",html)
+    match = re.search("""<a href="(.*?)">Suivant &nbsp; &gt;&gt;</a>""",html)
+
     if match:
         page_suivante = match.group(1)
     else:
@@ -199,7 +181,7 @@ def SELECT_EPISODE(url):
     if page_suivante != None:
         addDir('Page suivante', url + "/" + page_suivante, 3, os.path.join(MEDIA_PATH, "next-page.png"))
     if url in TYPES['chaines'].values():
-        addDir("Toutes les vidéos", url + "/" + "1", 3, '')
+        addDir("Toutes les vidÃ©os", url + "/" + "1", 3, '')
         
     episodes = get_category_episodes(url)
     for episode in episodes:
