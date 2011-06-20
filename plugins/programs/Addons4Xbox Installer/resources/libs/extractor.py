@@ -141,18 +141,25 @@ def unzip( filename, destination=None, report=False ):
         diff = 100.0 / total_items
         percent = 0
         # nom du dossier racine
-        root_dir = namelist[ 0 ]
         is_root_dir = True
+        if "/" in namelist[ 0 ]:
+            if namelist[ 0 ].endswith( "/" ):
+                root_dir = namelist[ 0 ]
+                if not root_dir.endswith( "/" ) and ( zip.getinfo( root_dir ).file_size > 0 ):
+                    is_root_dir = False
+                else:
+                    for i in namelist:
+                        #print root_dir in i, i
+                        if not root_dir in i:
+                            is_root_dir = False
+                            break
+            else:
+                root_dir = namelist[ 0 ].split("/")[0]
+        else:
+            is_root_dir = False
+            
         # si root_dir n'est pas un dossier ou n'est pas la racine, on se base sur le nom de l'archive
         #print root_dir
-        if not root_dir.endswith( "/" ) and ( zip.getinfo( root_dir ).file_size > 0 ):
-            is_root_dir = False
-        else:
-            for i in namelist:
-                #print root_dir in i, i
-                if not root_dir in i:
-                    is_root_dir = False
-                    break
         base_dir = os.path.join( destination, root_dir.rstrip( "/" ) )
         if not is_root_dir:#root_dir.endswith( "/" ) and ( zip.getinfo( root_dir ).file_size > 0 ):
             root_dir = os.path.basename( os.path.splitext( filename )[ 0 ] )

@@ -1,4 +1,8 @@
-﻿2011-06-12 Version 0.8 by Temhil
+﻿2011-06-19 Version 0.8.1 by Temhil
+- Fixed zip issue appearing with some zip format used
+- Fixed install issue for SVN/GIT install
+
+2011-06-12 Version 0.8 by Temhil
 - Added Window info describing addons (via context menu)
 
 2011-06-04 Version 0.7 by Temhil

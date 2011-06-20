@@ -15,8 +15,8 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/programs/Addons4xbox/"
 __credits__      = "Team XBMC Passion"
 __platform__     = "xbmc media center [XBOX]"
-__date__         = "06-12-2011"
-__version__      = "0.8"
+__date__         = "06-19-2011"
+__version__      = "0.8.1"
 __svn_revision__ = 0
 __XBMC_Revision__= 30805
 
@@ -434,14 +434,18 @@ class Addons4xboxInstallerPlugin:
                 if item:
                     print "filter: %s"%filter
                     if eval(filter):
+                        endRepoChar = "/"
+                        if repoInfo [ "repo_datadir" ].endswith( "/" ):
+                            endRepoChar = ""
+                        
                         if repoInfo [ "repo_format" ] ==  'zip':
-                            downloadUrl = (repoInfo [ "repo_datadir" ] + '/' + item["id"] + '/' + item["id"] + '-' + item["version"] + ".zip").replace(' ', '%20')
-                            iconimage   = (repoInfo [ "repo_datadir" ] + '/' + item["id"] + '/' + "icon.png").replace(' ', '%20') 
+                            downloadUrl = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/' + item["id"] + '-' + item["version"] + ".zip").replace(' ', '%20')
+                            iconimage   = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/' + "icon.png").replace(' ', '%20') 
                             item["ImageUrl"] = iconimage
                             
                         else:
-                            downloadUrl = (repoInfo [ "repo_datadir" ] + '/' + item["id"] + '/').replace(' ', '%20') 
-                            iconimage   = (repoInfo [ "repo_datadir" ] + '/' + item["id"] + '/' + "icon.png").replace(' ', '%20')
+                            downloadUrl = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/').replace(' ', '%20') 
+                            iconimage   = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/' + "icon.png").replace(' ', '%20')
                             item["ImageUrl"] = iconimage
                             
                         print downloadUrl
@@ -524,40 +528,41 @@ class Addons4xboxInstallerPlugin:
                 self.createAddonsDir(repoId, addonCat)
 
 
-            elif self.PARAM_LISTTYPE in self.parameters.keys():
-                addon_type = self.parameters[self.PARAM_LISTTYPE]
-                self.fileMgr = fileMgr()
-                paramsDic = {}
-                
-                if addon_type in self.supportedAddonList:
-                    print addon_type
-                    listdir = self.fileMgr.listDirFiles( get_install_path( addon_type ) )
-                    listdir.sort( key=str.lower )
-                    for addon_dir  in listdir:
-                        if TYPE_ADDON_SCRIPT in addon_dir:
-                            addon_path    = os.path.join( get_install_path( addon_type ), addon_dir )
-                            thumbnail_path = os.path.join( addon_path, "icon.png" )
-                            if not os.path.exists(thumbnail_path):
-                            #    thumbnail_path = get_thumb( self.curListType )
-                                thumbnail_path = get_thumb( addon_type ) #"DefaultVideo.png"
-                            #listItemObj = ListItemObject( type = addon_type, name = addon_dir, local_path = addon_path, thumb = thumbnail_path )
-                            #self.currentItemList.append( listItemObj )
-                            paramsDic[self.PARAM_TYPE]      = addon_type
-                            paramsDic[self.PARAM_TITLE]     = addon_dir
-                            paramsDic[self.PARAM_LOCALPATH] = addon_dir
-                            
-                            url = self._create_param_url( paramsDic )
-                            if url:
-                                self._addLink( addon_dir, url, iconimage=thumbnail_path )
-                self._end_of_directory( True )
-                    
-            elif self.PARAM_TYPE in self.parameters.keys():
-                print "Run addon"
-                addon_type = self.parameters[self.PARAM_TYPE]
-                addon_basename = self.parameters[self.PARAM_LOCALPATH]
-                self._run_addon(addon_type, addon_basename)
-                
-                self._end_of_directory( True )
+#            elif self.PARAM_LISTTYPE in self.parameters.keys():
+#                # List local addons
+#                addon_type = self.parameters[self.PARAM_LISTTYPE]
+#                self.fileMgr = fileMgr()
+#                paramsDic = {}
+#                
+#                if addon_type in self.supportedAddonList:
+#                    print addon_type
+#                    listdir = self.fileMgr.listDirFiles( get_install_path( addon_type ) )
+#                    listdir.sort( key=str.lower )
+#                    for addon_dir  in listdir:
+#                        if TYPE_ADDON_SCRIPT in addon_dir:
+#                            addon_path    = os.path.join( get_install_path( addon_type ), addon_dir )
+#                            thumbnail_path = os.path.join( addon_path, "icon.png" )
+#                            if not os.path.exists(thumbnail_path):
+#                            #    thumbnail_path = get_thumb( self.curListType )
+#                                thumbnail_path = get_thumb( addon_type ) #"DefaultVideo.png"
+#                            #listItemObj = ListItemObject( type = addon_type, name = addon_dir, local_path = addon_path, thumb = thumbnail_path )
+#                            #self.currentItemList.append( listItemObj )
+#                            paramsDic[self.PARAM_TYPE]      = addon_type
+#                            paramsDic[self.PARAM_TITLE]     = addon_dir
+#                            paramsDic[self.PARAM_LOCALPATH] = addon_dir
+#                            
+#                            url = self._create_param_url( paramsDic )
+#                            if url:
+#                                self._addLink( addon_dir, url, iconimage=thumbnail_path )
+#                self._end_of_directory( True )
+#                    
+#            elif self.PARAM_TYPE in self.parameters.keys():
+#                print "Run addon"
+#                addon_type = self.parameters[self.PARAM_TYPE]
+#                addon_basename = self.parameters[self.PARAM_LOCALPATH]
+#                self._run_addon(addon_type, addon_basename)
+#                
+#                self._end_of_directory( True )
 
             elif self.PARAM_ACTION in self.parameters.keys() and self.VALUE_DISPLAY_INFO == self.parameters[self.PARAM_ACTION]:
                 try:
