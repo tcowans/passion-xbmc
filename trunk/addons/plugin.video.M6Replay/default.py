@@ -3,52 +3,18 @@
 
 plugin video M6 Replay pour XBMC 
 
-06-03-2011 Version 1.4.4 par Temhil et beenje
-    + Ajout de pycrypto pour openELEC (patch de beenje)
-    + Ajout selection de la plateforme dans les parametres
-    + Configure le serveur 3 par defaut
-    + Support vue Media Info pour les videos
-    
-23-02-2011 Version 1.4.3 par Temhil
-    + Ajout du serveur 3
-    
-23-02-2011 Version 1.4.2 par Temhil
-    + Configure le serveur 2 par defaut (a la place sur serveur 1)
-	
-22-02-2011 Version 1.4.1 par Temhil et beenje
-    + Ajout de pycrypto pour ATV2 (patch de beenje)
-    + Correction bug encodage (patch de beenje)
-    + Correction bug affichage des jours de la semaines (decalage)
-    
-02-01-2011 Version 1.4.0 par Temhil
-    + Ajout du choix du serveur dans les parametres du plugin
-    + Utilisation de setResolvedUrl permettant d'utiliser le player par defaut d'XBMC:
-      . Cela evite des problemes d'affichage lors du chargement de la video
-      . permet le transfert automatique des informations (nom, icone) au player d'XBMC
-    + Ajout de la bibliothèque "python-crypto" pour platformes MacOSX 32bits et XBOX
-    + Ajout de la description de la video (resume, date de diffusion, date de fin, duree)
-    + Activation du Tri
-    + Resolution du bug lorsque les images affichee ne correspondaint pas a la categorie. 
-      On efface desormais les thumbs du cache a chaque fois, le chargement des images sera donc plus
-      lent, mais a moins de faire d'importantes modification du design actuel, cette solution reste
-      un bon compromis 
-      
-08-11-2010 Version 1.3.0 par merindol
-    + Affichage des différentes versions des medias quand il y en a (VF, VOSTFR, ...) 
-    
-06-11-2010 Version 1.2.0 par merindol
-    ~ Le déchiffrage du catalogue se fait désormais grâce à la bibliothèque python "python-crypto" enbarquée
+Please read changelog.txt for more information
 
 """
 
 REMOTE_DBG       = False # For remote debugging with PyDev (Eclipse)
 
 __addonID__      = "plugin.video.M6Replay"
-__author__       = "PECK, mighty_bombero, merindol, Temhil"
+__author__       = "PECK, mighty_bombero, merindol, Temhil, beenje"
 __url__          = "http://passion-xbmc.org/index.php"
 __credits__      = "Team XBMC Passion"
-__date__         = "06-03-2010"
-__version__      = "1.4.4"
+__date__         = "08-05-2011"
+__version__      = "1.4.5"
 
 import urllib,sys,os,platform
 import base64
@@ -108,7 +74,7 @@ dirCheckList   = ( CACHEDIR, )
 # Check the platform
 SYSTEM_PLATFORM = None
 CRYPTO_PATH = None
-if ( __settings__.getSetting('autoplatform') == 'true'):
+if ( __settings__.getSetting('autoplatform') == 'false'):
     os_type_list = ['Windows', 'mac', 'mac_arm', 'Linux', 'Xbox']
     cpu_type_list = ['32bit', '64bit']
     paths = []
@@ -279,7 +245,8 @@ class M6Replay:
                                        + dico['description'][produit]}
                     #{ "TVShowTitle": "CNN Video", "Season": 1, "Episode": 1, "Title": video.title, "Genre": self.args.title, "Duration": video.duration, "Date": video.date, "Premiered": video.date }
                     #{ "Title": pname, "Duration": duration, "Label": name, "SortLetter":sort_letter, "date": date, "Year": year, "Plot":plot, "Rating":rating, "Path":path, "Director":director, "Genre":genre, "Tagline":tagline, "Writer":writer, "Studio": str(id)  }
-                    ok = self.add_menu_item(dico['nom'][produit], "stream="+dico['path'][produit], len(dico['nom']), dico['image'][produit], False, itemInfoLabels=infoLabels)
+                    cm = [(__language__(30060), 'XBMC.RunPlugin(%s?download=%s)' % (sys.argv[0], dico['path'][produit]))]
+                    ok = self.add_menu_item(dico['nom'][produit], "stream="+dico['path'][produit], len(dico['nom']), dico['image'][produit], False, itemInfoLabels=infoLabels, contextmenu=cm)
                     # if user cancels, call raise to exit loop
                     if ( not ok ): raise
             except Exception, e:
@@ -297,12 +264,9 @@ class M6Replay:
                 
                 
         elif ( "stream=" in sys.argv[ 2 ] ): 
-            # Resolve URL in order to play a video   
-            server_id = int( __settings__.getSetting( 'server' ) )
-            rtmp = srv_list[server_id]['rtmp']
-            app = srv_list[server_id]['app']
-            playpath = re.sub( "[ ]", "%20", sys.argv[ 2 ].split("=")[1] )
-            url = rtmp + " app=" + app + " swfUrl=http://l3.player.m6.fr/swf/StatPlaylibrary_20100401.swf playpath=" + playpath + " swfvfy=true socks=80.67.172.70:9050 flashVer=LNX 10,0,45,2"
+            # Resolve URL in order to play a video
+            rtmp, app, playpath, flash_ver = self.get_rtmp_args()
+            url = rtmp + " app=" + app + " swfUrl=http://l3.player.m6.fr/swf/StatPlaylibrary_20100401.swf playpath=" + playpath + " swfvfy=true socks=80.67.172.70:9050 flashVer=" + flash_ver
             if rtmp =="":
                 url = playpath
 
@@ -314,10 +278,65 @@ class M6Replay:
             xbmcplugin.setResolvedUrl(handle=int(sys.argv[1]), succeeded=True, listitem=item)
 
 
+        elif ( "download=" in sys.argv[ 2 ] ):
+            rtmpdump = __settings__.getSetting('rtmpdump')
+            if not rtmpdump:
+                # Hope that rtmpdump is in the path
+                rtmpdump = 'rtmpdump'
+            download_path = self.get_download_path()
+            rtmp, app, playpath, flash_ver = self.get_rtmp_args()
+            filename =  os.path.basename(playpath)
+            if self.check_path(download_path, filename):
+                full_filename = os.path.join(download_path, filename)
+                cmd = '%(rtmpdump)s -r %(rtmp)s -a %(app)s -y %(playpath)s -f "%(flash_ver)s" -o %(full_filename)s' % locals()
+                print cmd
+                self.showNotification(__language__(30205), filename)
+                try:
+                    retcode = os.system(cmd)
+                except OSError, e:
+                    print_exc()
+                    self.showNotification(__language__(30207), e.__str__())
+                else:
+                    # We should check the return code, but it doesn't seem to work in XBMC
+                    print "Download complete"
+                    self.showNotification(__language__(30206), filename)
+
+
         # set our plugin category
         xbmcplugin.setPluginCategory( handle=int( sys.argv[ 1 ] ), category=__language__ ( 30000 ) )
         
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+    def showNotification(self, header, message):
+        xbmc.executebuiltin('XBMC.Notification("%s", "%s")' % (header.encode( "utf-8", "ignore" ), message.encode( "utf-8", "ignore" )))
+
+    def get_rtmp_args(self):
+        "Return rtmp args as a tuple (rtmp, app, playpath, flash_ver)"
+        server_id = int( __settings__.getSetting( 'server' ) )
+        rtmp = srv_list[server_id]['rtmp']
+        app = srv_list[server_id]['app']
+        playpath = re.sub( "[ ]", "%20", sys.argv[ 2 ].split("=")[1] )
+        flash_ver = 'LNX 10,0,45,2'
+        return (rtmp, app, playpath, flash_ver)
+
+    def check_path(self, path, filename):
+        if os.path.isdir(path):
+            if os.path.isfile(os.path.join(path, filename)):
+                if os.path.getsize(os.path.join(path, filename))>0:
+                    self.showNotification(__language__(30208), '%s %s' % (filename, __language__(30209)))
+                else:
+                    return True #overwrite empty files, #skip others.
+            else:
+                return True
+        return False
+
+    def get_download_path(self):
+        download_mode = __settings__.getSetting('downloadMode')
+        if download_mode == 'true':
+            download_path = xbmcgui.Dialog().browse(3, __language__(30060), 'video')
+        else:
+            download_path = __settings__.getSetting('downloadPath')
+        return download_path
            
     def set_debug_mode(self):
         debug =__settings__.getSetting('debug')
@@ -449,7 +468,7 @@ class M6Replay:
             print dico    
         return dico
     
-    def add_menu_item(self, title,action,size,thumb,folder, itemInfoLabels=None):
+    def add_menu_item(self, title,action,size,thumb,folder, itemInfoLabels=None, contextmenu=None):
         if self.debug_mode:
             print "add_menu_item:"
             print "title = %s"%repr(title)
@@ -459,14 +478,14 @@ class M6Replay:
             print itemInfoLabels
             print
         item=xbmcgui.ListItem(title,thumbnailImage=thumb)
-        cm = []    
-        cm +=[ (title,"XBMC.RunPlugin("+sys.argv[ 0 ]+"?"+action+")")]
+        if contextmenu is None:
+            contextmenu = [ (title,"XBMC.RunPlugin("+sys.argv[ 0 ]+"?"+action+")")]
         url=sys.argv[ 0 ]+"?"+action
         
         # Clean the Thumb (cache thumbnail name being based on plugin URL)
         self.clean_thumbnail(url)
         
-        item.addContextMenuItems(cm, replaceItems=True)
+        item.addContextMenuItems(contextmenu, replaceItems=True)
         if itemInfoLabels:
             iLabels = itemInfoLabels
         else:
