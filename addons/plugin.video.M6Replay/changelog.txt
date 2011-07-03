@@ -1,3 +1,8 @@
+1.4.5 (08-05-2011) par beenje
++ Correction bug sur le selection auto de la plateforme dans les parametres de l'addon
++ Ajout d'une option "Download" dans le menu contextuel (lors d'un clic sur une vidéo). 
+  Il faut avoir installer rtmpdump initialement et donner le chemin dans les paramètres de l'addon.
+
 1.4.4 (06-03-2011) par Temhil et beenje
 + Ajout de pycrypto pour openELEC (patch de beenje)
 + Ajout selection de la plateforme dans les parametres
@@ -20,7 +25,7 @@
 + Utilisation de setResolvedUrl permettant d'utiliser le player par defaut d'XBMC:
   . Cela evite des problemes d'affichage lors du chargement de la video
   . permet le transfert automatique des informations (nom, icone) au player d'XBMC
-+ Ajout de la bibliothÃ¨que "python-crypto" pour platformes MacOSX 32bits et XBOX
++ Ajout de la bibliothèque "python-crypto" pour platformes MacOSX 32bits et XBOX
 + Ajout de la description de la video (resume, date de diffusion, date de fin, duree)
 + Activation du Tri
 + Resolution du bug lorsque les images affichee ne correspondaint pas a la categorie. 
@@ -29,12 +34,12 @@
   un bon compromis 
 
 1.3.0 (08-11-2010) par merindol
-+ Affichage des diffÃ©rentes versions des medias quand il y en a (VF, VOSTFR, ...) 
-+ Dans les paramÃ¨tres du addon, possibilitÃ© de dÃ©finir le dÃ©lai de rafraichissement de la liste des vidÃ©os
-+ CrÃ©ation du Â« changelog Â»
++ Affichage des différentes versions des medias quand il y en a (VF, VOSTFR, ...) 
++ Dans les paramètres du addon, possibilité de définir le délai de rafraichissement de la liste des vidéos
++ Création du « changelog »
 
 1.2.0 (06-11-2010) par merindol
-+ Le dÃ©chiffrage du catalogue se fait dÃ©sormais grÃ¢ce Ã  la bibliothÃ¨que "python-crypto" embarquÃ©e
++ Le déchiffrage du catalogue se fait désormais grâce à la bibliothèque "python-crypto" embarquée
 
 1.0.0 par PECK et mighty_bombero
-+ Addon originel dÃ©rivÃ© du addon W9Replay
++ Addon originel dérivé du addon W9Replay
