@@ -71,6 +71,10 @@
     <string id="30005">Installation done</string>
     <string id="30006">Error during the installation</string>
     <string id="30007">Please check the logs</string>
+    
+    <string id="30011">Repository</string>
+    <string id="30012">Repository Info</string>
+    
     <string id="30020">Add-on Zip path</string>
     <string id="30021">First plugin startup</string>
     
@@ -107,7 +111,7 @@
     <string id="30201">Enabled Add-ons</string>
     <string id="30202">Get Add-ons</string>
     <string id="30203">Install from zip file</string>
-    <string id="30204">Get Add-ons</string>
+    <string id="30204">Install Unofficial Add-on Repositories</string>
     
     <string id="30300">Add-on Info</string>
     <string id="30301">Repository Info</string>
@@ -116,6 +120,9 @@
     <string id="30304">Creator</string>
     <string id="30305">Description</string>
     
+    <!-- REPO INFO WINDOW STRINGS -->
+    <string id="30400">Install</string>
+
     <!-- compatible messages -->
     <string id="30900">version</string>
     <string id="30901">This version of %s requires an</string>
@@ -123,4 +130,5 @@
     <string id="30903">Please update your XBMC.</string>
     <string id="30904">Error</string>
     <string id="30905">This plugin run under[CR][COLOR=ffe2ff43]%s[/COLOR] only.</string>    
+
 </strings>

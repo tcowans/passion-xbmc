@@ -14,9 +14,9 @@ try:
     from Item import *
     from FileManager import fileMgr
     #from utilities import copy_dir, copy_inside_dir
-    from specialpath import *
+    #from specialpath import *
     from XmlParser import parseAddonXml
-
+    #from globalvars import DIR_CACHE
 except:
     print_exc()
 
@@ -62,7 +62,7 @@ class ItemInstaller:
         # required_lib
         
     def __init__( self ):
-        
+        from globalvars import DIR_CACHE
         self.CACHEDIR      = DIR_CACHE
         self.fileMgr       = fileMgr()
         self.status        = "INIT" # Status of install :[ INIT | OK | ERROR | DOWNLOADED | EXTRACTED | ALREADYINSTALLED | ALREADYINUSE | CANCELED | INSTALL_DONE ]       
@@ -117,12 +117,26 @@ class ItemInstaller:
 
     def getItemInstallName( self ):
         """
-        Return the real name (path) of the item (install name) not the name for description
+        Return the real name (no the path) of the item (install name) not the name for description
         """
 #        name = None
 #        if hasattr( self.itemInfo, "name" ):
 #            name = self.itemInfo[ "name" ]
         return self.itemInfo[ "name" ]
+
+    def getItemVersion( self ):
+        """
+        Return the version of the item
+        """
+        return self.itemInfo[ "version" ]
+    
+    def getItemType( self ):
+        """
+        Return the type of the item
+        """
+        return self.itemInfo[ "type" ]
+    
+    
 
     def _getItemPaths( self ):
         """
@@ -273,6 +287,12 @@ class ItemInstaller:
         print item
         return status
 
+#    def _save_addon_local_info( self ):
+#        #Install OK so save information for future update
+#        addonInfo = {}
+#        addonInfo['date']
+#        addonInfo['version']
+#        addonInfo['repository']
 
 
     def setItemInfo( self, itemName=None ):

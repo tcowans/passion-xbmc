@@ -1,10 +1,24 @@
 
+__all__ = [
+    # public names
+    "Main",
+    "DialogRepoInfo"
+    ]
+
 import os
+import sys
 from traceback import print_exc
 
 import xbmc
 import xbmcgui
 from xbmcaddon import Addon
+
+# Custom modules
+try:
+    from PluginMgr import PluginMgr
+    #from InstallMgr import InstallMgr
+except:
+    print_exc()
 
 
 ############################################################################
@@ -30,11 +44,38 @@ ACTION_PREVIOUS_MENU             = 10
 ACTION_CONTEXT_MENU              = 117
 
 
+__language__     = sys.modules[ "__main__" ].__language__
+
+ROOTDIR            = sys.modules[ "__main__" ].ROOTDIR
+
 #__settings__ = Addon( "repository.xbmc.builds" )
 #__addonDir__ = __settings__.getAddonInfo( "path" )
 
 #PROFILE_PATH = xbmc.translatePath( __settings__.getAddonInfo( "profile" ) )
 #DL_INFO_PATH = os.path.join( PROFILE_PATH, "iddl_data" )
+
+class Main:
+    """
+    Main plugin class
+    """
+
+    def __init__( self, *args, **kwargs ):
+        
+        self.pluginMgr = PluginMgr()
+        self.parameters = self.pluginMgr.parse_params()
+        
+        try:
+            #repoWindow = DialogRepoInfo( "DialogRepoInfo.xml", os.getcwd(), "Default", "720p" )
+            repoWindow = DialogRepoInfo( "DialogRepoInfo.xml", ROOTDIR, "Default", "720p" )
+            
+            del repoWindow
+        except:
+            print_exc()
+        #TODO: call DialogRepoInfo
+        #status = self._install_addon_remote()
+        
+        print "_end_of_directory"
+        self.pluginMgr.end_of_directory( False )
 
 
 class DialogRepoInfo( xbmcgui.WindowXMLDialog ):
@@ -63,8 +104,8 @@ class DialogRepoInfo( xbmcgui.WindowXMLDialog ):
             kill = None
             if controlID == 199:
                 self._close_dialog()
-#            elif controlID == 99:
-#                pass
+            elif controlID == 6:
+                print "DialogRepoInfo - Install requested"
         except:
             print_exc()
 

@@ -22,7 +22,26 @@ __all__ = [
     "DIR_ADDON_MODULE",
     "DIR_ROOT",
     "DIR_CACHE",
-    "DIR_ADDON_REPO"
+    "DIR_ADDON_REPO",
+    "PARAM_NAME",
+    "PARAM_ACTION",
+    "PARAM_TITLE",
+    "PARAM_TYPE",
+    "PARAM_LISTTYPE",
+    "PARAM_LOCALPATH",
+    "PARAM_INSTALL_FROM_ZIP",
+    "PARAM_INSTALL_FROM_REPO",
+    "PARAM_REPO_ID",
+    "PARAM_REPO_NAME",
+    "PARAM_ADDON_NAME",
+    "PARAM_URL",
+    "PARAM_DATADIR",
+    "PARAM_REPO_FORMAT",
+    "VALUE_LIST_CATEGORY",
+    "VALUE_LIST_LOCAL_REPOS",
+    "VALUE_LIST_ALL_ADDONS",
+    "VALUE_LIST_ADDONS",
+    "VALUE_DISPLAY_INFO"
     ]
 
 
@@ -31,7 +50,7 @@ import os
 import sys
 
 # Modules XBMC
-from xbmc import translatePath, getCondVisibility
+from xbmc import translatePath#, getCondVisibility
 
 
 try: pluginname = sys.modules[ "__main__" ].__plugin__
@@ -77,4 +96,28 @@ DIR_ADDON_MODULE   = os.path.join( SPECIAL_HOME_DIR, "scripts", ".modules" )
 DIR_ROOT            = os.getcwd().replace( ";", "" )
 DIR_CACHE           = os.path.join( SPECIAL_SCRIPT_DATA, "cache" )
 DIR_ADDON_REPO      = os.path.join( SPECIAL_SCRIPT_DATA, "repositories")
+
+
+# define plugin param key names
+PARAM_NAME              = 'name'
+PARAM_ACTION            = 'action'
+PARAM_TITLE             = "title"
+PARAM_TYPE              = 'type'
+PARAM_LISTTYPE          = 'listype'
+PARAM_LOCALPATH         = 'localpath'
+PARAM_INSTALL_FROM_ZIP  = 'installfromzip'
+PARAM_INSTALL_FROM_REPO = 'installfromrepo'
+PARAM_REPO_ID           = 'repoid'
+PARAM_REPO_NAME         = 'reponame'
+PARAM_ADDON_NAME        = 'addonname'
+PARAM_URL               = 'url'
+PARAM_DATADIR           = 'datadir'
+PARAM_REPO_FORMAT       = 'format'
+VALUE_LIST_CATEGORY     = 'listcataddon'
+VALUE_LIST_LOCAL_REPOS  = 'listlocalrepos'
+VALUE_LIST_WIKI_REPOS   = 'listwikirepos'
+VALUE_LIST_ALL_ADDONS   = 'alladdons'
+VALUE_LIST_ADDONS       = 'listaddons'
+VALUE_DISPLAY_INFO      = 'displayinfo'
+
 

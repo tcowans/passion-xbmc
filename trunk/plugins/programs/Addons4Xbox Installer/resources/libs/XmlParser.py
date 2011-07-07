@@ -1,9 +1,17 @@
 """
 """
 
+__all__ = [
+    # public names
+    "parseAddonXml",
+    "parseAddonElt",
+    "createItemListFromXml",
+    "ListItemFromXML"
+    ]
+
 
 # Modules general
-import os
+#import os
 import sys
 
 from traceback import print_exc
@@ -12,9 +20,9 @@ import elementtree.ElementTree as ET
 
 # Modules custom
 try:
-    from specialpath import *
-    from utilities import *
-    from Item import *
+    #from specialpath import *
+    #from utilities import *
+    from Item import TYPE_ADDON, TYPE_ADDON_MUSIC, TYPE_ADDON_PICTURES, TYPE_ADDON_PROGRAMS, TYPE_ADDON_VIDEO, TYPE_ADDON_MODULE, TYPE_ADDON_REPO, TYPE_ADDON_SCRIPT  
 except:
     print_exc()
 

@@ -45,7 +45,9 @@ __all__ = [
     "TITLE_ADDON_MODULE",
     "get_install_path",
     "get_thumb",
-    "get_type_title"
+    "get_type_title",
+    "supportedAddonList",
+    "is_supported"
     ]
 
 
@@ -54,7 +56,7 @@ import os
 import sys
 
 # Modules custom
-from specialpath import *
+from globalvars import *
 
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
 _ = sys.modules[ "__main__" ].__language__
@@ -170,6 +172,15 @@ item_index = { TYPE_ADDON          : INDEX_ADDON,
                TYPE_ADDON_MODULE   : INDEX_ADDON_MODULE,
                TYPE_ADDON_REPO     : INDEX_ADDON_REPO }
 
+# List of supported addons
+supportedAddonList = [ TYPE_ADDON_SCRIPT,
+                       TYPE_ADDON_MUSIC,
+                       TYPE_ADDON_PICTURES,
+                       TYPE_ADDON_PROGRAMS,
+                       TYPE_ADDON_VIDEO,
+                       TYPE_ADDON_WEATHER,
+                       TYPE_ADDON_MODULE,
+                       TYPE_ADDON_REPO ]
 
 def get_install_path( type ):
     """
@@ -215,3 +226,12 @@ def get_type_index( type ):
         result = None
     return result
 
+def is_supported( type ):
+    """
+    Returns if type of this item is supported by the installer
+    """
+    if type in supportedAddonList:
+        result = True
+    else:
+        result = False
+    return result
