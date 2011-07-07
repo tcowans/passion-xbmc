@@ -17,10 +17,11 @@ import xbmc
 import xbmcgui
 
 # Modules custom
-from utilities import *
+#from utilities import *
 try:
     from ItemInstaller import ArchItemInstaller, DirItemInstaller, cancelRequest
-    from Item import *
+    from Item import TYPE_SYSTEM_DIRECTORY, TYPE_SYSTEM_ARCHIVE
+    from utilities import readURL, unescape
 except:
     print_exc()
 
@@ -212,7 +213,8 @@ class RemoteArchiveInstaller(ArchItemInstaller):
                     print_exc()
 
             
-            destination = xbmc.translatePath( os.path.join( destinationDir, self.itemInfo [ "filename" ] ) )
+            #destination = xbmc.translatePath( os.path.join( destinationDir, self.itemInfo [ "filename" ] ) )
+            destination = xbmc.makeLegalFilename( xbmc.translatePath( os.path.join( destinationDir, self.itemInfo [ "filename" ] ) ) )
             print "_downloadFile - file name : %s "%self.itemInfo [ "filename" ]
             print "_downloadFile - file size : %d Octet(s)"%self.itemInfo [ "filesize" ]
             print "_downloadFile: destination %s"%destination

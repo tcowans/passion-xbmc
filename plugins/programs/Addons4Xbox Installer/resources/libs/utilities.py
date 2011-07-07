@@ -28,6 +28,9 @@ __all__ = [
     "set_cache_thumb_name",
     "RecursiveDialogProgress",
     "checkURL",
+    "PersistentDataCreator",
+    "PersistentDataRetriever",
+    "PluginMgr"
     ]
 
 #Modules general
@@ -37,6 +40,7 @@ import sys
 import time
 import htmllib
 import urllib
+import pickle
 
 from traceback import print_exc
 #from httplib import HTTP
@@ -51,6 +55,7 @@ timeout = 3
 #modules XBMC
 import xbmc
 import xbmcgui
+import xbmcplugin
 
 # Modules Custom
 import shutil2
@@ -59,10 +64,11 @@ import shutil2
 #REPERTOIRE RACINE ( default.py )
 CWD = os.getcwd().rstrip( ";" )
 
-BASE_SETTINGS_PATH = os.path.join( sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA, "settings.txt" )
-RSS_FEEDS_XML = os.path.join( CWD, "resources", "RssFeeds.xml" )
+#BASE_SETTINGS_PATH = os.path.join( sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA, "settings.txt" )
+#RSS_FEEDS_XML = os.path.join( CWD, "resources", "RssFeeds.xml" )
 
 BASE_THUMBS_PATH = os.path.join( sys.modules[ "__main__" ].SPECIAL_SCRIPT_DATA, "Thumbnails" )
+MEDIA_PATH         = sys.modules[ "__main__" ].MEDIA_PATH
 
 
 def copy_dir( dirname, destination, overwrite=True, progressBar=None, percentage=100 ):
@@ -337,3 +343,37 @@ def checkURL(url):
     # else: 
     #    return 0
     #===========================================================================
+
+class PersistentDataCreator:
+    """
+    Creates persitent data
+    """
+    def __init__( self, data, filepath ):
+        print "PersistentDataCreator: filepath = %s"%filepath
+        print "PersistentDataCreator: data:"
+        print data
+        self._persit_data( data, filepath )
+
+    def _persit_data( self, data, filepath ):
+        f = open( filepath, 'w' )
+        pickle.dump(data, f)
+        f.close()
+
+class PersistentDataRetriever:
+    """
+    Retrieves persitent data
+    """
+    import pickle
+    def __init__( self, filepath ):
+        self.filepath = filepath
+
+    def get_data( self ):
+        data = None
+        if os.path.isfile( self.filepath ):
+            f = open( self.filepath, 'r')
+            try:
+                data = pickle.load(f)
+            except:
+                pass
+            f.close()
+        return data

@@ -12,9 +12,9 @@ import xbmc
 
 # Modules custom
 try:
-    from ItemInstaller import ArchItemInstaller, cancelRequest
-    from specialpath import *
-    from Item import *
+    from ItemInstaller import ArchItemInstaller#, cancelRequest
+    #from globalvars import *
+    from Item import TYPE_SYSTEM_ARCHIVE
 except:
     print_exc()
 

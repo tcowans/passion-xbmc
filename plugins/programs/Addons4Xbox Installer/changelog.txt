@@ -1,4 +1,9 @@
-﻿2011-06-19 Version 0.8.1 by Temhil
+﻿2011-07-06 Version 0.9 by Temhil
+- Refactored code in order to improve loading performances
+- Added Unofficial Add-on Repositories install from XBMC Wiki page
+- Fixed some encoding issues
+
+2011-06-19 Version 0.8.1 by Temhil
 - Fixed zip issue appearing with some zip format used
 - Fixed install issue for SVN/GIT install
 
