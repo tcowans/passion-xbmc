@@ -28,11 +28,12 @@
   <string id="30047">MAC (ARM)</string>
   <string id="30048">Linux</string>
   <string id="30049">Xbox</string>
-
   <string id="30050">Platform</string>
   <string id="30051">CPU</string>
   <string id="30052">32 bit</string>
   <string id="30053">64 bit</string>
+
+  <string id="30055">All platforms (slower)</string>
 
   <string id="30060">Download</string>
   <string id="30061">Always Ask for Download Location</string>
