@@ -1,3 +1,8 @@
+1.4.6 (27-07-2011) par Temhil
++ Ajout support Eden
++ Ajout de la lib Python PyDes pour les plateformes n'ayant pas PyCrypto compiles (ainsi que pour XBMC Eden)
+  ->le probleme est que cela peut prendre jusqu'a une minute pour decrypter le catalogue
+  
 1.4.5 (08-05-2011) par beenje
 + Correction bug sur le selection auto de la plateforme dans les parametres de l'addon
 + Ajout d'une option "Download" dans le menu contextuel (lors d'un clic sur une vidéo). 

@@ -13,8 +13,8 @@ __addonID__      = "plugin.video.M6Replay"
 __author__       = "PECK, mighty_bombero, merindol, Temhil, beenje"
 __url__          = "http://passion-xbmc.org/index.php"
 __credits__      = "Team XBMC Passion"
-__date__         = "08-05-2011"
-__version__      = "1.4.5"
+__date__         = "27-07-2011"
+__version__      = "1.4.6"
 
 import urllib,sys,os,platform
 import base64
@@ -48,7 +48,7 @@ if REMOTE_DBG:
             "You must add org.python.pydev.debug.pysrc to XBMC\system\python\Lib\pysrc")
         sys.exit(1)
 
-ROOTDIR            = os.getcwd()
+ROOTDIR            = __settings__.getAddonInfo('path') # os.getcwd()
 BASE_RESOURCE_PATH = os.path.join( ROOTDIR, "resources" )
 MEDIA_PATH         = os.path.join( BASE_RESOURCE_PATH, "media" )
 #ADDON_DATA         = __addonDir__
@@ -74,8 +74,9 @@ dirCheckList   = ( CACHEDIR, )
 # Check the platform
 SYSTEM_PLATFORM = None
 CRYPTO_PATH = None
+PYDES_ENABLED = False
 if ( __settings__.getSetting('autoplatform') == 'false'):
-    os_type_list = ['Windows', 'mac', 'mac_arm', 'Linux', 'Xbox']
+    os_type_list  = ['All', 'Windows', 'mac', 'mac_arm', 'Linux', 'Xbox']
     cpu_type_list = ['32bit', '64bit']
     paths = []
     os_type_id  = int( __settings__.getSetting('ostype') )
@@ -90,6 +91,9 @@ if ( __settings__.getSetting('autoplatform') == 'false'):
         CRYPTO_PATH = os.path.join( __addonDir__, "resources", "platform_libraries","Darwin", "arm" )
     elif os_type_list[os_type_id] == 'Xbox':
         CRYPTO_PATH = os.path.join( __addonDir__, "resources", "platform_libraries", "Xbox" )
+    elif os_type_list[os_type_id] == 'All':
+        PYDES_ENABLED = True
+
 else:  
     if xbmc.getCondVisibility( "system.platform.linux" ):
         SYSTEM_PLATFORM = "linux"
@@ -114,22 +118,26 @@ else:
             architecture = platform.architecture()[0]
         CRYPTO_PATH = os.path.join( __addonDir__, "resources", "platform_libraries", os.uname()[0], architecture )
 
+# Import Crypto lib
 if CRYPTO_PATH:
     sys.path.append(CRYPTO_PATH)
+    print "CRYPTO_PATH: %s"%CRYPTO_PATH
+    try:
+        from Crypto.Cipher import DES
+    except:
+        print "Impossible to import Crypto.Cipher"
+        print_exc()
+        dialog = xbmcgui.Dialog()
+        dialog.ok( __language__(30201), __language__(30204) ,__language__(30203))
+        exit()
+elif PYDES_ENABLED:
+    from resources.lib.pyDes import *
 else:
     print "Impossible to determine the platform and set an import path"
     dialog = xbmcgui.Dialog()
     dialog.ok( __language__(30201), __language__(30202) ,__language__(30203))
 
-#print "CRYPTO_PATH: %s"%CRYPTO_PATH
 
-# Import Crypto lib
-try:
-    from Crypto.Cipher import DES
-except:
-    print "Impossible to import Crypto.Cipher"
-    dialog = xbmcgui.Dialog()
-    dialog.ok( __language__(30201), __language__(30204) ,__language__(30203))
     
 
 def verifrep( folder ):
@@ -173,6 +181,8 @@ class M6Replay:
         self.set_debug_mode()
         ok = False
         if self.debug_mode:
+            print "Python version:"
+            print sys.version_info
             print "URL du plugin:"
             print sys.argv[ 0 ] + sys.argv[ 2 ]
             print "ROOTDIR: %s"%ROOTDIR
@@ -180,6 +190,7 @@ class M6Replay:
             print "CACHEDIR: %s"%CACHEDIR
             print "SYSTEM_PLATFORM: %s"%SYSTEM_PLATFORM
             print "CRYPTO_PATH: %s"%CRYPTO_PATH
+            print "PYDES_ENABLED: %s"%PYDES_ENABLED
             #print xbmc.getCondVisibility( "system.platform.xbox" )
             #print xbmc.getCondVisibility( "system.platform.osx" )
             #print xbmc.getCondVisibility( "system.platform.linux" )
@@ -363,8 +374,14 @@ class M6Replay:
 
         if no_catalog or catalog.is_old():
             data = urllib.urlopen( url ).read()
-            cipher = DES.new( base64.b64decode(key), DES.MODE_ECB )
-            catalog_xml = cipher.decrypt( base64.standard_b64decode(data) )
+            if PYDES_ENABLED:
+                file_buffer = base64.b64decode(data)
+                passw = base64.b64decode(key)
+                cipher = des(passw)
+                catalog_xml = cipher.decrypt(file_buffer)
+            else:
+                cipher = DES.new( base64.b64decode(key), DES.MODE_ECB )
+                catalog_xml = cipher.decrypt( base64.standard_b64decode(data) )
             catalog_xml = string.rstrip( string.split( catalog_xml, '</template_exchange_WEB>' )[0] ) + '</template_exchange_WEB>'
             catalog = Catalog( catalog_xml )
             f = open(os.path.join( CACHEDIR, "current_catalog"), 'w')
