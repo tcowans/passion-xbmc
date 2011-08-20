@@ -51,22 +51,29 @@ def getRepoList(pageUrl, destination=None, addItemFunc=None, progressBar=None,  
                 repoInfo[ "name" ]        = tdList[0].a.string.strip()
                 repoInfo[ "description" ] = tdList[1].string.strip()
                 repoInfo[ "author" ]      = tdList[2].string.strip()
-                repoInfo[ "repo_url" ]    = tdList[3].a["href"]
+                try:
+                    repoInfo[ "repo_url" ] = tdList[3].a["href"]
+                except:
+                    repoInfo[ "repo_url" ] = None
+                    
                 repoInfo[ "version" ]     = None
                 repoInfo[ "type" ]        = TYPE_ADDON_REPO
+                
                 try:
                     repoInfo["ImageUrl"] = tdList[4].a["href"]
                 except:
                     repoInfo["ImageUrl"] = None
             
-            #if progressBar != None:
-            if addItemFunc != None:
-                if repoInfo["repoUrl"].endswith("zip"):
-                    addItemFunc( repoInfo )
-                else:
-                    print "Invalid URL for the repository %s - URL=%s"%(repoInfo["name"], repoInfo["repoUrl"])
+                #if progressBar != None:
+                if addItemFunc:
+                    if repoInfo["repo_url"] and repoInfo["repoUrl"].endswith("zip"):
+                        addItemFunc( repoInfo )
+                    else:
+                        print "Invalid URL for the repository %s - URL=%s"%(repoInfo["name"], repoInfo["repoUrl"])
+            else:
+                print "Impossible to repository entry - No <td> list- Invalid format"
         except:
-            print "getRepoList - error parsing html - impossible to retrieve Repo info"
+            print "getRepoList - Exception parsing Wiki page - impossible to retrieve Repo info"
             print_exc()
             result = "ERROR"  
     return result
@@ -104,13 +111,21 @@ class ListItemFromWiki:
                 repoInfo[ "name" ]        = tdList[0].a.string.strip()
                 repoInfo[ "description" ] = tdList[1].string.strip()
                 repoInfo[ "author" ]      = tdList[2].string.strip()
-                repoInfo[ "repo_url" ]    = tdList[3].a[ "href" ]
+                
+                try:
+                    repoInfo[ "repo_url" ] = tdList[3].a["href"]
+                except:
+                    repoInfo[ "repo_url" ] = None
+                    print "Invalid URL for the repository %s"%(repoInfo["name"])
+                    
                 repoInfo[ "version" ]     = None
                 repoInfo[ "type" ]        = TYPE_ADDON_REPO
+                
                 try:
                     repoInfo[ "ImageUrl" ] = tdList[4].a[ "href" ]
                 except:
                     repoInfo[ "ImageUrl" ] = None
+                    print "No image found for the repository %s"%(repoInfo["name"])
         except:
             print "_parseRepoElement - error parsing html - impossible to retrieve Repos info"
             print_exc()
@@ -120,6 +135,9 @@ class ListItemFromWiki:
     
     
     def getNextItem(self):
+        """
+        return the next Repository in the list or return 'None' when no repository is left
+        """
         result = None
         if len(self.itemRepoList) > 0 and self.currentParseIdx < len(self.itemRepoList):
             itemInfo = {}
@@ -128,10 +146,10 @@ class ListItemFromWiki:
             print "status = %s"%status
             if status == 'OK':
                 result = itemInfo
-        else:
-            #result = None
-            itemInfo = {}
-            result = itemInfo
+        #else:
+        #    result = None
+            #itemInfo = {}
+            #result = itemInfo
         print "getNextItem - result:"
         print result
         return result

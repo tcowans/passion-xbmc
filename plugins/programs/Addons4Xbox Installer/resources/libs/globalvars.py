@@ -22,6 +22,7 @@ __all__ = [
     "DIR_ADDON_MODULE",
     "DIR_ROOT",
     "DIR_CACHE",
+    "DIR_CACHE_ADDONS",
     "DIR_ADDON_REPO",
     "PARAM_NAME",
     "PARAM_ACTION",
@@ -41,7 +42,10 @@ __all__ = [
     "VALUE_LIST_LOCAL_REPOS",
     "VALUE_LIST_ALL_ADDONS",
     "VALUE_LIST_ADDONS",
-    "VALUE_DISPLAY_INFO"
+    "VALUE_DISPLAY_INFO",
+    "REQUIRED_DEFAULT_LIB",
+    "OFFICIAL_REPO_ID",
+    "MISSING_MODULES_PATH"
     ]
 
 
@@ -95,29 +99,35 @@ DIR_ADDON_MODULE   = os.path.join( SPECIAL_HOME_DIR, "scripts", ".modules" )
 
 DIR_ROOT            = os.getcwd().replace( ";", "" )
 DIR_CACHE           = os.path.join( SPECIAL_SCRIPT_DATA, "cache" )
+DIR_CACHE_ADDONS    = os.path.join( DIR_CACHE, "addons" )
 DIR_ADDON_REPO      = os.path.join( SPECIAL_SCRIPT_DATA, "repositories")
 
+MISSING_MODULES_PATH = os.path.join( DIR_CACHE, "missing_modules.txt" )
 
 # define plugin param key names
-PARAM_NAME              = 'name'
-PARAM_ACTION            = 'action'
-PARAM_TITLE             = "title"
-PARAM_TYPE              = 'type'
-PARAM_LISTTYPE          = 'listype'
-PARAM_LOCALPATH         = 'localpath'
-PARAM_INSTALL_FROM_ZIP  = 'installfromzip'
-PARAM_INSTALL_FROM_REPO = 'installfromrepo'
-PARAM_REPO_ID           = 'repoid'
-PARAM_REPO_NAME         = 'reponame'
-PARAM_ADDON_NAME        = 'addonname'
-PARAM_URL               = 'url'
-PARAM_DATADIR           = 'datadir'
-PARAM_REPO_FORMAT       = 'format'
-VALUE_LIST_CATEGORY     = 'listcataddon'
-VALUE_LIST_LOCAL_REPOS  = 'listlocalrepos'
-VALUE_LIST_WIKI_REPOS   = 'listwikirepos'
-VALUE_LIST_ALL_ADDONS   = 'alladdons'
-VALUE_LIST_ADDONS       = 'listaddons'
-VALUE_DISPLAY_INFO      = 'displayinfo'
+PARAM_NAME                 = 'name'
+PARAM_ACTION               = 'action'
+PARAM_TITLE                = "title"
+PARAM_TYPE                 = 'type'
+PARAM_LISTTYPE             = 'listype'
+PARAM_LOCALPATH            = 'localpath'
+PARAM_INSTALL_FROM_ZIP     = 'installfromzip'
+PARAM_INSTALL_FROM_REPO    = 'installfromrepo'
+PARAM_REPO_ID              = 'repoid'
+PARAM_REPO_NAME            = 'reponame'
+PARAM_ADDON_NAME           = 'addonname'
+PARAM_ADDON_ID             = 'addonid'
+PARAM_URL                  = 'url'
+PARAM_DATADIR              = 'datadir'
+PARAM_REPO_FORMAT          = 'format'
+VALUE_LIST_CATEGORY        = 'listcataddon'
+VALUE_LIST_LOCAL_REPOS     = 'listlocalrepos'
+VALUE_LIST_WIKI_REPOS      = 'listwikirepos'
+VALUE_LIST_ALL_ADDONS      = 'alladdons'
+VALUE_LIST_ADDONS          = 'listaddons'
+VALUE_DISPLAY_INFO         = 'displayinfo'
+VALUE_LIST_MANAGE_ADDONS   = 'manageaddons'
+VALUE_LIST_MISSING_MODULES = 'missingmodules'
 
-
+REQUIRED_DEFAULT_LIB = 'xbmc.python'
+OFFICIAL_REPO_ID = 'repository.xbmc.org'

@@ -11,7 +11,11 @@ from traceback import print_exc
 
 import xbmc
 import xbmcgui
-from xbmcaddon import Addon
+try:
+    from xbmcaddon import Addon
+except:
+    print "xbmcaddon module not available"
+    print_exc()
 
 # Custom modules
 try:
@@ -106,6 +110,8 @@ class DialogRepoInfo( xbmcgui.WindowXMLDialog ):
                 self._close_dialog()
             elif controlID == 6:
                 print "DialogRepoInfo - Install requested"
+            elif controlID == 10:
+                print "DialogRepoInfo - Changelog requested"
         except:
             print_exc()
 

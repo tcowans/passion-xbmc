@@ -47,6 +47,7 @@
   <string id="157">Rename</string>
   <string id="158">Delete of %s</string>
   <string id="159">Are you sure you want to delete %s ?</string>
+  <string id="160">Type of Addon not supported</string>
 
   <string id="184">Refresh</string>
   <string id="185">Calculate Size</string>
@@ -88,6 +89,10 @@
     <string id="30057">File:</string>
     <string id="30058">Your new item was installed to:</string>
 
+    <string id="30070">Impossible to install this library</string>
+    <string id="30071">Do you want to continue the install?</string>
+    <string id="30072">(if yes you will need to install it manually)</string>
+
     <!-- Update error messages -->
     <string id="30090">There was an error installing item!</string>
     <string id="30091">xbmcaddon Library is missing</string>
@@ -112,7 +117,10 @@
     <string id="30202">Get Add-ons</string>
     <string id="30203">Install from zip file</string>
     <string id="30204">Install Unofficial Add-on Repositories</string>
+    <string id="30205">Manage installed Addons</string>
     
+    <string id="30250">List of missing libraries (need to be installed manually)</string>
+
     <string id="30300">Add-on Info</string>
     <string id="30301">Repository Info</string>
     <string id="30302">Type</string>

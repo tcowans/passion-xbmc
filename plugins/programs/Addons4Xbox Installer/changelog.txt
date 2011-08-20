@@ -1,4 +1,12 @@
-﻿2011-07-06 Version 0.9 by Temhil
+﻿2011-08-20 Version 0.9.1 by Temhil
+- Fixed anarchintosh-projects repository install (patch by exobuzz)
+- Install automatically required addons, if install fails let the user to chose between keep going
+  and install it manually or cancel the install
+  Note: this does not apply to addons installed from zip
+- Added 'Manage installed Addons' options, this for example provide a way to list the required addons on which install failed
+- Fixed on parsing wiki page of unofficial addons when an addons does not have a link to the zip file, now we ignore it
+
+2011-07-06 Version 0.9 by Temhil
 - Refactored code in order to improve loading performances
 - Added Unofficial Add-on Repositories install from XBMC Wiki page
 - Fixed some encoding issues

@@ -28,7 +28,7 @@ MEDIA_PATH         = sys.modules[ "__main__" ].MEDIA_PATH
 
 # Custom modules
 try:
-    from globalvars import DIR_ADDON_MODULE, DIR_ADDON_REPO, DIR_CACHE, VALUE_LIST_LOCAL_REPOS, VALUE_LIST_WIKI_REPOS, PARAM_INSTALL_FROM_ZIP, PARAM_LISTTYPE
+    from globalvars import DIR_ADDON_MODULE, DIR_ADDON_REPO, DIR_CACHE, DIR_CACHE_ADDONS, VALUE_LIST_LOCAL_REPOS, VALUE_LIST_WIKI_REPOS, VALUE_LIST_MANAGE_ADDONS, PARAM_INSTALL_FROM_ZIP, PARAM_LISTTYPE
     from FileManager import fileMgr
     from PluginMgr import PluginMgr
 except:
@@ -50,7 +50,8 @@ class Main:
             self.fileMgr.verifrep( DIR_ADDON_MODULE )
             self.fileMgr.verifrep( DIR_ADDON_REPO )
             self.fileMgr.verifrep( DIR_CACHE )
-            
+            self.fileMgr.verifrep( DIR_CACHE_ADDONS )
+                       
             # Check settings
             if xbmcplugin.getSetting('first_run') == 'true':
                 # Check (only the 1st time) is xbmcaddon module is available 
@@ -167,5 +168,11 @@ class Main:
         urlRepo = self.pluginMgr.create_param_url( paramsDicRepo )
         if urlRepo:
             self.pluginMgr.addDir( __language__( 30204 ), urlRepo )
+        
+        paramsDicRepo = {}
+        paramsDicRepo[PARAM_LISTTYPE] = VALUE_LIST_MANAGE_ADDONS
+        urlRepo = self.pluginMgr.create_param_url( paramsDicRepo )
+        if urlRepo:
+            self.pluginMgr.addDir( __language__( 30205 ), urlRepo )
         
     

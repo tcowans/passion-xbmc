@@ -62,8 +62,8 @@ class ItemInstaller:
         # required_lib
         
     def __init__( self ):
-        from globalvars import DIR_CACHE
-        self.CACHEDIR      = DIR_CACHE
+        from globalvars import DIR_CACHE_ADDONS
+        self.CACHEDIR      = DIR_CACHE_ADDONS
         self.fileMgr       = fileMgr()
         self.status        = "INIT" # Status of install :[ INIT | OK | ERROR | DOWNLOADED | EXTRACTED | ALREADYINSTALLED | ALREADYINUSE | CANCELED | INSTALL_DONE ]       
         
@@ -117,12 +117,18 @@ class ItemInstaller:
 
     def getItemInstallName( self ):
         """
-        Return the real name (no the path) of the item (install name) not the name for description
+        Return the real name (not the path) of the item 
         """
 #        name = None
 #        if hasattr( self.itemInfo, "name" ):
 #            name = self.itemInfo[ "name" ]
         return self.itemInfo[ "name" ]
+
+    def getItemId( self ):
+        """
+        Return the Id the item 
+        """
+        return self.itemInfo[ "id" ]
 
     def getItemVersion( self ):
         """
@@ -337,8 +343,11 @@ class ItemInstaller:
                     status = 'ERROR'
                         
                 # Renaming addon's internal files
-                if ( statusGetInfo == "OK"):               
+                if statusGetInfo == "OK":               
                     status = self._prepareItem4xbox( self.itemInfo )
+                elif statusGetInfo == "NOT_SUPPORTED":
+                    print "setItemInfo - Addon not supported"
+                    status = 'NOT_SUPPORTED'
                 else:
                     print "setItemInfo - Error parsing addon.xml"
                     status = 'ERROR'
@@ -371,8 +380,8 @@ class ItemInstaller:
                     self.itemInfo [ "install_path" ] = os.path.join( typeInstallPath, os.path.basename( self.itemInfo [ "temp_item_path" ] ) )        
             else:
                 # We don't rename modules and repos
-                self.itemInfo [ "install_path" ] = os.path.join( typeInstallPath, os.path.basename( self.itemInfo [ "id" ] ) )        
-                
+                #self.itemInfo [ "install_path" ] = os.path.join( typeInstallPath, os.path.basename( self.itemInfo [ "id" ] ) )        
+                self.itemInfo [ "install_path" ] = os.path.join( typeInstallPath, os.path.basename( self.itemInfo [ "id" ][:42] ) ) # xbox filename limitation
         print self.itemInfo
         print "setItemInfo - status: %s"%status
         return status

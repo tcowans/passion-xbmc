@@ -58,7 +58,12 @@ class Main:
 
         # Install from zip file
         status, itemName, destination, addonInstaller = installMgr.install_from_zip()
-        
+
+        #TODO: addd install of required lib
+#        requiredLibs = addonDic[addonId]['required_lib']
+#        print requiredLibs
+#        status = installMgr._getAddonRequiredLibs( requiredLibs, repoId )
+
         #Check if install went well
         status, destination = installMgr.check_install(status, itemName, destination, addonInstaller)
         

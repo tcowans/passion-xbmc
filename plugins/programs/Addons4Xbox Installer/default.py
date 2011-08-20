@@ -15,8 +15,8 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/programs/Addons4xbox/"
 __credits__      = "Team XBMC Passion"
 __platform__     = "xbmc media center [XBOX]"
-__date__         = "07-06-2011"
-__version__      = "0.9"
+__date__         = "08-20-2011"
+__version__      = "0.9.1"
 __svn_revision__ = 0
 __XBMC_Revision__= 30805
 
@@ -57,7 +57,7 @@ __language__ = xbmc.Language( ROOTDIR ).getLocalizedString
 
 # Custom modules
 try:
-    from resources.libs.globalvars import PARAM_INSTALL_FROM_REPO, PARAM_INSTALL_FROM_ZIP, PARAM_LISTTYPE, PARAM_ACTION, VALUE_LIST_LOCAL_REPOS, VALUE_LIST_WIKI_REPOS, VALUE_LIST_CATEGORY, VALUE_LIST_ADDONS, VALUE_DISPLAY_INFO, SPECIAL_SCRIPT_DATA
+    from resources.libs.globalvars import PARAM_INSTALL_FROM_REPO, PARAM_INSTALL_FROM_ZIP, PARAM_LISTTYPE, PARAM_ACTION, VALUE_LIST_LOCAL_REPOS, VALUE_LIST_WIKI_REPOS, VALUE_LIST_CATEGORY, VALUE_LIST_ADDONS, VALUE_DISPLAY_INFO, VALUE_LIST_MANAGE_ADDONS, VALUE_LIST_MISSING_MODULES, SPECIAL_SCRIPT_DATA
     from resources.libs.PluginMgr import PluginMgr
 except:
     print_exc()
@@ -74,6 +74,8 @@ class Addons4xboxInstallerPlugin:
     def __init__( self, *args, **kwargs ):
         self.pluginMgr = PluginMgr()
         self.parameters = self.pluginMgr.parse_params()
+        print "Parameters"
+        print self.parameters
         self.select()
 
 
@@ -128,6 +130,20 @@ class Addons4xboxInstallerPlugin:
             #
             elif PARAM_LISTTYPE in self.parameters.keys() and VALUE_LIST_ADDONS == self.parameters[PARAM_LISTTYPE]:
                 import resources.libs.Addons4Xbox_list_addons as plugin
+
+
+            #
+            # List of options for managing installed Add-ons 
+            #
+            elif PARAM_LISTTYPE in self.parameters.keys() and VALUE_LIST_MANAGE_ADDONS == self.parameters[PARAM_LISTTYPE]:
+                import resources.libs.Addons4Xbox_list_manage_addons as plugin
+
+
+            #
+            # List of missing modules (usually not found during the installed of an addon) 
+            #
+            elif PARAM_LISTTYPE in self.parameters.keys() and VALUE_LIST_MISSING_MODULES == self.parameters[PARAM_LISTTYPE]:
+                import resources.libs.Addons4Xbox_list_missing_libs as plugin
 
 
             #
