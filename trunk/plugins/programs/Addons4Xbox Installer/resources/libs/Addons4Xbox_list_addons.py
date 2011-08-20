@@ -28,11 +28,12 @@ __language__     = sys.modules[ "__main__" ].__language__
 
 # Custom modules
 try:
-    from globalvars import DIR_CACHE, DIR_ADDON_REPO, PARAM_REPO_ID, PARAM_TYPE, PARAM_INSTALL_FROM_REPO, PARAM_ADDON_NAME, PARAM_URL, PARAM_DATADIR, VALUE_LIST_ALL_ADDONS
+    from globalvars import DIR_CACHE, DIR_ADDON_REPO, PARAM_REPO_ID, PARAM_TYPE, PARAM_INSTALL_FROM_REPO, PARAM_ADDON_NAME, PARAM_ADDON_ID, PARAM_URL, PARAM_DATADIR, VALUE_LIST_ALL_ADDONS
     from PluginMgr import PluginMgr
     from Item import supportedAddonList #TYPE_ADDON_SCRIPT, TYPE_ADDON_MUSIC, TYPE_ADDON_PICTURES, TYPE_ADDON_PROGRAMS, TYPE_ADDON_VIDEO, TYPE_ADDON_WEATHER, TYPE_ADDON_MODULE
-    from utilities import readURL,RecursiveDialogProgress, checkURL
+    from utilities import readURL, PersistentDataCreator
     from XmlParser import ListItemFromXML, parseAddonXml
+    from AddonsMgr import getInstalledAddonInfo
 except:
     print_exc()
 
@@ -63,7 +64,11 @@ class Main:
         Display the addons to install for a repository
         """
         # Retrieve info from  addon.xml for the repository
-        repoInfo = self._getInstalledAddInfo( os.path.join( DIR_ADDON_REPO, repoId) )       
+        #repoInfo = self._getInstalledAddInfo( os.path.join( DIR_ADDON_REPO, repoId) )
+        repoInfo = getInstalledAddonInfo( os.path.join( DIR_ADDON_REPO, repoId) )
+        
+        #TODO: add repo ID to persist data
+        addonDic = {}     
               
         # Retrieving addons.xml from remote repository
         xmlInfofPath = os.path.join( DIR_CACHE, "addons.xml")
@@ -109,45 +114,25 @@ class Main:
                         print downloadUrl
                         paramsAddons = {}
                         paramsAddons[PARAM_INSTALL_FROM_REPO]   = "true"
+                        paramsAddons[PARAM_ADDON_ID]            = item[ "id" ]
                         paramsAddons[PARAM_ADDON_NAME]          = item['name'].encode('utf8')
                         paramsAddons[PARAM_URL]                 = downloadUrl
-                        paramsAddons[PARAM_DATADIR]             = repoInfo [ "repo_datadir" ]
-                        paramsAddons[PARAM_TYPE]                = repoInfo [ "repo_format" ]
+                        paramsAddons[PARAM_DATADIR]             = repoInfo[ "repo_datadir" ]
+                        paramsAddons[PARAM_TYPE]                = repoInfo[ "repo_format" ]
                         paramsAddons[PARAM_REPO_ID]             = repoId
-
                         url = self.pluginMgr.create_param_url( paramsAddons )
 
                         if ( url ):
                             #self._addLink( item['name'], url, iconimage=iconimage)
                             item["PluginUrl"] = url
                             self.pluginMgr.addItemLink( item )
+                            #addonList.append( item )
+                            addonDic[ item[ "id" ]] = item
                             print "Link added"
                 else:
                     keepParsing = False
+            # Save the list of addons
+            print addonDic        
+            PersistentDataCreator( addonDic, os.path.join( DIR_CACHE, "addon_list.txt" ) )
 
-    def _getInstalledAddInfo( self, addonpath ):
-        #TODO: move to InstallMgr?
-        """
-        Get metadata from addon.xml of an installed addon
-        """
-        itemInfo = {}
-        
-        # Open addon.xml
-        print "Addon path: %s"%addonpath
-        xmlInfofPath = os.path.join( addonpath, "addon.xml")
-        if os.path.exists( xmlInfofPath ):
-            try:
-                xmlData = open( os.path.join( xmlInfofPath ), "r" )
-                statusGetInfo = parseAddonXml( xmlData, itemInfo )
-                xmlData.close()
-            except:
-                print_exc()            
-            if statusGetInfo == "OK":
-                iconPath = os.path.join( xmlInfofPath, "icon.png")
-                if os.path.exists( iconPath ):
-                    itemInfo [ "icon" ] = iconPath
-                else:
-                    #TODO: move default image selection in the caller code????
-                    itemInfo [ "icon" ]="DefaultFolder.png"
-        return itemInfo
         

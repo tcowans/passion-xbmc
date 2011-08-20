@@ -31,6 +31,7 @@ __all__ = [
     "PersistentDataCreator",
     "PersistentDataRetriever",
     "PluginMgr"
+    "versionsCmp"
     ]
 
 #Modules general
@@ -343,6 +344,31 @@ def checkURL(url):
     # else: 
     #    return 0
     #===========================================================================
+
+
+def versionsCmp( version1, version2 ):
+    """
+    returning:
+     -1 if version1 is older than version2
+      0 if version1 is equal to version2
+      1 if version1 is newer than version2,
+    Credit to jellybean (http://stackoverflow.com/questions/1714027/version-number-comparison)
+    """
+    parts1 = [int(x) for x in version1.split('.')]
+    parts2 = [int(x) for x in version2.split('.')]
+
+    # fill up the shorter version with zeros ...
+    lendiff = len(parts1) - len(parts2)
+    if lendiff > 0:
+        parts2.extend([0] * lendiff)
+    elif lendiff < 0:
+        parts1.extend([0] * (-lendiff))
+
+    for i, p in enumerate(parts1):
+        ret = cmp(p, parts2[i])
+        if ret: return ret
+    return 0
+
 
 class PersistentDataCreator:
     """

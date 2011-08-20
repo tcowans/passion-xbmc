@@ -47,7 +47,8 @@ TYPE_EXT_SCRIPT                 = "xbmc.python.script"
 TYPE_EXT_SCRIPT_WEATHER         = "xbmc.python.weather"
 TYPE_EXT_SCRIPT_SUBTITLE        = "xbmc.python.subtitles"
 TYPE_EXT_SCRIPT_LYRICS          = "xbmc.python.lyrics"
-TYPE_EXT_SCRIPT_LIB             = "xbmc.python.module"
+TYPE_EXT_SCRIPT_MODULE          = "xbmc.python.module"
+TYPE_EXT_SCRIPT_LIB             = "xbmc.python.library"
 
 supportedExtList = [ TYPE_EXT_REPO,
                      TYPE_EXT_PLUGINSOURCE,
@@ -56,11 +57,13 @@ supportedExtList = [ TYPE_EXT_REPO,
                      TYPE_EXT_SCRIPT_SUBTITLE,
                      TYPE_EXT_SCRIPT_LYRICS,
                      TYPE_EXT_SCRIPT_LIB,
+                     TYPE_EXT_SCRIPT_MODULE,
                    ]
 
 scriptExtList = [ TYPE_EXT_SCRIPT_WEATHER,
                   TYPE_EXT_SCRIPT_SUBTITLE,
                   TYPE_EXT_SCRIPT_LYRICS,
+                  TYPE_EXT_SCRIPT_LIB,
                   TYPE_EXT_SCRIPT,
                 ]
 
@@ -119,7 +122,7 @@ def parseAddonElt( addonElt, itemInfo ):
     # icon
     # fanart
     # changelog
-    # library: path of python script
+    # library: path of python script file i.e default.py
     # raw_item_sys_type: file | archive | dir
     # raw_item_path
     # install_path
@@ -185,15 +188,18 @@ def parseAddonElt( addonElt, itemInfo ):
                 modules2import = requires.findall("import")
                 requiredModuleList = []
                 for module in modules2import:
-                    moduleInfo = {}
-                    moduleInfo [ "id" ]      = module.attrib.get( "addon" )
-                    moduleInfo [ "version" ] = module.attrib.get( "version" )
-                    itemInfo [ "required_lib" ] = requiredModuleList.append( moduleInfo )
+                    addonId = module.attrib.get( "addon" )
+                    if module.attrib.get( "addon" ) != 'xbmc.python': # we ignore default python lib
+                        moduleInfo = {}
+                        moduleInfo [ "id" ]      = addonId
+                        moduleInfo [ "version" ] = module.attrib.get( "version" )
+                        requiredModuleList.append( moduleInfo )
+                itemInfo [ "required_lib" ] = requiredModuleList
                     
                 
             if itemInfo [ "type" ] == TYPE_ADDON:
                 print "Not supported type of Addon"
-                #status = 'ERROR'
+                status = 'NOT_SUPPORTED'
         else:
             print "addonElt not defined"
             #status = 'ERROR'
@@ -229,7 +235,7 @@ def _getType(id, extension):
         elif TYPE_ADDON_VIDEO in id:
             print "_getType - This is a VIDEO Plugin"
             type = TYPE_ADDON_VIDEO
-    elif extension == TYPE_EXT_SCRIPT_LIB:
+    elif extension == TYPE_EXT_SCRIPT_MODULE:
         print "_getType - This is a LIB script"
         type = TYPE_ADDON_MODULE
     elif extension == TYPE_EXT_REPO:
@@ -303,11 +309,8 @@ class ListItemFromXML:
             status = self._parseAddonElement( self.addons[self.currentParseIdx], itemInfo )
             self.currentParseIdx = self.currentParseIdx + 1
             print "status = %s"%status
-            if status == 'OK':
-                result = itemInfo
-        else:
-            #result = None
-            itemInfo = {}
+#            if status == 'OK':
+#                result = itemInfo
             result = itemInfo
         print "getNextItem - result:"
         print result

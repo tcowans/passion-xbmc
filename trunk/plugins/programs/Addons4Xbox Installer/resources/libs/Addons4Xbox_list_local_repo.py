@@ -32,6 +32,7 @@ try:
     from PluginMgr import PluginMgr
     #from utilities import readURL,RecursiveDialogProgress, checkURL
     from XmlParser import parseAddonXml
+    from AddonsMgr import getInstalledAddonInfo
 except:
     print_exc()
 
@@ -60,7 +61,8 @@ class Main:
             print "Repo ID = %s"%repoId
             
             # Retrieve info from  addon.xml
-            itemInfo = self._getInstalledAddInfo( os.path.join( DIR_ADDON_REPO, repoId ) )
+            #itemInfo = self._getInstalledAddInfo( os.path.join( DIR_ADDON_REPO, repoId ) )
+            itemInfo = getInstalledAddonInfo( os.path.join( DIR_ADDON_REPO, repoId) )
             print itemInfo
             if itemInfo:
                 # Dic Not empty
@@ -71,28 +73,3 @@ class Main:
                 if urlRepo:
                     self.pluginMgr.addDir( itemInfo [ "name" ], urlRepo, iconimage=itemInfo [ "icon" ] )
          
-    def _getInstalledAddInfo( self, addonpath ):
-        #TODO: move to InstallMgr?
-        """
-        Get metadata from addon.xml of an installed addon
-        """
-        itemInfo = {}
-        
-        # Open addon.xml
-        print "Addon path: %s"%addonpath
-        xmlInfofPath = os.path.join( addonpath, "addon.xml")
-        if os.path.exists( xmlInfofPath ):
-            try:
-                xmlData = open( os.path.join( xmlInfofPath ), "r" )
-                statusGetInfo = parseAddonXml( xmlData, itemInfo )
-                xmlData.close()
-            except:
-                print_exc()            
-            if statusGetInfo == "OK":
-                iconPath = os.path.join( xmlInfofPath, "icon.png")
-                if os.path.exists( iconPath ):
-                    itemInfo [ "icon" ] = iconPath
-                else:
-                    #TODO: move default image selection in the caller code????
-                    itemInfo [ "icon" ]="DefaultFolder.png"
-        return itemInfo

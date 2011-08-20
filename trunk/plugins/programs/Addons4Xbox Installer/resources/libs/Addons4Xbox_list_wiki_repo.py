@@ -31,7 +31,7 @@ __settings__ = xbmcplugin.getSetting
 
 # Custom modules
 try:
-    from globalvars import PARAM_REPO_ID, PARAM_TYPE, PARAM_INSTALL_FROM_REPO, PARAM_ADDON_NAME, PARAM_URL, PARAM_DATADIR
+    from globalvars import PARAM_REPO_ID, PARAM_ADDON_ID, PARAM_TYPE, PARAM_INSTALL_FROM_REPO, PARAM_ADDON_NAME, PARAM_URL, PARAM_DATADIR
     from PluginMgr import PluginMgr
     #from Item import supportedAddonList #TYPE_ADDON_SCRIPT, TYPE_ADDON_MUSIC, TYPE_ADDON_PICTURES, TYPE_ADDON_PROGRAMS, TYPE_ADDON_VIDEO, TYPE_ADDON_WEATHER, TYPE_ADDON_MODULE
     #from utilities import readURL,RecursiveDialogProgress, checkURL
@@ -77,20 +77,22 @@ class Main:
             item = listRepoWiki.getNextItem()
             print item
             if item:
-                paramsAddons = {}
-                paramsAddons[PARAM_INSTALL_FROM_REPO]   = "true"
-                paramsAddons[PARAM_ADDON_NAME]          = item['name']
-                paramsAddons[PARAM_URL]                 = item["repo_url"]
-                paramsAddons[PARAM_DATADIR]             = "None"
-                paramsAddons[PARAM_TYPE]                = "zip"
-                paramsAddons[PARAM_REPO_ID]             = "None"
-
-                url = self.pluginMgr.create_param_url( paramsAddons )
-
-                if ( url ):
-                    item["PluginUrl"] = url
-                    self.pluginMgr.addItemLink( item )
-                    print "Link added"
+                if 'repo_url' in item and item['repo_url']:
+                    paramsAddons = {}
+                    paramsAddons[PARAM_INSTALL_FROM_REPO]   = 'true'
+                    paramsAddons[PARAM_ADDON_ID]            = 'None' # No ID at this stage in case of repo from the wiki
+                    paramsAddons[PARAM_ADDON_NAME]          = item['name']
+                    paramsAddons[PARAM_URL]                 = item['repo_url']
+                    paramsAddons[PARAM_DATADIR]             = 'None'
+                    paramsAddons[PARAM_TYPE]                = 'zip'
+                    paramsAddons[PARAM_REPO_ID]             = 'None'
+    
+                    url = self.pluginMgr.create_param_url( paramsAddons )
+    
+                    if ( url ):
+                        item['PluginUrl'] = url
+                        self.pluginMgr.addItemLink( item )
+                        print "Link added"
             else:
                 keepParsing = False
                 

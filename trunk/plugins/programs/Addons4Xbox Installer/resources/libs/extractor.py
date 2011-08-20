@@ -160,7 +160,8 @@ def unzip( filename, destination=None, report=False ):
             
         # si root_dir n'est pas un dossier ou n'est pas la racine, on se base sur le nom de l'archive
         #print root_dir
-        base_dir = os.path.join( destination, root_dir.rstrip( "/" ) )
+        #base_dir = os.path.join( destination, root_dir.rstrip( "/" ) )
+        base_dir = os.path.join( destination, root_dir.rstrip( "/" )[:42] ) # xbox filename limitation
         if not is_root_dir:#root_dir.endswith( "/" ) and ( zip.getinfo( root_dir ).file_size > 0 ):
             root_dir = os.path.basename( os.path.splitext( filename )[ 0 ] )
             destination = os.path.join( destination, root_dir )
@@ -177,7 +178,8 @@ def unzip( filename, destination=None, report=False ):
                 #print round( percent, 2 ), item
             if not item.endswith( "/" ):
                 root, name = os.path.split( item )
-                directory = os.path.normpath( os.path.join( destination, root ) )
+                #directory = os.path.normpath( os.path.join( destination, root ) )
+                directory = os.path.normpath( os.path.join( destination, root[:42] ) ) # xbox filename limitation
                 if not os.path.isdir( directory ): os.makedirs( directory )
                 filename = makeLegalFilename( os.path.join( directory, name ), True )
                 file( filename, "wb" ).write( zip.read( item ) )
