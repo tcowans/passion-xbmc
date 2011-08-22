@@ -99,7 +99,8 @@ DIR_ADDON_MODULE   = os.path.join( SPECIAL_HOME_DIR, "scripts", ".modules" )
 
 DIR_ROOT            = os.getcwd().replace( ";", "" )
 DIR_CACHE           = os.path.join( SPECIAL_SCRIPT_DATA, "cache" )
-DIR_CACHE_ADDONS    = os.path.join( DIR_CACHE, "addons" )
+#DIR_CACHE_ADDONS    = os.path.join( DIR_CACHE, "addons" )
+DIR_CACHE_ADDONS    = os.path.join( SPECIAL_SCRIPT_DATA, "dwl" )
 DIR_ADDON_REPO      = os.path.join( SPECIAL_SCRIPT_DATA, "repositories")
 
 MISSING_MODULES_PATH = os.path.join( DIR_CACHE, "missing_modules.txt" )
