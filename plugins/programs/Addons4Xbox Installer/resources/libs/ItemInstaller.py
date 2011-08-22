@@ -442,7 +442,6 @@ class ArchItemInstaller(ItemInstaller):
             print "extractItem - Archive does not exist - extraction impossible"
             status = "ERROR"
         print status
-        print self.itemInfo[ "temp_item_path" ]
         return status
 
     

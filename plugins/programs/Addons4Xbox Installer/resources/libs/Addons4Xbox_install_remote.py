@@ -113,11 +113,12 @@ class Main:
                 # Check is addon is a module and if it was part of the missing modules list
                 #addonType    = addonInstaller.getItemType()
                 #addonVersion = addonInstaller.getItemVersion()
-                installedModuleItem = addonDic[addonId]
-                if TYPE_ADDON_MODULE == installedModuleItem["type"]:
-                    # We just installed successfully a module
-                    # Check if it was part of the missing modules list and remove it if it is the case
-                    removeMissingModule2DB(installedModuleItem)
+                if "None" != repoId:
+                    installedModuleItem = addonDic[addonId]
+                    if TYPE_ADDON_MODULE == installedModuleItem["type"]:
+                        # We just installed successfully a module
+                        # Check if it was part of the missing modules list and remove it if it is the case
+                        removeMissingModule2DB(installedModuleItem)
                     
                 
         return status
