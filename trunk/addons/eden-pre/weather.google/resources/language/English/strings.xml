@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!-- General strings -->
+  <string id="32000">Google Weather</string>
+
+  <string id="32010">Enter your Location, Postal Code or ZipCode</string>
+  <string id="32011">Choose your country</string>
+  <string id="32012">Error: no cities found!</string>
+  <string id="32013">Choose your city for %s</string>
+  <string id="32014">Select mode...</string>
+  <string id="32015"></string>
+</strings>

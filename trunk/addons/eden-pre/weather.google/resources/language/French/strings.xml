@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!-- General strings -->
+  <string id="32000">Météo Google</string>
+
+  <string id="32010">Entrez votre Emplacement, Code Postal ou ZipCode</string>
+  <string id="32011">Choisissez votre pays</string>
+  <string id="32012">Erreur: Aucune villes de trouver!</string>
+  <string id="32013">Choisissez votre ville pour le %s</string>
+  <string id="32014">Sélectionnez le mode...</string>
+  <string id="32015"></string>
+
+  <!-- http://fr.wikipedia.org/wiki/Points_cardinaux#Rose_des_vents -->
+  <!-- N, NNE, NE, ENE, E, ESE, SE, SSE, S, SSO, SO, OSO, O, ONO, NO, NNO -->
+  <!-- 
+  <string id="32500">Nord</string>
+  <string id="32501">Nord-Nord-Est</string>
+  <string id="32502">Nord-Est</string>
+  <string id="32503">Est-Nord-Est</string>
+  <string id="32504">Est</string>
+  <string id="32505">Est-Sud-Est</string>
+  <string id="32506">Sud-Est</string>
+  <string id="32507">Sud-Sud-Est</string>
+  <string id="32508">Sud</string>
+  <string id="32509">Sud-Sud-Ouest</string>
+  <string id="32510">Sud-Ouest</string>
+  <string id="32511">Ouest-Sud-Ouest</string>
+  <string id="32512">Ouest</string>
+  <string id="32513">Ouest-Nord-Ouest</string>
+  <string id="32514">Nord-Ouest</string>
+  <string id="32515">Nord-Nord-Ouest</string>
+  -->
+</strings>
