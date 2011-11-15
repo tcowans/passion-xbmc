@@ -1,0 +1,24 @@
+<window id="25">
+    ...
+    <onload condition="Library.HasContent(Movies) + System.HasAddon(script.moviesets)">
+RunScript(script.moviesets,containerId=7000)</onload>
+    <controls>
+        ...
+        <control type="list" id="7000">
+            <description>Container Movie Sets</description>
+            <hitrect x="0" y="0" w="0" h="0" />
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>1</width>
+            <height>1</height>
+            <onleft>50</onleft>
+            <onright>50</onright>
+            <onup>50</onup>
+            <ondown>50</ondown>
+            <pagecontrol>-</pagecontrol>
+            <itemlayout height="1" width="1" />
+            <focusedlayout height="1" width="1" />
+        </control>
+        ...
+    </controls>
+</window>

@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!-- strings 32000 thru 32999 reserved for scripts -->
+  <string id="32000">Movie Sets</string>
+  <string id="32001">Manager Sets</string>
+  <string id="32002">Sets</string>
+  <string id="32003">[Set]&#32;</string>
+  <string id="32004">[Movie]&#32;</string>
+
+  <!-- category settings -->
+  <string id="32050">General</string>
+  <string id="32051">Show busy dialog on retrieving info</string>
+  <string id="32052">Label Separator</string>
+  <string id="32053">Movies order of each set</string>
+
+  <string id="32060">Maintenance</string>
+  <string id="32061">Show Changelog</string>
+  <string id="32062">Show InfoLabels</string>
+  <string id="32063">Show License</string>
+
+  <!-- strings Manager -->
+  <string id="32100">Add Movies...</string>
+  <string id="32101">Select movie for set [%s]</string>
+  <string id="32102">Confirm add movie to set</string>
+  <string id="32103">Add this movie '%s'</string>
+  <string id="32104">To this set '%s'</string>
+
+  <string id="32110">Remove from movieset</string>
+  <string id="32111">Remove movie of set [%s]</string>
+  <string id="32112">Confirm remove movie of set</string>
+  <string id="32113">Remove this movie '%s'</string>
+  <string id="32114">Of this set '%s'</string>
+
+  <string id="32120">Set movieset fanart</string>
+  <string id="32121">Select one fanart or more for extrafanart</string>
+  <string id="32122">Confirm Downloading...</string>
+  <string id="32123">%i of %i have been selected!</string>
+  <string id="32124">Are you sure download this files?</string>
+  <string id="32125">Download: %i of %i - %i%%</string>
+  <string id="32126">Choose folder for&#32;</string>
+  <string id="32127">extrafanart</string>
+  <string id="32128">extrathumb</string>
+  <string id="32129"></string>
+  <string id="32130">Set movieset thumb</string>
+  <string id="32131">Select one thumb or more for extrathumb</string>
+
+  <string id="32135">Confirm overwrite...</string>
+  <string id="32136">Do you want overwrite your existing files?</string>
+
+  <string id="32140">Remove this movieset [%s]</string>
+  <string id="32141">Remove movieset from library</string>
+
+  <string id="32200">Add to movieset</string>
+  <string id="32201">Select movieset for [%s]</string>
+
+  <string id="32210">Remove movie of set [%s]</string>
+  <string id="32220">Edit movie sorttitle</string>
+  <string id="32221">Edit movieset title</string>
+
+  <string id="32300">Add movies to existing movieset</string>
+  <string id="32301">Select movie</string>
+  <string id="32302">Select movieset for movie [%s]</string>
+
+  <string id="32310">Remove movies to existing movieset</string>
+  <string id="32311">Select movieset</string>
+
+  <string id="32320">Remove existing movieset</string>
+  <string id="32321">Select movieset to remove</string>
+
+  <string id="32330">Create new movieset</string>
+  <string id="32331">Enter title of set</string>
+
+  <!-- strings 33000 thru 33999 reserved for common strings used in addons -->
+  <!-- skin strings -->
+  <string id="33000">Manager Sets</string>
+  <string id="33001">Sets</string>
+  <string id="33002">Info Set</string>
+  <string id="33004">[Set]</string>
+
+  <string id="33100">Show Info of Movie Sets in the library</string>
+  <string id="33101">Extra Buttons</string>
+  <string id="33102">Enable the manager's options in the library</string>
+  <string id="33103">Enable "Info Set" in the context menu</string>
+  <string id="33104">(Available with mouse only!)</string>
+</strings>
