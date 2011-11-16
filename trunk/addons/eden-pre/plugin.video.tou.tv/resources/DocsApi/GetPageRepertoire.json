@@ -1,0 +1,66 @@
+= Introduction =
+
+This is a description of the tou.tv api. 
+
+= Repertoire = 
+== GetPageRepertoire ==
+
+*Request*
+{{{
+http://api.tou.tv/v1/toutvapiservice.svc/json/GetPageRepertoire
+}}}
+
+*Response*
+{{{
+{
+  "d": {
+    "Emissions": [
+      {
+        "AnneeProduction": "2011", 
+        "CategorieDuree": "Plus de 90 minutes", 
+        "DateArrivee": null, 
+        "DateDepart": null, 
+        "DateRetraitOuEmbargo": "/Date(-62135578800000-0500)/", 
+        "DescriptionUnavailableText": null, 
+        "DescriptionUpcomingText": null, 
+        "Genre": "Films et documentaires", 
+        "Id": 2096989778, 
+        "ImagePromoNormalK": null, 
+        "IsGeolocalise": true, 
+        "NombreEpisodes": 1, 
+        "NombreSaisons": 1, 
+        "ParentId": 1360668651, 
+        "Pays": "", 
+        "SaisonsDisponibles": "2011", 
+        "Titre": "1 jour 24 heures 34 millions de vies", 
+        "TitreIndex": "1 jour 24 heures 34 millions de vies", 
+        "Url": "1_jour_24_heures_34_millions_de_vies", 
+        "__type": "EmissionRepertoireDTO:#RC.Svc.Web.TouTV"
+      }, 
+      ...
+    ], 
+    "Genres": [
+      {
+        "CategoryURL": "animation", 
+        "ClassCategory": "gris", 
+        "Description": "", 
+        "Id": 1360666537, 
+        "ImageBackground": "http://static.tou.tv/images/backgrounds/BG_ANIMATION.jpg", 
+        "ParentId": 0, 
+        "Title": "Animation", 
+        "Url": "animation", 
+        "__type": "GenreDTO:#RC.Svc.Web.TouTV"
+      }, 
+      ...
+    ], 
+    "Pays": [
+      {
+        "Key": "canada", 
+        "Value": "Canada"
+      }, 
+      ...
+    ], 
+    "__type": "PageRepertoireDTO:#RC.Svc.Web.TouTV"
+  }
+}
+}}}
