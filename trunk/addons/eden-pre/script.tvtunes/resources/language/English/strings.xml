@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!-- strings 30000 thru 30999 reserved for plugins and plugin settings -->
+<!-- strings 31000 thru 31999 reserved for skins -->
+<!-- strings 32000 thru 32999 reserved for scripts -->
+<!-- strings 33000 thru 33999 reserved for common strings used in addons -->
+<strings>
+  <!-- General strings -->
+  <string id="32000">TV Tunes</string>
+
+  <string id="32101">ERROR</string>
+  <string id="32102">site unreacheable</string>
+  <string id="32103">TvTune downloader</string>
+  <string id="32104">Replace existing theme?</string>
+  <string id="32105">TVTunes</string>
+  <string id="32106">Getting information...</string>
+  <string id="32107">Searching for</string>
+  <string id="32108">CANCELED</string>
+  <string id="32109">Operation canceled by user.</string>
+  <string id="32110">From:</string>
+  <string id="32111">To:</string>
+  <string id="32112">Choose for</string>
+  <string id="32113">ENTER MANUAL SEARCH</string>
+  <string id="32114">Download this one?</string>
+  <string id="32115">TvTunes</string>
+  <string id="32116">You can help to get more theme on:</string>
+  <string id="32117">Visit</string>
+  <string id="32118">Quit</string>
+
+  <string id="32120">Downloading tune failed!</string>
+  <string id="32121">Downloading...</string>
+  <string id="32122">Copying...</string>
+
+  <string id="32130">Manual Search</string>
+
+  <!-- Context Menu -->
+  <string id="32200">Get Tune</string>
+  <string id="32201">Play Tune</string>
+  <string id="32202">Delete Tune</string>
+  <string id="32203">Download</string>
+  <string id="32204">Refresh Remotes</string>
+
+  <!-- Settings strings -->
+  <!-- General category -->
+  <string id="32500">Lower sound value</string>
+  <string id="32501">Play theme in loop</string>
+  <string id="32502">Notify Repeat Statut</string>
+
+  <string id="32510">Tunes</string>
+  <string id="32511">Use Tv Show folder for recording tunes</string>
+  <string id="32512">Use local folder</string>
+  <string id="32513">Record in separate folders</string>
+
+  <!-- Scrapers category -->
+  <string id="32550">Scraper</string>
+  <string id="32551">Limit selection of tunes</string>
+  <string id="32552">Show the selection of tunes for the unique tune (Solo Mode)</string>
+  <string id="32553">Show dialog to help site</string>
+
+  <!-- Gui category -->
+  <string id="32600">Gui</string>
+  <string id="32601">Pretty Formatting</string>
+  <string id="32602">Enable pretty formatting for matching name</string>
+  <string id="32603">UPPERCASE</string>
+
+  <string id="32610">Show player controls on play tune</string>
+
+  <!-- Share category -->
+  <string id="32500">Use Protected SMB share</string>
+  <string id="32501">Use Protected FTP share</string>
+
+  <!-- skinning category -->
+  <string id="32700">Skinning</string>
+  <string id="32701">Skinners</string>
+  <string id="32702">How To Run TvTunes</string>
+  <string id="32703">InfoLabels / Conditional Visibility</string>
+</strings>
