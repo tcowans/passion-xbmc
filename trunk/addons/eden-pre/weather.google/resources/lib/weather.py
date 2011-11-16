@@ -280,7 +280,6 @@ def SetProperties2( weather, LocationIndex=1 ):
     SetProperty( "Current.Locale.Sunrise", SUN_UP )
     SetProperty( "Current.Locale.Sunset", SUN_DOWN )
     SetProperty( "Weather.IsFetched", "true" )
-    SetProperty( "WeatherProvider", "Google Weather" )
 
 
 def getWeatherSettings2( loc_index="1" ):

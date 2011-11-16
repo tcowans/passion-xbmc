@@ -10,6 +10,33 @@
   <string id="32014">Sélectionnez le mode...</string>
   <string id="32015"></string>
 
+  <string id="32020">Emplacements</string>
+  <string id="32021">Emplacement actuel</string>
+  <string id="32022">Emplacement</string>
+
+  <string id="32030">Extras</string>
+  <string id="32031">Lever et coucher du soleil</string>
+  <string id="32032">Locale</string>
+  <string id="32033">Utiliser temps standards [6:00 AM - 8:00 PM]</string>
+  <string id="32034">Préférence</string>
+  <string id="32035">Crépuscule astronomique</string>
+  <string id="32036">Crépuscule nautique</string>
+  <string id="32037">Crépuscule civil</string>
+  <string id="32038">Temps réel</string>
+  
+  <string id="32040">Icônes</string>
+  <string id="32041">Icônes Set (expérimentale)</string>
+  <string id="32042">Add-on</string>
+  <string id="32043">XBMC</string>
+  <string id="32044">Google</string>
+  <string id="32045">Personnalisé</string>
+  <string id="32046">Icônes personnalisées</string>
+
+  <string id="32050">Sélectionnez la préférence pour %s</string>
+  <string id="32051">Sélectionnez le lieu pour le lever/coucher du soleil</string>
+  <string id="32052">Autres emplacements</string>
+  <string id="32053">Sélectionnez un autre lieu pour le lever/coucher du soleil</string>
+
   <!-- http://fr.wikipedia.org/wiki/Points_cardinaux#Rose_des_vents -->
   <!-- N, NNE, NE, ENE, E, ESE, SE, SSE, S, SSO, SO, OSO, O, ONO, NO, NNO -->
   <!-- 

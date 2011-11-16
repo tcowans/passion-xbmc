@@ -1,7 +1,12 @@
+"""
+    Google Weather
+    by frost
+    url: http://passion-xbmc.googlecode.com/svn/trunk/addons/eden-pre/weather.google/
+"""
 
 from resources.lib.weather import *
 
-print sys.argv
+#print sys.argv
 
 loc_index = "".join( sys.argv[ 1: ] )
 if loc_index.isdigit():
@@ -15,6 +20,7 @@ else:
 
 def Main( retry=3 ):
     try:
+        SetProperty( "WeatherProvider", "Google Weather" )
         SetProperty( "Weather.IsFetched", "" )
 
         city, LocationIndex = GWS( loc_index )
