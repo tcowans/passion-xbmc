@@ -1000,14 +1000,16 @@ def get_sun( countryId=189, mode=4, g_update=False ):
 
 def set_rising_sun( country, countryId ):
     choice = []
-    base_choice = [ "[B]Astronomical Twilight[/B]   [%s - %s]", "[B]Nautical Twilight[/B]   [%s - %s]", "[B]Civil Twilight[/B]   [%s - %s]", "[B]Sunrise and Sunset[/B]   [%s - %s]" ]
-
+    #base_choice = [ "[B]Astronomical Twilight[/B]   [%s - %s]", "[B]Nautical Twilight[/B]   [%s - %s]", "[B]Civil Twilight[/B]   [%s - %s]", "[B]Sunrise and Sunset[/B]   [%s - %s]" ]
+    #"32035|32036|32037|32036"
     for mode in range( 1, 5 ):
         sun_up, sun_down, in_broad_daylight = get_sun( countryId, mode )
-        choice.append( base_choice[ mode-1 ] % ( sun_up, sun_down ) )
+        title = "[B]%s[/B]   [%s - %s]" % ( Addon.getLocalizedString( 32034+mode ), sun_up, sun_down )
+        #title = base_choice[ mode-1 ] % ( sun_up, sun_down )
+        choice.append( title )
 
     OK = False
-    selected = d_select( "Select preference for %s" % country, choice )
+    selected = d_select( Addon.getLocalizedString( 32050 ) % country, choice )
     if selected >= 0:
         Addon.setSetting( "risingsun_city", country )
         Addon.setSetting( "risingsun_pref", str( selected ) )
@@ -1020,11 +1022,11 @@ def set_rising_sun( country, countryId ):
 def selection():
     globals_update()
 
-    choice1 = [ "Other locations" ] + [ c[ 0 ] for c in base_countries ]
+    choice1 = [ Addon.getLocalizedString( 32052 ) ] + [ c[ 0 ] for c in base_countries ]
     choice2 = [ c[ 0 ] for c in more_countries ]
     
     while True:
-        selected = d_select( "Select location for sunrise/sunset", choice1 )
+        selected = d_select( Addon.getLocalizedString( 32051 ), choice1 )
         if selected == -1: break
 
         if selected >= 1:
@@ -1036,13 +1038,13 @@ def selection():
         elif selected == 0:
             stop = False
             while True:
-                selected = d_select( "Select other location for sunrise/sunset", choice2 )
+                selected = d_select( Addon.getLocalizedString( 32053 ), choice2 )
                 if selected == -1: break
 
                 country, code = more_countries[ selected ]
                 cities = sorted( more_cities.get( code, {} ).items(), key=lambda c: c[ 1 ] )
                 choice3 = [ "%s - %s" % ( c[ 1 ], country ) for c in cities ]
-                selected = d_select( "Select other location for sunrise/sunset", choice3 )
+                selected = d_select( Addon.getLocalizedString( 32053 ), choice3 )
                 if selected == -1: continue
 
                 #take info

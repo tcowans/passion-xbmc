@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="weather.google" name="Google Weather"
-       version="1.0.0" provider-name="Frost (passion-xbmc.org)">
+       version="1.0.1" provider-name="Frost (passion-xbmc.org)">
   <requires>
     <import addon="xbmc.python" version="2.0"/>
   </requires>
@@ -10,5 +10,6 @@
     <summary lang="en">Simple weather forecasts conditions.</summary>
     <description lang="en">Simple weather forecasts conditions.</description>
     <platform>all</platform>
+    <license>GPL</license>
   </extension>
 </addon>
