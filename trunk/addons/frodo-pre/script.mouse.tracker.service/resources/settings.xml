@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+    <setting id="sprite" type="fileenum" label="Sprite" values="/resources/skins/" mask="/" default="Dog" />
+    <setting id="speed" type="slider" label="Speed (ms)" range="10,10,1000" default="300" />
+    <setting type="sep"/>
+    <setting id="playsfx" type="bool" label="Play sound effect" default="false"/>
+</settings>
