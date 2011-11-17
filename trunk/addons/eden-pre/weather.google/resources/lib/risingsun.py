@@ -1009,7 +1009,7 @@ def set_rising_sun( country, countryId ):
         choice.append( title )
 
     OK = False
-    selected = d_select( Addon.getLocalizedString( 32050 ) % country, choice )
+    selected = d_select( Addon.getLocalizedString( 32050 ) % country.decode( "utf-8" ), choice )
     if selected >= 0:
         Addon.setSetting( "risingsun_city", country )
         Addon.setSetting( "risingsun_pref", str( selected ) )

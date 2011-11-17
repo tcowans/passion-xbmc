@@ -1,3 +1,7 @@
+1.0.2
+ - Fixed: selection of city in extras settings
+   possible UnicodeDecodeError in risingsun::set_rising_sun
+
 1.0.1
  - Finalized translation
 
