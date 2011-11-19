@@ -902,8 +902,14 @@ def is_expired( c_filename, hours=24, days=28 ):
     return True
 
 
-def get_user_time_format( str_time ):
-    insecs = mktime( strptime( str_time, DATE_FORMAT + '%I:%M %p' ) )
+def get_user_time_format( date, str_time ):
+    # fix to 24h format
+    str_time = str_time.lower().replace( "am", "" ).strip()
+    if "pm" in str_time:
+        H, M = str_time.replace( "pm", "" ).strip().split( ":" )
+        str_time = '%i:%s' % ( int( H ) + 12, M )
+
+    insecs = mktime( strptime( date + str_time, DATE_FORMAT + '%H:%M' ) )
     return strftime( USER_TIME_FORMAT, localtime( insecs ) ), insecs
 
 
@@ -944,8 +950,8 @@ def trim_time( str_time ):
 
 
 def get_default_sun( date ):
-    sun_up = get_user_time_format( date + "6:00 AM" )
-    sun_down = get_user_time_format( date + "8:00 PM" )
+    sun_up = get_user_time_format( date, "6:00 AM" )
+    sun_down = get_user_time_format( date, "8:00 PM" )
     in_broad_daylight = ( sun_up[ 1 ] <= time() <= sun_down[ 1 ] )
     sun_up, sun_down = sun_up[ 0 ], sun_down[ 0 ]
     return trim_time( sun_up ), trim_time( sun_down ), in_broad_daylight
@@ -983,8 +989,8 @@ def get_sun( countryId=189, mode=4, g_update=False ):
             else:
                 continue
 
-            sun_up = get_user_time_format( date + t1 )
-            sun_down = get_user_time_format( date + t2 )
+            sun_up = get_user_time_format( date, t1 )
+            sun_down = get_user_time_format( date, t2 )
             in_broad_daylight = ( sun_up[ 1 ] <= time() <= sun_down[ 1 ] )
             sun_up, sun_down = sun_up[ 0 ], sun_down[ 0 ]
 
