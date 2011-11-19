@@ -1,7 +1,12 @@
+"""
+    Google Weather
+    by frost
+    url: http://passion-xbmc.googlecode.com/svn/trunk/addons/eden-pre/weather.google/
+"""
 
 from resources.lib.weather import *
 
-print sys.argv
+#print sys.argv
 
 loc_index = "".join( sys.argv[ 1: ] )
 if loc_index.isdigit():
