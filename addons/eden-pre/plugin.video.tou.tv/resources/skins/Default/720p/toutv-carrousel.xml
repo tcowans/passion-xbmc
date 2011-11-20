@@ -8,7 +8,7 @@
 			<posy>0</posy>
 			<width>1280</width>
 			<height>720</height>
-			<imagepath fallback="special://skin/backgrounds/videos.jpg" background="true">$INFO[ListItem.Property(fanart_image)]</imagepath>
+			<imagepath fallback="special://home/addons/plugin.video.tou.tv/fanart.jpg" background="true">$INFO[ListItem.Property(fanart_image)]</imagepath>
 			<timeperimage>10000</timeperimage>
 			<randomize>true</randomize>
 			<fadetime>FanartCrossfadeTime</fadetime>
@@ -18,7 +18,7 @@
 			<posy>100r</posy>
 			<width>1280</width>
 			<height>100</height>
-			<texture>floor.png</texture>
+			<texture>toutv-floor.png</texture>
 			<animation effect="slide" start="0,10" end="0,0" time="200" condition="Window.Previous(Home)">WindowOpen</animation>
 			<animation effect="slide" start="0,0" end="0,10" time="200" condition="Window.Next(Home)">WindowClose</animation>
 		</control>
@@ -102,7 +102,7 @@
 										<posy>60</posy>
 										<width>60</width>
 										<height>60</height>
-										<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(9).Thumb]</texture>
+										<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(9).Thumb]</texture>
 										<aspectratio align="center" aligny="top">keep</aspectratio>
 										<animation effect="fade" start="75" end="75" time="0" condition="true">Conditional</animation>
 									</control>
@@ -137,7 +137,7 @@
 									<posy>80</posy>
 									<width>80</width>
 									<height>80</height>
-									<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(8).Thumb]</texture>
+									<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(8).Thumb]</texture>
 									<aspectratio align="center" aligny="top">keep</aspectratio>
 									<animation effect="rotatey" center="40,0" start="0" end="-75" time="0" condition="!Skin.HasSetting(toutv_HideRotateCompass)">Conditional</animation>
 								</control>
@@ -174,7 +174,7 @@
 										<posy>80</posy>
 										<width>80</width>
 										<height>80</height>
-										<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(-10).Thumb]</texture>
+										<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(-10).Thumb]</texture>
 										<aspectratio align="center" aligny="top">keep</aspectratio>
 										<animation effect="rotatey" center="40,0" start="0" end="75" time="0" condition="!Skin.HasSetting(toutv_HideRotateCompass)">Conditional</animation>
 									</control>
@@ -209,7 +209,7 @@
 									<posy>100</posy>
 									<width>100</width>
 									<height>100</height>
-									<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(7).Thumb]</texture>
+									<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(7).Thumb]</texture>
 									<aspectratio align="center" aligny="top">keep</aspectratio>
 									<animation effect="rotatey" center="50,0" start="0" end="-65" time="0" condition="!Skin.HasSetting(toutv_HideRotateCompass)">Conditional</animation>
 								</control>
@@ -243,7 +243,7 @@
 									<posy>100</posy>
 									<width>100</width>
 									<height>100</height>
-									<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(-9).Thumb]</texture>
+									<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(-9).Thumb]</texture>
 									<aspectratio align="center" aligny="top">keep</aspectratio>
 									<animation effect="rotatey" center="50,0" start="0" end="65" time="0" condition="!Skin.HasSetting(toutv_HideRotateCompass)">Conditional</animation>
 								</control>
@@ -277,7 +277,7 @@
 									<posy>120</posy>
 									<width>120</width>
 									<height>120</height>
-									<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(6).Thumb]</texture>
+									<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(6).Thumb]</texture>
 									<aspectratio align="center" aligny="top">keep</aspectratio>
 									<animation effect="rotatey" center="60,0" start="0" end="-55" time="0" condition="!Skin.HasSetting(toutv_HideRotateCompass)">Conditional</animation>
 								</control>
@@ -311,7 +311,7 @@
 									<posy>120</posy>
 									<width>120</width>
 									<height>120</height>
-									<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(-8).Thumb]</texture>
+									<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(-8).Thumb]</texture>
 									<aspectratio align="center" aligny="top">keep</aspectratio>
 									<animation effect="rotatey" center="60,0" start="0" end="55" time="0" condition="!Skin.HasSetting(toutv_HideRotateCompass)">Conditional</animation>
 								</control>
@@ -345,7 +345,7 @@
 									<posy>144</posy>
 									<width>144</width>
 									<height>144</height>
-									<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(5).Thumb]</texture>
+									<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(5).Thumb]</texture>
 									<aspectratio align="center" aligny="top">keep</aspectratio>
 									<animation effect="rotatey" center="72,0" start="0" end="-45" time="0" condition="!Skin.HasSetting(toutv_HideRotateCompass)">Conditional</animation>
 								</control>
@@ -379,7 +379,7 @@
 									<posy>144</posy>
 									<width>144</width>
 									<height>144</height>
-									<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(-7).Thumb]</texture>
+									<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(-7).Thumb]</texture>
 									<aspectratio align="center" aligny="top">keep</aspectratio>
 									<animation effect="rotatey" center="72,0" start="0" end="45" time="0" condition="!Skin.HasSetting(toutv_HideRotateCompass)">Conditional</animation>
 								</control>
@@ -413,7 +413,7 @@
 									<posy>160</posy>
 									<width>160</width>
 									<height>160</height>
-									<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(4).Thumb]</texture>
+									<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(4).Thumb]</texture>
 									<aspectratio align="center" aligny="top">keep</aspectratio>
 									<animation effect="rotatey" center="80,0" start="0" end="-30" time="0" condition="!Skin.HasSetting(toutv_HideRotateCompass)">Conditional</animation>
 								</control>
@@ -447,7 +447,7 @@
 									<posy>160</posy>
 									<width>160</width>
 									<height>160</height>
-									<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(-6).Thumb]</texture>
+									<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(-6).Thumb]</texture>
 									<aspectratio align="center" aligny="top">keep</aspectratio>
 									<animation effect="rotatey" center="80,0" start="0" end="30" time="0" condition="!Skin.HasSetting(toutv_HideRotateCompass)">Conditional</animation>
 								</control>
@@ -477,7 +477,7 @@
 								<posy>200</posy>
 								<width>200</width>
 								<height>200</height>
-								<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(3).Thumb]</texture>
+								<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(3).Thumb]</texture>
 								<aspectratio align="center" aligny="top">keep</aspectratio>
 							</control>
 						</control>
@@ -508,7 +508,7 @@
 									<posy>200</posy>
 									<width>200</width>
 									<height>200</height>
-									<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(-5).Thumb]</texture>
+									<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(-5).Thumb]</texture>
 									<aspectratio align="center" aligny="top">keep</aspectratio>
 								</control>
 							</control>
@@ -537,7 +537,7 @@
 								<posy>242</posy>
 								<width>242</width>
 								<height>242</height>
-								<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(2).Thumb]</texture>
+								<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(2).Thumb]</texture>
 								<aspectratio align="center" aligny="top">keep</aspectratio>
 							</control>
 						</control>
@@ -565,7 +565,7 @@
 								<posy>242</posy>
 								<width>242</width>
 								<height>242</height>
-								<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(-4).Thumb]</texture>
+								<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(-4).Thumb]</texture>
 								<aspectratio align="center" aligny="top">keep</aspectratio>
 							</control>
 						</control>
@@ -593,7 +593,7 @@
 								<posy>275</posy>
 								<width>275</width>
 								<height>275</height>
-								<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(1).Thumb]</texture>
+								<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(1).Thumb]</texture>
 								<aspectratio align="center" aligny="top">keep</aspectratio>
 							</control>
 						</control>
@@ -621,7 +621,7 @@
 								<posy>275</posy>
 								<width>275</width>
 								<height>275</height>
-								<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(-3).Thumb]</texture>
+								<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(-3).Thumb]</texture>
 								<aspectratio align="center" aligny="top">keep</aspectratio>
 							</control>
 						</control>
@@ -650,7 +650,7 @@
 								<posy>306</posy>
 								<width>306</width>
 								<height>306</height>
-								<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(-2).Thumb]</texture>
+								<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(-2).Thumb]</texture>
 								<aspectratio align="center" aligny="top">keep</aspectratio>
 								<bordersize>4</bordersize>
 							</control>
@@ -682,7 +682,7 @@
 								<width>360</width>
 								<height>360</height>
 								<aspectratio align="center" aligny="top">keep</aspectratio>
-								<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(-1).Thumb]</texture>
+								<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(-1).Thumb]</texture>
 								<bordersize>4</bordersize>
 								<animation condition="true" type="Conditional">
 									<effect type="zoom" center="auto" start="110" end="110" time="0" />
@@ -708,7 +708,7 @@
 								<height>306</height>
 								<texture>$INFO[ListItem(0).Thumb]</texture>
 								<aspectratio align="center" aligny="bottom">keep</aspectratio>
-								<bordertexture border="4">folder-focus.png</bordertexture>
+								<bordertexture border="4">toutv-folder-focus.png</bordertexture>
 								<bordersize>4</bordersize>
 							</control>
 							<control type="image">
@@ -716,9 +716,9 @@
 								<posy>306</posy>
 								<width>306</width>
 								<height>306</height>
-								<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(0).Thumb]</texture>
+								<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(0).Thumb]</texture>
 								<aspectratio align="center" aligny="top">keep</aspectratio>
-								<bordertexture border="4" flipy="true" diffuse="diffuse_mirror2.png">folder-focus.png</bordertexture>
+								<bordertexture border="4" flipy="true" diffuse="toutv-diffuse_mirror2.png">toutv-folder-focus.png</bordertexture>
 								<bordersize>4</bordersize>
 							</control>
 						</control>
@@ -762,7 +762,7 @@
 										<posy>60</posy>
 										<width>60</width>
 										<height>60</height>
-										<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(-9).Thumb]</texture>
+										<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(-9).Thumb]</texture>
 										<aspectratio align="center" aligny="top">keep</aspectratio>
 										<animation effect="fade" start="75" end="75" time="0" condition="true">Conditional</animation>
 									</control>
@@ -800,7 +800,7 @@
 										<posy>80</posy>
 										<width>80</width>
 										<height>80</height>
-										<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(10).Thumb]</texture>
+										<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(10).Thumb]</texture>
 										<aspectratio align="center" aligny="top">keep</aspectratio>
 										<animation effect="rotatey" center="40,0" start="0" end="-75" time="0" condition="!Skin.HasSetting(toutv_HideRotateCompass)">Conditional</animation>
 									</control>
@@ -835,7 +835,7 @@
 									<posy>80</posy>
 									<width>80</width>
 									<height>80</height>
-									<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(-8).Thumb]</texture>
+									<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(-8).Thumb]</texture>
 									<aspectratio align="center" aligny="top">keep</aspectratio>
 									<animation effect="rotatey" center="40,0" start="0" end="75" time="0" condition="!Skin.HasSetting(toutv_HideRotateCompass)">Conditional</animation>
 								</control>
@@ -869,7 +869,7 @@
 									<posy>100</posy>
 									<width>100</width>
 									<height>100</height>
-									<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(9).Thumb]</texture>
+									<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(9).Thumb]</texture>
 									<aspectratio align="center" aligny="top">keep</aspectratio>
 									<animation effect="rotatey" center="50,0" start="0" end="-65" time="0" condition="!Skin.HasSetting(toutv_HideRotateCompass)">Conditional</animation>
 								</control>
@@ -903,7 +903,7 @@
 									<posy>100</posy>
 									<width>100</width>
 									<height>100</height>
-									<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(-7).Thumb]</texture>
+									<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(-7).Thumb]</texture>
 									<aspectratio align="center" aligny="top">keep</aspectratio>
 									<animation effect="rotatey" center="50,0" start="0" end="65" time="0" condition="!Skin.HasSetting(toutv_HideRotateCompass)">Conditional</animation>
 								</control>
@@ -937,7 +937,7 @@
 									<posy>120</posy>
 									<width>120</width>
 									<height>120</height>
-									<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(8).Thumb]</texture>
+									<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(8).Thumb]</texture>
 									<aspectratio align="center" aligny="top">keep</aspectratio>
 									<animation effect="rotatey" center="60,0" start="0" end="-55" time="0" condition="!Skin.HasSetting(toutv_HideRotateCompass)">Conditional</animation>
 								</control>
@@ -971,7 +971,7 @@
 									<posy>120</posy>
 									<width>120</width>
 									<height>120</height>
-									<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(-6).Thumb]</texture>
+									<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(-6).Thumb]</texture>
 									<aspectratio align="center" aligny="top">keep</aspectratio>
 									<animation effect="rotatey" center="60,0" start="0" end="55" time="0" condition="!Skin.HasSetting(toutv_HideRotateCompass)">Conditional</animation>
 								</control>
@@ -1005,7 +1005,7 @@
 									<posy>144</posy>
 									<width>144</width>
 									<height>144</height>
-									<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(7).Thumb]</texture>
+									<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(7).Thumb]</texture>
 									<aspectratio align="center" aligny="top">keep</aspectratio>
 									<animation effect="rotatey" center="72,0" start="0" end="-45" time="0" condition="!Skin.HasSetting(toutv_HideRotateCompass)">Conditional</animation>
 								</control>
@@ -1039,7 +1039,7 @@
 									<posy>144</posy>
 									<width>144</width>
 									<height>144</height>
-									<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(-5).Thumb]</texture>
+									<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(-5).Thumb]</texture>
 									<aspectratio align="center" aligny="top">keep</aspectratio>
 									<animation effect="rotatey" center="72,0" start="0" end="45" time="0" condition="!Skin.HasSetting(toutv_HideRotateCompass)">Conditional</animation>
 								</control>
@@ -1073,7 +1073,7 @@
 									<posy>160</posy>
 									<width>160</width>
 									<height>160</height>
-									<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(6).Thumb]</texture>
+									<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(6).Thumb]</texture>
 									<aspectratio align="center" aligny="top">keep</aspectratio>
 									<animation effect="rotatey" center="80,0" start="0" end="-30" time="0" condition="!Skin.HasSetting(toutv_HideRotateCompass)">Conditional</animation>
 								</control>
@@ -1107,7 +1107,7 @@
 									<posy>160</posy>
 									<width>160</width>
 									<height>160</height>
-									<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(-4).Thumb]</texture>
+									<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(-4).Thumb]</texture>
 									<aspectratio align="center" aligny="top">keep</aspectratio>
 									<animation effect="rotatey" center="80,0" start="0" end="30" time="0" condition="!Skin.HasSetting(toutv_HideRotateCompass)">Conditional</animation>
 								</control>
@@ -1140,7 +1140,7 @@
 									<posy>200</posy>
 									<width>200</width>
 									<height>200</height>
-									<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(5).Thumb]</texture>
+									<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(5).Thumb]</texture>
 									<aspectratio align="center" aligny="top">keep</aspectratio>
 								</control>
 							</control>
@@ -1169,7 +1169,7 @@
 								<posy>200</posy>
 								<width>200</width>
 								<height>200</height>
-								<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(-3).Thumb]</texture>
+								<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(-3).Thumb]</texture>
 								<aspectratio align="center" aligny="top">keep</aspectratio>
 							</control>
 						</control>
@@ -1197,7 +1197,7 @@
 								<posy>242</posy>
 								<width>242</width>
 								<height>242</height>
-								<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(4).Thumb]</texture>
+								<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(4).Thumb]</texture>
 								<aspectratio align="center" aligny="top">keep</aspectratio>
 							</control>
 						</control>
@@ -1225,7 +1225,7 @@
 								<posy>242</posy>
 								<width>242</width>
 								<height>242</height>
-								<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(-2).Thumb]</texture>
+								<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(-2).Thumb]</texture>
 								<aspectratio align="center" aligny="top">keep</aspectratio>
 							</control>
 						</control>
@@ -1253,7 +1253,7 @@
 								<posy>275</posy>
 								<width>275</width>
 								<height>275</height>
-								<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(3).Thumb]</texture>
+								<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(3).Thumb]</texture>
 								<aspectratio align="center" aligny="top">keep</aspectratio>
 							</control>
 						</control>
@@ -1281,7 +1281,7 @@
 								<posy>275</posy>
 								<width>275</width>
 								<height>275</height>
-								<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(-1).Thumb]</texture>
+								<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(-1).Thumb]</texture>
 								<aspectratio align="center" aligny="top">keep</aspectratio>
 							</control>
 						</control>
@@ -1310,7 +1310,7 @@
 								<posy>306</posy>
 								<width>306</width>
 								<height>306</height>
-								<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(2).Thumb]</texture>
+								<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(2).Thumb]</texture>
 								<aspectratio align="center" aligny="top">keep</aspectratio>
 								<bordersize>4</bordersize>
 							</control>
@@ -1342,7 +1342,7 @@
 								<width>360</width>
 								<height>360</height>
 								<aspectratio align="center" aligny="top">keep</aspectratio>
-								<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(1).Thumb]</texture>
+								<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(1).Thumb]</texture>
 								<bordersize>4</bordersize>
 								<animation condition="true" type="Conditional">
 									<effect type="zoom" center="auto" start="110" end="110" time="0" />
@@ -1368,7 +1368,7 @@
 								<height>306</height>
 								<texture>$INFO[ListItem(0).Thumb]</texture>
 								<aspectratio align="center" aligny="bottom">keep</aspectratio>
-								<bordertexture border="4">folder-focus.png</bordertexture>
+								<bordertexture border="4">toutv-folder-focus.png</bordertexture>
 								<bordersize>4</bordersize>
 							</control>
 							<control type="image">
@@ -1376,9 +1376,9 @@
 								<posy>306</posy>
 								<width>306</width>
 								<height>306</height>
-								<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(0).Thumb]</texture>
+								<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(0).Thumb]</texture>
 								<aspectratio align="center" aligny="top">keep</aspectratio>
-								<bordertexture border="4" flipy="true" diffuse="diffuse_mirror2.png">folder-focus.png</bordertexture>
+								<bordertexture border="4" flipy="true" diffuse="toutv-diffuse_mirror2.png">toutv-folder-focus.png</bordertexture>
 								<bordersize>4</bordersize>
 							</control>
 						</control>
@@ -1410,7 +1410,7 @@
 							<posy>60</posy>
 							<width>60</width>
 							<height>60</height>
-							<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(10).Thumb]</texture>
+							<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(10).Thumb]</texture>
 							<aspectratio align="center" aligny="top">keep</aspectratio>
 						</control>
 					</control>
@@ -1433,7 +1433,7 @@
 							<posy>80</posy>
 							<width>80</width>
 							<height>80</height>
-							<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(9).Thumb]</texture>
+							<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(9).Thumb]</texture>
 							<aspectratio align="center" aligny="top">keep</aspectratio>
 						</control>
 					</control>
@@ -1456,7 +1456,7 @@
 							<posy>80</posy>
 							<width>80</width>
 							<height>80</height>
-							<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(-9).Thumb]</texture>
+							<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(-9).Thumb]</texture>
 							<aspectratio align="center" aligny="top">keep</aspectratio>
 						</control>
 					</control>
@@ -1479,7 +1479,7 @@
 							<posy>100</posy>
 							<width>100</width>
 							<height>100</height>
-							<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(8).Thumb]</texture>
+							<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(8).Thumb]</texture>
 							<aspectratio align="center" aligny="top">keep</aspectratio>
 						</control>
 					</control>
@@ -1502,7 +1502,7 @@
 							<posy>100</posy>
 							<width>100</width>
 							<height>100</height>
-							<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(-8).Thumb]</texture>
+							<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(-8).Thumb]</texture>
 							<aspectratio align="center" aligny="top">keep</aspectratio>
 						</control>
 					</control>
@@ -1525,7 +1525,7 @@
 							<posy>120</posy>
 							<width>120</width>
 							<height>120</height>
-							<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(7).Thumb]</texture>
+							<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(7).Thumb]</texture>
 							<aspectratio align="center" aligny="top">keep</aspectratio>
 						</control>
 					</control>
@@ -1548,7 +1548,7 @@
 							<posy>120</posy>
 							<width>120</width>
 							<height>120</height>
-							<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(-7).Thumb]</texture>
+							<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(-7).Thumb]</texture>
 							<aspectratio align="center" aligny="top">keep</aspectratio>
 						</control>
 					</control>
@@ -1571,7 +1571,7 @@
 							<posy>144</posy>
 							<width>144</width>
 							<height>144</height>
-							<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(6).Thumb]</texture>
+							<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(6).Thumb]</texture>
 							<aspectratio align="center" aligny="top">keep</aspectratio>
 						</control>
 					</control>
@@ -1594,7 +1594,7 @@
 							<posy>144</posy>
 							<width>144</width>
 							<height>144</height>
-							<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(-6).Thumb]</texture>
+							<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(-6).Thumb]</texture>
 							<aspectratio align="center" aligny="top">keep</aspectratio>
 						</control>
 					</control>
@@ -1617,7 +1617,7 @@
 							<posy>160</posy>
 							<width>160</width>
 							<height>160</height>
-							<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(5).Thumb]</texture>
+							<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(5).Thumb]</texture>
 							<aspectratio align="center" aligny="top">keep</aspectratio>
 						</control>
 					</control>
@@ -1640,7 +1640,7 @@
 							<posy>160</posy>
 							<width>160</width>
 							<height>160</height>
-							<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(-5).Thumb]</texture>
+							<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(-5).Thumb]</texture>
 							<aspectratio align="center" aligny="top">keep</aspectratio>
 						</control>
 					</control>
@@ -1662,7 +1662,7 @@
 							<posy>200</posy>
 							<width>200</width>
 							<height>200</height>
-							<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(4).Thumb]</texture>
+							<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(4).Thumb]</texture>
 							<aspectratio align="center" aligny="top">keep</aspectratio>
 						</control>
 					</control>
@@ -1684,7 +1684,7 @@
 							<posy>200</posy>
 							<width>200</width>
 							<height>200</height>
-							<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(-4).Thumb]</texture>
+							<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(-4).Thumb]</texture>
 							<aspectratio align="center" aligny="top">keep</aspectratio>
 						</control>
 					</control>
@@ -1706,7 +1706,7 @@
 							<posy>242</posy>
 							<width>242</width>
 							<height>242</height>
-							<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(3).Thumb]</texture>
+							<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(3).Thumb]</texture>
 							<aspectratio align="center" aligny="top">keep</aspectratio>
 						</control>
 					</control>
@@ -1728,7 +1728,7 @@
 							<posy>242</posy>
 							<width>242</width>
 							<height>242</height>
-							<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(-3).Thumb]</texture>
+							<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(-3).Thumb]</texture>
 							<aspectratio align="center" aligny="top">keep</aspectratio>
 						</control>
 					</control>
@@ -1750,7 +1750,7 @@
 							<posy>275</posy>
 							<width>275</width>
 							<height>275</height>
-							<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(2).Thumb]</texture>
+							<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(2).Thumb]</texture>
 							<aspectratio align="center" aligny="top">keep</aspectratio>
 						</control>
 					</control>
@@ -1772,7 +1772,7 @@
 							<posy>275</posy>
 							<width>275</width>
 							<height>275</height>
-							<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(-2).Thumb]</texture>
+							<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(-2).Thumb]</texture>
 							<aspectratio align="center" aligny="top">keep</aspectratio>
 						</control>
 					</control>
@@ -1795,7 +1795,7 @@
 							<posy>306</posy>
 							<width>306</width>
 							<height>306</height>
-							<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(1).Thumb]</texture>
+							<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(1).Thumb]</texture>
 							<aspectratio align="center" aligny="top">keep</aspectratio>
 							<bordersize>4</bordersize>
 						</control>
@@ -1819,7 +1819,7 @@
 							<posy>306</posy>
 							<width>306</width>
 							<height>306</height>
-							<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(-1).Thumb]</texture>
+							<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(-1).Thumb]</texture>
 							<aspectratio align="center" aligny="top">keep</aspectratio>
 							<bordersize>4</bordersize>
 						</control>
@@ -1836,7 +1836,7 @@
 							<height>360</height>
 							<aspectratio align="center" aligny="bottom">keep</aspectratio>
 							<texture>$INFO[ListItem(0).Thumb]</texture>
-							<bordertexture border="4">folder-focus.png</bordertexture>
+							<bordertexture border="4">toutv-folder-focus.png</bordertexture>
 							<bordersize>4</bordersize>
 							<visible>Control.HasFocus(50)</visible>
 							<animation effect="zoom" center="auto" start="100" end="110" time="500" condition="Control.HasFocus(50)">conditional</animation>
@@ -1847,8 +1847,8 @@
 							<width>360</width>
 							<height>360</height>
 							<aspectratio align="center" aligny="top">keep</aspectratio>
-							<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(0).Thumb]</texture>
-							<bordertexture border="4" flipy="true" diffuse="diffuse_mirror2.png">folder-focus.png</bordertexture>
+							<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(0).Thumb]</texture>
+							<bordertexture border="4" flipy="true" diffuse="toutv-diffuse_mirror2.png">toutv-folder-focus.png</bordertexture>
 							<bordersize>4</bordersize>
 							<visible>Control.HasFocus(50)</visible>
 							<animation condition="Control.HasFocus(50)" type="Conditional">
@@ -1873,7 +1873,7 @@
 							<width>360</width>
 							<height>360</height>
 							<aspectratio align="center" aligny="top">keep</aspectratio>
-							<texture flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem(0).Thumb]</texture>
+							<texture flipy="true" diffuse="toutv-diffuse_mirror2.png">$INFO[ListItem(0).Thumb]</texture>
 							<bordersize>4</bordersize>
 							<visible>!Control.HasFocus(50)</visible>
 							<animation condition="!Control.HasFocus(50)" type="Conditional">
@@ -1887,7 +1887,7 @@
 							<width>40</width>
 							<height>40</height>
 							<aspectratio>keep</aspectratio>
-							<texture>OverlayWatched.png</texture>
+							<texture>toutv-OverlayWatched.png</texture>
 							<visible>StringCompare(ListItem(0).PlayCount,1)</visible>
 						</control>
 					</control>
@@ -1939,7 +1939,8 @@
 			<aligny>center</aligny>
 			<label>$INFO[Container.CurrentPage, $LOCALIZE[31025] ([COLOR=blue]]$INFO[Container.NumPages,/,[/COLOR])]$INFO[ListItem.Duration,[CR]$LOCALIZE[180] ([COLOR=blue],[/COLOR])]</label>
 			<animation effect="slide" start="0,0" end="0,-10" condition="!IsEmpty(ListItem.Duration)">Conditional</animation>
-			<include>Window_OpenClose_Animation</include>
+			<animation effect="fade" time="250">WindowOpen</animation>
+			<animation effect="fade" time="250">WindowClose</animation>
 		</control>
 		<control type="group">
 			<visible>Container.Scrolling + [StringCompare(Container.SortMethod,$LOCALIZE[551]) | StringCompare(Container.SortMethod,$LOCALIZE[561]) | StringCompare(Container.SortMethod,$LOCALIZE[558]) | StringCompare(Container.SortMethod,$LOCALIZE[557]) | StringCompare(Container.SortMethod,$LOCALIZE[556])]</visible>
@@ -1952,7 +1953,7 @@
 				<posy>0</posy>
 				<width>70</width>
 				<height>65</height>
-				<texture border="20,20,20,2">InfoMessagePanel.png</texture>
+				<texture border="20,20,20,2">toutv-InfoMessagePanel.png</texture>
 			</control>
 			<control type="label">
 				<posx>5</posx>
@@ -1969,7 +1970,47 @@
 
 		<control type="group">
 			<posx>-250</posx>
-			<include>SideBladeLeft</include>
+			<animation effect="slide" start="0,0" end="250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(9000).HasFocus | Control.HasFocus(9001) | Control.HasFocus(8999)">Conditional</animation>
+			<animation effect="slide" start="0,0" end="-300,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(9000).HasFocus | Control.HasFocus(9001)">WindowClose</animation>
+			<animation effect="slide" start="0,0" end="-50,0" time="300" tween="quadratic" easing="out" condition="![ControlGroup(9000).HasFocus | Control.HasFocus(9001)]">WindowClose</animation>
+			<animation effect="slide" start="-50,0" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+			<control type="button" id="8999">
+				<description>Fake button for mouse control</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>250</width>
+				<height>720</height>
+				<label>-</label>
+				<font>-</font>
+				<texturenofocus>-</texturenofocus>
+				<texturefocus>-</texturefocus>
+				<visible>true</visible>
+			</control>
+			<control type="button" id="9001">
+				<posx>250</posx>
+				<posy>260</posy>
+				<width>42</width>
+				<height>128</height>
+				<font>-</font>
+				<texturefocus>toutv-HasSub.png</texturefocus>
+				<texturenofocus>toutv-HasSub.png</texturenofocus>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>260</width>
+				<height>720</height>
+				<texture border="0,0,10,0">toutv-MediaBladeSub.png</texture>
+			</control>
+			<control type="image">
+				<description>LOGO</description>
+				<posx>15</posx>
+				<posy>50</posy>
+				<width>220</width>
+				<height>80</height>
+				<aspectratio>keep</aspectratio>
+				<texture>toutv-Confluence_Logo.png</texture>
+			</control>
 			<control type="grouplist" id="9000">
 				<posx>0</posx>
 				<posy>110</posy>
@@ -1993,19 +2034,43 @@
 				<control type="button" id="2">
 					<description>View As button</description>
 					<textwidth>235</textwidth>
-					<include>ButtonCommonValues</include>
+					<height>40</height>
+					<width>250</width>
+					<textoffsetx>10</textoffsetx>
+					<textwidth>200</textwidth>
+					<aligny>center</aligny>
+					<font>font13</font>
+					<texturefocus border="5">button-focus.png</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<pulseonselect>false</pulseonselect>
 					<label>-</label>
 				</control>
 				<control type="button" id="13">
 					<description>Sort by button</description>
-					<include>ButtonCommonValues</include>
+					<height>40</height>
+					<width>250</width>
+					<textoffsetx>10</textoffsetx>
+					<textwidth>200</textwidth>
+					<aligny>center</aligny>
+					<font>font13</font>
+					<texturefocus border="5">button-focus.png</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<pulseonselect>false</pulseonselect>
 					<label>103</label>
 					<enable>false</enable>
 				</control>
 				<control type="togglebutton" id="14">
 					<description>Sort asc</description>
-					<include>ButtonCommonValues</include>
-					<alttexturefocus border="5">button-focus.png</alttexturefocus>
+					<height>40</height>
+					<width>250</width>
+					<textoffsetx>10</textoffsetx>
+					<textwidth>200</textwidth>
+					<aligny>center</aligny>
+					<font>font13</font>
+					<texturefocus border="5">button-focus.png</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<pulseonselect>false</pulseonselect>
+					<alttexturefocus border="5">toutv-button-focus.png</alttexturefocus>
 					<alttexturenofocus>-</alttexturenofocus>
 					<label>31051</label>
 					<altlabel>31050</altlabel>
@@ -2015,7 +2080,15 @@
 				<control type="radiobutton" id="99">
 					<description>Show Info Toggle</description>
 					<textwidth>170</textwidth>
-					<include>ButtonCommonValues</include>
+					<height>40</height>
+					<width>250</width>
+					<textoffsetx>10</textoffsetx>
+					<textwidth>200</textwidth>
+					<aligny>center</aligny>
+					<font>font13</font>
+					<texturefocus border="5">button-focus.png</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<pulseonselect>false</pulseonselect>
 					<label>Rotate Icon</label>
 					<onclick>Skin.ToggleSetting(toutv_HideRotateCompass)</onclick>
 					<selected>!Skin.HasSetting(toutv_HideRotateCompass)</selected>
@@ -2028,7 +2101,8 @@
 			<posx>210</posx>
 			<posy>0</posy>
 			<visible>IsEmpty(ListItem.TVShowTitle)</visible>
-			<include>VisibleFadeEffect</include>
+			<animation effect="fade" time="300">Visible</animation>
+			<animation effect="fade" time="300">Hidden</animation>
 			<animation effect="slide" end="-510,0" time="400" tween="quadratic" easing="out">WindowClose</animation>
 			<animation effect="slide" start="-510,0" time="400" tween="quadratic" easing="out">WindowOpen</animation>
 			<control type="image">
@@ -2036,10 +2110,16 @@
 				<posy>0</posy>
 				<width>250</width>
 				<height>35</height>
-				<texture border="0,0,32,0">header.png</texture>
+				<texture border="0,0,32,0">toutv-header.png</texture>
 			</control>
 			<control type="label">
-				<include>WindowTitleCommons</include>
+				<width>1060</width>
+				<height>28</height>
+				<font>font12caps</font>
+				<textcolor>white</textcolor>
+				<scroll>false</scroll>
+				<align>right</align>
+				<aligny>center</aligny>
 				<posx>220</posx>
 				<label>$LOCALIZE[20343]</label>
 			</control>
@@ -2048,7 +2128,8 @@
 			<posx>480</posx>
 			<posy>0</posy>
 			<visible>!IsEmpty(ListItem.Season)</visible>
-			<include>VisibleFadeEffect</include>
+			<animation effect="fade" time="300">Visible</animation>
+			<animation effect="fade" time="300">Hidden</animation>
 			<animation effect="slide" end="-710,0" time="400" tween="quadratic" easing="out">WindowClose</animation>
 			<animation effect="slide" start="-710,0" time="400" tween="quadratic" easing="out">WindowOpen</animation>
 			<control type="image">
@@ -2056,11 +2137,18 @@
 				<posy>0</posy>
 				<width>250</width>
 				<height>35</height>
-				<texture border="0,0,32,0">header.png</texture>
+				<texture border="0,0,32,0">toutv-header.png</texture>
 			</control>
 			<control type="label">
-				<include>WindowTitleCommons</include>
+				<width>1060</width>
+				<height>28</height>
+				<font>font12caps</font>
+				<textcolor>white</textcolor>
+				<scroll>false</scroll>
+				<align>right</align>
+				<aligny>center</aligny>
 				<posx>220</posx>
+				<posy>0</posy>
 				<label>$INFO[ListItem.Season,$LOCALIZE[20373] ]</label>
 			</control>
 		</control>
@@ -2068,7 +2156,8 @@
 			<posx>210</posx>
 			<posy>0</posy>
 			<visible>!IsEmpty(ListItem.TVShowTitle)</visible>
-			<include>VisibleFadeEffect</include>
+			<animation effect="fade" time="300">Visible</animation>
+			<animation effect="fade" time="300">Hidden</animation>
 			<animation effect="slide" end="-600,0" time="400" tween="quadratic" easing="out">WindowClose</animation>
 			<animation effect="slide" start="-600,0" time="400" tween="quadratic" easing="out">WindowOpen</animation>
 			<control type="image">
@@ -2076,12 +2165,19 @@
 				<posy>0</posy>
 				<width>350</width>
 				<height>35</height>
-				<texture border="0,0,32,0">header.png</texture>
+				<texture border="0,0,32,0">toutv-header.png</texture>
 			</control>
 			<control type="label">
 				<width>250</width>
-				<include>WindowTitleCommons</include>
+				<width>1060</width>
+				<height>28</height>
+				<font>font12caps</font>
+				<textcolor>white</textcolor>
+				<scroll>false</scroll>
+				<align>right</align>
+				<aligny>center</aligny>
 				<posx>320</posx>
+				<posy>0</posy>
 				<label>$INFO[ListItem.TVShowTitle]</label>
 			</control>
 		</control>
@@ -2095,15 +2191,71 @@
 				<posy>0</posy>
 				<width>190</width>
 				<height>35</height>
-				<texture border="0,0,32,0">header.png</texture>
+				<texture border="0,0,32,0">toutv-header.png</texture>
 			</control>
 			<control type="label">
-				<include>WindowTitleCommons</include>
+				<width>1060</width>
+				<height>28</height>
+				<font>font12caps</font>
+				<textcolor>white</textcolor>
+				<scroll>false</scroll>
+				<align>right</align>
+				<aligny>center</aligny>
 				<posx>160</posx>
+				<posy>0</posy>
 				<label>$LOCALIZE[3]</label>
 			</control>
 		</control>
-		<include>WindowTitleHomeButton</include>
-		<include>Clock</include>
+		<control type="group">
+			<posx>0</posx>
+			<posy>0</posy>
+			<animation effect="slide" end="-270,0" time="400" tween="quadratic" easing="out" condition="Window.Next(Home)">WindowClose</animation>
+			<animation effect="slide" start="-270,0" time="400" tween="quadratic" easing="out" condition="Window.Previous(Home)">WindowOpen</animation>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>80</width>
+				<height>35</height>
+				<texture border="0,0,32,0">toutv-header.png</texture>
+			</control>
+			<control type="button">
+				<hitrect x="0" y="0" w="60" h="30" />
+				<posx>20</posx>
+				<posy>5</posy>
+				<width>25</width>
+				<height>20</height>
+				<texturenofocus>toutv-HomeIcon.png</texturenofocus>
+				<texturefocus>toutv-HomeIcon-Focus.png</texturefocus>
+				<label>-</label>
+				<onclick>ActivateWindow(Home)</onclick>
+			</control>
+		</control>
+		<control type="group">
+			<posx>140r</posx>
+			<posy>0</posy>
+			<animation effect="slide" start="0,0" end="-60,0" delay="0" time="300" condition="Window.IsVisible(MuteBug)">conditional</animation>
+			<animation effect="slide" start="0,0" end="210,0" delay="0" time="300" condition="Window.Next(Home) + ![Window.IsVisible(MovieInformation) | Window.IsVisible(MusicInformation)]">WindowClose</animation>
+			<animation effect="slide" start="210,0" end="0,0" delay="0" time="300" condition="Window.Previous(Home) + ![Window.IsVisible(MovieInformation) | Window.IsVisible(MusicInformation)]">WindowOpen</animation>
+			<control type="image">
+				<description>time background</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>150</width>
+				<height>35</height>
+				<texture flipx="true" border="32,0,0,0">toutv-header.png</texture>
+			</control>
+			<control type="label">
+				<description>time label</description>
+				<posx>30</posx>
+				<posy>0</posy>
+				<width>400</width>
+				<height>28</height>
+				<align>left</align>
+				<aligny>center</aligny>
+				<font>font12</font>
+				<textcolor>white</textcolor>
+				<label>$INFO[System.Time]</label>
+			</control>
+		</control>
 	</controls>
 </window>

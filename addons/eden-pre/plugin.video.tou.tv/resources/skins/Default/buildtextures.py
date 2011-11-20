@@ -2,7 +2,7 @@
 import os
 import shutil
 
-prefix = "TvTunes-"
+prefix = "toutv-"
 
 skin_sources_dir = r"E:\coding\Windows\xbmc\addons\skin.confluence"
 skin_sources_dir = skin_sources_dir.replace( "\\", "/" ).strip( "/" )

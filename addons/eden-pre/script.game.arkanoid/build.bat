@@ -7,7 +7,7 @@ COLOR 1B
 FOR /F "Delims=" %%D IN ("%CD%") DO SET AddonName=%%~nxD
 
 :: Extract Version # and SET %addonVer% variable
-FOR /F "Tokens=2* Delims= " %%R IN ('FIND /v /n "&_&_&_&" "addon.xml" ^| FIND "[4]"') DO SET addonVer=%%R
+FOR /F "Tokens=2* Delims= " %%R IN ('FIND /v /n "&_&_&_&" "addon.xml" ^| FIND "[3]"') DO SET addonVer=%%R
 SET addonVer=%addonVer:~9,-1%
 
 :: Set window title
