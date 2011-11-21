@@ -287,8 +287,10 @@ class Main( viewtype ):
             if os.path.exists( FAVOURITES_XML ):
                 fav = ( uri, 'myfavourites' ), ( 'Mes Favoris',       '', 'DefaultAddonScreensaver.png'      )
                 items.append( fav )
+            fanart = ADDON.getAddonInfo( "fanart" )
             for uri, item in items:
                 listitem = xbmcgui.ListItem( *item )
+                listitem.setProperty( "fanart_image", fanart )
                 self._add_context_menu_items( [], listitem )
                 url = '%s?category="%s"' % uri
                 listitems.append( ( url, listitem, True ) )
@@ -789,7 +791,7 @@ class Main( viewtype ):
                 if self.args.category == "myfavourites":
                     c_items += [ ( "Retirer de mes favoris", "RunPlugin(%s)" % uri.replace( "addto", "removefrom" ) ) ]
                 else:
-                    c_items += [ ( "Ajouer à mes favoris TouTv", "RunPlugin(%s)" % uri ) ]
+                    c_items += [ ( "Ajouter à mes favoris TouTv", "RunPlugin(%s)" % uri ) ]
 
             #
             if not hidewatched:
@@ -838,7 +840,7 @@ class Main( viewtype ):
                 if self.args.category == "myfavourites":
                     c_items += [ ( "Retirer de mes favoris", "RunPlugin(%s)" % uri.replace( "addto", "removefrom" ) ) ]
                 else:
-                    c_items += [ ( "Ajouer à mes favoris TouTv", "RunPlugin(%s)" % uri ) ]
+                    c_items += [ ( "Ajouter à mes favoris TouTv", "RunPlugin(%s)" % uri ) ]
             #
             if not watched:
                 i_label, action = 16103, "setwatched"
