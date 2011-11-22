@@ -1,0 +1,64 @@
+<window id="3002">
+	<defaultcontrol always="true">11</defaultcontrol>
+	<animation effect="slide" start="0,-80" end="0,0" time="100">WindowOpen</animation>
+	<animation effect="slide" start="0,0" end="0,-80" time="100">WindowClose</animation>
+	<coordinates>
+		<system>1</system>
+		<posx>405</posx>
+		<posy>0</posy>
+	</coordinates>
+	<controls>
+		<control type="label" id="150">
+			<description>Current Color Percent (used for get label or fallback)</description>
+			<label fallback="white">$INFO[Window.Property(CurrentColorPercent)]</label>
+			<visible>false</visible>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>-10</posy>
+			<width>460</width>
+			<height>80</height>
+			<texture flipy="true" border="20,2,20,20">InfoMessagePanel.png</texture>
+			<colordiffuse>$INFO[Control.GetLabel(150)]</colordiffuse>
+		</control>
+		<control type="label">
+			<description>Dialog header</description>
+			<posx>20</posx>
+			<posy>10</posy>
+			<width>300</width>
+			<height>20</height>
+			<align>left</align>
+			<aligny>center</aligny>
+			<font>font12_title</font>
+			<textcolor>blue</textcolor>
+			<shadowcolor>black</shadowcolor>
+			<label>Transparency</label>
+		</control>
+		<control type="label">
+			<description>Slider Value</description>
+			<posx>440</posx>
+			<posy>10</posy>
+			<width>160</width>
+			<height>20</height>
+			<align>right</align>
+			<aligny>center</aligny>
+			<font>font12_title</font>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+			<label fallback="0%">$INFO[Window.Property(CurrentPercent)]</label>
+		</control>
+		<control type="slider" id="11">
+			<description>Slider</description>
+			<posx>20</posx>
+			<posy>35</posy>
+			<width>420</width>
+			<height>20</height>
+			<aligny>center</aligny>
+			<texturefocus>-</texturefocus>
+			<texturenofocus>-</texturenofocus>
+			<texturesliderbar>osd_slider_bg_2.png</texturesliderbar>
+			<textureslidernib>osd_slider_nibNF.png</textureslidernib>
+			<textureslidernibfocus>osd_slider_nib.png</textureslidernibfocus>
+		</control>
+	</controls>
+</window>
