@@ -35,9 +35,12 @@ def get_colors():
     dpath = os.path.join( sys.path[ 0 ], "resources", "colors" )
     if not os.path.exists( dpath ): dpath = "../colors"
     for xml in os.listdir( dpath ):
-        strColors = open( os.path.join( dpath, xml ) ).read().lower()
-        d = dict( re.compile( '<color name="(.*?)">(.*?)</color>' ).findall( strColors ) )
-        names_to_hex.update( d )
+        try:
+            strColors = open( os.path.join( dpath, xml ) ).read().lower()
+            d = dict( re.compile( '<color name="(.*?)">(.*?)</color>' ).findall( strColors ) )
+            names_to_hex.update( d )
+        except:# IOError:
+            pass
     return names_to_hex
 
 xbmc_names_to_hex = get_colors()
