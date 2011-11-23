@@ -162,9 +162,9 @@ class Info:
 
 
 if re.search( '(GetCarrousel|"carrousel")', sys.argv[ 2 ] ):
-    from XBMCGui import XBMCGui as viewtype
+    from GuiView import GuiView as viewtype
 else:
-    from XBMCPlugin import XBMCPlugin as viewtype
+    from PluginView import PluginView as viewtype
 
 class Main( viewtype ):
     def __init__( self ):

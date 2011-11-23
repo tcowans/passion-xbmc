@@ -3,7 +3,7 @@ import sys
 import xbmcplugin
 
 
-class XBMCPlugin:
+class PluginView:
     def __init__( self ):
         pass
 

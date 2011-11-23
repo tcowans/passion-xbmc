@@ -10,13 +10,15 @@ else:
     from md5 import new as _hash
 
 try:
+    from xbmcaddon import Addon
     from xbmc import translatePath
     BASE_CACHE_PATH   = translatePath( "special://profile/Thumbnails/Video" )
-    ADDON_CACHE       = os.path.join( sys.modules[ 'resources.lib.toutv' ].ADDON_CACHE, ".cache" )
-    CACHE_EXPIRE_TIME = sys.modules[ 'resources.lib.toutv' ].CACHE_EXPIRE_TIME
+    ADDON             = Addon( "plugin.video.tou.tv" )
+    ADDON_CACHE       = os.path.join( translatePath( ADDON.getAddonInfo( 'profile' ) ), ".cache" )
+    CACHE_EXPIRE_TIME = float( ADDON.getSetting( "expiretime" ).replace( "0", ".5" ).replace( "25", "0" ) )
 except:
-    BASE_CACHE_PATH   = r"C:\Documents and Settings\Frost\Application Data\XBMC\userdata\Thumbnails\Video"
-    ADDON_CACHE       = r"C:\Documents and Settings\Frost\Application Data\XBMC\userdata\addon_data\plugin.video.tou.tv\.cache"
+    BASE_CACHE_PATH   = ""
+    ADDON_CACHE       = ""
     CACHE_EXPIRE_TIME = 72
 
 if not os.path.exists( ADDON_CACHE ):
