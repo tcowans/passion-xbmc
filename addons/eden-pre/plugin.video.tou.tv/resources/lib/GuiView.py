@@ -53,7 +53,7 @@ def get_thumbnail( thumbnail_url, fanart=0, default='DefaultTouTv.png' ):
     return thumbnail_url or default
 
 
-class XBMCGui:
+class GuiView:
     def __init__( self ):
         self._content = ""
         self._listitems = []
