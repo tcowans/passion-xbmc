@@ -182,7 +182,6 @@ def add_directory_items():
         totals += len( list( bandesannonces ) )
 
         for thumb, duration, url, title, plot in bandesannonces:
-            print repr( plot )
             try:
                 m, s = duration.split( ":" )
                 duration = eval( "(%i*60)+%i" % ( int( m ), int( s ) ) )
