@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="plugin.video.astral.media"
        name="Astral Media"
-       version="1.0.8"
+       version="1.0.9"
        provider-name="Frost (passion-xbmc.org)">
   <requires>
     <import addon="xbmc.python" version="1.0"/>
@@ -11,6 +11,7 @@
     <provides>video</provides>
   </extension>
   <extension point="xbmc.addon.metadata">
+    <broken>Because sites change, and the author has no time to update...</broken>
     <summary>Plugin vidéo sur les émissions Québécoise en français</summary>
     <description>Plugin vidéo vous permettent de regarder la TV Québécoise, mais à 90% avec un bon français :P
 
