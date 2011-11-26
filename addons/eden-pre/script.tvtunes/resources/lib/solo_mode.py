@@ -74,8 +74,10 @@ def isRemovedSong( path ):
 def closeDialogProgress():
     #Don't raise SystemError: Error: Window is NULL, this is not possible :-)
     if xbmc.getCondVisibility( "Window.IsVisible(progressdialog)" ):
-        xbmc.executebuiltin( "Close.Dialog(progressdialog)" )
-        #DIALOG_PROGRESS.close()
+        xbmc.executebuiltin( "Dialog.Close(progressdialog)" )
+    xbmc.sleep( 1000 )
+    if xbmc.getCondVisibility( "Window.IsVisible(progressdialog)" ):
+        DIALOG_PROGRESS.close()
 
 
 def dialog_help_site():
