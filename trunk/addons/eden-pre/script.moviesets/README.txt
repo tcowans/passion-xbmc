@@ -34,7 +34,7 @@ AVAILABLE LABELS:
    - Container(7000).ListItem.Property(VideoAspect) ----->   [ return moyen of all movie in set ] ( not really exact value, for friendly only )
 
    this Property is used for conditional visibility
-   - Container(7000).ListItem.Property(HasMovieSets) ---->   [ return true or empty, if item currently selected is movieset ]
+   - Container(7000).ListItem.Property(IsSet) ----------->   [ return true or empty, if item currently selected is movieset ]
 
 Available properties of each movie in the currently selected movieset
 base property "movie.ID." Possible ID ( 1 - 10 or more )
