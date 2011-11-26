@@ -1,3 +1,7 @@
+v1.9.1
+ - changed: provides video to executable (fmronan report multiple crash on linux)
+ - fixed: typo on close dialog progress
+
 v1.9.0
  Starting pre-2.0.0
  Translators: Language completely changed on this version, please submit your language if you want...
