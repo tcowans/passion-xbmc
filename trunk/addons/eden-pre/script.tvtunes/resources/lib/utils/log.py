@@ -4,10 +4,14 @@ import sys
 import traceback
 
 # Modules XBMC
-try: import xbmc
-except: xbmc = None
+try:
+    import xbmc
+    from xbmcaddon import Addon
+    PREFIX = "[TvTunes-%s] " % Addon( 'script.tvtunes' ).getAddonInfo( 'version' )
+except:
+    xbmc = None
+    PREFIX = "[TvTunes] "
 
-PREFIX = "[TvTunes] "
 LEVELS = [ "debug", "info", "notice", "warning", "error", "severe", "fatal", "none" ]
 
 

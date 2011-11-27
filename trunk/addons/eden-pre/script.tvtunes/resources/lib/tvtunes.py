@@ -305,9 +305,10 @@ class Gui( xbmcgui.WindowXMLDialog ):
             dialog_help_site()
 
     def _close_dialog( self ):
-        xbmc.executebuiltin( "ClearProperty(AnimeWindowXMLDialogClose)" )
-        time.sleep( .3 )
+        #xbmc.executebuiltin( "ClearProperty(AnimeWindowXMLDialogClose)" )
+        #time.sleep( .3 )
         self.close()
+        xbmc.sleep( 500 )
 
 
 class DialogContextMenu( xbmcgui.WindowXMLDialog ):
@@ -360,10 +361,11 @@ class DialogContextMenu( xbmcgui.WindowXMLDialog ):
             self._close_dialog()
 
     def _close_dialog( self ):
-        xbmc.executebuiltin( "ClearProperty(AnimeContextMenuOnClose)" )
-        time.sleep( .2 )
+        #xbmc.executebuiltin( "ClearProperty(AnimeContextMenuOnClose)" )
+        #time.sleep( .2 )
         xbmc.executebuiltin( "ClearProperty(TunesListHasFocus)" )
         self.close()
+        xbmc.sleep( 500 )
 
 
 class XBMCPlayer( xbmc.Player ):
