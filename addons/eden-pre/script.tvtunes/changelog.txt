@@ -1,3 +1,9 @@
+v1.9.2
+ - fixed: don't stop player if is not playing audio
+ - changed: always add version with prefix in log
+ - changed: use xbmc.sleep after close dialog. animation work perfectly.
+            thx to `Black http://forum.xbmc.org/showpost.php?p=945574&postcount=6
+
 v1.9.1
  - changed: provides video to executable (fmronan report multiple crash on linux)
  - fixed: typo on close dialog progress

@@ -187,7 +187,7 @@ class TunesPlayer( XBMCPlayer ):
     def stopTunesPlayer( self ):
         xbmc.PlayList( xbmc.PLAYLIST_MUSIC ).clear()
         #if xbmc.getCondVisibility( CONDITION_STOP_TUNE ):
-        if self.isAlive and self.isPlaying():
+        if self.isAlive and self.isPlayingAudio():
             LOGGER.debug.LOG( "stop playing" )
             self.stop()
 
