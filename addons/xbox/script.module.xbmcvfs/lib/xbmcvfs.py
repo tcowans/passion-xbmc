@@ -1,9 +1,15 @@
 """
-    module xbmcvfs for xbox
+    module xbmcvfs for xbox and/or dharma
 """
 
 import os
 import xbmc
+
+
+def _encode( text, encoding='utf-8' ):
+    try: text = text.encode( encoding )
+    except: pass
+    return text
 
 
 def exists( filename ):
@@ -13,8 +19,11 @@ def exists( filename ):
         example:
           success = xbmcvfs.exists(path)
     """
-    msg = xbmc.executehttpapi( "FileExists(%s)" % ( filename ) ).replace( "<li>", "" ).lower()
-    xbmc.log( "[xbmcvfs] %s, exists(%s)" % ( msg, filename ), xbmc.LOGDEBUG )
+    msg = 'false'
+    if filename:
+        filename = _encode( filename )
+        msg = xbmc.executehttpapi( "FileExists(%s)" % ( filename ) ).replace( "<li>", "" ).lower()
+        xbmc.log( "[xbmcvfs] %s, exists(%s)" % ( msg, filename ), xbmc.LOGDEBUG )
     return ( msg == 'true' )
 
 
@@ -38,6 +47,7 @@ def delete( filename ):
         example:
           xbmcvfs.delete(file)
     """
+    filename = _encode( filename )
     msg = xbmc.executehttpapi( "FileDelete(%s)" % ( filename ) ).replace( "<li>", "" )
     xbmc.log( "[xbmcvfs] %s, delete(%s)" % ( msg, filename ), xbmc.LOGDEBUG )
     return ( not exists( filename ) )
