@@ -53,7 +53,7 @@
   <!-- Scrapers category -->
   <string id="32550">Scraper</string>
   <string id="32551">Limite de la sélection des thèmes</string>
-  <string id="32552">Afficher la sélection pour les thèms uniques (Solo Mode)</string>
+  <string id="32552">Afficher la sélection pour les thèmes uniques (Solo Mode)</string>
   <string id="32553">Afficher le dialogue pour aider le site</string>
 
   <!-- Gui category -->
@@ -65,8 +65,8 @@
   <string id="32610">Afficher les commandes du lecteur lors du lancement d'un thème</string>
 
   <!-- Share category -->
-  <string id="32501">Utiliser un partage SMB protégé</string>
-  <string id="32502">Utiliser un partage FTP protégé</string>
+  <string id="32650">Utiliser un partage SMB protégé</string>
+  <string id="32651">Utiliser un partage FTP protégé</string>
 
   <!-- skinning category -->
   <string id="32700">Skinning</string>

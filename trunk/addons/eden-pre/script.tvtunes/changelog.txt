@@ -1,3 +1,6 @@
+v1.9.4
+ - fixed: typo in language and settings
+
 v1.9.3
  - added/fixed: Dharma compatibility ;)
  - added: new themes scraper TVAdSongs.com

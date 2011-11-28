@@ -39,12 +39,12 @@
   <!-- Share -->
   <category label="$LOCALIZE[220]">
     <setting type="lsep" label="$LOCALIZE[1200]"/>
-    <setting id="smb_share" type="bool" label="32500" default="false"/>
+    <setting id="smb_share" type="bool" label="32650" default="false"/>
     <setting id="smb_login" type="text" label="$LOCALIZE[1048]" default="" visible="eq(-1,true)" />
     <setting id="smb_psw" type="text" label="$LOCALIZE[733]" default="" option="hidden" visible="eq(-2,true)" />
 
     <setting type="lsep" label="$LOCALIZE[728]"/>
-    <setting id="ftp_share" type="bool" label="32501" default="false"/>
+    <setting id="ftp_share" type="bool" label="32651" default="false"/>
     <setting id="ftp_login" type="text" label="$LOCALIZE[1048]" default="" visible="eq(-1,true)" />
     <setting id="ftp_psw" type="text" label="$LOCALIZE[733]" default="" option="hidden" visible="eq(-2,true)" />
   </category>
