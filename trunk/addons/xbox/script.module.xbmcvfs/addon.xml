@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="script.module.xbmcvfs" name="xbmcvfs emulator"
-       version="1.0.0" provider-name="Frost (passion-xbmc.org)">
+       version="1.0.1" provider-name="Frost (passion-xbmc.org)">
     <requires>
         <import addon="xbmc.python" version="1.0"/>
     </requires>
@@ -9,6 +9,6 @@
     <extension point="xbmc.addon.metadata">
         <summary lang="en">Module emulates XBMC xbmcvfs module.</summary>
         <description lang="en">Module emulates XBMC xbmcvfs module.</description>
-        <platform>xbox</platform>
+        <platform>all</platform>
     </extension>
 </addon>
