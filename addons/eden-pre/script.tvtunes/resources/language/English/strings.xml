@@ -65,8 +65,8 @@
   <string id="32610">Show player controls on play tune</string>
 
   <!-- Share category -->
-  <string id="32500">Use Protected SMB share</string>
-  <string id="32501">Use Protected FTP share</string>
+  <string id="32650">Use Protected SMB share</string>
+  <string id="32651">Use Protected FTP share</string>
 
   <!-- skinning category -->
   <string id="32700">Skinning</string>
