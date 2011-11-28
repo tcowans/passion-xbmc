@@ -1,3 +1,7 @@
+v1.9.3
+ - added/fixed: Dharma compatibility ;)
+ - added: new themes scraper TVAdSongs.com
+
 v1.9.2
  - fixed: don't stop player if is not playing audio
  - changed: always add version with prefix in log

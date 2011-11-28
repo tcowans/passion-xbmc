@@ -44,8 +44,8 @@ def print_exc( level ):
             xbmc_log( level, line.strip( "\n" ).replace( "\n", "\n" + PREFIX ) )
     except:
         traceback.print_exc()
-    finally:
-        etype = value = tb = None
+    #finally: # invalid symtaxe on dharma
+    etype = value = tb = None
 
 
 class execNamespace:
