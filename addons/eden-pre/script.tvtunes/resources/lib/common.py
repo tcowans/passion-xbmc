@@ -8,7 +8,6 @@ import unicodedata
 
 import xbmc
 import xbmcgui
-import xbmcvfs
 from xbmcaddon import Addon
 
 from utils.log import logAPI
@@ -29,6 +28,12 @@ LangXBMC = xbmc.getLocalizedString
 
 # default theme name
 THEME_FILE = "theme.mp3"
+
+try:
+    import xbmcvfs
+except ImportError:
+    sys.path.append( os.path.join( AddonPath, "resources", "script.module.xbmcvfs", "lib" ) )
+    import xbmcvfs
 
 
 def _unicode( text, encoding='utf-8' ):
