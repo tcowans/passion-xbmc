@@ -1,6 +1,7 @@
 <window id="3001">
 	<defaultcontrol always="true">1001</defaultcontrol>
-	<include>dialogeffect</include>
+	<animation effect="fade" time="250">WindowOpen</animation>
+	<animation effect="fade" time="250">WindowClose</animation>
 	<coordinates>
 		<system>1</system>
 		<posx>470</posx>
@@ -8,8 +9,6 @@
 	</coordinates>
 	<controls>
 		<control type="grouplist" id="1000">
-			<animation effect="slide" start="0,0" end="315,0" time="0" condition="!IsEmpty(window.property(TunesListHasFocus))">Conditional</animation>
-			<animation effect="slide" start="0,0" end="-315,0" time="0" condition="IsEmpty(window.property(TunesListHasFocus)) + !IsEmpty(window(13000).property(tuneschoice))">Conditional</animation>
 			<posx>0</posx>
 			<posy>0</posy>
 			<width>340</width>
@@ -29,7 +28,7 @@
 					<posy>0</posy>
 					<width>340</width>
 					<height>30</height>
-					<texture border="20,19,20,0">DialogContextTop.png</texture>
+					<texture border="20,19,20,0">sets-DialogContextTop.png</texture>
 				</control>
 				<control type="button" id="20">
 					<description>Close Window button</description>
@@ -40,8 +39,8 @@
 					<label>-</label>
 					<font>-</font>
 					<onclick>PreviousMenu</onclick>
-					<texturefocus>DialogCloseButton-focus.png</texturefocus>
-					<texturenofocus>DialogCloseButton.png</texturenofocus>
+					<texturefocus>sets-DialogCloseButton-focus.png</texturefocus>
+					<texturenofocus>sets-DialogCloseButton.png</texturenofocus>
 					<onleft>1001</onleft>
 					<onright>1001</onright>
 					<onup>1011</onup>
@@ -52,132 +51,132 @@
 			<control type="button" id="1001">
 				<width>340</width>
 				<height>40</height>
-				<textcolor>grey2</textcolor>
-				<focusedcolor>white</focusedcolor>
+				<textcolor>FF999999</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
 				<align>center</align>
 				<textwidth>290</textwidth>
-				<texturefocus border="25,5,25,5">ShutdownButtonFocus.png</texturefocus>
-				<texturenofocus border="25,5,25,5">ShutdownButtonNoFocus.png</texturenofocus>
+				<texturefocus border="25,5,25,5">sets-ShutdownButtonFocus.png</texturefocus>
+				<texturenofocus border="25,5,25,5">sets-ShutdownButtonNoFocus.png</texturenofocus>
 				<pulseonselect>no</pulseonselect>
 				<label>-</label>
 			</control>
 			<control type="button" id="1002">
 				<width>340</width>
 				<height>40</height>
-				<textcolor>grey2</textcolor>
-				<focusedcolor>white</focusedcolor>
+				<textcolor>FF999999</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
 				<align>center</align>
 				<textwidth>290</textwidth>
-				<texturefocus border="25,5,25,5">ShutdownButtonFocus.png</texturefocus>
-				<texturenofocus border="25,5,25,5">ShutdownButtonNoFocus.png</texturenofocus>
+				<texturefocus border="25,5,25,5">sets-ShutdownButtonFocus.png</texturefocus>
+				<texturenofocus border="25,5,25,5">sets-ShutdownButtonNoFocus.png</texturenofocus>
 				<pulseonselect>no</pulseonselect>
 				<label>-</label>
 			</control>
 			<control type="button" id="1003">
 				<width>340</width>
 				<height>40</height>
-				<textcolor>grey2</textcolor>
-				<focusedcolor>white</focusedcolor>
+				<textcolor>FF999999</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
 				<align>center</align>
 				<textwidth>290</textwidth>
-				<texturefocus border="25,5,25,5">ShutdownButtonFocus.png</texturefocus>
-				<texturenofocus border="25,5,25,5">ShutdownButtonNoFocus.png</texturenofocus>
+				<texturefocus border="25,5,25,5">sets-ShutdownButtonFocus.png</texturefocus>
+				<texturenofocus border="25,5,25,5">sets-ShutdownButtonNoFocus.png</texturenofocus>
 				<pulseonselect>no</pulseonselect>
 				<label>-</label>
 			</control>
 			<control type="button" id="1004">
 				<width>340</width>
 				<height>40</height>
-				<textcolor>grey2</textcolor>
-				<focusedcolor>white</focusedcolor>
+				<textcolor>FF999999</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
 				<align>center</align>
 				<textwidth>290</textwidth>
-				<texturefocus border="25,5,25,5">ShutdownButtonFocus.png</texturefocus>
-				<texturenofocus border="25,5,25,5">ShutdownButtonNoFocus.png</texturenofocus>
+				<texturefocus border="25,5,25,5">sets-ShutdownButtonFocus.png</texturefocus>
+				<texturenofocus border="25,5,25,5">sets-ShutdownButtonNoFocus.png</texturenofocus>
 				<pulseonselect>no</pulseonselect>
 				<label>-</label>
 			</control>
 			<control type="button" id="1005">
 				<width>340</width>
 				<height>40</height>
-				<textcolor>grey2</textcolor>
-				<focusedcolor>white</focusedcolor>
+				<textcolor>FF999999</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
 				<align>center</align>
 				<textwidth>290</textwidth>
-				<texturefocus border="25,5,25,5">ShutdownButtonFocus.png</texturefocus>
-				<texturenofocus border="25,5,25,5">ShutdownButtonNoFocus.png</texturenofocus>
+				<texturefocus border="25,5,25,5">sets-ShutdownButtonFocus.png</texturefocus>
+				<texturenofocus border="25,5,25,5">sets-ShutdownButtonNoFocus.png</texturenofocus>
 				<pulseonselect>no</pulseonselect>
 				<label>-</label>
 			</control>
 			<control type="button" id="1006">
 				<width>340</width>
 				<height>40</height>
-				<textcolor>grey2</textcolor>
-				<focusedcolor>white</focusedcolor>
+				<textcolor>FF999999</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
 				<align>center</align>
 				<textwidth>290</textwidth>
-				<texturefocus border="25,5,25,5">ShutdownButtonFocus.png</texturefocus>
-				<texturenofocus border="25,5,25,5">ShutdownButtonNoFocus.png</texturenofocus>
+				<texturefocus border="25,5,25,5">sets-ShutdownButtonFocus.png</texturefocus>
+				<texturenofocus border="25,5,25,5">sets-ShutdownButtonNoFocus.png</texturenofocus>
 				<pulseonselect>no</pulseonselect>
 				<label>-</label>
 			</control>
 			<control type="button" id="1007">
 				<width>340</width>
 				<height>40</height>
-				<textcolor>grey2</textcolor>
-				<focusedcolor>white</focusedcolor>
+				<textcolor>FF999999</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
 				<align>center</align>
 				<textwidth>290</textwidth>
-				<texturefocus border="25,5,25,5">ShutdownButtonFocus.png</texturefocus>
-				<texturenofocus border="25,5,25,5">ShutdownButtonNoFocus.png</texturenofocus>
+				<texturefocus border="25,5,25,5">sets-ShutdownButtonFocus.png</texturefocus>
+				<texturenofocus border="25,5,25,5">sets-ShutdownButtonNoFocus.png</texturenofocus>
 				<pulseonselect>no</pulseonselect>
 				<label>-</label>
 			</control>
 			<control type="button" id="1008">
 				<width>340</width>
 				<height>40</height>
-				<textcolor>grey2</textcolor>
-				<focusedcolor>white</focusedcolor>
+				<textcolor>FF999999</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
 				<align>center</align>
 				<textwidth>290</textwidth>
-				<texturefocus border="25,5,25,5">ShutdownButtonFocus.png</texturefocus>
-				<texturenofocus border="25,5,25,5">ShutdownButtonNoFocus.png</texturenofocus>
+				<texturefocus border="25,5,25,5">sets-ShutdownButtonFocus.png</texturefocus>
+				<texturenofocus border="25,5,25,5">sets-ShutdownButtonNoFocus.png</texturenofocus>
 				<pulseonselect>no</pulseonselect>
 				<label>-</label>
 			</control>
 			<control type="button" id="1009">
 				<width>340</width>
 				<height>40</height>
-				<textcolor>grey2</textcolor>
-				<focusedcolor>white</focusedcolor>
+				<textcolor>FF999999</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
 				<align>center</align>
 				<textwidth>290</textwidth>
-				<texturefocus border="25,5,25,5">ShutdownButtonFocus.png</texturefocus>
-				<texturenofocus border="25,5,25,5">ShutdownButtonNoFocus.png</texturenofocus>
+				<texturefocus border="25,5,25,5">sets-ShutdownButtonFocus.png</texturefocus>
+				<texturenofocus border="25,5,25,5">sets-ShutdownButtonNoFocus.png</texturenofocus>
 				<pulseonselect>no</pulseonselect>
 				<label>-</label>
 			</control>
 			<control type="button" id="1010">
 				<width>340</width>
 				<height>40</height>
-				<textcolor>grey2</textcolor>
-				<focusedcolor>white</focusedcolor>
+				<textcolor>FF999999</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
 				<align>center</align>
 				<textwidth>290</textwidth>
-				<texturefocus border="25,5,25,5">ShutdownButtonFocus.png</texturefocus>
-				<texturenofocus border="25,5,25,5">ShutdownButtonNoFocus.png</texturenofocus>
+				<texturefocus border="25,5,25,5">sets-ShutdownButtonFocus.png</texturefocus>
+				<texturenofocus border="25,5,25,5">sets-ShutdownButtonNoFocus.png</texturenofocus>
 				<pulseonselect>no</pulseonselect>
 				<label>-</label>
 			</control>
 			<control type="button" id="1011">
 				<width>340</width>
 				<height>40</height>
-				<textcolor>grey2</textcolor>
-				<focusedcolor>white</focusedcolor>
+				<textcolor>FF999999</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
 				<align>center</align>
 				<textwidth>290</textwidth>
-				<texturefocus border="25,5,25,5">ShutdownButtonFocus.png</texturefocus>
-				<texturenofocus border="25,5,25,5">ShutdownButtonNoFocus.png</texturenofocus>
+				<texturefocus border="25,5,25,5">sets-ShutdownButtonFocus.png</texturefocus>
+				<texturenofocus border="25,5,25,5">sets-ShutdownButtonNoFocus.png</texturenofocus>
 				<pulseonselect>no</pulseonselect>
 				<label>-</label>
 			</control>
@@ -186,7 +185,7 @@
 				<posx>0</posx>
 				<width>340</width>
 				<height>25</height>
-				<texture border="20,0,19,20">DialogContextBottom.png</texture>
+				<texture border="20,0,19,20">sets-DialogContextBottom.png</texture>
 			</control>
 		</control>
 	</controls>

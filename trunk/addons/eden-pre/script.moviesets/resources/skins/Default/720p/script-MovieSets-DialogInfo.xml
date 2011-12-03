@@ -45,8 +45,8 @@
 					<label>$INFO[Listitem.Title]</label>
 					<align>center</align>
 					<aligny>center</aligny>
-					<textcolor>white</textcolor>
-					<shadowcolor>black</shadowcolor>
+					<textcolor>FFFFFFFF</textcolor>
+					<shadowcolor>FF000000</shadowcolor>
 					<visible>IsEmpty(ListItem.Property(IsSet))</visible>
 				</control>
 				<control type="label">
@@ -59,8 +59,8 @@
 					<label>$ADDON[script.moviesets 33004] - $INFO[Listitem.Title]</label>
 					<align>center</align>
 					<aligny>center</aligny>
-					<textcolor>white</textcolor>
-					<shadowcolor>black</shadowcolor>
+					<textcolor>FFFFFFFF</textcolor>
+					<shadowcolor>FF000000</shadowcolor>
 					<visible>!IsEmpty(ListItem.Property(IsSet))</visible>
 				</control>
 				<control type="grouplist">
@@ -118,8 +118,8 @@
 							<width>675</width>
 							<height>380</height>
 							<font>font30_title</font>
-							<textcolor>white</textcolor>
-							<shadowcolor>black</shadowcolor>
+							<textcolor>FFFFFFFF</textcolor>
+							<shadowcolor>FF000000</shadowcolor>
 							<align>center</align>
 							<aligny>center</aligny>
 							<label>31311</label>
@@ -154,8 +154,8 @@
 						<width>675</width>
 						<height>380</height>
 						<font>font30_title</font>
-						<textcolor>grey2</textcolor>
-						<shadowcolor>black</shadowcolor>
+						<textcolor>FF999999</textcolor>
+						<shadowcolor>FF000000</shadowcolor>
 						<align>center</align>
 						<aligny>center</aligny>
 						<label>31330</label>
@@ -215,8 +215,8 @@
 								<font>font13</font>
 								<align>right</align>
 								<aligny>center</aligny>
-								<textcolor>blue</textcolor>
-								<selectedcolor>selected</selectedcolor>
+								<textcolor>FF0084ff</textcolor>
+								<selectedcolor>FFEB9E17</selectedcolor>
 								<info>ListItem.Label</info>
 							</control>
 							<control type="label">
@@ -227,8 +227,8 @@
 								<font>font13</font>
 								<align>left</align>
 								<aligny>center</aligny>
-								<textcolor>white</textcolor>
-								<selectedcolor>white</selectedcolor>
+								<textcolor>FFFFFFFF</textcolor>
+								<selectedcolor>FFFFFFFF</selectedcolor>
 								<info>ListItem.Label2</info>
 							</control>
 						</itemlayout>
@@ -251,8 +251,8 @@
 								<font>font13</font>
 								<align>right</align>
 								<aligny>center</aligny>
-								<textcolor>blue</textcolor>
-								<selectedcolor>selected</selectedcolor>
+								<textcolor>FF0084ff</textcolor>
+								<selectedcolor>FFEB9E17</selectedcolor>
 								<info>ListItem.Label</info>
 							</control>
 							<control type="label">
@@ -263,15 +263,15 @@
 								<font>font13</font>
 								<align>left</align>
 								<aligny>center</aligny>
-								<textcolor>white</textcolor>
-								<selectedcolor>white</selectedcolor>
+								<textcolor>FFFFFFFF</textcolor>
+								<selectedcolor>FFFFFFFF</selectedcolor>
 								<info>ListItem.Label2</info>
 							</control>
 						</focusedlayout>
 						<content>
 							<item>
 								<label>$LOCALIZE[20342]:</label>
-								<label2>$INFO[ListItem.Property(TotalMovies)] [COLOR=grey] ($INFO[ListItem.Property(WatchedMovies),, $LOCALIZE[16102]] - $INFO[ListItem.Property(UnWatchedMovies), , $LOCALIZE[16101]])[/COLOR]</label2>
+								<label2>$INFO[ListItem.Property(TotalMovies)] [COLOR=FFb4b4b4] ($INFO[ListItem.Property(WatchedMovies),, $LOCALIZE[16102]] - $INFO[ListItem.Property(UnWatchedMovies), , $LOCALIZE[16101]])[/COLOR]</label2>
 								<onclick>-</onclick>
 								<visible>!IsEmpty(ListItem.Property(IsSet))</visible>
 							</item>
@@ -370,12 +370,12 @@
 					<width>400</width>
 					<height>30</height>
 					<font>font13_title</font>
-					<textcolor>grey2</textcolor>
-					<shadowcolor>black</shadowcolor>
+					<textcolor>FF999999</textcolor>
+					<shadowcolor>FF000000</shadowcolor>
 					<scroll>true</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>[COLOR=blue]$LOCALIZE[207][/COLOR]$INFO[Container(400).CurrentPage, ( $LOCALIZE[31024] ]$INFO[Container(400).NumPages,/, )]</label>
+					<label>[COLOR=FF0084ff]$LOCALIZE[207][/COLOR]$INFO[Container(400).CurrentPage, ( $LOCALIZE[31024] ]$INFO[Container(400).NumPages,/, )]</label>
 					<visible>Control.IsVisible(400)</visible>
 				</control>
 				<control type="label">
@@ -384,12 +384,12 @@
 					<width>400</width>
 					<height>30</height>
 					<font>font13_title</font>
-					<textcolor>grey2</textcolor>
-					<shadowcolor>black</shadowcolor>
+					<textcolor>FF999999</textcolor>
+					<shadowcolor>FF000000</shadowcolor>
 					<scroll>true</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>[COLOR=blue]$LOCALIZE[206][/COLOR]$INFO[Container(50).CurrentPage, ( $LOCALIZE[31024] ]$INFO[Container(50).NumPages,/, )]</label>
+					<label>[COLOR=FF0084ff]$LOCALIZE[206][/COLOR]$INFO[Container(50).CurrentPage, ( $LOCALIZE[31024] ]$INFO[Container(50).NumPages,/, )]</label>
 					<visible>Control.IsVisible(50)</visible>
 				</control>
 				<control type="label">
@@ -398,12 +398,12 @@
 					<width>400</width>
 					<height>30</height>
 					<font>font13_title</font>
-					<textcolor>grey2</textcolor>
-					<shadowcolor>black</shadowcolor>
+					<textcolor>FF999999</textcolor>
+					<shadowcolor>FF000000</shadowcolor>
 					<scroll>true</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>[COLOR=blue]$LOCALIZE[206][/COLOR]$INFO[Container(150).CurrentPage, ( $LOCALIZE[31024] ]$INFO[Container(150).NumPages,/, )]</label>
+					<label>[COLOR=FF0084ff]$LOCALIZE[206][/COLOR]$INFO[Container(150).CurrentPage, ( $LOCALIZE[31024] ]$INFO[Container(150).NumPages,/, )]</label>
 					<visible>Control.IsVisible(150)</visible>
 				</control>
 				<control type="spincontrol" id="61">
@@ -428,7 +428,7 @@
 					<width>33</width>
 					<height>22</height>
 					<reverse>yes</reverse>
-					<disabledcolor>grey3</disabledcolor>
+					<disabledcolor>FF505050</disabledcolor>
 					<textoffsetx>-5</textoffsetx>
 					<textoffsety>0</textoffsety>
 					<aligny>-</aligny>
@@ -442,7 +442,7 @@
 					<height>120</height>
 					<font>font12</font>
 					<align>justify</align>
-					<textcolor>white</textcolor>
+					<textcolor>FFFFFFFF</textcolor>
 					<pagecontrol>61</pagecontrol>
 					<label>$INFO[ListItem.Plot]</label>
 					<autoscroll time="3000" delay="4000" repeat="5000">!Control.HasFocus(61) + Skin.HasSetting(AutoScroll)</autoscroll>
@@ -499,7 +499,7 @@
 							<font>font12</font>
 							<align>left</align>
 							<aligny>center</aligny>
-							<selectedcolor>white</selectedcolor>
+							<selectedcolor>FFFFFFFF</selectedcolor>
 							<info>ListItem.Label</info>
 						</control>
 					</itemlayout>
@@ -528,7 +528,7 @@
 							<font>font12</font>
 							<align>left</align>
 							<aligny>center</aligny>
-							<selectedcolor>white</selectedcolor>
+							<selectedcolor>FFFFFFFF</selectedcolor>
 							<info>ListItem.Label</info>
 						</control>
 					</focusedlayout>
@@ -562,7 +562,7 @@
 							<font>font12</font>
 							<align>left</align>
 							<aligny>center</aligny>
-							<selectedcolor>white</selectedcolor>
+							<selectedcolor>FFFFFFFF</selectedcolor>
 							<info>ListItem.Label</info>
 						</control>
 					</itemlayout>
@@ -591,7 +591,7 @@
 							<font>font12</font>
 							<align>left</align>
 							<aligny>center</aligny>
-							<selectedcolor>white</selectedcolor>
+							<selectedcolor>FFFFFFFF</selectedcolor>
 							<info>ListItem.Label</info>
 						</control>
 					</focusedlayout>
@@ -732,7 +732,7 @@
 				<align>left</align>
 				<aligny>center</aligny>
 				<font>font12</font>
-				<textcolor>white</textcolor>
+				<textcolor>FFFFFFFF</textcolor>
 				<label>$INFO[System.Time]</label>
 			</control>
 		</control>

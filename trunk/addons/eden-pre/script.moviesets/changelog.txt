@@ -1,3 +1,6 @@
+2.0.1
+ - fixed: Default skin, missing images/colors/includes
+
 2.0.0
  NB:
    - Fully compatible with XBMC Eden ( Recommended )
