@@ -51,8 +51,8 @@
 					<label>1023</label>
 					<align>right</align>
 					<aligny>center</aligny>
-					<textcolor>selected</textcolor>
-					<shadowcolor>black</shadowcolor>
+					<textcolor>FFEB9E17</textcolor>
+					<shadowcolor>FF000000</shadowcolor>
 				</control>
 				<control type="label" id="412">
 					<description>Path label</description>
@@ -64,8 +64,8 @@
 					<haspath>true</haspath>
 					<align>right</align>
 					<aligny>center</aligny>
-					<textcolor>white</textcolor>
-					<shadowcolor>black</shadowcolor>
+					<textcolor>FFFFFFFF</textcolor>
+					<shadowcolor>FF000000</shadowcolor>
 				</control>
 				<control type="grouplist" id="9000">
 					<posx>20</posx>
@@ -178,7 +178,7 @@
 							<posy>0</posy>
 							<width>640</width>
 							<height>41</height>
-							<texture border="5">MenuItemNF.png</texture>
+							<texture border="5">sets-MenuItemNF.png</texture>
 						</control>
 						<control type="image">
 							<posx>10</posx>
@@ -195,7 +195,7 @@
 							<font>font13</font>
 							<align>left</align>
 							<aligny>center</aligny>
-							<selectedcolor>selected</selectedcolor>
+							<selectedcolor>FFEB9E17</selectedcolor>
 							<info>ListItem.Label</info>
 						</control>
 					</itemlayout>
@@ -206,7 +206,7 @@
 							<width>640</width>
 							<height>41</height>
 							<visible>!Control.HasFocus(450)</visible>
-							<texture border="5">MenuItemNF.png</texture>
+							<texture border="5">sets-MenuItemNF.png</texture>
 						</control>
 						<control type="image">
 							<posx>0</posx>
@@ -231,7 +231,7 @@
 							<font>font13</font>
 							<align>left</align>
 							<aligny>center</aligny>
-							<selectedcolor>selected</selectedcolor>
+							<selectedcolor>FFEB9E17</selectedcolor>
 							<info>ListItem.Label</info>
 						</control>
 					</focusedlayout>
@@ -253,7 +253,7 @@
 							<posy>0</posy>
 							<width>640</width>
 							<height>41</height>
-							<texture border="5">MenuItemNF.png</texture>
+							<texture border="5">sets-MenuItemNF.png</texture>
 						</control>
 						<control type="image">
 							<posx>10</posx>
@@ -270,7 +270,7 @@
 							<font>font13</font>
 							<align>left</align>
 							<aligny>center</aligny>
-							<selectedcolor>selected</selectedcolor>
+							<selectedcolor>FFEB9E17</selectedcolor>
 							<info>ListItem.Label</info>
 						</control>
 					</itemlayout>
@@ -281,7 +281,7 @@
 							<width>640</width>
 							<height>41</height>
 							<visible>!Control.HasFocus(451)</visible>
-							<texture border="5">MenuItemNF.png</texture>
+							<texture border="5">sets-MenuItemNF.png</texture>
 						</control>
 						<control type="image">
 							<posx>0</posx>
@@ -306,7 +306,7 @@
 							<font>font13</font>
 							<align>left</align>
 							<aligny>center</aligny>
-							<selectedcolor>selected</selectedcolor>
+							<selectedcolor>FFEB9E17</selectedcolor>
 							<info>ListItem.Label</info>
 						</control>
 					</focusedlayout>
@@ -335,9 +335,9 @@
 					<height>30</height>
 					<align>right</align>
 					<aligny>center</aligny>
-					<textcolor>grey</textcolor>
+					<textcolor>FFb4b4b4</textcolor>
 					<font>font12</font>
-					<label>([COLOR=blue]$INFO[Container(450).NumItems][/COLOR]) $LOCALIZE[31025] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(450).CurrentPage]/$INFO[Container(450).NumPages][/COLOR])</label>
+					<label>([COLOR=FF0084ff]$INFO[Container(450).NumItems][/COLOR]) $LOCALIZE[31025] - $LOCALIZE[31024] ([COLOR=FF0084ff]$INFO[Container(450).CurrentPage]/$INFO[Container(450).NumPages][/COLOR])</label>
 					<visible>!Control.IsVisible(451)</visible>
 				</control>
 				<control type="label">
@@ -348,9 +348,9 @@
 					<height>30</height>
 					<align>right</align>
 					<aligny>center</aligny>
-					<textcolor>grey</textcolor>
+					<textcolor>FFb4b4b4</textcolor>
 					<font>font12</font>
-					<label>([COLOR=blue]$INFO[Container(451).NumItems][/COLOR]) $LOCALIZE[31025] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(451).CurrentPage]/$INFO[Container(451).NumPages][/COLOR])</label>
+					<label>([COLOR=FF0084ff]$INFO[Container(451).NumItems][/COLOR]) $LOCALIZE[31025] - $LOCALIZE[31024] ([COLOR=FF0084ff]$INFO[Container(451).CurrentPage]/$INFO[Container(451).NumPages][/COLOR])</label>
 					<visible>Control.IsVisible(451)</visible>
 				</control>
 			</control>
@@ -378,7 +378,7 @@
 				<align>left</align>
 				<aligny>center</aligny>
 				<font>font12</font>
-				<textcolor>white</textcolor>
+				<textcolor>FFFFFFFF</textcolor>
 				<label>$INFO[System.Time]</label>
 			</control>
 		</control>

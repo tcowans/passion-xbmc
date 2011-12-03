@@ -8,8 +8,6 @@
 	</coordinates>
 	<controls>
 		<control type="grouplist" id="1000">
-			<animation effect="slide" start="0,0" end="315,0" time="0" condition="!IsEmpty(window.property(TunesListHasFocus))">Conditional</animation>
-			<animation effect="slide" start="0,0" end="-315,0" time="0" condition="IsEmpty(window.property(TunesListHasFocus)) + !IsEmpty(window(13000).property(tuneschoice))">Conditional</animation>
 			<posx>0</posx>
 			<posy>0</posy>
 			<width>340</width>

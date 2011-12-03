@@ -104,6 +104,7 @@ class DialogContextMenu( xbmcgui.WindowXMLDialog ):
 
     def _close_dialog( self ):
         self.close()
+        xbmc.sleep( 500 )
 
 
 
@@ -435,10 +436,11 @@ class Manager( xbmcgui.WindowXMLDialog ):
                     self._close_dialog()
             except:
                 LOGGER.error.exc_info( sys.exc_info(), self )
-                self.close()
+                self._close_dialog()
 
     def _close_dialog( self ):
         self.close()
+        xbmc.sleep( 600 )
 
 
 
