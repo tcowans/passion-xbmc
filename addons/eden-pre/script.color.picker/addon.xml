@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.color.picker" name="XBMC Color Picker"
+<addon id="script.color.picker" name="XBMC Color Picker [Beta]"
        version="1.0.1" provider-name="Frost (passion-xbmc.org)">
   <requires>
     <import addon="xbmc.python" version="2.0"/>
