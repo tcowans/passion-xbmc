@@ -52,6 +52,7 @@ class XBMCPlayer( xbmc.Player ):
         self.playpath = tune
         self.listitem = listitem
         playlist = self._repeat()
+        if not self.loud: self.setVolume( "down" )
         if playlist is not None: self.play( playlist )
         else: self.play( self.playpath, self.listitem )
 
@@ -117,10 +118,14 @@ class TunesPlayer( XBMCPlayer ):
                 if xbmc.getCondVisibility( CONDITION_STOP_TUNES_PLAYER ):
                     self.stopTunesPlayer()
 
+                #if xbmc.getCondVisibility( "!IsEmpty(ListItem.Path) + !StringCompare(ListItem.Path,%s/)" % os.path.dirname( self.playpath ) ):
+                #    print repr( xbmc.getInfoLabel( "ListItem.Path" ) + THEME_FILE )
+
                 if xbmc.getCondVisibility( CONDITION_PLAY_TUNE ):
                     TVShowTitle = _unicode( xbmc.getInfoLabel( "ListItem.TVShowTitle" ) or xbmc.getInfoLabel( "Container.FolderName" ) )
                     if TVShowTitle and CONTAINER.has_key( TVShowTitle ):
                         listitem = CONTAINER[ TVShowTitle ]
+                        #default tune
                         tune = listitem.getProperty( "tune" )
                         if tune and tune != self.playpath:
                             if not self.isPlaying():
@@ -130,11 +135,11 @@ class TunesPlayer( XBMCPlayer ):
                                 LOGGER.debug.LOG( "player already playing" )
 
                 #if xbmc.getCondVisibility( CONDITION_TUNE_ENDED ):
-                if self.isAlive and not self.isPlaying(): #xbmc.getCondVisibility( "!IsEmpty(Window(10025).Property(TvTunesIsAlive))" ):
+                if self.isAlive and not self.isPlaying() or IsTrue( WINDOW_VIDEO_NAV.getProperty( 'TvTunesIsAlive' ) ) and not self.isPlaying():
                     LOGGER.debug.LOG( "playing ends" )
                     if self.loud:
                         self.setVolume( "up" )
-                    WINDOW_VIDEO_NAV.clearProperty('TvTunesIsAlive')
+                    WINDOW_VIDEO_NAV.clearProperty( 'TvTunesIsAlive' )
                     self.isAlive = False
 
                 if self.playpath and xbmc.getCondVisibility( CONDITION_REINIT_TUNES_PLAYER ):
@@ -176,18 +181,21 @@ class TunesPlayer( XBMCPlayer ):
                 self.loud = False
                 operator  = "+"
             if operator:
-                volume = xbmc.getInfoLabel( "Player.Volume" ).replace( ",", "." ).split( " " )[ 0 ]
-                vol = eval( "int((60+%s%s%s)*(100/60.0))" % ( volume, operator, Addon.getSetting( "downvolume" ) ) )
+                volume = xbmc.getInfoLabel( "Player.Volume" ).replace( ",", "." )
+                formula = "int((60+%s%s%s)*(100/60.0))" % ( volume.split( " " )[ 0 ], operator, Addon.getSetting( "downvolume" ) )
+                vol = eval( formula )
                 if vol > 100 : vol = 100
                 elif vol < 0 : vol = 0
                 xbmc.executebuiltin( 'XBMC.SetVolume(%d)' % vol )
+                xbmc.sleep( 100 )
+                LOGGER.debug.LOG( "SetVolume: %s to %s, Formula: %s" % ( volume, xbmc.getInfoLabel( "Player.Volume" ), formula ) )
         except:
             LOGGER.error.print_exc()
 
     def stopTunesPlayer( self ):
         xbmc.PlayList( xbmc.PLAYLIST_MUSIC ).clear()
         #if xbmc.getCondVisibility( CONDITION_STOP_TUNE ):
-        if self.isAlive and self.isPlayingAudio():
+        if self.isAlive and self.isPlayingAudio() or xbmc.getCondVisibility( "Player.Playing + StringCompare(Player.Filenameandpath,%s)" % self.playpath ) or self.isPlaying() and self.playpath == self.getPlayingFile():
             LOGGER.debug.LOG( "stop playing" )
             self.stop()
 
@@ -198,7 +206,6 @@ class TunesPlayer( XBMCPlayer ):
         self.isAlive = False
 
         LOGGER.notice.LOG( "running backend took %s", time_took( START_TIME ) )
-        #LOGGER.debug.LOG( "Stopping TvTunes Backend" )
         self._stop = True
 
     def showLogo( self ):

@@ -103,10 +103,27 @@
 						<width>570</width>
 						<height>80</height>
 						<aspectratio>stretch</aspectratio>
+						<texture>$INFO[Container(103).Listitem.Property(banner)]</texture>
+						<bordertexture border="5">TvTunes-button-nofocus.png</bordertexture>
+						<bordersize>4</bordersize>
+						<fadetime>400</fadetime>
+						<visible>!IsEmpty(Container(103).Listitem.Property(banner))</visible>
+						<animation effect="fade" time="400">Visible</animation>
+						<animation effect="fade" time="400">Hidden</animation>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>570</width>
+						<height>80</height>
+						<aspectratio>stretch</aspectratio>
 						<texture>$INFO[Container(103).Listitem.Icon]</texture>
 						<bordertexture border="5">TvTunes-button-nofocus.png</bordertexture>
 						<bordersize>4</bordersize>
 						<fadetime>400</fadetime>
+						<visible>IsEmpty(Container(103).Listitem.Property(banner))</visible>
+						<animation effect="fade" time="400">Visible</animation>
+						<animation effect="fade" time="400">Hidden</animation>
 					</control>
 					<control type="image">
 						<posx>0</posx>
@@ -116,7 +133,7 @@
 						<aspectratio>stretch</aspectratio>
 						<texture>TvTunes-GlassOverlay.png</texture>
 						<colordiffuse>AAFFFFFF</colordiffuse>
-						<visible>!IsEmpty(Container(103).Listitem.Icon)</visible>
+						<visible>!IsEmpty(Container(103).Listitem.Property(banner)) | !IsEmpty(Container(103).Listitem.Icon)</visible>
 					</control>
 				</control>
 				<control type="list" id="103">
