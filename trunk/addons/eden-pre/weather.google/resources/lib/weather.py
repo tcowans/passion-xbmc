@@ -87,12 +87,43 @@ def writeXML( xml ):
     except: pass
 
 
-def SetProperty( key, value ):
+def SetProperty( key, value="" ):
     if WEATHER_WINDOW:
         WEATHER_WINDOW.setProperty( key, value )
     else:
         # for test print
         print key, value
+
+
+def ClearProperties():
+    map( SetProperty,
+        [ "Weather.IsFetched",
+          "Updated",
+          "Current.OutlookIcon",
+          "Current.FanartCode",
+          "Current.Condition",
+          "Current.Temperature",
+          "Current.FeelsLike",
+          "Current.UVIndex",
+          "Current.Humidity",
+          "Current.WindDirection",
+          "Current.Wind",
+          "Current.DewPoint",
+
+          "Current.Locale.Sunrise",
+          "Current.Locale.Sunset",
+          ]
+        )
+    for i in xrange( 4 ):
+        map( SetProperty,
+            [ "Day%i.Title" % ( i ),
+              "Day%i.HighTemp" % ( i ),
+              "Day%i.LowTemp" % ( i ),
+              "Day%i.Outlook" % ( i ),
+              "Day%i.OutlookIcon" % ( i ),
+              "Day%i.FanartCode" % ( i ),
+              ]
+            )
 
 
 def SetProperties( weather, LocationIndex=1 ):

@@ -20,8 +20,8 @@ else:
 
 def Main( retry=3 ):
     try:
+        ClearProperties()
         SetProperty( "WeatherProvider", "Google Weather" )
-        SetProperty( "Weather.IsFetched", "" )
 
         city, LocationIndex = GWS( loc_index )
 
