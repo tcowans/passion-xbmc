@@ -2,22 +2,22 @@
 ### GOOGLE: 'code'            #DESCRIPTION
 code = {
     'N/A': 'na',              #Not Available
-    'storm': '00',            #Rain/Lightning
-    'chance_of_storm': '01',  #Windy/Rain
-    '02': '02',               #Same as 01
-    '03': '03',               #Same as 00
-    '04': '04',               #Same as 00
-    'sleet': '05',            #Cloudy/Snow-Rain Mix
-    '06': '06',               #Hail
-    'rain_snow': '07',        #Icy/Clouds Rain-Snow
-    'chance_of_sleet': '08',  #Icy/Haze Rain
-    'mist': '09',             #Haze/Rain
+    'storm': '0',             #Rain/Lightning
+    'chance_of_storm': '1',   #Windy/Rain
+    '02': '2',                #Same as 01
+    '03': '3',                #Same as 00
+    '04': '4',                #Same as 00
+    'sleet': '5',             #Cloudy/Snow-Rain Mix
+    '06': '6',                #Hail
+    'rain_snow': '7',         #Icy/Clouds Rain-Snow
+    'chance_of_sleet': '8',   #Icy/Haze Rain
+    'mist': '9',              #Haze/Rain
     '10': '10',               #Icy/Rain
     '11': '11',               #Light Rain
     '12': '12',               #Moderate Rain
     'chance_of_snow': '13',   #Cloudy/Flurries
     '14': '14',               #Same as 13
-    '15': '15',               #Flurries
+    'flurries': '15',         #Flurries
     '16': '16',               #Same as 13
     '17': '17',               #Same as 00
     '18': '18',               #Same as 00
@@ -55,7 +55,7 @@ code = {
 
 import os
 from sys import modules
-from urlparse import urljoin
+#from urlparse import urljoin
 
 
 weather = modules.get( 'resources.lib.weather' ) or modules.get( 'weather' ) or modules[ '__main__' ]
@@ -100,9 +100,10 @@ def getIcon( uri, usenight=False ):
             icon = "%i.png" % int( xbmc_code )
         # icons custom
         if weather.ICONS_SET == 3:
-            custom_icon = "%i.jpg" % int( xbmc_code )
-            if copyIcon( weather.CUSTOM_ICONS + icon, custom_icon ):
-                icon = custom_icon
+            if xbmc_code.isdigit():
+                custom_icon = "%i.jpg" % int( xbmc_code )
+                if copyIcon( weather.CUSTOM_ICONS + icon, custom_icon ):
+                    icon = custom_icon
     
     # icons google
     elif weather.ICONS_SET == 2:
