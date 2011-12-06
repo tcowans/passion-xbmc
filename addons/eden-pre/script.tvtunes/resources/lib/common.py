@@ -43,7 +43,7 @@ def _unicode( text, encoding='utf-8' ):
 
 
 def IsTrue( text ):
-    return ( text == "true" )
+    return ( text.lower() == "true" )
 
 
 def time_took( t ):
@@ -90,7 +90,7 @@ def fix_path( fixpath ):
         # add login and pass
         login = Addon.getSetting( "smb_login" )
         if login and not fixpath.startswith( login ):
-            fixpath = "%s:%s@%s" % ( Addon.getSetting("smb_login"), Addon.getSetting("smb_psw"), fixpath )
+            fixpath = "%s:%s@%s" % ( login, Addon.getSetting("smb_psw"), fixpath )
         fixpath = "smb://" + fixpath
 
     elif fixpath.lower().startswith( "ftp://" ) and IsTrue( Addon.getSetting( "ftp_share" ) ):
@@ -99,7 +99,7 @@ def fix_path( fixpath ):
         # add login and pass
         login = Addon.getSetting( "ftp_login" )
         if login and not fixpath.startswith( login ):
-            fixpath = "%s:%s@%s" % ( Addon.getSetting("ftp_login"), Addon.getSetting("ftp_psw"), fixpath )
+            fixpath = "%s:%s@%s" % ( login, Addon.getSetting("ftp_psw"), fixpath )
         fixpath = "ftp://" + fixpath
 
     return fixpath
@@ -194,7 +194,13 @@ def getTVShows( format="list", isReload=False ):
         #print "%r" % tune
         # initialize listitem
         listitem = xbmcgui.ListItem( tvshow[ "label" ], tvshow[ "file" ], tvshow[ "thumbnail" ] )
-        # set properties
+        listitem.setPath( tvshow[ "file" ] )
+        # set images properties
+        banner = tvshow[ "file" ] + "banner.jpg"
+        listitem.setProperty( "banner", ( "", banner )[ path_exists( banner ) ] )
+        logo = tvshow[ "file" ] + "logo.png"
+        listitem.setProperty( "logo", ( "", logo )[ path_exists( logo ) ] )
+        # set tune properties
         listitem.setProperty( "tune", tune )
         listitem.setProperty( "IsPlayable", ( "", "true" )[ tune != "" ] )
         # set music info

@@ -1,3 +1,11 @@
+v1.9.5
+ - added: [GUI] listitem.path / listitem.filenameandpath
+ - added: [GUI] listitem.Property(banner) and listitem.Property(logo)
+            NB: return empty if banner/logo not exists
+
+ - added: more debug info about setvolume
+ - fixed: stop playing tune on return onprevious window
+
 v1.9.4
  - fixed: typo in language and settings
 
