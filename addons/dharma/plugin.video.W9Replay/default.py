@@ -13,8 +13,8 @@ __addonID__      = "plugin.video.W9Replay"
 __author__       = "PECK, mighty_bombero, merindol, Temhil (passion-xbmc.org)"
 __url__          = "http://passion-xbmc.org/index.php"
 __credits__      = "Team XBMC Passion"
-__date__         = "03-07-2011"
-__version__      = "1.2.3"
+__date__         = "08-12-2011"
+__version__      = "1.2.4"
 
 import urllib,sys,os,platform
 import string
@@ -46,7 +46,7 @@ if REMOTE_DBG:
             "You must add org.python.pydev.debug.pysrc to XBMC\system\python\Lib\pysrc")
         sys.exit(1)
 
-ROOTDIR            = os.getcwd()
+ROOTDIR            = __settings__.getAddonInfo('path') # os.getcwd()
 BASE_RESOURCE_PATH = os.path.join( ROOTDIR, "resources" )
 MEDIA_PATH         = os.path.join( BASE_RESOURCE_PATH, "media" )
 #ADDON_DATA         = __addonDir__
@@ -54,6 +54,9 @@ ADDON_DATA  = xbmc.translatePath( "special://profile/addon_data/%s/" % __addonID
 #DOWNLOADDIR        = os.path.join( ADDON_DATA, "downloads")
 CACHEDIR           = os.path.join( ADDON_DATA, "cache")
 THUMB_CACHE_PATH   = os.path.join( xbmc.translatePath( "special://profile/" ), "Thumbnails", "Video" )
+#CATALOG_URL        = "http://www.w9replay.fr/catalogue/120-w9.xml"
+CATALOG_URL        = "http://www.w9replay.fr/catalogue/4398.xml"
+
 
 #modules custom
 try:
@@ -83,6 +86,19 @@ def verifrep( folder ):
         print( "Exception while creating folder " + folder )
         print( str( e ) )
 
+#class Catalog:
+#    def __init__(self, catalog):
+#        self.catalog = catalog
+#        self.timestamp = datetime.datetime.now()
+#    def is_old(self):
+#        delta = datetime.datetime.now() - self.timestamp
+#        limit = int(__settings__.getSetting('catalog_refresh_rate'))
+#        print "delta: " + str(delta.seconds) + " / " + str(limit)
+#        if delta.seconds > limit:
+#            return True
+#        else:
+#            return False
+
 class W9Replay:
     """
     main plugin class
@@ -97,6 +113,8 @@ class W9Replay:
         self.set_debug_mode()
         ok = False
         if self.debug_mode:
+            print "Python version:"
+            print sys.version_info
             print "URL du plugin:"
             print sys.argv[ 0 ] + sys.argv[ 2 ]
             print "ROOTDIR: %s"%ROOTDIR
@@ -113,13 +131,13 @@ class W9Replay:
         if ( not sys.argv[ 2 ] ):
             # Main Categories
             try:
-                dico=self.get_categorie("http://www.w9replay.fr/catalogue/120-w9.xml")
+                dico=self.get_categorie(CATALOG_URL)
                 for cat in range(len(dico['categorie'])):
                     #infoLabels={ "Title": dico['categorie'][cat],
                     #             "count": cat}
                     ok = self.add_menu_item(dico['categorie'][cat], "display_pos="+str(dico['pos'][cat]), len(dico['categorie']), dico['image'][cat], True)               
                     # if user cancels, call raise to exit loop
-                    if ( not ok ): raise
+                    if ( not ok ): raise BaseException
             except Exception, e:
                 # oops, notify user what error occurred
                 print_exc()
@@ -132,7 +150,7 @@ class W9Replay:
         elif ( "display_pos=" in sys.argv[ 2 ] ):
             # Sub Categories
             try:
-                dico=self.get_sub_categorie("http://www.w9replay.fr/catalogue/120-w9.xml",int(sys.argv[ 2 ].split("=")[1]))
+                dico=self.get_sub_categorie(CATALOG_URL,int(sys.argv[ 2 ].split("=")[1]))
                 for cat in range(len(dico['categorie'])):
                     #infoLabels={ "Title": dico['categorie'][cat],
                     #             "count": cat}
@@ -151,7 +169,7 @@ class W9Replay:
         elif ( "display_produit=" in sys.argv[ 2 ] ):
             # Produit
             try:
-                dico=self.get_produit("http://www.w9replay.fr/catalogue/120-w9.xml",int(sys.argv[ 2 ].split("=")[1]))
+                dico=self.get_produit(CATALOG_URL,int(sys.argv[ 2 ].split("=")[1]))
                 for produit in range(len(dico['nom'])):
                     infoLabels={ "Title": dico['nom'][produit],#+ " " + video["publication_date"],
                                  #"Rating":5,

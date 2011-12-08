@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="plugin.video.W9Replay"
        name="W9 Replay"
-       version="1.2.3"
+       version="1.2.4"
        provider-name="PECK, Temhil (passion-xbmc.org)">
   <requires>
     <import addon="xbmc.python" version="1.0"/>
