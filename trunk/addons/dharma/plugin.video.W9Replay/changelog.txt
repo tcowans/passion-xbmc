@@ -1,3 +1,8 @@
+1.2.4 (08-12-2011) par Temhil
++ Ajout support Eden
++ Utilisation de la nouvelle URL afin de recuperer le catalogue
++ Suppression option frequence de la mise a jour du catalogue qui n'est pas utilisee dans le code
+
 1.2.3 (03-07-2011) par Temhil et beenje
 + Integration du patch de Beenje pour M6 Replay: Ajout d'une option "Download" dans le menu contextuel (lors d'un clic sur une vidéo). 
   Il faut avoir installer rtmpdump initialement et donner le chemin dans les paramètres de l'addon.
@@ -25,7 +30,7 @@
 
 1.1.0 (20-12-2010) par Temhil
 + Merge avec le add-on M6 replay 1.3.0
-+ Convertion uf format Add-on compatible Dharma
++ Convertion au format Add-on compatible Dharma
 + Permet l'acces aux videos en dehors de la France
 
 1.0.0 (16-06-2010) par PECK
