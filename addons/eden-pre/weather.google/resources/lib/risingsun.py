@@ -974,10 +974,11 @@ def get_sun( countryId=189, mode=4, g_update=False ):
     regexp = '<tr class=c.*?>%s</tr>' % ( '<td>(.*?)</td>' * 9 )
     sunrises_sunsets = re.compile( regexp ).findall( html )
 
+    d_now = strptime( d_now, DATE_FORMAT )
     for day in sunrises_sunsets:
         date = day[ 0 ]  #Date
 
-        if d_now == date:
+        if d_now == strptime( date, DATE_FORMAT ):
             if mode == 4:
                 t1, t2 = day[ 7:9 ] # Sunrise-Sunset
             elif mode == 1:
@@ -1080,6 +1081,7 @@ def _calculallcounties():
 
 
 if __name__ == "__main__":
+    #print get_sun()
     selection()
 
     #for mode in range( 6 ):
