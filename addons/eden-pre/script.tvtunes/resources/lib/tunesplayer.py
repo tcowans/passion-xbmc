@@ -26,7 +26,7 @@ CONTAINER        = getTVShows( "dict" )
 
 
 def _unicode( text, encoding='utf-8' ):
-    try: text = unicode( text, encoding )
+    try: text = unicode( text, encoding, errors="ignore" )
     except: pass
     return text
 
@@ -162,8 +162,12 @@ class TunesPlayer( XBMCPlayer ):
                     globals().update( { "Addon": Addon } )
                     # reset refresh status
                     self.refresh_container = False
-                    # set again logo for change
-                    self.showLogo()
+                    if Addon.getSetting( "useplayerv2" ).lower() == "false":
+                        #change player
+                        self.stopTunesPlayer( True )
+                    else:
+                        # set again logo for change
+                        self.showLogo()
         except SystemExit:
             LOGGER.warning.LOG( "SystemExit! xbmc.abortRequested(%r)" % xbmc.abortRequested )
             self.stopTunesPlayer()
@@ -182,7 +186,8 @@ class TunesPlayer( XBMCPlayer ):
                 operator  = "+"
             if operator:
                 volume = xbmc.getInfoLabel( "Player.Volume" ).replace( ",", "." )
-                formula = "int((60+%s%s%s)*(100/60.0))" % ( volume.split( " " )[ 0 ], operator, Addon.getSetting( "downvolume" ) )
+                downvolume = int( float( Addon.getSetting( "downvolume" ) ) * 60.0 / 100.0 )
+                formula = "int((60+%s%s%s)*(100/60.0))" % ( volume.split( " " )[ 0 ], operator, str( downvolume ) )
                 vol = eval( formula )
                 if vol > 100 : vol = 100
                 elif vol < 0 : vol = 0
@@ -192,7 +197,7 @@ class TunesPlayer( XBMCPlayer ):
         except:
             LOGGER.error.print_exc()
 
-    def stopTunesPlayer( self ):
+    def stopTunesPlayer( self, loadplayerv1=False ):
         xbmc.PlayList( xbmc.PLAYLIST_MUSIC ).clear()
         #if xbmc.getCondVisibility( CONDITION_STOP_TUNE ):
         if self.isAlive and self.isPlayingAudio() or xbmc.getCondVisibility( "Player.Playing + StringCompare(Player.Filenameandpath,%s)" % self.playpath ) or self.isPlaying() and self.playpath == self.getPlayingFile():
@@ -207,6 +212,8 @@ class TunesPlayer( XBMCPlayer ):
 
         LOGGER.notice.LOG( "running backend took %s", time_took( START_TIME ) )
         self._stop = True
+        if loadplayerv1:
+            xbmc.executebuiltin( 'RunScript(script.tvtunes,backend=true)' )
 
     def showLogo( self ):
         try:

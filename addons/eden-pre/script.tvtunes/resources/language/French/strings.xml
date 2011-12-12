@@ -44,6 +44,7 @@
   <string id="32500">Baisser le volume de...</string>
   <string id="32501">Jouer le thème en boucle</string>
   <string id="32502">Signaler le statut de la répétition</string>
+  <string id="32505">Activer le lecteur v2   [COLOR=FF888888](Unstable)[/COLOR]</string>
 
   <string id="32510">Tunes</string>
   <string id="32511">Utilisez le dossier de la série Tv pour enregistrer le thème</string>
@@ -61,6 +62,8 @@
   <string id="32601">Pretty Formatting</string>
   <string id="32602">Activer la mise en forme pour les noms correspondant</string>
   <string id="32603">MAJUSCULES</string>
+  <string id="32605">Synchroniser automatiquement les conteneurs</string>
+  <string id="32606">Réinitialiser la liste des tunes si Unfocus</string>
 
   <string id="32610">Afficher les commandes du lecteur lors du lancement d'un thème</string>
 

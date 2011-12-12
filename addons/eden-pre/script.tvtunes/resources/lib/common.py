@@ -37,7 +37,7 @@ except ImportError:
 
 
 def _unicode( text, encoding='utf-8' ):
-    try: text = unicode( text, encoding )
+    try: text = unicode( text, encoding, errors="ignore" )
     except: pass
     return text
 
