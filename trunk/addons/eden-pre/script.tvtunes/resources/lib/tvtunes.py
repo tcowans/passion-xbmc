@@ -23,9 +23,11 @@ class Gui( xbmcgui.WindowXMLDialog ):
         self.already_searched = {}
         # boolean for disabled "onClick, onContextMenu, and cond_synchronize_containers"
         self.onBusy = False
+        # boolean for user want not sync
+        self.auto_sync_containers  = IsTrue( Addon.getSetting( "synccontainer" ) )
+        #self.auto_reset_containers = self.auto_sync_containers and IsTrue( Addon.getSetting( "resetcontainer" ) )
 
     def onInit( self ):
-        xbmc.executebuiltin( "SetProperty(AnimeWindowXMLDialogClose,true)" )
         # activate busy
         self.busy( True )
         # get you controls
@@ -282,6 +284,7 @@ class Gui( xbmcgui.WindowXMLDialog ):
 
     def synchronize( self ):
         try:
+            if not self.auto_sync_containers: return
             if xbmc.getCondVisibility( self.cond_synchronize_containers ):
                 if self.onBusy: return
                 tunes = self.already_searched.get( self.control_tvshows_list.getSelectedItem().getLabel() )
@@ -305,8 +308,6 @@ class Gui( xbmcgui.WindowXMLDialog ):
             dialog_help_site()
 
     def _close_dialog( self ):
-        #xbmc.executebuiltin( "ClearProperty(AnimeWindowXMLDialogClose)" )
-        #time.sleep( .3 )
         self.close()
         xbmc.sleep( 500 )
 
@@ -321,7 +322,6 @@ class DialogContextMenu( xbmcgui.WindowXMLDialog ):
         self.selected = -1
 
     def onInit( self ):
-        xbmc.executebuiltin( "SetProperty(AnimeContextMenuOnClose,true)" )
         try:
             if self.TunesListHasFocus:
                 xbmc.executebuiltin( "SetProperty(TunesListHasFocus,true)" )
@@ -361,8 +361,6 @@ class DialogContextMenu( xbmcgui.WindowXMLDialog ):
             self._close_dialog()
 
     def _close_dialog( self ):
-        #xbmc.executebuiltin( "ClearProperty(AnimeContextMenuOnClose)" )
-        #time.sleep( .2 )
         xbmc.executebuiltin( "ClearProperty(TunesListHasFocus)" )
         self.close()
         xbmc.sleep( 500 )

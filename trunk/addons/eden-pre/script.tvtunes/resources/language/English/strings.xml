@@ -44,6 +44,7 @@
   <string id="32500">Lower sound value</string>
   <string id="32501">Play theme in loop</string>
   <string id="32502">Notify Repeat Statut</string>
+  <string id="32505">Enable Tunes Player v2   [COLOR=FF888888](Unstable)[/COLOR]</string>
 
   <string id="32510">Tunes</string>
   <string id="32511">Use Tv Show folder for recording tunes</string>
@@ -61,6 +62,8 @@
   <string id="32601">Pretty Formatting</string>
   <string id="32602">Enable pretty formatting for matching name</string>
   <string id="32603">UPPERCASE</string>
+  <string id="32605">Auto synchronize containers</string>
+  <string id="32606">Reset tunes listing on unfocus</string>
 
   <string id="32610">Show player controls on play tune</string>
 

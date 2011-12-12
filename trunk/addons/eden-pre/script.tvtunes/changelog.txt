@@ -1,3 +1,8 @@
+v1.9.6
+ - added: [GUI] Setting for Auto synchronize containers. default: false
+ - re-added: Play tune routine v1 and merged from version 1.0.14 and fixed to work with settings pre-2.0.0
+ - added: settings for use backend player v1 or v2 (unstable). default: v1
+
 v1.9.5
  - added: [GUI] listitem.path / listitem.filenameandpath
  - added: [GUI] listitem.Property(banner) and listitem.Property(logo)
