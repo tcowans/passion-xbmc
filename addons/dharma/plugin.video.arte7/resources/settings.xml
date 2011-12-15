@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+    <!-- GENERAL -->
+  	<category label="$LOCALIZE[128]">
+	    <setting label="30500" type="enum" id="vid_language" lvalues="30501|30502" default="0" />
+	</category>    
+</settings>
