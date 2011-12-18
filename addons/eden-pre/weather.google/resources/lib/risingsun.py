@@ -866,7 +866,7 @@ import _strptime
 
 CACHE_PATH = sys.path[ 0 ]
 USER_TIME_FORMAT = '%H:%M'
-DATE_FORMAT  = '%b %d, %Y'
+DATE_FORMAT  = '%b %d %Y'
 
 #HTTP_USER_AGENT  = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.1.1) Gecko/20090715 Firefox/3.5.1"
 HTTP_USER_AGENT = "Mozilla/5.0 (Windows NT 5.1; rv:8.0) Gecko/20100101 Firefox/8.0"
@@ -904,12 +904,14 @@ def is_expired( c_filename, hours=24, days=28 ):
 
 def get_user_time_format( date, str_time ):
     # fix to 24h format
-    str_time = str_time.lower().replace( "am", "" ).strip()
+    str_time = str_time.lower().replace( "am", "" ).strip().replace( " h ", ":" ).replace( "h", ":" )
     if "pm" in str_time:
         H, M = str_time.replace( "pm", "" ).strip().split( ":" )
         str_time = '%i:%s' % ( int( H ) + 12, M )
 
-    insecs = mktime( strptime( date + str_time, DATE_FORMAT + '%H:%M' ) )
+    date = date.replace( "&#233;", "e" )
+    try: insecs = mktime( strptime( date + str_time, DATE_FORMAT + '%H:%M' ) )
+    except: insecs = mktime( strptime( date + str_time, '%d %b %Y%H:%M' ) )
     return strftime( USER_TIME_FORMAT, localtime( insecs ) ), insecs
 
 
@@ -957,53 +959,66 @@ def get_default_sun( date ):
     return trim_time( sun_up ), trim_time( sun_down ), in_broad_daylight
 
 
+def is_same_date( date1, date2 ):
+    same = False
+    date2 = date2.replace( "&#233;", "e" )
+    try: same = ( date1 == strptime( date2, DATE_FORMAT ) )
+    except:
+        try: same = ( date1 == strptime( date2, '%d %b %Y' ) )
+        except: print_exc()
+    return same
+
+
 def get_sun( countryId=189, mode=4, g_update=False ):
-    if g_update: globals_update()
-    #Rising and setting times for the Sun
-    d_now = strftime( DATE_FORMAT, localtime( time() ) )
-    sun_up, sun_down, in_broad_daylight = get_default_sun( d_now )
-    if mode == 0:
-        return sun_up, sun_down, in_broad_daylight
+    try:
+        if g_update: globals_update()
+        #Rising and setting times for the Sun
+        d_now = strftime( DATE_FORMAT, localtime( time() ) )
+        sun_up, sun_down, in_broad_daylight = get_default_sun( d_now )
+        if mode == 0:
+            return sun_up, sun_down, in_broad_daylight
 
-    # _info_mode is for debug
-    _info_mode = [ "", "Astronomical Twilight starts-ends", "Nautical Twilight starts-ends", "Civil Twilight starts-ends", "Sunrise-Sunset" ]
+        # _info_mode is for debug
+        _info_mode = [ "", "Astronomical Twilight starts-ends", "Nautical Twilight starts-ends", "Civil Twilight starts-ends", "Sunrise-Sunset" ]
 
-    html = get_html_source( countryId )
+        html = get_html_source( countryId )
 
-    #( Date, Astronomical Twilight starts-ends, Nautical Twilight starts-ends, Civil Twilight starts-ends, Sunrise Sunset )
-    regexp = '<tr class=c.*?>%s</tr>' % ( '<td>(.*?)</td>' * 9 )
-    sunrises_sunsets = re.compile( regexp ).findall( html )
+        #( Date, Astronomical Twilight starts-ends, Nautical Twilight starts-ends, Civil Twilight starts-ends, Sunrise Sunset )
+        regexp = '<tr class=c.*?>%s</tr>' % ( '<td>(.*?)</td>' * 9 )
+        sunrises_sunsets = re.compile( regexp ).findall( html )
 
-    d_now = strptime( d_now, DATE_FORMAT )
-    for day in sunrises_sunsets:
-        date = day[ 0 ]  #Date
+        d_now = strptime( d_now, DATE_FORMAT )
+        for day in sunrises_sunsets:
+            date = day[ 0 ].replace( ",", "" )  #Date
 
-        if d_now == strptime( date, DATE_FORMAT ):
-            if mode == 4:
-                t1, t2 = day[ 7:9 ] # Sunrise-Sunset
-            elif mode == 1:
-                t1, t2 = day[ 1:3 ] # Astronomical Twilight starts-ends
-            elif mode == 2:
-                t1, t2 = day[ 3:5 ] # Nautical Twilight starts-ends
-            elif mode == 3:
-                t1, t2 = day[ 5:7 ] # Civil Twilight starts-ends
-            else:
-                continue
+            if is_same_date( d_now, date ):
+                if mode == 4:
+                    t1, t2 = day[ 7:9 ] # Sunrise-Sunset
+                elif mode == 1:
+                    t1, t2 = day[ 1:3 ] # Astronomical Twilight starts-ends
+                elif mode == 2:
+                    t1, t2 = day[ 3:5 ] # Nautical Twilight starts-ends
+                elif mode == 3:
+                    t1, t2 = day[ 5:7 ] # Civil Twilight starts-ends
+                else:
+                    continue
 
-            sun_up = get_user_time_format( date, t1 )
-            sun_down = get_user_time_format( date, t2 )
-            in_broad_daylight = ( sun_up[ 1 ] <= time() <= sun_down[ 1 ] )
-            sun_up, sun_down = sun_up[ 0 ], sun_down[ 0 ]
+                sun_up = get_user_time_format( date, t1 )
+                sun_down = get_user_time_format( date, t2 )
+                in_broad_daylight = ( sun_up[ 1 ] <= time() <= sun_down[ 1 ] )
+                sun_up, sun_down = sun_up[ 0 ], sun_down[ 0 ]
 
-            _print( _info_mode[ mode ] )
-            _print( "In broad daylight %r" % in_broad_daylight )
-            _print( sun_up )
-            _print( sun_down )
-            _print( "*"*100 )
-            break
+                _print( _info_mode[ mode ] )
+                _print( "In broad daylight %r" % in_broad_daylight )
+                _print( sun_up )
+                _print( sun_down )
+                _print( "*"*100 )
+                break
 
-    return trim_time( sun_up ), trim_time( sun_down ), in_broad_daylight
-
+        return trim_time( sun_up ), trim_time( sun_down ), in_broad_daylight
+    except:
+        print_exc()
+        return "6:00 AM", "8:00 PM", False
 
 def set_rising_sun( country, countryId ):
     choice = []
