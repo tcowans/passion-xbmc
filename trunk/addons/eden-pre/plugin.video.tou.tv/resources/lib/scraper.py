@@ -186,8 +186,10 @@ def getFavourites():
                     break
         else:
             infos[ "Emission" ][ "all_id" ] = "%r" % [ str( e[ "Id" ] ) for e in infos[ "Episodes" ] ]
-            infos[ "Emission" ][ "premiered" ] = infos[ "Episodes" ][ -1 ][ "AirDateLongString" ] or ""
-            infos[ "Emission" ][ "season" ] = max( [ e[ "SeasonNumber" ] for e in infos[ "Episodes" ] ] )
+            try: infos[ "Emission" ][ "premiered" ] = infos[ "Episodes" ][ -1 ][ "AirDateLongString" ] or ""
+            except: infos[ "Emission" ][ "premiered" ] = ""
+            try: infos[ "Emission" ][ "season" ] = max( [ e[ "SeasonNumber" ] for e in infos[ "Episodes" ] ] )
+            except: infos[ "Emission" ][ "season" ] = "-1"
             cast = []
             for cr in map( setCastAndRole, [ e for e in infos[ "Episodes" ] ] ):
                 cast += [ c for c in cr if c not in cast ]
