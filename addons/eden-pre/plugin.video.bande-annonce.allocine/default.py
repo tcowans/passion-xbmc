@@ -203,23 +203,20 @@ def get_film_list( url , database = False):
                 match = re.search("<a href=\'/video/emissions.*?>",i)
                 if match: film["type"] = "emission"
 
-                if film["type"] == "serie": match = re.search( "<span class=\'bold\'>(.*?)</span>(.*?)\s+</a>", i ) #( "<span class='bold'>(.*?)</a>", i )
+                if   film["type"] == "serie":      match = re.search( "<strong>(.*?)</strong>(.*?)\s+</a>", i )
                 elif film["type"] == "interviews": match = re.search( "<span class=\'bold\'>\s+(.*?)\s+</span>\s+(.*?)<br />", i )
-                elif film["type"] == "emission": 
-                    match = re.search("<span class=\'bold\'><strong>(.*?)</strong>(.*?)</span></a><br/>", i)
+                elif film["type"] == "emission":   match = re.search("<span class=\'bold\'><strong>(.*?)</strong>(.*?)</span></a><br/>", i)
                 else : match = re.search( "<strong>(.*?)</strong>", i )
                 save_data(i)
-                
+
+                film["name"] = ""
                 if match :
-                    if film["type"] == "serie" : film["name"] = match.group(1) + " " + match.group(2) #match.group(1).replace("</span>"," ")
+                    if film["type"] == "serie": film["name"] = match.group(1) + " " + match.group(2) #match.group(1).replace("</span>"," ")
                     elif film["type"] == "interviews": film["name"] = match.group(1) + match.group(2)
                     elif film["type"] == "emission": film["name"] = match.group(1) + match.group(2)
                     else : 
                         film["name"] = match.group(1)
-                
-                    
-                else: film["name"] = ""
-                
+
                 print "récupération info %s (%s/%s): %s" % ( film["type"] , count , total_item , film["name"] )
                 #dp.update(ratio , "récupération info %s (%s/%s)" % ( film["type"], count , total_item ), film["name"])
 #                 if dp.iscanceled() :
@@ -248,9 +245,9 @@ def get_film_list( url , database = False):
                     film["poster"] = film["poster"].replace("cx_120_113/o_overlayEmissions-P2C-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-MerciQui-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-LaMinute-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-D2DVD-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-TES-120.png_1_c", "r_760_x" ).replace("cx_120_113/o_overlayEmissions-FauxR-120.png_1_c", "r_760_x" )
                 catalogue.append(film)
                 if film["type"] == "film":
-                    if __settings__.getSetting("date_sortie") == "true" : ajout_sortie = "[CR]" +  film["sortie"]
+                    if __settings__.getSetting("date_sortie") == "true" : ajout_sortie = "[CR]" +  film.get( "sortie", "" )
                     else : ajout_sortie = ""
-                    addDir(film["name"] + ajout_sortie ,"%s##%s" % (film["poster"] , film["id_allo"]),2,film["poster"], sortie=film["sortie"])
+                    addDir(film["name"] + ajout_sortie ,"%s##%s" % (film["poster"] , film["id_allo"]),2,film["poster"], sortie=film.get( "sortie", "" ))
                     xbmcplugin.addSortMethod(int(sys.argv[1]), xbmcplugin.SORT_METHOD_TITLE)
                     xbmcplugin.addSortMethod(int(sys.argv[1]), xbmcplugin.SORT_METHOD_DATE)
                     #xbmcplugin.addSortMethod(int(sys.argv[1]), xbmcplugin.SORT_METHOD_NONE)
@@ -608,9 +605,9 @@ if mode == 1: # affichage des liste ba / series / emissions / interviews
         data=load_DB( name )
         for film in data:
             if film["type"] == "film":
-                if __settings__.getSetting("date_sortie") == "true" : ajout_sortie = "[CR]" +  film["sortie"]
+                if __settings__.getSetting("date_sortie") == "true" : ajout_sortie = "[CR]" +  film.get( "sortie", "" )
                 else : ajout_sortie = ""
-                addDir(film["name"] + ajout_sortie ,"%s##%s" % (film["poster"] , film["id_allo"]),2,film["poster"], sortie=film["sortie"])
+                addDir(film["name"] + ajout_sortie ,"%s##%s" % (film["poster"] , film["id_allo"]),2,film["poster"], sortie=film.get( "sortie", "" ))
                 xbmcplugin.addSortMethod(int(sys.argv[1]), xbmcplugin.SORT_METHOD_TITLE)
                 xbmcplugin.addSortMethod(int(sys.argv[1]), xbmcplugin.SORT_METHOD_DATE)
                 #xbmcplugin.addSortMethod(int(sys.argv[1]), xbmcplugin.SORT_METHOD_NONE)
