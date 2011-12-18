@@ -1,3 +1,6 @@
+1.0.6
+ - fixed: risingsun, french date/time format
+
 1.0.5
  - fixed: rising sun for first 9 days of month
 
