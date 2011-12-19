@@ -537,6 +537,21 @@ def Main():
         if "start=pickcoloronscreen" in ",".join( args ).lower():
             xbmc.sleep( 100 )
             colorPicked = pickColorOnScreen()
+        else:
+            # get default color in builtin
+            try:
+                builtin, default_color = ( args[ 0 ].strip( ")" ).split( "," ) + [ "" ] )[ :2 ]
+                if default_color.lower().startswith( "$" ):
+                    default_color = xbmc.getInfoLabel( default_color.strip( "]" ).split( "[" )[ -1 ] )
+
+                try: colorPicked = name_to_argb( default_color )
+                except:
+                    # ValueError for check name last chance check hex
+                    try: colorPicked = hex_to_argb( default_color )
+                    except:
+                        colorPicked = None
+            except:
+                print_exc()
 
         w = ColorPicker( "script-ColorPicker-main.xml", ADDON_DIR, colorPicked=colorPicked )
         w.doModal()
