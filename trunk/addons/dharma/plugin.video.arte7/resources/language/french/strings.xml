@@ -21,6 +21,7 @@
     <!--CONTEXT MENU STRINGS -->
     <string id="30100">Enregistrer (Haute Qualité)</string>
     <string id="30101">Enregistrer (Basse Qualité)</string>
+    <string id="30102">Télécharger la vidéo</string>
 
     <!--DIALOG STRINGS -->
     <string id="30200">Chargement des informations...</string>
@@ -35,4 +36,5 @@
     <string id="30500">Langue des vidéos:</string>
     <string id="30501">Francais</string>
     <string id="30502">Allemand</string>
+    
 </strings>

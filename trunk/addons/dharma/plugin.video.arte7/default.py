@@ -2,6 +2,11 @@
 
 import xbmc
 import xbmcaddon
+import xbmcgui
+import xbmcvfs
+
+import CommonFunctions
+from traceback import print_exc
 
 
 # Plugin constants
@@ -21,10 +26,16 @@ __addonDir__     = __settings__.getAddonInfo( "path" )
 from resources.libs.Arte7Plugin import Arte7Plugin
 
 if ( __name__ == "__main__" ):
-    try:      
+    try:
+        dbglevel = 3
+        dbg = False
+        plugin = __plugin__
+        settings = __settings__
+        common = CommonFunctions.CommonFunctions()  
         Arte7Plugin()
     except Exception,msg:
         xbmc.executebuiltin("XBMC.Notification(%s,%s)"%("ERROR",msg))   
-
+        print ("Error default.py")
+        print_exc()
 
 

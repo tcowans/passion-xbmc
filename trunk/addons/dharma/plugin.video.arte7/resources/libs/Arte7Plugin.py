@@ -2,14 +2,16 @@
 import os
 import sys
 
-import urllib2, xml.dom.minidom
+import urllib2, xml.dom.minidom, string
+from traceback import print_exc
 
 import xbmc
-import xbmcplugin
 import xbmcgui
+import xbmcplugin
 import xbmcaddon
 
 import BeautifulSoup as BS
+import SimpleDownloader as downloader
 
 # Recuperation des constants
 __plugin__       = sys.modules[ "__main__" ].__plugin__
@@ -26,7 +28,7 @@ __addonDir__     = sys.modules[ "__main__" ].__addonDir__
 
 # Custom modules
 from Catalog import Catalog, unescape_html, get_lang
-from Utils import _addLink, _parse_params, verifrep, _add_sort_methods, _end_of_directory, _addDir, _create_param_url
+from Utils import _addLink, _parse_params, verifrep, _add_sort_methods, _end_of_directory, _addDir, _create_param_url, _addContextMenuItems
 
 
 class Arte7Plugin: 
@@ -36,9 +38,10 @@ class Arte7Plugin:
     ADDON_DATA         = xbmc.translatePath( "special://profile/addon_data/%s/" % __addonID__ )
     DOWNLOADDIR        = os.path.join( ADDON_DATA, "downloads")
     CACHEDIR           = os.path.join( ADDON_DATA, "cache")
-    FILENAME           = "arteCatalogue"
+    FILENAME           = "arteCatalogue.tmp"
     COLOR_IMG_URL      = "http://www.color-hex.com/colorimg.php?color="
     NB_VIDEO           = 0
+    USERAGENT = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-GB; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8"
     
     # define param key names
     PARAM_LIST_VIDEOS     = "listevideos"
@@ -47,6 +50,7 @@ class Arte7Plugin:
     PARAM_SHOW_VIDEO_INFO = "showvideoinfos"
     PARAM_SHOW_PICTURE    = "showpicture"
     PARAM_VIDEO_ID        = "video_id"
+    PARAM_VIDEO_NAME      = "video_name"
     
     pluginhandle = int(sys.argv[1])
     dirCheckList = ( CACHEDIR, DOWNLOADDIR )
@@ -86,10 +90,25 @@ class Arte7Plugin:
 
                 xbmcplugin.setResolvedUrl(handle=int(sys.argv[1]), succeeded=True, listitem=item)
                 _end_of_directory( True )
+                
+            elif self.PARAM_DOWNLOAD_VIDEO in self.parameters.keys(): 
+                video = {}
+                
+                name = self.parameters[self.PARAM_VIDEO_NAME]
+                
+                url_page = self.parameters[self.PARAM_VIDEO_ID]
+                url = self.get_rtmp_url( url_page, quality = "hd"  )             
 
+                video[self.PARAM_VIDEO_ID] = url
+                video[self.PARAM_VIDEO_NAME] = name
+
+                self.downloadVideo(video)     
 
         except Exception,msg:
             xbmc.executebuiltin("XBMC.Notification(%s,%s)"%("ERROR select",msg)) 
+            print ("Error select")
+            print_exc()
+            
             _end_of_directory( False )
 
     def show_videos_init(self):
@@ -97,7 +116,8 @@ class Arte7Plugin:
         ok = True
         cpt = 0
 
-        f = open(os.path.join(self.CACHEDIR,xbmc.makeLegalFilename(self.FILENAME)),'w')
+        file = xbmc.makeLegalFilename(os.path.join(self.CACHEDIR,self.FILENAME))
+        f = open(file,'w')
         
         pDialog = xbmcgui.DialogProgress()
         ret = pDialog.create( 'XBMC', __language__ ( 30200 ) )        
@@ -119,8 +139,17 @@ class Arte7Plugin:
             infoLabels={ "Title": video[Catalog.DATE_TAG] + " - " + video[Catalog.TITLE_TAG],
                          "Date": video[Catalog.DATE_TAG]}            
             
-            _addLink( name=video[Catalog.TITLE_TAG], url=url, iconimage=video[Catalog.IMAGE_TAG], itemInfoLabels=infoLabels )
+            paramsAddonsContextMenu = {}
+            paramsAddonsContextMenu[self.PARAM_DOWNLOAD_VIDEO]  = "true"
+            paramsAddonsContextMenu[self.PARAM_VIDEO_ID]    = video[Catalog.URL_TAG]
+            paramsAddonsContextMenu[self.PARAM_VIDEO_NAME]    = video[Catalog.TITLE_TAG]
             
+            urlContextMenu = _create_param_url( paramsAddonsContextMenu )
+            
+            cm = _addContextMenuItems(name=video[Catalog.TITLE_TAG], url=urlContextMenu, msg= __language__(30102))
+            
+            _addLink( name=video[Catalog.TITLE_TAG], url=url, iconimage=video[Catalog.IMAGE_TAG], itemInfoLabels=infoLabels, c_items=cm )
+
             pDialog.update(int(99*float(cpt)/(self.NB_VIDEO)), __language__ ( 30202 ) )            
        
         pDialog.close()
@@ -140,7 +169,8 @@ class Arte7Plugin:
         """
         ok = True
         cpt = 0
-        f = open(os.path.join(self.CACHEDIR,self.FILENAME).encode('utf8'),"r")
+        file = xbmc.makeLegalFilename(os.path.join(self.CACHEDIR,self.FILENAME))
+        f = open(file,"r")
 
         pDialog = xbmcgui.DialogProgress()
         ret = pDialog.create( 'XBMC', __language__ ( 30200 ) )        
@@ -159,6 +189,12 @@ class Arte7Plugin:
                          "Date": video[1]}            
             
             _addLink( name=video[0], url=url, iconimage=video[3], itemInfoLabels=infoLabels )
+
+            paramsAddons = {}
+            paramsAddons[self.PARAM_DOWNLOAD_VIDEO]  = "true"
+            paramsAddons[self.PARAM_VIDEO_ID]    = video[2]
+            url = _create_param_url( paramsAddons )
+            _addContextMenuItems(video[1],url, __language__(30102))
             
             pDialog.update(int(99*float(cpt)/(self.NB_VIDEO)), __language__ ( 30202 ) )
 
@@ -192,5 +228,15 @@ class Arte7Plugin:
         movie_url = base_soup.find("url", {"quality": quality}).string
         return movie_url
 
+    def downloadVideo(self, video):
+        ok = True    
+        try:
+            my_downloader = downloader.SimpleDownloader()
+            params = {"videoid": "1", "video_url": video[self.PARAM_VIDEO_ID], "Title": video[self.PARAM_VIDEO_NAME]}
+            my_downloader.downloadVideo(params)            
+            
+        except Exception,msg:
+            print_exc("Error downloadVideo : %s", msg)
+            xbmc.executebuiltin("XBMC.Notification(%s,%s)"%("ERROR downloadVideo ",msg))  
 
-
+        return ok
