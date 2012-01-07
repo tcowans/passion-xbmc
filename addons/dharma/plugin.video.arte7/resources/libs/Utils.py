@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import xbmc
 import xbmcgui
 import xbmcplugin
 
@@ -13,6 +14,7 @@ def _addDir(  name, name2="", url="", iconimage="DefaultFolder.png", itemInfoTyp
     lstItem=xbmcgui.ListItem( label=name, label2=name2, iconImage=iconimage, thumbnailImage=iconimage )
     
     if c_items : 
+        xbmc.executebuiltin("XBMC.Notification(%s,%s)"%("_addDir","l 16"))  
         lstItem.addContextMenuItems( c_items, replaceItems=True )
         
     if itemInfoLabels:
@@ -38,6 +40,8 @@ def _add_sort_methods(  OK ):
             #xbmcplugin.addSortMethod( handle=int( sys.argv[ 1 ] ), sortMethod=xbmcplugin.SORT_METHOD_STUDIO )
         except Exception,msg:
             xbmc.executebuiltin("XBMC.Notification(%s,%s)"%("ERROR _add_sort_methods ",msg))  
+            print ("Error _add_sort_methods")
+            print_exc()            
     _end_of_directory( OK )
 
 def _coloring(  text , color , colorword ):
@@ -55,7 +59,8 @@ def verifrep( folder ):
             os.makedirs( folder )
     except Exception, msg:
         xbmc.executebuiltin("XBMC.Notification(%s,%s)"%("Exception while creating folder  ",msg))  
-
+        print ("Error verifrep")
+        print_exc()         
         
 def _parse_params( ):
     """
@@ -127,3 +132,8 @@ def _create_param_url( paramsDic, quote_plus=False):
         xbmc.executebuiltin("XBMC.Notification(%s,%s)"%("ERROR _create_param_url ",msg))  
         url = None
     return url
+
+def _addContextMenuItems( name, url, msg):
+    cm = []
+    cm.append( ( msg , "XBMC.PlayMedia(%s)" % (url) ) )
+    return cm

@@ -21,6 +21,7 @@
     <!--CONTEXT MENU STRINGS -->
     <string id="30100">Save (HQ)</string>
     <string id="30101">Save (LQ)</string>
+    <string id="30102">Download video</string>
 
     <!--DIALOG STRINGS -->
     <string id="30200">Loading informations...</string>
@@ -35,5 +36,7 @@
     <string id="30500">Videos language :</string>
     <string id="30501">French</string>
     <string id="30502">German</string>
+    
+
 
 </strings>
