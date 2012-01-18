@@ -39,7 +39,7 @@ except:
 
 
 from risingsun import get_sun
-SUN_UP, SUN_DOWN, IN_BROAD_DAYLIGHT = get_sun( RISING_SUN_CODE, RISING_SUN_PREF, True )
+SUN_UP, SUN_DOWN, IN_BROAD_DAYLIGHT, SUN_LENGTH = get_sun( RISING_SUN_CODE, RISING_SUN_PREF, True )
 #print SUN_UP, SUN_DOWN, IN_BROAD_DAYLIGHT, RISING_SUN_CODE, RISING_SUN_PREF
 
 from utilities import *
@@ -310,6 +310,7 @@ def SetProperties2( weather, LocationIndex=1 ):
 
     SetProperty( "Current.Locale.Sunrise", SUN_UP )
     SetProperty( "Current.Locale.Sunset", SUN_DOWN )
+    SetProperty( "Current.Locale.Sunlength", SUN_LENGTH )
     SetProperty( "Weather.IsFetched", "true" )
 
 

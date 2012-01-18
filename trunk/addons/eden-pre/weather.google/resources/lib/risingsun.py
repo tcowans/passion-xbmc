@@ -915,12 +915,12 @@ def get_user_time_format( date, str_time ):
     return strftime( USER_TIME_FORMAT, localtime( insecs ) ), insecs
 
 
-def get_html_source( countryId=189, refresh=False ):
+def get_html_source( countryId=189, typeId=13, refresh=False ):
     html = ""
     try:
         save = True
         sock = None
-        c_filename = os.path.join( CACHE_PATH, '%i.html' % countryId )
+        c_filename = os.path.join( CACHE_PATH, '%i_%i.html' %(countryId, typeId))
         if not refresh and os.path.exists( c_filename ):
             if not is_expired( c_filename ):
                 _print( "Reading local source: %r" % c_filename )
@@ -928,8 +928,8 @@ def get_html_source( countryId=189, refresh=False ):
                 save = False
 
         if not bool( sock ):
-            url  = "http://timeanddate.com/worldclock/astronomy.html?n=%i" % countryId
-            url += strftime( '&month=%m&year=%Y&obj=sun&afl=-13&day=%d', localtime( time() ) )
+            url  = "http://timeanddate.com/worldclock/astronomy.html?n=%i&obj=sun&afl=-%i" %(countryId, typeId)
+            url += strftime( '&month=%m&year=%Y&day=%d', localtime( time() ) )
             _print( "Reading online source: %r" % url )
             sock = urllib.urlopen( url )
             _print( sock.info() )
@@ -975,17 +975,21 @@ def get_sun( countryId=189, mode=4, g_update=False ):
         #Rising and setting times for the Sun
         d_now = strftime( DATE_FORMAT, localtime( time() ) )
         sun_up, sun_down, in_broad_daylight = get_default_sun( d_now )
+        sun_length = ""
         if mode == 0:
-            return sun_up, sun_down, in_broad_daylight
+            return sun_up, sun_down, in_broad_daylight, sun_length
 
         # _info_mode is for debug
         _info_mode = [ "", "Astronomical Twilight starts-ends", "Nautical Twilight starts-ends", "Civil Twilight starts-ends", "Sunrise-Sunset" ]
 
-        html = get_html_source( countryId )
+        # Retrieve sunrise and sunseet hours for astronomical, nautical, civil twilight
+        html_13 = get_html_source( countryId, 13)
+        # Retrieve sunrise and sunset, day length and day length difference
+        html_11 = get_html_source( countryId, 11)
 
         #( Date, Astronomical Twilight starts-ends, Nautical Twilight starts-ends, Civil Twilight starts-ends, Sunrise Sunset )
         regexp = '<tr class=c.*?>%s</tr>' % ( '<td>(.*?)</td>' * 9 )
-        sunrises_sunsets = re.compile( regexp ).findall( html )
+        sunrises_sunsets = re.compile( regexp ).findall( html_13 )
 
         d_now = strptime( d_now, DATE_FORMAT )
         for day in sunrises_sunsets:
@@ -1012,20 +1016,33 @@ def get_sun( countryId=189, mode=4, g_update=False ):
                 _print( "In broad daylight %r" % in_broad_daylight )
                 _print( sun_up )
                 _print( sun_down )
+                break
+
+        #( Date, Sunrise, Sunset, Length of day, Length of day difference, Solar noon time, Altitude, Distance )
+        regexp = '<tr class=c.*?>%s</tr>' % ( '<td>(.*?)</td>' * 8 )
+        sunrises_sunsets = re.compile( regexp ).findall( html_11 )
+
+        for day in sunrises_sunsets:
+            date = day[ 0 ].replace( ",", "" )  #Date
+
+            if is_same_date( d_now, date ):
+                sun_length = day[ 4 ] # Length of day difference
+
+                _print( sun_down )
                 _print( "*"*100 )
                 break
 
-        return trim_time( sun_up ), trim_time( sun_down ), in_broad_daylight
+        return trim_time( sun_up ), trim_time( sun_down ), in_broad_daylight, sun_length
     except:
         print_exc()
-        return "6:00 AM", "8:00 PM", False
+        return "6:00 AM", "8:00 PM", False, ""
 
 def set_rising_sun( country, countryId ):
     choice = []
     #base_choice = [ "[B]Astronomical Twilight[/B]   [%s - %s]", "[B]Nautical Twilight[/B]   [%s - %s]", "[B]Civil Twilight[/B]   [%s - %s]", "[B]Sunrise and Sunset[/B]   [%s - %s]" ]
     #"32035|32036|32037|32036"
     for mode in range( 1, 5 ):
-        sun_up, sun_down, in_broad_daylight = get_sun( countryId, mode )
+        sun_up, sun_down, in_broad_daylight, sun_length = get_sun( countryId, mode )
         title = "[B]%s[/B]   [%s - %s]" % ( Addon.getLocalizedString( 32034+mode ), sun_up, sun_down )
         #title = base_choice[ mode-1 ] % ( sun_up, sun_down )
         choice.append( title )
