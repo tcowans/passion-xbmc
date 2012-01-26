@@ -7,19 +7,22 @@ import socket
 #from xml.dom import minidom #TODO: replace minidom by ET
 import elementtree.ElementTree as ET
 import traceback
+import sys
 
 # timeout en seconds
 #timeout =  10
 #socket.setdefaulttimeout(timeout)
 #cookies
-if os.name=='posix':
-    # Linux case
-    ROOTDIR = os.path.abspath(os.curdir).replace(';','')
-else:
-    # Xbox and Windows case
-    ROOTDIR = os.getcwd().replace(';','')
+ROOTDIR  = sys.modules[ "__main__" ].ROOTDIR
+CACHEDIR = sys.modules[ "__main__" ].CACHEDIR
 
-CACHEDIR= os.path.join(ROOTDIR,"cache")
+#if os.name=='posix':
+#    # Linux case
+#    ROOTDIR = os.path.abspath(os.curdir).replace(';','')
+#else:
+#    # Xbox and Windows case
+#    ROOTDIR = os.getcwd().replace(';','')
+
 COOKIEFILE = os.path.join(CACHEDIR,'cookies.lwp')
 cj = cookielib.LWPCookieJar()
 
@@ -29,17 +32,13 @@ if os.path.isfile(COOKIEFILE):
     cj.load(COOKIEFILE)
          
 xmlParam = "14-1-18/06/2008-0"
-#videoplayerURLOld = "http://www.canalplus.fr/flash/xml/module/video-player/"
 videoplayerURL = "http://webservice.canal-plus.com/rest/bigplayer/"
-#GetMosaicPage = "getMosaic.php"
 GetMosaicPage = "getMEAs/"
 EntrysPage = "video-player-filters.php"
-#ThemesPage = "video-player-thematic.php"
 ThemesPage = "initPlayer/"
 # TODO : add old base url
 VideoInfoPage = "getVideoInformation.php"
 SearchPage = "search/"
-
     
 def get_page(url,params={},savehtml=True,filename="defaut.html",check_connexion=True,debuglevel=1,nocookie=True,stream=False):
     """
@@ -159,6 +158,7 @@ def get_videos( subtheme_id,keyword='' ):
 #        print videoplayerURL + SearchPage + keyword
         #videos = _searchvideo( keyword )
         urlxml = videoplayerURL + SearchPage + keyword
+        print urlxml
         firstTag = "VIDEO"
     else:
         urlxml = videoplayerURL + GetMosaicPage + subtheme_id
@@ -176,7 +176,7 @@ def get_videos( subtheme_id,keyword='' ):
             title           = vid.find( "INFOS" ).find( "TITRAGE" ).findtext( "TITRE" ).strip() + ': ' #+ vid.find( "INFOS" ).find( "TITRAGE" ).findtext( "SOUS_TITRE" )
             publicationDate = vid.find( "INFOS" ).find( "TITRAGE" ).findtext( "SOUS_TITRE" )
             description     = vid.find( "INFOS" ).findtext( "DESCRIPTION" ).strip()
-            note            = float( vid.find( "INFOS" ).find( "NOTE" ).findtext( "MOYENNE" ) )
+            note            = float( vid.find( "INFOS" ).find( "NOTE" ).findtext( "MOYENNE" ).replace(",", ".") )
             imageURL        = vid.find( "MEDIA" ).find( "IMAGES" ).findtext( "GRAND" )
             
             videos.append( { 'videoID' : videoID,
