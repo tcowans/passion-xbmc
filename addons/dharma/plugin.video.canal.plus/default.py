@@ -2,40 +2,6 @@
 """
 plugin video Canal+ pour XBMC 
 
-
-19-11-2008 Version 1.0 par Alexsolex
-    - Creation
-    
-13-05-2009 Version Pre2.0 par Temhil 
-    - Adpatation du plugin suite a des modifications sur le site de Canal+
-    - Ajout du menu option
-    - Ajout du choix de visionnage (HD ou SD) des videos (via les options)
-    - Support multilangue
-    - Ajout description video via menu info
-    - Les images sont desormais automatiquement telechargees par le plugin lui meme
-    - Adaptation de la fonction de recherche au modifications du site
-    
-23-10-2009 Version Pre2.0b by Temhil
-    - Replaced separator in the URL "&" by "#" (broken due to change made in XBMC)
-    - Added plugin variable for SVN repo installer infos
-    
-23-10-2009 Version 2.0 by Temhil
-    - Replaced XML parser BeautifulSoup by ElementTree (needed because some XML were not correctly formed)
-    - Added support of new video stream URL, now http and rtmp urls are both supported
-    
-09-06-2010 Version 2.1 by Frost
-    - Modified the code for Dharma compatibility
-    
-11-10-2010 Version 2.2 by Temhil
-    - Moved cache and download directories to user data
-    - some cleanup
-    
-05-12-2010 Version 3.0 par Temhil
-    - Reorganisation du code du code
-     (on recupere l'URL de la video lors d'une 2eme etape invisble pour l'utilsateur)
-    - Suppression des threads (plus necessaire desormais)
-    - Amelioration du chargement des listes de videos 
-    - Affiche les couleurs correspondant aux rubriques (provenant de www.color-hex.com)
 """
 
 REMOTE_DBG       = False # For remote debugging with PyDev (Eclipse)
@@ -48,14 +14,15 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/addons/plugin.video.canal.plus/"
 __credits__      = "Team XBMC Passion"
 __platform__     = "xbmc media center"
-__date__         = "12-05-2010"
-__version__      = "3.0"
+__date__         = "23-01-2011"
+__version__      = "3.1"
 __svn_revision__ = 0
 
 
 import sys
 import os, os.path
 import urllib
+from time import sleep
 from traceback import print_exc
 
 # xbmc modules
@@ -84,24 +51,27 @@ if REMOTE_DBG:
             "You must add org.python.pydev.debug.pysrc to XBMC\system\python\Lib\pysrc")
         sys.exit(1)
 
-# Modules custom
-if sys.modules.has_key("cplusplus"):
-    del sys.modules['cplusplus']  
-try:
-    import resources.libs.cplusplus as cpp
-except:
-    print_exc()
 
-ROOTDIR            = os.getcwd()
-BASE_RESOURCE_PATH = os.path.join( ROOTDIR, "resources" )
-ADDON_DATA         = xbmc.translatePath( "special://profile/addon_data/%s/" % __addonID__ )
-DOWNLOADDIR        = os.path.join( ADDON_DATA, "downloads")
-CACHEDIR           = os.path.join( ADDON_DATA, "cache")
-COLOR_IMG_URL      = "http://www.color-hex.com/colorimg.php?color="
+ROOTDIR                 = __settings__.getAddonInfo('path') # os.getcwd()
+BASE_RESOURCE_PATH      = os.path.join( ROOTDIR, "resources" )
+ADDON_DATA              = xbmc.translatePath( "special://profile/addon_data/%s/" % __addonID__ )
+DOWNLOADDIR             = os.path.join( ADDON_DATA, "downloads")
+CACHEDIR                = os.path.join( ADDON_DATA, "cache")
+COLOR_IMG_URL           = "http://www.color-hex.com/colorimg.php?color="
+BOOKMARKS_DB_PATH       = os.path.join( CACHEDIR, "sb.txt" )
 #BASE_THUMBS_PATH = os.path.join( xbmc.translatePath( "special://profile/" ), "Thumbnails", "Video" )
 
 # List of directories to check at startup
 dirCheckList   = ( CACHEDIR, DOWNLOADDIR, ) #Tuple - Singleton (Note Extra ,)
+
+# Modules custom
+#if sys.modules.has_key("cplusplus"):
+#    del sys.modules['cplusplus']  
+try:
+    import resources.libs.cplusplus as cpp
+    from resources.libs.utilities import PersistentDataCreator, PersistentDataRetriever
+except:
+    print_exc()
 
 
 
@@ -129,7 +99,9 @@ class CanalPlusMosaicPlugin:
     PARAM_LIST_THEME      = "listethemes"
     PARAM_LIST_SUBTHEME   = "listesubthemes"
     PARAM_LIST_VIDEOS     = "listevideos"
+    PARAM_LIST_BOOKMARKS  = "listebookmarks"
     PARAM_SEARCH          = "search"
+    PARAM_SEARCH_DIALOG   = "searchdialog"
     PARAM_THEME_ID        = "theme_id"
     PARAM_SUBTHEME_ID     = "subtheme_id"
     PARAM_VIDEO_ID        = "video_id"
@@ -138,6 +110,8 @@ class CanalPlusMosaicPlugin:
     PARAM_PLAY_VIDEO      = "playvideo"
     PARAM_SHOW_VIDEO_INFO = "showvideoinfos"
     PARAM_SHOW_PICTURE    = "showpicture"
+    PARAM_ADD_BOOKMARK    = "addbookmark"
+    PARAM_BOOKMARK_URL    = "bookmarkurl"
     
     pluginhandle = int(sys.argv[1])
 
@@ -146,26 +120,73 @@ class CanalPlusMosaicPlugin:
     PARAM_URL         = 'url'
 
     def __init__( self, *args, **kwargs ):
-        print "================================"
-        print "Canal + - DEMARRAGE"
+        print "===================================="
+        print "CANAL+ version %s - DEMARRAGE"%__version__
+        print "===================================="
+        sleep(1)
+        self.set_debug_mode()
+
+        if self.debug_mode:
+            print "Python version:"
+            print sys.version_info
+            print "plugin: URL"
+            print sys.argv[ 0 ] + sys.argv[ 2 ]
+            print "ROOTDIR: %s"%ROOTDIR
+            print "ADDON_DATA: %s"%ADDON_DATA
+            print "CACHEDIR: %s"%CACHEDIR
+
+        self.set_options_display()
         self.parameters = self._parse_params()
-        cpp.CACHEDIR = CACHEDIR
         
         # Check if directories in user data exist
         for i in range( len( dirCheckList ) ):
             verifrep( dirCheckList[i] ) 
             
-        # Read settings
-        #self.useCacheThumb = __settings__.getSetting('use_cache_thumb') == 'true'
-            
         self.select()
         
         
+    def set_debug_mode(self):
+        debug =__settings__.getSetting('debug')
+        if debug == 'true':
+            self.debug_mode = True
+        else:
+            self.debug_mode = False
+        print "CANAL+: debug Mode:"
+        print self.debug_mode
+        
+    def set_options_display(self):
+        debug =__settings__.getSetting('debug')
+        self.options_display = int( __settings__.getSetting( 'option_display' ) ) # 0: context menu / 1: video list / 2: both
+        print "CANAL+: options_display Mode:"
+        print self.options_display
+        
     def select( self ):
         try:
+            if self.debug_mode:
+                print "select"
+                print self.parameters
+            
             if len(self.parameters) < 1:
                 self.show_themes()
             
+            elif self.PARAM_SEARCH_DIALOG in self.parameters.keys():
+                self.show_search_dialog( self.parameters[self.PARAM_THEME_ID],self.parameters[self.PARAM_SUBTHEME_ID], self.parameters[self.PARAM_REFERER])
+                
+            elif self.PARAM_SEARCH in self.parameters.keys():
+                # Lance une recherche et affiche les resultat des videos trouvees
+                self.show_search(self.parameters[self.PARAM_SEARCH], self.parameters[self.PARAM_THEME_ID],self.parameters[self.PARAM_SUBTHEME_ID])
+
+            elif self.PARAM_ADD_BOOKMARK in self.parameters.keys():
+                ok = self.add_bookmark( self.parameters[self.PARAM_ADD_BOOKMARK], self.parameters[self.PARAM_BOOKMARK_URL] )
+                #if ok == "OK":
+#                dialog = xbmcgui.Dialog()
+#                ok = dialog.ok( __language__( 30000 ), __language__( 30004 ) )
+                #TODO: add  error dialog
+
+                # To prevent to re-save bm after video playback
+                xbmc.executebuiltin('XBMC.Container.Update(%s)' % (self.parameters[self.PARAM_BOOKMARK_URL]))
+
+                
             elif self.PARAM_LIST_THEME in self.parameters.keys():
                 #on liste les themes
                 self.show_themes()
@@ -179,6 +200,10 @@ class CanalPlusMosaicPlugin:
                 theme_id,subtheme_id = self.parameters[self.PARAM_LIST_VIDEOS].split("#")
                 self.show_videos(theme_id,subtheme_id,self.parameters[self.PARAM_REFERER])
                    
+            elif self.PARAM_LIST_BOOKMARKS in self.parameters.keys():
+                #on liste les favoris
+                self.show_bookmarks()
+            
             elif self.PARAM_PLAY_VIDEO in self.parameters.keys():
                 # On lance la video
                 video_id = int(self.parameters[self.PARAM_VIDEO_ID])
@@ -207,27 +232,7 @@ class CanalPlusMosaicPlugin:
                                                                 self.parameters[self.PARAM_DOWNLOAD_VIDEO],
                                                                 os.path.join(DOWNLOADDIR,xbmc.makeLegalFilename(os.path.basename(self.parameters[self.PARAM_DOWNLOAD_VIDEO])))
                                                                 ))
-                #    #télécharge la vidéo selon l'url fournie
-                #    pDialog = xbmcgui.DialogProgress()
-                #    ret = pDialog.create('CanalPlus', 'Démarrage du téléchargement ...')
-                #    #téléchargement par Thread : FONCTIONNE MAIS TRES MAL : pas convaincant
-                #    goDL = cpp.DL_video(parameters["dlvideo"],
-                #                        #xbmc.makeLegalFilename(os.path.join(DOWNLOADDIR,os.path.basename(parameters["dlvideo"]))),
-                #                        os.path.join(DOWNLOADDIR,xbmc.makeLegalFilename(os.path.basename(parameters["dlvideo"]))),
-                #                        pDialog.update,pDialog)
-                #    pDialog.close()
-                #    if goDL==1:
-                #        xbmc.executebuiltin("XBMC.Notification(%s,%s)"%("Telechargement termine !",""))
-                #    elif goDL == 0:
-                #        xbmc.executebuiltin("XBMC.Notification(%s,%s)"%("Fichier existant !","Telechargement annule."))
-                #    elif goDL == -1:
-                #        xbmc.executebuiltin("XBMC.Notification(%s,%s)"%("Telechargement annule par l'utilisateur.",""))
-
-                                                                
-            elif self.PARAM_SEARCH in self.parameters.keys():
-                # Lance une recherche et affiche les resultat des videos trouvees
-                self.show_search(self.parameters[self.PARAM_THEME_ID],self.parameters[self.PARAM_SUBTHEME_ID])
-
+                                                                              
             elif self.PARAM_SHOW_PICTURE in self.parameters.keys():
                 # Non utilise
                 # ne fait rien
@@ -270,7 +275,8 @@ class CanalPlusMosaicPlugin:
                 
                 # Filling dictionnary
                 paramDic[key]=value
-        print paramDic
+        if self.debug_mode:
+            print paramDic
         return paramDic        
 
 
@@ -280,7 +286,6 @@ class CanalPlusMosaicPlugin:
         """
         url = sys.argv[ 0 ]
         sep = '?'
-        print paramsDic
         try:
             for param in paramsDic:
                 #TODO: solve error on name with non ascii char (generate exception)
@@ -298,38 +303,53 @@ class CanalPlusMosaicPlugin:
 
     def _addLink( self, name, name2="", url="", iconimage="DefaultVideo.png", itemInfoType="Video", itemInfoLabels=None, c_items=None, totalItems=0 ):
         ok=True
-        print iconimage
-        lstItem=xbmcgui.ListItem( label=name, label2=name2, iconImage=iconimage, thumbnailImage=iconimage )
-        if c_items : 
-            lstItem.addContextMenuItems( c_items, replaceItems=True )
-            
-        if itemInfoLabels:
-            iLabels = itemInfoLabels
-        else:
-            iLabels = { "Title": name }
-            
-        lstItem.setInfo( type=itemInfoType, infoLabels=iLabels )
-        lstItem.setProperty('IsPlayable', 'true')
-        ok=xbmcplugin.addDirectoryItem( handle=int(sys.argv[1]), url=url, listitem=lstItem, totalItems=totalItems )
+        if self.debug_mode:
+            print "_addLink - iconimage: %s"%iconimage
+            print itemInfoLabels
+            print c_items
+            print totalItems
+        try:
+            lstItem=xbmcgui.ListItem( label=name, label2=name2, iconImage=iconimage, thumbnailImage=iconimage )
+            if c_items : 
+                lstItem.addContextMenuItems( c_items, replaceItems=True )
+                
+            if itemInfoLabels:
+                iLabels = itemInfoLabels
+            else:
+                iLabels = { "Title": name }
+                
+            lstItem.setInfo( type=itemInfoType, infoLabels=iLabels )
+            lstItem.setProperty('IsPlayable', 'true')
+            ok=xbmcplugin.addDirectoryItem( handle=int(sys.argv[1]), url=url, listitem=lstItem, totalItems=totalItems )
+        except:
+            ok = False
         return ok
 
         
     def _addDir( self, name, name2="", url="", iconimage="DefaultFolder.png", itemInfoType="Video", itemInfoLabels=None, c_items=None, totalItems=0 ):
         #u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)
         ok=True
-        lstItem=xbmcgui.ListItem( label=name, label2=name2, iconImage=iconimage, thumbnailImage=iconimage )
-        
-        if c_items : 
-            lstItem.addContextMenuItems( c_items, replaceItems=True )
+        if self.debug_mode:
+            print "_addDir - iconimage: %s"%iconimage
+            print itemInfoLabels
+            print c_items
+            print totalItems
+        try:
+            lstItem=xbmcgui.ListItem( label=name, label2=name2, iconImage=iconimage, thumbnailImage=iconimage )
             
-        if itemInfoLabels:
-            iLabels = itemInfoLabels
-        else:
-            iLabels = { "Title": name }
-            
-        lstItem.setInfo( type=itemInfoType, infoLabels=iLabels )
-        ok=xbmcplugin.addDirectoryItem( handle=int( sys.argv[1] ), url=url, listitem=lstItem, isFolder=True, totalItems=totalItems )
-        
+            if c_items : 
+                lstItem.addContextMenuItems( c_items, replaceItems=True )
+                
+            if itemInfoLabels:
+                iLabels = itemInfoLabels
+            else:
+                iLabels = { "Title": name }
+                
+            lstItem.setInfo( type=itemInfoType, infoLabels=iLabels )
+            ok=xbmcplugin.addDirectoryItem( handle=int( sys.argv[1] ), url=url, listitem=lstItem, isFolder=True, totalItems=totalItems )
+        except:
+            ok = False
+            print_exc()
         return ok
 
         
@@ -358,7 +378,7 @@ class CanalPlusMosaicPlugin:
         return colored_text
 
 
-    def show_search(self, theme_id,subtheme_id):
+    def show_search_dialog(self, theme_id,subtheme_id, referer=""):
         """
         Display virtual keyboard and start a search
         """
@@ -367,10 +387,22 @@ class CanalPlusMosaicPlugin:
         if kb.isConfirmed():
             motcle = kb.getText()
             if ( len(motcle) > 2): # Taille mini pour une recherche
-                self.show_videos(theme_id=theme_id,subtheme_id=subtheme_id,referer="Resultats pour '%s'"%motcle,keyword=motcle)
+                paramsAddonsSearch = {}
+                paramsAddonsSearch[self.PARAM_SEARCH]      = motcle
+                paramsAddonsSearch[self.PARAM_THEME_ID]    = "theme_id"
+                paramsAddonsSearch[self.PARAM_SUBTHEME_ID] = "subtheme_id"
+                paramsAddonsSearch[self.PARAM_REFERER]     = referer
+                urlSearch = self._create_param_url( paramsAddonsSearch )
+                xbmc.executebuiltin('XBMC.Container.Update(%s)' % (urlSearch))
             else:
                 dialogError = xbmcgui.Dialog()
                 ok = dialogError.ok( __language__( 30204 ), __language__( 30205 ), __language__( 30206 ) )
+
+    def show_search(self, motcle, th_id, subth_id):
+        """
+        Display virtual keyboard and start a search
+        """
+        self.show_videos(theme_id=th_id,subtheme_id=subth_id,referer="Resultats pour '%s'"%motcle,keyword=motcle)
 
 
     def get_video_urls(self, video_id):
@@ -395,20 +427,36 @@ class CanalPlusMosaicPlugin:
         pDialog = xbmcgui.DialogProgress()
         ret = pDialog.create( 'XBMC', __language__ ( 30200 ) )
         pDialog.update(0, __language__ ( 30202 ) )
-        themes=cpp.get_themes()
+
+        # Bookmarks
+        paramsGetBookmarks = {}
+        paramsGetBookmarks[self.PARAM_LIST_BOOKMARKS] = "True"
+        urlGetBookmarks = self._create_param_url( paramsGetBookmarks )
+        self._addDir( __language__ ( 30003 ), url=urlGetBookmarks )
 
         # Recherche
         #url = sys.argv[0]+"?search=&theme_id=%s&subtheme_id=%s&referer=%s"%("Rechercher dans toutes les catégories :",
         #                                                                    "",
         #                                                                    "")
         paramsAddonsSearch = {}
-        paramsAddonsSearch[self.PARAM_SEARCH]      = ""
-        paramsAddonsSearch[self.PARAM_THEME_ID]    = ""
-        paramsAddonsSearch[self.PARAM_SUBTHEME_ID] = ""
-        paramsAddonsSearch[self.PARAM_REFERER]     = "Rechercher dans toutes les catégories :"
-        url = self._create_param_url( paramsAddonsSearch )
-        self._addDir( __language__ ( 30001 ), url )
+        paramsAddonsSearch[self.PARAM_SEARCH_DIALOG] = "True"
+        paramsAddonsSearch[self.PARAM_THEME_ID]      = "None"
+        paramsAddonsSearch[self.PARAM_SUBTHEME_ID]   = "None"
+        paramsAddonsSearch[self.PARAM_REFERER]       = "Rechercher dans toutes les catégories :"
+        urlSearch = self._create_param_url( paramsAddonsSearch )
         
+        # Addboomarks
+        paramsAddBookmark = {}
+        paramsAddBookmark[self.PARAM_ADD_BOOKMARK] = __language__ ( 30002 )
+        paramsAddBookmark[self.PARAM_BOOKMARK_URL] = sys.argv[ 0 ] + sys.argv[ 2 ] # current plugin url
+        
+        urlAddBkM = self._create_param_url( paramsAddBookmark, quote_plus=True )
+        
+        if self.options_display in [1, 2]:
+            self._addDir( __language__ ( 30001 ), url=urlSearch )
+            self._addDir( __language__ ( 30110 ), url=urlAddBkM )
+        
+        themes=cpp.get_themes()
         for theme_id, theme_titre, theme_color in themes:
             #A ce jour les ID inferieurs à 10000 sont vides
             #De plus les ID au dessus de 10000 sont redondants avec ceux en dessous
@@ -421,32 +469,26 @@ class CanalPlusMosaicPlugin:
                 print url
                 #url = sys.argv[0]+"?listesubthemes=%s&referer=%s"%(theme_id,theme_titre)
 
+                if self.options_display in [0, 2]:
+#                    cm = [(__language__( 30001 ), 'XBMC.Container.Update(%s)' % (urlSearch)),
+#                          (__language__( 30110 ), 'XBMC.Container.Update(%s)' % (urlAddBkM))]
+                    cm = [(__language__( 30001 ), 'XBMC.Container.Update(%s)' % (urlSearch)),
+                          (__language__( 30110 ), 'XBMC.RunPlugin(%s)' % (urlAddBkM))]
+                    #TODO: check how to call plugin withotu changing list
+#                    url_args = sys.argv[2].replace("self_update=True&", "")
+#                    # create path to module in backups
+#                    filepath= "plugin://programs/.backups/" + __plugin__
+#                    path = '%s%s' % ( filepath, url_args, )
+#        
+#                    # run module from backup
+#                    command = 'XBMC.RunPlugin(%s)' % path
+#                    log(command)
+#                    xbmc.executebuiltin(command)
+
+                else:
+                    cm = None
                 thumb = COLOR_IMG_URL + theme_color
-#                #  Get cached thumbnail instead of redownload it when possible
-#                img_url = COLOR_IMG_URL + theme_color
-#                print self.useCacheThumb
-#                if self.useCacheThumb == True:
-#                    thumbnailImage = xbmc.getCacheThumbName( img_url )
-#                    thumbnailpath = os.path.join( BASE_THUMBS_PATH, thumbnailImage[ 0 ], thumbnailImage )
-#                    if os.path.exists(thumbnailpath):
-#                        thumb=thumbnailpath
-#                    else:
-#                        thumb=img_url
-#                else:
-#                    thumb=img_url
-#                    
-#                item=xbmcgui.ListItem(label=theme_titre,
-#                                      iconImage=thumb,
-#                                      thumbnailImage=thumb)
-#                
-#                
-#                
-#                ok = ok and xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),
-#                                                        url=url,
-#                                                        listitem=item,
-#                                                        isFolder=True,
-#                                                        totalItems=len(themes))
-                self._addDir( name=theme_titre, url=url, iconimage=thumb, totalItems=len(themes) )
+                self._addDir( name=theme_titre, url=url, iconimage=thumb, totalItems=len(themes), c_items=cm )
                 i=i+1
                 pDialog.update(int(99*float(i)/(len(themes))), __language__ ( 30202 ) )
             else:
@@ -477,13 +519,21 @@ class CanalPlusMosaicPlugin:
         #                                                                    theme_id,
         #                                                                    "")
         paramsAddonsSearch = {}
-        paramsAddonsSearch[self.PARAM_SEARCH]      = ""
-        paramsAddonsSearch[self.PARAM_THEME_ID]    = str(theme_id)
-        paramsAddonsSearch[self.PARAM_SUBTHEME_ID] = ""
-        paramsAddonsSearch[self.PARAM_REFERER]     = "Rechercher dans %s :"%referer
-        url = self._create_param_url( paramsAddonsSearch )
-        self._addDir( __language__ ( 30001 ), url )
+        paramsAddonsSearch[self.PARAM_SEARCH_DIALOG] = ""
+        paramsAddonsSearch[self.PARAM_THEME_ID]      = str(theme_id)
+        paramsAddonsSearch[self.PARAM_SUBTHEME_ID]   = ""
+        paramsAddonsSearch[self.PARAM_REFERER]       = "Rechercher dans %s :"%referer
+        urlSearch = self._create_param_url( paramsAddonsSearch )
     
+        paramsAddBookmark = {}
+        paramsAddBookmark[self.PARAM_ADD_BOOKMARK] = referer
+        paramsAddBookmark[self.PARAM_BOOKMARK_URL] = sys.argv[ 0 ] + sys.argv[ 2 ] # current plugin url
+        urlAddBkM = self._create_param_url( paramsAddBookmark, quote_plus=True )
+        
+        if self.options_display in [1, 2]:
+            self._addDir( __language__ ( 30001 ), url=urlSearch )
+            self._addDir( __language__ ( 30110 ), url=urlAddBkM )
+        
         for subtheme_id, subtheme_titre in subthemes:
             #url = sys.argv[0]+"?listevideos=%s#%s&referer=%s"%(theme_id,subtheme_id,referer+">"+subtheme_titre)
             paramsAddons = {}
@@ -500,7 +550,14 @@ class CanalPlusMosaicPlugin:
             #                                        isFolder=True,
             #                                        totalItems=len(subthemes))
             
-            self._addDir( name=subtheme_titre, url=url, totalItems=len(subthemes) )
+            if self.options_display in [0, 2]:
+#                cm = [(__language__( 30001 ), 'XBMC.Container.Update(%s)' % (urlSearch)),
+#                      (__language__( 30110 ), 'XBMC.Container.Update(%s)' % (urlAddBkM))]
+                cm = [(__language__( 30001 ), 'XBMC.Container.Update(%s)' % (urlSearch)),
+                      (__language__( 30110 ), 'XBMC.RunPlugin(%s)' % (urlAddBkM))]
+            else:
+                cm = None
+            self._addDir( name=subtheme_titre, url=url, totalItems=len(subthemes), c_items=cm )
             i=i+1
             pDialog.update(int(99*float(i)/(len(subthemes))), __language__ ( 30202 ) )
 
@@ -533,12 +590,23 @@ class CanalPlusMosaicPlugin:
         #                                                                    theme_id,
         #                                                                    subtheme_id)
         paramsAddonsSearch = {}
-        paramsAddonsSearch[self.PARAM_SEARCH]      = ""
-        paramsAddonsSearch[self.PARAM_THEME_ID]    = str(theme_id)
-        paramsAddonsSearch[self.PARAM_SUBTHEME_ID] = str(subtheme_id)
-        paramsAddonsSearch[self.PARAM_REFERER]     = "Rechercher dans %s"%referer
-        url = self._create_param_url( paramsAddonsSearch )
-        self._addDir( __language__ ( 30001 ), url )
+        paramsAddonsSearch[self.PARAM_SEARCH_DIALOG] = ""
+        paramsAddonsSearch[self.PARAM_THEME_ID]      = str(theme_id)
+        paramsAddonsSearch[self.PARAM_SUBTHEME_ID]   = str(subtheme_id)
+        paramsAddonsSearch[self.PARAM_REFERER]       = "Rechercher dans %s"%referer
+        urlSearch = self._create_param_url( paramsAddonsSearch )
+        
+        paramsAddBookmark = {}
+        if keyword == "":
+            paramsAddBookmark[self.PARAM_ADD_BOOKMARK] = referer
+        else:
+            paramsAddBookmark[self.PARAM_ADD_BOOKMARK] = keyword 
+        paramsAddBookmark[self.PARAM_BOOKMARK_URL] = sys.argv[ 0 ] + sys.argv[ 2 ] # current plugin url
+        urlAddBkM = self._create_param_url( paramsAddBookmark, quote_plus=True )
+
+        if self.options_display in [1, 2]:
+            self._addDir( __language__ ( 30001 ), url=urlSearch )
+            self._addDir( __language__ ( 30110 ), url=urlAddBkM )
         
         for video in videos:
             try:
@@ -549,67 +617,22 @@ class CanalPlusMosaicPlugin:
                 url = self._create_param_url( paramsAddons )
                 thumb=video['image.url']
 
-#                #  Get cached thumbnail instead of redownload it when possible
-#                if self.useCacheThumb == True:
-#                    #thumbnailImage = xbmc.getCacheThumbName( os.path.basename(video['image.url']) )
-#                    print video['image.url']
-#                    print sys.argv[ 0 ] + sys.argv[ 2 ]
-#                    thumbnailImage = xbmc.getCacheThumbName( video['image.url'] )
-#                    print thumbnailImage
-#                    thumbnailpath = os.path.join( BASE_THUMBS_PATH, thumbnailImage[ 0 ], thumbnailImage )
-#                    print thumbnailpath
-#                    
-#                    if os.path.exists(thumbnailpath):
-#                        thumb=thumbnailpath
-#                    else:
-#                        thumb=video['image.url']
-#                else:
-#                    thumb=video['image.url']
-
-#                item=xbmcgui.ListItem(label=video["title"],label2=video["publication_date"],
-#                                      iconImage=thumb,
-#                                      thumbnailImage=thumb)
         
                 #menu contextuel
-#                label  = __language__( 30100 ) # Enregistrer (Haute Qualitée)
-#                action = 'XBMC.RunScript(%s,%s,%s)'%(os.path.join(os.getcwd(), "resources", "libs", "FLVdownload.py"),
-#                                                     infos["video.hi"],
-#                                                     os.path.join(DOWNLOADDIR,xbmc.makeLegalFilename(os.path.basename(infos["video.hi"])))
-#                                                     )
-#                item.addContextMenuItems([ (
-#                    __language__( 30100 ),
-#                    'XBMC.RunScript(%s,%s,%s)'%(os.path.join(os.getcwd(), "resources", "libs","FLVdownload.py"),
-#                                                infos["video.hi"],
-#                                                os.path.join(DOWNLOADDIR,xbmc.makeLegalFilename(os.path.basename(infos["video.hi"])))
-#                                                ),
-#                                            ),(
-#                    __language__( 30101 ),
-#                    'XBMC.RunScript(%s,%s,%s)'%(os.path.join(os.getcwd(), "resources", "libs","FLVdownload.py"),
-#                                                     infos["video.low"],
-#                                                     os.path.join(DOWNLOADDIR,xbmc.makeLegalFilename(os.path.basename(infos["video.hi"])))
-#                                                     ),
-#                                            )
-#                    ])
-                #infos sur la video
-#                item.setInfo( type="Video",
-#                              infoLabels={ "Title": video["title"] + " " + video["publication_date"],
-#                                           "Rating":video["note"],
-#                                           "Date": video["publication_date"],
-#                                           "Plot": video["description"]})
-#                item.setProperty('IsPlayable', 'true')
-#
-#                ok = ok and xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),
-#                                                        url=url,
-#                                                        listitem=item,
-#                                                        isFolder=False)
-#                
+                if self.options_display in [0, 2]:
+#                    cm = [(__language__( 30001 ), 'XBMC.Container.Update(%s)' % (urlSearch)),
+#                          (__language__( 30110 ), 'XBMC.Container.Update(%s)' % (urlAddBkM))]
+                    cm = [(__language__( 30001 ), 'XBMC.Container.Update(%s)' % (urlSearch)),
+                          (__language__( 30110 ), 'XBMC.RunPlugin(%s)' % (urlAddBkM))]
+                else:
+                    cm = None
+
                 infoLabels={ "Title": video["title"] + " " + video["publication_date"],
                              "Rating":video["note"],
                              "Date": video["publication_date"],
                              "Plot": video["description"] }
-
                 
-                self._addLink( name=video["title"], url=url, iconimage=thumb, itemInfoLabels=infoLabels )
+                self._addLink( name=video["title"], url=url, iconimage=thumb, itemInfoLabels=infoLabels, c_items=cm )
                 cpt=cpt+1
                 pDialog.update(int(99*float(cpt)/(len(videos))), __language__ ( 30202 ) )
             except:
@@ -623,7 +646,125 @@ class CanalPlusMosaicPlugin:
         self._end_of_directory( True )
         return ok
 
+    def show_bookmarks ( self ):
+        ok = True
+        i= 0
+        
+        # Recuperation de la liste des themes
+        pDialog = xbmcgui.DialogProgress()
+        ret = pDialog.create( 'XBMC', __language__ ( 30200 ) )
+        pDialog.update(0, __language__ ( 30202 ) )
 
+        # Recherche
+        #url = sys.argv[0]+"?search=&theme_id=%s&subtheme_id=%s&referer=%s"%("Rechercher dans toutes les catégories :",
+        #                                                                    "",
+        #                                                                    "")
+        paramsAddonsSearch = {}
+        paramsAddonsSearch[self.PARAM_SEARCH_DIALOG] = "True"
+        paramsAddonsSearch[self.PARAM_THEME_ID]      = "None"
+        paramsAddonsSearch[self.PARAM_SUBTHEME_ID]   = "None"
+        paramsAddonsSearch[self.PARAM_REFERER]       = "Rechercher dans toutes les catégories :"
+        urlSearch = self._create_param_url( paramsAddonsSearch )
+        
+#        paramsAddBookmark = {}
+#        paramsAddBookmark[self.PARAM_ADD_BOOKMARK] = __language__ ( 30002 )
+#        paramsAddBookmark[self.PARAM_BOOKMARK_URL] = sys.argv[ 0 ] + sys.argv[ 2 ] # current plugin url
+#        urlAddBkM = self._create_param_url( paramsAddBookmark, quote_plus=True )
+        
+        if self.options_display in [1, 2]:
+            self._addDir( __language__ ( 30001 ), url=urlSearch )
+#            self._addDir( __language__ ( 30110 ), url=urlAddBkM )
+        
+        bookmarks=self.get_bookmarks()
+        for bookmarkName in bookmarks.keys():
+            if self.options_display in [0, 2]:
+#                    cm = [(__language__( 30001 ), 'XBMC.Container.Update(%s)' % (urlSearch)),
+#                          (__language__( 30110 ), 'XBMC.Container.Update(%s)' % (urlAddBkM))]
+                cm = [(__language__( 30001 ), 'XBMC.Container.Update(%s)' % (urlSearch))]
+            else:
+                cm = None
+            self._addDir( name=bookmarkName, url=bookmarks[bookmarkName], totalItems=len(bookmarks), c_items=cm )
+            i=i+1
+            pDialog.update(int(99*float(i)/(len(bookmarks))), __language__ ( 30202 ) )
+        xbmcplugin.addSortMethod(int(sys.argv[1]), xbmcplugin.SORT_METHOD_NONE)
+        xbmcplugin.setPluginCategory( handle=int( sys.argv[ 1 ] ), category= __language__ ( 30003 )) # Catégories
+        self._end_of_directory( True )
+        return ok
+        
+    def get_bookmarks( self ):
+        status = "OK"
+        # retrieved bookmarks
+        bookmarks = {}
+        if os.path.exists(BOOKMARKS_DB_PATH):
+            pdr = PersistentDataRetriever( BOOKMARKS_DB_PATH ) 
+            bookmarks = pdr.get_data()    
+        if self.debug_mode:
+            print 'bookmarks:'
+            print bookmarks
+        return bookmarks
+
+
+    def add_bookmark( self, name, url ):
+        # retrieved bookmarks
+        bookmarks = {}
+        if os.path.exists(BOOKMARKS_DB_PATH):
+            pdr = PersistentDataRetriever( BOOKMARKS_DB_PATH ) 
+            bookmarks = pdr.get_data()
+        if self.debug_mode:
+            print 'add_bookmark - bookmarks before:'
+            print bookmarks
+        dialog = xbmcgui.Dialog()
+        for key in bookmarks:
+            if bookmarks[key] == url:
+                print "bookmark %s already saved"%name
+                if self.debug_mode:
+                    print "url: %s"%url
+                ok = dialog.ok( __language__( 30000 ), __language__( 30005 ) )
+                break
+        else:
+            print "url not found in bookmarks - adding it"
+            kb = xbmc.Keyboard(name, __language__( 30208 ), False) #Recherche sur Canal Plus Videos
+            kb.doModal()
+            if kb.isConfirmed():
+                motcle = kb.getText()
+                if ( len(motcle) > 2): # Taille mini pour une recherche
+                    if bookmarks.has_key(motcle):
+                        dialogError = xbmcgui.Dialog()
+                        ok = dialogError.ok( __language__( 30204 ), __language__( 30209 ) )
+
+                        # Update bookmarks files
+                        PersistentDataCreator( bookmarks, BOOKMARKS_DB_PATH )
+                        ok = dialog.ok( __language__( 30000 ), __language__( 30004 ) )
+                    else:
+                        bookmarks[motcle] = url
+                        if self.debug_mode:
+                            print 'add_bookmark - bookmarks after:'
+                            print bookmarks
+                else:
+                    dialogError = xbmcgui.Dialog()
+                    ok = dialogError.ok( __language__( 30204 ), __language__( 30207 ), __language__( 30206 ) )
+            
+
+    def delete_search_bookmark( self, name ):
+        status = "OK"
+        # retrieved bookmarks
+        bookmarks = {}
+        if os.path.exists(BOOKMARKS_DB_PATH):
+            pdr = PersistentDataRetriever( BOOKMARKS_DB_PATH ) 
+            bookmarks = pdr.get_data()
+    
+        print 'bookmarks:'
+        print bookmarks
+        if bookmarks.has_key(name):
+            bookmarks.pop(name)
+            bookmarks.remove(url)
+        else:
+            print "bookmark not found"
+            status = "NOT_FOUND"
+                
+        # Update bookmarks files
+        PersistentDataCreator( bookmarks, BOOKMARKS_DB_PATH )
+        return status
 
                                                 
 #######################################################################################################################    
