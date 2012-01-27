@@ -62,7 +62,7 @@ class Viewer:
             elif sys.argv[ 1 ] == "howtostart":
                 return "How To Start MovieSets Backend", self.readFile( "HowToStartMovieSetsBackend.txt" )
         except:
-            LOGGER.error.exc_info( sys.exc_info(), self )
+            LOGGER.error.print_exc()
         return "", ""
 
     def readFile( self, filename ):
@@ -81,7 +81,7 @@ class WebBrowser:
             # launch url
             self.launchUrl( url )
         except:
-            LOGGER.error.exc_info( sys.exc_info(), self )
+            LOGGER.error.print_exc()
 
     def launchUrl( self, url ):
         import webbrowser
@@ -95,7 +95,7 @@ def Main():
         else:
             Viewer()
     except:
-        LOGGER.error.exc_info( sys.exc_info() )
+        LOGGER.error.print_exc()
 
 
 

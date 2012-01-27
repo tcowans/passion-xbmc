@@ -243,7 +243,7 @@ for countset, movieset in enumerate( movie_sets ):
                 pprint( "-"*50 )
                 pprint( "-"*50 )
             except:
-                log.error.exc_info( sys.exc_info() )
+                log.error.print_exc()
 
         VideoAspect = VideoAspectToAspectDescription( float( aspect / total_movies ) )
         VideoResolution = VideoDimsToResolutionDescription( int( iWidth / total_movies ), int( iHeight / total_movies ) )
@@ -292,5 +292,5 @@ for countset, movieset in enumerate( movie_sets ):
             moviesets[ movieset[ 'label' ] ] = 0
             break # get only one user want info
     except:
-        log.error.exc_info( sys.exc_info() )
+        log.error.print_exc()
 #return listitems, moviesets

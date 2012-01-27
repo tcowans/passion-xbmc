@@ -105,6 +105,7 @@
 						<align>center</align>
 						<include>ButtonMediaSubCommonValues</include>
 						<label>749</label>
+						<enable>System.HasAddon(script.module.pil)</enable>
 					</control>
 				</control>
 				<control type="image">

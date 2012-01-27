@@ -17,7 +17,7 @@ xbmcHttp = "http://"
 if webserverpassword and webserverusername:
     xbmcHttp += "%s:%s@" % ( webserverpassword, webserverusername )
 
-xbmcHttp += "localhost" #"107.0.0.1"
+xbmcHttp += xbmc.getIPAddress() #"localhost" #"107.0.0.1"
 
 if webserverport and webserverport != "80":
     xbmcHttp += ":%s" % webserverport
@@ -28,5 +28,4 @@ xbmcHttp += "/xbmcCmds/xbmcHttp"
 #print webserverpassword
 #print webserverport
 #print webserverusername
-
 #print xbmcHttp

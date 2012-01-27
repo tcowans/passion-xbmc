@@ -16,7 +16,7 @@ ADDON = Addon( "script.moviesets" )
 
 
 def IsTrue( text ):
-    return ( text == "true" )
+    return ( text.lower() == "true" )
 
 
 def runScript():
@@ -30,15 +30,7 @@ def runScript():
         script = "manager" #"moviesets_mgr"
 
     elif ( "containerid" in args ) and ( not IsTrue( xbmc.getInfoLabel( "Window(VideoLibrary).Property(MovieSets.IsAlive)" ) ) ):
-        #if xbmc.getCondVisibility( "SubString(Container.FolderPath,videodb://1) | StringCompare(ListItem.Path,videodb://)" ):
         script = "moviesets"
-        #else:
-        #    #start later 3 seconds
-        #    alarm_name = "MovieSets.Reload"
-        #    if xbmc.getCondVisibility( "System.HasAlarm(%s)" % alarm_name ):
-        #        xbmc.executebuiltin( "CancelAlarm(%s,true)" % alarm_name )
-        #    if xbmc.getCondVisibility( "Window.IsVisible(VideoLibrary)" ):
-        #        xbmc.executebuiltin( "AlarmClock(%s,RunScript(%s),0:02,true)" % ( alarm_name, ",".join( argv + [ alarm_name ] ) ) )
 
     if script:
         if script != "moviesets":
@@ -46,6 +38,11 @@ def runScript():
                 message = "Please! Enable XBMC Web Server..."
                 header, icon = ADDON.getAddonInfo( "name" ), ADDON.getAddonInfo( "icon" )
                 xbmc.executebuiltin( "Notification(%s,%s,6000,%s)" % ( header, message, icon ) )
+                xbmc.executebuiltin( "ActivateWindow(networksettings)" )
+                xbmc.executebuiltin( "SetFocus(-101)" )
+                xbmc.executebuiltin( "SetFocus(-75)" )
+                xbmc.executebuiltin( "Action(Select)" )
+                return
 
         command = "RunScript(%s.py,%s)" % ( os.path.join( ADDON.getAddonInfo( "path" ), "lib", script ), args, )
 
@@ -54,9 +51,9 @@ def runScript():
         #print alarm_name + " started"
         if xbmc.getCondVisibility( "System.HasAlarm(%s)" % alarm_name ):
             xbmc.executebuiltin( "CancelAlarm(%s,true)" % alarm_name )
-        if script == "moviesets" and argv[ -1 ] != "MovieSets.Reload":
+        if script == "moviesets" and str( argv[ -1 ] ).lower() != "moviesets.reload":
             #wait 1or2 seconds for tvtunes load correctly ;)
-            xbmc.executebuiltin( "AlarmClock(%s,%s,0:02,true)" % ( alarm_name, command ) )
+            xbmc.executebuiltin( "AlarmClock(%s,%s,0:00,true)" % ( alarm_name, command ) )
         else:
             xbmc.executebuiltin( command )
 

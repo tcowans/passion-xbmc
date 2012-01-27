@@ -15,7 +15,7 @@ try:
     # Require PIL for FLIP
     from PIL import Image
 except:
-    LOGGER.error.exc_info( sys.exc_info() )
+    LOGGER.error.print_exc()
 
 
 def flip_fanart( fanart, quality=85 ):
@@ -25,7 +25,7 @@ def flip_fanart( fanart, quality=85 ):
         except:
             quality = 85
             print "flip_fanart::quality: %s" % repr( quality )
-            LOGGER.error.exc_info( sys.exc_info() )
+            LOGGER.error.print_exc()
         try:
             im = Image.open( fanart )
             im = im.transpose( Image.FLIP_LEFT_RIGHT )
@@ -34,12 +34,12 @@ def flip_fanart( fanart, quality=85 ):
             try: im.save( fanart, format, quality=quality, dpi=im.info.get( "dpi", ( 0, 0 ) ), exif=im.info.get( "exif", "" ) )
             except: im.save( fanart, "PNG" )
         except:
-            LOGGER.error.exc_info( sys.exc_info() )
+            LOGGER.error.print_exc()
     return fanart
 
 
 def IsTrue( text ):
-    return ( text == "true" )
+    return ( text.lower() == "true" )
 
 
 def path_exists( filename ):

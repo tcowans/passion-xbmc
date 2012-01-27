@@ -140,7 +140,7 @@ class Manager:
                             choices[ 0 ] = Language( 32200 )#"Add to movieset"
                             if buttons[ 1 ] == 2002:
                                 del buttons[ 1 ], choices[ 1 ]
-                        except: LOGGER.error.exc_info( sys.exc_info(), self )
+                        except: LOGGER.error.print_exc()
 
             elif button == 3001:
                 # Remove movies to existing movieset
@@ -166,7 +166,7 @@ class Manager:
                                 buttons.insert( 1, 2002 )
                                 button1008 = ( " [%s]" % self.strSortTitle, "" )[ not self.strSortTitle ]
                                 choices.insert( 1, Language( 32220 ) + _unicode( button1008 ) )#"Edit sorttitle movie%s"
-                        except: LOGGER.error.exc_info( sys.exc_info(), self )
+                        except: LOGGER.error.print_exc()
                         #
                         sortTitle = self.strSortTitle or self.strTitle
                         newSortTitle = self.keyboard( sortTitle, Language( 32220 ) )#"Edit sorttitle movie"
@@ -176,7 +176,7 @@ class Manager:
                                 self.strSortTitle = newSortTitle
                                 button1008 = ( " [%s]" % self.strSortTitle, "" )[ not self.strSortTitle ]
                                 try: choices[ 1 ] = Language( 32220 ) + _unicode( button1008 )#"Edit sorttitle movie%s"
-                                except: LOGGER.error.exc_info( sys.exc_info(), self )
+                                except: LOGGER.error.print_exc()
 
             elif button == 2002:
                 # Edit sorttitle movie
@@ -188,7 +188,7 @@ class Manager:
                         self.strSortTitle = newSortTitle
                         button1008 = ( " [%s]" % self.strSortTitle, "" )[ not self.strSortTitle ]
                         try: choices[ 1 ] = Language( 32220 ) + _unicode( button1008 )#"Edit sorttitle movie%s"
-                        except: LOGGER.error.exc_info( sys.exc_info(), self )
+                        except: LOGGER.error.print_exc()
 
             elif button == 1000:
                 # Add Movie to current movieset
@@ -238,7 +238,7 @@ class Manager:
                 movie = movies[ selected ]
                 return int( movie[ 0 ] ), movie[ 1 ], movie[ 2 ]
         except:
-            LOGGER.error.exc_info( sys.exc_info(), self )
+            LOGGER.error.print_exc()
         return -1, "", ""
 
     def selectMovieOfSet( self, idSet, heading ):
@@ -250,7 +250,7 @@ class Manager:
                 movie = movies[ selected ]
                 return int( movie[ "idMovie" ] ), movie[ "strTitle" ], movie[ "strSort" ]
         except:
-            LOGGER.error.exc_info( sys.exc_info(), self )
+            LOGGER.error.print_exc()
         return -1, "", ""
 
     def selectSet( self, heading, showCount=False, create="" ):
@@ -277,7 +277,7 @@ class Manager:
                     return int( idSet ), strSet
                 break
         except:
-            LOGGER.error.exc_info( sys.exc_info(), self )
+            LOGGER.error.print_exc()
         return -1, ""
 
 
@@ -292,7 +292,7 @@ def Main():
         if sum( [ os.path.getmtime( db ) for db in DB_PATHS ] ) > mtime:
             xbmc.executebuiltin( "Container.Refresh" )
     except:
-        LOGGER.error.exc_info( sys.exc_info() )
+        LOGGER.error.print_exc()
     xbmc.executebuiltin( "Skin.Reset(MovieSets.Sleep)" )
 
 

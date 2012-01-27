@@ -60,13 +60,12 @@
 			</control>
 			<control type="image">
 				<description>background image</description>
-				<posx>30</posx>
-				<posy>67</posy>
-				<width>1069</width>
-				<height>560</height>
-				<aspectratio>keep</aspectratio>
+				<posx>20</posx>
+				<posy>20</posy>
+				<width>1060</width>
+				<height>600</height>
+				<aspectratio>scale</aspectratio>
 				<texture>special://home/addons/script.moviesets/fanart.jpg</texture>
-				<!--<animation effect="fade" end="20" condition="true">Conditional</animation>-->
 				<colordiffuse>FF505050</colordiffuse>
 			</control>
 			<control type="image">

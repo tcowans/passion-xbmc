@@ -1,67 +1,57 @@
 
 # Modules general
-import os
 import sys
-import linecache
-from traceback import print_exc
+import traceback
 
 # Modules XBMC
-try: import xbmc
-except: xbmc = None
+try:
+    import xbmc
+    from xbmcaddon import Addon
+    PREFIX = "[MovieSets-%s] " % Addon( 'script.moviesets' ).getAddonInfo( 'version' )
+except:
+    xbmc = None
+    PREFIX = "[MovieSets] "
 
-IsNotPython24 = ( sys.version >= "2.5" )
 LEVELS = [ "debug", "info", "notice", "warning", "error", "severe", "fatal", "none" ]
+
+
+def _print( file, str='', terminator='\n' ):
+    file.write( str + terminator )
 
 
 def xbmc_log( level, format, *args ):
     try:
         if not args: s = format
         else: s = format % args
-        line = "[MovieSets] %s" % s
+        line  = PREFIX + s
         level = LEVELS.index( level )
-        if not xbmc:
-            level = LEVELS[ level ]
-            print "%s: %s" % ( level, line )
+        if xbmc is not None:
+            #line = line.strip( "\r\n" )
+            xbmc.log( line, level )
         else:
-            xbmc.log( line.strip( "\r\n" ), level )
+            level = LEVELS[ level ].upper()
+            file  = ( sys.stdout, sys.stderr )[ level == "ERROR" ]
+            _print( file, "%s: %s" % ( level, line ) )
     except:
-        print "xbmc_log( %r, %r, %r )" % ( level, format, args )
-        print_exc()
+        _print( sys.stderr, "%sxbmc_log(%r, %r, %r)" % ( PREFIX, level, format, args ) )
+        traceback.print_exc()
 
 
-def sys_exc_info( level, infos, main=None ):
+def print_exc( level ):
     try:
-        filename = infos[ 2 ].tb_frame.f_code.co_filename
-        write_line = "%s" % ( os.path.basename( os.path.splitext( filename )[ 0 ] ), )
-
-        if main:
-            write_line += "::%s" % ( main[ 0 ].__class__.__name__, )
-
-        lineno = infos[ 2 ].tb_lineno
-        write_line += "::%s (%d)" % ( infos[ 2 ].tb_frame.f_code.co_name, lineno, )
-
-        next = infos[ 2 ].tb_next
-        if next is not None:
-            write_line += " in %s" % ( next.tb_frame.f_code.co_name, )
-
-        linecache.checkcache( filename )
-        if IsNotPython24:
-            strline = linecache.getline( filename, lineno, infos[ 2 ].tb_frame.f_globals )
-        else:
-            strline = linecache.getline( filename, lineno )
-        if strline:
-            write_line += ", %s" % ( repr( strline.strip() ), )
-
-        write_line += " - %s" % ( infos[ 1 ], )
-        xbmc_log( level, write_line )
+        etype, value, tb = sys.exc_info()
+        for line in traceback.format_exception( etype, value, tb ):
+            xbmc_log( level, line.strip( "\n" ).replace( "\n", "\n" + PREFIX ) )
     except:
-        print_exc()
+        traceback.print_exc()
+    #finally: # invalid symtaxe on dharma
+    etype = value = tb = None
 
 
 class execNamespace:
     def __init__( self, level, api ):
         self.__handler_cache = {}
-        self.level = level
+        self.level = level.lower()
         self.api = api
 
     def __getattr__( self, method ):
@@ -69,10 +59,13 @@ class execNamespace:
             return self.__handler_cache[ method ]
 
         def handler( *args, **kwargs ):
-            if method == "exc_info":
-                sys_exc_info( self.level, args[ 0 ], args[ 1:2 ] )
-            elif method == "LOG":
-                xbmc_log( self.level, args[ 0 ], *args[ 1: ] )
+            format = "".join( args[ :1 ] )
+            args   = args[ 1: ]
+            if method.lower() == "log":
+                xbmc_log( self.level, format, *args )
+            elif method.lower() == "print_exc":
+                if format: xbmc_log( self.level, format, *args )
+                print_exc( self.level )
 
         handler.method = method
         self.__handler_cache[ method ] = handler
@@ -97,11 +90,12 @@ class logAPI:
 
 
 def testing():
-    log = logAPI()
-    log.info.LOG( "testing" )
+    logger = logAPI()
+    logger.info.log( "testing" )
     try: oops
     except:
-        log.error.exc_info( sys.exc_info() )
+        logger.error.print_exc( "testing: %s", "exception" )
+
 
 
 if ( __name__ == "__main__" ):

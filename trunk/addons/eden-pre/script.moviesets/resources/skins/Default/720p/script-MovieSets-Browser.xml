@@ -133,6 +133,7 @@
 						<texturenofocus border="5">sets-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
 						<label>749</label>
+						<enable>System.HasAddon(script.module.pil)</enable>
 					</control>
 				</control>
 				<control type="image">
