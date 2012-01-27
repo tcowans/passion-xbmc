@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="script.moviesets" name="Movie Sets"
-       version="2.0.1" provider-name="Frost (passion-xbmc.org)">
+       version="2.0.2" provider-name="Frost (passion-xbmc.org)">
   <requires>
     <import addon="xbmc.python" version="2.0"/>
-    <import addon="script.module.pil" version="1.1.7"/>
+    <import addon="script.module.pil" version="1.1.7" optional="true" />
   </requires>
   <extension point="xbmc.python.script"
              library="default.py">
-    <provides>video</provides>
+    <provides>executable</provides>
   </extension>
   <extension point="xbmc.addon.metadata">
     <summary lang="en">Movie Sets Library and Manager</summary>
@@ -23,6 +23,7 @@ Add this in your [B]keymaps/keyboard.xml[/B] and use (eg: [B]I + O[/B]) for open
     [B]&lt;o mod=&quot;i&quot;&gt;RunScript(script.moviesets,moviesetinfo)&lt;/o&gt;[/B]
   &lt;/keyboard&gt;
 &lt;/MyVideoLibrary&gt;</description>
+    <disclaimer lang="en">Comparison of skin features.[CR]http://wiki.xbmc.org/index.php?title=Comparison_of_skin_features</disclaimer>
     <license>GPL</license>
     <platform>all</platform>
   </extension>

@@ -211,6 +211,7 @@ class Manager( xbmcgui.WindowXMLDialog ):
             self.container_movies_in_set.reset()
             self.container_movies_in_set.addItems( movieset )
             self.container_movies_in_set.selectItem( selectitem )
+            self.container_moviesets.getSelectedItem().setProperty( "TotalMovies", str( self.container_movies_in_set.size() ) )
         except:
             LOGGER.error.exc_info( sys.exc_info(), self )
 

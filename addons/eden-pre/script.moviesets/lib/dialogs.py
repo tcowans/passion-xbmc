@@ -56,7 +56,7 @@ def _delete_files( files ):
             if path_exists( dl ):
                 os.remove( dl )
         except:
-            LOGGER.error.exc_info( sys.exc_info() )
+            LOGGER.error.print_exc()
         if not path_exists( dl ):
             LOGGER.warning.LOG( "OK, FileDelete(%s)", dl )
         else:
@@ -158,7 +158,7 @@ class Browser( xbmcgui.WindowXMLDialog ):
             try: self.getControl( self.CONTROL_LIST_451 ).setVisible( 0 )
             except: pass
         except:
-            LOGGER.error.exc_info( sys.exc_info(), self )
+            LOGGER.error.print_exc()
 
     def onFocus( self, controlID ):
         pass
@@ -191,7 +191,7 @@ class Browser( xbmcgui.WindowXMLDialog ):
                         try:
                             os.remove( icon )
                             listitem.setThumbnailImage( "DefaultVideoCover.png" )
-                        except: LOGGER.error.exc_info( sys.exc_info(), self )
+                        except: LOGGER.error.print_exc()
                     listitem.select( False )
                 else:
                     listitem.select( not listitem.isSelected() )
@@ -208,7 +208,7 @@ class Browser( xbmcgui.WindowXMLDialog ):
                 self._download()
 
         except:
-            LOGGER.error.exc_info( sys.exc_info(), self )
+            LOGGER.error.print_exc()
 
     def _download( self ):
         try:
@@ -259,7 +259,7 @@ class Browser( xbmcgui.WindowXMLDialog ):
                         self.delete_files.add( dest )
                         LOGGER.error.LOG( dest )
                         dest = None
-                        LOGGER.error.exc_info( sys.exc_info(), self )
+                        LOGGER.error.print_exc()
                     listitem.select( False )
                     if DIALOG_PROGRESS.iscanceled():
                         break
@@ -281,7 +281,7 @@ class Browser( xbmcgui.WindowXMLDialog ):
                 #DIALOG_PROGRESS.update( 100 )
             _delete_files( self.delete_files )
         except:
-            LOGGER.error.exc_info( sys.exc_info(), self )
+            LOGGER.error.print_exc()
 
         if xbmc.getCondVisibility( "Window.IsVisible(progressdialog)" ):
             xbmc.executebuiltin( "Dialog.Close(progressdialog)" )
@@ -339,13 +339,13 @@ class MovieSetInfo( xbmcgui.WindowXMLDialog ):
                         listitems.append( xbmcgui.ListItem( label, "", icon, icon ) )
                     self.getControl( 150 ).addItems( listitems )
                 except:
-                    LOGGER.error.exc_info( sys.exc_info(), self )
+                    LOGGER.error.print_exc()
                     self.getControl( 5 ).setEnabled( 0 )
 
                 if self.setfocus:
                     self.setFocusId( self.setfocus )
         except:
-            LOGGER.error.exc_info( sys.exc_info(), self )
+            LOGGER.error.print_exc()
             self._close_dialog()
 
     def onFocus( self, controlID ):
@@ -408,7 +408,7 @@ class MovieSetInfo( xbmcgui.WindowXMLDialog ):
                     }
                 self._close_dialog()
         except:
-            LOGGER.error.exc_info( sys.exc_info(), self )
+            LOGGER.error.print_exc()
 
     def onAction( self, action ):
         if action in CLOSE_DIALOG:
@@ -465,7 +465,7 @@ def showInfo( idset, update=False, setfocus=None ):
             update = update or up
             showInfo( idset, update, setfocus )
     except:
-        LOGGER.error.exc_info( sys.exc_info() )
+        LOGGER.error.print_exc()
     del w
 
     xbmc.executebuiltin( "Skin.Reset(MovieSets.Sleep)" )
@@ -491,4 +491,4 @@ if ( __name__ == "__main__" ):
                 try: xbmcgui.Window( 10025 ).setProperty( "MovieSets.Update", "true" )
                 except: xbmc.executebuiltin( "SetProperty(MovieSets.Update,true)" )
     except:
-        LOGGER.error.exc_info( sys.exc_info() )
+        LOGGER.error.print_exc()

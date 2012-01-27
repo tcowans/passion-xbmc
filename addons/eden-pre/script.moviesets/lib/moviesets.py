@@ -24,7 +24,7 @@ DB_PATHS = glob( xbmc.translatePath( "special://Database/MyVideos*.db" ) )[ -1: 
 DB_NAME  = "".join( [ os.path.basename( db ) for db in DB_PATHS ] ) or "MyVideos??.db"
 
 def IsTrue( text ):
-    return ( text == "true" )
+    return ( text.lower() == "true" )
 
 
 def time_took( t ):
@@ -55,7 +55,7 @@ class Main:
             #self.backend.setDaemon( True )
             #self.backend.start()
         except:
-            LOGGER.error.exc_info( sys.exc_info(), self )
+            LOGGER.error.print_exc()
 
     def setContent( self ):
         self.window.setProperty( "MovieSets.IsAlive", "true" )
@@ -89,7 +89,7 @@ class Main:
                 if ( 0 <= cur_pos <> new_pos ):
                     self.container.selectItem( new_pos )
         except:
-            LOGGER.error.exc_info( sys.exc_info(), self )
+            LOGGER.error.print_exc()
 
 
 class Backend:#( Thread ):
@@ -116,7 +116,7 @@ class Backend:#( Thread ):
             LOGGER.warning.LOG( "SystemExit! xbmc.abortRequested(%r)" % xbmc.abortRequested )
             self.stop()
         except:
-            LOGGER.error.exc_info( sys.exc_info(), self )
+            LOGGER.error.print_exc()
             self.stop()
 
     def updates( self ):
@@ -149,7 +149,7 @@ class Backend:#( Thread ):
             try: self.window.clearProperty( property )
             except:
                 try: xbmcgui.Window( 10025 ).clearProperty( property )
-                except: LOGGER.error.exc_info( sys.exc_info(), self )
+                except: LOGGER.error.print_exc()
 
 
 
