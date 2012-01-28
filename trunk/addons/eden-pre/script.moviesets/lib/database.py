@@ -186,7 +186,7 @@ def getContainerMovieSets( infoSet=None ):
 
             # enum movies
             for count, movie in enumerate( movies ):
-                if not movie: continue
+                if not bool( movie ): continue
                 #print movie.keys()#[u'rating', u'set', u'filetype', u'file', u'year', u'id', u'streamDetails', u'plot', u'votes', u'title', u'fanart', u'mpaa', u'writer', u'label', u'type', u'thumbnail', u'plotoutline', u'resume', u'director', u'imdbnumber', u'studio', u'showlink', u'genre', u'productioncode', u'country', u'premiered', u'originaltitle', u'cast', u'tagline', u'playcount', u'runtime', u'top250', u'trailer']
                 # for more infos
                 #print jsonapi.VideoLibrary.GetMovieDetails( movieid=int(movie["id"]), properties=VIDEO_FIELDS_MOVIE )
@@ -194,11 +194,14 @@ def getContainerMovieSets( infoSet=None ):
                 #continue
                 try:
                     #optional
-                    sdv = movie.get( "streamdetails", {} ).get( "video", [ {} ] )
-                    duration += sum( d.get( "duration", 0 ) for d in sdv )
-                    iWidth   += sum( w.get( "width",    0 ) for w in sdv )
-                    iHeight  += sum( h.get( "height",   0 ) for h in sdv )
-                    aspect   += sum( a.get( "aspect",   0 ) for a in sdv )
+                    try:
+                        sdv = movie[ "streamdetails"].get( "video", [ {} ] )
+                        duration += sum( d.get( "duration", 0 ) for d in sdv )
+                        iWidth   += sum( w.get( "width",    0 ) for w in sdv )
+                        iHeight  += sum( h.get( "height",   0 ) for h in sdv )
+                        aspect   += sum( a.get( "aspect",   0 ) for a in sdv )
+                    except:
+                        pass
                     # update mpaa
                     if movie.get( "mpaa" ):
                         mpaa.add( movie[ "mpaa" ] )
