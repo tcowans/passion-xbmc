@@ -1,3 +1,6 @@
+2.0.3
+ - re-fixed: error to get streamdetails from json result (except error pass)
+
 2.0.2
  - fixed: error to get streamdetails from json result
  - fixed: if movieset as encoding title
