@@ -1,20 +1,23 @@
+1.0.7
+ - Added : length of day difference (meaningless for Astronomical Twilight starts-ends, Nautical Twilight starts-ends and Civil Twilight starts-ends)
+
 1.0.6
- - fixed: risingsun, french date/time format
+ - Fixed : risingsun, french date/time format
 
 1.0.5
- - fixed: rising sun for first 9 days of month
+ - Fixed : rising sun for first 9 days of month
 
 1.0.4
- - fixed: flurries icon
- - fixed: fanartcode 1 to 9
- - added: clear base properties
+ - Fixed : flurries icon
+ - Fixed : fanartcode 1 to 9
+ - Added : clear base properties
 
 1.0.3
- - fixed: unconverted data remains:  am/pm
+ - Fixed : unconverted data remains:  am/pm
    convert 12h to 24h format before get_user_time_format. thx to vs65r for idea
 
 1.0.2
- - Fixed: selection of city in extras settings
+ - Fixed : selection of city in extras settings
    possible UnicodeDecodeError in risingsun::set_rising_sun
 
 1.0.1
