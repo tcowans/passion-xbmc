@@ -1,14 +1,14 @@
-Parameters (separated by &amp; ):
+Parameters ( separated by &amp; ):
 
-limit=#         ; # to limit returned results (default=5)
-unplayed=True   ; True to return only items (not supported for albums) that have not been played (default=False)
-trailer=True    ; True to play the trailer (if available) (default=False)
-alarm=#         ; # number of minutes before running again (default=Off)
-
+limit=#          ; # to limit returned results (default=5)
+unplayed=True    ; True to return only items (not supported for albums) that have not been played (default=False)
+trailer=True     ; True to play the trailer (if available) (default=False)
+alarm=#          ; # number of minutes before running again (default=Off)
+extraimages=True ; True for retrieving and check existence of episode banner, logo, clearart and poster (Warning: possible hard drive spin up on check existence)
 
 For example:
  
-XBMC.RunScript(script.randomitems,limit=10&amp;unplayed=True&amp;alarm=30)
+XBMC.RunScript(script.randomitems,limit=10&amp;unplayed=True&amp;alarm=30&amp;extraimages=True)
 
 will return 10 random, unplayed movies, episodes, albums, songs and addons every 30 minutes.
 
@@ -37,6 +37,10 @@ Labels:
 "RandomEpisode.%d.Fanart"
 "RandomEpisode.%d.Thumb"
 "RandomEpisode.Count"
+"RandomEpisode.%d.banner"   (Requied param: extraimages=True)
+"RandomEpisode.%d.logo"     (Requied param: extraimages=True)
+"RandomEpisode.%d.clearart" (Requied param: extraimages=True)
+"RandomEpisode.%d.poster"   (Requied param: extraimages=True)
 
 "RandomMusicVideo.%d.Title"
 "RandomMusicVideo.%d.Year"

@@ -1,5 +1,11 @@
+v3.0.9
+- changed: [addon info] file existence checks for "fnmatch - Unix filename pattern matching"
+- changed/added: setting param 'extraimages' to retrieve extra images for episode (Warning: possible hard drive spin up on check existence)
+                 RunScript(script.randomitems,limit=10&amp;unplayed=True&amp;alarm=30&amp;extraimages=True)
+- updated README.txt
+
 v3.0.8
-- completely rewrites
+- completly rewrited
 - added: episode "RandomEpisode.%d.banner", "RandomEpisode.%d.logo", "RandomEpisode.%d.clearart", "RandomEpisode.%d.poster"
 - changed: script.module.simplejson optional required (use json integration in python)
 
