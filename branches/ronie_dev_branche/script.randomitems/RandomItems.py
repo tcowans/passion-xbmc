@@ -5,6 +5,9 @@
 # *  ppic, Hitcher & ronie for the updates
 # *  frost for the rewrite
 
+import time
+start_time = time.time()
+
 import os
 import re
 import sys
@@ -20,13 +23,13 @@ import xbmcaddon
 try: import json # Use speedup
 except: import simplejson as json # No speed
 
-__addon__        = xbmcaddon.Addon("script.randomitems")
-__addonid__      = __addon__.getAddonInfo('id')
-__addonversion__ = __addon__.getAddonInfo('version')
+__addon__   = xbmcaddon.Addon("script.randomitems")
+__addonid__ = __addon__.getAddonInfo('id')
+log_prefix  = "[RandomItems-%s]" % __addon__.getAddonInfo('version')
 
-def log(txt):
-    message = '%s: %s' % (__addonid__,txt)
-    xbmc.log(msg=message, level=xbmc.LOGDEBUG)
+def log( txt, level=xbmc.LOGDEBUG ):
+    message = '%s %s' % ( log_prefix, txt )
+    xbmc.log( message, level )
 
 class Main:
     # grab the home window
@@ -50,24 +53,24 @@ class Main:
             self.WINDOW.clearProperty( "RandomAddon.%d.Name"       % ( count + 1 ) )
 
     def _parse_argv( self ):
-        try:
-            # parse sys.argv for params
-            params = dict( arg.split( "=" ) for arg in sys.argv[ 1 ].split( "&" ) )
-        except:
-            # no params passed
-            params = {}
+        # default params
+        params = {}
+        # parse sys.argv for params
+        try: params = dict( arg.split( "=" ) for arg in sys.argv[ 1 ].split( "&" ) )
+        except: pass
         # set our preferences
-        self.LIMIT = int( params.get( "limit", "5" ) )
-        self.UNPLAYED = params.get( "unplayed", "False" )
+        self.LIMIT        = int( params.get( "limit", "5" ) )
+        self.UNPLAYED     = params.get( "unplayed", "False" )
         self.PLAY_TRAILER = params.get( "trailer", "False" )
-        self.ALARM = int( params.get( "alarm", "0" ) )
-        self.ALBUMID = params.get( "albumid", "" )
+        self.ALARM        = int( params.get( "alarm", "0" ) )
+        self.ALBUMID      = params.get( "albumid", "" )
+        self.EXTRA_IMAGES = str( params.get( "extraimages" ) ).lower() == "true"
 
     def _set_alarm( self ):
         # only run if user/skinner preference
         if ( not self.ALARM ): return
         # set the alarms command
-        command = "XBMC.RunScript(%s,limit=%d&unplayed=%s&trailer=%s&alarm=%d)" % ( __addonid__, self.LIMIT, str( self.UNPLAYED ), str( self.PLAY_TRAILER ), self.ALARM, )
+        command = "XBMC.RunScript(%s,limit=%d&unplayed=%s&trailer=%s&alarm=%d&extraimages=%r)" % ( __addonid__, self.LIMIT, str( self.UNPLAYED ), str( self.PLAY_TRAILER ), self.ALARM, self.EXTRA_IMAGES, )
         xbmc.executebuiltin( "AlarmClock(RandomItems,%s,%d,true)" % ( command, self.ALARM, ) )
 
     def __init__( self ):
@@ -84,13 +87,17 @@ class Main:
             # fetch media info, but don't visit, if not content
             if xbmc.getCondVisibility( "Library.HasContent(Movies)" ): 
                 self._fetch_movie_info() #function modified by frost
+
             if xbmc.getCondVisibility( "Library.HasContent(TVShows)" ):
                 self._fetch_episode_info() #function modified by frost
+
             if xbmc.getCondVisibility( "Library.HasContent(MusicVideos)" ):
                 self._fetch_musicvideo_info() #function modified by frost
+
             if xbmc.getCondVisibility( "Library.HasContent(Music)" ):
                 self._fetch_album_info() #function modified by frost
                 self._fetch_song_info() #function modified by frost
+
             #Frost: xbmc crash on my system winxp, nightly build
             self._fetch_addon_info() # ok I rewrited this function now work correctly (don't use xbmcaddon for get object)
 
@@ -178,7 +185,8 @@ class Main:
                     self.WINDOW.setProperty( b_property + "Path",          item['file'] )
                     self.WINDOW.setProperty( b_property + "Fanart",        item['fanart'] )
                     self.WINDOW.setProperty( b_property + "Thumb",         item['thumbnail'] )
-
+                    # 
+                    if not self.EXTRA_IMAGES: continue
                     # get dir of episode (by frost)
                     if os.path.isdir( item['file'] ): d_path = item['file']
                     else: d_path = item['file'].replace( os.path.basename( item['file'] ), "" )
@@ -282,12 +290,13 @@ class Main:
 
     def _fetch_addon_info( self ):
         try:
+            from glob import glob
             from locale import getdefaultlocale
+            #get lang info for getting summary
             g_langInfo = str( getdefaultlocale() )[ 2:4 ] or "en"
-            # list the contents of the addons folder
-            addonpath = xbmc.translatePath( 'special://home/addons' )
-            #get addons listing
-            addons = os.listdir( addonpath )
+            # list the contents of the addons folder and get addons listing
+            addons =  glob( os.path.join( xbmc.translatePath( 'special://home/addons' ), "*", "addon.xml" ) )
+            addons += glob( os.path.join( xbmc.translatePath( 'special://xbmc/addons' ), "*", "addon.xml" ) )
             # get total value
             self.WINDOW.setProperty( "RandomAddon.Count", str( len( addons ) ) )
             # count thru our addons
@@ -298,34 +307,33 @@ class Main:
                     break
                 # Shuffle addons in place.
                 random.shuffle( addons )
-                # select a random item
-                item = random.choice( addons )
-                # remove the item from our list
-                addons.remove( item )
-                # find addon.xml in the addon folder
-                addon_xml = os.path.join( addonpath, item, 'addon.xml' )
-                if os.path.exists( addon_xml ):
-                    # read xml
-                    str_xml = open( addon_xml ).read()
-                    # find plugins and scripts only
-                    if re.search( 'point="xbmc.python.(script|pluginsource)"', str_xml ):
-                        count += 1
-                        # set base property
-                        b_property = "RandomAddon.%d." % ( count )
-                        # get summary
-                        summary = re.search( '<summary.*?lang="[%s|en]">(.*?)</summary>' % g_langInfo, str_xml, re.S )
-                        if not summary: summary = re.search( '<summary>(.*?)</summary>', str_xml, re.S )
-                        if summary: summary = summary.group( 1 )
-                        else: summary = ""
-                        # set properties
-                        self.WINDOW.setProperty( b_property + "Summary", summary )
-                        self.WINDOW.setProperty( b_property + "Name",    re.search( '<addon.*?name="(.*?)"', str_xml, re.S ).group( 1 ) )
-                        self.WINDOW.setProperty( b_property + "Author",  re.search( '<addon.*?provider-name="(.*?)"', str_xml, re.S ).group( 1 ) )
-                        self.WINDOW.setProperty( b_property + "Version", re.search( '<addon.*?version="(.*?)"', str_xml, re.S ).group( 1 ) )
-                        self.WINDOW.setProperty( b_property + "Fanart",  os.path.join( addonpath, item, 'fanart.jpg' ) )
-                        self.WINDOW.setProperty( b_property + "Thumb",   os.path.join( addonpath, item, 'icon.png' ) )
-                        self.WINDOW.setProperty( b_property + "Type",    "".join( re.findall( '<provides>(.*?)</provides>', str_xml ) ) or "executable" )
-                        self.WINDOW.setProperty( b_property + "Path",    re.search( '<addon.*?id="(.*?)"', str_xml, re.S ).group( 1 ) )
+                # select a random xml
+                addon_xml = random.choice( addons )
+                # remove the xml from our list
+                addons.remove( addon_xml )
+                # read xml
+                str_xml = open( addon_xml ).read()
+                # find plugins and scripts only
+                if re.search( 'point="xbmc.python.(script|pluginsource)"', str_xml ):
+                    count += 1
+                    # set base property
+                    b_property = "RandomAddon.%d." % ( count )
+                    # get summary
+                    summary = re.search( '<summary.*?lang="[%s|en]">(.*?)</summary>' % g_langInfo, str_xml, re.S )
+                    summary = summary or re.search( '<summary>(.*?)</summary>', str_xml, re.S )
+                    if summary: summary = summary.group( 1 )
+                    else: summary = ""
+                    # set properties
+                    self.WINDOW.setProperty( b_property + "Summary", summary )
+                    self.WINDOW.setProperty( b_property + "Name",    re.search( '<addon.*?name="(.*?)"', str_xml, re.S ).group( 1 ) )
+                    self.WINDOW.setProperty( b_property + "Author",  re.search( '<addon.*?provider-name="(.*?)"', str_xml, re.S ).group( 1 ) )
+                    self.WINDOW.setProperty( b_property + "Version", re.search( '<addon.*?version="(.*?)"', str_xml, re.S ).group( 1 ) )
+                    self.WINDOW.setProperty( b_property + "Fanart",  addon_xml.replace( 'addon.xml', 'fanart.jpg' ) )
+                    self.WINDOW.setProperty( b_property + "Thumb",   addon_xml.replace( 'addon.xml', 'icon.png' ) )
+                    self.WINDOW.setProperty( b_property + "Type",    "".join( re.findall( '<provides>(.*?)</provides>', str_xml ) ) or "executable" )
+                    self.WINDOW.setProperty( b_property + "Path",    re.search( '<addon.*?id="(.*?)"', str_xml, re.S ).group( 1 ) )
+                    #
+                    #print "Addon: %r" % self.WINDOW.getProperty( b_property + "Path" )
         except:
             print_exc()
         #print locals()
@@ -348,7 +356,15 @@ class Main:
             xbmc.Player().play( playlist )
 
 
+def time_took( t ):
+    t = ( time.time() - t )
+    if t >= 60: return "%.3fm" % ( t / 60.0 )
+    if 0 < t < 1: return "%.3fms" % ( t )
+    return "%.3fs" % ( t )
+
+
 if ( __name__ == "__main__" ):
-    log('script version %s started' % __addonversion__)
+    log( 'script started' )
     Main()
-    log('script stopped')
+    log( "time took %s" % time_took( start_time ), xbmc.LOGNOTICE )
+    log( 'script stopped' )
