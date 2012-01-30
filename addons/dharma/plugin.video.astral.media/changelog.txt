@@ -1,6 +1,0 @@
-1.0.9
- - set to broken: Because sites changed, and the author has no time to update...
-
-1.0.8
- - Fixe temporaire
- - Désactiver HistoriaTV

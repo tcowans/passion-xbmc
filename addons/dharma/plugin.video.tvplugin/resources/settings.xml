@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<settings>
-    <!-- GENERAL -->
-    <setting id="FAI" type="enum" lvalues="30001|30002|30003" label="30000"/>
-    <setting id="extplayer" type="bool" label="30102" default="false" />
-    <setting enable="eq(-1,true)" id="path" type="file" label="30100"/>
-    <setting enable="eq(-2,true)" id="cmdline" type="text" label="30103"/>
-    <setting enable="eq(-3,true)" id="arguments" type="text" label="30101"/>
-</settings>

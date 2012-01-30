@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<settings>
-    <!-- GENERAL -->
-    <setting id="path" type="file" label="30000"/>
-    <setting id="cmdline" type="text" label="30001"/>
-    <setting id="arguments" type="text" label="30002"/>
-    <setting id="login" type="text" label="30003"/>
-    <setting id="password" option="hidden" type="text" label="30004"/>
-</settings>

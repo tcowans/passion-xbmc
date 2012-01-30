@@ -1,9 +1,0 @@
-0.0.3 : fixed: bad arguments for xbmclive
-        added: runscript without arguments
-
-0.0.2 : Add : TVShow support
-        Fix : Do not refresh if no change
-        Change : rename ok.png to GenreEditorSel.png
-        Fix : Error dialog on missing arguments
-
-0.0.1 : initial version

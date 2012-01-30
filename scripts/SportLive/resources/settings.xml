@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<settings>
-<setting type="lsep" label="30000" />
-   <setting id="visualisation" type="enum" label="32002" lvalues="32003|32004" default="0"/>
-</settings> 
