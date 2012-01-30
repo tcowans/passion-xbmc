@@ -1,3 +1,8 @@
+v3.0.8
+- completely rewrites
+- added: episode "RandomEpisode.%d.banner", "RandomEpisode.%d.logo", "RandomEpisode.%d.clearart", "RandomEpisode.%d.poster"
+- changed: script.module.simplejson optional required (use json integration in python)
+
 v3.0.7
 - ignore possible encoding errors
 
