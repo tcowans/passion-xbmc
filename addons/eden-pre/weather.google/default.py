@@ -1,6 +1,5 @@
 """
     Google Weather
-    by frost
     url: http://passion-xbmc.googlecode.com/svn/trunk/addons/eden-pre/weather.google/
 """
 

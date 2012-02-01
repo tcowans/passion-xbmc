@@ -12,17 +12,28 @@ try:
     import xbmcgui
     from xbmcaddon import Addon
     Addon = Addon( "weather.google" )
-    WEATHER_WINDOW   = xbmcgui.Window( 12600 )
-    ICONS_SET        = int( Addon.getSetting( 'icons_set' ) )
-    RISING_SUN_CODE  = int( Addon.getSetting( 'risingsun_code' ) )
-    RISING_SUN_PREF  = 0
-    if RISING_SUN_CODE and Addon.getSetting( 'risingsun_none' ) == "false":
-        RISING_SUN_PREF = int( Addon.getSetting( 'risingsun_pref' ) ) + 1
-    WEATHER_ICONS    = os.path.join( Addon.getAddonInfo( 'path' ), "resources", "images", "" )
-    CUSTOM_ICONS     = os.path.join( Addon.getSetting( 'custom_icons' ), "" )
+    WEATHER_WINDOW = xbmcgui.Window( 12600 )
+    ICONS_SET = int( Addon.getSetting( 'icons_set' ) )
+    CURRENT_LOCATION = int( Addon.getSetting( 'currentlocation' ) ) - 1
+    RISING_SUN_CODE = {}
+    RISING_SUN_PREF = {}
+    RISING_SUN_CODE[0]  = int( Addon.getSetting( 'risingsun1_code' ) )
+    RISING_SUN_PREF[0] = 0
+    if RISING_SUN_CODE[0] and Addon.getSetting( 'risingsun1_none' ) == "false":
+        RISING_SUN_PREF[0] = int( Addon.getSetting( 'risingsun1_pref' ) ) + 1
+    RISING_SUN_CODE[1]  = int( Addon.getSetting( 'risingsun2_code' ) )
+    RISING_SUN_PREF[1] = 0
+    if RISING_SUN_CODE[1] and Addon.getSetting( 'risingsun2_none' ) == "false":
+        RISING_SUN_PREF[1] = int( Addon.getSetting( 'risingsun2_pref' ) ) + 1
+    RISING_SUN_CODE[2]  = int( Addon.getSetting( 'risingsun3_code' ) )
+    RISING_SUN_PREF[2] = 0
+    if RISING_SUN_CODE[2] and Addon.getSetting( 'risingsun3_none' ) == "false":
+        RISING_SUN_PREF[2] = int( Addon.getSetting( 'risingsun3_pref' ) ) + 1
+    WEATHER_ICONS = os.path.join( Addon.getAddonInfo( 'path' ), "resources", "images", "" )
+    CUSTOM_ICONS = os.path.join( Addon.getSetting( 'custom_icons' ), "" )
     DATE_TIME_FORMAT = "%s %s" % ( xbmc.getRegion( "dateshort" ), xbmc.getRegion( "time" ) )
-    CELSIUS_FORMAT   = ( "C" in xbmc.getRegion( "tempunit" ) )
-    WEATHER_XML      = os.path.join( xbmc.translatePath( Addon.getAddonInfo( 'profile' ) ), "weather.xml" )
+    CELSIUS_FORMAT = ( "C" in xbmc.getRegion( "tempunit" ) )
+    WEATHER_XML = os.path.join( xbmc.translatePath( Addon.getAddonInfo( 'profile' ) ), "weather.xml" )
     if not os.path.exists( xbmc.translatePath( Addon.getAddonInfo( 'profile' ) ) ):
         os.makedirs( xbmc.translatePath( Addon.getAddonInfo( 'profile' ) ) )
 except:
@@ -39,7 +50,7 @@ except:
 
 
 from risingsun import get_sun
-SUN_UP, SUN_DOWN, IN_BROAD_DAYLIGHT, SUN_LENGTH = get_sun( RISING_SUN_CODE, RISING_SUN_PREF, True )
+SUN_UP, SUN_DOWN, IN_BROAD_DAYLIGHT, SUN_LENGTH = get_sun( RISING_SUN_CODE[CURRENT_LOCATION], RISING_SUN_PREF[CURRENT_LOCATION], True )
 #print SUN_UP, SUN_DOWN, IN_BROAD_DAYLIGHT, RISING_SUN_CODE, RISING_SUN_PREF
 
 from utilities import *
@@ -208,7 +219,9 @@ def SetProperties( weather, LocationIndex=1 ):
         code, icon = getIcon( getData( condition, "icon" ) )
         SetProperty( day + "OutlookIcon", "special://temp/weather/128x128/%s" % icon )
         SetProperty( day + "FanartCode", code )
-
+    # Retrieve data for new location
+    id = int(LocationIndex) - 1
+    SUN_UP, SUN_DOWN, IN_BROAD_DAYLIGHT, SUN_LENGTH = get_sun( RISING_SUN_CODE[id], RISING_SUN_PREF[id], True )
     SetProperty( "Current.Sunrise", SUN_UP )
     SetProperty( "Current.Sunset", SUN_DOWN )
     SetProperty( "Weather.IsFetched", "true" )
@@ -308,6 +321,9 @@ def SetProperties2( weather, LocationIndex=1 ):
         SetProperty( day + "OutlookIcon", OutlookIcon )
         SetProperty( day + "FanartCode", fanartcode )
 
+    # Retrieve data for new location
+    id = int(LocationIndex) - 1
+    SUN_UP, SUN_DOWN, IN_BROAD_DAYLIGHT, SUN_LENGTH = get_sun( RISING_SUN_CODE[id], RISING_SUN_PREF[id], True )
     SetProperty( "Current.Locale.Sunrise", SUN_UP )
     SetProperty( "Current.Locale.Sunset", SUN_DOWN )
     SetProperty( "Current.Locale.Sunlength", SUN_LENGTH )
@@ -338,4 +354,12 @@ def _test():
 
 
 if __name__ == "__main__":
-    _test()
+    #_test()
+    # Call from setting windows so refresh weather data
+    SetProperty( "Current.Locale.Sunrise", SUN_UP )
+    SetProperty( "Current.Locale.Sunset", SUN_DOWN )
+    SetProperty( "Current.Locale.Sunlength", SUN_LENGTH )
+    SetProperty( "Weather.IsFetched", "true" )
+    xbmc.executebuiltin( "Addon.openSettings(weather.google)" )
+    xbmc.executebuiltin( "SetFocus(201)" )
+    xbmc.executebuiltin( "SetFocus(104)" )

@@ -10,11 +10,26 @@
   </category>
 
   <category label="32030">
-    <setting type="lsep" label="$ADDON[weather.google 32031]   [COLOR=66FFFFFF]($ADDON[weather.google 32032])[/COLOR]" />
-    <setting id="risingsun_none" type="bool" label="32033" default="true"/>
-    <setting id="risingsun_city" type="action" label="32022" option="close" action="RunScript($CWD/resources/lib/risingsun.py)" enable="eq(-1,false)" default="" />
-    <setting id="risingsun_pref" type="enum" label="32034" lvalues="32035|32036|32037|32038" default="3" enable="!eq(-1,) + eq(-2,false)" subsetting="true" />
-    <setting id="risingsun_code" type="text" label="-" default="0" visible="false" />
+    <setting type="lsep" label="$ADDON[weather.google 32031] - $ADDON[weather.google 32022] 1" />
+    <setting id="risingsun1_none" type="bool" label="32033" default="true"/>
+    <setting id="risingsun1_city" type="action" label="32022" option="close" action="RunScript($CWD/resources/lib/risingsun.py,1)" enable="eq(-1,false)" default="" />
+    <setting id="risingsun1_pref" type="enum" label="32034" lvalues="32035|32036|32037|32038" default="3" enable="!eq(-1,) + eq(-2,false)" subsetting="true" />
+    <setting id="risingsun1_refresh" type="action" label="$LOCALIZE[184]" option="close" action="RunScript($CWD/resources/lib/weather.py)" enable="!eq(-1,) + !eq(-2,) + eq(-3,false)" default="" />
+    <setting id="risingsun1_code" type="text" label="-" default="0" visible="false" />
+
+    <setting type="lsep" label="$ADDON[weather.google 32031] - $ADDON[weather.google 32022] 2" />
+    <setting id="risingsun2_none" type="bool" label="32033" default="true"/>
+    <setting id="risingsun2_city" type="action" label="32022" option="close" action="RunScript($CWD/resources/lib/risingsun.py,2)" enable="eq(-1,false)" default="" />
+    <setting id="risingsun2_pref" type="enum" label="32034" lvalues="32035|32036|32037|32038" default="3" enable="!eq(-1,) + eq(-2,false)" subsetting="true" />
+    <setting id="risingsun2_refresh" type="action" label="$LOCALIZE[184]" option="close" action="RunScript($CWD/resources/lib/weather.py)" enable="!eq(-1,) + !eq(-2,) + eq(-3,false)" default="" />
+    <setting id="risingsun2_code" type="text" label="-" default="0" visible="false" />
+
+    <setting type="lsep" label="$ADDON[weather.google 32031] - $ADDON[weather.google 32022] 3" />
+    <setting id="risingsun3_none" type="bool" label="32033" default="true"/>
+    <setting id="risingsun3_city" type="action" label="32022" option="close" action="RunScript($CWD/resources/lib/risingsun.py,3)" enable="eq(-1,false)" default="" />
+    <setting id="risingsun3_pref" type="enum" label="32034" lvalues="32035|32036|32037|32038" default="3" enable="!eq(-1,) + eq(-2,false)" subsetting="true" />
+    <setting id="risingsun3_refresh" type="action" label="$LOCALIZE[184]" option="close" action="RunScript($CWD/resources/lib/weather.py)" enable="!eq(-1,) + !eq(-2,) + eq(-3,false)" default="" />
+    <setting id="risingsun3_code" type="text" label="-" default="0" visible="false" />
 
     <setting type="lsep" label="32040" />
     <setting id="icons_set" type="enum" label="32041" lvalues="32042|32043|32044|32045" default="1" />
