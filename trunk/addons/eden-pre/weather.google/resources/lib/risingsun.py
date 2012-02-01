@@ -902,6 +902,20 @@ def is_expired( c_filename, hours=24, days=28 ):
     return True
 
 
+def french_date_to_english( date ):
+    # Replace french accents
+    date = date.replace( "&#233;", "e" ) # fév déc
+    date = date.replace( "&#251;", "u" ) # aoû
+    # Replace french shortname month by english shortname month
+    date = date.replace( "fev", "feb" )
+    date = date.replace( "avr", "apr" )
+    date = date.replace( "mai", "may" )
+    date = date.replace( "juin", "jun" )
+    date = date.replace( "juil", "jul" )
+    date = date.replace( "aou", "aug" )
+    return date
+
+
 def get_user_time_format( date, str_time ):
     # fix to 24h format
     str_time = str_time.lower().replace( "am", "" ).strip().replace( " h ", ":" ).replace( "h", ":" )
@@ -909,7 +923,7 @@ def get_user_time_format( date, str_time ):
         H, M = str_time.replace( "pm", "" ).strip().split( ":" )
         str_time = '%i:%s' % ( int( H ) + 12, M )
 
-    date = date.replace( "&#233;", "e" )
+    date = french_date_to_english( date )
     try: insecs = mktime( strptime( date + str_time, DATE_FORMAT + '%H:%M' ) )
     except: insecs = mktime( strptime( date + str_time, '%d %b %Y%H:%M' ) )
     return strftime( USER_TIME_FORMAT, localtime( insecs ) ), insecs
@@ -961,7 +975,7 @@ def get_default_sun( date ):
 
 def is_same_date( date1, date2 ):
     same = False
-    date2 = date2.replace( "&#233;", "e" )
+    date2 = french_date_to_english( date2 )
     try: same = ( date1 == strptime( date2, DATE_FORMAT ) )
     except:
         try: same = ( date1 == strptime( date2, '%d %b %Y' ) )
@@ -1019,25 +1033,30 @@ def get_sun( countryId=189, mode=4, g_update=False ):
                 break
 
         #( Date, Sunrise, Sunset, Length of day, Length of day difference, Solar noon time, Altitude, Distance )
-        regexp = '<tr class=c.*?>%s</tr>' % ( '<td>(.*?)</td>' * 8 )
-        sunrises_sunsets = re.compile( regexp ).findall( html_11 )
+        # Usefull only in mode 4 Sunrise-Sunset
+        if mode == 4:
+            regexp = '<tr class=c.*?>%s</tr>' % ( '<td>(.*?)</td>' * 8 )
+            sunrises_sunsets = re.compile( regexp ).findall( html_11 )
 
-        for day in sunrises_sunsets:
-            date = day[ 0 ].replace( ",", "" )  #Date
+            for day in sunrises_sunsets:
+                date = day[ 0 ].replace( ",", "" )  #Date
 
-            if is_same_date( d_now, date ):
-                sun_length = day[ 4 ] # Length of day difference
-
-                _print( sun_down )
-                _print( "*"*100 )
-                break
+                if is_same_date( d_now, date ):
+                    sun_length = day[ 4 ] # Length of day difference
+                    # Replace &#8722; by - for decreasing day length
+                    sun_length = sun_length.replace( "&#8722;", "-" )
+                    _print( sun_down )
+                    _print( "*"*100 )
+                    break
+        else:
+            sun_length = "N/A"
 
         return trim_time( sun_up ), trim_time( sun_down ), in_broad_daylight, sun_length
     except:
         print_exc()
         return "6:00 AM", "8:00 PM", False, ""
 
-def set_rising_sun( country, countryId ):
+def set_rising_sun( country, countryId, settingId ):
     choice = []
     #base_choice = [ "[B]Astronomical Twilight[/B]   [%s - %s]", "[B]Nautical Twilight[/B]   [%s - %s]", "[B]Civil Twilight[/B]   [%s - %s]", "[B]Sunrise and Sunset[/B]   [%s - %s]" ]
     #"32035|32036|32037|32036"
@@ -1050,15 +1069,15 @@ def set_rising_sun( country, countryId ):
     OK = False
     selected = d_select( Addon.getLocalizedString( 32050 ) % country.decode( "utf-8" ), choice )
     if selected >= 0:
-        Addon.setSetting( "risingsun_city", country )
-        Addon.setSetting( "risingsun_pref", str( selected ) )
-        Addon.setSetting( "risingsun_code", str( countryId ) )
+        Addon.setSetting( "risingsun%s_city" %settingId, country )
+        Addon.setSetting( "risingsun%s_pref" %settingId, str( selected ) )
+        Addon.setSetting( "risingsun%s_code" %settingId, str( countryId ) )
         OK = True
 
     return OK
 
 
-def selection():
+def selection( id ):
     globals_update()
 
     choice1 = [ Addon.getLocalizedString( 32052 ) ] + [ c[ 0 ] for c in base_countries ]
@@ -1071,7 +1090,7 @@ def selection():
         if selected >= 1:
             #take info
             take = base_countries[ selected-1 ]
-            OK = set_rising_sun( take[ 0 ], take[ 1 ] )
+            OK = set_rising_sun( take[ 0 ], take[ 1 ], id )
             if OK: break
 
         elif selected == 0:
@@ -1088,7 +1107,7 @@ def selection():
 
                 #take info
                 city = cities[ selected ]
-                OK = set_rising_sun( "%s - %s" % ( country, city[ 1 ] ), city[ 0 ] )
+                OK = set_rising_sun( "%s - %s" % ( country, city[ 1 ] ), city[ 0 ], id )
                 if OK:
                     stop = OK
                     break
@@ -1114,7 +1133,7 @@ def _calculallcounties():
 
 if __name__ == "__main__":
     #print get_sun()
-    selection()
+    selection( sys.argv[ 1 ] )
 
     #for mode in range( 6 ):
     #    print mode, get_sun( mode=mode )

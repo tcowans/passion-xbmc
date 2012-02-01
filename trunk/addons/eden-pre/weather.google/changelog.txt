@@ -1,27 +1,35 @@
-1.0.7
- - Added : length of day difference (meaningless for Astronomical Twilight starts-ends, Nautical Twilight starts-ends and Civil Twilight starts-ends)
+1.0.? (by mikebzh44)
+ - Added : As you can define 3 cities for weather data, you can now define 3 cities for sun or twilight
+ - Fixed : Return N/A for length of day difference for Astronomical, Nautical and Civil Twilight starts-ends
+ - Fixed : Problem with minus sign when day is decreasing
+ - Fixed : Refresh data when switching between different twilights or sunset-sunrise preference in settings
+           (neeed to use Refresh button to force refresh)
+ - Fixed : Problems with french shortname month containing accent
 
-1.0.6
+1.0.7 (by mikebzh44)
+ - Added : length of day difference (meaningless for Astronomical, Nautical and Civil Twilight starts-ends)
+
+1.0.6 (by frost)
  - Fixed : risingsun, french date/time format
 
-1.0.5
+1.0.5 (by frost)
  - Fixed : rising sun for first 9 days of month
 
-1.0.4
+1.0.4 (by frost)
  - Fixed : flurries icon
  - Fixed : fanartcode 1 to 9
  - Added : clear base properties
 
-1.0.3
+1.0.3 (by frost)
  - Fixed : unconverted data remains:  am/pm
    convert 12h to 24h format before get_user_time_format. thx to vs65r for idea
 
-1.0.2
+1.0.2 (by frost)
  - Fixed : selection of city in extras settings
    possible UnicodeDecodeError in risingsun::set_rising_sun
 
-1.0.1
+1.0.1 (by frost)
  - Finalized translation
 
-1.0.0
+1.0.0 (by frost)
  - Initial version
