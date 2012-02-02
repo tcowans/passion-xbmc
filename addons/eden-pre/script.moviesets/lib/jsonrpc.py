@@ -5,10 +5,12 @@ import sys
 import urllib
 
 try:
-    # Use speedup
     import json as simplejson
-except:
-    # No speed
+    # test json has not loads, call error
+    if not hasattr( simplejson, "loads" ):
+        raise Exception( "Hmmm! Error with json %r" % dir( simplejson ) )
+except Exception, e:
+    print "[MovieSets] %s" % str( e )
     import simplejson
 # for fun! :) json use speedup
 if simplejson.decoder.c_scanstring is not None:

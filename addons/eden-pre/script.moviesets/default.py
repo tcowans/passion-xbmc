@@ -5,14 +5,18 @@
 
 #Modules General
 import os
-from sys import argv
-from urllib import quote_plus
+import sys
 
 # Modules XBMC
 import xbmc
 from xbmcaddon import Addon
 
 ADDON = Addon( "script.moviesets" )
+
+# log infos system
+PREFIX = "[MovieSets-%s] " % ADDON.getAddonInfo( 'version' )
+xbmc.log( PREFIX + "XBMC (%s), Built on %s" % ( xbmc.getInfoImage( 'System.BuildVersion' ), xbmc.getInfoImage( 'System.BuildDate' ) ) )
+xbmc.log( PREFIX + "Python %s on %s" % ( sys.version, sys.platform ) )
 
 
 def IsTrue( text ):
@@ -21,7 +25,7 @@ def IsTrue( text ):
 
 def runScript():
     script = None
-    args = "".join( argv[ 1:2 ] ).lower()
+    args = "".join( sys.argv[ 1:2 ] ).lower()
 
     if ( "moviesetinfo" in args ):
         script = "dialogs"
@@ -51,7 +55,7 @@ def runScript():
         #print alarm_name + " started"
         if xbmc.getCondVisibility( "System.HasAlarm(%s)" % alarm_name ):
             xbmc.executebuiltin( "CancelAlarm(%s,true)" % alarm_name )
-        if script == "moviesets" and str( argv[ -1 ] ).lower() != "moviesets.reload":
+        if script == "moviesets" and str( sys.argv[ -1 ] ).lower() != "moviesets.reload":
             #wait 1or2 seconds for tvtunes load correctly ;)
             xbmc.executebuiltin( "AlarmClock(%s,%s,0:00,true)" % ( alarm_name, command ) )
         else:
