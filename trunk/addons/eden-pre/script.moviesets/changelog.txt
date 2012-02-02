@@ -1,3 +1,8 @@
+2.0.4
+ - added: language portuguese (brazil). thanks to Wanilton
+ - added: log infos about system. (python version and xbmc version)
+ - prevent: possible error with json ( http://forum.xbmc.org/showpost.php?p=1005692&postcount=444 and http://forum.xbmc.org/showpost.php?p=1006841&postcount=464 )
+
 2.0.3
  - re-fixed: error to get streamdetails from json result (except error pass)
 
