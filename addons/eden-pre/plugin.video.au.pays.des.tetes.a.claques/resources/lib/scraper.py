@@ -18,7 +18,6 @@ class AppURLopener( urllib.FancyURLopener ):
         "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/535.7 (KHTML, like Gecko) Chrome/16.0.912.77 Safari/535.7",
         "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET4.0C; .NET4.0E; .NET CLR 2.0.50727; .NET CLR 3.0.04506.648; .NET CLR 3.5.21022; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729)"
         ] )
-    print version
 urllib._urlopener = AppURLopener()
 
 
@@ -84,14 +83,15 @@ def getEpisodes( getplot=False, full=False ):
 
     for count, item in enumerate( re.compile( regexp, re.S ).findall( html ) ):
         ep = {}
-        ep[ "aired" ]   = S01_AIRED[ count ]
-        ep[ "id" ]      = re.sub( '(.*?episode)', '', item[ 0 ] )
-        ep[ "url" ]     = item[ 0 ]
-        ep[ "title" ]   = item[ 1 ]
-        ep[ "episode" ] = item[ 2 ].split()[ -1 ]
-        ep[ "icon" ]    = item[ 3 ]
-        ep[ "rate" ]    = str( list( item[ 4:-1 ] ).count( 'starActive.png' ) )
-        ep[ "votes" ]   = item[ -1 ]
+        ep[ "aired" ]      = S01_AIRED[ count ]
+        try: ep[ "id" ]    = re.sub( '(.*?episode)', '', item[ 0 ] )
+        except: ep[ "id" ] = item[ 0 ].split( "episode" )[ -1 ]
+        ep[ "url" ]        = item[ 0 ]
+        ep[ "title" ]      = item[ 1 ]
+        ep[ "episode" ]    = item[ 2 ].split()[ -1 ]
+        ep[ "icon" ]       = item[ 3 ]
+        ep[ "rate" ]       = str( list( item[ 4:-1 ] ).count( 'starActive.png' ) )
+        ep[ "votes" ]      = item[ -1 ]
 
         ep[ "plot" ] = ""
         if getplot or full:
