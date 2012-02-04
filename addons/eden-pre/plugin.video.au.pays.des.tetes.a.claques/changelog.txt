@@ -1,0 +1,6 @@
+0.0.2
+ - fixed: no longer to parse episodes
+ - fixed: python 2.4 AttributeError: 'tuple' object has no attribute 'count'
+
+0.0.1
+ - Initial version

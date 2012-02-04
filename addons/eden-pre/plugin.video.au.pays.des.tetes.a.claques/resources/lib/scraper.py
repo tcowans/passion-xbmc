@@ -3,6 +3,7 @@
 import os
 import re
 import sys
+import random
 import urllib
 from traceback import print_exc
 
@@ -13,8 +14,11 @@ S01_AIRED = [ "2012-01-12", "2012-01-19", "2012-01-27", "2012-02-03", "2012-02-1
 
 
 class AppURLopener( urllib.FancyURLopener ):
-    #version = "Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.0.1) Gecko/2008070208 Firefox/3.0.1"
-    version = "Mozilla/5.0 (Windows NT 5.1; rv:9.0.1) Gecko/20100101 Firefox/9.0.1"
+    version = random.choice( [ "Mozilla/5.0 (Windows NT 5.1; rv:10.0) Gecko/20100101 Firefox/10.0",
+        "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/535.7 (KHTML, like Gecko) Chrome/16.0.912.77 Safari/535.7",
+        "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET4.0C; .NET4.0E; .NET CLR 2.0.50727; .NET CLR 3.0.04506.648; .NET CLR 3.5.21022; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729)"
+        ] )
+    print version
 urllib._urlopener = AppURLopener()
 
 
@@ -75,7 +79,7 @@ def getEpisodes( getplot=False, full=False ):
     regexp = '<div class="wrapCapsule.*?">.*?'
     regexp += '<a href="(.*?)" title=".*?" class="titreThumb">(.*?)<br /><span class="saison-episode">(.*?)</span></a>.*?'
     regexp += '<img src="(.*?)".*?'
-    regexp += '<div class="votes">.*?' + ( '<img src="http://tetesaclaques.tv/public/images/(.*?)".*?' * 5 )
+    #regexp += '<div class="votes">.*?' + ( '<img src="http://tetesaclaques.tv/public/images/(.*?)".*?>' * 5 )
     regexp += '<p class="nbVoteStar">(.*?) votes</p>.*?'
 
     for count, item in enumerate( re.compile( regexp, re.S ).findall( html ) ):
@@ -86,7 +90,7 @@ def getEpisodes( getplot=False, full=False ):
         ep[ "title" ]   = item[ 1 ]
         ep[ "episode" ] = item[ 2 ].split()[ -1 ]
         ep[ "icon" ]    = item[ 3 ]
-        ep[ "rate" ]    = str( item[ 4:-1 ].count( 'starActive.png' ) )
+        ep[ "rate" ]    = str( list( item[ 4:-1 ] ).count( 'starActive.png' ) )
         ep[ "votes" ]   = item[ -1 ]
 
         ep[ "plot" ] = ""

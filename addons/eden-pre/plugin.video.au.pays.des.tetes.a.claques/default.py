@@ -14,6 +14,8 @@ FANART = ADDON.getAddonInfo( "fanart" )
 SUBTITLES = xbmc.translatePath( "special://subtitles/" )
 if not xbmcvfs.exists( SUBTITLES ): SUBTITLES = xbmc.translatePath( ADDON.getAddonInfo( "profile" ) )
 SUBTITLES = SUBTITLES.replace( "\\", "/" ).rstrip( "/" ) + "/"
+try: os.makedirs( SUBTITLES )
+except: xbmcvfs.mkdir( SUBTITLES )
 
 
 b_infoLabels = {
@@ -24,6 +26,7 @@ b_infoLabels = {
     "studio":      "Salambo Productions inc.",
     "writer":      "Michel Beaudet",
     "director":    "Michel Beaudet",
+    "castandrole": [ ( "Michel Beaudet", "" ) ],
     }
 
 
@@ -45,13 +48,12 @@ def add_container():
         listitem.setProperty( "fanart_image", FANART )
         #
         infoLabels = {
-            "title":       ep[ "title" ],
-            "plot":        ep[ "plot" ],
-            "episode":     int( ep[ "episode" ] ),
-            "Aired":       ep[ "aired" ],
-            "mpaa":        ep[ "rate" ],
-            "duration":    "23",
-            "castandrole": [],
+            "title":    ep[ "title" ],
+            "plot":     ep[ "plot" ],
+            "episode":  int( ep[ "episode" ] ),
+            "Aired":    ep[ "aired" ],
+            "rating":   ep[ "rate" ],
+            "duration": "23",
             }
         infoLabels.update( b_infoLabels )
         listitem.setInfo( "Video", infoLabels )
