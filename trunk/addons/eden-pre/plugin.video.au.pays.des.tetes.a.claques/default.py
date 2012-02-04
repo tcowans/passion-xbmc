@@ -52,7 +52,7 @@ def add_container():
             "plot":     ep[ "plot" ],
             "episode":  int( ep[ "episode" ] ),
             "Aired":    ep[ "aired" ],
-            "rating":   ep[ "rate" ],
+            #"rating":   ep[ "rate" ],
             "duration": "23",
             }
         infoLabels.update( b_infoLabels )
