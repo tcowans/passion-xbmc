@@ -31,7 +31,7 @@ if ( __name__ == "__main__" ):
         dbg = False
         plugin = __plugin__
         settings = __settings__
-        common = CommonFunctions.CommonFunctions()  
+        common = CommonFunctions  
         Arte7Plugin()
     except Exception,msg:
         xbmc.executebuiltin("XBMC.Notification(%s,%s)"%("ERROR",msg))   
