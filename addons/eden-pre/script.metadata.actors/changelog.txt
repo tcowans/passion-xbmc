@@ -1,2 +1,10 @@
+0.1.1
+ - little review
+ - added: missing readme.txt
+ - added Window.Property(current.actor.extrafanart) and Window.Property(current.actor.extrathumb) (return empty if not exists)
+         Alternate use ( special://thumbnails/Actors/$INFO[ListItem.Label]/extrafanart or extrathumb )
+         But xbmc create a multiple error in log, if dir not exists (ERROR: XFILE::CDirectory::GetDirectory - Error getting special://thumbnails/Actors/[ACTOR NAME]/foo/)
+ - changed: moved dialog progress in script-Actors-Browser.xml, to prevent multiple crash on win32
+
 0.1.0 (Beta)
  - Initial version

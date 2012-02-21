@@ -94,6 +94,7 @@ def keyboard( text="", heading=Language( 32033 ) ):
 def load_db_json_string( json_string ):
     if json_string:
         try: return json.loads( json_string )
+        except TypeError: pass
         except: print_exc()
     return []
 

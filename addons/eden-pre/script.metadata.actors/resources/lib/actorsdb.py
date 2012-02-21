@@ -6,7 +6,7 @@ try:
     from xbmc import translatePath
     ACTORS_DB = translatePath( "special://Database/Actors1.db" )
 except:
-    ACTORS_DB = r'C:\Documents and Settings\Frost\Application Data\XBMC\userdata\Database\Actors1.db'
+    ACTORS_DB = 'Actors1.db'
 
 try:
     import json

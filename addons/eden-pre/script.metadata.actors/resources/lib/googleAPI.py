@@ -52,7 +52,7 @@ def _get_json_string( url ):
     except:
         pass
     return ""
-    
+
 
 def getImages( **kwargs ):
     query = { "v": "1.0", "rsz": 8, "safe": "off", "imgsz": "xxlarge" }
@@ -82,8 +82,8 @@ def getImages( **kwargs ):
 
         try: pages = o_json[ "responseData" ][ "cursor" ][ "pages" ][ 1: ]
         except: pages = []
-        
-        # fetch others pages 
+
+        # fetch others pages
         for page in pages:
             s_json = _get_json_string( url + "&start=" + page[ "start" ] )
             o_json = json.loads( s_json )
@@ -101,29 +101,28 @@ def getImages( **kwargs ):
     return results
     """
     [
-      "GsearchResultClass", 
-      "content", 
-      "contentNoFormatting", 
-      "height", 
-      "imageId", 
-      "originalContextUrl", 
-      "tbHeight", 
-      "tbUrl", 
-      "tbWidth", 
-      "title", 
-      "titleNoFormatting", 
-      "unescapedUrl", 
-      "url", 
-      "visibleUrl", 
+      "GsearchResultClass",
+      "content",
+      "contentNoFormatting",
+      "height",
+      "imageId",
+      "originalContextUrl",
+      "tbHeight",
+      "tbUrl",
+      "tbWidth",
+      "title",
+      "titleNoFormatting",
+      "unescapedUrl",
+      "url",
+      "visibleUrl",
       "width"
     ]
     """
+
+
 
 if __name__=="__main__":
     for images in getImages( q="Tatjana Simić wallpaper" ):
         for image in images:
             print json.dumps( image, sort_keys=True, indent=2 )
             print "-"*100
-
-
-
