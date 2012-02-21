@@ -33,8 +33,6 @@ TBN        = utils.Thumbnails()
 TEMP_DIR = xbmc.translatePath( "%scache/" % utils.ADDON_DATA )
 if not xbmcvfs.exists( TEMP_DIR ): os.makedirs( TEMP_DIR )
 
-DIALOG_PROGRESS = xbmcgui.DialogProgress()
-
 html_to_xbmc = {
     "<b>":    "[B]",
     "</b>":   "[/B]",
@@ -46,7 +44,7 @@ html_to_xbmc = {
     }
 
 def _html_to_xbmc( s ):
-    # Replace french accents or french shortname month by english shortname month
+    # Replace html formatting to xbmc formatting
     return re.sub( '(%s)' % '|'.join( html_to_xbmc ), lambda m: html_to_xbmc.get( m.group( 1 ), "" ), s )
 
 
@@ -66,6 +64,23 @@ def get_browse_dialog( default="", heading="", dlg_type=3, shares="files", mask=
     dialog = xbmcgui.Dialog()
     value = dialog.browse( dlg_type, heading, shares, mask, use_thumbs, treat_as_folder, default )
     return value
+
+
+def _delete_files( files ):
+    not_deleted = set()
+    for dl in files:
+        try:
+            xbmcvfs.delete( dl )
+            if xbmcvfs.exists( dl ):
+                os.remove( dl )
+        except:
+            print_exc()
+        if not xbmcvfs.exists( dl ):
+            print "OK, FileDelete(%r)" % dl
+        else:
+            print "ERROR, FileDelete(%r)" % dl
+            not_deleted.add( dl )
+    return not_deleted
 
 
 class Browser( xbmcgui.WindowXMLDialog ):
@@ -97,6 +112,7 @@ class Browser( xbmcgui.WindowXMLDialog ):
             #googleAPI
             images = googleAPI.getImages( q=self.search_name )#+" wallpaper" )
             indexItem = 1
+            images = sorted( images, key=lambda i: int( i.get( "width" ) or 0 ), reverse=True )
             for image in images:
                 #for img in image: #if yield, use this...
                 img = image
@@ -147,7 +163,6 @@ class Browser( xbmcgui.WindowXMLDialog ):
             self.control_list.addItem( listitem )
 
             # add listitems
-            self.listitems = sorted( self.listitems, key=lambda l: l.getLabel(), reverse=True )
             self.control_list.addItems( self.listitems )
 
             # add listitem browse
@@ -224,49 +239,63 @@ class Browser( xbmcgui.WindowXMLDialog ):
                 if t_selected > 1:
                     # if multi download to user folder
                     heading = Language( 32126 ) + ( Language( 32127 ), Language( 32128 ) )[ self.thumb_type == "thumb" ]
-                    dpath = xbmc.translatePath( get_browse_dialog( heading=heading ) )
-                    if not dpath and not xbmcvfs.exists( dpath ): return
+                    #dpath = xbmc.translatePath( get_browse_dialog( heading=heading ) )
+                    #if not dpath and not xbmcvfs.exists( dpath ): return
                     overwrite = xbmcgui.Dialog().yesno( Language( 32135 ), Language( 32136 ) )
+                    # make cached actor thumb
+                    cached_actor_thumb = "special://thumbnails/"
+                    for d in [ "Actors/", self.search_name, "/extra" + self.thumb_type ]:
+                        cached_actor_thumb += d
+                        xbmcvfs.mkdir( cached_actor_thumb )
+                    dpath = xbmc.translatePath( cached_actor_thumb )
+                    #print repr( dpath )
                 else:
                     # otherwise, download to cached thumb
                     overwrite = True
                     is_cached_thumb = True
                     dpath = self.get_current_thumb()
+                    cached_actor_thumb = dpath
                     self.control_list.getListItem( 0 ).setThumbnailImage( self.default_icon )
 
                 def _pbhook( numblocks, blocksize, filesize, ratio=1.0 ):
                     try: pct = int( min( ( numblocks * blocksize * 100 ) / filesize, 100 ) * ratio )
                     except: pct = 100
-                    DIALOG_PROGRESS.update( pct )
-                    if DIALOG_PROGRESS.iscanceled():
+                    self.getControl( 1015 ).setPercent( pct )
+                    if self.getProperty( "iscanceled" ) == "1":
                         raise IOError
-                DIALOG_PROGRESS.create( self.heading )
+                xbmc.executebuiltin( "SetProperty(dialogprogress,1)" )
+                self.getControl( 1011 ).setLabel( self.heading )
                 diff = 100.0 / t_selected
                 percent = 0
 
                 flipfanart = self.getControl( self.CONTROL_RADIOBUTTON ).isSelected()
 
                 for count, listitem in enumerate( selected ):
+                    self.setFocusId( 1010 )
                     self.control_list.selectItem( int( listitem.getProperty( "indexItem" ) ) )
                     url = listitem.getLabel2()
                     if is_cached_thumb: dest = TEMP_DIR + os.path.basename( url )
                     else: dest = _unicode( os.path.join( dpath, os.path.basename( url ) ) )
                     percent += diff
-                    line1 = Language( 32125 ) % ( count+1, t_selected, percent )
-                    DIALOG_PROGRESS.update( 0, line1, url, dest )
+                    self.getControl( 1012 ).setLabel( Language( 32125 ) % ( count+1, t_selected, percent ) )
+                    self.getControl( 1013 ).setLabel( url )
+                    self.getControl( 1014 ).setLabel( dest.replace( dpath, cached_actor_thumb ).replace( "\\", "/" ) )
+                    self.getControl( 1015 ).setPercent( 0 )
                     if not overwrite and xbmcvfs.exists( dest ):
                         listitem.select( False )
                         continue
                     # download file
                     try:
                         fp, h = urllib.urlretrieve( url, dest, lambda nb, bs, fs: _pbhook( nb, bs, fs ) )
-                        if "denied.png" in h.get( "Content-Disposition", "" ): raise
+
+                        if h[ "Content-Type" ] == "text/html":
+                            raise Exception( "bad thumb: %r" % fp )
                     except:
                         self.delete_files.add( dest )
                         dest = None
                         print_exc()
                     listitem.select( False )
-                    if DIALOG_PROGRESS.iscanceled():
+                    if self.getProperty( "iscanceled" ) == "1":
                         break
                     #flip source
                     if dest and flipfanart:
@@ -281,20 +310,20 @@ class Browser( xbmcgui.WindowXMLDialog ):
                             listitem.setThumbnailImage( dpath )
                             self.actor_update = True
 
-                #DIALOG_PROGRESS.update( 100 )
+            self.delete_files = _delete_files( self.delete_files )
         except:
             print_exc()
-
-        if xbmc.getCondVisibility( "Window.IsVisible(progressdialog)" ):
-            xbmc.executebuiltin( "Dialog.Close(progressdialog)" )
-        #try: DIALOG_PROGRESS.close()
-        #except: pass
+        xbmc.executebuiltin( "ClearProperty(iscanceled)" )
+        xbmc.executebuiltin( "ClearProperty(dialogprogress)" )
+        self.setFocusId( self.CONTROL_BUTTON_CANCEL )
 
     def onAction( self, action ):
         if action in utils.CLOSE_DIALOG:
             self._close_dialog()
 
     def _close_dialog( self ):
+        xbmc.executebuiltin( "ClearProperty(dialogprogress)" )
+        self.delete_files = _delete_files( self.delete_files )
         self.close()
         xbmc.sleep( 500 )
 

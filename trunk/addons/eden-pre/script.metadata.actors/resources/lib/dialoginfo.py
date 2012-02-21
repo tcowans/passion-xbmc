@@ -53,10 +53,11 @@ class DialogSelect( xbmcgui.WindowXMLDialog ):
         self.add_plus = js_search[ "results" ] and js_search[ "page" ] < js_search[ "total_pages" ]
 
     def _add_actor( self, ID ):
+        # active busy
         xbmc.executebuiltin( 'ActivateWindow(busydialog)' )
         try:
-            # active busy or dialog dprogress
             json_object = tmdbAPI.full_person_info( ID, ADDON.getSetting( "language" ).lower() )
+            self.actor = {}
             if json_object:
                 if self.main.actor_name:
                     json_object[ "name" ] = unicode( self.main.actor_name, 'utf-8', errors='ignore' )
@@ -66,8 +67,6 @@ class DialogSelect( xbmcgui.WindowXMLDialog ):
                 #print repr( str( update_id ) )
                 self.actor = actorsdb.save_actor( json_object, self.profile_path, update_id, TBN )
                 globals().update( { "RELOAD_ACTORS_BACKEND": True } )
-            else:
-                self.actor = {}
         except:
             print_exc()
         xbmc.executebuiltin( 'Dialog.Close(busydialog,true)' )
@@ -130,10 +129,8 @@ class DialogSelect( xbmcgui.WindowXMLDialog ):
                 else:
                     if selected > -1:
                         # get id for fetching info
-                        try:
-                            ID = self.listing[ selected ][ "id" ]
-                        except IndexError:
-                            pass
+                        try: ID = self.listing[ selected ][ "id" ]
+                        except IndexError: pass
                         else:
                             self._add_actor( ID )
                             if bool( self.actor ):
@@ -142,7 +139,6 @@ class DialogSelect( xbmcgui.WindowXMLDialog ):
             elif controlID == 5:
                 # show keyboard
                 new_name = utils.keyboard( self.main.actor_search )
-                # if not again name, call error
                 if new_name and new_name != self.main.actor_search:
                     self.main.actor_search = new_name
                     self.page = 1
@@ -187,7 +183,6 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
     def __init__( self, *args, **kwargs ):
         self.tbn_added = False
         self.multiimage_thread = None
-        self.setfocus = kwargs.get( "setfocus" )
         # get configuration: images path and sizes
         self.config = tmdbAPI.configuration()
         # set our person image path
@@ -390,8 +385,6 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
             # set icon or fanart not implanted
             #self.getControl( 20 ).setEnabled( 0 )
             self.getControl( 10 ).setEnabled( bool( self.images ) )
-            if self.setfocus:
-                self.setFocusId( self.setfocus )
         except:
             print_exc()
             self._close_dialog()
@@ -429,10 +422,9 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
                             ok = self.copyThumb( new_icon, force=True )
                             if not ok:
                                 import shutil
-                                try:
-                                    shutil.copy( new_icon, xbmc.translatePath( "".join( TBN.get_thumb( self.actor[ "name" ] ) ) ) )
-                                    ok = True
+                                try: shutil.copy( new_icon, xbmc.translatePath( "".join( TBN.get_thumb( self.actor[ "name" ] ) ) ) )
                                 except: pass
+                                else: ok = True
                                 del shutil
                         if ok:
                             self.tbn_added = False
@@ -522,7 +514,7 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
 def Main( actor_name="" ):
     w = ActorInfo( "script-Actors-DialogInfo.xml", utils.ADDON_DIR, actor_name=actor_name )
     w.doModal()
-    a = w.actor
+    #a = w.actor
     del w
 
     if CONTAINER_REFRESH:

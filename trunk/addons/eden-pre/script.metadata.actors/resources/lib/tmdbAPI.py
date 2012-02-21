@@ -3,8 +3,8 @@ DEBUG = 0
 
 import os
 import sys
-#import random
-import urllib, urllib2
+import urllib
+import urllib2
 from traceback import print_exc
 
 try:

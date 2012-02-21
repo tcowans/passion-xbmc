@@ -6,6 +6,7 @@ from traceback import print_exc
 
 import xbmc
 import xbmcgui
+import xbmcvfs
 
 # Modules Custom
 import utils
@@ -16,7 +17,6 @@ STR_AGE_LONG       = utils.Language( 32020 )
 STR_DEAD_SINCE     = utils.Language( 32021 )
 STR_DEATH_AGE_LONG = utils.Language( 32020 )
 TBN                = utils.Thumbnails()
-
 
 
 
@@ -36,7 +36,7 @@ class Backend( threading.Thread ):
 
     def clearProperties( self ):
         window = xbmcgui.Window( 10025 )
-        for prt in [ "name", "biography", "biooutline", "birthday", "deathday", "placeofbirth", "alsoknownas", "homepage", "adult", "age", "deathage", "agelong", "deathagelong", "fanart", "icon" ]:
+        for prt in [ "name", "biography", "biooutline", "birthday", "deathday", "placeofbirth", "alsoknownas", "homepage", "adult", "age", "deathage", "agelong", "deathagelong", "fanart", "icon", "extrafanart", "extrathumb" ][ ::-1  ]:
             window.clearProperty( "current.actor." + prt )
 
     def run( self ):
@@ -77,6 +77,12 @@ class Backend( threading.Thread ):
                             window.setProperty( "current.actor.fanart", fanart )
                             icon = "".join( TBN.get_thumb( self.current_actor[ 2 ] ) )
                             window.setProperty( "current.actor.icon",   icon )
+
+                            # check exist to prevent multiple ERROR: XFILE::CDirectory::GetDirectory - Error getting special://thumbnails/Actors/[ACTOR NAME]/foo/
+                            cached_actor_thumb = "special://thumbnails/Actors/" + self.current_actor[ 2 ]
+                            for extra in [ "/extrafanart", "/extrathumb" ]:
+                                if xbmcvfs.exists( cached_actor_thumb + extra ):
+                                    window.setProperty( "current.actor.extrafanart", cached_actor_thumb + extra )
 
                 time.sleep( .3 )
         except SystemExit:
