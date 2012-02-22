@@ -386,7 +386,16 @@
 							<width>20</width>
 							<height>16</height>
 							<texture>actors-OverlayWatched.png</texture>
-							<visible>!IsEmpty(ListItem.Property(LibraryHasMovie))</visible>
+							<visible>!IsEmpty(ListItem.Property(LibraryHasMovie)) + !IntegerGreaterThan(ListItem.Property(PlayCount),0)</visible>
+						</control>
+						<control type="image">
+							<posx>400</posx>
+							<posy>14</posy>
+							<width>20</width>
+							<height>16</height>
+							<texture>actors-OverlayWatched.png</texture>
+							<visible>IntegerGreaterThan(ListItem.Property(PlayCount),0)</visible>
+							<colordiffuse>FFEB9E17</colordiffuse>
 						</control>
 					</itemlayout>
 					<focusedlayout height="40" width="430">
@@ -436,7 +445,16 @@
 							<width>20</width>
 							<height>16</height>
 							<texture>actors-OverlayWatched.png</texture>
-							<visible>!IsEmpty(ListItem.Property(LibraryHasMovie))</visible>
+							<visible>!IsEmpty(ListItem.Property(LibraryHasMovie)) + !IntegerGreaterThan(ListItem.Property(PlayCount),0)</visible>
+						</control>
+						<control type="image">
+							<posx>400</posx>
+							<posy>14</posy>
+							<width>20</width>
+							<height>16</height>
+							<texture>actors-OverlayWatched.png</texture>
+							<visible>IntegerGreaterThan(ListItem.Property(PlayCount),0)</visible>
+							<colordiffuse>FFEB9E17</colordiffuse>
 						</control>
 					</focusedlayout>
 				</control>
