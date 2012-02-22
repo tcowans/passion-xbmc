@@ -101,6 +101,7 @@ Labels of Known Movies list
 Container(150).ListItem.Label ----------------------> Title of movie (format: "year  title [name of role / director / writer / etc]")
 Container(150).Listitem.Icon -----------------------> icon of movie
 Container(150).ListItem.Property(LibraryHasMovie) --> return 1 or empty, if movie exists in library
+Container(150).ListItem.Property(Playcount) --------> Playcount of movie (default is 0)
 
 Labels of thumbs list
 Container(250).ListItem.Label -------------------> Image résolution (512x720)

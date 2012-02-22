@@ -366,7 +366,9 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
                     li = xbmcgui.ListItem( label, "", "DefaultMovies.png" )
                     if movie[ 1 ]: li.setIconImage( movie[ 1 ] )
                     li.setProperty( "id", str( id ) )
-                    if movie[ 4 ]: li.setProperty( "LibraryHasMovie", "1" )
+                    if movie[ 4 ]:
+                        li.setProperty( "LibraryHasMovie", "1" )
+                        li.setProperty( "PlayCount", str( movie[ 4 ].get( "playcount" ) or "0" ) )
                     listitems.append( li )
                 self.getControl( 150 ).addItems( listitems )
             except:
