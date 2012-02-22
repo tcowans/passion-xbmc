@@ -341,6 +341,7 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
                 listitems = []
                 pretty_movie = {}
                 non_dated = {}
+                movies_library = utils.get_movies_library()
                 for movie in self.actor[ "castandcrew" ][ 0 ] + self.actor[ "castandcrew" ][ 1 ]:
                     if movie[ "id" ] not in movies_id: movies_id.append( movie[ "id" ] )
                     year = str( movie[ "release_date" ] or "?" )[ :4 ]
@@ -352,6 +353,9 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
                     if movie.get( "character" ): m[ 2 ].append( movie[ "character" ] )
                     if movie.get( "job" ):       m[ 3 ].append( movie[ "job" ] )
                     if movie[ "poster_path" ]:   m[ 1 ] = self.poster_path + movie[ "poster_path" ]
+                    #
+                    m.append( utils.library_has_movie( movies_library, movie[ "title" ], movie[ "original_title" ] ) )
+                    #
                     dict[ movie[ "id" ] ] = m
 
                 movies = sorted( pretty_movie.items(), key=lambda x: x[ 1 ][ 0 ], reverse=True ) + sorted( non_dated.items(), key=lambda x: x[ 1 ][ 0 ] )
@@ -362,6 +366,7 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
                     li = xbmcgui.ListItem( label, "", "DefaultMovies.png" )
                     if movie[ 1 ]: li.setIconImage( movie[ 1 ] )
                     li.setProperty( "id", str( id ) )
+                    if movie[ 4 ]: li.setProperty( "LibraryHasMovie", "1" )
                     listitems.append( li )
                 self.getControl( 150 ).addItems( listitems )
             except:

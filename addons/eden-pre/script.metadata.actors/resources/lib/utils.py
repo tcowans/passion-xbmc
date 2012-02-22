@@ -91,6 +91,23 @@ def keyboard( text="", heading=Language( 32033 ) ):
     return ""
 
 
+def get_movies_library():
+    json_string = xbmc.executeJSONRPC( '{"jsonrpc": "2.0", "id":"1", "method":"VideoLibrary.GetMovies"}' )
+    json_string = unicode( json_string, 'utf-8', errors='ignore' )
+    result = ( json.loads( json_string ).get( "result" ) or {} )
+    return result.get( "movies" ) or []
+
+
+def library_has_movie( movies_library, tilte, original_title ):
+    OK = None
+    where = "|".join( [ tilte, original_title or "" ] ).lower() # "(%s)" %  .strip( "|" )
+    for movie in movies_library:
+        if re.search( movie[ "label" ].lower(), where ):
+            OK = movie
+            break
+    return OK
+
+
 def load_db_json_string( json_string ):
     if json_string:
         try: return json.loads( json_string )
