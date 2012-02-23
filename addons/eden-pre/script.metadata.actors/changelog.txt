@@ -1,3 +1,7 @@
+0.1.5
+ - added: Portuguese (Brazil) (thanks to Wanilton) 
+ - fixed: close dialogs properly before launch trailer
+
 0.1.4
  - added: [filmography] ability to play trailers (require plugin.video.youtube v2.9.0)
  - added: [script-Actors-ContextMenu.xml] on filmography listing
