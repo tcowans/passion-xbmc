@@ -28,6 +28,55 @@ CONTAINER_REFRESH     = False
 RELOAD_ACTORS_BACKEND = False
 
 
+
+class DialogContextMenu( xbmcgui.WindowXMLDialog ):
+    CONTROLS_BUTTON = range( 1001, 1012 )
+
+    def __init__( self, *args, **kwargs ):
+        self.buttons  = kwargs[ "buttons" ]
+        self.selected = -1
+        self.doModal()
+
+    def onInit( self ):
+        try:
+            for control in self.CONTROLS_BUTTON:
+                try:
+                    self.getControl( control ).setLabel( "" )
+                    self.getControl( control ).setVisible( False )
+                except:
+                    pass
+            for count, button in enumerate( self.buttons ):
+                try:
+                    self.getControl( 1001 + count ).setLabel( button )
+                    self.getControl( 1001 + count ).setVisible( True )
+                except:
+                    pass
+            self.setFocusId( 1001 )
+        except:
+            print_exc()
+
+    def onFocus( self, controlID ):
+        pass
+
+    def onClick( self, controlID ):
+        try:
+            self.selected = ( controlID - 1001 )
+            if self.selected < 0: self.selected = -1
+        except:
+            self.selected = -1
+            print_exc()
+        self._close_dialog()
+
+    def onAction( self, action ):
+        if action in utils.CLOSE_SUB_DIALOG:
+            self.selected = -1
+            self._close_dialog()
+
+    def _close_dialog( self ):
+        self.close()
+        xbmc.sleep( 300 )
+
+
 class DialogSelect( xbmcgui.WindowXMLDialog ):
     def __init__( self, *args, **kwargs ):
         self.actor = {}
@@ -160,7 +209,7 @@ class DialogSelect( xbmcgui.WindowXMLDialog ):
                     self.setFocusId( 5 )
         except:
             self.setFocus( self.control_list )
-        if action in utils.CLOSE_DIALOG:
+        if action in utils.CLOSE_SUB_DIALOG:
             self.actor = {}
             self._close_dialog()
 
@@ -260,7 +309,7 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
         try: self.multiimage_thread.cancel()
         except: pass
 
-    def setContainer( self ):
+    def setContainer( self, refresh=False ):
         try:
             self.videodb = utils.getActorPaths( self.actor[ "name" ], ACTORS )
             self.getControl( 8 ).setEnabled( bool( self.videodb ) )
@@ -283,6 +332,11 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
                 if xbmcvfs.exists( fanart ):
                     listitem.setProperty( "Fanart_Image", fanart )
                     break
+
+            cached_actor_thumb = "special://thumbnails/Actors/" + self.actor[ "name" ] + "/"
+            for extra in [ "extrafanart", "extrathumb" ]:
+                if xbmcvfs.exists( cached_actor_thumb + extra ):
+                    listitem.setProperty( extra, cached_actor_thumb + extra )
 
             self.tbn_added = False
             if self.actor[ "thumbs" ]:
@@ -392,6 +446,15 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
             # set icon or fanart not implanted
             #self.getControl( 20 ).setEnabled( 0 )
             self.getControl( 10 ).setEnabled( bool( self.images ) )
+
+            if refresh:
+                # del trailer id's
+                trailers = utils.load_trailers()
+                for id in movies_id:
+                    if trailers.get( str( id ) ):
+                        del trailers[ str( id ) ]
+                f = xbmc.translatePath( utils.ADDON_DATA + "trailers.json" )
+                file( f, "w" ).write( utils.json.dumps( trailers ) )
         except:
             print_exc()
             self._close_dialog()
@@ -442,12 +505,48 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
                         xbmcgui.Dialog().ok( xbmc.getInfoLabel( "ListItem.Title" ), msg )
 
             elif controlID == 150:
-                id = self.getControl( 150 ).getSelectedItem().getProperty( "id" )
-                if not id: return
-                import webbrowser
-                url = "http://www.themoviedb.org/movie/%s?language=%s" % ( id, ADDON.getSetting( "language" ).lower() )
-                webbrowser.open( url )
-                del webbrowser
+                listitem = self.getControl( 150 ).getSelectedItem()
+                movie_id = listitem.getProperty( "id" )
+                if not movie_id: return
+
+                listitem.select( 1 )
+                buttons = [ Language( 32051 ), LangXBMC( 13346 ), Language( 32050 ) ]
+                cm = DialogContextMenu( "script-Actors-ContextMenu.xml", utils.ADDON_DIR, buttons=buttons )
+                selected = cm.selected
+                del cm
+                listitem.select( 0 )
+
+                if selected == 0:
+                    trailers = utils.load_trailers()
+                    if trailers.get( movie_id ):
+                        trailers, lang = trailers[ movie_id ]
+                    else:
+                        xbmc.executebuiltin( 'ActivateWindow(busydialog)' )
+                        trailers, lang = tmdbAPI.get_movie_trailers( movie_id, ADDON.getSetting( "language" ).lower() )
+                        utils.save_trailers( trailers, lang )
+                        xbmc.executebuiltin( 'Dialog.Close(busydialog,true)' )
+
+                    trailers = trailers.get( "youtube" )
+                    if trailers:
+                        selected = -1
+                        if len( trailers ) == 1: selected = 0
+                        else: selected = xbmcgui.Dialog().select( "%s [%s]" % ( Language( 32051 ), lang.upper() ), [ "%s (%s)" % ( trailer[ "name" ], trailer[ "size" ] ) for trailer in trailers ] )
+                        if selected > -1:
+                            url = "plugin://plugin.video.youtube/?action=play_video&videoid=%s" % trailers[ selected ][ "source" ]
+                            xbmc.Player().play( url, listitem )
+                            xbmc.executebuiltin( 'Dialog.Close(all,true)' )
+                    else:
+                        #no trailers found
+                        utils.notification( listitem.getLabel(), Language( 32052 ).encode( "utf-8" ) )
+
+                elif selected == 1:
+                    xbmcgui.Dialog().ok( utils.ADDON.getAddonInfo( "name" ), "Coming Soon!" )
+
+                elif selected == 2:
+                    import webbrowser
+                    url = "http://www.themoviedb.org/movie/%s?language=%s" % ( movie_id, ADDON.getSetting( "language" ).lower() )
+                    webbrowser.open( url )
+                    del webbrowser
 
             elif controlID == 5:
                 # toggle button Filmography/Biography
@@ -463,7 +562,7 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
                 actor = select( self, True )
                 if actor:
                     self.actor = actor
-                    self.setContainer()
+                    self.setContainer( True )
 
             elif controlID == 8:
                 # show user movies acting, tvshows acting, movies directing, discography
@@ -506,7 +605,11 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
             print_exc()
 
     def onAction( self, action ):
-        if action in utils.CLOSE_DIALOG:
+        if action == utils.ACTION_CONTEXT_MENU and xbmc.getCondVisibility( "Control.HasFocus(150)" ):
+            try: self.onClick( 150 )
+            except: pass
+
+        elif action in utils.CLOSE_DIALOG:
             self._close_dialog()
 
     def _close_dialog( self ):
