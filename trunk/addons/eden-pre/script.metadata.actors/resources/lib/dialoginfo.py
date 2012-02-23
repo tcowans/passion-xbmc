@@ -533,8 +533,10 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
                         else: selected = xbmcgui.Dialog().select( "%s [%s]" % ( Language( 32051 ), lang.upper() ), [ "%s (%s)" % ( trailer[ "name" ], trailer[ "size" ] ) for trailer in trailers ] )
                         if selected > -1:
                             url = "plugin://plugin.video.youtube/?action=play_video&videoid=%s" % trailers[ selected ][ "source" ]
-                            xbmc.Player().play( url, listitem )
+                            self._close_dialog()
+                            xbmc.executebuiltin( "ClearProperty(script.metadata.actors.isactive)" )
                             xbmc.executebuiltin( 'Dialog.Close(all,true)' )
+                            xbmc.Player().play( url, listitem )
                     else:
                         #no trailers found
                         utils.notification( listitem.getLabel(), Language( 32052 ).encode( "utf-8" ) )
