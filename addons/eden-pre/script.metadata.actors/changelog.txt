@@ -1,5 +1,9 @@
+0.1.6
+ - updated: German language (thanks to Eisi2005)
+ - updated: Portuguese (Brazil) language (thanks to Wanilton) 
+
 0.1.5
- - added: Portuguese (Brazil) (thanks to Wanilton) 
+ - added: Portuguese (Brazil) language (thanks to Wanilton) 
  - fixed: close dialogs properly before launch trailer
 
 0.1.4

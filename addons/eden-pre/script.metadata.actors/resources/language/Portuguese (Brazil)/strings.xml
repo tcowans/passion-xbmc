@@ -5,9 +5,9 @@
 
   <string id="32010">Filmografia</string>
   <string id="32011">Filmes conhecidos</string>
-  <string id="32012">Data de Nascimento</string>
+  <string id="32012">Data Nascimento</string>
   <string id="32013">Data de Morte</string>
-  <string id="32014">Local de Nascimento</string>
+  <string id="32014">Natural de</string>
   <string id="32015">Ator Adulto</string>
   <string id="32016">Também conhecido como</string>
   <string id="32017">Homepage</string>
@@ -28,6 +28,10 @@
   <string id="32040">Selecione o tamanho da imagem</string>
   <string id="32041">Sucesso! Nova miniatura criada.</string>
   <string id="32042">Erro! Impossível criar uma nova miniatura!</string>
+  
+  <string id="32050">Informação Online</string> 
+  <string id="32051">Trailers</string> 
+  <string id="32052">Nenhum trailer encontrado</string>  
 
   <string id="32100">Título e Poster do Filme</string>
   <string id="32101">Mostrar Título Original</string>
@@ -57,4 +61,5 @@
   <string id="32136">Você deseja sobrepor seus arquivos existentes?</string>
 
   <string id="32311">Imagem de Fanart[CR][CR]Indisponível[CR][CR] Clique no botão para setar</string>
+ 
 </strings>
