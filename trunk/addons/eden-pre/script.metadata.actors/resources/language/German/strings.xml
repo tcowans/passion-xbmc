@@ -29,6 +29,10 @@
   <string id="32041">Erfolgreich! Neues Bild erstellt.</string>
   <string id="32042">Fehler! neues Bild konnte nicht erstellt werden!</string>
 
+  <string id="32050">Online Informationen</string>
+  <string id="32051">Trailer</string>
+  <string id="32052">Kein Trailer gefunden!</string>
+
   <string id="32100">Film Titel und Poster</string>
   <string id="32101">Zeige Originaltitel</string>
   <string id="32102">Qualität der wechselnden Fanarts</string>
