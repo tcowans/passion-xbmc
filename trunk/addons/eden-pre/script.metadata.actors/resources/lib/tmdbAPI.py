@@ -107,6 +107,21 @@ def person_images( person_id=19429 ):
     return js
 
 
+def get_movie_trailers( movie_id=72545, language="en" ):
+    """ This method is used to retrieve all of the trailers for a particular movie.
+        Supported sites are YouTube and QuickTime.
+    """
+    url = "http://api.themoviedb.org/3/movie/%s/trailers"  % str( movie_id )
+    js  = _get_json_new( url, { "language": language } )
+    if DEBUG:
+        #print js
+        print json.dumps( js, sort_keys=True, indent=2 )
+    # if not trailer in language user try english
+    if not js.get( "youtube" ) and language.lower() != "en":
+        return get_movie_trailers( movie_id, "en" )
+    return js, language
+
+
 def full_person_info( person_id=19429, language="en" ):
     infos = {}
     infos.update( person_info( person_id ) )
@@ -164,7 +179,8 @@ if __name__=="__main__":
     #js = configuration()
     #print "-"*100
     DEBUG = 1
-    js = search_person( "Bruce Lee" )
+    js = get_movie_trailers()
+    #js = search_person( "Bruce Lee" )
     #print "-"*100
 
     #js = full_person_info( 19429, "fr" )

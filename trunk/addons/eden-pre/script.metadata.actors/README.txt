@@ -96,6 +96,8 @@ ListItem.Property(AlsoKnownAs) ---> Also Known Name
 ListItem.Property(Homepage) ------> Link of homepage, you can use onclick for open web browser directly on homepage: RunScript(script.metadata.actors,homepage=$INFO[ListItem.Property(Homepage)])
 ListItem.Property(Adult) ---------> Is Adult Actor (no / yes)
 ListItem.Property(Fanart_Image) --> Fanart
+ListItem.Property(extrafanart) ---> extrafanart (return empty if not exists)
+ListItem.Property(extrathumb) ----> extrathumb (return empty if not exists)
 
 Labels of Known Movies list
 Container(150).ListItem.Label ----------------------> Title of movie (format: "year  title [name of role / director / writer / etc]")

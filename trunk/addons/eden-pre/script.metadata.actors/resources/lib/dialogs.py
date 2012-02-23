@@ -318,7 +318,7 @@ class Browser( xbmcgui.WindowXMLDialog ):
         self.setFocusId( self.CONTROL_BUTTON_CANCEL )
 
     def onAction( self, action ):
-        if action in utils.CLOSE_DIALOG:
+        if action in utils.CLOSE_SUB_DIALOG:
             self._close_dialog()
 
     def _close_dialog( self ):

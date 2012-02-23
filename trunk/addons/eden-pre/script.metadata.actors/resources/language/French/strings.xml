@@ -29,6 +29,10 @@
   <string id="32041">Succès! Nouvelle vignette créée.</string>
   <string id="32042">Erreur! Impossible de créer la nouvelle vignette!</string>
 
+  <string id="32050">Informations en ligne</string>
+  <string id="32051">Bandes-annonces</string>
+  <string id="32052">Aucune bandes-annonces de trouver !</string>
+
   <string id="32100">Titre et affiche des films</string>
   <string id="32101">Afficher le titre original</string>
   <string id="32102">Qualité de retournement des fanarts</string>

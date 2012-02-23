@@ -79,10 +79,10 @@ class Backend( threading.Thread ):
                             window.setProperty( "current.actor.icon",   icon )
 
                             # check exist to prevent multiple ERROR: XFILE::CDirectory::GetDirectory - Error getting special://thumbnails/Actors/[ACTOR NAME]/foo/
-                            cached_actor_thumb = "special://thumbnails/Actors/" + self.current_actor[ 2 ]
-                            for extra in [ "/extrafanart", "/extrathumb" ]:
+                            cached_actor_thumb = "special://thumbnails/Actors/" + self.current_actor[ 2 ] + "/"
+                            for extra in [ "extrafanart", "extrathumb" ]:
                                 if xbmcvfs.exists( cached_actor_thumb + extra ):
-                                    window.setProperty( "current.actor.extrafanart", cached_actor_thumb + extra )
+                                    window.setProperty( "current.actor." + extra, cached_actor_thumb + extra )
 
                 time.sleep( .3 )
         except SystemExit:

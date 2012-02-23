@@ -364,7 +364,7 @@
 							<font>font12</font>
 							<align>left</align>
 							<aligny>center</aligny>
-							<selectedcolor>FFFFFFFF</selectedcolor>
+							<selectedcolor>FFEB9E17</selectedcolor>
 							<info>ListItem.Label</info>
 							<visible>IsEmpty(ListItem.Property(LibraryHasMovie))</visible>
 						</control>
@@ -376,7 +376,7 @@
 							<font>font12</font>
 							<align>left</align>
 							<aligny>center</aligny>
-							<selectedcolor>FFFFFFFF</selectedcolor>
+							<selectedcolor>FFEB9E17</selectedcolor>
 							<info>ListItem.Label</info>
 							<visible>!IsEmpty(ListItem.Property(LibraryHasMovie))</visible>
 						</control>
@@ -423,7 +423,7 @@
 							<font>font12</font>
 							<align>left</align>
 							<aligny>center</aligny>
-							<selectedcolor>FFFFFFFF</selectedcolor>
+							<selectedcolor>FFEB9E17</selectedcolor>
 							<info>ListItem.Label</info>
 							<visible>IsEmpty(ListItem.Property(LibraryHasMovie))</visible>
 						</control>
@@ -435,7 +435,7 @@
 							<font>font12</font>
 							<align>left</align>
 							<aligny>center</aligny>
-							<selectedcolor>FFFFFFFF</selectedcolor>
+							<selectedcolor>FFEB9E17</selectedcolor>
 							<info>ListItem.Label</info>
 							<visible>!IsEmpty(ListItem.Property(LibraryHasMovie))</visible>
 						</control>

@@ -33,7 +33,8 @@ ACTION_PARENT_DIR    =   9
 ACTION_PREVIOUS_MENU =  10
 ACTION_NAV_BACK      =  92
 ACTION_CONTEXT_MENU  = 117
-CLOSE_DIALOG         = [ ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, ACTION_NAV_BACK, ACTION_CONTEXT_MENU ]
+CLOSE_DIALOG         = [ ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, ACTION_NAV_BACK ]
+CLOSE_SUB_DIALOG     = [ ACTION_CONTEXT_MENU ] + CLOSE_DIALOG
 
 day_month_id_long = {
     "Monday":    11,
@@ -81,6 +82,14 @@ day_month_id_short = {
 
 
 STR_JSONRPC = '{"jsonrpc":"2.0", "id":"1", "method":"Files.GetDirectory", "params":{"directory":"%s", "sort":{"method":"label", "order":"ascending"}}}'
+
+
+def notification( header="", message="", sleep=5000, icon=ADDON.getAddonInfo( "icon" ) ):
+    """ Will display a notification dialog with the specified header and message,
+        in addition you can set the length of time it displays in milliseconds and a icon image.
+    """
+    icon = ( "DefaultIconInfo.png", icon )[ os.path.isfile( icon ) ]
+    xbmc.executebuiltin( "XBMC.Notification(%s,%s,%i,%s)" % ( header, message, sleep, icon ) )
 
 
 def keyboard( text="", heading=Language( 32033 ) ):
@@ -294,6 +303,27 @@ def flip_fanart( fanart, PIL_Image, quality=85 ):
     return fanart
 
 
+def load_trailers():
+    trailers = {}
+    try:
+        f = xbmc.translatePath( ADDON_DATA + "trailers.json" )
+        trailers = json.loads( open( f ).read() )
+    except:
+        pass
+    return trailers
+
+
+def save_trailers( trailer, lang ):
+    trailers = load_trailers()
+    try:
+        trailers[ trailer[ "id" ] ] = trailer, lang
+        f = xbmc.translatePath( ADDON_DATA + "trailers.json" )
+        file( f, "w" ).write( json.dumps( trailers ) )
+    except:
+        pass
+    return trailers
+
+    
 class Thumbnails:
     BASE_THUMB_PATH   = "special://thumbnails/"
     VIDEO_THUMB_PATH  = BASE_THUMB_PATH + "Video/"
