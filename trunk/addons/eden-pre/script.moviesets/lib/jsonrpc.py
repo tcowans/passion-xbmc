@@ -65,7 +65,6 @@ class httpNamespace( baseNamespace ):
 
         def handler( *args, **kwargs ):
             postdata = self.createParams( method, args, kwargs )
-            #print postdata
 
             try:
                 fobj = urllib.urlopen( self.api.url, postdata )
@@ -74,8 +73,11 @@ class httpNamespace( baseNamespace ):
                      if e.args[ 1 ] == 401: raise UserPassError()
                 raise ConnectionError( e.errno, 'Connection error: ' + str( e.errno ) )
 
+            jsonstring = fobj.read()
+            try: jsonstring = unicode( jsonstring, 'utf-8', errors='ignore' )
+            except: pass
             try:
-                json = simplejson.loads( fobj.read() )
+                json = simplejson.loads( jsonstring )
             finally:
                 fobj.close()
 
@@ -104,6 +106,8 @@ class execNamespace( baseNamespace ):
             postdata = self.createParams( method, args, kwargs )
 
             jsonstring = xbmc.executeJSONRPC( postdata )
+            try: jsonstring = unicode( jsonstring, 'utf-8', errors='ignore' )
+            except: pass
             json = simplejson.loads( jsonstring )
 
             if 'error' in json:
