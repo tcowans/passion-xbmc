@@ -15,7 +15,7 @@ webserverusername = re.search( '<webserverusername>(.*?)</webserverusername>', d
 xbmcHttp = "http://"
 
 if webserverpassword and webserverusername:
-    xbmcHttp += "%s:%s@" % ( webserverpassword, webserverusername )
+    xbmcHttp += "%s:%s@" % ( webserverusername, webserverpassword )
 
 xbmcHttp += xbmc.getIPAddress() #"localhost" #"107.0.0.1"
 
