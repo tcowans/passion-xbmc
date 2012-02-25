@@ -13,7 +13,9 @@
 
   <!-- Dialog Info -->
   <category label="32105">
-    <setting type="lsep" label="Date" />
+    <setting type="lsep" label="InfoLabels" />
+    <setting label="32107" type="enum" lvalues="106|107|32108" id="showlabeladult" default="1"/>
+    <setting type="sep" />
     <setting label="$LOCALIZE[14052]" type="enum" lvalues="33013|33012" id="datelongshort" default="0"/>
     <setting label="$ADDON[script.metadata.actors 32106] [$INFO[System.Date(DDDD D MMMM YYYY)]]" type="bool" id="fulldatelong" enable="eq(-1,0)" default="true"/>
 
