@@ -1,10 +1,15 @@
+0.1.7
+ - test: add Actors GetDirectory to home property for increase speed on next launch
+ - added: busydialog on first time of Actors GetDirectory
+ - added: setting for Show label Adult Actor. (choice: no / yes / only if true)
+
 0.1.6
  - updated: German language (thanks to Eisi2005)
  - updated: Portuguese (Brazil) language (thanks to Wanilton) 
 
-0.1.5
- - added: Portuguese (Brazil) language (thanks to Wanilton) 
- - fixed: close dialogs properly before launch trailer
+1.1.5
+ - added: Portuguese (Brazil) (thanks to Wanilton) 
+ - fixed: close properly dialogs before launch trailer
 
 0.1.4
  - added: [filmography] ability to play trailers (require plugin.video.youtube v2.9.0)

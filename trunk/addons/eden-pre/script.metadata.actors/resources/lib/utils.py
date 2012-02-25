@@ -141,9 +141,16 @@ def getXBMCActors( where=LIBRARY_TYPE ):
         directories += [ "videodb://1/4/", "videodb://2/4/", "videodb://1/5/" ]
     if not where or where == "artist":
         directories += [ "musicdb://2/" ]
-    Actors = []
-    for directory in directories:
-        Actors += get_directory( directory ).get( "files" ) or []
+    #Actors = []
+    prt = "library.actors." + ( where or "" )
+    Actors = load_db_json_string( unicode( xbmc.getInfoLabel( "Window(10000).Property(%s)" % prt ), "utf-8" ) )
+    if not Actors:
+        xbmc.executebuiltin( 'ActivateWindow(busydialog)' )
+        for directory in directories:
+            Actors += get_directory( directory ).get( "files" ) or []
+        xbmc.executebuiltin( 'Dialog.Close(busydialog,true)' )
+        # Test: add Actors GetDirectory to home property for increase speed on next launch
+        xbmcgui.Window( 10000 ).setProperty( prt, json.dumps( Actors ) )
     return Actors
 
 

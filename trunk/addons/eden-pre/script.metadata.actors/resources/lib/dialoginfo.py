@@ -362,7 +362,11 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
             listitem.setProperty( "Homepage",     self.actor[ "homepage" ]   or "" )
             listitem.setProperty( "PlaceOfBirth", self.actor[ "place_of_birth" ] or "" )
             listitem.setProperty( "AlsoKnownAs",  self.actor[ "also_known_as" ]  or "" )
-            listitem.setProperty( "Adult",        LangXBMC( ( 106, 107 )[ str( self.actor[ "adult" ] ).lower() == "true" ] ) )
+
+            if int( ADDON.getSetting( "showlabeladult" ) ):
+                adult = LangXBMC( ( 106, 107 )[ str( self.actor[ "adult" ] ).lower() == "true" ] )
+                if int( ADDON.getSetting( "showlabeladult" ) ) == 2 and adult == LangXBMC( 106 ): adult = ""
+                listitem.setProperty( "Adult", adult )
 
             format = ( "datelong", "dateshort" )[ int( ADDON.getSetting( "datelongshort" ) ) ]
             birthday = utils.get_user_date_format( ( self.actor[ "birthday" ] or "" ), format )
