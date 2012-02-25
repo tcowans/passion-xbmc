@@ -1,5 +1,8 @@
+0.0.4
+ - fixed: Next Aired Date
+
 0.0.3
- - fixed: float error on old version 
+ - fixed: float error on old version of XBMC
 
 0.0.2
  - fixed: no longer to parse episodes
