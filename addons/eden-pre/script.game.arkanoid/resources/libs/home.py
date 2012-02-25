@@ -179,8 +179,7 @@ class Main( xbmcgui.WindowXML ):
             elif not self.GAME and controlID == 203:
                 mode = ( controlID - 200 )
                 #browse custom stage
-                stg = utilities.getBrowseDialog( os.path.join( BASE_RESOURCE_PATH, "custom_levels" )+os.sep,
-                    heading="Select Your Stage", mask=".stage" )
+                stg = utilities.getBrowseDialog( os.path.join( BASE_RESOURCE_PATH, "custom_levels" )+os.sep, heading="Select Your Stage", mask=".stage" )
                 if stg and os.path.isfile( stg ):
                     f = open( stg, "r" )
                     bg, stage = eval( f.read() )
@@ -193,7 +192,7 @@ class Main( xbmcgui.WindowXML ):
                     if os.path.exists( bg ): bg = bg
                     elif bg and not os.path.exists( bg ): bg = os.path.join( MEDIAS_PATH, bg )
                     stageName = os.path.splitext( os.path.basename( stg ) )[ 0 ]
-                    customlevel = bg, stage, stageName
+                    customlevel = ( bg or "dummy" ), stage, stageName
                     self.launchGame( 0, mode, customlevel )
 
             elif not self.GAME and controlID == 204:

@@ -50,6 +50,7 @@ class Info( xbmcgui.WindowXMLDialog ):
 
             listitem.setProperty( "revision", get_revision() )
             self.getControl( 48 ).addItem( listitem )
+            self.getControl( 12 ).setLabel( xbmc.getLocalizedString( 13009 ) )
         except:
             print_exc()
 
