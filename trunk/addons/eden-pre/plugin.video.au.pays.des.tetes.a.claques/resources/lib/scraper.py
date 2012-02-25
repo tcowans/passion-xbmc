@@ -10,7 +10,7 @@ from traceback import print_exc
 try: SUBTITLES = sys.modules[ "__main__" ].SUBTITLES
 except: SUBTITLES = ""
 
-S01_AIRED = [ "2012-01-12", "2012-01-19", "2012-01-27", "2012-02-03", "2012-02-10", "2012-02-17", "2012-02-24", "2012-03-02" ]
+S01_AIRED = [ "2012-01-12", "2012-01-19", "2012-01-27", "2012-02-03", "2012-03-02", "2012-04-06", "2012-05-04", "2012-06-01" ]
 
 
 class AppURLopener( urllib.FancyURLopener ):
