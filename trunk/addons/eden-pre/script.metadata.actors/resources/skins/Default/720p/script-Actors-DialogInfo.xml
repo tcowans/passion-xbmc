@@ -96,7 +96,7 @@
 					</control>
 				</control>
 				<control type="group">
-					<visible>![Control.HasFocus(20) | Control.HasFocus(10) | ControlGroup(2500).HasFocus]</visible>
+					<visible>![Control.HasFocus(20) | [Control.HasFocus(10) + IntegerGreaterThan(Container(250).NumItems,0)] | ControlGroup(2500).HasFocus]</visible>
 					<posy>90</posy>
 					<posx>210</posx>
 					<animation effect="fade" time="300">Visible</animation>
@@ -475,7 +475,7 @@
 				</control>
 
 				<control type="group" id="2500">
-					<visible>Control.HasFocus(10) | ControlGroup(2500).HasFocus</visible>
+					<visible>[Control.HasFocus(10) + IntegerGreaterThan(Container(250).NumItems,0)] | ControlGroup(2500).HasFocus</visible>
 					<posx>210</posx>
 					<posy>90</posy>
 					<animation effect="fade" time="300">Visible</animation>
@@ -627,7 +627,7 @@
 						<texturenofocus border="5">actors-button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
 						<label>13405</label>
-						<onclick>SetFocus(250)</onclick>
+						<!--<onclick>SetFocus(250)</onclick>-->
 					</control>
 					<control type="button" id="20">
 						<description>Get Fanart</description>

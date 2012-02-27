@@ -85,10 +85,14 @@ class DialogSelect( xbmcgui.WindowXMLDialog ):
         self.listing = kwargs.get( "listing" ) or []
         self.profile_path = self.main.config[ "base_url" ] + self.main.config[ "profile_sizes" ][ 2 ]
 
-        self.page = 1
-        self._search_person()
-
         self.refresh = kwargs[ "refresh" ]
+        self.page = 1
+
+        if self.main.actor_search.isdigit():
+            self._add_actor( self.main.actor_search )
+        else:
+            self._search_person()
+
         # if not refresh and just one item, use this
         if not self.refresh and len( self.listing ) == 1:
             self._add_actor( self.listing[ 0 ][ "id" ] )
@@ -138,7 +142,7 @@ class DialogSelect( xbmcgui.WindowXMLDialog ):
         if self.listing:
             try: self.setContainer()
             except: print_exc()
-        else:
+        elif not bool( self.actor ):
             try: self.onClick( 5 )
             except: print_exc()
 
@@ -192,6 +196,11 @@ class DialogSelect( xbmcgui.WindowXMLDialog ):
                     self.main.actor_search = new_name
                     self.page = 1
                     self.listing = []
+                    if self.main.actor_search.isdigit():
+                        self._add_actor( self.main.actor_search )
+                        if bool( self.actor ):
+                            self._close_dialog( 0 )
+                            return
                     self._search_person()
                     self.setContainer()
         except:
@@ -221,7 +230,8 @@ class DialogSelect( xbmcgui.WindowXMLDialog ):
 def select( main, refresh=False ):
     xbmc.executebuiltin( "SetProperty(actorsselect,1)" )
     w = DialogSelect( "DialogSelect.xml", utils.ADDON_DIR, main=main, refresh=refresh )
-    w.doModal()
+    if not w.actor:
+        w.doModal()
     actor = w.actor
     del w
     xbmc.executebuiltin( "ClearProperty(actorsselect)" )
@@ -259,8 +269,11 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
             raise Exception( "No search person: Canceled..." )
 
         # search in database
-        con, cur   = actorsdb.getConnection()
-        self.actor = actorsdb.getActor( cur, strActor=self.actor_search )
+        con, cur = actorsdb.getConnection()
+        if self.actor_search.isdigit():
+            self.actor = actorsdb.getActor( cur, idTMDB=self.actor_search )
+        else:
+            self.actor = actorsdb.getActor( cur, strActor=self.actor_search )
         con.close()
         OK = bool( self.actor )
 
@@ -427,6 +440,7 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
                     if movie[ 4 ]:
                         li.setProperty( "LibraryHasMovie", "1" )
                         li.setProperty( "PlayCount", str( movie[ 4 ].get( "playcount" ) or "0" ) )
+                        li.setProperty( "file", movie[ 4 ].get( "file" ) or "" )
                     listitems.append( li )
                 self.getControl( 150 ).addItems( listitems )
             except:
@@ -447,9 +461,9 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
                 self.getControl( 250 ).addItems( listitems )
             except:
                 print_exc()
-            # set icon or fanart not implanted
+            # set icon or fanart
             #self.getControl( 20 ).setEnabled( 0 )
-            self.getControl( 10 ).setEnabled( bool( self.images ) )
+            #self.getControl( 10 ).setEnabled( bool( self.images ) )
 
             if refresh:
                 # del trailer id's
@@ -512,13 +526,23 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
                 listitem = self.getControl( 150 ).getSelectedItem()
                 movie_id = listitem.getProperty( "id" )
                 if not movie_id: return
+                LibraryHasMovie = listitem.getProperty( "LibraryHasMovie" ) == "1"
 
                 listitem.select( 1 )
                 buttons = [ Language( 32051 ), LangXBMC( 13346 ), Language( 32050 ) ]
+                if LibraryHasMovie: buttons.insert( 0, LangXBMC( 208 ) )
                 cm = DialogContextMenu( "script-Actors-ContextMenu.xml", utils.ADDON_DIR, buttons=buttons )
                 selected = cm.selected
                 del cm
                 listitem.select( 0 )
+
+                if selected == 0 and LibraryHasMovie:
+                    file = listitem.getProperty( "file" )
+                    if file: xbmc.executebuiltin( "PlayMedia(%s)" % file )
+                    return
+
+                if LibraryHasMovie:
+                    selected -= 1
 
                 if selected == 0:
                     trailers = utils.load_trailers()
@@ -595,9 +619,13 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
                     webbrowser.open( "http://www.themoviedb.org/person/%i" % self.actor[ "id" ] )
                     del webbrowser
 
-            elif controlID == 20:
-                #browse fanart
-                if dialogs.browser( search_name=self.actor_search ):
+            elif controlID in [ 10, 20 ]:
+                #browse fanart or thumb
+                type = ( "thumb", "fanart" )[ controlID == 20 ]
+                if type == "thumb" and self.getControl( 250 ).size():
+                    self.setFocusId( 250 )
+
+                elif dialogs.browser( search_name=self.actor_search, type=type ):
                     globals().update( { "CONTAINER_REFRESH": True } )
                     self.setContainer()
 

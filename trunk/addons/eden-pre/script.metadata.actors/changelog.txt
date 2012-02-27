@@ -1,3 +1,10 @@
+0.1.8
+ - added: Manual search by id tmdb
+ - fixed: Get Thumb if not exists
+ - added: [filmography] Play Movie. if movie exists in library
+ - updated: German language (thanks to Eisi2005)
+ - updated: Portuguese (Brazil) language (thanks to Wanilton) 
+
 0.1.7
  - test: add Actors GetDirectory to home property for increase speed on next launch
  - added: busydialog on first time of Actors GetDirectory

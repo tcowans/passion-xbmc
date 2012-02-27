@@ -101,7 +101,7 @@ def keyboard( text="", heading=Language( 32033 ) ):
 
 
 def get_movies_library():
-    json_string = xbmc.executeJSONRPC( '{"jsonrpc": "2.0", "id":"1", "method":"VideoLibrary.GetMovies", "params": {"properties":["originaltitle", "playcount"]}}' )
+    json_string = xbmc.executeJSONRPC( '{"jsonrpc": "2.0", "id":"1", "method":"VideoLibrary.GetMovies", "params": {"properties":["originaltitle", "playcount", "file"]}}' )
     json_string = unicode( json_string, 'utf-8', errors='ignore' )
     result = ( json.loads( json_string ).get( "result" ) or {} )
     return result.get( "movies" ) or []
