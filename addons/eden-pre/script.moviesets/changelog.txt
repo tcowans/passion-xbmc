@@ -1,12 +1,12 @@
 2.0.6
- - added: Hebrew (thanks to BuSHari)
+ - added: Hebrew language (thanks to BuSHari)
 
 2.0.5
  - fixed: webserver, stupid reversed login and pass
  - fixed: unicode before loads json string
 
 2.0.4
- - added: language portuguese (brazil). thanks to Wanilton
+ - added: Portuguese (brazil) language (thanks to Wanilton)
  - added: log infos about system. (python version and xbmc version)
  - prevent: possible error with json ( http://forum.xbmc.org/showpost.php?p=1005692&postcount=444 and http://forum.xbmc.org/showpost.php?p=1006841&postcount=464 )
 
