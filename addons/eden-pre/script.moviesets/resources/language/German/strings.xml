@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!-- strings 32000 thru 32999 reserved for scripts -->
+  <string id="32000">Filmsets</string>
+  <string id="32001">Manager Sets</string>
+  <string id="32002">Sets</string>
+  <string id="32003">[Set]&#32;</string>
+  <string id="32004">[Film]&#32;</string>
+
+  <!-- category settings -->
+  <string id="32050">Allgemein</string>
+  <string id="32051">Show busy dialog on retrieving info</string>
+  <string id="32052">Label Separator</string>
+  <string id="32053">Filmanordnung in jedem Set</string>
+
+  <string id="32060">Wartung</string>
+  <string id="32061">Changelog anzeigen</string>
+  <string id="32062">InfoLabel anzeigen</string>
+  <string id="32063">Lizenz anzeigen</string>
+
+  <!-- strings Manager -->
+  <string id="32100">Film hinzufügen...</string>
+  <string id="32101">Wähle Film für Set [%s]</string>
+  <string id="32102">Film zum Set hinzufügen bestätigen</string>
+  <string id="32103">Hinzufügen des Films '%s'</string>
+  <string id="32104">zum Set '%s'</string>
+
+  <string id="32110">Aus Filmset entfernen</string>
+  <string id="32111">Entferne Film aus dem Set [%s]</string>
+  <string id="32112">Entfernen des Films aus dem Set bestätigen</string>
+  <string id="32113">Entferne den Film '%s'</string>
+  <string id="32114">aus dem Set '%s'</string>
+
+  <string id="32120">Wähle Filmset Fanart</string>
+  <string id="32121">Wähle ein oder mehrere Fanart für Extrafanart</string>
+  <string id="32122">Bestätige runterladen..</string>
+  <string id="32123">%i von %i wurden ausgewählt!</string>
+  <string id="32124">Willst Du diese Dateien runterladen?</string>
+  <string id="32125">Download: %i von %i - %i%%</string>
+  <string id="32126">Wähle Verzeichnis für&#32;</string>
+  <string id="32127">Extrafanart</string>
+  <string id="32128">Extrabild</string>
+  <string id="32129"></string>
+  <string id="32130">Filmset Cover auswählen</string>
+  <string id="32131">Wähle ein oder mehrere Bild für Extrabild</string>
+
+  <string id="32135">Überschreiben bestätigen...</string>
+  <string id="32136">Willst Du deine vorhandenen Dateien überschreiben?</string>
+
+  <string id="32140">Entferne das Filmset [%s]</string>
+  <string id="32141">Entferne Filmset aus Sammlung</string>
+
+  <string id="32200">Hinzufügen zum Filmset</string>
+  <string id="32201">Wähle Filmset für [%s]</string>
+
+  <string id="32210">Entferne Film aus dem Set [%s]</string>
+  <string id="32220">Film Sortiertitel ändern</string>
+  <string id="32221">Filmset Titel ändern</string>
+
+  <string id="32300">Füge Filme zu bestehendem Filmset hinzu</string>
+  <string id="32301">Wähle Film</string>
+  <string id="32302">Wähle Filmset für Film [%s]</string>
+
+  <string id="32310">Remove movies to existing movieset</string>
+  <string id="32311">Wähle Filmset</string>
+
+  <string id="32320">Entferne bestehendes Filmset</string>
+  <string id="32321">Wähle Filmset zum entfernen</string>
+
+  <string id="32330">neues Filmset erstellen</string>
+  <string id="32331">Settitel eingeben</string>
+
+  <!-- strings 33000 thru 33999 reserved for common strings used in addons -->
+  <!-- skin strings -->
+  <string id="33000">Manager Sets</string>
+  <string id="33001">Sets</string>
+  <string id="33002">Info Set</string>
+  <string id="33004">[Set]</string>
+
+  <string id="33100">Filmsets Informationen in Sammlung anzeigen</string>
+  <string id="33101">Extra Buttons</string>
+  <string id="33102">Anzeigen von Manager Optionen in der Sammlung</string>
+  <string id="33103">Anzeigen von "Info Set" im Kontextmenü</string>
+  <string id="33104">(Nur mit Maus verfügbar!)</string>
+</strings>
