@@ -15,20 +15,7 @@ try:
     WEATHER_WINDOW = xbmcgui.Window( 12600 )
     ICONS_SET = int( Addon.getSetting( 'icons_set' ) )
     CURRENT_LOCATION = int( Addon.getSetting( 'currentlocation' ) ) - 1
-    RISING_SUN_CODE = {}
-    RISING_SUN_PREF = {}
-    RISING_SUN_CODE[0]  = int( Addon.getSetting( 'risingsun1_code' ) )
-    RISING_SUN_PREF[0] = 0
-    if RISING_SUN_CODE[0] and Addon.getSetting( 'risingsun1_none' ) == "false":
-        RISING_SUN_PREF[0] = int( Addon.getSetting( 'risingsun1_pref' ) ) + 1
-    RISING_SUN_CODE[1]  = int( Addon.getSetting( 'risingsun2_code' ) )
-    RISING_SUN_PREF[1] = 0
-    if RISING_SUN_CODE[1] and Addon.getSetting( 'risingsun2_none' ) == "false":
-        RISING_SUN_PREF[1] = int( Addon.getSetting( 'risingsun2_pref' ) ) + 1
-    RISING_SUN_CODE[2]  = int( Addon.getSetting( 'risingsun3_code' ) )
-    RISING_SUN_PREF[2] = 0
-    if RISING_SUN_CODE[2] and Addon.getSetting( 'risingsun3_none' ) == "false":
-        RISING_SUN_PREF[2] = int( Addon.getSetting( 'risingsun3_pref' ) ) + 1
+    
     WEATHER_ICONS = os.path.join( Addon.getAddonInfo( 'path' ), "resources", "images", "" )
     CUSTOM_ICONS = os.path.join( Addon.getSetting( 'custom_icons' ), "" )
     DATE_TIME_FORMAT = "%s %s" % ( xbmc.getRegion( "dateshort" ), xbmc.getRegion( "time" ) )
@@ -40,8 +27,6 @@ except:
     # NOT RUNNING ON XBMC, ON DEV
     WEATHER_WINDOW   = None
     ICONS_SET        = 2
-    RISING_SUN_CODE  = 0
-    RISING_SUN_PREF  = 0
     WEATHER_ICONS    = ""
     CUSTOM_ICONS     = ""
     DATE_TIME_FORMAT = "%d/%m/%Y %I:%M:%S %p"
@@ -49,9 +34,7 @@ except:
     WEATHER_XML      = os.path.join( sys.path[ 0 ], "weather.xml" )
 
 
-from risingsun import get_sun
-SUN_UP, SUN_DOWN, IN_BROAD_DAYLIGHT, SUN_LENGTH = get_sun( RISING_SUN_CODE[CURRENT_LOCATION], RISING_SUN_PREF[CURRENT_LOCATION], True )
-#print SUN_UP, SUN_DOWN, IN_BROAD_DAYLIGHT, RISING_SUN_CODE, RISING_SUN_PREF
+IN_BROAD_DAYLIGHT = True
 
 from utilities import *
 from google_weather_api import *
@@ -107,9 +90,9 @@ def SetProperty( key, value="" ):
 
 
 def ClearProperties():
+    #clear base properties
     map( SetProperty,
-        [ "Weather.IsFetched",
-          "Updated",
+        [ "Updated",
           "Current.OutlookIcon",
           "Current.FanartCode",
           "Current.Condition",
@@ -120,145 +103,55 @@ def ClearProperties():
           "Current.WindDirection",
           "Current.Wind",
           "Current.DewPoint",
-
-          "Current.Locale.Sunrise",
-          "Current.Locale.Sunset",
           ]
         )
     for i in xrange( 4 ):
         map( SetProperty,
-            [ "Day%i.Title" % ( i ),
-              "Day%i.HighTemp" % ( i ),
-              "Day%i.LowTemp" % ( i ),
-              "Day%i.Outlook" % ( i ),
+            [ "Day%i.Title"       % ( i ),
+              "Day%i.HighTemp"    % ( i ),
+              "Day%i.LowTemp"     % ( i ),
+              "Day%i.Outlook"     % ( i ),
               "Day%i.OutlookIcon" % ( i ),
-              "Day%i.FanartCode" % ( i ),
+              "Day%i.FanartCode"  % ( i ),
               ]
             )
-
+    #clear extra properties
+    map( SetProperty,
+        [ "Weather.IsFetched",
+          "Weather.ExtraIsFetched",
+          "Current.Location.LocalTime",
+          "Current.AstroTwilight.Start",
+          "Current.AstroTwilight.End",
+          "Current.NauticTwilight.Start",
+          "Current.NauticTwilight.End",
+          "Current.CivilTwilight.Start",
+          "Current.CivilTwilight.End",
+          "Current.Sunrise",
+          "Current.Sunset",
+          "Current.Sunrise.Azimuth",
+          "Current.Sunset.Azimuth",
+          "Current.Sun.Length",
+          "Current.Sun.Diff",
+          "Current.Solarnoon.Time",
+          "Current.Solarnoon.Altitude",
+          "Current.Solarnoon.Distance",
+          "In.Broad.Daylight",
+          "Current.Moonrise",
+          "Current.Moonset",
+          "Current.Moonrise.Azimuth",
+          "Current.Moonset.Azimuth",
+          "Current.Moon.Meridian.Time",
+          "Current.Moon.Meridian.Altitude",
+          "Current.Moon.Meridian.Distance",
+          "Current.Moon.Meridian.Illuminated",
+          "Current.Moon.Phase",
+          #"Current.Earth.Phase.LargeImage",
+          #"Current.Earth.Phase.Image",
+          #"Current.Moon.Phase.Image",
+          ]
+        )
 
 def SetProperties( weather, LocationIndex=1 ):
-    # USED FOR OLD XBMC
-    writeXML( weather )
-    #Current weather
-    #forecast_information
-    forecast_info = weather.getElementsByTagName( "forecast_information" )[ 0 ]
-
-    SetProperty( "Location", getData( forecast_info, "city" ) )
-    SetProperty( "Location%s" % int( LocationIndex ), str( LocationIndex ) )
-    SetProperty( "LocationIndex", str( LocationIndex ) )
-    SetProperty( "AreaCode", getData( forecast_info, "postal_code" ) )
-
-    #date = getData( forecast_info, "forecast_date" )
-    #longdate = getData( forecast_info, "current_date_time" ).split()#[ 1: ]
-    #longdate[ 0 ] = date
-    #SetProperty( "Updated", " ".join( longdate ) )
-    SetProperty( "Updated", time.strftime( DATE_TIME_FORMAT, time.localtime( time.time() ) ) )
-
-    #extra info
-    SetProperty( "Latitude", getData( forecast_info, "latitude_e6" ) )
-    SetProperty( "Longitude", getData( forecast_info, "longitude_e6" ) )
-    unit_system = getData( forecast_info, "unit_system" )
-    SetProperty( "UnitSystem", unit_system )
-
-    #current_conditions
-    current_conditions = weather.getElementsByTagName( "current_conditions" )[ 0 ]
-
-    fanartcode, icon = getIcon( getData( current_conditions, "icon" ), True )
-    #print fanartcode, icon
-    SetProperty( "Current.ConditionIcon", "special://temp/weather/128x128/%s" % icon )
-    SetProperty( "Current.FanartCode", fanartcode )
-    SetProperty( "Current.Condition", getData( current_conditions, "condition" ) )
-
-    Temperature = getData( current_conditions, "temp_c" )
-    Humidity    = getData( current_conditions, "humidity", True )
-    Wind        = getData( current_conditions, "wind_condition", True )
-
-    curSpeed, gUnit = re.search( ' (\d+) (mph|km/h)', Wind.lower() ).groups()
-    newSpeed, strUnit = ConvertSpeed( curSpeed, gUnit, xbmc.getRegion( "speedunit" ) )
-    Wind = Wind.replace( curSpeed, str( int( newSpeed ) ) ).replace( gUnit, strUnit )
-
-    V = ( curSpeed, mphtokmh( curSpeed ) )[ gUnit.lower() == "mph" ]
-    FeelsLike = getFeelsLike( int( Temperature ), int( V ) )
-    DewPoint  = getDewPoint( int( Temperature ), int( Humidity.strip( "%" ) ) )
-
-    if not CELSIUS_FORMAT:
-        Temperature = getData( current_conditions, "temp_f" )
-        FeelsLike   = CelsiusVsFahrenheit( FeelsLike, "tf" )
-        DewPoint    = CelsiusVsFahrenheit( DewPoint, "tf" )
-
-    SetProperty( "Current.Temperature", Temperature )
-    SetProperty( "Current.FeelsLike", FeelsLike ) # "N/A" )
-
-    SetProperty( "Current.UVIndex", "N/A" )
-    SetProperty( "Current.Humidity", Humidity )
-
-    SetProperty( "Current.Wind", Wind )
-    SetProperty( "Current.DewPoint", DewPoint ) # "N/A" )
-
-    #Future weather
-    #forecast_conditions
-    forecast_conditions = weather.getElementsByTagName( "forecast_conditions" )
-    for i, condition in enumerate( forecast_conditions ):
-        day = "Day%i." % ( i )
-        day_of_week = getData( condition, "day_of_week" )
-        SetProperty( day + "Title", DAYS_OF_WEEK.get( day_of_week ) or day_of_week )
-
-        high = getData( condition, "high" )
-        low = getData( condition, "low" )
-        if unit_system == "SI" and not CELSIUS_FORMAT:
-            high = CelsiusVsFahrenheit( high, "tf" )
-            low = CelsiusVsFahrenheit( low, "tf" )
-        if unit_system != "SI" and CELSIUS_FORMAT:
-            high = CelsiusVsFahrenheit( high, "tc" )
-            low = CelsiusVsFahrenheit( low, "tc" )
-        SetProperty( day + "HighTemp", high )
-        SetProperty( day + "LowTemp", low )
-        
-        SetProperty( day + "Outlook", getData( condition, "condition" ) )
-        code, icon = getIcon( getData( condition, "icon" ) )
-        SetProperty( day + "OutlookIcon", "special://temp/weather/128x128/%s" % icon )
-        SetProperty( day + "FanartCode", code )
-    # Retrieve data for new location
-    id = int(LocationIndex) - 1
-    SUN_UP, SUN_DOWN, IN_BROAD_DAYLIGHT, SUN_LENGTH = get_sun( RISING_SUN_CODE[id], RISING_SUN_PREF[id], True )
-    SetProperty( "Current.Sunrise", SUN_UP )
-    SetProperty( "Current.Sunset", SUN_DOWN )
-    SetProperty( "Weather.IsFetched", "true" )
-
-
-def getWeatherSettings( loc_index=None ):
-    # USED FOR OLD XBMC
-    location = None
-    try:
-        city = xbmc.getInfoLabel( "Window(Weather).Property(Location)" )
-        LocationIndex = xbmc.getInfoLabel( "Window(Weather).Property(LocationIndex)" )
-        if city and LocationIndex:
-            location, loc_index = city, LocationIndex
-        else:
-            strxml = open( xbmc.translatePath( "special://userdata/guisettings.xml" ) ).read()
-            currentlocation = re.search( '<currentlocation>(\d+)</currentlocation>', strxml )
-            if currentlocation:
-                loc_index = currentlocation.group( 1 )
-                areacode = re.search( '<areacode%s>(.+?)</areacode%s>' % ( loc_index, loc_index ), strxml )
-                if areacode:
-                    location = areacode.group( 1 ).split( " - " )[ -1 ]
-
-        if not loc_index:
-            loc_index = Addon.getSetting( 'currentlocation' )
-        if loc_index:
-            Addon.setSetting( 'currentlocation', loc_index )
-            #reset weather setting from xbmc guisettings.xml
-            location = Addon.getSetting( 'areacode%s' % loc_index )
-    except:
-        print_exc()
-    SetProperty( "Location", location )
-    SetProperty( "Location%s" % int( loc_index ), str( loc_index ) )
-    return location, loc_index
-
-
-def SetProperties2( weather, LocationIndex=1 ):
-    # new method for xbmc.python 2.0
     writeXML( weather )
     #Current weather
     #forecast_information
@@ -266,13 +159,12 @@ def SetProperties2( weather, LocationIndex=1 ):
 
     SetProperty( "Location%s" % int( LocationIndex ), getData( forecast_info, "city" ) )
     #SetProperty( "Location%s" % int( LocationIndex ), getData( forecast_info, "postal_code" ) )
-
-    SetProperty( "Updated", time.strftime( DATE_TIME_FORMAT, time.localtime( time.time() ) ) )
+    #SetProperty( "Updated", time.strftime( DATE_TIME_FORMAT, time.localtime( time.time() ) ) )
 
     #current_conditions
     current_conditions = weather.getElementsByTagName( "current_conditions" )[ 0 ]
 
-    fanartcode, OutlookIcon = getIcon( getData( current_conditions, "icon" ), True )
+    fanartcode, OutlookIcon = getIcon( getData( current_conditions, "icon" ), not IN_BROAD_DAYLIGHT )
     SetProperty( "Current.OutlookIcon", OutlookIcon )
     SetProperty( "Current.FanartCode", fanartcode )
     SetProperty( "Current.Condition", getData( current_conditions, "condition" ) )
@@ -291,9 +183,7 @@ def SetProperties2( weather, LocationIndex=1 ):
 
     SetProperty( "Current.UVIndex", "N/A" )
     SetProperty( "Current.Humidity", Humidity )
-    
-    #try: WindDirection = Addon.getLocalizedString( 32500 + cardinal_direction.index( WindDirection ) )
-    #except: pass
+
     SetProperty( "Current.WindDirection", WindDirection )
     SetProperty( "Current.Wind", str( curSpeed ) )
     SetProperty( "Current.DewPoint", DewPoint )
@@ -321,17 +211,10 @@ def SetProperties2( weather, LocationIndex=1 ):
         SetProperty( day + "OutlookIcon", OutlookIcon )
         SetProperty( day + "FanartCode", fanartcode )
 
-    # Retrieve data for new location
-    id = int(LocationIndex) - 1
-    SUN_UP, SUN_DOWN, IN_BROAD_DAYLIGHT, SUN_LENGTH = get_sun( RISING_SUN_CODE[id], RISING_SUN_PREF[id], True )
-    SetProperty( "Current.Locale.Sunrise", SUN_UP )
-    SetProperty( "Current.Locale.Sunset", SUN_DOWN )
-    SetProperty( "Current.Locale.Sunlength", SUN_LENGTH )
     SetProperty( "Weather.IsFetched", "true" )
 
 
-def getWeatherSettings2( loc_index="1" ):
-    # new method for xbmc.python 2.0
+def getWeatherSettings( loc_index="1" ):
     try:
         location = Addon.getSetting( 'areacode%s' % loc_index )
         SetProperty( "Location", location )
@@ -344,6 +227,33 @@ def getWeatherSettings2( loc_index="1" ):
     return location, loc_index
 
 
+def Main( loc_index="1", retry=3 ):
+    try:
+        ClearProperties()
+        SetProperty( "WeatherProvider", "Google Weather" )
+
+        city, LocationIndex = getWeatherSettings( loc_index )
+
+        if not city: raise ( city, LocationIndex )
+
+        #run extra info
+        try:
+            import timeanddate
+            is_night = timeanddate.SetProperties( LocationIndex )
+            globals().update( { "IN_BROAD_DAYLIGHT": is_night } )
+        except:
+            print_exc()
+
+        weather = get_weather( city, LANG )
+        if weather:
+            SetProperties( weather, LocationIndex=LocationIndex )
+    except:
+        print_exc()
+        retry -= 1
+        if retry > 0:
+            Main( loc_index, retry )
+
+
 def _test():
     cities = [ ( "Paris", "fr" ), ( "New York", "en" ), ( "Quebec, QC", "fr" ) ]
     for city in cities:
@@ -354,12 +264,4 @@ def _test():
 
 
 if __name__ == "__main__":
-    #_test()
-    # Call from setting windows so refresh weather data
-    SetProperty( "Current.Locale.Sunrise", SUN_UP )
-    SetProperty( "Current.Locale.Sunset", SUN_DOWN )
-    SetProperty( "Current.Locale.Sunlength", SUN_LENGTH )
-    SetProperty( "Weather.IsFetched", "true" )
-    xbmc.executebuiltin( "Addon.openSettings(weather.google)" )
-    xbmc.executebuiltin( "SetFocus(201)" )
-    xbmc.executebuiltin( "SetFocus(104)" )
+    _test()

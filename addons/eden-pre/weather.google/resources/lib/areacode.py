@@ -1,14 +1,38 @@
 # -*- coding: utf-8 -*-
 
 from weather import *
+import timeanddate
 
 
-def keyboard( text="" ):
-    kb = xbmc.Keyboard( text, Addon.getLocalizedString( 32010 ), False )
+def keyboard( text="", heading=Addon.getLocalizedString( 32010 ) ):
+    kb = xbmc.Keyboard( text, heading, False )
     kb.doModal()
     if kb.isConfirmed():
         return kb.getText()
     return ""
+
+
+def get_matching_city( country ):
+    countries = timeanddate.get_countries_id( country )
+    totals = len( countries )
+    if totals == 0:
+        location = keyboard( country )
+        if location: return get_matching_city( location )
+
+    if totals == 1:
+        return countries[ 0 ][ 0 ]
+
+    if totals > 1:
+        choices = [ "[B]%s[/B]" % Addon.getLocalizedString( 32052 ) ] + [ c for i, c in countries ]
+        while True:
+            selected = xbmcgui.Dialog().select( "[Astronomy] " + xbmc.getLocalizedString( 14024 ), choices )
+            if selected == -1: break
+            if selected == 0:
+                location = keyboard( country, "[Astronomy] " + xbmc.getLocalizedString( 14024 ) )
+                if location:
+                    return get_matching_city( location )
+            else:
+                return countries[ selected-1 ][ 0 ]
 
 
 def changeLocation( location, onselection=False ):
@@ -28,7 +52,19 @@ def changeLocation( location, onselection=False ):
             # now ask user
             heading = "%s  (%s%s)" % ( city.encode( "utf-8" ), Temp.encode( "utf-8" ), xbmc.getRegion( "tempunit" ) )
             if xbmcgui.Dialog().yesno( heading, condition, humidity, wind, xbmc.getLocalizedString( 222 ), xbmc.getLocalizedString( 424 ) ):
-                Addon.setSetting( sys.argv[ 1 ], city )#location )
+                #now get matching city from timeanddate
+                id_city = None
+                if Addon.getSetting( sys.argv[ 1 ] + "_city" ) == city:
+                    id_city = Addon.getSetting( sys.argv[ 1 ] + "_code" )
+                if not id_city:
+                    id_city = get_matching_city( city )
+                if id_city:
+                    #save settings
+                    Addon.setSetting( sys.argv[ 1 ], city )
+                    Addon.setSetting( sys.argv[ 1 ] + "_city", city )
+                    Addon.setSetting( sys.argv[ 1 ] + "_code", id_city )
+                #else:
+                #    retry = True
             else:
                 retry = True
         except:

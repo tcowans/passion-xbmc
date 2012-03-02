@@ -1,4 +1,13 @@
-1.0.? (by mikebzh44)
+2.0.0
+ - added: a lot of new properties. see README.txt
+ - added: Moon and Earth Phases images (auto refresh every 1 hour). see properties in README.txt
+ - changed: property "Current.Locale.Sunrise" for "Current.Sunrise"
+ - changed: property "Current.Locale.Sunset" for "Current.Sunset"
+ - removed: extra settings
+ - removed: dharma/xbox compatibility
+ - cleanup...
+
+1.0.8
  - Added : As you can define 3 cities for weather data, you can now define 3 cities for sun or twilight
  - Fixed : Return N/A for length of day difference for Astronomical, Nautical and Civil Twilight starts-ends
  - Fixed : Problem with minus sign when day is decreasing
@@ -6,30 +15,30 @@
            (neeed to use Refresh button to force refresh)
  - Fixed : Problems with french shortname month containing accent
 
-1.0.7 (by mikebzh44)
+1.0.7
  - Added : length of day difference (meaningless for Astronomical, Nautical and Civil Twilight starts-ends)
 
-1.0.6 (by frost)
+1.0.6
  - Fixed : risingsun, french date/time format
 
-1.0.5 (by frost)
+1.0.5
  - Fixed : rising sun for first 9 days of month
 
-1.0.4 (by frost)
+1.0.4
  - Fixed : flurries icon
  - Fixed : fanartcode 1 to 9
  - Added : clear base properties
 
-1.0.3 (by frost)
+1.0.3
  - Fixed : unconverted data remains:  am/pm
    convert 12h to 24h format before get_user_time_format. thx to vs65r for idea
 
-1.0.2 (by frost)
+1.0.2
  - Fixed : selection of city in extras settings
    possible UnicodeDecodeError in risingsun::set_rising_sun
 
-1.0.1 (by frost)
+1.0.1
  - Finalized translation
 
-1.0.0 (by frost)
+1.0.0
  - Initial version
