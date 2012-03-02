@@ -1,3 +1,6 @@
+2.0.7
+ - added: German language (thanks to Eisi2005)
+
 2.0.6
  - added: Hebrew language (thanks to BuSHari)
 
