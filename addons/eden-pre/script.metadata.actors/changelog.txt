@@ -1,3 +1,6 @@
+﻿0.2.0
+ - fixed: Cast and role, non-Latin characters (e.g. in Greek it is "Tom Hanks ως Forrest Gump"). http://forum.xbmc.org/showpost.php?p=1034440&postcount=54
+
 0.1.9
  - added: Greek language (thanks to CutSickAss)
 

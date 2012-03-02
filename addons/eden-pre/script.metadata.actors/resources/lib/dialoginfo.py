@@ -254,8 +254,16 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
         self.actor_name = kwargs.get( "actor_name" ) or ""
 
         # fix name if called from dialogvideoinfo.xml actor and role
-        _as_ = utils.re.search( "(.*?) %s .*?" % LangXBMC( 20347 ), self.actor_name )
-        if _as_: self.actor_name = _as_.group( 1 )
+        _as_ = " %s " % LangXBMC( 20347 )
+        try: actor, role = self.actor_name.split( _as_.encode( "utf-8" ) )
+        except:
+            try: actor, role = self.actor_name.split( _as_ )
+            except:
+                _as_ = utils.re.search( "(.*?)%s(.*?)" % _as_, self.actor_name )
+                if _as_: actor, role = _as_.groups()
+                else: actor, role = "", ""
+        #xbmcgui.Dialog().ok( LangXBMC( 20347 ), actor, role )
+        self.actor_name = actor or self.actor_name
 
         # if not name, show keyboard
         self.actor_search = self.actor_name or utils.select_actor_from_xbmc( ACTORS )
