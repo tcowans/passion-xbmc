@@ -7,7 +7,7 @@
 	    <setting label="30011" type="text" id="catalog_refresh_rate" default="18000" />
 	    -->
 	    <setting label="30020" type="lsep" />
-	    <setting label="30021" type="enum" id="server" lvalues="30022|30023|30024" default="2" />
+	    <setting label="30021" type="enum" id="server" lvalues="30024" default="0" />
 	</category>
 
     <!-- ADVANCED -->

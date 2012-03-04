@@ -14,7 +14,7 @@ __author__       = "PECK, mighty_bombero, merindol, Temhil (passion-xbmc.org)"
 __url__          = "http://passion-xbmc.org/index.php"
 __credits__      = "Team XBMC Passion"
 __date__         = "08-12-2011"
-__version__      = "1.2.4"
+__version__      = "1.3.0"
 
 import urllib,sys,os,platform
 import string
@@ -65,9 +65,7 @@ except:
     print_exc()
 
 # Server List
-srv_list = [ {'rtmp': "rtmpe://m6replayfs.fplive.net/m6replay/streaming", 'app': "m6replay/streaming"}, # France (semble ne plus fonctionner)
-             {'rtmp': "rtmpe://m6dev.fcod.llnwd.net:443/a3100/d1",        'app': "a3100/d1"},           # International (semble ne plus fonctionner)
-             {'rtmp': "rtmp://groupemsix.fcod.llnwd.net/a3100/d1",        'app': "a3100/d1"}]           # International
+srv_list = [ {'rtmp': "rtmpe://groupemsix.fcod.llnwd.net/a2883/d1",       'app': "a2883/d1"}]           # International
 
 # List of directories to check at startup
 dirCheckList   = ( CACHEDIR, ) 
@@ -200,7 +198,7 @@ class W9Replay:
         elif ( "stream=" in sys.argv[ 2 ] ): 
             # Resolve URL in order to play a video   
             rtmp, app, playpath, flash_ver = self.get_rtmp_args()
-            url = rtmp + " app=" + app + " swfUrl=http://l3.player.m6.fr/swf/StatPlaylibrary_20100401.swf playpath=" + playpath + " swfvfy=true socks=80.67.172.70:9050 flashVer=" + flash_ver
+            url = rtmp + " app=" + app + " swfUrl=http://groupemsix.vo.llnwd.net/o24/u/players/ReplayPlayerV2Hds.swf playpath=" + playpath + " swfvfy=true socks=80.67.172.70:9050 flashVer=" + flash_ver
             if rtmp =="":
                 url = playpath
 
@@ -249,7 +247,7 @@ class W9Replay:
         rtmp = srv_list[server_id]['rtmp']
         app = srv_list[server_id]['app']
         playpath = re.sub( "[ ]", "%20", sys.argv[ 2 ].split("=")[1] )
-        flash_ver = 'LNX 10,0,45,2'
+        flash_ver = 'LNX 11,1,102,62'
         return (rtmp, app, playpath, flash_ver)
 
     def check_path(self, path, filename):
