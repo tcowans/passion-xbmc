@@ -14,7 +14,7 @@ __author__       = "PECK, mighty_bombero, merindol, Temhil, beenje"
 __url__          = "http://passion-xbmc.org/index.php"
 __credits__      = "Team XBMC Passion"
 __date__         = "04-03-2012"
-__version__      = "1.5.1"
+__version__      = "2.0.1"
 
 import urllib,sys,os,struct
 import base64
@@ -53,7 +53,6 @@ BASE_RESOURCE_PATH = os.path.join( ROOTDIR, "resources" )
 MEDIA_PATH         = os.path.join( BASE_RESOURCE_PATH, "media" )
 #ADDON_DATA         = __addonDir__
 ADDON_DATA  = xbmc.translatePath( "special://profile/addon_data/%s/" % __addonID__ )
-#DOWNLOADDIR        = os.path.join( ADDON_DATA, "downloads")
 CACHEDIR           = os.path.join( ADDON_DATA, "cache")
 THUMB_CACHE_PATH   = os.path.join( xbmc.translatePath( "special://profile/" ), "Thumbnails", "Video" )
 
@@ -64,9 +63,7 @@ except:
     print_exc()
 
 # Server List
-srv_list = [ {'rtmp': "rtmpe://m6replayfs.fplive.net/m6replay/streaming", 'app': "m6replay/streaming"}, # France (semble ne plus fonctionner)
-             {'rtmp': "rtmpe://m6dev.fcod.llnwd.net:443/a3100/d1",        'app': "a3100/d1"},           # International
-             {'rtmp': "rtmpe://groupemsix.fcod.llnwd.net/a2883/d1",       'app': "a2883/d1"}]           # International
+srv_list = [ {'rtmp': "rtmpe://groupemsix.fcod.llnwd.net/a2883/d1",       'app': "a2883/d1"}]           # International
 
 # List of directories to check at startup
 dirCheckList   = ( CACHEDIR, )
@@ -193,10 +190,6 @@ class M6Replay:
             print "SYSTEM_PLATFORM: %s"%SYSTEM_PLATFORM
             print "CRYPTO_PATH: %s"%CRYPTO_PATH
             print "PYDES_ENABLED: %s"%PYDES_ENABLED
-            #print xbmc.getCondVisibility( "system.platform.xbox" )
-            #print xbmc.getCondVisibility( "system.platform.osx" )
-            #print xbmc.getCondVisibility( "system.platform.linux" )
-            #print xbmc.getCondVisibility( "system.platform.windows" )
         
         # Check if directories in user data exist
         for i in range( len( dirCheckList ) ):
