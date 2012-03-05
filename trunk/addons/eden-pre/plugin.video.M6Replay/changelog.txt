@@ -1,3 +1,6 @@
+2.0.2 (05-03-2012) par beenje
++ Ajout des fichiers .so disparus lors du passage à Eden (Darwin et Linux)
+
 2.0.1 (04-03-2012) par Temhil
 + Desactivations des anciens serveurs ne fonctionnant plus
 + Correction de la version
