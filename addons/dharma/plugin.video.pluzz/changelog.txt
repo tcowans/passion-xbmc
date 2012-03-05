@@ -1,3 +1,8 @@
+Version 1.1.0 (04/03/12) par mighty_bombero et Temhil
+- changements faits par mighty_bombero integrant PluzzDl de chaoswizard
+- mise a jour de PluzzDl de chaoswizard
+- Ajout notifications
+
 Version 1.0.3 (19/06/11) par Temhil et tom.net
 - Integration des changements faits par tom.net necessaires suite a une modification du site de pluzz (merci a Tom.net)
 

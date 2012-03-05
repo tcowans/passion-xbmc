@@ -4,8 +4,8 @@ __addonID__      = "plugin.video.pluzz"
 __author__       = "mighty_bombero, merindol, Temhil (passion-xbmc.org), tom.net"
 __url__          = "http://passion-xbmc.org/index.php"
 __credits__      = "Team XBMC Passion"
-__date__         = "19-06-2011"
-__version__      = "1.0.3"
+__date__         = "04-03-2012"
+__version__      = "1.1.0"
 
 import xbmcplugin
 import xbmcgui
@@ -25,6 +25,9 @@ import time
 from traceback import print_exc
 from resources.libs.BeautifulSoup import BeautifulSoup
 from resources.libs.BeautifulSoup import BeautifulStoneSoup
+
+from resources.libs.PluzzDL import PluzzDL
+
 
 ROOTDIR            = os.getcwd()
 BASE_RESOURCE_PATH = os.path.join( ROOTDIR, "resources" )
@@ -80,28 +83,46 @@ def get_category_episodes(url):
 
 
 def get_episode(url):
-    #get the id
-    req = urllib2.Request(url)
-    req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-GB; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7')
-    response = urllib2.urlopen(req).read()
-    video_id = re.compile('id-video=(.*?)"').findall(response)[0]
-    #get the episode url
-    #print 'http://www.pluzz.fr/appftv/webservices/video/getInfosVideo.php?src=cappuccino&video-type=simple&template=ftvi&template-format=complet&id-externe=' + video_id
-    req = urllib2.Request('http://www.pluzz.fr/appftv/webservices/video/getInfosVideo.php?src=cappuccino&video-type=simple&template=ftvi&template-format=complet&id-externe=' + video_id)
-    req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-GB; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7')
-    response = urllib2.urlopen(req).read()
-    print response
-    #<nom><![CDATA[144846_docu_010742_3_288816.wmv]]></nom>
-    video_base = 'mms://a988.v101995.c10199.e.vm.akamaistream.net/7/988/10199/3f97c7e6/ftvigrp.download.akamai.com/10199/cappuccino/production/publication'
-    video_name = re.compile('<nom><!\[CDATA\[(.*?)\]\]></nom>').findall(response)[0]
-    video_path = re.compile('<chemin><!\[CDATA\[(.*?)\]\]></chemin>').findall(response)[0]
-    type = 'wmv'
+    pluzzDL = PluzzDL( url, True, None )
+    #print "urlFrag" + pluzzDL.urlFrag
+    path = None
+    if pluzzDL.lienRTMP != None:
+        path = pluzzDL.lienRTMP
+        print "lien RTMP found"
+    elif pluzzDL.lienMMS:
+        path = pluzzDL.lienMMS
+        print "lien MMS found"
+    if pluzzDL.drm:
+        if pluzzDL.drm == "oui" :
+            showNotification("Vidéo avec DRM", '%s' % (name))
+            print "get_episode: La vidéo posséde un DRM ; elle sera sans doute illisible"
+            
+    print "get_episode: path"
+    print path
+    return path , 'wmv'
     
-    if video_name.find('mp4') != -1:
-        video_base = 'rtmp://videozones-rtmp.francetv.fr/ondemand/mp4:cappuccino/publication'
-        type = 'mp4'
-    print video_path + video_name
-    return video_base + video_path + video_name, type
+#    #get the id
+#    req = urllib2.Request(url)
+#    req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-GB; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7')
+#    response = urllib2.urlopen(req).read()
+#    video_id = re.compile('id-video=(.*?)"').findall(response)[0]
+#    #get the episode url
+#    #print 'http://www.pluzz.fr/appftv/webservices/video/getInfosVideo.php?src=cappuccino&video-type=simple&template=ftvi&template-format=complet&id-externe=' + video_id
+#    req = urllib2.Request('http://www.pluzz.fr/appftv/webservices/video/getInfosVideo.php?src=cappuccino&video-type=simple&template=ftvi&template-format=complet&id-externe=' + video_id)
+#    req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-GB; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7')
+#    response = urllib2.urlopen(req).read()
+#    print response
+#    #<nom><![CDATA[144846_docu_010742_3_288816.wmv]]></nom>
+#    video_base = 'mms://a988.v101995.c10199.e.vm.akamaistream.net/7/988/10199/3f97c7e6/ftvigrp.download.akamai.com/10199/cappuccino/production/publication'
+#    video_name = re.compile('<nom><!\[CDATA\[(.*?)\]\]></nom>').findall(response)[0]
+#    video_path = re.compile('<chemin><!\[CDATA\[(.*?)\]\]></chemin>').findall(response)[0]
+#    type = 'wmv'
+#    
+#    if video_name.find('mp4') != -1:
+#        video_base = 'rtmp://videozones-rtmp.francetv.fr/ondemand/mp4:cappuccino/publication'
+#        type = 'mp4'
+#    print video_path + video_name
+#    return video_base + video_path + video_name, type
 
 def get_all_episodes():
     #pour lister toutes les émissions par ordre alphabétique:
@@ -196,17 +217,20 @@ def SELECT_EPISODE_FROM_ALL():
                     
 def VIDEO(url, name):
         url, type = get_episode(url)
-        if type == 'wmv':
-            url = get_linux_url(url)
+        #if type == 'wmv':
+        #    url = get_linux_url(url)
         #item = xbmcgui.ListItem(name)
         #xbmc.Player(xbmc.PLAYER_CORE_AUTO).play(url, item)
         #xbmc.executebuiltin('XBMC.ActivateWindow(fullscreenvideo)')        
 
         # Play  video
-        item = xbmcgui.ListItem(path=url)
+        if url:
+            item = xbmcgui.ListItem(path=url)
+        else:
+            showNotification("Format video non supporté", '%s' % (name))
     
         #if self.debug_mode:
-        print "Lecture de la video %s with URL: %s"%(name, url)
+        #print "Lecture de la video %s with URL: %s"%(name, url)
         xbmcplugin.setResolvedUrl(handle=int(sys.argv[1]), succeeded=True, listitem=item)
         
 def get_params():
@@ -244,6 +268,9 @@ def addDir(name,url,mode,iconimage):
         liz.setInfo( type="Video", infoLabels={ "Title": name } )
         ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=True)
         return ok
+    
+def showNotification(header, message):
+    xbmc.executebuiltin('XBMC.Notification("%s", "%s")' % (header.encode( "utf-8", "ignore" ), message.encode( "utf-8", "ignore" )))
         
 
 #######################################################################################################################    
@@ -298,3 +325,4 @@ if ( __name__ == "__main__" ):
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
     except:
         print_exc()
+
