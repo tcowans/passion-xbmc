@@ -319,6 +319,9 @@ class M6Replay:
     def get_rtmp_args(self):
         "Return rtmp args as a tuple (rtmp, app, playpath, flash_ver)"
         server_id = int( __settings__.getSetting( 'server' ) )
+        if server_id > len(srv_list) - 1:
+            print "Server id %d out of range. Server 0 forced." % server_id
+            server_id = 0
         rtmp = srv_list[server_id]['rtmp']
         app = srv_list[server_id]['app']
         playpath = re.sub( "[ ]", "%20", sys.argv[ 2 ].split("=")[1] )
