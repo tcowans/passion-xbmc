@@ -67,7 +67,7 @@ ECHO.
 
 ECHO ----------------------------------------------------------------------
 ECHO.
-SET /P zipaddon=Do you want create a zip of the Add-on.? [Y/N]:
+SET /P zipaddon=Do you want create a zip of the Add-on.? [y/n]:
 IF "%zipaddon:~0,1%"=="y" (
     GOTO ZIP_BUILD
 ) ELSE (
