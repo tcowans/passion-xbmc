@@ -19,4 +19,9 @@
     <setting id="icons_set" type="enum" label="32041" lvalues="32042|32043|32044|32045" default="1" />
     <setting id="custom_icons" type="folder" source="local" label="32046" default="" subsetting="true" enable="eq(-1,3)" />
   </category>
+
+  <category label="Astronomy">
+    <setting type="lsep" label="A compatible skin is required..." />
+    <setting id="dist_unit" type="enum" label="Distance Units" values="Kilometres (km)|Miles (mi)|Astronomical units (AU)|Light Years (l.y.)|Parsec (pc)" default="0" />
+  </category>
 </settings>

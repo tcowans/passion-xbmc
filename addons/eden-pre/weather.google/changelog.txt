@@ -1,3 +1,8 @@
+2.0.1 (by frost)
+ - fixed: [astronomy] encoding to fetch city
+ - added: setting for distance units [kilometres (km), miles (mi), Astronomical units (AU), Light Years (l.y.), Parsec (pc)]
+ - removed: resources/language/[????]/days_of_week.xml
+
 2.0.0 (by frost)
  - added: a lot of new properties. see README.txt
  - added: Moon and Earth Phases images (auto refresh every 1 hour). see properties in README.txt

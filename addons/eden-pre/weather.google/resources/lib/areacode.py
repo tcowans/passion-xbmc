@@ -12,11 +12,13 @@ def keyboard( text="", heading=Addon.getLocalizedString( 32010 ) ):
     return ""
 
 
-def get_matching_city( country ):
+def get_matching_city( country, country2="" ):
     countries = timeanddate.get_countries_id( country )
     totals = len( countries )
+    heading = "[Astronomy] " + xbmc.getLocalizedString( 14024 )
     if totals == 0:
-        location = keyboard( country )
+        if country2: return get_matching_city( country2, "" )
+        location = keyboard( country, heading )
         if location: return get_matching_city( location )
 
     if totals == 1:
@@ -25,10 +27,10 @@ def get_matching_city( country ):
     if totals > 1:
         choices = [ "[B]%s[/B]" % Addon.getLocalizedString( 32052 ) ] + [ c for i, c in countries ]
         while True:
-            selected = xbmcgui.Dialog().select( "[Astronomy] " + xbmc.getLocalizedString( 14024 ), choices )
+            selected = xbmcgui.Dialog().select( heading, choices )
             if selected == -1: break
             if selected == 0:
-                location = keyboard( country, "[Astronomy] " + xbmc.getLocalizedString( 14024 ) )
+                location = keyboard( country, heading )
                 if location:
                     return get_matching_city( location )
             else:
@@ -54,10 +56,10 @@ def changeLocation( location, onselection=False ):
             if xbmcgui.Dialog().yesno( heading, condition, humidity, wind, xbmc.getLocalizedString( 222 ), xbmc.getLocalizedString( 424 ) ):
                 #now get matching city from timeanddate
                 id_city = None
-                if Addon.getSetting( sys.argv[ 1 ] + "_city" ) == city:
+                if Addon.getSetting( sys.argv[ 1 ] + "_city" ) == city.encode( "utf-8" ):
                     id_city = Addon.getSetting( sys.argv[ 1 ] + "_code" )
                 if not id_city:
-                    id_city = get_matching_city( city )
+                    id_city = get_matching_city( location, city )
                 if id_city:
                     #save settings
                     Addon.setSetting( sys.argv[ 1 ], city )

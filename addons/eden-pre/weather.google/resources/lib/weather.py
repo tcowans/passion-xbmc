@@ -41,19 +41,6 @@ from google_weather_api import *
 from icons_set import getIcon
 
 
-def getDaysOfWeeks():
-    days_of_week = {}
-    try:
-        dow = os.path.join( Addon.getAddonInfo( 'path' ), "resources", "language", xbmc.getLanguage(), "days_of_week.xml" )
-        days_of_week = dict( re.findall( 'short="(.+?)".+?long="(.+?)"', open( dow ).read() ) )
-    except Exception, e:
-        #NameError: global name 'Addon' is not defined
-        if "'Addon'" not in str( e ):
-            print_exc()
-    return days_of_week
-DAYS_OF_WEEK = getDaysOfWeeks()
-
-
 def getLang():
     lang = ""
     try:
@@ -188,14 +175,19 @@ def SetProperties( weather, LocationIndex=1 ):
     SetProperty( "Current.Wind", str( curSpeed ) )
     SetProperty( "Current.DewPoint", DewPoint )
 
+    from timeanddate import DAY_MONTH_ID_LONG
+    t1 = time.time()
     #Future weather
     toCelsius = ( getData( forecast_info, "unit_system" ) != "SI" )
     #forecast_conditions
     forecast_conditions = weather.getElementsByTagName( "forecast_conditions" )
     for i, condition in enumerate( forecast_conditions ):
         day = "Day%i." % ( i )
-        day_of_week = getData( condition, "day_of_week" )
-        SetProperty( day + "Title", DAYS_OF_WEEK.get( day_of_week ) or day_of_week )
+        day_of_week = time.strftime( "%A", time.localtime( t1 ) )
+        if DAY_MONTH_ID_LONG.get( day_of_week ):
+            day_of_week = xbmc.getLocalizedString( DAY_MONTH_ID_LONG[ day_of_week ] )
+        SetProperty( day + "Title", day_of_week )
+        t1 += 24*60*60
 
         high = getData( condition, "high" )
         low  = getData( condition, "low" )

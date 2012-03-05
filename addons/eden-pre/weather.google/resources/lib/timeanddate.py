@@ -198,6 +198,36 @@ def get_current_local_time_in( countryId=189 ):
     return f_time, translate_date( local_time )
 
 
+from decimal import Decimal
+def convert_distance( km, i_unit=0 ):
+    """
+    kilometres (km)         1
+    miles (mi)              0.621371192
+    Astronomical units (AU) 0.0000000067
+    Light Years (l.y.)      0.00000000000011
+    Parsec (pc)             0.000000000000033
+    """
+
+    dist = km
+    if   i_unit == 1: dist = eval( "0.621371192*dist" )
+    elif i_unit == 2: dist = eval( "0.0000000067*dist" )
+    elif i_unit == 3: dist = eval( "0.00000000000011*dist" )
+    elif i_unit == 4: dist = eval( "0.000000000000033*dist" )
+    else: i_unit = 0
+
+    dist = Decimal( str( dist ) ) + Decimal( "0.0" )
+
+    s, v = str( dist ).split( "." )
+    s = list( s )[ ::-1 ]
+    for i in range( 3, len( s ), 4 ): s.insert( i, " " )
+    dist = ( "".join( s[ ::-1 ] ) + "." + v ).lower()
+    if "e-" in dist:
+        s = dist.split( "e-" )
+        dist = "0." + ( "0" * ( int( s[ 1 ] ) - 1 ) ) + s[ 0 ].replace( ".", "" )
+    units = [ "(km)", "(mi)", "(AU)", "(l.y.)", "(pc)" ]
+    return dist, units[ i_unit ]
+
+
 def get_default_sun():
     f_sunrise, sun_up  = get_user_time_format( "6:00 AM" )
     f_sunset, sun_down = get_user_time_format( "8:00 PM" )
@@ -222,7 +252,7 @@ def get_default_sun():
         }
     return sun_day
 
-def get_sun( countryId=189 ):
+def get_sun( countryId=189, i_unit=0 ):
     sun_day = get_default_sun()
     try:
         url = BASE_URL + "?n=%i&obj=sun&afl=-1" % int( countryId )
@@ -256,12 +286,9 @@ def get_sun( countryId=189 ):
             "Current.Solarnoon.Distance":   sun[ 15 ] + " (10**6 km)",              # Solar noon : Distance (10**6 km)
             } )
         try:
-            s = list( str( eval( "int(%s*10**6)-660000" % sun[ 15 ] ) ) )[ ::-1 ]
-            for i in range( 3, len( s ), 4 ): s.insert( i, " " )
-            sun_day[ "Current.Solarnoon.Distance" ] = "".join( s[ ::-1 ] ) + " (km)"
-        except: pass
-        #print xbmc.getRegion( "speedunit" )
-        #print str( round( eval( "((%s*10**6)-660000)*0.621371192" % sun[ 15 ] ), 2 ) )
+            dist, unit = convert_distance( eval( "int(%s*10**6)-660000" % sun[ 15 ] ), i_unit )
+            sun_day[ "Current.Solarnoon.Distance" ] = " ".join( [ dist, unit ] )
+        except: print_exc()
     except:
         print_exc()
     return sun_day
@@ -280,7 +307,7 @@ def get_default_moon():
         "Current.Moon.Phase":                "N/A",
         }
 
-def get_moon( countryId=189 ):
+def get_moon( countryId=189, i_unit=0 ):
     moon_day = get_default_moon()
     try:
         url = BASE_URL + "?n=%i&obj=moon&afl=-1" % int( countryId )
@@ -304,6 +331,10 @@ def get_moon( countryId=189 ):
             phase_at = moon[ 9 ].strip().split( " at " )
             if phase_at != ['']: phase_at = [ phase_at[ 0 ], get_user_time_format( phase_at[ 1 ] )[ 1 ] ]
             moon_day[ "Current.Moon.Phase" ] = ", ".join( phase_at ) # Phase of moon and time
+            try:
+                dist, unit = convert_distance( int( moon[ 7 ].strip().replace( ",", "" ) ), i_unit )
+                moon_day[ "Current.Moon.Meridian.Distance" ] = " ".join( [ dist, unit ] )
+            except: pass
     except:
         print_exc()
     return moon_day
@@ -312,7 +343,9 @@ def get_moon( countryId=189 ):
 def get_countries_id( country="Quebec City, QC" ):
     countries = []
     #
-    url = BASE_URL + "?query=" + urllib.quote_plus( country )
+    try: query = urllib.quote_plus( country.encode( "utf-8" ) )
+    except: query = urllib.quote_plus( country )
+    url = BASE_URL + "?query=" + query
     #print url
     sock = urllib.urlopen( url )
     real_url = sock.geturl()
@@ -344,13 +377,14 @@ def SetProperties( loc_index=None ):
         if loc_index is None:
             loc_index = Addon.getSetting( 'currentlocation' )
         ID = Addon.getSetting( 'areacode%s_code' % loc_index )
+        i_unit = int( Addon.getSetting( "dist_unit" ) )
 
-        sun = get_sun( ID )
+        sun = get_sun( ID, i_unit )
         in_broad_daylight = ( sun.get( "In.Broad.Daylight" ) == "true" )
         for key, value in sun.items():
             SetProperty( key, value )
 
-        for key, value in get_moon( ID ).items():
+        for key, value in get_moon( ID, i_unit ).items():
             SetProperty( key, value )
 
         SetProperty( "Weather.ExtraIsFetched", "true" )
