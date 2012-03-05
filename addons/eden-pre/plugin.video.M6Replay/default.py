@@ -13,8 +13,8 @@ __addonID__      = "plugin.video.M6Replay"
 __author__       = "PECK, mighty_bombero, merindol, Temhil, beenje"
 __url__          = "http://passion-xbmc.org/index.php"
 __credits__      = "Team XBMC Passion"
-__date__         = "04-03-2012"
-__version__      = "2.0.1"
+__date__         = "05-03-2012"
+__version__      = "2.0.2"
 
 import urllib,sys,os,struct
 import base64
