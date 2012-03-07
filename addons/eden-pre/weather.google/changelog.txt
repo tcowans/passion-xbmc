@@ -1,3 +1,6 @@
+2.0.2 (by frost)
+ - fixed: [astronomy] missing locale's equivalent of either AM or PM.
+
 2.0.1 (by frost)
  - fixed: [astronomy] encoding to fetch city
  - added: setting for distance units [kilometres (km), miles (mi), Astronomical units (AU), Light Years (l.y.), Parsec (pc)]
