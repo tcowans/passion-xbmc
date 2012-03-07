@@ -136,11 +136,18 @@ def trim_time( str_time ):
 def get_user_time_format( str_time="5:31 PM" ):
     f_time = time()
     try:
-        T, P = str_time.lower().split()
-        H, M = T.split( ":" )
+        str_dt = str_time.lower().split()
+        if str_dt[ -1 ] not in [ "pm", "am" ]:
+            T, P = str_dt + [ "" ]
+        else:
+            T, P = str_dt
+        if T.count( ":" ) == 1:
+            H, M = T.split( ":" )
+        else:
+            H, M, S = T.split( ":" )
 
         dt = datetime.now()
-        dt = dt.replace( hour=int( H ), minute=int( M ) )
+        dt = dt.replace( hour=int( H ), minute=int( M ), second=0, microsecond=0 )
 
         hour = ( dt.hour, dt.hour+12 )[ P == "pm" ]
         hour = ( hour, dt.hour-12 )[ P == "am" ]
@@ -152,16 +159,20 @@ def get_user_time_format( str_time="5:31 PM" ):
         #convert a datetime object into a Unix time stamp
         f_time = mktime( dt.timetuple() ) + 1e-6 * dt.microsecond
     except:
-        print str_time
-        print_exc()
+        if str_time:
+            print "str_time: %r" % str_time
+            print_exc()
     return f_time, trim_time( str_time )
 
 
 def get_user_datetime_format( str_datetime="Wednesday, February 29, 2012 at 1:58:19 PM" ):
     f_time = time()
     try:
-        str_dt = str_datetime.lower().replace( ",", "" ).replace( "at", "" )
-        A, B, D, Y, T, P = str_dt.split()
+        str_dt = str_datetime.lower().replace( ",", "" ).replace( "at", "" ).split()
+        if str_dt[ -1 ] not in [ "pm", "am" ]:
+            A, D, B, Y, T, P = str_dt + [ "" ]
+        else:
+            A, B, D, Y, T, P = str_dt
         B = MONTHS.index( B[ :3 ] )
         H, M, S = T.split( ":" )
 
@@ -176,10 +187,10 @@ def get_user_datetime_format( str_datetime="Wednesday, February 29, 2012 at 1:58
         str_datetime = "%s | %s" % ( dt.strftime( DATE_LONG_FORMAT ), trim_time( dt.strftime( USER_TIME_FORMAT ) ) )
         #convert a datetime object into a Unix time stamp
         f_time = mktime( dt.timetuple() ) + 1e-6 * dt.microsecond
-    #except ValueError:
-    #    pass
     except:
-        print_exc()
+        if str_datetime:
+            print "str_datetime: %r" % str_datetime
+            print_exc()
     return f_time, str_datetime
 
 
@@ -287,7 +298,11 @@ def get_sun( countryId=189, i_unit=0 ):
             } )
         try:
             dist, unit = convert_distance( eval( "int(%s*10**6)-660000" % sun[ 15 ] ), i_unit )
-            sun_day[ "Current.Solarnoon.Distance" ] = " ".join( [ dist, unit ] )
+            if not dist: dist = ""
+            else: dist = " ".join( [ dist, unit ] )
+            sun_day[ "Current.Solarnoon.Distance" ] = dist
+        except ValueError:
+            moon_day[ "Current.Solarnoon.Distance" ] = ""
         except: print_exc()
     except:
         print_exc()
@@ -333,8 +348,12 @@ def get_moon( countryId=189, i_unit=0 ):
             moon_day[ "Current.Moon.Phase" ] = ", ".join( phase_at ) # Phase of moon and time
             try:
                 dist, unit = convert_distance( int( moon[ 7 ].strip().replace( ",", "" ) ), i_unit )
-                moon_day[ "Current.Moon.Meridian.Distance" ] = " ".join( [ dist, unit ] )
-            except: pass
+                if not dist: dist = ""
+                else: dist = " ".join( [ dist, unit ] )
+                moon_day[ "Current.Moon.Meridian.Distance" ] = dist
+            except ValueError:
+                moon_day[ "Current.Moon.Meridian.Distance" ] = ""
+            except: print_exc()
     except:
         print_exc()
     return moon_day
