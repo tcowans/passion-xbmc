@@ -74,26 +74,28 @@ class DialogSelect( xbmcgui.WindowXMLDialog ):
         xbmc.sleep( 500 )
 
 
-def toggle_splash():
+def toggle_splash( toggle ):
     from xml.dom.minidom import parseString
-    toggle = "false"
     try:
         advancedsettings = xbmc.translatePath( "special://userdata/advancedsettings.xml" )
 
+        try: str_xml = open( advancedsettings ).read()
+        except: str_xml = "<advancedsettings></advancedsettings>"
+
+        if "<splash>" not in str_xml:
+            str_xml = str_xml.replace( "ettings>", "ettings>\n  <splash>false</splash>\n", 1 )
+
         # parse source
-        dom = parseString( open( advancedsettings ).read() )
+        dom = parseString( str_xml )
 
         splash = dom.getElementsByTagName( "splash" )
         if splash:
             splash = splash[ 0 ]
-            toggle = ( "true", "false" )[ splash.firstChild.nodeValue == "true" ]
+            toggle = ( "true", "false" )[ toggle == "true" ]
             splash.firstChild.nodeValue = toggle
 
-        str_xml = dom.toxml( "utf-8"  ).replace( "?>", ' standalone="yes"?>\n', 1 )
+        str_xml = dom.toxml( "UTF-8"  ).replace( "?>", ' standalone="yes"?>\n', 1 )
         dom.unlink()
-
-        if not splash:
-            str_xml = str_xml.replace( "ettings>", "ettings>\n  <splash>false</splash>\n", 1 )
 
         bak = advancedsettings + ".bak"
         file( bak, "w" ).write( str_xml )
@@ -106,7 +108,7 @@ def toggle_splash():
 def Main( settingID=None ):
     setfocusid = 200
     if settingID == "splash":
-        toggle = toggle_splash()
+        toggle = toggle_splash( Addon.getSetting( "splash" ) )
         Addon.setSetting( "splash", toggle )
         xbmc.sleep( 500 )
         setfocusid = ( 107, 108 )[ toggle == "false" ]
@@ -117,12 +119,25 @@ def Main( settingID=None ):
         del w
         setfocusid = 101
 
-    #del Addon
     xbmc.executebuiltin( "Addon.openSettings(script.xbmc.intro.movie)" )
     xbmc.executebuiltin( "SetFocus(200)" )
     xbmc.executebuiltin( "SetFocus(%i)" % setfocusid )
 
 
+def service():
+    from xml.dom.minidom import parseString
+    has_splash = "true"
+    dom = None
+    try:
+        dom = parseString( open( xbmc.translatePath( "special://userdata/advancedsettings.xml" ) ).read() )
+        has_splash = dom.getElementsByTagName( "splash" )[ 0 ].firstChild.nodeValue
+    except:
+        print_exc()
+    if dom: dom.unlink()
+    if Addon.getSetting( "splash" ) != has_splash:
+        Addon.setSetting( "splash", has_splash )
+
+
 
 if __name__=="__main__":
-    Main( "intro" )
+    service()
