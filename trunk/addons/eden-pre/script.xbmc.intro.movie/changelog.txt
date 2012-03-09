@@ -1,2 +1,7 @@
+1.0.1
+ - added: template_confluence_Startup.xml see this for example to run addon
+ - fixed: disable default splash, if advancedsettings.xml not exists
+ - added: service fonction for auto-setting statut of default splash in advancedsettings.xml
+
 1.0.0
  - Initial version
