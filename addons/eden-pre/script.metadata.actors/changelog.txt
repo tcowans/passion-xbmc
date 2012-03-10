@@ -1,4 +1,10 @@
-﻿0.2.0
+﻿0.2.1
+ - changed/added: service to add Actors GetDirectory to home property for increase speed on next launch
+ - added: [filmography] Container(150).ListItem.Title and Container(150).ListItem.Year
+ - fixed: json module has no attribute 'loads'
+ - And a little cleanup...
+
+0.2.0
  - fixed: Cast and role, non-Latin characters (e.g. in Greek it is "Tom Hanks ως Forrest Gump"). http://forum.xbmc.org/showpost.php?p=1034440&postcount=54
 
 0.1.9
