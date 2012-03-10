@@ -20,7 +20,7 @@ except:
 if json.decoder.c_scanstring is not None:
     print "[Actors] Yes, json use speedup ;)"
 else:
-    print "[Actors] No, json don't use speedup ;)"
+    print "[Actors] No, json don't use speedup :("
 
 # constants
 ADDON      = Addon( "script.metadata.actors" )
