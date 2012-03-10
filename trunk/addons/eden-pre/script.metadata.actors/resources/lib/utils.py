@@ -12,6 +12,8 @@ from xbmcaddon import Addon
 
 try:
     import json
+    # test json
+    json.loads( "['test']" )
 except:
     import simplejson as json
 
@@ -135,7 +137,7 @@ def get_directory( directory ):
     return o_json.get( "result" ) or {}
 
 
-def getXBMCActors( where=LIBRARY_TYPE ):
+def getXBMCActors( where=LIBRARY_TYPE, busy=True ):
     directories = []
     if not where or where == "actor":
         directories += [ "videodb://1/4/", "videodb://2/4/", "videodb://1/5/" ]
@@ -145,10 +147,10 @@ def getXBMCActors( where=LIBRARY_TYPE ):
     prt = "library.actors." + ( where or "" )
     Actors = load_db_json_string( unicode( xbmc.getInfoLabel( "Window(10000).Property(%s)" % prt ), "utf-8" ) )
     if not Actors:
-        xbmc.executebuiltin( 'ActivateWindow(busydialog)' )
+        if busy: xbmc.executebuiltin( 'ActivateWindow(busydialog)' )
         for directory in directories:
             Actors += get_directory( directory ).get( "files" ) or []
-        xbmc.executebuiltin( 'Dialog.Close(busydialog,true)' )
+        if busy: xbmc.executebuiltin( 'Dialog.Close(busydialog,true)' )
         # Test: add Actors GetDirectory to home property for increase speed on next launch
         xbmcgui.Window( 10000 ).setProperty( prt, json.dumps( Actors ) )
     return Actors

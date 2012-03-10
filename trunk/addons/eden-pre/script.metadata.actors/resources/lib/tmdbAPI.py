@@ -9,6 +9,8 @@ from traceback import print_exc
 
 try:
     import json
+    # test json
+    json.loads( "['test']" )
 except:
     import simplejson as json
 

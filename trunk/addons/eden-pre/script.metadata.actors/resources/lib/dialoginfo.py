@@ -29,54 +29,6 @@ RELOAD_ACTORS_BACKEND = False
 
 
 
-class DialogContextMenu( xbmcgui.WindowXMLDialog ):
-    CONTROLS_BUTTON = range( 1001, 1012 )
-
-    def __init__( self, *args, **kwargs ):
-        self.buttons  = kwargs[ "buttons" ]
-        self.selected = -1
-        self.doModal()
-
-    def onInit( self ):
-        try:
-            for control in self.CONTROLS_BUTTON:
-                try:
-                    self.getControl( control ).setLabel( "" )
-                    self.getControl( control ).setVisible( False )
-                except:
-                    pass
-            for count, button in enumerate( self.buttons ):
-                try:
-                    self.getControl( 1001 + count ).setLabel( button )
-                    self.getControl( 1001 + count ).setVisible( True )
-                except:
-                    pass
-            self.setFocusId( 1001 )
-        except:
-            print_exc()
-
-    def onFocus( self, controlID ):
-        pass
-
-    def onClick( self, controlID ):
-        try:
-            self.selected = ( controlID - 1001 )
-            if self.selected < 0: self.selected = -1
-        except:
-            self.selected = -1
-            print_exc()
-        self._close_dialog()
-
-    def onAction( self, action ):
-        if action in utils.CLOSE_SUB_DIALOG:
-            self.selected = -1
-            self._close_dialog()
-
-    def _close_dialog( self ):
-        self.close()
-        xbmc.sleep( 300 )
-
-
 class DialogSelect( xbmcgui.WindowXMLDialog ):
     def __init__( self, *args, **kwargs ):
         self.actor = {}
@@ -412,66 +364,8 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
             self.addItem( self.listitem )
             self.getControl( 50 ).setVisible( 0 )
 
-            movies_id = []
-            try:
-                self.getControl( 150 ).reset()
-                self.getControl( 150 ).setVisible( 0 )
-                keeporiginaltitle = ( ADDON.getSetting( "keeporiginaltitle" ) == "true" )
-                listitems = []
-                pretty_movie = {}
-                non_dated = {}
-                movies_library = utils.get_movies_library()
-                for movie in self.actor[ "castandcrew" ][ 0 ] + self.actor[ "castandcrew" ][ 1 ]:
-                    if movie[ "id" ] not in movies_id: movies_id.append( movie[ "id" ] )
-                    year = str( movie[ "release_date" ] or "?" )[ :4 ]
-                    dict = ( pretty_movie, non_dated )[ year == "?" ]
-                    m = dict.get( movie[ "id" ] ) or [ "", "", [], [] ]
-
-                    title = ( movie[ "title" ], movie[ "original_title" ] )[ keeporiginaltitle ]
-                    m[ 0 ] = " ".join( [ unicode( year ), "  ", title ] )
-                    if movie.get( "character" ): m[ 2 ].append( movie[ "character" ] )
-                    if movie.get( "job" ):       m[ 3 ].append( movie[ "job" ] )
-                    if movie[ "poster_path" ]:   m[ 1 ] = self.poster_path + movie[ "poster_path" ]
-                    #
-                    m.append( utils.library_has_movie( movies_library, movie[ "title" ], movie[ "original_title" ] ) )
-                    #
-                    dict[ movie[ "id" ] ] = m
-
-                movies = sorted( pretty_movie.items(), key=lambda x: x[ 1 ][ 0 ], reverse=True ) + sorted( non_dated.items(), key=lambda x: x[ 1 ][ 0 ] )
-                for id, movie in movies:
-                    label = movie[ 0 ]
-                    if movie[ 2 ] or movie[ 3 ]:
-                        label += "    [" + unicode( " / ".join( sorted( movie[ 2 ] ) + sorted( movie[ 3 ] ) )  ) + "]"
-                    li = xbmcgui.ListItem( label, "", "DefaultMovies.png" )
-                    if movie[ 1 ]: li.setIconImage( movie[ 1 ] )
-                    li.setProperty( "id", str( id ) )
-                    if movie[ 4 ]:
-                        li.setProperty( "LibraryHasMovie", "1" )
-                        li.setProperty( "PlayCount", str( movie[ 4 ].get( "playcount" ) or "0" ) )
-                        li.setProperty( "file", movie[ 4 ].get( "file" ) or "" )
-                    listitems.append( li )
-                self.getControl( 150 ).addItems( listitems )
-            except:
-                print_exc()
-                self.getControl( 5 ).setEnabled( 0 )
-            self.listitem.setProperty( "TotalMovies",  str( len( movies_id ) ) )
-            self.getControl( 5 ).setEnabled( bool( movies_id ) )
-            self.getControl( 5 ).setLabel( Language( 32010 ) )
-
-            try:
-                listitems = []
-                for img in self.images:
-                    label = "%ix%i" % ( img[ "width" ], img[ "height" ], )
-                    li = xbmcgui.ListItem( label, "", self.profile_path + img[ "file_path" ] )
-                    li.setProperty( "aspect_ratio", "%.2f" % img[ "aspect_ratio" ] )
-                    listitems.append( li )
-                self.getControl( 250 ).reset()
-                self.getControl( 250 ).addItems( listitems )
-            except:
-                print_exc()
-            # set icon or fanart
-            #self.getControl( 20 ).setEnabled( 0 )
-            #self.getControl( 10 ).setEnabled( bool( self.images ) )
+            self.setContainer150()
+            self.setContainer250()
 
             if refresh:
                 # del trailer id's
@@ -485,6 +379,74 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
             print_exc()
             self._close_dialog()
         xbmc.executebuiltin( "ClearProperty(actorsselect)" )
+
+    def setContainer150( self ):
+        movies_id = []
+        try:
+            self.getControl( 150 ).reset()
+            self.getControl( 150 ).setVisible( 0 )
+            keeporiginaltitle = ( ADDON.getSetting( "keeporiginaltitle" ) == "true" )
+            listitems = []
+            pretty_movie = {}
+            non_dated = {}
+            movies_library = utils.get_movies_library()
+            for movie in self.actor[ "castandcrew" ][ 0 ] + self.actor[ "castandcrew" ][ 1 ]:
+                if movie[ "id" ] not in movies_id: movies_id.append( movie[ "id" ] )
+                year = str( movie[ "release_date" ] or "0" )[ :4 ]
+                dict = ( pretty_movie, non_dated )[ year == "0" ]
+                m = dict.get( movie[ "id" ] ) or [ "", "", [], [] ]
+
+                title = ( movie[ "title" ], movie[ "original_title" ] )[ keeporiginaltitle ]
+                m[ 0 ] = " ".join( [ unicode( year ), "  ", title ] )
+                if movie.get( "character" ): m[ 2 ].append( movie[ "character" ] )
+                if movie.get( "job" ):       m[ 3 ].append( movie[ "job" ] )
+                if movie[ "poster_path" ]:   m[ 1 ] = self.poster_path + movie[ "poster_path" ]
+                #
+                m.append( utils.library_has_movie( movies_library, movie[ "title" ], movie[ "original_title" ] ) )
+                #
+                dict[ movie[ "id" ] ] = m
+
+            movies = sorted( pretty_movie.items(), key=lambda x: x[ 1 ][ 0 ], reverse=True ) + sorted( non_dated.items(), key=lambda x: x[ 1 ][ 0 ] )
+            for id, movie in movies:
+                label = movie[ 0 ]
+                year, title = label.split( "    ", 1 )
+                if label.startswith( "0" ):
+                    label = label.replace( "0", "?", 1 )
+                if movie[ 2 ] or movie[ 3 ]:
+                    label += "    [" + unicode( " / ".join( sorted( movie[ 2 ] ) + sorted( movie[ 3 ] ) )  ) + "]"
+                li = xbmcgui.ListItem( label, "", "DefaultMovies.png" )
+                if movie[ 1 ]: li.setIconImage( movie[ 1 ] )
+                li.setProperty( "id", str( id ) )
+                if movie[ 4 ]:
+                    li.setProperty( "LibraryHasMovie", "1" )
+                    li.setProperty( "PlayCount", str( movie[ 4 ].get( "playcount" ) or "0" ) )
+                    li.setProperty( "file", movie[ 4 ].get( "file" ) or "" )
+                li.setInfo( "video", { "title": title, "year": int( year ) } )
+                listitems.append( li )
+            self.getControl( 150 ).addItems( listitems )
+        except:
+            print_exc()
+            self.getControl( 5 ).setEnabled( 0 )
+
+        self.listitem.setProperty( "TotalMovies",  str( len( movies_id ) ) )
+        self.getControl( 5 ).setEnabled( bool( movies_id ) )
+        self.getControl( 5 ).setLabel( Language( 32010 ) )
+
+    def setContainer250( self ):
+        try:
+            listitems = []
+            for img in self.images:
+                label = "%ix%i" % ( img[ "width" ], img[ "height" ], )
+                li = xbmcgui.ListItem( label, "", self.profile_path + img[ "file_path" ] )
+                li.setProperty( "aspect_ratio", "%.2f" % img[ "aspect_ratio" ] )
+                listitems.append( li )
+            self.getControl( 250 ).reset()
+            self.getControl( 250 ).addItems( listitems )
+        except:
+            print_exc()
+        # set icon or fanart
+        #self.getControl( 20 ).setEnabled( 0 )
+        #self.getControl( 10 ).setEnabled( bool( self.images ) )
 
     def onFocus( self, controlID ):
         pass
@@ -539,9 +501,7 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
                 listitem.select( 1 )
                 buttons = [ Language( 32051 ), LangXBMC( 13346 ), Language( 32050 ) ]
                 if LibraryHasMovie: buttons.insert( 0, LangXBMC( 208 ) )
-                cm = DialogContextMenu( "script-Actors-ContextMenu.xml", utils.ADDON_DIR, buttons=buttons )
-                selected = cm.selected
-                del cm
+                selected = dialogs.contextmenu( buttons )
                 listitem.select( 0 )
 
                 if selected == 0 and LibraryHasMovie:

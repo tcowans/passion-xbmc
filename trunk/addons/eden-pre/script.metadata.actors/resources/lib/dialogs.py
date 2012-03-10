@@ -328,6 +328,55 @@ class Browser( xbmcgui.WindowXMLDialog ):
         xbmc.sleep( 500 )
 
 
+class DialogContextMenu( xbmcgui.WindowXMLDialog ):
+    CONTROLS_BUTTON = range( 1001, 1012 )
+
+    def __init__( self, *args, **kwargs ):
+        self.buttons  = kwargs[ "buttons" ]
+        self.selected = -1
+        self.doModal()
+
+    def onInit( self ):
+        try:
+            for control in self.CONTROLS_BUTTON:
+                try:
+                    self.getControl( control ).setLabel( "" )
+                    self.getControl( control ).setVisible( False )
+                except:
+                    pass
+            for count, button in enumerate( self.buttons ):
+                try:
+                    self.getControl( 1001 + count ).setLabel( button )
+                    self.getControl( 1001 + count ).setVisible( True )
+                except:
+                    pass
+            self.setFocusId( 1001 )
+        except:
+            print_exc()
+
+    def onFocus( self, controlID ):
+        pass
+
+    def onClick( self, controlID ):
+        try:
+            self.selected = ( controlID - 1001 )
+            if self.selected < 0: self.selected = -1
+        except:
+            self.selected = -1
+            print_exc()
+        self._close_dialog()
+
+    def onAction( self, action ):
+        if action in utils.CLOSE_SUB_DIALOG:
+            self.selected = -1
+            self._close_dialog()
+
+    def _close_dialog( self ):
+        self.close()
+        xbmc.sleep( 300 )
+
+
+
 def browser( **kwargs ):
     wb = Browser( "script-Actors-Browser.xml", utils.ADDON_DIR, **kwargs )
     wb.doModal()
@@ -335,3 +384,9 @@ def browser( **kwargs ):
     del wb
     return refresh
 
+
+def contextmenu( buttons ):
+    cm = DialogContextMenu( "script-Actors-ContextMenu.xml", utils.ADDON_DIR, buttons=buttons )
+    selected = cm.selected
+    del cm
+    return selected
