@@ -7,7 +7,7 @@ import urllib
 try:
     import json
     # test json
-    json.loads( "['test']" )
+    json.loads( "[null]" )
 except:
     import simplejson as json
 

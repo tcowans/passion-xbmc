@@ -1,4 +1,8 @@
-﻿0.2.1
+﻿0.2.2
+ - fixed: stupid test of "json.loads". Result of decrease speed of version 0.2.1
+ - fixed: Don't close dialog after refresh infos
+
+0.2.1
  - changed/added: service to add Actors GetDirectory to home property for increase speed on next launch
  - added: [filmography] Container(150).ListItem.Title and Container(150).ListItem.Year
  - fixed: json module has no attribute 'loads'
