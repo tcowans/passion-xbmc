@@ -364,7 +364,7 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
             self.addItem( self.listitem )
             self.getControl( 50 ).setVisible( 0 )
 
-            self.setContainer150()
+            movies_id = self.setContainer150()
             self.setContainer250()
 
             if refresh:
@@ -431,6 +431,8 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
         self.listitem.setProperty( "TotalMovies",  str( len( movies_id ) ) )
         self.getControl( 5 ).setEnabled( bool( movies_id ) )
         self.getControl( 5 ).setLabel( Language( 32010 ) )
+
+        return movies_id
 
     def setContainer250( self ):
         try:
