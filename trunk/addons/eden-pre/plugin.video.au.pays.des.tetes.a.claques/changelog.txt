@@ -1,3 +1,6 @@
+0.0.5
+ - broken: Vidéo bloquée par le site! Et Thailog est partie travaillé à l'extérieur, donc il a pas le temps de regarder pour le mettre à jour!
+
 0.0.4
  - fixed: Next Aired Date
 
