@@ -175,29 +175,35 @@ def getFavourites():
             infos = getPageEmission( emissionId )
             already_loaded[ emissionId ] = infos
 
-        #json_dumps( infos )
-        if episodeId:
-            for info in infos[ "Episodes" ]:
-                if str( info[ "Id" ] ) == episodeId:
-                    episodes.append( info )
-                    #print "Episode"
-                    #print info.keys()
-                    #json_dumps( info )
-                    break
-        else:
-            infos[ "Emission" ][ "all_id" ] = "%r" % [ str( e[ "Id" ] ) for e in infos[ "Episodes" ] ]
-            try: infos[ "Emission" ][ "premiered" ] = infos[ "Episodes" ][ -1 ][ "AirDateLongString" ] or ""
-            except: infos[ "Emission" ][ "premiered" ] = ""
-            try: infos[ "Emission" ][ "season" ] = max( [ e[ "SeasonNumber" ] for e in infos[ "Episodes" ] ] )
-            except: infos[ "Emission" ][ "season" ] = "-1"
-            cast = []
-            for cr in map( setCastAndRole, [ e for e in infos[ "Episodes" ] ] ):
-                cast += [ c for c in cr if c not in cast ]
-            infos[ "Emission" ][ "cast" ] = cast
-            
-            emissions.append( infos[ "Emission" ] )
-            #print "Emission"
-            #json_dumps( infos[ "Emission" ] )
+        #print json_dumps( infos )
+        #print "-"*100
+        try:
+            if episodeId:
+                for info in infos[ "Episodes" ]:
+                    if str( info[ "Id" ] ) == episodeId:
+                        episodes.append( info )
+                        #print "Episode"
+                        #print info.keys()
+                        #json_dumps( info )
+                        break
+            else:
+                infos[ "Emission" ][ "all_id" ] = "%r" % [ str( e[ "Id" ] ) for e in infos[ "Episodes" ] ]
+                try: infos[ "Emission" ][ "premiered" ] = infos[ "Episodes" ][ -1 ][ "AirDateLongString" ] or ""
+                except: infos[ "Emission" ][ "premiered" ] = ""
+                try: infos[ "Emission" ][ "season" ] = max( [ e[ "SeasonNumber" ] for e in infos[ "Episodes" ] ] )
+                except: infos[ "Emission" ][ "season" ] = "-1"
+                cast = []
+                for cr in map( setCastAndRole, [ e for e in infos[ "Episodes" ] ] ):
+                    cast += [ c for c in cr if c not in cast ]
+                infos[ "Emission" ][ "cast" ] = cast
+                
+                emissions.append( infos[ "Emission" ] )
+                #print "Emission"
+                #json_dumps( infos[ "Emission" ] )
+        except TypeError:
+            pass
+        except:
+            print_exc()
 
     return emissions, episodes
 
