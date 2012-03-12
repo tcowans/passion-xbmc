@@ -1,3 +1,6 @@
+1.0.4
+ - fixed: possible error to parse myfavorites is episode outdated
+
 1.0.3
  - fixed: possible error to parse myfavorites is tvshow outdated
 
