@@ -11,10 +11,10 @@
   <string id="32050">Γενικά</string>
   <string id="32051">Εμφάνιση παράθυρου κατά τη λήψη πληροφοριών</string>
   <string id="32052">Διαχωριστικό Ετικετών</string>
-  <string id="32053">Ταξινόμηση ταινιών κάθε ομάδας</string>
+  <string id="32053">Ταξινόμηση ταινιών εκάστοτε ομάδας</string>
 
   <string id="32060">Συντήρηση</string>
-  <string id="32061">Προβολή Αρχείου Καταγραφής Αλλαγών</string>
+  <string id="32061">Αρχείο Καταγραφής Αλλαγών</string>
   <string id="32062">Εμφάνιση InfoLabels</string>
   <string id="32063">Προβολή Άδειας</string>
 
@@ -38,11 +38,11 @@
   <string id="32124">Επιθυμείτε να κατεβάσετε αυτά τα αρχεία;</string>
   <string id="32125">Λήψη: %i από %i - %i%%</string>
   <string id="32126">Επιλογή φακέλου για&#32;</string>
-  <string id="32127">extrafanart</string>
-  <string id="32128">επιπλέον μικρογραφίες (extrathumb)</string>
+  <string id="32127">επιπλέον fanart (extrafanart)</string>
+  <string id="32128">επιπλέον μικρογραφίες (extrathumbs)</string>
   <string id="32129"></string>
   <string id="32130">Ορισμός μικρογραφίας ομάδας</string>
-  <string id="32131">Επιλέξτε μία ή επιπλέον μικρογραφίες (extrathumb)</string>
+  <string id="32131">Επιλέξτε μία ή επιπλέον μικρογραφίες (extrathumbs)</string>
 
   <string id="32135">Επιβεβαίωση αντικατάστασης...</string>
   <string id="32136">Να αντικατασταθούν τα υπάρχοντα αρχεία;</string>

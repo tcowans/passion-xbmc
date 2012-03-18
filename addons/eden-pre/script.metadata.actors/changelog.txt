@@ -1,4 +1,7 @@
-﻿0.2.2
+﻿0.2.3
+ - updated: Greek language (thanks to CutSickAss)
+
+0.2.2
  - fixed: stupid test of "json.loads". Result of decrease speed of version 0.2.1
  - fixed: Don't close dialog after refresh infos
 

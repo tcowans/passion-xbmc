@@ -17,7 +17,7 @@
 
   <string id="32024">Σελίδα</string>
 
-  <string id="32030">Κινημοτογραφικές συμμετοχές</string>
+  <string id="32030">Κινηματογραφικές συμμετοχές</string>
   <string id="32031">Τηλεοπτικές συμμετοχές</string>
   <string id="32032">Σκηνοθεσία Ταινιών</string>
   <string id="32033">Εισαγωγή Ονόματος Ατόμου</string>
@@ -47,20 +47,20 @@
   <string id="32112">Τυχαία</string>
   <string id="32113">Χρόνος ανά εικόνα (δευτερόλεπτα)</string>
   
-  <string id="32121">Επιλέξτε μία ή επιπλέον εικόνες (extrafanart)</string>
+  <string id="32121">Επιλέξτε μία ή επιπλέον εικόνες fanart (extrafanart)</string>
   <string id="32122">Επιβεβαίωση Λήψης...</string>
   <string id="32123">%i από %i έχουν επιλεγεί!</string>
-  <string id="32124">Θέλετε να κατεβάσετε αυτά τα αρχεία;</string>
+  <string id="32124">Επιθυμείτε να κατεβάσετε αυτά τα αρχεία;</string>
   <string id="32125">Λήψη: %i από %i - %i%%</string>
   <string id="32126">Επιλογή φακέλου για&#32;</string>
-  <string id="32127">extrafanart</string>
-  <string id="32128">επιπλέον μικρογραφίες</string>
+  <string id="32127">επιπλέον fanart (extrafanart)</string>
+  <string id="32128">επιπλέον μικρογραφίες (extrathumbs)</string>
   <string id="32129">-</string>
   <string id="32130">-</string>
-  <string id="32131">Επιλέξτε μία ή επιπλέον μικρογραφίες</string>
+  <string id="32131">Επιλέξτε μία ή επιπλέον μικρογραφίες (extrathumbs)</string>
 
   <string id="32135">Επιβεβαίωση αντικατάστασης...</string>
-  <string id="32136">Επιθυμείτε να αντικαταστήσετε τα υπάρχοντα αρχεία;</string>
+  <string id="32136">Να αντικατασταθούν τα υπάρχοντα αρχεία;</string>
 
   <string id="32311">Εικόνα fanart[CR][CR]Μη διαθέσιμη[CR][CR] Πιέστε ΕΠΙΛΟΓΗ για ρύθμιση</string>
 </strings>

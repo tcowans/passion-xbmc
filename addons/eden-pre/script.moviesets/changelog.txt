@@ -1,3 +1,6 @@
+2.0.9
+ - updated: Greek language (thanks to CutSickAss)
+
 2.0.8
  - added: Greek language (thanks to CutSickAss)
  
