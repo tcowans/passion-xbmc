@@ -123,7 +123,7 @@ class Backend:#( Thread ):
         if not IsTrue( self.window.getProperty( "MovieSets.Update" ) ) and xbmc.getCondVisibility( "Window.IsActive(addonsettings)" ):
             self.window.setProperty( "MovieSets.Update", "true" )
         if not xbmc.getCondVisibility( "Skin.HasSetting(MovieSets.Sleep) | Window.IsActive(addonsettings) | Window.IsActive(13000) | Window.IsActive(FileBrowser.xml) | Window.IsActive(DialogVideoInfo.xml) | Window.IsActive(script-MovieSets-Browser.xml) | Window.IsActive(script-MovieSets-DialogInfo.xml) | Window.IsActive(11112)" ):
-            if IsTrue( self.window.getProperty( "Content.MovieSets" ) ) or xbmc.getCondVisibility( "Container.Content(Movies) + !System.GetBool(VideoLibrary.FlattenMovieSets)" ):
+            if IsTrue( self.window.getProperty( "Content.MovieSets" ) ) or xbmc.getCondVisibility( "Container.Content(Movies) + System.GetBool(videolibrary.groupmoviesets)" ):
                 if not self.updateContainer(): return self.stop()
                 self.main.synchronize()
             self.main.setContent()

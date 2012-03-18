@@ -1,3 +1,6 @@
+2.1.0
+ - fixed: Error: Requested setting (VideoLibrary.FlattenMovieSets) was not found.  It must be case-sensitive
+
 2.0.9
  - updated: Greek language (thanks to CutSickAss)
 
