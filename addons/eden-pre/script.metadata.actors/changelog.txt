@@ -1,4 +1,7 @@
-﻿0.2.3
+﻿0.2.4
+ - added: Korean language (thanks to piodio)
+
+0.2.3
  - updated: Greek language (thanks to CutSickAss)
 
 0.2.2
