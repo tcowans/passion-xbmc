@@ -1,3 +1,6 @@
+2.1.1
+ - added: Korean language (thanks to piodio)
+
 2.1.0
  - fixed: Error: Requested setting (VideoLibrary.FlattenMovieSets) was not found.  It must be case-sensitive
 
