@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.video.bande-annonce.allocine"
+       name="Bande-Annonce Allociné"
+       version="1.6.1"
+       provider-name="PPIC (passion-xbmc.org)">
+  <requires>
+    <import addon="xbmc.python" version="1.0"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource"
+             library="default.py">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary>Plugin vidéo sur les Vidéos en français / VOST</summary>
+    <description>Plugin vidéo sur les Vidéos en français / VOST
+
+[B]Contenus:[/B]
+ - [B]Bandes Annonces[/B] - Vous propose de voir les bandes annonces des films des différentes catégories: prochainement / en salle / à ne pas manquer.
+ - [B]Séries[/B] - Vous propose les différentes bandes annonce / extraits d'épisode des séries.
+ - [B]émissions TV[/B] - Retrouver l'intégralité des émissions allociné depuis votre canapé.
+ - [B]Interviews[/B] - Les interviews de star sont elles aussi disponibles.
+Et plus...[CR]</description>
+    <platform>all</platform>
+  </extension>
+</addon>

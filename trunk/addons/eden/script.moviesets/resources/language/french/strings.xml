@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!-- strings 32000 thru 32999 reserved for scripts -->
+  <string id="32000">Movie Sets</string>
+  <string id="32001">Saga Manager</string>
+  <string id="32002">Saga</string>
+  <string id="32003">[Saga]&#32;</string>
+  <string id="32004">[Film]&#32;</string>
+
+  <!-- category settings -->
+  <string id="32050">Général</string>
+  <string id="32051">Afficher le dialogue busy lors de la récupération des infos</string>
+  <string id="32052">Séparateur d'étiquette</string>
+  <string id="32053">Ordre des films pour chaque saga</string>
+
+  <string id="32060">Maintenance</string>
+  <string id="32061">Afficher le Changelog</string>
+  <string id="32062">Afficher les InfoLabels</string>
+  <string id="32063">Afficher la License</string>
+
+  <!-- strings Manager -->
+  <string id="32100">Ajouter des films...</string>
+  <string id="32101">Sélectionner un film pour la saga [%s]</string>
+  <string id="32102">Confirmer l'ajout du film à la saga</string>
+  <string id="32103">Ajouter ce film '%s'</string>
+  <string id="32104">À cette saga '%s'</string>
+
+  <string id="32110">Retirer de la saga</string>
+  <string id="32111">Retirer un film de la saga [%s]</string>
+  <string id="32112">Confirmer la suppression du film de la saga</string>
+  <string id="32113">Retirer ce film '%s'</string>
+  <string id="32114">De cette saga '%s'</string>
+
+  <string id="32120">Définir fanart de la saga</string>
+  <string id="32121">Sélectionnez un fanart ou plus pour extrafanart</string>
+  <string id="32122">Confirmez Téléchargement...</string>
+  <string id="32123">%i sur %i ont été sélectionnés!</string>
+  <string id="32124">Êtes-vous sûr de vouloir télécharger ce(s) fichier(s)?</string>
+  <string id="32125">Téléchargement: %i de %i - %i%%</string>
+  <string id="32126">Choisir un dossier pour&#32;</string>
+  <string id="32127">extrafanart</string>
+  <string id="32128">extrathumb</string>
+  <string id="32129"></string>
+  <string id="32130">Définir vignette de la saga</string>
+  <string id="32131">Sélectionnez un poster ou plus pour extrathumb</string>
+
+  <string id="32135">Confirmez écrasement...</string>
+  <string id="32136">Voulez-vous écraser les fichiers existants?</string>
+
+  <string id="32140">Supprimer cette saga [%s]</string>
+  <string id="32141">Retirer cette saga de la médiathèque</string>
+
+  <string id="32200">Ajouter à une saga</string>
+  <string id="32201">Sélectionner une saga pour [%s]</string>
+
+  <string id="32210">Retirer le film de la saga [%s]</string>
+  <string id="32220">Editer titre du trie</string>
+  <string id="32221">Editer titre de la saga</string>
+
+  <string id="32300">Ajouter un film à une saga existante</string>
+  <string id="32301">Sélectionner un film</string>
+  <string id="32302">Sélectionner une saga pour [%s]</string>
+
+  <string id="32310">Supprimer un film d'une saga existante</string>
+  <string id="32311">Sélectionner une saga</string>
+
+  <string id="32320">Supprimer une saga existante</string>
+  <string id="32321">Sélectionner la saga à supprimer</string>
+
+  <string id="32330">Créer une nouvelle saga</string>
+  <string id="32331">Éditer le titre de la saga</string>
+
+  <!-- strings 33000 thru 33999 reserved for common strings used in addons -->
+  <!-- skin strings -->
+  <string id="33000">Saga Manager</string>
+  <string id="33001">Saga</string>
+  <string id="33002">Info Saga</string>
+  <string id="33004">[Saga]</string>
+
+  <string id="33100">Afficher les informations des Sagas dans la médiathèque</string>
+  <string id="33101">Boutons supplémentaires</string>
+  <string id="33102">Activer le manager dans les options de la médiathèque</string>
+  <string id="33103">Activer "Info Saga" dans le contexte menu</string>
+  <string id="33104">(Accessible avec la souris!)</string>
+</strings>

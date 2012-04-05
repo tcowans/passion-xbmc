@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+  <!-- General -->
+  <category label="$LOCALIZE[128]">
+    <setting type="lsep" label="$LOCALIZE[14022] - $LOCALIZE[14086]"/>
+    <setting id="downvolume" type="slider" label="32500" range="0,1,60" option="percent" default="0" />
+    <setting id="useplayerv2" type="bool" label="32505" default="false"/>
+    <setting type="sep"/>
+    <setting id="loop2" type="enum" label="32501" lvalues="106|107|592" default="0" />
+    <setting id="loopnotify" type="bool" label="32502" default="false" subsetting="true" />
+    <setting type="lsep" label="32510"/>
+    <setting id="savetuneintvshowfolder" type="bool" label="32511" default="true"/>
+    <setting id="customtunesfolder" type="folder" source="local" label="32512" option="writeable" default="" subsetting="true" enable="eq(-1,false)" />
+    <setting id="saveinseparatefolder" type="bool" label="32513" default="true" subsetting="true" enable="!eq(-1,) + eq(-2,false)"/>
+  </category>
+
+  <!-- Scrapers -->
+  <category label="$LOCALIZE[21412]">
+    <setting type="lsep" label="$LOCALIZE[21412]"/>
+    <setting id="scraper" type="fileenum" label="32550" values="/resources/scrapers/" mask="/" default="TelevisionTunes" />
+    <setting type="sep"/>
+    <setting id="tuneslimite" type="enum" label="32551" values="No Limite|20|40|80|160|320|640|1000" default="0" />
+    <setting id="select_one_tune" type="bool" label="32552" default="true"/>
+    <setting type="sep"/>
+    <setting id="showhelpsite" type="bool" label="32553" default="true"/>
+  </category>
+
+  <!-- Gui -->
+  <category label="32600">
+    <setting type="lsep" label="$LOCALIZE[128]"/>
+    <setting id="synccontainer" type="bool" label="32605" default="false"/>
+    <setting id="resetcontainer" type="bool" label="32606" default="false" visible="false" enable="eq(-1,false)"/>
+
+    <setting type="lsep" label="32601"/>
+    <setting id="formatting" type="bool" label="32602" default="false" />
+    <setting id="style_formatting" type="enum" label="$LOCALIZE[736]" lvalues="738|739|740|741" default="0" enable="eq(-1,true)" />
+    <setting id="color_formatting" type="select" label="$LOCALIZE[737]" default="Default" enable="eq(-2,true)" values="Default|[COLOR=fff0f8ff]ALICEBLUE[/COLOR]|[COLOR=fffaebd7]ANTIQUEWHITE[/COLOR]|[COLOR=ff00ffff]AQUA[/COLOR]|[COLOR=ff7fffd4]AQUAMARINE[/COLOR]|[COLOR=fff0ffff]AZURE[/COLOR]|[COLOR=fff5f5dc]BEIGE[/COLOR]|[COLOR=ffffe4c4]BISQUE[/COLOR]|[COLOR=ffffebcd]BLANCHEDALMOND[/COLOR]|[COLOR=ff0000ff]BLUE[/COLOR]|[COLOR=ff8a2be2]BLUEVIOLET[/COLOR]|[COLOR=ffa52a2a]BROWN[/COLOR]|[COLOR=ffdeb887]BURLYWOOD[/COLOR]|[COLOR=ff5f9ea0]CADETBLUE[/COLOR]|[COLOR=ff7fff00]CHARTREUSE[/COLOR]|[COLOR=ffd2691e]CHOCOLATE[/COLOR]|[COLOR=ffff7f50]CORAL[/COLOR]|[COLOR=ff6495ed]CORNFLOWERBLUE[/COLOR]|[COLOR=fffff8dc]CORNSILK[/COLOR]|[COLOR=ffdc143c]CRIMSON[/COLOR]|[COLOR=ff00ffff]CYAN[/COLOR]|[COLOR=ff00008b]DARKBLUE[/COLOR]|[COLOR=ff008b8b]DARKCYAN[/COLOR]|[COLOR=ffb8860b]DARKGOLDENROD[/COLOR]|[COLOR=ffa9a9a9]DARKGRAY[/COLOR]|[COLOR=ff006400]DARKGREEN[/COLOR]|[COLOR=ffbdb76b]DARKKHAKI[/COLOR]|[COLOR=ff8b008b]DARKMAGENTA[/COLOR]|[COLOR=ff556b2f]DARKOLIVEGREEN[/COLOR]|[COLOR=ffff8c00]DARKORANGE[/COLOR]|[COLOR=ff9932cc]DARKORCHID[/COLOR]|[COLOR=ff8b0000]DARKRED[/COLOR]|[COLOR=ffe9967a]DARKSALMON[/COLOR]|[COLOR=ff8fbc8f]DARKSEAGREEN[/COLOR]|[COLOR=ff483d8b]DARKSLATEBLUE[/COLOR]|[COLOR=ff2f4f4f]DARKSLATEGRAY[/COLOR]|[COLOR=ff00ced1]DARKTURQUOISE[/COLOR]|[COLOR=ff9400d3]DARKVIOLET[/COLOR]|[COLOR=ffff1493]DEEPPINK[/COLOR]|[COLOR=ff00bfff]DEEPSKYBLUE[/COLOR]|[COLOR=ff696969]DIMGRAY[/COLOR]|[COLOR=ff1e90ff]DODGERBLUE[/COLOR]|[COLOR=ffb22222]FIREBRICK[/COLOR]|[COLOR=fffffaf0]FLORALWHITE[/COLOR]|[COLOR=ff228b22]FORESTGREEN[/COLOR]|[COLOR=ffff00ff]FUCHSIA[/COLOR]|[COLOR=ffdcdcdc]GAINSBORO[/COLOR]|[COLOR=fff8f8ff]GHOSTWHITE[/COLOR]|[COLOR=ffffd700]GOLD[/COLOR]|[COLOR=ffdaa520]GOLDENROD[/COLOR]|[COLOR=ff808080]GRAY[/COLOR]|[COLOR=ff008000]GREEN[/COLOR]|[COLOR=ffadff2f]GREENYELLOW[/COLOR]|[COLOR=fff0fff0]HONEYDEW[/COLOR]|[COLOR=ffff69b4]HOTPINK[/COLOR]|[COLOR=ffcd5c5c]INDIANRED [/COLOR]|[COLOR=ff4b0082]INDIGO  [/COLOR]|[COLOR=fffffff0]IVORY[/COLOR]|[COLOR=fff0e68c]KHAKI[/COLOR]|[COLOR=ffe6e6fa]LAVENDER[/COLOR]|[COLOR=fffff0f5]LAVENDERBLUSH[/COLOR]|[COLOR=ff7cfc00]LAWNGREEN[/COLOR]|[COLOR=fffffacd]LEMONCHIFFON[/COLOR]|[COLOR=ffadd8e6]LIGHTBLUE[/COLOR]|[COLOR=fff08080]LIGHTCORAL[/COLOR]|[COLOR=ffe0ffff]LIGHTCYAN[/COLOR]|[COLOR=fffafad2]LIGHTGOLDENRODYELLOW[/COLOR]|[COLOR=ffd3d3d3]LIGHTGREY[/COLOR]|[COLOR=ff90ee90]LIGHTGREEN[/COLOR]|[COLOR=ffffb6c1]LIGHTPINK[/COLOR]|[COLOR=ffffa07a]LIGHTSALMON[/COLOR]|[COLOR=ff20b2aa]LIGHTSEAGREEN[/COLOR]|[COLOR=ff87cefa]LIGHTSKYBLUE[/COLOR]|[COLOR=ff778899]LIGHTSLATEGRAY[/COLOR]|[COLOR=ffb0c4de]LIGHTSTEELBLUE[/COLOR]|[COLOR=ffffffe0]LIGHTYELLOW[/COLOR]|[COLOR=ff00ff00]LIME[/COLOR]|[COLOR=ff32cd32]LIMEGREEN[/COLOR]|[COLOR=fffaf0e6]LINEN[/COLOR]|[COLOR=ffff00ff]MAGENTA[/COLOR]|[COLOR=ff800000]MAROON[/COLOR]|[COLOR=ff66cdaa]MEDIUMAQUAMARINE[/COLOR]|[COLOR=ff0000cd]MEDIUMBLUE[/COLOR]|[COLOR=ffba55d3]MEDIUMORCHID[/COLOR]|[COLOR=ff9370d8]MEDIUMPURPLE[/COLOR]|[COLOR=ff3cb371]MEDIUMSEAGREEN[/COLOR]|[COLOR=ff7b68ee]MEDIUMSLATEBLUE[/COLOR]|[COLOR=ff00fa9a]MEDIUMSPRINGGREEN[/COLOR]|[COLOR=ff48d1cc]MEDIUMTURQUOISE[/COLOR]|[COLOR=ffc71585]MEDIUMVIOLETRED[/COLOR]|[COLOR=ff191970]MIDNIGHTBLUE[/COLOR]|[COLOR=fff5fffa]MINTCREAM[/COLOR]|[COLOR=ffffe4e1]MISTYROSE[/COLOR]|[COLOR=ffffe4b5]MOCCASIN[/COLOR]|[COLOR=ffffdead]NAVAJOWHITE[/COLOR]|[COLOR=ff000080]NAVY[/COLOR]|[COLOR=fffdf5e6]OLDLACE[/COLOR]|[COLOR=ff808000]OLIVE[/COLOR]|[COLOR=ff6b8e23]OLIVEDRAB[/COLOR]|[COLOR=ffffa500]ORANGE[/COLOR]|[COLOR=ffff3250]ORANGERED[/COLOR]|[COLOR=ffda70d6]ORCHID[/COLOR]|[COLOR=ffeee8aa]PALEGOLDENROD[/COLOR]|[COLOR=ff98fb98]PALEGREEN[/COLOR]|[COLOR=ffafeeee]PALETURQUOISE[/COLOR]|[COLOR=ffd87093]PALEVIOLETRED[/COLOR]|[COLOR=ffffefd5]PAPAYAWHIP[/COLOR]|[COLOR=ffffdab9]PEACHPUFF[/COLOR]|[COLOR=ffcd853f]PERU[/COLOR]|[COLOR=ffffc0cb]PINK[/COLOR]|[COLOR=ffdda0dd]PLUM[/COLOR]|[COLOR=ffb0e0e6]POWDERBLUE[/COLOR]|[COLOR=ff800080]PURPLE[/COLOR]|[COLOR=ffff0000]RED[/COLOR]|[COLOR=ffbc8f8f]ROSYBROWN[/COLOR]|[COLOR=ff4169e1]ROYALBLUE[/COLOR]|[COLOR=ff8b4513]SADDLEBROWN[/COLOR]|[COLOR=fffa8072]SALMON[/COLOR]|[COLOR=fff4a460]SANDYBROWN[/COLOR]|[COLOR=ff2e8b57]SEAGREEN[/COLOR]|[COLOR=fffff5ee]SEASHELL[/COLOR]|[COLOR=ffa0522d]SIENNA[/COLOR]|[COLOR=ffc0c0c0]SILVER[/COLOR]|[COLOR=ff87ceeb]SKYBLUE[/COLOR]|[COLOR=ff6a5acd]SLATEBLUE[/COLOR]|[COLOR=ff708090]SLATEGRAY[/COLOR]|[COLOR=fffffafa]SNOW[/COLOR]|[COLOR=ff00ff7f]SPRINGGREEN[/COLOR]|[COLOR=ff4682b4]STEELBLUE[/COLOR]|[COLOR=ffd2b48c]TAN[/COLOR]|[COLOR=ff008080]TEAL[/COLOR]|[COLOR=ffd8bfd8]THISTLE[/COLOR]|[COLOR=ffff6347]TOMATO[/COLOR]|[COLOR=ff40e0d0]TURQUOISE[/COLOR]|[COLOR=ffee82ee]VIOLET[/COLOR]|[COLOR=fff5deb3]WHEAT[/COLOR]|[COLOR=ffffffff]WHITE[/COLOR]|[COLOR=fff5f5f5]WHITESMOKE[/COLOR]|[COLOR=ffffff00]YELLOW[/COLOR]|[COLOR=ff9acd32]YELLOWGREEN[/COLOR]" />
+    <setting id="upper_formatting" type="bool" label="32603" default="false" enable="eq(-3,true)" subsetting="true" />
+
+    <setting type="lsep" label="$LOCALIZE[14086]"/>
+    <setting id="playercontrols" type="bool" label="32610" default="false"/>
+  </category>
+
+  <!-- Share -->
+  <category label="$LOCALIZE[220]">
+    <setting type="lsep" label="$LOCALIZE[1200]"/>
+    <setting id="smb_share" type="bool" label="32650" default="false"/>
+    <setting id="smb_login" type="text" label="$LOCALIZE[1048]" default="" visible="eq(-1,true)" />
+    <setting id="smb_psw" type="text" label="$LOCALIZE[733]" default="" option="hidden" visible="eq(-2,true)" />
+
+    <setting type="lsep" label="$LOCALIZE[728]"/>
+    <setting id="ftp_share" type="bool" label="32651" default="false"/>
+    <setting id="ftp_login" type="text" label="$LOCALIZE[1048]" default="" visible="eq(-1,true)" />
+    <setting id="ftp_psw" type="text" label="$LOCALIZE[733]" default="" option="hidden" visible="eq(-2,true)" />
+  </category>
+
+  <!-- Skinning -->
+  <category label="32700">
+    <setting type="lsep" label="32701" />
+    <setting type="action" label="32702" action="RunScript($CWD/resources/lib/viewer.py,howtostart)" default="" />
+    <setting type="action" label="32703" action="RunScript($CWD/resources/lib/viewer.py,infolabels)" default="" />
+    <!-- show tvtunes logo -->
+    <setting type="lsep" label="Test"/>
+    <setting id="showlogo" type="bool" label="Show TvTunes logo is running" default="false" visible="eq(1,false)"/>
+    <setting id="showlogo2" type="bool" label="Show TvTunes logo is alive" default="false" visible="eq(-1,false)"/>
+    <setting id="logoposx" type="slider" label="Pos X" range="0,1,1280" option="int" default="0" enable="eq(-1,true) | eq(-2,true)" subsetting="true" />
+    <setting id="logoposy" type="slider" label="Pos Y" range="0,1,720" option="int" default="0" enable="eq(-2,true) | eq(-3,true)" subsetting="true" />
+    <setting id="logosize" type="slider" label="Size" range="1,1,256" option="int" default="128" enable="eq(-3,true) | eq(-4,true)" subsetting="true" />
+  </category>
+</settings>

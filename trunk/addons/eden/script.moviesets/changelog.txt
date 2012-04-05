@@ -1,0 +1,114 @@
+2.1.1
+ - added: Korean language (thanks to piodio)
+
+2.1.0
+ - fixed: Error: Requested setting (VideoLibrary.FlattenMovieSets) was not found.  It must be case-sensitive
+
+2.0.9
+ - updated: Greek language (thanks to CutSickAss)
+
+2.0.8
+ - added: Greek language (thanks to CutSickAss)
+ 
+2.0.7
+ - added: German language (thanks to Eisi2005)
+
+2.0.6
+ - added: Hebrew language (thanks to BuSHari)
+
+2.0.5
+ - fixed: webserver, stupid reversed login and pass
+ - fixed: unicode before loads json string
+
+2.0.4
+ - added: Portuguese (brazil) language (thanks to Wanilton)
+ - added: log infos about system. (python version and xbmc version)
+ - prevent: possible error with json ( http://forum.xbmc.org/showpost.php?p=1005692&postcount=444 and http://forum.xbmc.org/showpost.php?p=1006841&postcount=464 )
+
+2.0.3
+ - re-fixed: error to get streamdetails from json result (except error pass)
+
+2.0.2
+ - fixed: error to get streamdetails from json result
+ - fixed: if movieset as encoding title
+ - removed: wait 1-2 seconds for tvtunes load correctly
+ - changed: provides video to executable
+ - changed: script.module.pil optional required
+ - changed: [manager] "107.0.0.1" for xbmc.getIPAddress()
+ - changed: log full info about errors
+
+2.0.1
+ - fixed: Default skin, missing images/colors/includes
+
+2.0.0
+ NB:
+   - Fully compatible with XBMC Eden ( Recommended )
+   - For XBMC Dharma or XBMC4Xbox, Only Manager is compatible.
+
+ - fixed/changed/added: new features for XBMC Eden-pre
+ - changed: property 'HasMovieSets' to 'IsSet'
+
+ - MovieSets Backend:
+    - added: default skin for "Dialog Info and Browser" -> script-MovieSets-DialogInfo.xml and script-MovieSets-Browser.xml
+             If current skin not support script.moviesets!!!
+
+ - MovieSets Manager:
+    - completly changed: Now use WindowXML -> script-MovieSets-Manager.xml and script-MovieSets-ContextMenu.xml
+    - added: default skin
+    - added: skin for Confluence
+
+
+*************** END OF VERSION 1.X.X ***************
+
+1.0.7
+ - fixed: load movie sets infos, if database file is not found
+
+1.0.6
+ - fixed: database path for grab last modification time
+
+1.0.5
+ - fixed: missing requires addon import
+ - fixed: typo french strings
+
+1.0.4
+ - typo
+
+1.0.3
+ - changed/fixed: strings language
+
+1.0.2
+ - changed: now use jsonrpc for showing info. (HTTPAPI is used only in manager)
+ - added: Dialog Movie Set Info (<onclick>RunScript(script.moviesets,moviesetinfo)</onclick>)
+          Or add <o mod="i">RunScript(script.moviesets,moviesetinfo)</o> into your keymaps/keyboard.xml -> <MyVideoLibrary>
+
+ - added: Manager Movie Sets (Video -> Add-on Video) or for skinners (<onclick>RunScript(script.moviesets[,manager])</onclick>)
+   Choices of management:
+    - Add movies to existing movieset
+    - Remove movies to existing movieset
+    - Remove existing movieset
+    - Create new movieset
+
+   Visible if currently selected item is movieset
+    - Add Movie
+    - Remove Movie
+    - Set movieset fanart
+    - Set movieset thumb
+    - Remove this movieset [?]
+
+   Visible if currently selected item is movie
+    - Add to movieset ( visible if table setlinkmovie has movie )
+    - Remove movie of set [?] ( visible if table setlinkmovie has movie )
+    - Edit sorttitle movie ( visible if table setlinkmovie has movie )
+
+1.0.1
+ - changed: method to run moviesets in background. Now require only container id (<onfocus>XBMC.RunScript(script.moviesets,containerId=7000)</onfocus>)
+ - added: listitem properties, property(StarRating), property(Years), property(movie.%d.year), property(Countries), ListItem.studio, Listitem.Trailer
+ - added: Addon Settings ( skinners: <onclick>Addon.OpenSettings(script.moviesets)</onclick> )
+ - added: Label Separator ( configurable in settings )
+ - moved: runscript parameter "busy" to addon settings
+ - changed: container(id).listitem.path for stack paths of all movies in set. use this for flagging ( eg: substring(container(id).ListItem.FilenameAndPath,bluray) )
+ - changed: load, refresh and synchronize container only on content is Movies or MovieSets
+ - more: added skin Confluence [Mod] Movie Sets on google code and on repo "http://passion-xbmc.org/addons/?Page=View&ID=skin.confluence.moviesets"
+
+1.0.0
+ - Initial version

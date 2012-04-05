@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+<setting type="lsep" label="30000" />
+<setting id="trailer_path" type="folder" source="files" label="Répertoire des trailers" default="special://userdata/addon_data/plugin.video.bande-annonce.allocine/cache" />
+<setting id="mon_cine" type="bool" label="Activer 'Mon Cinéma'"  default="false"/>
+<setting id="page_limit" type="enum" label="Limiter aux vidéos les plus récentes" values="5 pages|10 pages|20 pages|30 pages|Tout(lent)" default="1" />
+<setting type="sep" label="Réglages qualité"/>
+<setting id="quality" type="enum" label="qualité Vidéos" values="Basse définition|Moyenne définition|Haute définition" default="2" />
+<setting id="hdimage" type="bool" label="Utiliser des image haute qualité" default="true"/>
+<setting id="date_sortie" type="bool" label="Afficher la date de sortie sur la liste des films" default="true"/>
+</settings>

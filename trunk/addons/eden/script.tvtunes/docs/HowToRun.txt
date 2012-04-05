@@ -1,0 +1,23 @@
+[B]BACKEND[/B]
+Params:
+ - backend=true [COLOR=green](required)[/COLOR]
+ - NB: Don't use condition "IsEmpty(Window(10025).Property(TvTunesIsRunning))"
+       The script auto-detect this.
+
+<window id="25">
+    ...
+    <onload condition="Library.HasContent(TVShows) + System.HasAddon(script.tvtunes)">
+RunScript(script.tvtunes,backend=true)</onload>
+    ...
+</window>
+
+
+[B]SOLO MODE[/B]
+Params:
+ - mode=solo [COLOR=green](required)[/COLOR]
+ - tvpath=[UPPERCASE]$info[/UPPERCASE][ListItem.FilenameAndPath] [COLOR=yellow](optional)[/COLOR]
+ - tvname=[UPPERCASE]$info[/UPPERCASE][ListItem.TVShowTitle] [COLOR=yellow](optional)[/COLOR]
+
+<control...>
+    <onclick>RunScript(script.tvtunes,mode=solo)</onclick>
+</control>

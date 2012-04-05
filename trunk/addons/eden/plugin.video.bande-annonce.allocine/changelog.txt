@@ -1,0 +1,9 @@
+1.6.1
+ - fixed: TV show title
+ - fixed: date de sortie
+
+1.6.0
+ - update to eden
+ - fixed BA by thegnorf
+ - moved cache to profile
+ - renamed addon to proper name plugin.video.bande-annonce.allocine
