@@ -1,0 +1,157 @@
+v1.9.6
+ - added: [GUI] Setting for Auto synchronize containers. default: false
+ - re-added: Play tune routine v1 and merged from version 1.0.14 and fixed to work with settings pre-2.0.0
+ - added: settings for use backend player v1 or v2 (unstable). default: v1
+
+v1.9.5
+ - added: [GUI] listitem.path / listitem.filenameandpath
+ - added: [GUI] listitem.Property(banner) and listitem.Property(logo)
+            NB: return empty if banner/logo not exists
+
+ - added: more debug info about setvolume
+ - fixed: stop playing tune on return onprevious window
+
+v1.9.4
+ - fixed: typo in language and settings
+
+v1.9.3
+ - added/fixed: Dharma compatibility ;)
+ - added: new themes scraper TVAdSongs.com
+
+v1.9.2
+ - fixed: don't stop player if is not playing audio
+ - changed: always add version with prefix in log
+ - changed: use xbmc.sleep after close dialog. animation work perfectly.
+            thx to `Black http://forum.xbmc.org/showpost.php?p=945574&postcount=6
+
+v1.9.1
+ - changed: provides video to executable (fmronan report multiple crash on linux)
+ - fixed: typo on close dialog progress
+
+v1.9.0
+ Starting pre-2.0.0
+ Translators: Language completely changed on this version, please submit your language if you want...
+
+ - added: GUI usage for selection of tunes
+ - added: DialogContextMenu
+   -> Get Tune
+   -> Download Tune
+   -> Play Tune ( visible if "[your_tvshow]/theme.mp3" exists )
+   -> Delete Tune ( visible if "[your_tvshow]/theme.mp3" exists )
+
+ - re-added: missing "provider-name" for threading routine
+ - added: save theme mp3 to custom directory and/or in separate subdir
+ - added: ftp server ( same as smb ) require login and pass
+ - added: scrapers settings ( default : TelevisionTunes )
+ - added: category settings ( general, scrapers, Gui, remotes )
+ - cleanup and re-order codes ( now script run faster )
+ - And ?!...
+
+
+*************** END OF VERSION 1.X.X ***************
+
+v1.0.6:
+- do not use the xbmc temp dir
+
+v1.0.5:
+- code cleanup
+
+v1.0.4:
+- fixed unicode tvshow name
+
+v1.0.3:
+- localize strings
+
+v1.0.2:
+- use json-rpc instead of http-api
+
+v1.0.1:
+- fixed copy theme to smb share
+
+v1.0.0:
+- updated code for xbmc eden
+
+v0.9.0:
+- added support for dvd iso folders (thanks to anarchintosh)
+
+v0.8.1:
+- localized settings.
+
+v0.8.0:
+- added solo mode, use this line with a button on dialogvideoinfo for tvshow:
+<onclick>XBMC.RunScript(script.tvtunes,mode=solo&tvpath=$INFO[ListItem.FilenameAndPath]&tvname=$INFO[ListItem.TVShowTitle])</onclick>
+probably won't work on episode level.
+
+v0.7.3
+- prevent theme script to be activated when browsing plugins
+
+v0.7.2
+- added Spanish translation.
+
+v0.7.1
+- corrected float conversion error between linux and windows.
+
+v0.7.0
+- added support for protected smb share 'activate in settings'.
+
+v0.6.7:
+- fix theme playing on recently added episodes
+- fix error on start with volume parameter
+
+v0.6.6:
+- fix the video stopped by script exiting.
+
+v0.6.5:
+- changed log volume display (all in %)
+- changed container and playing conditions
+- log steps
+- now compense volume during theme playing (when going back to original volume, your volume change will be take in count)
+- fixed loop
+
+v0.6.0:
+- change volume setting
+- rewrite code
+- changed thread control
+- corrections on volume control, no only used when theme is playing
+- control if current playing is a theme for stop condtion
+- do not interrupt music playing if user is listen to music.
+- fixed theme not playing when re enter the same show
+- fixed theme downloader was not playing full theme
+
+v0.5.3:
+- added sound setting decrease from 0 to 60 in setting, automatically raising when script exit.
+- moved running control into default.py
+
+v0.5.2:
+- fixed problem for flatten tvshow option
+- change the visible condition to : !"Window(10025).Property(TvTunesIsAlive)" it's "true" when script is running
+
+v0.5.1:
+- moved loop in addon setting.
+
+v0.5.0:
+- added backend to play theme when entering a show. this will play theme.mp3 in your tv show folder
+- Skinners informations:
+will automatically launch when browsing videolibrary, automaticaly end when playing video or exiting video library
+add this button in MyVideoNav.xml:
+
+For xbmc Eden use this
+<onload condition="IsEmpty(Window(10025).Property(TvTunesIsRunning)) + System.HasAddon(script.tvtunes)">XBMC.RunScript(script.tvtunes,backend=True)</onload>
+
+Other version use this
+<control type="button" id="9999">
+	<description>trigger</description>
+	<onfocus>XBMC.RunScript(script.TvTunes,backend=True&amploop=False)</onfocus>
+	<onfocus>SetFocus(50)</onfocus>
+	<texturenofocus>-</texturenofocus>
+	<texturefocus>-</texturefocus>
+</control>
+
+change the defaultcontrol to 9999 (or id you want for this control) and put your previous defaultcontrol in SefFocus()
+loop can be True or False if you want or not to repeat the theme in loop while browsing in the tv show.
+
+you can also use this visible condition to prevent activating visualisation or music baground fanart:
+        !SubString(Window(10025).Property(TvTunesIsAlive),True)
+
+v0.1.0:
+-initial release

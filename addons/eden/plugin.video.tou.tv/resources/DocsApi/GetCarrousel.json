@@ -1,0 +1,30 @@
+= Introduction =
+
+This is a description of the tou.tv api. 
+
+= Repertoire = 
+== GetCarrousel ==
+
+*Request*
+{{{
+http://api.tou.tv/v1/toutvapiservice.svc/json/GetCarrousel?playlistName=carrousel-animation
+}}}
+
+*Response*
+{{{
+{
+  "d": [
+    {
+      "EmissionId": 1852377904, 
+      "__type": "CarrouselItemDTO:#RC.Svc.Web.TouTV", 
+      "imgNR": "http://static.tou.tv/medias/images-promo/VIEQUARTIER_K.jpg", 
+      "imgXR": "http://static.tou.tv/medias/images-promo/VIEQUARTIER_I.jpg", 
+      "imgYR": "http://static.tou.tv/medias/images-promo/VIEQUARTIER_J.jpg", 
+      "subTitle": "D\u00e9couvrez D\u00e9d\u00e9 Tremblay et ses locataires ", 
+      "title": "VIE DE QUARTIER", 
+      "urlPage": "vie-de-quartier"
+    }, 
+    ...
+  ]
+}
+}}}

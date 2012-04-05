@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!-- General strings -->
+  <string id="32000">Google Weather</string>
+
+  <string id="32010">Enter your Location, Postal Code or ZipCode</string>
+  <string id="32011">Choose your country</string>
+  <string id="32012">Error: no cities found!</string>
+  <string id="32013">Choose your city for %s</string>
+  <string id="32014">Select mode...</string>
+  <string id="32015"></string>
+
+  <string id="32020">Locations</string>
+  <string id="32021">Current Location</string>
+  <string id="32022">Location</string>
+
+  <string id="32030">Extras</string>
+  <string id="32031">Rising and setting times for the Sun</string>
+  <string id="32032">Locale</string>
+  <string id="32033">Use standard times [6:00 AM - 8:00 PM]</string>
+  <string id="32034">Preference</string>
+  <string id="32035">Astronomical Twilight</string>
+  <string id="32036">Nautical Twilight</string>
+  <string id="32037">Civil Twilight</string>
+  <string id="32038">Sunrise and Sunset</string>
+  
+  <string id="32040">Icons</string>
+  <string id="32041">Icons Set (experimental)</string>
+  <string id="32042">Add-on</string>
+  <string id="32043">XBMC</string>
+  <string id="32044">Google</string>
+  <string id="32045">Custom</string>
+  <string id="32046">Custom Icons</string>
+
+  <string id="32050">Select preference for %s</string>
+  <string id="32051">Select location for sunrise/sunset</string>
+  <string id="32052">Other locations</string>
+  <string id="32053">Select other location for sunrise/sunset</string>
+</strings>
