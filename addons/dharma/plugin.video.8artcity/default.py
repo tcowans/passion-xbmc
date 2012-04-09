@@ -1,13 +1,6 @@
 # -*- coding: cp1252 -*-
 """
    Video Addon (plugin type) allowing to watch 8 Art City Blogs' videos
-   
-   Changelog:
-   25-11-2010 Version 1.0 par Temhil
-      - Creation
-      
-   05-12-2010 Version 1.1 par Temhil 
-      - Ajout de la date et de la description pour chaque video
 """
 
 REMOTE_DBG       = False # For remote debugging with PyDev (Eclipse)
@@ -21,8 +14,8 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/addons/plugin.video.8artcity/"
 __credits__      = "Team XBMC Passion"
 __platform__     = "xbmc media center"
-__date__         = "12-05-2010"
-__version__      = "1.1"
+__date__         = "08-05-2012"
+__version__      = "1.2"
 __svn_revision__ = 0
 
 
