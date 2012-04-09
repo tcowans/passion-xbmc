@@ -1,5 +1,8 @@
 Historique:
 ----------
+08-04-12 Version 2.0.3 par Temhil
+   - Broken: Changement du site et vidéos bloquées par le site. Actuellement pas le temps d'y regarder pour le mettre à jour
+
 06-09-10 Version 2.0.2 by Frost
   - fixed windowXML resolution
 
