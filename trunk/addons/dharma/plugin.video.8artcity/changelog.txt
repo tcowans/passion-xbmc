@@ -1,3 +1,9 @@
-Version 1.1
+08-05-2012 Version 1.2 par Temhil
+  - Broken: changement du site, aucune mise a jour des videos sur le site depuis plus de 1 an.
 
-- Ajout de la date et de la description pour chaque video
+05-12-2010 Version 1.1 par Temhil 
+  - Ajout de la date et de la description pour chaque video
+
+25-11-2010 Version 1.0 par Temhil
+  - Creation
+  
