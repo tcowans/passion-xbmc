@@ -86,6 +86,7 @@ ListItem.Property(Biography) -----> Same as Plot
 ListItem.Property(Biooutline) ----> (currently not used)
 ListItem.Property(TotalMovies) ---> Total of Known Movies (acting / directing / writing)
 ListItem.Property(Birthday) ------> Date of Birthday
+ListItem.Property(HappyBirthday) -> return true or empty
 ListItem.Property(Age) -----------> Age (30)
 ListItem.Property(AgeLong) -------> Age long format (age 30)
 ListItem.Property(Deathday) ------> Date of Deathday
@@ -121,9 +122,10 @@ For example:
 Labels Available from backend in video/music library.
 
 Window.Property(current.actor.name) ----------> Name
-Window.Property(current.actor.biography) -----> Same as Plot
+Window.Property(current.actor.biography) -----> Biography
 Window.Property(current.actor.biooutline) ----> (currently not used)
 Window.Property(current.actor.birthday) ------> Date of Birthday
+Window.Property(current.actor.happybirthday) -> return true or empty
 Window.Property(current.actor.age) -----------> Age (30)
 Window.Property(current.actor.agelong) -------> Age long format (age 30)
 Window.Property(current.actor.deathday) ------> Date of Deathday
@@ -140,3 +142,36 @@ Window.Property(current.actor.extrafanart) ---> extrafanart (return empty if not
 Window.Property(current.actor.extrathumb) ----> extrathumb (return empty if not exists)
 
 Window.Property(current.actor.totalmovies) ---> (currently not used) Total of Known Movies (acting / directing / writing)
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+** HOME WIDGET : Most Popular Artists Born Today **
+
+Parameters:
+RunScript(script.metadata.actors,borntoday[,limit,random])
+limit  : 1 - 100 max
+random : random and choice limit in 100 peoples
+
+For example:
+<onload condition="System.HasAddon(script.metadata.actors)">RunScript(script.metadata.actors,borntoday,10,random)</onload>
+
+Labels Available from borntoday in Home.
+
+Window.Property(peopleborntoday.[1-100max].name) --------> Name
+Window.Property(peopleborntoday.[1-100max].job) ---------> Actor / Actress / Other, and last notable movie  
+Window.Property(peopleborntoday.[1-100max].bio) ---------> Biography
+Window.Property(peopleborntoday.[1-100max].icon) --------> icon
+Window.Property(peopleborntoday.[1-100max].fanart) ------> Fanart
+Window.Property(peopleborntoday.[1-100max].extrafanart) -> extrafanart (return empty if not exists)
+Window.Property(peopleborntoday.[1-100max].extrathumb) --> extrathumb (return empty if not exists)
+Window.Property(peopleborntoday.[1-100max].urlinfo) -----> used from python <onclick>RunScript(script.metadata.actors,urlinfo=$INFO[Window.Property(peopleborntoday.[1-10].urlinfo)])</onclick>
+
+Window.Property(peopleborntoday.[1-100max].media.[1-25max].title) --> Title
+Window.Property(peopleborntoday.[1-100max].media.[1-25max].icon) ---> Icon
+Window.Property(peopleborntoday.[1-100max].media.[1-25max].fanart) -> Fanart
+Window.Property(peopleborntoday.[1-100max].media.[1-25max].file) ---> media to play
+Window.Property(peopleborntoday.[1-100max].media.[1-25max]1.type) --> movie / tvshow / music
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
