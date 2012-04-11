@@ -3,6 +3,7 @@
 from random import shuffle
 from threading import Timer
 from collections import deque
+from datetime import datetime
 from traceback import print_exc
 
 # Modules XBMC
@@ -356,6 +357,9 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
             if actuel_age: listitem.setProperty( "AgeLong",      Language( 32020 ) % actuel_age )
             if dead_since: listitem.setProperty( "DeathageLong", Language( 32021 ) % dead_since )
             elif dead_age: listitem.setProperty( "DeathageLong", Language( 32020 ) % dead_age )
+
+            if self.actor[ "birthday" ] and datetime.today().strftime( "%m-%d" ) in str( self.actor[ "birthday" ] ):
+                listitem.setProperty( "HappyBirthday", "true" )
 
             listitem.setInfo( "video", { "title": self.actor[ "name" ], "plot": self.actor[ "biography" ] } )
 

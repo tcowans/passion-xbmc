@@ -87,7 +87,7 @@ day_month_id_short = {
     }
 
 
-STR_JSONRPC = '{"jsonrpc":"2.0", "id":"1", "method":"Files.GetDirectory", "params":{"directory":"%s", "sort":{"method":"label", "order":"ascending"}}}'
+STR_JSONRPC = '{"jsonrpc":"2.0", "id":"1", "method":"Files.GetDirectory", "params":{"directory":"%s", %s"sort":{"method":"label", "order":"ascending"}}}'
 
 
 def notification( header="", message="", sleep=5000, icon=ADDON.getAddonInfo( "icon" ) ):
@@ -134,8 +134,8 @@ def load_db_json_string( json_string ):
     return []
 
 
-def get_directory( directory ):
-    json_string = xbmc.executeJSONRPC( STR_JSONRPC % directory )
+def get_directory( directory, properties='' ):
+    json_string = xbmc.executeJSONRPC( STR_JSONRPC % ( directory, properties ) )
     #json_string = unicode( json_string, 'utf-8', errors='ignore' )
     o_json = json.loads( json_string )
     return o_json.get( "result" ) or {}
@@ -201,7 +201,7 @@ def clean_bio( bio ):
         elif s == "\n" or e == "\n": bio = bio.strip( "\n" )
         else: break
     #print repr( bio )
-    return bio + "."
+    return bio.strip() + "."
 
 
 def get_ages( birthday, deathday ):

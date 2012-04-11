@@ -121,6 +121,15 @@
 						<texture>actors-GlassOverlay.png</texture>
 						<colordiffuse>AAFFFFFF</colordiffuse>
 					</control>
+					<control type="image">
+						<posx>8</posx>
+						<posy>385</posy>
+						<width>40</width>
+						<height>40</height>
+						<aspectratio>keep</aspectratio>
+						<texture>bdaycake.png</texture>
+						<visible>!IsEmpty(ListItem.Property(HappyBirthday))</visible>
+					</control>
 					<control type="list" id="49">
 						<posx>290</posx>
 						<posy>20</posy>

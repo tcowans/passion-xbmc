@@ -1,4 +1,9 @@
-﻿0.2.4
+﻿0.2.5
+ - added: HOME WIDGET : Most Popular Artists Born Today. See README.txt at end for infos.
+ - added: [BACKEND] Window.Property(current.actor.happybirthday) -> return true or empty
+ - added: [DialogInfo] ListItem.Property(HappyBirthday) -> return true or empty
+
+0.2.4
  - added: Korean language (thanks to piodio)
 
 0.2.3

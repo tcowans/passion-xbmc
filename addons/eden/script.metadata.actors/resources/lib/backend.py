@@ -2,6 +2,7 @@
 #Modules General
 import time
 import threading
+from datetime import datetime
 from traceback import print_exc
 
 import xbmc
@@ -17,7 +18,7 @@ STR_AGE_LONG       = utils.Language( 32020 )
 STR_DEAD_SINCE     = utils.Language( 32021 )
 STR_DEATH_AGE_LONG = utils.Language( 32020 )
 TBN                = utils.Thumbnails()
-
+BIRTH_MONTHDAY     = datetime.today().strftime( "%m-%d" )
 
 
 class Backend( threading.Thread ):
@@ -36,7 +37,7 @@ class Backend( threading.Thread ):
 
     def clearProperties( self ):
         window = xbmcgui.Window( 10025 )
-        for prt in [ "name", "biography", "biooutline", "birthday", "deathday", "placeofbirth", "alsoknownas", "homepage", "adult", "age", "deathage", "agelong", "deathagelong", "fanart", "icon", "extrafanart", "extrathumb" ][ ::-1  ]:
+        for prt in [ "name", "biography", "biooutline", "birthday", "deathday", "placeofbirth", "alsoknownas", "homepage", "adult", "age", "deathage", "agelong", "deathagelong", "fanart", "icon", "extrafanart", "extrathumb", "happybirthday" ][ ::-1  ]:
             window.clearProperty( "current.actor." + prt )
 
     def run( self ):
@@ -56,17 +57,19 @@ class Backend( threading.Thread ):
                         if self.current_actor:
                             #( "idactor", "id", "name", "biography", "biooutline", "birthday", "deathday", "placeofbirth", "alsoknownas", "homepage", "adult", "cachedthumb" )
                             window = xbmcgui.Window( 10025 )
+                            birthday = self.current_actor[ 5 ] or ""
                             window.setProperty( "current.actor.name",         self.current_actor[ 2 ]  or "" )
                             window.setProperty( "current.actor.biography",    utils.clean_bio( self.current_actor[ 3 ] or "" ) )
                             window.setProperty( "current.actor.biooutline",   self.current_actor[ 4 ]  or "" )
-                            window.setProperty( "current.actor.birthday",     self.current_actor[ 5 ]  or "" )
+                            window.setProperty( "current.actor.birthday",     birthday )
                             window.setProperty( "current.actor.deathday",     self.current_actor[ 6 ]  or "" )
                             window.setProperty( "current.actor.placeofbirth", self.current_actor[ 7 ]  or "" )
                             window.setProperty( "current.actor.alsoknownas",  self.current_actor[ 8 ]  or "" )
                             window.setProperty( "current.actor.homepage",     self.current_actor[ 9 ]  or "" )
                             window.setProperty( "current.actor.adult",        self.current_actor[ 10 ] or "" )
-
-                            actuel_age, dead_age, dead_since = utils.get_ages( self.current_actor[ 5 ], self.current_actor[ 6 ] )
+                            if birthday and BIRTH_MONTHDAY in birthday:
+                                window.setProperty( "current.actor.happybirthday", "true" )
+                            actuel_age, dead_age, dead_since = utils.get_ages( birthday, self.current_actor[ 6 ] )
                             window.setProperty( "current.actor.age",      actuel_age )
                             window.setProperty( "current.actor.deathage", dead_age )
                             if actuel_age: window.setProperty( "current.actor.agelong",      STR_AGE_LONG % actuel_age )
