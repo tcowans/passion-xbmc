@@ -15,8 +15,8 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/programs/Addons4xbox/"
 __credits__      = "Team XBMC Passion"
 __platform__     = "xbmc media center [XBOX]"
-__date__         = "08-21-2011"
-__version__      = "0.9.2"
+__date__         = "03-13-2012"
+__version__      = "0.9.3"
 __svn_revision__ = 0
 __XBMC_Revision__= 30805
 
@@ -49,7 +49,9 @@ MEDIA_PATH         = os.path.join( BASE_RESOURCE_PATH, "media" )
 PERSIT_REPO_LIST   = "repo_list.txt"
 
 # URLs
-REPO_LIST_URL = "http://wiki.xbmc.org/index.php?title=Unofficial_Add-on_Repositories"
+#REPO_LIST_URL = "http://wiki.xbmc.org/index.php?title=Unofficial_Add-on_Repositories"
+REPO_LIST_URL_LIST = ["http://wiki.xbmc.org/index.php?title=Unofficial_Add-on_Repositories",
+                      "http://home.brantje.com/xbmcrepositories/Unofficial-add-on-repositories-XBMC.htm" ]
 
 __platform__ = "xbmc media center, [%s]" % xbmc.__platform__
 __language__ = xbmc.Language( ROOTDIR ).getLocalizedString

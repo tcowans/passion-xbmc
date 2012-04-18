@@ -25,6 +25,7 @@ __language__     = sys.modules[ "__main__" ].__language__
 #LIBS_PATH          = sys.modules[ "__main__" ].LIBS_PATH
 MEDIA_PATH         = sys.modules[ "__main__" ].MEDIA_PATH
 PERSIT_REPO_LIST   = sys.modules[ "__main__" ].PERSIT_REPO_LIST
+REPO_LIST_URL_LIST = sys.modules[ "__main__" ].REPO_LIST_URL_LIST
 
 __settings__ = xbmcplugin.getSetting
 
@@ -42,7 +43,7 @@ except:
     print_exc()
 
 # URLs
-REPO_LIST_URL = "http://wiki.xbmc.org/index.php?title=Unofficial_Add-on_Repositories"
+#REPO_LIST_URL = "http://wiki.xbmc.org/index.php?title=Unofficial_Add-on_Repositories"
 
 class Main:
     """
@@ -70,8 +71,11 @@ class Main:
         print "createRepo2InstallListDir"
         #xbmcplugin.setPluginCategory( handle=int( sys.argv[ 1 ] ), category=__language__( 30001 ) )
         
-        print "Loading wiki page: %s"%REPO_LIST_URL
-        listRepoWiki = ListItemFromWiki(REPO_LIST_URL)
+        print 'wiki_server:'
+        print __settings__( 'wiki_server' )
+        wiki_server_id = int( __settings__( 'wiki_server' ) )
+        print "Loading wiki page: %s"%REPO_LIST_URL_LIST[wiki_server_id]
+        listRepoWiki = ListItemFromWiki(REPO_LIST_URL_LIST[wiki_server_id])
         keepParsing = True
         while (keepParsing):
             item = listRepoWiki.getNextItem()
