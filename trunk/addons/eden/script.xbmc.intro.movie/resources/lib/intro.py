@@ -4,14 +4,18 @@ import time
 import random
 
 import xbmc
+import xbmcgui
 import xbmcvfs
 from xbmcaddon import Addon
 
 Addon = Addon( "script.xbmc.intro.movie" )
 
 
-if xbmc.getCondVisibility( '!Window.IsVisible(Home)' ):
-    ReplaceWindowHome = xbmc.getCondVisibility( '!Window.IsVisible(Programs)' )
+isplayed = xbmc.getInfoLabel( "Window(Home).Property(intro.isplayed)" ).lower() == "true"
+winPrograms = xbmc.getCondVisibility( 'Window.IsVisible(Programs)' )
+
+if not isplayed or winPrograms:
+    ReplaceWindowHome = not winPrograms
     print "XBMC Intro Movie"
 
     intros_dir = os.path.join( Addon.getAddonInfo( "path" ), "resources", "intros" )
@@ -24,11 +28,16 @@ if xbmc.getCondVisibility( '!Window.IsVisible(Home)' ):
 
     if intro == "Random":
         intros = os.listdir( intros_dir )
+        last = Addon.getSetting( "last_random" )
+        if last and last in intros:
+            del intros[ intros.index( last ) ]
         random.shuffle( intros )
         intro = random.choice( intros )
+        Addon.setSetting( "last_random", intro )
 
     player = xbmc.Player()
     player.play( os.path.join( intros_dir, intro ) )
+    xbmcgui.Window( 10000 ).setProperty( "intro.isplayed", "true" )
 
     if ReplaceWindowHome:
         xbmc.sleep( 1000 )
