@@ -1,5 +1,6 @@
 
 import os
+import glob
 import random
 import urllib
 from traceback import print_exc
@@ -36,30 +37,37 @@ except: sqlite3 = None
 def deleteTexture( sourceurl ):
     OK = False
     #print "-"*100
-    try:
-        c_filename   = xbmc.getCacheThumbName( sourceurl )
-        cachedurl    = "%s/%s.png" % ( c_filename[ 0 ], c_filename.replace( ".tbn", "" ) )
-        cached_tbumb = "special://profile/Thumbnails/" + cachedurl
-        xbmcvfs.delete( cached_tbumb )
-        OK = xbmcvfs.copy( sourceurl, cached_tbumb )
-        #print "I just deleted %r thumbs" % OK
-    except:
-        cachedurl = None
-    if cachedurl and sqlite3:
-        conn = None
-        try:
-            # connect to textures database
-            conn = sqlite3.connect( xbmc.translatePath( "special://Database/Textures6.db" ) )
-            # Using a dummy WHERE clause to not let SQLite take the shortcut table deletes.
-            where = "DELETE FROM texture WHERE cachedurl LIKE \"%s\"" % cachedurl
-            #print where
-            row_count = conn.execute( where ).rowcount
-            #print "I just deleted %r rows in Textures6.db" % row_count
-        except:
-            pass
-        if hasattr( conn, "close" ):
-            # close database
-            conn.close()
+    #try:
+    #    c_filename   = xbmc.getCacheThumbName( sourceurl )
+    #    cachedurl    = "%s/%s.png" % ( c_filename[ 0 ], c_filename.replace( ".tbn", "" ) )
+    #    cached_tbumb = "special://profile/Thumbnails/" + cachedurl
+    #    xbmcvfs.delete( cached_tbumb )
+    #    #OK = xbmcvfs.copy( sourceurl, cached_tbumb )
+    #    #print "I just deleted %r thumbs" % OK
+    #except:
+    #    cachedurl = None
+    if sqlite3:
+        for db in glob.glob( xbmc.translatePath( "special://Database/Textures*.db" ) ):
+            conn = None
+            try:
+                # connect to textures database
+                conn = sqlite3.connect( db )
+                c_url = conn.execute( 'SELECT cachedurl FROM texture WHERE url=?', ( sourceurl, ) ).fetchone()
+                if c_url:
+                    cachedurl = c_url[ 0 ]
+                    cached_tbumb = "special://profile/Thumbnails/" + cachedurl
+                    xbmcvfs.delete( cached_tbumb )
+                    #
+                    row_count = conn.execute( 'DELETE FROM texture WHERE cachedurl=?', ( cachedurl, ) ).rowcount
+                    #print ( cachedurl, sourceurl )
+                    #print "I just deleted %r rows in %s" % ( row_count, os.path.basename( db ) )
+                    conn.commit()
+                    OK = True
+            except:
+                print_exc()
+            if hasattr( conn, "close" ):
+                # close database
+                conn.close()
     return OK
 
 
@@ -105,7 +113,7 @@ def start_alarm():
         return
     try:
         # start next time to refresh images. 60 minutes (skinner for force refresh use "CancelAlarm(moon_earth_phases,true)")
-        command = "RunScript(%s.py)" % os.path.join( Addon.getAddonInfo( "path" ), "resources", "lib", "moon_and_earth_phases" )
+        command = "RunScript(%s)" % os.path.join( Addon.getAddonInfo( "path" ), "resources", "lib", "moon_and_earth_phases.py" )
         xbmc.executebuiltin( "AlarmClock(moon_earth_phases,%s,60,true)" % command )
     except:
         print_exc()
