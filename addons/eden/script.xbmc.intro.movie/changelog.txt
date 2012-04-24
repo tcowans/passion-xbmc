@@ -1,3 +1,6 @@
+1.0.2
+ - fixed: play only one intro on startup
+
 1.0.1
  - added: template_confluence_Startup.xml see this for example to run addon
  - fixed: disable default splash, if advancedsettings.xml not exists
