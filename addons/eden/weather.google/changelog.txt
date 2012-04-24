@@ -1,3 +1,6 @@
+2.0.3 (by frost)
+ - fixed: auto-refresh of Moon and Earth Phases images
+
 2.0.2 (by frost)
  - fixed: [astronomy] missing locale's equivalent of either AM or PM.
 
