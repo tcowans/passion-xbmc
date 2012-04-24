@@ -107,17 +107,25 @@ def toggle_splash( toggle ):
 
 def Main( settingID=None ):
     setfocusid = 200
-    if settingID == "splash":
+    if settingID == "use_intro_movie":
+        xbmc.executebuiltin( "Skin.ToggleSetting(Use_Intro_Movie)" )
+        xbmc.sleep( 100 )
+        setting = ( "false", "true" )[ xbmc.getCondVisibility( "Skin.HasSetting(Use_Intro_Movie" ) ]
+        Addon.setSetting( "use_intro_movie", setting )
+        xbmc.sleep( 100 )
+        setfocusid = ( 102, 103 )[ setting == "false" ]
+
+    elif settingID == "splash":
         toggle = toggle_splash( Addon.getSetting( "splash" ) )
         Addon.setSetting( "splash", toggle )
         xbmc.sleep( 500 )
-        setfocusid = ( 107, 108 )[ toggle == "false" ]
+        setfocusid = ( 110, 111 )[ toggle == "false" ]
 
     elif settingID == "intro":
         w = DialogSelect( "DialogSelect.xml", Addon.getAddonInfo( "path" ) )
         w.doModal()
         del w
-        setfocusid = 101
+        setfocusid = 104
 
     xbmc.executebuiltin( "Addon.openSettings(script.xbmc.intro.movie)" )
     xbmc.executebuiltin( "SetFocus(200)" )
