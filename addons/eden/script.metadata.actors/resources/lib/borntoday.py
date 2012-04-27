@@ -1,4 +1,7 @@
 
+import time
+START_TIME = time.time()
+
 import os
 import re
 import sys
@@ -13,15 +16,20 @@ try:
     Addon = Addon( "script.metadata.actors" )
     HOME_WINDOW = Window( 10000 )
     JSON_FILE   = xbmc.translatePath( Addon.getAddonInfo( "profile" ).rstrip( "/" ) + "/mostpopularpeopleborn.json" )
-    if not xbmcvfs.exists( os.path.dirname( JSON_FILE ) ): os.makedirs( os.path.dirname( JSON_FILE ) )
     import utils
-    ACTORS = utils.getXBMCActors( busy=False )
-    TBN    = utils.Thumbnails()
+    from actorsdb import get_actors_for_backend
+    utils.xbmcvfs_makedirs( os.path.dirname( JSON_FILE ) )
+    ACTORSDB = get_actors_for_backend()
+    ACTORS   = utils.getXBMCActors( busy=False )
+    TBN      = utils.Thumbnails()
     STR_ONLINE_INFO = utils.Language( 32050 )
+    clean_bio = utils.clean_bio
 except:
     # NOT RUNNING ON XBMC, ON DEV
+    def clean_bio( bio ): return bio
     HOME_WINDOW = None
     JSON_FILE   = "mostpopularpeopleborn.json"
+    ACTORSDB    = {}
     ACTORS      = []
     TBN         = None
     STR_ONLINE_INFO = 'Show Info on IMDB (require a web browser)'
@@ -94,18 +102,16 @@ def SetProperty( key, value="" ):
         print ( key, value )
 
 
-def ClearProperties():
-    for i in xrange( 1, 101 ):
+def ClearProperties( limit ):
+    for i in range( 1, limit+1 )[ ::-1 ]:
         b_prop = "peopleborntoday.%i." % i
         for prop in [ "name", "job", "bio", "urlinfo", "icon", "fanart", "extrafanart", "extrathumb" ]:
-            if HOME_WINDOW:
-                HOME_WINDOW.clearProperty( b_prop + prop )
+            SetProperty( b_prop + prop )
 
-            for i in xrange( 1, 26 ):
+            for i in range( 1, limit+1 )[ ::-1 ]:
                 m_prop = b_prop + "media.%i." % ( i + 1 )
-                for prop in [ "title", "icon", "fanart", "file", "type" ]:
-                    if HOME_WINDOW:
-                        HOME_WINDOW.clearProperty( m_prop + prop )
+                for prop in [ "title", "icon", "fanart", "file", "type", "folder", "isplayable", "library" ]:
+                    SetProperty( m_prop + prop )
 
 
 def setImages( b_prop, name ):
@@ -118,9 +124,9 @@ def setImages( b_prop, name ):
     # check exist to prevent multiple ERROR: XFILE::CDirectory::GetDirectory - Error getting special://thumbnails/Actors/[ACTOR NAME]/foo/
     cached_actor_thumb = "special://thumbnails/Actors/" + name + "/"
     for extra in [ "extrafanart", "extrathumb" ]:
-        SetProperty( b_prop + extra, "" )
-        if xbmcvfs.exists( cached_actor_thumb + extra ):
-            SetProperty( b_prop + extra, cached_actor_thumb + extra )
+        #SetProperty( b_prop + extra, "" )
+        #if xbmcvfs.exists( cached_actor_thumb + extra ):
+        SetProperty( b_prop + extra, cached_actor_thumb + extra )
     # set icon and return true if exists
     icon = "".join( TBN.get_cached_actor_thumb( name ) )
     if not xbmcvfs.exists( icon ):
@@ -131,27 +137,27 @@ def setImages( b_prop, name ):
 
 
 def Main():
-    peoples = loadPeoples()
-
     try: limit = int( sys.argv[ 2 ] )
     except: limit = 10
     if limit > 100: limit = 100
-    #print sys.argv
-    #print limit
+    ClearProperties( limit )
+
+    peoples = loadPeoples()
     if "".join( sys.argv[ 3: ] ).lower() == "random":
         random.shuffle( peoples )
         peoples = random.sample( peoples, limit )
     else:
         peoples = peoples[ :limit ]
 
-    #print len( peoples )
-    #print json.dumps( peoples, indent=2 )
-    ClearProperties()
     for i, people in enumerate( peoples ):
         b_prop = "peopleborntoday.%i." % ( i + 1 )
         SetProperty( b_prop + "name",    people[ 0 ] )
         SetProperty( b_prop + "job",     people[ 3 ] )
-        SetProperty( b_prop + "bio",     people[ 4 ] )
+        bio = people[ 4 ]
+        indb = ACTORSDB.get( people[ 0 ] )
+        if not bio and indb: bio = clean_bio( indb[ 3 ] or "" )
+        SetProperty( b_prop + "bio", bio )
+        #print ( bio, indb )
 
         if not setImages( b_prop, people[ 0 ] ):
             SetProperty( b_prop + "icon", "" )
@@ -166,18 +172,37 @@ def Main():
             if paths:
                 urlinfo += paths
                 # for fmronan
-                medias = []
-                for t, p in paths:
-                    medias += utils.get_directory( p, '"properties":["fanart", "thumbnail"],' ).get( "files" ) or []
-                # enum medias
-                for i, media in enumerate( medias ):
-                    m_prop = b_prop + "media.%i." % ( i + 1 )
-                    SetProperty( m_prop + "title",  media[ "label" ] )
-                    SetProperty( m_prop + "icon",   media[ "thumbnail" ] )
-                    SetProperty( m_prop + "fanart", media[ "fanart" ] )
-                    SetProperty( m_prop + "file",   media[ "file" ] )
-                    SetProperty( m_prop + "type",   media[ "type" ] )
-                    if ( i + 1 ) == 25: break
+                count = 0
+                for txt, dir in paths:
+                    # enum medias
+                    for media in ( utils.get_directory( dir, '"properties":["fanart", "thumbnail"],' ).get( "files" ) or [] ):
+                        count += 1
+                        m_prop = b_prop + "media.%i." % count
+                        SetProperty( m_prop + "title",  media[ "label" ] )
+                        SetProperty( m_prop + "icon",   media[ "thumbnail" ] )
+                        SetProperty( m_prop + "fanart", media[ "fanart" ] )
+                        SetProperty( m_prop + "file",   media[ "file" ] )
+                        SetProperty( m_prop + "folder", os.path.dirname( media[ "file" ] ) )
+                        SetProperty( m_prop + "type",   media[ "type" ] )
+                        if media.get( "filetype" ) == "file":
+                            SetProperty( m_prop + "isplayable", "true" )
+                            SetProperty( m_prop + "library", dir )
+                        else:
+                            library = ""
+                            # library path
+                            if "videodb://1/4/" in dir or "videodb://1/5/" in dir:
+                                library = "videodb://1/2/"
+                            elif "videodb://2/4/" in dir:
+                                library = "videodb://2/2/%s/" % str( media[ "id"] )
+                            elif "videodb://3/4/" in dir:
+                                library = "videodb://3/2/%s/" % str( media[ "id"] )
+                            elif "musicdb://2/" in dir:
+                                library = "musicdb://2/%s/" % str( media[ "id"] )
+                            else:
+                                print dir
+                            SetProperty( m_prop + "library", library )
+
+                        if limit <= count <= 25: break
             
         urlinfo.append( [ STR_ONLINE_INFO, people[ 1 ] ] )
         SetProperty( b_prop + "urlinfo", repr( urlinfo ) )
@@ -190,3 +215,4 @@ if __name__ == "__main__":
     #sys.argv.append( "25" )
     #sys.argv.append( "random" )
     Main()
+    print time.time() - START_TIME

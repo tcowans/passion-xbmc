@@ -127,9 +127,10 @@ def addActor( c, actor, castandcrew=([], []), thumbs=('', '', []), update_id=-1 
 def getActor( c, **kwargs ):
     actor = {}
     where = ""
-    if kwargs.get( "idTMDB" ):     where, like = "WHERE idTMDB=?", kwargs[ "idTMDB" ]
-    elif kwargs.get( "idActor" ):  where, like = "WHERE idActor=?", kwargs[ "idActor" ]
-    elif kwargs.get( "strActor" ): where, like = "WHERE strActor=?", unicode( kwargs[ "strActor" ], 'utf-8', errors='ignore' )
+    if kwargs.get( "idTMDB" ):      where, like = "WHERE idTMDB=?", kwargs[ "idTMDB" ]
+    elif kwargs.get( "idActor" ):   where, like = "WHERE idActor=?", kwargs[ "idActor" ]
+    elif kwargs.get( "ustrActor" ): where, like = "WHERE strActor=?", kwargs[ "ustrActor" ]
+    elif kwargs.get( "strActor" ):  where, like = "WHERE strActor=?", unicode( kwargs[ "strActor" ], 'utf-8', errors='ignore' )
     if where:
         actor = dict( zip(
             ( "idactor", "id", "name", "biography", "biooutline", "birthday", "deathday", "place_of_birth", "also_known_as", "homepage", "adult", "cachedthumb" ),
@@ -171,11 +172,22 @@ def save_actor( js, profile_path="", update_id=-1, TBN=None ):
     return actor
 
 
-def get_actors_for_backend():
+def get_actors_for_backend( xbmc=None ):
     con, cur = getConnection()
     actors = {}
-    try: actors = dict( [ ( actor[ 2 ], actor ) for actor in con.execute( "SELECT * FROM actors" ) ] )
-    except: print_exc()
+    if xbmc is None:
+        try: actors = dict( [ ( actor[ 2 ], actor ) for actor in con.execute( "SELECT * FROM actors" ) ] )
+        except: print_exc()
+    else:
+        try:
+            cast = unicode( xbmc.getInfoLabel( "ListItem.Cast" ), 'utf-8', errors='ignore' ).split( "\n" )
+            castandrole = unicode( xbmc.getInfoLabel( "ListItem.CastAndRole" ), 'utf-8', errors='ignore' ).split( "\n" )
+            sql = "SELECT * FROM actors WHERE strActor IN (%s)" % ", ".join( [ "?" ] * len( cast ) )
+            for actor in con.execute( sql, tuple( cast ) ):
+                i = cast.index( actor[ 2 ] )
+                actors[ castandrole[ i ] ] = actor
+        except:
+            print_exc()
     con.close()
     return actors
 

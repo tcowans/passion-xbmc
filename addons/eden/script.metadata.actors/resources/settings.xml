@@ -2,10 +2,8 @@
 <settings>
   <!-- General -->
   <category label="$LOCALIZE[128]">
-    <setting type="lsep" label="$LOCALIZE[248]" />
-    <setting label="32100" type="labelenum" values="cs|da|de|el|en|es|fi|fr|he|hr|hu|it|ja|ko|nl|no|pl|pt|ru|sl|sv|tr|zh" id="language" default="en"/>
-    <setting type="sep" />
-    <setting label="32101" type="bool" id="keeporiginaltitle" default="false"/>
+    <setting type="lsep" label="32010" />
+    <setting label="$LOCALIZE[248]" type="labelenum" values="cs|da|de|el|en|es|fi|fr|he|hr|hu|it|ja|ko|nl|no|pl|pt|ru|sl|sv|tr|zh" id="language" default="en"/>
 
     <setting type="lsep" label="Images" />
     <setting id="flipquality" type="slider" label="32102" range="0,1,100" option="percent" default="85" />

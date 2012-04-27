@@ -16,6 +16,7 @@
   <string id="32021">since %s years</string>
 
   <string id="32024">Page</string>
+  <string id="32025">Items</string>
 
   <string id="32030">Movies Acting</string>
   <string id="32031">TvShows Acting</string>
@@ -33,8 +34,8 @@
   <string id="32051">Trailers</string>
   <string id="32052">No trailers found!</string>
 
-  <string id="32100">Movies Title and Poster</string>
-  <string id="32101">Show Original Title</string>
+  <string id="32100"></string>
+  <string id="32101"></string>
   <string id="32102">Quality of flipping fanarts</string>
 
   <string id="32105">Dialog info</string>
@@ -63,4 +64,5 @@
   <string id="32136">Do you want overwrite your existing files?</string>
 
   <string id="32311">Fanart image[CR][CR]Unavailable[CR][CR] Click button to set</string>
+  <string id="32330">Click button to play[CR][CR]Movie trailer</string>
 </strings>
