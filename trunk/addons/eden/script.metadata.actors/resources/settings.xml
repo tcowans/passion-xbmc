@@ -2,6 +2,8 @@
 <settings>
   <!-- General -->
   <category label="$LOCALIZE[128]">
+    <setting type="lsep" label="Scraper" />
+    <setting label="32099" type="bool" id="include_adult" default="false"/>
     <setting type="lsep" label="32010" />
     <setting label="$LOCALIZE[248]" type="labelenum" values="cs|da|de|el|en|es|fi|fr|he|hr|hu|it|ja|ko|nl|no|pl|pt|ru|sl|sv|tr|zh" id="language" default="en"/>
 
