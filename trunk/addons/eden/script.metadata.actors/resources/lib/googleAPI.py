@@ -21,10 +21,12 @@ try:
     from xbmcaddon import Addon
     ADDON       = Addon( "script.metadata.actors" )
     ADDON_CACHE = xbmc.translatePath( "%scache/" % ADDON.getAddonInfo( "profile" ) )
+    from utils import xbmcvfs_makedirs
+    xbmcvfs_makedirs( ADDON_CACHE )
 except:
     ADDON_CACHE = "ADDON_CACHE"
-if not os.path.exists( ADDON_CACHE ):
-    os.makedirs( ADDON_CACHE )
+    if not os.path.exists( ADDON_CACHE ):
+        os.makedirs( ADDON_CACHE )
 
 BASE_URL = "http://ajax.googleapis.com/ajax/services/search/images?"
 

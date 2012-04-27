@@ -27,7 +27,7 @@
 				<posy>0</posy>
 				<width>1100</width>
 				<height>720</height>
-				<texture border="15,0,0,0" flipx="true">actors-MediaBladeSub.png</texture>
+				<texture border="15,0,0,0" flipx="true">MediaBladeSub.png</texture>
 			</control>
 			<control type="button">
 				<description>Close Window button</description>
@@ -38,8 +38,8 @@
 				<label>-</label>
 				<font>-</font>
 				<onclick>PreviousMenu</onclick>
-				<texturefocus>actors-DialogCloseButton-focus.png</texturefocus>
-				<texturenofocus>actors-DialogCloseButton.png</texturenofocus>
+				<texturefocus>DialogCloseButton-focus.png</texturefocus>
+				<texturenofocus>DialogCloseButton.png</texturenofocus>
 				<onleft>9000</onleft>
 				<onright>9000</onright>
 				<onup>9000</onup>
@@ -59,8 +59,8 @@
 					<label>$INFO[Listitem.Title]</label>
 					<align>center</align>
 					<aligny>center</aligny>
-					<textcolor>FFFFFFFF</textcolor>
-					<shadowcolor>FF000000</shadowcolor>
+					<textcolor>white</textcolor>
+					<shadowcolor>black</shadowcolor>
 				</control>
 
 				<control type="group">
@@ -76,7 +76,7 @@
 						<width>675</width>
 						<height>380</height>
 						<texture background="true">$INFO[ListItem.Property(Fanart_Image)]</texture>
-						<bordertexture border="5">actors-button-nofocus.png</bordertexture>
+						<bordertexture border="5">button-nofocus.png</bordertexture>
 						<bordersize>4</bordersize>
 						<aspectratio>keep</aspectratio>
 						<visible>!IsEmpty(Listitem.Property(Fanart_Image))</visible>
@@ -89,8 +89,8 @@
 							<posy>0</posy>
 							<width>675</width>
 							<height>380</height>
-							<texture>actors-Fanart_Fallback_Small.jpg</texture>
-							<bordertexture border="5">actors-button-nofocus.png</bordertexture>
+							<texture>Fanart_Fallback_Small.jpg</texture>
+							<bordertexture border="5">button-nofocus.png</bordertexture>
 							<bordersize>4</bordersize>
 							<aspectratio>stretch</aspectratio>
 							<colordiffuse>99FFFFFF</colordiffuse>
@@ -101,8 +101,8 @@
 							<width>675</width>
 							<height>380</height>
 							<font>font30_title</font>
-							<textcolor>FFFFFFFF</textcolor>
-							<shadowcolor>FF000000</shadowcolor>
+							<textcolor>white</textcolor>
+							<shadowcolor>black</shadowcolor>
 							<align>center</align>
 							<aligny>center</aligny>
 							<label>$ADDON[script.metadata.actors 32311]</label>
@@ -122,7 +122,7 @@
 						<height>380</height>
 						<aspectratio>stretch</aspectratio>
 						<fadetime>500</fadetime>
-						<bordertexture border="5">actors-button-nofocus.png</bordertexture>
+						<bordertexture border="5">button-nofocus.png</bordertexture>
 						<bordersize>4</bordersize>
 						<texture background="true">$INFO[ListItem.Icon]</texture>
 					</control>
@@ -132,7 +132,7 @@
 						<width>200</width>
 						<height>230</height>
 						<aspectratio>stretch</aspectratio>
-						<texture>actors-GlassOverlay.png</texture>
+						<texture>GlassOverlay.png</texture>
 						<colordiffuse>AAFFFFFF</colordiffuse>
 					</control>
 					<control type="image">
@@ -164,8 +164,8 @@
 								<font>font13</font>
 								<align>right</align>
 								<aligny>center</aligny>
-								<textcolor>FF0084ff</textcolor>
-								<selectedcolor>FFEB9E17</selectedcolor>
+								<textcolor>blue</textcolor>
+								<selectedcolor>selected</selectedcolor>
 								<info>ListItem.Label</info>
 							</control>
 							<control type="label">
@@ -176,8 +176,8 @@
 								<font>font13</font>
 								<align>left</align>
 								<aligny>center</aligny>
-								<textcolor>FFFFFFFF</textcolor>
-								<selectedcolor>FFFFFFFF</selectedcolor>
+								<textcolor>white</textcolor>
+								<selectedcolor>white</selectedcolor>
 								<info>ListItem.Label2</info>
 							</control>
 						</itemlayout>
@@ -188,7 +188,7 @@
 								<width>740</width>
 								<height>30</height>
 								<visible>Control.HasFocus(49)</visible>
-								<texture>actors-MenuItemFO.png</texture>
+								<texture>MenuItemFO.png</texture>
 								<animation effect="fade" time="300">Visible</animation>
 								<animation effect="fade" time="300">Hidden</animation>
 							</control>
@@ -200,8 +200,8 @@
 								<font>font13</font>
 								<align>right</align>
 								<aligny>center</aligny>
-								<textcolor>FF0084ff</textcolor>
-								<selectedcolor>FFEB9E17</selectedcolor>
+								<textcolor>blue</textcolor>
+								<selectedcolor>selected</selectedcolor>
 								<info>ListItem.Label</info>
 							</control>
 							<control type="label">
@@ -212,8 +212,8 @@
 								<font>font13</font>
 								<align>left</align>
 								<aligny>center</aligny>
-								<textcolor>FFFFFFFF</textcolor>
-								<selectedcolor>FFFFFFFF</selectedcolor>
+								<textcolor>white</textcolor>
+								<selectedcolor>white</selectedcolor>
 								<info>ListItem.Label2</info>
 							</control>
 						</focusedlayout>
@@ -268,7 +268,7 @@
 						<width>740</width>
 						<height>4</height>
 						<aspectratio>stretch</aspectratio>
-						<texture>actors-separator.png</texture>
+						<texture>separator.png</texture>
 					</control>
 				</control>
 				<control type="group">
@@ -281,12 +281,12 @@
 						<width>400</width>
 						<height>30</height>
 						<font>font13_title</font>
-						<textcolor>FF999999</textcolor>
-						<shadowcolor>FF000000</shadowcolor>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>black</shadowcolor>
 						<scroll>true</scroll>
 						<align>right</align>
 						<aligny>center</aligny>
-						<label>[COLOR=FF0084ff]$LOCALIZE[21887][/COLOR]$INFO[Container(400).CurrentPage, ( $ADDON[script.metadata.actors 32024] ]$INFO[Container(400).NumPages,/, )]</label>
+						<label>[COLOR=blue]$LOCALIZE[21887][/COLOR]$INFO[Container(400).CurrentPage, ( $ADDON[script.metadata.actors 32024] ]$INFO[Container(400).NumPages,/, )]</label>
 						<visible>Control.IsVisible(400)</visible>
 					</control>
 					<control type="label">
@@ -295,12 +295,12 @@
 						<width>400</width>
 						<height>30</height>
 						<font>font13_title</font>
-						<textcolor>FF999999</textcolor>
-						<shadowcolor>FF000000</shadowcolor>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>black</shadowcolor>
 						<scroll>true</scroll>
 						<align>right</align>
 						<aligny>center</aligny>
-						<label>[COLOR=FF0084ff]$ADDON[script.metadata.actors 32010][/COLOR]$INFO[Container(150).CurrentPage, ( $ADDON[script.metadata.actors 32024] ]$INFO[Container(150).NumPages,/, )]</label>
+						<label>[COLOR=blue]$ADDON[script.metadata.actors 32010][/COLOR]$INFO[Container(150).CurrentPage, ( $ADDON[script.metadata.actors 32024] ]$INFO[Container(150).NumPages,/, )]</label>
 						<visible>Control.IsVisible(150)</visible>
 					</control>
 					<control type="spincontrol" id="61">
@@ -317,15 +317,15 @@
 						<onup>49</onup>
 						<textcolor>-</textcolor>
 						<showonepage>true</showonepage>
-						<textureup>actors-scroll-up-2.png</textureup>
-						<texturedown>actors-scroll-down-2.png</texturedown>
-						<textureupfocus>actors-scroll-up-focus-2.png</textureupfocus>
-						<texturedownfocus>actors-scroll-down-focus-2.png</texturedownfocus>
+						<textureup>scroll-up-2.png</textureup>
+						<texturedown>scroll-down-2.png</texturedown>
+						<textureupfocus>scroll-up-focus-2.png</textureupfocus>
+						<texturedownfocus>scroll-down-focus-2.png</texturedownfocus>
 						<align>right</align>
 						<width>33</width>
 						<height>22</height>
 						<reverse>yes</reverse>
-						<disabledcolor>FF505050</disabledcolor>
+						<disabledcolor>grey3</disabledcolor>
 						<textoffsetx>-5</textoffsetx>
 						<textoffsety>0</textoffsety>
 						<aligny>-</aligny>
@@ -340,7 +340,7 @@
 					<height>120</height>
 					<font>font12</font>
 					<align>justify</align>
-					<textcolor>FFFFFFFF</textcolor>
+					<textcolor>white</textcolor>
 					<pagecontrol>61</pagecontrol>
 					<label>$INFO[ListItem.Plot]</label>
 					<!--<label>$INFO[ListItem.Property(Biography)]</label>-->
@@ -353,7 +353,7 @@
 					<posy>480</posy>
 					<width>160</width>
 					<height>160</height>
-					<texture background="true" fallback="actors-DefaultVideo.png">$INFO[Container(150).Listitem.Icon]</texture>
+					<texture background="true" fallback="DefaultVideo.png">$INFO[Container(150).Listitem.Icon]</texture>
 					<aspectratio>keep</aspectratio>
 					<visible>Control.IsVisible(150)</visible>
 				</control>
@@ -368,8 +368,8 @@
 						<width>400</width>
 						<height>30</height>
 						<font>font13_title</font>
-						<textcolor>FF999999</textcolor>
-						<shadowcolor>FF000000</shadowcolor>
+						<textcolor>grey2</textcolor>
+						<shadowcolor>black</shadowcolor>
 						<scroll>true</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -385,60 +385,60 @@
 						<width>400</width>
 						<height>20</height>
 						<font>font12</font>
-						<textcolor>FFFFFFFF</textcolor>
-						<shadowcolor>FF000000</shadowcolor>
+						<textcolor>white</textcolor>
+						<shadowcolor>black</shadowcolor>
 						<scroll>true</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>[COLOR=FF0084ff]$LOCALIZE[20376]:[/COLOR] $INFO[Container(150).ListItem.OriginalTitle]</label>
+						<label>[COLOR=blue]$LOCALIZE[20376]:[/COLOR] $INFO[Container(150).ListItem.OriginalTitle]</label>
 						<visible>!IsEmpty(Container(150).ListItem.OriginalTitle) + !stringcompare(Container(150).ListItem.OriginalTitle,Container(150).Listitem.Title)</visible>
 					</control>
 					<control type="label">
 						<width>400</width>
 						<height>20</height>
 						<font>font12</font>
-						<textcolor>FFFFFFFF</textcolor>
-						<shadowcolor>FF000000</shadowcolor>
+						<textcolor>white</textcolor>
+						<shadowcolor>black</shadowcolor>
 						<scroll>true</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>[COLOR=FF0084ff]Release Date:[/COLOR] $INFO[Container(150).ListItem.Property(releasedate)]</label>
+						<label>[COLOR=blue]Release Date:[/COLOR] $INFO[Container(150).ListItem.Property(releasedate)]</label>
 						<visible>!IsEmpty(Container(150).ListItem.Property(releasedate))</visible>
 					</control>
 					<control type="label">
 						<width>400</width>
 						<height>20</height>
 						<font>font12</font>
-						<textcolor>FFFFFFFF</textcolor>
-						<shadowcolor>FF000000</shadowcolor>
+						<textcolor>white</textcolor>
+						<shadowcolor>black</shadowcolor>
 						<scroll>true</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>[COLOR=FF0084ff]$LOCALIZE[562]:[/COLOR] $INFO[Container(150).ListItem.Year]</label>
+						<label>[COLOR=blue]$LOCALIZE[562]:[/COLOR] $INFO[Container(150).ListItem.Year]</label>
 						<visible>!IsEmpty(Container(150).ListItem.Year)</visible>
 					</control>
 					<control type="label">
 						<width>400</width>
 						<height>20</height>
 						<font>font12</font>
-						<textcolor>FFFFFFFF</textcolor>
-						<shadowcolor>FF000000</shadowcolor>
+						<textcolor>white</textcolor>
+						<shadowcolor>black</shadowcolor>
 						<scroll>true</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>[COLOR=FF0084ff]Role:[/COLOR] $INFO[Container(150).ListItem.Property(role)]</label>
+						<label>[COLOR=blue]Role:[/COLOR] $INFO[Container(150).ListItem.Property(role)]</label>
 						<visible>!IsEmpty(Container(150).ListItem.Property(role))</visible>
 					</control>
 					<control type="label">
 						<width>400</width>
 						<height>20</height>
 						<font>font12</font>
-						<textcolor>FFFFFFFF</textcolor>
-						<shadowcolor>FF000000</shadowcolor>
+						<textcolor>white</textcolor>
+						<shadowcolor>black</shadowcolor>
 						<scroll>true</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>[COLOR=FF0084ff]Job:[/COLOR] $INFO[Container(150).ListItem.Property(job)]</label>
+						<label>[COLOR=blue]Job:[/COLOR] $INFO[Container(150).ListItem.Property(job)]</label>
 						<visible>!IsEmpty(Container(150).ListItem.Property(job))</visible>
 					</control>
 				</control>
@@ -463,7 +463,7 @@
 							<posy>0</posy>
 							<width>430</width>
 							<height>40</height>
-							<texture border="5">actors-button-nofocus.png</texture>
+							<texture border="5">button-nofocus.png</texture>
 						</control>
 						<control type="label">
 							<posx>10</posx>
@@ -473,7 +473,7 @@
 							<font>font12</font>
 							<align>left</align>
 							<aligny>center</aligny>
-							<selectedcolor>FFEB9E17</selectedcolor>
+							<selectedcolor>selected</selectedcolor>
 							<label>$INFO[ListItem.Label]</label>
 							<visible>IsEmpty(ListItem.Property(LibraryHasMovie))</visible>
 						</control>
@@ -485,7 +485,7 @@
 							<font>font12</font>
 							<align>left</align>
 							<aligny>center</aligny>
-							<selectedcolor>FFEB9E17</selectedcolor>
+							<selectedcolor>selected</selectedcolor>
 							<label>$INFO[ListItem.Label]</label>
 							<visible>!IsEmpty(ListItem.Property(LibraryHasMovie))</visible>
 						</control>
@@ -497,7 +497,7 @@
 							<font>font12</font>
 							<align>right</align>
 							<aligny>center</aligny>
-							<selectedcolor>FFEB9E17</selectedcolor>
+							<selectedcolor>selected</selectedcolor>
 							<label>$INFO[ListItem.Year]</label>
 							<animation effect="slide" start="0,0" end="-30,0" time="0" condition="!IsEmpty(ListItem.Property(LibraryHasMovie))">Conditional</animation>
 						</control>
@@ -506,7 +506,7 @@
 							<posy>14</posy>
 							<width>20</width>
 							<height>16</height>
-							<texture>actors-OverlayWatched.png</texture>
+							<texture>OverlayWatched.png</texture>
 							<visible>!IsEmpty(ListItem.Property(LibraryHasMovie)) + !IntegerGreaterThan(ListItem.Property(PlayCount),0)</visible>
 						</control>
 						<control type="image">
@@ -514,9 +514,9 @@
 							<posy>14</posy>
 							<width>20</width>
 							<height>16</height>
-							<texture>actors-OverlayWatched.png</texture>
+							<texture>OverlayWatched.png</texture>
 							<visible>IntegerGreaterThan(ListItem.Property(PlayCount),0)</visible>
-							<colordiffuse>FFEB9E17</colordiffuse>
+							<colordiffuse>selected</colordiffuse>
 						</control>
 					</itemlayout>
 					<focusedlayout height="40" width="430">
@@ -526,7 +526,7 @@
 							<width>430</width>
 							<height>40</height>
 							<visible>!Control.HasFocus(150)</visible>
-							<texture border="5">actors-button-nofocus.png</texture>
+							<texture border="5">button-nofocus.png</texture>
 						</control>
 						<control type="image">
 							<posx>0</posx>
@@ -534,7 +534,7 @@
 							<width>430</width>
 							<height>40</height>
 							<visible>Control.HasFocus(150)</visible>
-							<texture border="5">actors-button-focus2.png</texture>
+							<texture border="5">button-focus2.png</texture>
 						</control>
 						<control type="label">
 							<posx>10</posx>
@@ -544,7 +544,7 @@
 							<font>font12</font>
 							<align>left</align>
 							<aligny>center</aligny>
-							<selectedcolor>FFEB9E17</selectedcolor>
+							<selectedcolor>selected</selectedcolor>
 							<label>$INFO[ListItem.Label]</label>
 							<visible>IsEmpty(ListItem.Property(LibraryHasMovie))</visible>
 						</control>
@@ -556,7 +556,7 @@
 							<font>font12</font>
 							<align>left</align>
 							<aligny>center</aligny>
-							<selectedcolor>FFEB9E17</selectedcolor>
+							<selectedcolor>selected</selectedcolor>
 							<label>$INFO[ListItem.Label]</label>
 							<visible>!IsEmpty(ListItem.Property(LibraryHasMovie))</visible>
 						</control>
@@ -568,7 +568,7 @@
 							<font>font12</font>
 							<align>right</align>
 							<aligny>center</aligny>
-							<selectedcolor>FFEB9E17</selectedcolor>
+							<selectedcolor>selected</selectedcolor>
 							<label>$INFO[ListItem.Year]</label>
 							<animation effect="slide" start="0,0" end="-30,0" time="0" condition="!IsEmpty(ListItem.Property(LibraryHasMovie))">Conditional</animation>
 						</control>
@@ -577,7 +577,7 @@
 							<posy>14</posy>
 							<width>20</width>
 							<height>16</height>
-							<texture>actors-OverlayWatched.png</texture>
+							<texture>OverlayWatched.png</texture>
 							<visible>!IsEmpty(ListItem.Property(LibraryHasMovie)) + !IntegerGreaterThan(ListItem.Property(PlayCount),0)</visible>
 						</control>
 						<control type="image">
@@ -585,9 +585,9 @@
 							<posy>14</posy>
 							<width>20</width>
 							<height>16</height>
-							<texture>actors-OverlayWatched.png</texture>
+							<texture>OverlayWatched.png</texture>
 							<visible>IntegerGreaterThan(ListItem.Property(PlayCount),0)</visible>
-							<colordiffuse>FFEB9E17</colordiffuse>
+							<colordiffuse>selected</colordiffuse>
 						</control>
 					</focusedlayout>
 				</control>
@@ -629,7 +629,7 @@
 								<width>180</width>
 								<height>280</height>
 								<aspectratio aligny="bottom">keep</aspectratio>
-								<bordertexture border="5">actors-button-nofocus.png</bordertexture>
+								<bordertexture border="5">button-nofocus.png</bordertexture>
 								<bordersize>5</bordersize>
 								<texture background="true">$INFO[ListItem.Icon]</texture>
 							</control>
@@ -641,7 +641,7 @@
 								<width>180</width>
 								<height>280</height>
 								<aspectratio aligny="bottom">keep</aspectratio>
-								<bordertexture border="5">actors-button-nofocus.png</bordertexture>
+								<bordertexture border="5">button-nofocus.png</bordertexture>
 								<bordersize>5</bordersize>
 								<texture background="true">$INFO[ListItem.Icon]</texture>
 								<animation reversible="false" effect="zoom" start="13,80,180,280" end="-12,0,230,360" time="300">focus</animation>
@@ -654,11 +654,11 @@
 						<posy>360</posy>
 						<width>660</width>
 						<height>25</height>
-						<texturesliderbackground border="14,0,14,0">actors-ScrollBarH.png</texturesliderbackground>
-						<texturesliderbar border="14,0,14,0">actors-ScrollBarH_bar.png</texturesliderbar>
-						<texturesliderbarfocus border="14,0,14,0">actors-ScrollBarH_bar_focus.png</texturesliderbarfocus>
-						<textureslidernib>actors-ScrollBarNib.png</textureslidernib>
-						<textureslidernibfocus>actors-ScrollBarNib.png</textureslidernibfocus>
+						<texturesliderbackground border="14,0,14,0">ScrollBarH.png</texturesliderbackground>
+						<texturesliderbar border="14,0,14,0">ScrollBarH_bar.png</texturesliderbar>
+						<texturesliderbarfocus border="14,0,14,0">ScrollBarH_bar_focus.png</texturesliderbarfocus>
+						<textureslidernib>ScrollBarNib.png</textureslidernib>
+						<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
 						<onup>250</onup>
 						<ondown>9000</ondown>
 						<showonepage>false</showonepage>
@@ -671,11 +671,11 @@
 						<width>1030</width>
 						<height>25</height>
 						<font>font12</font>
-						<textcolor>FF999999</textcolor>
-						<selectedcolor>FFEB9E17</selectedcolor>
+						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>
 						<align>center</align>
 						<aligny>center</aligny>
-						<label>[COLOR=FF0084ff]$LOCALIZE[553]:[/COLOR] $INFO[Container(250).ListItem.Label]  [COLOR=FF0084ff]Ratio:[/COLOR] $INFO[Container(250).ListItem.Property(aspect_ratio)]</label>
+						<label>[COLOR=blue]$LOCALIZE[553]:[/COLOR] $INFO[Container(250).ListItem.Label]  [COLOR=blue]Ratio:[/COLOR] $INFO[Container(250).ListItem.Property(aspect_ratio)]</label>
 						<visible>ControlGroup(2500).HasFocus</visible>
 						<animation effect="fade" time="300">Visible</animation>
 						<animation effect="fade" time="300">Hidden</animation>
@@ -707,8 +707,8 @@
 							<font>-</font>
 							<aligny>-</aligny>
 							<onclick>ParentDir</onclick>
-							<texturefocus border="5">actors-floor_buttonFO.png</texturefocus>
-							<texturenofocus border="5">actors-floor_button.png</texturenofocus>
+							<texturefocus border="5">floor_buttonFO.png</texturefocus>
+							<texturenofocus border="5">floor_button.png</texturenofocus>
 							<onleft>25</onleft>
 							<onright>8</onright>
 							<onup>150</onup>
@@ -721,143 +721,53 @@
 							<width>30</width>
 							<height>30</height>
 							<aspectratio>keep</aspectratio>
-							<texture>actors-icon_back.png</texture>
+							<texture>icon_back.png</texture>
 						</control>
 					</control>
 					<control type="button" id="8">
 						<description>browse to Show</description>
-						<height>40</height>
-						<width>170</width>
-						<textoffsetx>20</textoffsetx>
-						<align>center</align>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<textcolor>FFFFFFFF</textcolor>
-						<disabledcolor>FF505050</disabledcolor>
-						<focusedcolor>FFFFFFFF</focusedcolor>
-						<texturefocus border="5">actors-button-focus.png</texturefocus>
-						<texturenofocus border="5">actors-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
+						<include>ButtonInfoDialogsCommonValues</include>
 						<label>1024</label>
 					</control>
 					<control type="togglebutton" id="105">
 						<description>Filmography/Biography</description>
-						<height>40</height>
-						<width>170</width>
-						<textoffsetx>20</textoffsetx>
-						<align>center</align>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<textcolor>FFFFFFFF</textcolor>
-						<disabledcolor>FF505050</disabledcolor>
-						<focusedcolor>FFFFFFFF</focusedcolor>
-						<texturefocus border="5">actors-button-focus.png</texturefocus>
-						<texturenofocus border="5">actors-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
+						<include>ButtonInfoDialogsCommonValues</include>
 						<label>$ADDON[script.metadata.actors 32010]</label>
 						<altlabel>21887</altlabel>
-						<alttexturefocus border="2">actors-button-focus.png</alttexturefocus>
-						<alttexturenofocus border="2">actors-button-nofocus.png</alttexturenofocus>
+						<alttexturefocus border="2">button-focus.png</alttexturefocus>
+						<alttexturenofocus border="2">button-nofocus.png</alttexturenofocus>
 						<usealttexture>StringCompare(Window.Property(showmovies),1)</usealttexture>
 						<altclick>ClearProperty(showmovies)</altclick>
 						<onclick>SetProperty(showmovies,1)</onclick>
 					</control>
 					<control type="button" id="6">
 						<description>Refresh</description>
-						<height>40</height>
-						<width>170</width>
-						<textoffsetx>20</textoffsetx>
-						<align>center</align>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<textcolor>FFFFFFFF</textcolor>
-						<disabledcolor>FF505050</disabledcolor>
-						<focusedcolor>FFFFFFFF</focusedcolor>
-						<texturefocus border="5">actors-button-focus.png</texturefocus>
-						<texturenofocus border="5">actors-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
+						<include>ButtonInfoDialogsCommonValues</include>
 						<label>184</label>
 					</control>
 					<control type="button" id="10">
 						<description>Get Thumb</description>
-						<height>40</height>
-						<width>170</width>
-						<textoffsetx>20</textoffsetx>
-						<align>center</align>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<textcolor>FFFFFFFF</textcolor>
-						<disabledcolor>FF505050</disabledcolor>
-						<focusedcolor>FFFFFFFF</focusedcolor>
-						<texturefocus border="5">actors-button-focus.png</texturefocus>
-						<texturenofocus border="5">actors-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
+						<include>ButtonInfoDialogsCommonValues</include>
 						<label>13405</label>
 					</control>
 					<control type="button" id="20">
 						<description>Get Fanart</description>
-						<height>40</height>
-						<width>170</width>
-						<textoffsetx>20</textoffsetx>
-						<align>center</align>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<textcolor>FFFFFFFF</textcolor>
-						<disabledcolor>FF505050</disabledcolor>
-						<focusedcolor>FFFFFFFF</focusedcolor>
-						<texturefocus border="5">actors-button-focus.png</texturefocus>
-						<texturenofocus border="5">actors-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
+						<include>ButtonInfoDialogsCommonValues</include>
 						<label>20413</label>
 					</control>
 					<control type="button" id="11">
 						<description>edit (require tmdb account)</description>
-						<height>40</height>
-						<width>170</width>
-						<textoffsetx>20</textoffsetx>
-						<align>center</align>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<textcolor>FFFFFFFF</textcolor>
-						<disabledcolor>FF505050</disabledcolor>
-						<focusedcolor>FFFFFFFF</focusedcolor>
-						<texturefocus border="5">actors-button-focus.png</texturefocus>
-						<texturenofocus border="5">actors-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
+						<include>ButtonInfoDialogsCommonValues</include>
 						<label>20067</label>
 					</control>
 					<control type="button" id="25">
 						<description>addon settings</description>
-						<height>40</height>
-						<width>170</width>
-						<textoffsetx>20</textoffsetx>
-						<align>center</align>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<textcolor>FFFFFFFF</textcolor>
-						<disabledcolor>FF505050</disabledcolor>
-						<focusedcolor>FFFFFFFF</focusedcolor>
-						<texturefocus border="5">actors-button-focus.png</texturefocus>
-						<texturenofocus border="5">actors-button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
+						<include>ButtonInfoDialogsCommonValues</include>
 						<label>24002</label>
 					</control>
 				</control>
 			</control>
 		</control>
-		<control type="label">
-			<description>time label</description>
-			<posx>20r</posx>
-			<posy>5</posy>
-			<width>200</width>
-			<height>30</height>
-			<align>right</align>
-			<aligny>center</aligny>
-			<font>font28_title</font>
-			<textcolor>FFFFFFFF</textcolor>
-			<shadowcolor>FF000000</shadowcolor>
-			<label>$INFO[System.Time]</label>
-			<animation effect="slide" start="0,0" end="-40,0" time="100" condition="Window.IsVisible(Mutebug)">conditional</animation>
-		</control>
+		<include>Clock</include>
 	</controls>
 </window>

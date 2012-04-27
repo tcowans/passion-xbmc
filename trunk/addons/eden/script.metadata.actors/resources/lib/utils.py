@@ -8,6 +8,7 @@ from traceback import print_exc
 
 import xbmc
 import xbmcgui
+import xbmcvfs
 from xbmcaddon import Addon
 
 try:
@@ -17,10 +18,10 @@ try:
 except:
     print_exc()
     import simplejson as json
-if json.decoder.c_scanstring is not None:
-    print "[Actors] Yes, json use speedup ;)"
-else:
-    print "[Actors] No, json don't use speedup :("
+#if json.decoder.c_scanstring is not None:
+#    print "[Actors] Yes, json use speedup ;)"
+#else:
+#    print "[Actors] No, json don't use speedup :("
 
 # constants
 ADDON      = Addon( "script.metadata.actors" )
@@ -34,9 +35,10 @@ IS_MUSIC_LIBRARY  = xbmc.getCondVisibility( "Window.IsVisible(MusicLibrary)" )
 IS_VIDEO_LIBRARY  = xbmc.getCondVisibility( "Window.IsVisible(Videos)" )
 LIBRARY_TYPE = ( ( "", "artist" )[ IS_MUSIC_LIBRARY ], "actor" )[ IS_VIDEO_LIBRARY ]
 
-#https://raw.github.com/xbmc/xbmc/master/xbmc/guilib/Key.h
+# https://raw.github.com/xbmc/xbmc/master/xbmc/guilib/Key.h
 ACTION_PARENT_DIR    =   9
 ACTION_PREVIOUS_MENU =  10
+ACTION_SHOW_INFO     =  11
 ACTION_NAV_BACK      =  92
 ACTION_CONTEXT_MENU  = 117
 CLOSE_DIALOG         = [ ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, ACTION_NAV_BACK ]
@@ -90,6 +92,27 @@ day_month_id_short = {
 STR_JSONRPC = '{"jsonrpc":"2.0", "id":"1", "method":"Files.GetDirectory", "params":{"directory":"%s", %s"sort":{"method":"label", "order":"ascending"}}}'
 
 
+def xbmcvfs_makedirs( name, ok=0 ):
+    """xbmcvfs_makedirs(path)
+
+    Super-mkdir; create a leaf directory and all intermediate ones.
+    Works like mkdir, except that any intermediate path segment (not
+    just the rightmost) will be created if it does not exist.  This is
+    recursive.
+
+    """
+    head, tail = os.path.split( name )
+    if not tail:
+        head, tail = os.path.split( head )
+    if head and tail and not xbmcvfs.exists( head ):
+        ok = xbmcvfs_makedirs( head, ok )
+        # xxx/newdir/. exists if xxx/newdir exists
+        if tail == os.curdir:
+            return ok
+    ok = xbmcvfs.mkdir( name )
+    return ok
+
+
 def notification( header="", message="", sleep=5000, icon=ADDON.getAddonInfo( "icon" ) ):
     """ Will display a notification dialog with the specified header and message,
         in addition you can set the length of time it displays in milliseconds and a icon image.
@@ -106,18 +129,28 @@ def keyboard( text="", heading=Language( 32033 ) ):
     return ""
 
 
+def get_library_movie_details( movieid ):
+    props = '["title", "genre", "year", "rating", "director", "trailer", "tagline", "plot", "plotoutline", "originaltitle", "lastplayed", "playcount", "writer", "studio", "mpaa", "cast", "country", "imdbnumber", "premiered", "productioncode", "runtime", "set", "showlink", "top250", "votes", "streamdetails", "fanart", "thumbnail", "file", "resume"]'
+    json_string = xbmc.executeJSONRPC( '{"jsonrpc": "2.0", "id":"1", "method":"VideoLibrary.GetMovieDetails", "params": {"movieid": %s, "properties": %s}}' % ( movieid, props ) )
+    json_string = unicode( json_string, 'utf-8', errors='ignore' )
+    result = ( json.loads( json_string ).get( "result" ) or {} )
+    return result.get( "moviedetails" ) or {}
+
+
 def get_movies_library():
-    json_string = xbmc.executeJSONRPC( '{"jsonrpc": "2.0", "id":"1", "method":"VideoLibrary.GetMovies", "params": {"properties":["originaltitle", "playcount", "file"]}}' )
+    json_string = xbmc.executeJSONRPC( '{"jsonrpc": "2.0", "id":"1", "method":"VideoLibrary.GetMovies", "params": {"properties":["originaltitle", "playcount", "file", "year"]}}' )
     json_string = unicode( json_string, 'utf-8', errors='ignore' )
     result = ( json.loads( json_string ).get( "result" ) or {} )
     return result.get( "movies" ) or []
 
 
-def library_has_movie( movies_library, title, original_title ):
+def library_has_movie( movies_library, title, original_title, year ):
     OK = None
     title = ( title or "" ).lower()
     original_title = ( original_title or "" ).lower()
+    year = int( year )
     for movie in movies_library:
+        if year != movie[ "year" ]: continue
         match = original_title and ( movie[ "originaltitle" ].lower() == title or movie[ "originaltitle" ].lower() == original_title )
         match = match or ( title and ( movie[ "label" ].lower() == title or movie[ "label" ].lower() == original_title ) )
         if match:
@@ -144,9 +177,11 @@ def get_directory( directory, properties='' ):
 def getXBMCActors( where=LIBRARY_TYPE, busy=True ):
     directories = []
     if not where or where == "actor":
-        directories += [ "videodb://1/4/", "videodb://2/4/", "videodb://1/5/" ]
+        directories += [ "videodb://1/4/", "videodb://1/5/" ] # actors, director movies
+        directories += [ "videodb://2/4/" ]                   # actros tvshows
+        directories += [ "videodb://3/4/" ]                   # artists musicvideo
     if not where or where == "artist":
-        directories += [ "musicdb://2/" ]
+        directories += [ "musicdb://2/" ]                     # artists music
     #Actors = []
     prt = "library.actors." + ( where or "" )
     Actors = load_db_json_string( unicode( xbmc.getInfoLabel( "Window(10000).Property(%s)" % prt ), "utf-8" ) )
@@ -179,6 +214,8 @@ def getActorPaths( actor, actors ):
                 item = Language( 32031 )
             elif "videodb://1/5/" in vdb:
                 item = Language( 32032 )
+            elif "videodb://3/4/" in vdb:
+                item = LangXBMC( 20389 )
             elif "musicdb://2/" in vdb:
                 item = LangXBMC( 21888 )
             else:

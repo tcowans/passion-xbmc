@@ -20,8 +20,10 @@ try: import PIL.Image as PIL_Image
 except: print_exc()
 
 # Modules Custom
-import utils 
+import utils
 import googleAPI
+import actorsdb
+import tmdbAPI
 
 
 # constants
@@ -29,9 +31,12 @@ ADDON      = utils.ADDON
 Language   = utils.Language  # ADDON strings
 LangXBMC   = utils.LangXBMC  # XBMC strings
 TBN        = utils.Thumbnails()
+RELOAD_ACTORS_BACKEND = False
 
 TEMP_DIR = xbmc.translatePath( "%scache/" % utils.ADDON_DATA )
-if not xbmcvfs.exists( TEMP_DIR ): os.makedirs( TEMP_DIR )
+utils.xbmcvfs_makedirs( TEMP_DIR )
+
+DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
 html_to_xbmc = {
     "<b>":    "[B]",
@@ -239,14 +244,10 @@ class Browser( xbmcgui.WindowXMLDialog ):
                 if t_selected > 1:
                     # if multi download to user folder
                     heading = Language( 32126 ) + ( Language( 32127 ), Language( 32128 ) )[ self.thumb_type == "thumb" ]
-                    #dpath = xbmc.translatePath( get_browse_dialog( heading=heading ) )
-                    #if not dpath and not xbmcvfs.exists( dpath ): return
                     overwrite = xbmcgui.Dialog().yesno( Language( 32135 ), Language( 32136 ) )
                     # make cached actor thumb
-                    cached_actor_thumb = "special://thumbnails/"
-                    for d in [ "Actors/", self.search_name, "/extra" + self.thumb_type ]:
-                        cached_actor_thumb += d
-                        xbmcvfs.mkdir( cached_actor_thumb )
+                    cached_actor_thumb = "special://thumbnails/Actors/" + self.search_name + "/extra" + self.thumb_type
+                    utils.xbmcvfs_makedirs( cached_actor_thumb )
                     dpath = xbmc.translatePath( cached_actor_thumb )
                     #print repr( dpath )
                 else:
@@ -260,34 +261,32 @@ class Browser( xbmcgui.WindowXMLDialog ):
                 def _pbhook( numblocks, blocksize, filesize, ratio=1.0 ):
                     try: pct = int( min( ( numblocks * blocksize * 100 ) / filesize, 100 ) * ratio )
                     except: pct = 100
-                    self.getControl( 1015 ).setPercent( pct )
-                    if self.getProperty( "iscanceled" ) == "1":
+                    DIALOG_PROGRESS.update( pct )
+                    if DIALOG_PROGRESS.iscanceled():
                         raise IOError
-                xbmc.executebuiltin( "SetProperty(dialogprogress,1)" )
-                self.getControl( 1011 ).setLabel( self.heading )
+
+                DIALOG_PROGRESS.create( self.heading )
                 diff = 100.0 / t_selected
                 percent = 0
 
                 flipfanart = self.getControl( self.CONTROL_RADIOBUTTON ).isSelected()
 
                 for count, listitem in enumerate( selected ):
-                    self.setFocusId( 1010 )
                     self.control_list.selectItem( int( listitem.getProperty( "indexItem" ) ) )
                     url = listitem.getLabel2()
                     if is_cached_thumb: dest = TEMP_DIR + os.path.basename( url )
                     else: dest = _unicode( os.path.join( dpath, os.path.basename( url ) ) )
                     percent += diff
-                    self.getControl( 1012 ).setLabel( Language( 32125 ) % ( count+1, t_selected, percent ) )
-                    self.getControl( 1013 ).setLabel( url )
-                    self.getControl( 1014 ).setLabel( dest.replace( dpath, cached_actor_thumb ).replace( "\\", "/" ) )
-                    self.getControl( 1015 ).setPercent( 0 )
+                    line1 = Language( 32125 ) % ( count+1, t_selected, percent )
+                    line3 = cached_actor_thumb + "/" + os.path.basename( url )
+                    DIALOG_PROGRESS.update( 0, line1, url, line3 )
+
                     if not overwrite and xbmcvfs.exists( dest ):
                         listitem.select( False )
                         continue
                     # download file
                     try:
                         fp, h = urllib.urlretrieve( url, dest, lambda nb, bs, fs: _pbhook( nb, bs, fs ) )
-
                         if h[ "Content-Type" ] == "text/html":
                             raise Exception( "bad thumb: %r" % fp )
                     except:
@@ -295,7 +294,7 @@ class Browser( xbmcgui.WindowXMLDialog ):
                         dest = None
                         print_exc()
                     listitem.select( False )
-                    if self.getProperty( "iscanceled" ) == "1":
+                    if DIALOG_PROGRESS.iscanceled():
                         break
                     #flip source
                     if dest and flipfanart:
@@ -313,8 +312,10 @@ class Browser( xbmcgui.WindowXMLDialog ):
             self.delete_files = _delete_files( self.delete_files )
         except:
             print_exc()
-        xbmc.executebuiltin( "ClearProperty(iscanceled)" )
-        xbmc.executebuiltin( "ClearProperty(dialogprogress)" )
+        if xbmc.getCondVisibility( "Window.IsVisible(progressdialog)" ):
+            xbmc.executebuiltin( "Dialog.Close(progressdialog)" )
+        #try: DIALOG_PROGRESS.close()
+        #except: pass
         self.setFocusId( self.CONTROL_BUTTON_CANCEL )
 
     def onAction( self, action ):
@@ -322,7 +323,6 @@ class Browser( xbmcgui.WindowXMLDialog ):
             self._close_dialog()
 
     def _close_dialog( self ):
-        xbmc.executebuiltin( "ClearProperty(dialogprogress)" )
         self.delete_files = _delete_files( self.delete_files )
         self.close()
         xbmc.sleep( 500 )
@@ -330,6 +330,8 @@ class Browser( xbmcgui.WindowXMLDialog ):
 
 class DialogContextMenu( xbmcgui.WindowXMLDialog ):
     CONTROLS_BUTTON = range( 1001, 1012 )
+    BUTTON_START = 1001
+    BUTTON_END   = 1012
 
     def __init__( self, *args, **kwargs ):
         self.buttons  = kwargs[ "buttons" ]
@@ -338,19 +340,17 @@ class DialogContextMenu( xbmcgui.WindowXMLDialog ):
 
     def onInit( self ):
         try:
-            for control in self.CONTROLS_BUTTON:
-                try:
-                    self.getControl( control ).setLabel( "" )
-                    self.getControl( control ).setVisible( False )
-                except:
-                    pass
             for count, button in enumerate( self.buttons ):
                 try:
-                    self.getControl( 1001 + count ).setLabel( button )
-                    self.getControl( 1001 + count ).setVisible( True )
+                    self.getControl( self.BUTTON_START + count ).setLabel( button )
+                    self.getControl( self.BUTTON_START + count ).setVisible( True )
                 except:
                     pass
-            self.setFocusId( 1001 )
+            self.setFocusId( self.BUTTON_START )
+
+            for control in range( self.BUTTON_START + count + 1, self.BUTTON_END ):
+                try: self.getControl( control ).setVisible( False )
+                except: pass
         except:
             print_exc()
 
@@ -359,7 +359,7 @@ class DialogContextMenu( xbmcgui.WindowXMLDialog ):
 
     def onClick( self, controlID ):
         try:
-            self.selected = ( controlID - 1001 )
+            self.selected = controlID - self.BUTTON_START
             if self.selected < 0: self.selected = -1
         except:
             self.selected = -1
@@ -375,6 +375,173 @@ class DialogContextMenu( xbmcgui.WindowXMLDialog ):
         self.close()
         xbmc.sleep( 300 )
 
+
+class DialogSelect( xbmcgui.WindowXMLDialog ):
+    def __init__( self, *args, **kwargs ):
+        self.actor = {}
+        self.add_plus = False
+        self.main = kwargs.get( "main" )
+        self.listing = kwargs.get( "listing" ) or []
+        self.profile_path = self.main.config[ "base_url" ] + self.main.config[ "profile_sizes" ][ 2 ]
+
+        self.refresh = kwargs[ "refresh" ]
+        self.page = 1
+
+        if self.main.actor_search.isdigit():
+            self._add_actor( self.main.actor_search )
+        else:
+            self._search_person()
+
+        # if not refresh and just one item, use this
+        if not self.refresh and len( self.listing ) == 1:
+            self._add_actor( self.listing[ 0 ][ "id" ] )
+
+    def _search_person( self ):
+        #first search person
+        xbmc.executebuiltin( 'ActivateWindow(busydialog)' )
+        js_search = tmdbAPI.search_person( self.main.actor_search, self.page )
+        xbmc.executebuiltin( 'Dialog.Close(busydialog,true)' )
+        self.listing += js_search[ "results" ]
+        self.add_plus = js_search[ "results" ] and js_search[ "page" ] < js_search[ "total_pages" ]
+
+    def _add_actor( self, ID ):
+        # active busy
+        xbmc.executebuiltin( 'ActivateWindow(busydialog)' )
+        try:
+            json_object = tmdbAPI.full_person_info( ID, ADDON.getSetting( "language" ).lower() )
+            self.actor = {}
+            if json_object:
+                if self.main.actor_name:
+                    json_object[ "name" ] = unicode( self.main.actor_name, 'utf-8', errors='ignore' )
+                update_id = -1
+                if str( self.main.actor.get( "id" ) ).isdigit():
+                    update_id = int( self.main.actor[ "id" ] )
+                #print repr( str( update_id ) )
+                self.actor = actorsdb.save_actor( json_object, self.profile_path, update_id, TBN )
+                globals().update( { "RELOAD_ACTORS_BACKEND": True } )
+        except:
+            print_exc()
+        xbmc.executebuiltin( 'Dialog.Close(busydialog,true)' )
+
+    def onInit( self ):
+        if bool( self.actor ):
+            self._close_dialog( 0 )
+        try: self.getControl( 1 ).setLabel( Language( 32034 ) % unicode( self.main.actor_search, 'utf-8', errors='ignore' ) )
+        except: self.getControl( 1 ).setLabel( 'Person results for "%s"' % self.main.actor_search )
+        try:
+            self.control_list = self.getControl( 6 )
+            self.getControl( 3 ).setVisible( False )
+            self.getControl( 5 ).controlUp( self.control_list )
+        except:
+            self.control_list = self.getControl( 3 )
+            print_exc()
+        try: self.getControl( 5 ).setLabel( LangXBMC( 413 ) )
+        except: print_exc()
+
+        if self.listing:
+            try: self.setContainer()
+            except: print_exc()
+        elif not bool( self.actor ):
+            try: self.onClick( 5 )
+            except: print_exc()
+
+    def setContainer( self, selectItem=0 ):
+        listitems = []
+        showlabeladult = int( ADDON.getSetting( "showlabeladult" ) )
+        for actor in self.listing:
+            label2 = ""
+            if showlabeladult:
+                adult = LangXBMC( ( 106, 107 )[ str( actor.get( "adult" ) ).lower() == "true" ] )
+                if showlabeladult == 2 and adult == LangXBMC( 106 ): adult = ""
+                if adult: label2 = ": ".join( [ Language( 32015 ), adult ] )
+
+            listitem = xbmcgui.ListItem( actor[ "name" ], label2, "DefaultActor.png" )
+            listitem.setProperty( "Addon.Summary", label2 )
+            if actor[ "profile_path" ]:
+                listitem.setIconImage( self.profile_path + actor[ "profile_path" ] )
+            listitems.append( listitem )
+
+        if self.add_plus:
+            self.add_plus = False
+            listitem = xbmcgui.ListItem( LangXBMC( 21452 ), "", "DefaultFolder.png" )
+            listitem.setProperty( "nextpage", "true" )
+            listitems.append( listitem )
+
+        self.control_list.reset()
+        self.control_list.addItems( listitems )
+        self.control_list.selectItem( selectItem )
+        self.setFocus( self.control_list )
+        if not listitems:
+            self.setFocusId( 5 )
+
+    def onClick( self, controlID ):
+        try:
+            if controlID in [ 3, 6 ]:
+                selected = self.control_list.getSelectedPosition()
+                item = self.control_list.getSelectedItem()
+                if item.getProperty( "nextpage" ) == "true":
+                    self.page += 1
+                    self._search_person()
+                    self.setContainer( selected )
+
+                else:
+                    if selected > -1:
+                        # get id for fetching info
+                        try: ID = self.listing[ selected ][ "id" ]
+                        except IndexError: pass
+                        else:
+                            self._add_actor( ID )
+                            if bool( self.actor ):
+                                self._close_dialog()
+
+            elif controlID == 5:
+                # show keyboard
+                new_name = utils.keyboard( self.main.actor_search )
+                if new_name and new_name != self.main.actor_search:
+                    self.main.actor_search = new_name
+                    self.page = 1
+                    self.listing = []
+                    if self.main.actor_search.isdigit():
+                        self._add_actor( self.main.actor_search )
+                        if bool( self.actor ):
+                            self._close_dialog( 0 )
+                            return
+                    self._search_person()
+                    self.setContainer()
+        except:
+            print_exc()
+
+    def onFocus( self, controlID ):
+        pass
+
+    def onAction( self, action ):
+        try:
+            if self.getFocusId() == 0:
+                if self.listing:
+                    self.setFocus( self.control_list )
+                else:
+                    self.setFocusId( 5 )
+        except:
+            self.setFocus( self.control_list )
+        if action in utils.CLOSE_SUB_DIALOG:
+            self.actor = {}
+            self._close_dialog()
+
+    def _close_dialog( self, t=500 ):
+        self.close()
+        if t: xbmc.sleep( t )
+
+
+
+def select( main, refresh=False ):
+    xbmc.executebuiltin( "SetProperty(actorsselect,1)" )
+    w = DialogSelect( "DialogSelect.xml", utils.ADDON_DIR, main=main, refresh=refresh )
+    if not w.actor:
+        w.doModal()
+    actor = w.actor
+    del w
+    xbmc.executebuiltin( "ClearProperty(actorsselect)" )
+    return actor
 
 
 def browser( **kwargs ):
