@@ -63,6 +63,7 @@ Available Property for hide DialogVideoInfo.xml / DialogAlbumInfo.xml:
 Window.Property(script.metadata.actors.isactive): return 1 or empty
 
 For example:
+<onload>ClearProperty(script.metadata.actors.isactive)</onload>
 
 <animation effect="slide" start="1100,0" end="0,0" time="400" condition="!StringCompare(Window.Property(script.metadata.actors.isactive),1)">Conditional</animation>
 <animation effect="slide" start="0,0" end="1100,0" time="400" condition="StringCompare(Window.Property(script.metadata.actors.isactive),1)">Conditional</animation>
