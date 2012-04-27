@@ -1,5 +1,7 @@
 ﻿v0.9.0
- Note: skinners please see README.txt for changes.
+ Note: Skinners please see README.txt for changes.
+       Diff: http://code.google.com/p/passion-xbmc/source/diff?spec=svn1099&r=1099&format=side&path=/trunk/addons/eden/script.metadata.actors/README.txt
+       Diff: http://code.google.com/p/passion-xbmc/source/diff?spec=svn1093&r=1093&format=side&path=/trunk/addons/eden/script.metadata.actors/README.txt
 
  - added/changed: practically all recommendations by users on forum xbmc.org and passion-xbmc.org. since the beginning of March 2012 sorry for delay.
  - added: Filmography information and new xml for Filmography information (script-Actors-DialogVideoInfo.xml)
