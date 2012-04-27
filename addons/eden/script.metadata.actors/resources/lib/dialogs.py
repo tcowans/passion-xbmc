@@ -399,7 +399,7 @@ class DialogSelect( xbmcgui.WindowXMLDialog ):
     def _search_person( self ):
         #first search person
         xbmc.executebuiltin( 'ActivateWindow(busydialog)' )
-        js_search = tmdbAPI.search_person( self.main.actor_search, self.page )
+        js_search = tmdbAPI.search_person( self.main.actor_search, self.page, ADDON.getSetting( "include_adult" ).lower() )
         xbmc.executebuiltin( 'Dialog.Close(busydialog,true)' )
         self.listing += js_search[ "results" ]
         self.add_plus = js_search[ "results" ] and js_search[ "page" ] < js_search[ "total_pages" ]

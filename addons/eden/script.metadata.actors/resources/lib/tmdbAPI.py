@@ -67,14 +67,14 @@ def _get_json_new( url, params={} ):
     return parsed_json
 
 
-def search_person( person="", page=1 ):
+def search_person( person="", page=1, include_adult="false" ):
     """ This is a good starting point to start finding peoples on TMDb.
         The idea is to be a quick and light method so you can iterate through peoples quickly.
         This method is purposefully lighter than the 2.1 search. It searches. That’s all.
     """
     if not person: return {}
     url = "http://api.themoviedb.org/3/search/person"
-    js  = _get_json_new( url, { "query": person, "page": str( page ) } )
+    js  = _get_json_new( url, { "query": person, "page": str( page ), "include_adult": include_adult } )
     if DEBUG:
         #print js
         print json.dumps( js, sort_keys=True, indent=2 )
