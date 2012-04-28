@@ -30,6 +30,7 @@ CONTAINER_REFRESH     = False
 RELOAD_ACTORS_BACKEND = False
 BIRTH_MONTHDAY        = datetime.today().strftime( "%m-%d" )
 
+
 class Stack( Queue.Queue ):
     "Thread-safe stack"
     # method aliases
@@ -238,7 +239,6 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
         xbmc.executebuiltin( "ClearProperty(actorsselect)" )
 
     def setContainer150( self ):
-        # very bad function, require to rewrite this.
         TotalMovies = 0
         try:
             if self.button_filmo_bio:
