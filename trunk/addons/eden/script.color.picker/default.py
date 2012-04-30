@@ -18,12 +18,6 @@ from resources.lib.pil_utils import *
 
 
 if not hasattr( xbmcgui, "getMousePosition" ):
-    #get Skin Resolution
-    #import re
-    #skin_xml = open( xbmc.translatePath( "special://skin/addon.xml" ) ).read()
-    #width  = "".join( re.findall( '<res.*?width="(\d+)".*?/>', skin_xml ) ) or "1280"
-    #height = "".join( re.findall( '<res.*?height="(\d+)".*?/>', skin_xml ) ) or "720"
-    #skinWidth, skinHeight = int( width ), int( height )
     skinWidth, skinHeight = 1280, 720
     def _getMousePosition( win ):
         #action.getAmount1-2 VS xbmcgui.getMousePosition
@@ -76,9 +70,14 @@ def get_browse_dialog( default="", heading="", dlg_type=2, shares="pictures", ma
 class ColorPicker( xbmcgui.WindowXMLDialog ):
     def __init__( self, *args, **kwargs ):
         self.color_picked = kwargs.get( "colorPicked" )
+        params = kwargs[ "params" ]
+        self.builtin = params[ "builtin" ]
+        # execute built-in in real time
+        self.executeBuiltIn = params.get( "setstringinrealtime" ) == "true" and self.builtin.lower().startswith( "skin." )
+        
 
-        self.filename = xbmc.translatePath( ADDON.getSetting( "palette" ) )#.replace( "$CWD", ADDON_DIR ) )
-        if not self.filename or not os.path.exists( self.filename ):
+        self.filename = xbmc.translatePath( ADDON.getSetting( "palette" ) )
+        if not self.filename or not xbmcvfs.exists( self.filename ):
             self.filename = os.path.join( PALETTES_PATH, "color-wheel.png" )
             ADDON.setSetting( "palette", self.filename )
 
@@ -276,6 +275,10 @@ class ColorPicker( xbmcgui.WindowXMLDialog ):
                 currentpickercolor = argb_to_hex( ( alpha, red, green, blue ) )
                 #print 'Color: %s' % argb_to_hex( color )
 
+                if self.executeBuiltIn:
+                    #print self.builtin % currentpickercolor
+                    xbmc.executebuiltin( self.builtin % currentpickercolor )
+
                 self.setProperty( "CurrentPickerColor", currentpickercolor )
                 if set_input_text:
                     self.getControl( 141 ).setText( currentpickercolor )
@@ -345,34 +348,30 @@ class ColorPicker( xbmcgui.WindowXMLDialog ):
             self._close_dialog()
 
     def _close_dialog( self ):
-        self.clearProperty( "AnimationWaitingDialogOnClose" )
-        time.sleep( .3 ) #make sure is same as your time in animation time="300"
         self.close()
+        xbmc.sleep( 500 )
 
 
 class ScreenColor( xbmcgui.WindowXMLDialog ):
     def __init__( self, *args, **kwargs ):
         self.image = None
         self.colorPicked = None
-        #get screenshot id
+
         dpath = ( xbmc.translatePath( "special://screenshots" ) or xbmc.translatePath( "special://temp" ) )
-        screenshots = glob( os.path.join( dpath, "screenshot*.*" ) )
-        screenshot = "screenshot%03d.png" % len( screenshots )
-        # check for missing id
-        for count, screen in enumerate( sorted( screenshots ) ):
-            id = os.path.basename( screen ).replace( "screenshot", "" ).split( "." )[ 0 ]
-            if count < int( id ):
-                screenshot = "screenshot%03d.png" % count
-                break
-        self.screenshot = os.path.join( dpath, screenshot )
+        screenshots = set( glob( os.path.join( dpath, "screenshot*.*" ) ) )
+
         xbmc.executebuiltin( "TakeScreenshot" )
-        xbmc.sleep( 500 )
+        xbmc.sleep( 800 )
         while xbmc.getCondVisibility( "Window.IsVisible(FileBrowser)" ):
-            time.sleep( .5 )
+            time.sleep( .25 )
+
+        dpath = ( xbmc.translatePath( "special://screenshots" ) or xbmc.translatePath( "special://temp" ) )
+        self.screenshot = set( glob( os.path.join( dpath, "screenshot*.*" ) ) ).difference( screenshots ).pop()
+        #print self.screenshot
 
     def onInit( self ):
         try:
-            if not os.path.exists( self.screenshot ):
+            if not xbmcvfs.exists( self.screenshot ):
                 self._close_dialog()
             else:
                 self.setProperty( "ScreenColor", self.screenshot )
@@ -438,7 +437,7 @@ class ScreenColor( xbmcgui.WindowXMLDialog ):
         self.close()
         try: xbmcvfs.delete( self.screenshot )
         except: print_exc()
-
+        xbmc.sleep( 500 )
 
 
 class Transparency( xbmcgui.WindowXMLDialog ):
@@ -446,37 +445,26 @@ class Transparency( xbmcgui.WindowXMLDialog ):
         self.transColor = None
 
         #parse params
-        self.builtin, default_color = ( kwargs[ "params" ][ 0 ].strip( ")" ).split( "," ) + [ "" ] )[ :2 ]
-        self.builtin += ",%s)"
-        #
-        if default_color.lower().startswith( "$var[" ):
-            #reset color xbmc.getSkinVariable is not ready in xbmc require this patch : http://trac.xbmc.org/ticket/12031
-            default_color = "ffffffff"
-        elif default_color.lower().startswith( "$" ):
-            default_color = xbmc.getInfoLabel( default_color.strip( "]" ).split( "[" )[ -1 ] )
-
+        params = kwargs[ "params" ]
+        self.builtin = params[ "builtin" ]
+        # execute built-in in real time
+        self.executeBuiltIn = params.get( "setstringinrealtime" ) == "true" and self.builtin.lower().startswith( "skin." )
+        
         # get percent from hex color
-        p1, p2, p3, p4 = hex_to_argb_percent( default_color or "ffffffff" )
+        p1, p2, p3, p4 = hex_to_argb_percent( params[ "default_color" ] or "ffffffff" )
         self.alpha_percent = float( p1.strip( "%" ) )
         self.red_percent   = float( p2.strip( "%" ) )
         self.green_percent = float( p3.strip( "%" ) )
         self.blue_percent  = float( p4.strip( "%" ) )
 
         # get max and min if is specified
-        params = kwargs[ "params" ][ 1 ].lower().replace( "&amp;", "&" ).replace( "transparency", "" ).strip( "&" )
-        params = dict( [ arg.split( "=" ) for arg in params.split( "&" ) if arg ] )
-        max = params.get( "max" ) or ""
-        if not max.isdigit(): max = "100"
-        if "100" < max: max = "100"
-        self.min = params.get( "min" ) or ""
-        if not self.min.isdigit(): self.min = "0"
-        if "0" > self.min: self.min = "0"
-        #
+        max = int( params.get( "max" ) or "100" )
+        self.min = int( params.get( "min" ) or "0" )
+        if max > 100: max = 100
+        if self.min < 0: self.min = 0
         self.min = float( self.min )
         diff = float( max ) - self.min
         self.step = diff / 100.0
-        # execute built-in in real time
-        self.executeBuiltIn = params.get( "setstringinrealtime" ) == "true" and self.builtin.lower().startswith( "skin." )
 
     def onInit( self ):
         self.getControl( 11 ).setPercent( self.alpha_percent )
@@ -506,6 +494,7 @@ class Transparency( xbmcgui.WindowXMLDialog ):
 
     def _close_dialog( self ):
         self.close()
+        xbmc.sleep( 500 )
 
 
 def pickColorOnScreen():
@@ -516,76 +505,87 @@ def pickColorOnScreen():
     return colorPicked
 
 
-def transparency( args ):
-    t = Transparency( "script-ColorPicker-transparency.xml", ADDON_DIR, params=args )
+def transparency( params ):
+    t = Transparency( "script-ColorPicker-transparency.xml", ADDON_DIR, params=params )
     t.doModal()
     transColor = t.transColor
     del t
     return transColor
 
 
+def parse_argv():
+    #parse params
+    default_color = ""
+    builtin = "".join( argv[ 1:2 ] )
+    options = "".join( argv[ 2:3 ] ).replace( "&amp;", "&" )
+
+    if builtin.lower().startswith( "skin." ) or builtin.lower().startswith( "addon(" ):
+        try:
+            builtin, default_color = ( builtin.strip( ")" ).split( ",", 1 ) + [ "" ] )[ :2 ]
+            builtin += ( ",%s)", ",'%s')" )[ builtin.lower().startswith( "addon(" ) ]
+            builtin = builtin.replace( "addon(", "Addon(" ).replace( "setsetting(", "setSetting(" )
+        except:
+            print_exc()
+        # print "$VAR[rating]: %r" % xbmc.getInfoLabel( "$VAR[rating]" ) # yes work on XBMC (12.0-ALPHA1 Git:20120420-f57f8ec)
+        if default_color.lower().startswith( "$var[" ):
+            #default_color = "ffffffff" #reset color xbmc.getSkinVariable is not ready in xbmc require this patch : http://trac.xbmc.org/ticket/12031
+            default_color = xbmc.getInfoLabel( default_color.replace( "$var[", "$VAR[" ) )
+        elif default_color.lower().startswith( "$" ):
+            default_color = xbmc.getInfoLabel( default_color.strip( "]" ).split( "[" )[ -1 ] )
+    else:
+        builtin = ""
+        options = "&".join( argv[ 1: ] )
+
+    # get max and min if is specified
+    options = options.lower().replace( "transparency", "transparency=true" )
+    params = dict( [ arg.split( "=" ) for arg in options.split( "&" ) if arg ] )
+    params.update( { "builtin": builtin, "default_color": default_color } )
+
+    print "[ColorPicker] Params: %r" % params
+    return params
+PARAMS = parse_argv()
+
+
 def Main():
     colorPicked = None
-    args = argv[ 1: ]
-    #args += [ "start=pickcoloronscreen" ]
-    #args += [ "Skin.SetString(MyPrettyColor,FFEB9E17)", "transparency&min=20&max=100&setstringinrealtime=true" ]
 
-    if "transparency" in ",".join( args ).lower():
-        colorPicked = transparency( args )
+    if PARAMS.get( "transparency" ) == "true":
+        colorPicked = transparency( PARAMS )
 
     else:
-        if "start=pickcoloronscreen" in ",".join( args ).lower():
-            xbmc.sleep( 100 )
+        if PARAMS.get( "start" ) == "pickcoloronscreen":
             colorPicked = pickColorOnScreen()
-        else:
-            # get default color in builtin
-            try:
-                builtin, default_color = ( args[ 0 ].strip( ")" ).split( "," ) + [ "" ] )[ :2 ]
-                if default_color.lower().startswith( "$" ):
-                    default_color = xbmc.getInfoLabel( default_color.strip( "]" ).split( "[" )[ -1 ] )
 
-                try: colorPicked = name_to_argb( default_color )
-                except:
-                    # ValueError for check name last chance check hex
-                    try: colorPicked = hex_to_argb( default_color )
-                    except:
-                        colorPicked = None
+        else:
+            try:
+                if PARAMS[ "default_color" ]:
+                    try: colorPicked = name_to_argb( PARAMS[ "default_color" ] )
+                    except: # ValueError for check name last chance check hex
+                        try: colorPicked = hex_to_argb( PARAMS[ "default_color" ] )
+                        except:
+                            colorPicked = None
             except:
                 print_exc()
 
-        w = ColorPicker( "script-ColorPicker-main.xml", ADDON_DIR, colorPicked=colorPicked )
+        w = ColorPicker( "script-ColorPicker-main.xml", ADDON_DIR, colorPicked=colorPicked, params=PARAMS )
         w.doModal()
         colorPicked = w.color_picked
         del w
 
-    if args:
-        #get builtin
-        builtin = args[ 0 ]
-        if builtin.lower() != "start=pickcoloronscreen": # is test from addonsettings
-            # get default color in builtin
-            builtin, default_color = ( builtin.strip( ")" ).split( "," ) + [ "" ] )[ :2 ]
-            if default_color.lower().startswith( "$" ):
-                default_color = xbmc.getInfoLabel( default_color.strip( "]" ).split( "[" )[ -1 ] )
+    if PARAMS[ "builtin" ]:
+        #set builtin with color
+        default_color = colorPicked or PARAMS[ "default_color" ] or "ffffffff"
+        builtin = PARAMS[ "builtin" ] % default_color
 
-            # add color picked in builtin
-            if colorPicked:
-                default_color = colorPicked
+        #executebuiltin
+        if builtin.count( "," ) > 0:
+            if builtin.lower().startswith( "skin." ):
+                xbmc.executebuiltin( builtin )
+            elif builtin.lower().startswith( "addon(" ):
+                exec builtin
+            return
 
-            if default_color:
-                if builtin.lower().startswith( "addon(" ):
-                    default_color = repr( default_color )
-                builtin += ",%s)" % default_color
-
-            #executebuiltin
-            if builtin.count( "," ) > 0:
-                if builtin.lower().startswith( "skin." ):
-                    xbmc.executebuiltin( builtin )
-                elif builtin.lower().startswith( "addon(" ):
-                    exec builtin.replace( "addon(", "Addon(" ).replace( "setsetting(", "setSetting(" )
-                else:
-                    print "hmmm! what is builtin(%r) and args(%r)" % ( builtin, args )
-            else:
-                print "hmmm! what is builtin(%r) and args(%r)" % ( builtin, args )
+        print "hmmm! what is builtin(%r)" % builtin
 
 
 
