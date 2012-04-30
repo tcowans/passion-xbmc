@@ -1,7 +1,5 @@
 <window id="3000">
 	<defaultcontrol always="true">9000</defaultcontrol>
-	<onload>SetProperty(AnimationWaitingDialogOnClose,true)</onload>
-	<onunload>ClearProperty(AnimationWaitingDialogOnClose)</onunload>
 	<controls>
 		<control type="group">
 			<description>Properties</description>

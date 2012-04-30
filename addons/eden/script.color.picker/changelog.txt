@@ -1,3 +1,8 @@
+1.0.3
+ - added: Option SetStringInRealTime=true in all view, but require a confirmation OK in main window.
+ - added: README.txt
+ - and cleanup...
+
 1.0.2
  - changed: start with default color is called
 

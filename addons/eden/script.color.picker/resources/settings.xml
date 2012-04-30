@@ -14,7 +14,7 @@
     <setting type="lsep" label="RunScript(script.color.picker,Built-In[,extra])" />
     <setting type="lsep" label="Skin Built-In" />
     <setting type="lsep" label="[COLOR=88FFFFFF]Skin.SetString(MyPrettyColor[,default color])[/COLOR]" />
-    <setting type="action" label="Test: Change heading color for add-on XBMC Color Picker" action="RunScript($ID,Skin.SetString(MyPrettyColor,FFEB9E17))" option="close" default="" />
+    <setting type="action" label="Test: Change heading color for add-on XBMC Color Picker" action="RunScript($ID,Skin.SetString(MyPrettyColor,FFEB9E17),SetStringInRealTime=true)" option="close" default="" />
     <setting type="lsep" label="Add-on Built-In" />
     <setting type="lsep" label="[COLOR=88FFFFFF]Addon('MyAddonId').setSetting('MyPrettyColor'[,default color])[/COLOR]" />
     <setting type="action" label="Test: Change heading color for add-on XBMC Color Picker" action="RunScript($ID,Addon('script.color.picker').setSetting('MyPrettyColor'))" option="close" default="" />
