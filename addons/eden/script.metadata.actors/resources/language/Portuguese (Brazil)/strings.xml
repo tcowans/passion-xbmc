@@ -32,7 +32,8 @@
   <string id="32050">Informação Online</string> 
   <string id="32051">Trailers</string> 
   <string id="32052">Nenhum trailer encontrado</string>  
-
+  
+  <string id="32099">Incluir Estrelas Pornográficas</string>
   <string id="32100">Título e Poster do Filme</string>
   <string id="32101">Mostrar Título Original</string>
   <string id="32102">Qualidade dos fanarts lançados</string>
@@ -63,5 +64,6 @@
   <string id="32136">Você deseja sobrepor seus arquivos existentes?</string>
 
   <string id="32311">Imagem de Fanart[CR][CR]Indisponível[CR][CR] Clique no botão para setar</string>
+  <string id="32330">Clique no botão para reproduzir[CR][CR]trailer do filme</string>
  
 </strings>
