@@ -209,7 +209,8 @@ def trim_time( str_time ):
 
 
 from locale import getdefaultlocale
-LOC_ISO = getdefaultlocale()[ 0 ].split( "_" )[ -1 ]
+try: LOC_ISO = getdefaultlocale()[ 0 ].split( "_" )[ -1 ]
+except: LOC_ISO = "US"
 def save_movie_info( movie ):
     #save info to xbmc json format
     x_json = {
