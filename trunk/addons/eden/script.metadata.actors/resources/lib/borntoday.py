@@ -16,14 +16,14 @@ try:
     Addon = Addon( "script.metadata.actors" )
     HOME_WINDOW = Window( 10000 )
     JSON_FILE   = xbmc.translatePath( Addon.getAddonInfo( "profile" ).rstrip( "/" ) + "/mostpopularpeopleborn.json" )
-    import utils
+    import metautils
     from actorsdb import get_actors_for_backend
-    utils.xbmcvfs_makedirs( os.path.dirname( JSON_FILE ) )
+    metautils.xbmcvfs_makedirs( os.path.dirname( JSON_FILE ) )
     ACTORSDB = get_actors_for_backend()
-    ACTORS   = utils.getXBMCActors( busy=False )
-    TBN      = utils.Thumbnails()
-    STR_ONLINE_INFO = utils.Language( 32050 )
-    clean_bio = utils.clean_bio
+    ACTORS   = metautils.getXBMCActors( busy=False )
+    TBN      = metautils.Thumbnails()
+    STR_ONLINE_INFO = metautils.Language( 32050 )
+    clean_bio = metautils.clean_bio
 except:
     # NOT RUNNING ON XBMC, ON DEV
     def clean_bio( bio ): return bio
@@ -168,14 +168,14 @@ def Main():
         urlinfo = [ people[ 0 ] ]
         if ACTORS:
             #get actor paths and list movies
-            paths = utils.getActorPaths( people[ 0 ], ACTORS )
+            paths = metautils.getActorPaths( people[ 0 ], ACTORS )
             if paths:
                 urlinfo += paths
                 # for fmronan
                 count = 0
                 for txt, dir in paths:
                     # enum medias
-                    for media in ( utils.get_directory( dir, '"properties":["fanart", "thumbnail"],' ).get( "files" ) or [] ):
+                    for media in ( metautils.get_directory( dir, '"properties":["fanart", "thumbnail"],' ).get( "files" ) or [] ):
                         count += 1
                         m_prop = b_prop + "media.%i." % count
                         SetProperty( m_prop + "title",  media[ "label" ] )

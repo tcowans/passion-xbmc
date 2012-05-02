@@ -142,7 +142,7 @@
 						<height>40</height>
 						<aspectratio>keep</aspectratio>
 						<texture>bdaycake.png</texture>
-						<visible>!IsEmpty(ListItem.Property(HappyBirthday))</visible>
+						<visible>!IsEmpty(ListItem.Property(HappyBirthday)) + !Control.IsVisible(150)</visible>
 					</control>
 					<control type="list" id="49">
 						<posx>290</posx>

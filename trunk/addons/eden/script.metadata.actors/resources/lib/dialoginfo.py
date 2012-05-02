@@ -14,18 +14,19 @@ import xbmcvfs
 from xbmcaddon import Addon
 
 # Modules Custom
-import utils
-import actorsdb
+import common
+metautils = common.metautils
+actorsdb  = common.actorsdb
 import tmdbAPI
 import dialogs
 
 
 # Constants
-ADDON    = utils.ADDON
-Language = utils.Language  # ADDON strings
-LangXBMC = utils.LangXBMC  # XBMC strings
-ACTORS   = utils.getXBMCActors()
-TBN      = utils.Thumbnails()
+ADDON    = metautils.ADDON
+Language = metautils.Language  # ADDON strings
+LangXBMC = metautils.LangXBMC  # XBMC strings
+ACTORS   = metautils.getXBMCActors()
+TBN      = metautils.Thumbnails()
 CONTAINER_REFRESH     = False
 RELOAD_ACTORS_BACKEND = False
 BIRTH_MONTHDAY        = datetime.today().strftime( "%m-%d" )
@@ -70,17 +71,17 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
         except:
             try: actor, role = self.actor_name.split( _as_ )
             except:
-                _as_ = utils.re.search( "(.*?)%s(.*?)" % _as_, self.actor_name )
+                _as_ = metautils.re.search( "(.*?)%s(.*?)" % _as_, self.actor_name )
                 if _as_: actor, role = _as_.groups()
                 else: actor, role = "", ""
         #xbmcgui.Dialog().ok( LangXBMC( 20347 ), actor, role )
         self.actor_name = actor or self.actor_name
 
         # if not name, show keyboard
-        self.actor_search = self.actor_name or utils.select_actor_from_xbmc( ACTORS )
+        self.actor_search = self.actor_name or metautils.select_actor_from_xbmc( ACTORS )
         # Manque un actor_search = "manual"
         if self.actor_search == "manual":
-            self.actor_search = utils.keyboard()
+            self.actor_search = metautils.keyboard()
         self.actor_search = self.actor_search
 
         # if not again name, call error
@@ -147,15 +148,15 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
 
     def setContainer( self, refresh=False ):
         try:
-            self.videodb = utils.getActorPaths( self.actor[ "name" ], ACTORS )
+            self.videodb = metautils.getActorPaths( self.actor[ "name" ], ACTORS )
             self.getControl( 8 ).setEnabled( bool( self.videodb ) )
 
             # actor key: ( "idactor", "id", "name", "biography", "biooutline", "birthday", "deathday", "place_of_birth", "also_known_as", "homepage", "adult", "cachedthumb" )
             # actor.thumbs list: [ cachedUrl, strUrl, strThumb=json_string ]
             # actor.castandcrew list: [ strCast=json_string, strCrew=json_string ]
 
-            self.actor[ "castandcrew" ] = map( utils.load_db_json_string, self.actor[ "castandcrew" ] )
-            try: self.images = utils.load_db_json_string( self.actor[ "thumbs" ][ 2 ] )
+            self.actor[ "castandcrew" ] = map( metautils.load_db_json_string, self.actor[ "castandcrew" ] )
+            try: self.images = metautils.load_db_json_string( self.actor[ "thumbs" ][ 2 ] )
             except: self.images = []
             # Shuffle items in place
             if ADDON.getSetting( "randomize" ) == "true": shuffle( self.images )
@@ -192,38 +193,10 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
                 cachedthumb = "".join( TBN.get_thumb( self.actor[ "name" ] ) )
                 if xbmcvfs.exists( cachedthumb ): listitem.setIconImage( cachedthumb )
 
-            self.actor[ "biography" ] = utils.clean_bio( self.actor[ "biography" ] or "" )
-            listitem.setProperty( "Biography",    self.actor[ "biography" ] )
-            listitem.setProperty( "Biooutline",   self.actor[ "biooutline" ] or "" )
-            listitem.setProperty( "Homepage",     self.actor[ "homepage" ]   or "" )
-            listitem.setProperty( "PlaceOfBirth", self.actor[ "place_of_birth" ] or "" )
-            listitem.setProperty( "AlsoKnownAs",  self.actor[ "also_known_as" ]  or "" )
-
-            if int( ADDON.getSetting( "showlabeladult" ) ):
-                adult = LangXBMC( ( 106, 107 )[ str( self.actor[ "adult" ] ).lower() == "true" ] )
-                if int( ADDON.getSetting( "showlabeladult" ) ) == 2 and adult == LangXBMC( 106 ): adult = ""
-                listitem.setProperty( "Adult", adult )
-
-            format = ( "datelong", "dateshort" )[ int( ADDON.getSetting( "datelongshort" ) ) ]
-            birthday = utils.get_user_date_format( ( self.actor[ "birthday" ] or "" ), format )
-            deathday = utils.get_user_date_format( ( self.actor[ "deathday" ] or "" ), format )
-            format = ( "long", "short" )[ ADDON.getSetting( "fulldatelong" ) == "false" ]
-            listitem.setProperty( "Birthday",     utils.translate_date( birthday, format ) )
-            listitem.setProperty( "Deathday",     utils.translate_date( deathday, format ) )
-
-            actuel_age, dead_age, dead_since = utils.get_ages( self.actor[ "birthday" ], self.actor[ "deathday" ] )
-            listitem.setProperty( "Age",          actuel_age )
-            listitem.setProperty( "Deathage",     dead_age )
-            listitem.setProperty( "AgeLong",      "" )
-            listitem.setProperty( "DeathageLong", "" )
-            if actuel_age: listitem.setProperty( "AgeLong",      Language( 32020 ) % actuel_age )
-            if dead_since: listitem.setProperty( "DeathageLong", Language( 32021 ) % dead_since )
-            elif dead_age: listitem.setProperty( "DeathageLong", Language( 32020 ) % dead_age )
-
-            if self.actor[ "birthday" ] and BIRTH_MONTHDAY in str( self.actor[ "birthday" ] ):
-                listitem.setProperty( "HappyBirthday", "true" )
-
+            #
+            self.actor[ "biography" ] = metautils.clean_bio( self.actor[ "biography" ] or "" )
             listitem.setInfo( "video", { "title": self.actor[ "name" ], "plot": self.actor[ "biography" ] } )
+            listitem = common.setActorProperties( listitem, self.actor )
 
             self.listitem = listitem
             self.clearList()
@@ -246,7 +219,7 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
 
             pretty_movie = {}
             non_dated = {}
-            movies_library = utils.get_movies_library()
+            movies_library = metautils.get_movies_library()
             for movie in self.actor[ "castandcrew" ][ 0 ] + self.actor[ "castandcrew" ][ 1 ]:
                 # set our year
                 year = str( movie[ "release_date" ] or "0" )[ :4 ]
@@ -275,7 +248,7 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
                 li.setProperty( "year", year )
                 li.setInfo( "video", { "title": movie[ "title" ], "originaltitle": ( movie[ "original_title" ] or movie[ "title" ] ).strip(), "year": int( year ) } )
                 # set our local movie properties
-                LibraryHasMovie = utils.library_has_movie( movies_library, movie[ "title" ], movie[ "original_title" ], year )
+                LibraryHasMovie = metautils.library_has_movie( movies_library, movie[ "title" ], movie[ "original_title" ], year )
                 if LibraryHasMovie:
                     li.setProperty( "LibraryHasMovie", "1" )
                     li.setProperty( "movieid", str( LibraryHasMovie.get( "movieid" ) or "" ) )
@@ -404,7 +377,7 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
                             xbmc.Player().play( url, listitem )
                     else:
                         #no trailers found
-                        utils.notification( listitem.getLabel(), Language( 32052 ).encode( "utf-8" ) )
+                        metautils.notification( listitem.getLabel(), Language( 32052 ).encode( "utf-8" ) )
 
                 elif selected == 1:
                     self.movie_info()
@@ -441,7 +414,7 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
 
                     if selected > -1:
                         path_db = self.videodb[ selected ][ 1 ]
-                        if utils.LIBRARY_TYPE:
+                        if metautils.LIBRARY_TYPE:
                             command = "Container.Update(%s,replace)" % path_db
                         else:
                             window = ( "Videos", "MusicLibrary" ) [ "musicdb" in path_db ]
@@ -490,22 +463,22 @@ class ActorInfo( xbmcgui.WindowXMLDialog ):
                 PARENT_DIR.push( ( "MovieInfo", movieid ) )
                 self._close_dialog()
             else:
-                xbmcgui.Dialog().ok( utils.ADDON.getAddonInfo( "name" ), "Coming Soon!" )
+                xbmcgui.Dialog().ok( metautils.ADDON.getAddonInfo( "name" ), "Coming Soon!" )
         except:
             print_exc()
 
     def onAction( self, action ):
-        if action == utils.ACTION_CONTEXT_MENU and xbmc.getCondVisibility( "Control.HasFocus(150)" ):
+        if action == metautils.ACTION_CONTEXT_MENU and xbmc.getCondVisibility( "Control.HasFocus(150)" ):
             try: self.onClick( 150 )
             except: pass
 
-        elif action == utils.ACTION_SHOW_INFO and xbmc.getCondVisibility( "Control.HasFocus(150)" ):
+        elif action == metautils.ACTION_SHOW_INFO and xbmc.getCondVisibility( "Control.HasFocus(150)" ):
             self.movie_info()
 
-        elif action == utils.ACTION_NAV_BACK:
+        elif action == metautils.ACTION_NAV_BACK:
             self._close_dialog()
 
-        elif action in utils.CLOSE_DIALOG:
+        elif action in metautils.CLOSE_DIALOG:
             globals().update( { "PARENT_DIR": Stack( 0 ) } )
             self._close_dialog()
 
@@ -542,10 +515,10 @@ class MovieInfo( xbmcgui.WindowXMLDialog ):
                     xbmc.executebuiltin( 'Dialog.Close(busydialog,true)' )
                 self.online_info = "http://www.themoviedb.org/movie/%s?language=%s" % ( movieid, ADDON.getSetting( "language" ).lower() )
             else:
-                self.movie = utils.get_library_movie_details( self.movieid )
+                self.movie = metautils.get_library_movie_details( self.movieid )
                 self.online_info = ""
             #print self.movie
-            #s_json = utils.json.dumps( details, sort_keys=True, indent=2 )
+            #s_json = metautils.json.dumps( details, sort_keys=True, indent=2 )
         except:
             xbmc.executebuiltin( 'Dialog.Close(busydialog,true)' )
             print_exc()
@@ -619,49 +592,19 @@ class MovieInfo( xbmcgui.WindowXMLDialog ):
         try:
             #set cast and role
             listitems = []
-            showlabeladult = int( ADDON.getSetting( "showlabeladult" ) )
-            bdayformat = ( "datelong", "dateshort" )[ int( ADDON.getSetting( "datelongshort" ) ) ]
-            dateformat = ( "long", "short" )[ ADDON.getSetting( "fulldatelong" ) == "false" ]
             for cast in self.movie[ "cast" ]:
                 listitem = xbmcgui.ListItem( cast[ "name" ], cast[ "role" ], "DefaultActor.png" )
                 cachedthumb = ( cast.get( "thumbnail" ) or "" )
                 if cachedthumb: listitem.setIconImage( cachedthumb )
                 try:
                     actor = actorsdb.getActor( cur, ustrActor=cast[ "name" ] )
-                    bio   = utils.clean_bio( actor.get( "biography" ) or "" )
+                    bio   = metautils.clean_bio( actor.get( "biography" ) or "" )
                     listitem.setInfo( "video", { "title": actor.get( "name" ) or cast[ "name" ], "plot": bio } )
                     if actor:
+                        actor[ "biography" ] = bio
+                        listitem = common.setActorProperties( listitem, actor )
                         if not cachedthumb and actor.get( "thumbs" ):
                             if actor[ "thumbs" ][ 1 ]: listitem.setIconImage( self.profile_path + actor[ "thumbs" ][ 1 ] )
-
-                        birthday = actor.get( "birthday" ) or ""
-                        if birthday and BIRTH_MONTHDAY in str( birthday ):
-                            listitem.setProperty( "HappyBirthday", "true" )
-
-                        listitem.setProperty( "Biography",    bio )
-                        listitem.setProperty( "Biooutline",   actor[ "biooutline" ] or "" )
-                        listitem.setProperty( "Homepage",     actor[ "homepage" ]   or "" )
-                        listitem.setProperty( "PlaceOfBirth", actor[ "place_of_birth" ] or "" )
-                        listitem.setProperty( "AlsoKnownAs",  actor[ "also_known_as" ]  or "" )
-
-                        if showlabeladult:
-                            adult = LangXBMC( ( 106, 107 )[ str( actor[ "adult" ] ).lower() == "true" ] )
-                            if showlabeladult == 2 and adult == LangXBMC( 106 ): adult = ""
-                            listitem.setProperty( "Adult", adult )
-
-                        birthday = utils.get_user_date_format( birthday, bdayformat )
-                        deathday = utils.get_user_date_format( ( actor[ "deathday" ] or "" ), bdayformat )
-                        listitem.setProperty( "Birthday",     utils.translate_date( birthday, dateformat ) )
-                        listitem.setProperty( "Deathday",     utils.translate_date( deathday, dateformat ) )
-
-                        actuel_age, dead_age, dead_since = utils.get_ages( actor[ "birthday" ], actor[ "deathday" ] )
-                        listitem.setProperty( "Age",          actuel_age )
-                        listitem.setProperty( "Deathage",     dead_age )
-                        listitem.setProperty( "AgeLong",      "" )
-                        listitem.setProperty( "DeathageLong", "" )
-                        if actuel_age: listitem.setProperty( "AgeLong",      Language( 32020 ) % actuel_age )
-                        if dead_since: listitem.setProperty( "DeathageLong", Language( 32021 ) % dead_since )
-                        elif dead_age: listitem.setProperty( "DeathageLong", Language( 32020 ) % dead_age )
                 except:
                     print_exc()
                 listitems.append( listitem )
@@ -728,10 +671,10 @@ class MovieInfo( xbmcgui.WindowXMLDialog ):
             print_exc()
 
     def onAction( self, action ):
-        if action == utils.ACTION_NAV_BACK:
+        if action == metautils.ACTION_NAV_BACK:
             self._close_dialog()
 
-        elif action in utils.CLOSE_DIALOG:
+        elif action in metautils.CLOSE_DIALOG:
             globals().update( { "PARENT_DIR": Stack( 0 ) } )
             self._close_dialog()
 
@@ -747,11 +690,11 @@ def Main( actor_name="" ):
             pardir = PARENT_DIR.pop()
             w = None
             if pardir[ 0 ] == "ActorInfo":
-                try: w = ActorInfo( "script-Actors-DialogInfo.xml", utils.ADDON_DIR, actor_name=pardir[ 1 ] )
+                try: w = ActorInfo( "script-Actors-DialogInfo.xml", metautils.ADDON_DIR, actor_name=pardir[ 1 ] )
                 except: print_exc()
 
             elif pardir[ 0 ] == "MovieInfo":
-                try: w = MovieInfo( "script-Actors-DialogVideoInfo.xml", utils.ADDON_DIR, movieid=pardir[ 1 ] )
+                try: w = MovieInfo( "script-Actors-DialogVideoInfo.xml", metautils.ADDON_DIR, movieid=pardir[ 1 ] )
                 except: print_exc()
 
             else: print pardir
@@ -773,7 +716,7 @@ def Main( actor_name="" ):
         xbmcgui.Window( 10025 ).setProperty( "reload.actors.backend", "1" )
         # refresh home cache
         from os.path import join
-        xbmc.executebuiltin( "RunScript(%s)" % join( utils.ADDON_DIR, "resources", "lib", "service.py" ) )
+        xbmc.executebuiltin( "RunScript(%s)" % join( metautils.ADDON_DIR, "resources", "lib", "service.py" ) )
 
 
 if __name__=="__main__":

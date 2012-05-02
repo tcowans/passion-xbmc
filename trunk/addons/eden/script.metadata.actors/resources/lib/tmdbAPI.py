@@ -24,7 +24,7 @@ try:
     USER_AGENT = USER_AGENT.replace( "Dev", ADDON.getAddonInfo( "version" ), 1 )
     USER_AGENT += " (XBMC for %s %s; %s)" % ( sys.platform, xbmc.getInfoLabel( "System.BuildVersion" ), xbmc.getInfoLabel( "System.BuildDate" ) )
     ADDON_CACHE = xbmc.translatePath( "%smovies/" % ADDON.getAddonInfo( "profile" ) )
-    from utils import xbmcvfs_makedirs
+    from metautils import xbmcvfs_makedirs
     xbmcvfs_makedirs( ADDON_CACHE )
     USER_TIME_FORMAT  = xbmc.getRegion( "time" ).replace( ':%S', '', 1 )
     DATE_SHORT_FORMAT = xbmc.getRegion( "dateshort" )
