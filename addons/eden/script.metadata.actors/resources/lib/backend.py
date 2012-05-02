@@ -11,14 +11,14 @@ import xbmcgui
 import xbmcvfs
 
 # Modules Custom
-import utils
+import metautils
 from actorsdb import get_actors_for_backend
 
 
-STR_AGE_LONG       = utils.Language( 32020 )
-STR_DEAD_SINCE     = utils.Language( 32021 )
-STR_DEATH_AGE_LONG = utils.Language( 32020 )
-TBN                = utils.Thumbnails()
+STR_AGE_LONG       = metautils.Language( 32020 )
+STR_DEAD_SINCE     = metautils.Language( 32021 )
+STR_DEATH_AGE_LONG = metautils.Language( 32020 )
+TBN                = metautils.Thumbnails()
 BIRTH_MONTHDAY     = datetime.today().strftime( "%m-%d" )
 
 
@@ -40,7 +40,7 @@ class Backend( threading.Thread ):
         window = xbmcgui.Window( self.windowID )
         birthday = self.current_actor[ 5 ] or ""
         window.setProperty( "current.actor.name",         self.current_actor[ 2 ]  or "" )
-        window.setProperty( "current.actor.biography",    utils.clean_bio( self.current_actor[ 3 ] or "" ) )
+        window.setProperty( "current.actor.biography",    metautils.clean_bio( self.current_actor[ 3 ] or "" ) )
         window.setProperty( "current.actor.biooutline",   self.current_actor[ 4 ]  or "" )
         window.setProperty( "current.actor.birthday",     birthday )
         window.setProperty( "current.actor.deathday",     self.current_actor[ 6 ]  or "" )
@@ -50,7 +50,7 @@ class Backend( threading.Thread ):
         window.setProperty( "current.actor.adult",        self.current_actor[ 10 ] or "" )
         if birthday and BIRTH_MONTHDAY in birthday:
             window.setProperty( "current.actor.happybirthday", "true" )
-        actuel_age, dead_age, dead_since = utils.get_ages( birthday, self.current_actor[ 6 ] )
+        actuel_age, dead_age, dead_since = metautils.get_ages( birthday, self.current_actor[ 6 ] )
         window.setProperty( "current.actor.age",      actuel_age )
         window.setProperty( "current.actor.deathage", dead_age )
         if actuel_age: window.setProperty( "current.actor.agelong",      STR_AGE_LONG % actuel_age )
@@ -138,6 +138,9 @@ class Window( Backend ):
                     if temp_actor != self.current_actor:
                         self.current_actor = temp_actor
                         self.setProperties()
+                else:
+                    self.clearProperties()
+                    self.current_actor = None
                 time.sleep( .25 )
         except SystemExit:
             print "SystemExit!"

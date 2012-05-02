@@ -33,7 +33,7 @@ try:
                     import webbrowser
                     webbrowser.open( path_db )
                 else:
-                    from resources.lib.utils import LIBRARY_TYPE
+                    from resources.lib.metautils import LIBRARY_TYPE
                     if LIBRARY_TYPE:
                         command = "Container.Update(%s,replace)" % path_db
                     else:

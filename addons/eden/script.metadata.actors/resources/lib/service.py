@@ -5,7 +5,7 @@ t1 = time.time()
 import os
 import sys
 import xbmc
-from utils import getXBMCActors
+from metautils import getXBMCActors
 
 totals = 0
 for library_type in [ "artist", "actor", "" ]:

@@ -20,21 +20,21 @@ try: import PIL.Image as PIL_Image
 except: print_exc()
 
 # Modules Custom
-import utils
+import metautils
 import googleAPI
 import actorsdb
 import tmdbAPI
 
 
 # constants
-ADDON      = utils.ADDON
-Language   = utils.Language  # ADDON strings
-LangXBMC   = utils.LangXBMC  # XBMC strings
-TBN        = utils.Thumbnails()
+ADDON      = metautils.ADDON
+Language   = metautils.Language  # ADDON strings
+LangXBMC   = metautils.LangXBMC  # XBMC strings
+TBN        = metautils.Thumbnails()
 RELOAD_ACTORS_BACKEND = False
 
-TEMP_DIR = xbmc.translatePath( "%scache/" % utils.ADDON_DATA )
-utils.xbmcvfs_makedirs( TEMP_DIR )
+TEMP_DIR = xbmc.translatePath( "%scache/" % metautils.ADDON_DATA )
+metautils.xbmcvfs_makedirs( TEMP_DIR )
 
 DIALOG_PROGRESS = xbmcgui.DialogProgress()
 
@@ -201,7 +201,7 @@ class Browser( xbmcgui.WindowXMLDialog ):
                         print  "%s, FileCopy(%s,%s)" % ( repr( OK ), ipath, dpath )
                         if xbmcvfs.exists( dpath ):
                             if self.getControl( self.CONTROL_RADIOBUTTON ).isSelected():
-                                dpath = utils.flip_fanart( dpath, PIL_Image, ADDON.getSetting( "flipquality" ) )
+                                dpath = metautils.flip_fanart( dpath, PIL_Image, ADDON.getSetting( "flipquality" ) )
                             listitem.setThumbnailImage( dpath )
                             self.actor_update = True
 
@@ -247,7 +247,7 @@ class Browser( xbmcgui.WindowXMLDialog ):
                     overwrite = xbmcgui.Dialog().yesno( Language( 32135 ), Language( 32136 ) )
                     # make cached actor thumb
                     cached_actor_thumb = "special://thumbnails/Actors/" + self.search_name + "/extra" + self.thumb_type
-                    utils.xbmcvfs_makedirs( cached_actor_thumb )
+                    metautils.xbmcvfs_makedirs( cached_actor_thumb )
                     dpath = xbmc.translatePath( cached_actor_thumb )
                     #print repr( dpath )
                 else:
@@ -298,7 +298,7 @@ class Browser( xbmcgui.WindowXMLDialog ):
                         break
                     #flip source
                     if dest and flipfanart:
-                        dest = utils.flip_fanart( dest, PIL_Image, ADDON.getSetting( "flipquality" ) )
+                        dest = metautils.flip_fanart( dest, PIL_Image, ADDON.getSetting( "flipquality" ) )
 
                     if is_cached_thumb and dest:
                         self.delete_files.add( dest )
@@ -319,7 +319,7 @@ class Browser( xbmcgui.WindowXMLDialog ):
         self.setFocusId( self.CONTROL_BUTTON_CANCEL )
 
     def onAction( self, action ):
-        if action in utils.CLOSE_SUB_DIALOG:
+        if action in metautils.CLOSE_SUB_DIALOG:
             self._close_dialog()
 
     def _close_dialog( self ):
@@ -367,7 +367,7 @@ class DialogContextMenu( xbmcgui.WindowXMLDialog ):
         self._close_dialog()
 
     def onAction( self, action ):
-        if action in utils.CLOSE_SUB_DIALOG:
+        if action in metautils.CLOSE_SUB_DIALOG:
             self.selected = -1
             self._close_dialog()
 
@@ -496,7 +496,7 @@ class DialogSelect( xbmcgui.WindowXMLDialog ):
 
             elif controlID == 5:
                 # show keyboard
-                new_name = utils.keyboard( self.main.actor_search )
+                new_name = metautils.keyboard( self.main.actor_search )
                 if new_name and new_name != self.main.actor_search:
                     self.main.actor_search = new_name
                     self.page = 1
@@ -523,7 +523,7 @@ class DialogSelect( xbmcgui.WindowXMLDialog ):
                     self.setFocusId( 5 )
         except:
             self.setFocus( self.control_list )
-        if action in utils.CLOSE_SUB_DIALOG:
+        if action in metautils.CLOSE_SUB_DIALOG:
             self.actor = {}
             self._close_dialog()
 
@@ -535,7 +535,7 @@ class DialogSelect( xbmcgui.WindowXMLDialog ):
 
 def select( main, refresh=False ):
     xbmc.executebuiltin( "SetProperty(actorsselect,1)" )
-    w = DialogSelect( "DialogSelect.xml", utils.ADDON_DIR, main=main, refresh=refresh )
+    w = DialogSelect( "DialogSelect.xml", metautils.ADDON_DIR, main=main, refresh=refresh )
     if not w.actor:
         w.doModal()
     actor = w.actor
@@ -545,7 +545,7 @@ def select( main, refresh=False ):
 
 
 def browser( **kwargs ):
-    wb = Browser( "script-Actors-Browser.xml", utils.ADDON_DIR, **kwargs )
+    wb = Browser( "script-Actors-Browser.xml", metautils.ADDON_DIR, **kwargs )
     wb.doModal()
     refresh = wb.actor_update
     del wb
@@ -553,7 +553,7 @@ def browser( **kwargs ):
 
 
 def contextmenu( buttons ):
-    cm = DialogContextMenu( "script-Actors-ContextMenu.xml", utils.ADDON_DIR, buttons=buttons )
+    cm = DialogContextMenu( "script-Actors-ContextMenu.xml", metautils.ADDON_DIR, buttons=buttons )
     selected = cm.selected
     del cm
     return selected

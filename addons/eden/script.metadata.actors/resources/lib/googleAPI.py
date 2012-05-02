@@ -21,7 +21,7 @@ try:
     from xbmcaddon import Addon
     ADDON       = Addon( "script.metadata.actors" )
     ADDON_CACHE = xbmc.translatePath( "%scache/" % ADDON.getAddonInfo( "profile" ) )
-    from utils import xbmcvfs_makedirs
+    from metautils import xbmcvfs_makedirs
     xbmcvfs_makedirs( ADDON_CACHE )
 except:
     ADDON_CACHE = "ADDON_CACHE"

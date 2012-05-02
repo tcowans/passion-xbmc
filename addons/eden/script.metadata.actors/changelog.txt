@@ -1,4 +1,9 @@
-﻿v0.9.1
+﻿v0.9.2
+ - renamed: utils to metautils for prevent conflict.
+ - added: common function for reducing code.
+ - fixed: bdaycake.png in default skin ( script-Actors-DialogInfo.xml )
+
+v0.9.1
  - fixed: possible error to locale.getdefaultlocale() under XBMC (11.0 Git:Unknown), Platform: Linux (Ubuntu 11.10, 3.0.0-17-generic x86_64). Built on Mar 24 2012
  - updated: Portuguese (Brazil) language (thanks to Wanilton) 
 
