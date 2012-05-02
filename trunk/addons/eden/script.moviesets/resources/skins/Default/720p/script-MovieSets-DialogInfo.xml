@@ -73,7 +73,7 @@
 					<orientation>horizontal</orientation>
 					<animation effect="fade" time="300">Visible</animation>
 					<animation effect="fade" time="300">Hidden</animation>
-					<visible>!Control.IsVisible(50) + Container.Content(Movies)</visible>
+					<visible>![Control.IsVisible(50) | Control.IsVisible(150)]</visible>
 					<include>VideoCodecFlaggingConditions</include>
 					<include>AudioCodecFlaggingConditions</include>
 					<include>AudioChannelsFlaggingConditions</include>
@@ -468,12 +468,75 @@
 					<aspectratio>keep</aspectratio>
 					<visible>Control.IsVisible(150)</visible>
 				</control>
-				<control type="panel" id="150">
-					<description>Actor list for movieset</description>
-					<visible>!Control.IsVisible(50) + !IsEmpty(ListItem.Property(IsSet))</visible>
+				<control type="label">
+					<posx>380</posx>
+					<posy>480</posy>
+					<width>400</width>
+					<height>45</height>
+					<font>font12</font>
+					<textcolor>FF999999</textcolor>
+					<shadowcolor>FF000000</shadowcolor>
+					<scroll>true</scroll>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label>$INFO[Container(150).ListItem.Title][CR]$INFO[Container(150).ListItem.Property(birthday),[COLOR=FF0084ff]$ADDON[script.metadata.actors 32012]:[/COLOR] ]$INFO[Container(150).ListItem.Property(agelong), (,)]</label>
+					<visible>Control.IsVisible(150) + IsEmpty(Container(150).ListItem.Property(deathday))</visible>
+				</control>
+				<control type="label">
+					<posx>380</posx>
+					<posy>480</posy>
+					<width>400</width>
+					<height>45</height>
+					<font>font12</font>
+					<textcolor>FF999999</textcolor>
+					<shadowcolor>FF000000</shadowcolor>
+					<scroll>true</scroll>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label>$INFO[Container(150).ListItem.Title][CR]$INFO[Container(150).ListItem.Property(deathday),[COLOR=FF0084ff]$ADDON[script.metadata.actors 32013]:[/COLOR] ]$INFO[Container(150).ListItem.Property(deathagelong), (,)]</label>
+					<visible>Control.IsVisible(150)+ !IsEmpty(Container(150).ListItem.Property(deathday))</visible>
+				</control>
+				<control type="spincontrol" id="62">
+					<description>Actor Bio Next page button</description>
+					<!-- hitrect is added for simulate scrolling textbox with mouse. coordinate based on textbox -->
+					<hitrect x="380" y="520" w="420" h="120" />
 					<posx>380</posx>
 					<posy>520</posy>
-					<width>860</width>
+					<width>210</width>
+					<height>120</height>
+					<subtype>page</subtype>
+					<font>-</font>
+					<onleft>5000</onleft>
+					<onright>50</onright>
+					<ondown>5000</ondown>
+					<onup>50</onup>
+					<textcolor>-</textcolor>
+					<textureup>-</textureup>
+					<texturedown>-</texturedown>
+					<textureupfocus>-</textureupfocus>
+					<texturedownfocus>-</texturedownfocus>
+					<visible>Control.IsVisible(150)</visible>
+				</control>
+				<control type="textbox">
+					<description>Description Value for actors</description>
+					<posx>380</posx>
+					<posy>520</posy>
+					<width>420</width>
+					<height>120</height>
+					<font>font12</font>
+					<align>justify</align>
+					<textcolor>FFFFFFFF</textcolor>
+					<pagecontrol>62</pagecontrol>
+					<label>[COLOR=FF0084ff]$LOCALIZE[21887][/COLOR][CR]$INFO[Container(150).ListItem.Plot]</label>
+					<autoscroll time="3000" delay="4000" repeat="5000">!Control.HasFocus(61) + Skin.HasSetting(AutoScroll)</autoscroll>
+					<visible>Control.IsVisible(150)</visible>
+				</control>
+				<control type="list" id="150">
+					<description>Actor list for movieset</description>
+					<visible>!Control.IsVisible(50) + !IsEmpty(ListItem.Property(IsSet))</visible>
+					<posx>810</posx>
+					<posy>520</posy>
+					<width>430</width>
 					<height>120</height>
 					<onleft>50</onleft>
 					<onright>61</onright>
