@@ -1,3 +1,31 @@
+2.1.2
+ - added: actors info in script-MovieSets-DialogInfo.xml (require: script.metadata.actors for actor info)
+ - updated: default skin for actor info
+
+Labels of the actors list 150.
+Container(150).Listitem.Title -------------------> cast as role in movie
+Container(150).Listitem.Label -------------------> Name
+Container(150).ListItem.Icon --------------------> icon
+Container(150).ListItem.Plot --------------------> Biography
+Container(150).ListItem.Property(Biography) -----> Same as Plot
+Container(150).ListItem.Property(Biooutline) ----> (currently not used)
+Container(150).ListItem.Property(TotalMovies) ---> Total of Known Movies (acting / directing / writing)
+Container(150).ListItem.Property(Birthday) ------> Date of Birthday
+Container(150).ListItem.Property(HappyBirthday) -> return true or empty
+Container(150).ListItem.Property(Age) -----------> Age (30)
+Container(150).ListItem.Property(AgeLong) -------> Age long format (age 30)
+Container(150).ListItem.Property(Deathday) ------> Date of Deathday
+Container(150).ListItem.Property(Deathage) ------> Age of dead (30)
+Container(150).ListItem.Property(DeathageLong) --> Age of dead long format (age 30)
+Container(150).ListItem.Property(PlaceOfBirth) --> Place of birth
+Container(150).ListItem.Property(AlsoKnownAs) ---> Also Known Name
+Container(150).ListItem.Property(Homepage) ------> Link of homepage, you can use onclick for open web browser directly on homepage: RunScript(script.metadata.actors,homepage=$INFO[ListItem.Property(Homepage)])
+Container(150).ListItem.Property(Adult) ---------> Is Adult Actor (no / yes)
+Container(150).ListItem.Property(Fanart_Image) --> Fanart
+Container(150).ListItem.Property(extrafanart) ---> extrafanart (return empty if not exists)
+Container(150).ListItem.Property(extrathumb) ----> extrathumb (return empty if not exists)
+
+
 2.1.1
  - added: Korean language (thanks to piodio)
 

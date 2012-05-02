@@ -102,13 +102,18 @@ class Backend:#( Thread ):
         self.moviesets_stop = xbmc.abortRequested #False
         self.run()
 
+    def autoStop( self, hrs=2 ):
+        # get auto stop to prevent 24/7 running :D
+        # http://forum.xbmc.org/showthread.php?tid=129473&pid=1082117#pid1082117
+        return xbmc.getGlobalIdleTime() > ( hrs*60**2 )
+
     def run( self ):
         LOGGER.notice.LOG( "initialized took %s", time_took( START_TIME ) )
         try:
             self.clearProperties()
             while ( not self.moviesets_stop ):# or ( not xbmc.abortRequested ):
                 self.moviesets_stop = xbmc.abortRequested
-                if xbmc.getCondVisibility( "![Window.IsVisible(VideoLibrary) | Skin.HasSetting(MovieSets.Stop)]" ):
+                if xbmc.getCondVisibility( "![Window.IsVisible(VideoLibrary) | Skin.HasSetting(MovieSets.Stop)]" ) or self.autoStop():
                     self.stop(); break
                 self.updates()
                 time.sleep( .1 )

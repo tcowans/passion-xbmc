@@ -1,9 +1,10 @@
 
 # Modules general
+import os
+import re
 import sys
 import time
 import urllib
-from re import findall
 
 if sys.version >= "2.5":
     from hashlib import md5 as _hash
@@ -104,11 +105,11 @@ class Browser( xbmcgui.WindowXMLDialog ):
             sorttitle = movie[ "strSortTitle" ]
             if self.thumb_type == "thumb":
                 fanart_url = ""
-                images = findall( '<thumb preview="(.*?)">(.*?)</thumb>', movie[ "strThumbs" ] )
+                images = re.findall( '<thumb preview="(.*?)">(.*?)</thumb>', movie[ "strThumbs" ] )
                 base_label = LangXBMC( 20015 )
             elif self.thumb_type == "fanart":
-                fanart_url = "".join( findall( '<fanart url="(.*?)">', movie[ "strFanarts" ] ) )
-                images = findall( '<thumb.*?preview="(.*?)">(.*?)</thumb>', movie[ "strFanarts" ] )
+                fanart_url = "".join( re.findall( '<fanart url="(.*?)">', movie[ "strFanarts" ] ) )
+                images = re.findall( '<thumb.*?preview="(.*?)">(.*?)</thumb>', movie[ "strFanarts" ] )
                 base_label = LangXBMC( 20441 )
             else:
                 images = []
@@ -313,6 +314,23 @@ class MovieSetInfo( xbmcgui.WindowXMLDialog ):
         self.idset = kwargs[ "idset" ]
         self.movieset_update = False
 
+        try:
+            #actors_lib = os.path.join( Addon( "script.metadata.actors" ).getAddonInfo( "path" ), "resources", "lib" )
+            actors_lib = xbmc.translatePath( "special://home/addons/script.metadata.actors/resources/lib" )
+            sys.path.append( actors_lib )
+            import common
+            self.actorsdb = common.actorsdb
+            self.setActorProperties = common.setActorProperties
+            self.clean_bio = common.metautils.clean_bio
+        except:
+            self.actorsdb = None
+            def _setActorProperties( listitem, actor ): return listitem
+            self.setActorProperties = _setActorProperties
+            def _clean_bio( bio ): return bio
+            self.clean_bio = _clean_bio
+            LOGGER.error.print_exc()
+        #print dir( self.actorsdb )
+
     def onInit( self ):
         try:
             self.listitem = getContainerMovieSets( self.idset )[ 0 ]
@@ -330,17 +348,35 @@ class MovieSetInfo( xbmcgui.WindowXMLDialog ):
                 try: self.getControl( 15 ).setEnabled( 0 )
                 except: pass
 
+                con = cur = None
+                if self.actorsdb:
+                    con, cur = self.actorsdb.getConnection()
                 try:
                     self.getControl( 150 ).setVisible( 0 )
                     listitems = []
                     for cast, role, movie in Database().getCastAndRoleOfSet( self.idset ):
-                        label = " ".join( [ _unicode( cast ), LangXBMC( 20347 ), _unicode( role ), LangXBMC( 1405 ), _unicode( movie ) ] )
-                        icon = TBN.get_cached_actor_thumb( cast )
-                        listitems.append( xbmcgui.ListItem( label, "", icon, icon ) )
+                        try:
+                            # cast est role dans movie
+                            label = " ".join( [ _unicode( cast ), LangXBMC( 20347 ), _unicode( role ), LangXBMC( 1405 ), _unicode( movie ) ] )
+                            icon = TBN.get_cached_actor_thumb( cast )
+                            listitem = xbmcgui.ListItem( label, "", icon, icon )
+                            if cur:
+                                actor = self.actorsdb.getActor( cur, strActor=cast )
+                                bio   = self.clean_bio( actor.get( "biography" ) or "" )
+                                listitem.setInfo( "video", { "title": cast, "plot": bio } )
+                                if actor:
+                                    actor[ "biography" ] = bio
+                                    listitem = self.setActorProperties( listitem, actor )
+                                    #print actor
+                            listitems.append( listitem )
+                        except:
+                            LOGGER.error.print_exc()
                     self.getControl( 150 ).addItems( listitems )
                 except:
                     LOGGER.error.print_exc()
                     self.getControl( 5 ).setEnabled( 0 )
+                if hasattr( con, "close" ):
+                    con.close()
 
                 if self.setfocus:
                     self.setFocusId( self.setfocus )
@@ -407,6 +443,11 @@ class MovieSetInfo( xbmcgui.WindowXMLDialog ):
                     "type": ( "fanart", "thumb" )[ self.setfocus == 10 ]
                     }
                 self._close_dialog()
+
+            elif controlID == 150:
+                actor_name = xbmc.getInfoLabel( "Container(150).ListItem.Title" )
+                if actor_name:
+                    xbmc.executebuiltin( "RunScript(script.metadata.actors,%s)" % actor_name )
         except:
             LOGGER.error.print_exc()
 
