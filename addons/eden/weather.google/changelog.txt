@@ -1,3 +1,8 @@
+2.0.4 (by frost)
+ - added: latitude and longitude of current location. see README.txt
+          Properties: Current.Location.Latitude,    Current.Location.Longitude
+                      Current.Location.LatitudeDec,  Current.Location.LongitudeDec
+
 2.0.3 (by frost)
  - fixed: auto-refresh of Moon and Earth Phases images
 
