@@ -1,4 +1,4 @@
-
+﻿
 import re
 import random
 import urllib
@@ -136,7 +136,7 @@ def trim_time( str_time ):
 def get_user_time_format( str_time="5:31 PM" ):
     f_time = time()
     try:
-        str_dt = str_time.lower().split()
+        str_dt = str_time.lower().replace( "-", "" ).replace( "<br>", "" ).split()
         if str_dt[ -1 ] not in [ "pm", "am" ]:
             T, P = str_dt + [ "" ]
         else:
@@ -194,19 +194,42 @@ def get_user_datetime_format( str_datetime="Wednesday, February 29, 2012 at 1:58
     return f_time, str_datetime
 
 
+def coords2degree( deg, min, card ):
+    deg += ( min * 100.0 / 60.0 / 100.0 )
+    if card.lower() in [ "s", "w" ]:
+        deg = float( "-" + str( deg ) )
+    return str( deg )
+
+def get_coordinates( html ):
+    coords = { "lat": [ "", "" ], "long": [ "", "" ] }
+    try:
+        latlong_regexp = "<tr><td>(Lat|Long)itude: </td><td class=r>(.*?)&deg;&nbsp;(.*?)'&nbsp;</td><td>(.*?)</td></tr>"
+        for coord in re.compile( latlong_regexp ).findall( html ):
+            coords[ coord[ 0 ].lower() ] = [
+                "%i° %i' %s" % ( int( coord[ 1 ] ), int( coord[ 2 ] ), coord[ 3 ][ 0 ] ),
+                coords2degree( int( coord[ 1 ] ), int( coord[ 2 ] ), coord[ 3 ][ 0 ] )
+                ]
+    except:
+        print_exc()
+    return coords
+    
+
 def get_current_local_time_in( countryId=189 ):
     # get real current time of countryId or except local time and return value of in broad daylight
     f_time = time()
     local_time = datetime.now().strftime( "%s | %s" % ( DATE_LONG_FORMAT, USER_TIME_FORMAT ) )
+    coords = {}
     try:
+        #html = open( "189.html" ).read()
         html = get_html_source( "http://timeanddate.com/worldclock/city.html?n=" + str( countryId ) )
         current_time = re.search( '<strong id=ct.*?class=big>(.*?)</strong>', html )
+        coords = get_coordinates( html )
         if current_time:
             f_time, local_time = get_user_datetime_format( current_time.group( 1 ) )
             #print current_time.group( 1 )
     except:
         print_exc()
-    return f_time, translate_date( local_time )
+    return f_time, translate_date( local_time ), coords
 
 
 from decimal import Decimal
@@ -243,23 +266,27 @@ def get_default_sun():
     f_sunrise, sun_up  = get_user_time_format( "6:00 AM" )
     f_sunset, sun_down = get_user_time_format( "8:00 PM" )
     sun_day  = {
-        "Current.AstroTwilight.Start":  sun_up,
-        "Current.AstroTwilight.End":    sun_down,
-        "Current.NauticTwilight.Start": sun_up,
-        "Current.NauticTwilight.End":   sun_down,
-        "Current.CivilTwilight.Start":  sun_up,
-        "Current.CivilTwilight.End":    sun_down,
-        "Current.Sunrise":              sun_up,
-        "Current.Sunset":               sun_down,
-        "Current.Sunrise.Azimuth":      "N/A",
-        "Current.Sunset.Azimuth":       "N/A",
-        "Current.Sun.Length":           "14h 0m 0s",
-        "Current.Sun.Diff":             "0m 0s",
-        "Current.Solarnoon.Time":       "N/A",
-        "Current.Solarnoon.Altitude":   "N/A",
-        "Current.Solarnoon.Distance":   "N/A",
-        "In.Broad.Daylight":            repr( f_sunrise <= time() <= f_sunset ).lower(),
-        "Current.Location.LocalTime":   translate_date( datetime.now().strftime( "%s | %s" % ( DATE_LONG_FORMAT, USER_TIME_FORMAT ) ) ),
+        "Current.AstroTwilight.Start":   sun_up,
+        "Current.AstroTwilight.End":     sun_down,
+        "Current.NauticTwilight.Start":  sun_up,
+        "Current.NauticTwilight.End":    sun_down,
+        "Current.CivilTwilight.Start":   sun_up,
+        "Current.CivilTwilight.End":     sun_down,
+        "Current.Sunrise":               sun_up,
+        "Current.Sunset":                sun_down,
+        "Current.Sunrise.Azimuth":       "N/A",
+        "Current.Sunset.Azimuth":        "N/A",
+        "Current.Sun.Length":            "14h 0m 0s",
+        "Current.Sun.Diff":              "0m 0s",
+        "Current.Solarnoon.Time":        "N/A",
+        "Current.Solarnoon.Altitude":    "N/A",
+        "Current.Solarnoon.Distance":    "N/A",
+        "In.Broad.Daylight":             repr( f_sunrise <= time() <= f_sunset ).lower(),
+        "Current.Location.LocalTime":    translate_date( datetime.now().strftime( "%s | %s" % ( DATE_LONG_FORMAT, USER_TIME_FORMAT ) ) ),
+        "Current.Location.Latitude":     "",
+        "Current.Location.Longitude":    "",
+        "Current.Location.LatitudeDec":  "",
+        "Current.Location.LongitudeDec": "",
         }
     return sun_day
 
@@ -276,7 +303,7 @@ def get_sun( countryId=189, i_unit=0 ):
 
         f_sunrise, sun_up  = get_user_time_format( sun[ 7 ] )
         f_sunset, sun_down = get_user_time_format( sun[ 8 ] )
-        f_time, local_time = get_current_local_time_in( countryId )
+        f_time, local_time, coords = get_current_local_time_in( countryId )
         sun_day.update( {
             "In.Broad.Daylight":            repr( f_sunrise <= f_time <= f_sunset ).lower(), # en plein jour
             "Current.Location.LocalTime":   local_time,                             # real current time of countryId
@@ -304,6 +331,10 @@ def get_sun( countryId=189, i_unit=0 ):
         except ValueError:
             moon_day[ "Current.Solarnoon.Distance" ] = ""
         except: print_exc()
+        sun_day[ "Current.Location.Latitude" ] = coords[ "lat" ][ 0 ]
+        sun_day[ "Current.Location.Longitude" ] = coords[ "long" ][ 0 ]
+        sun_day[ "Current.Location.LatitudeDec" ] = coords[ "lat" ][ 1 ]
+        sun_day[ "Current.Location.LongitudeDec" ] = coords[ "long" ][ 1 ]
     except:
         print_exc()
     return sun_day
@@ -443,3 +474,4 @@ def test():
 if __name__ == "__main__":
     #test()
     SetProperties()
+    #get_current_local_time_in( countryId=189 )

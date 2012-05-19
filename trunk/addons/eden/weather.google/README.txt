@@ -27,9 +27,13 @@ Day[0-6].FanartCode		number of day condition icon
 
 *** Extra Properties ***
 
-Weather.IsFetched			Returns true if the weather data has been downloaded.
-Weather.ExtraIsFetched		Returns true if the extra data has been downloaded.
-Current.Location.LocalTime	Return full date and time of current location. (if possible)
+Weather.IsFetched				Returns true if the weather data has been downloaded.
+Weather.ExtraIsFetched			Returns true if the extra data has been downloaded.
+Current.Location.LocalTime		Return full date and time of current location. (if possible)
+Current.Location.Latitude		return latitude of current location. Format: 46° 50' N
+Current.Location.Longitude		return longitude of current location. Format: 71° 15' W
+Current.Location.LatitudeDec	return latitude in decimal of current location. Format: 46.8333333333
+Current.Location.LongitudeDec	return longitude in decimal of current location. Format: -71.25
 
 http://www.timeanddate.com/worldclock/aboutastronomy.html
 Current.AstroTwilight.Start		Astronomical Twilight starts (Astronomical twilight is the time when the center of the sun is between 12° and 18° below the horizon. From the end of astronomical twilight in the evening to the beginning of astronomical twilight in the morning, the sky (away from urban light pollution) is dark enough for all astronomical observations.)
