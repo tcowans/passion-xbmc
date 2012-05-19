@@ -1,8 +1,0 @@
-ToDoList
-
-- support for play season tune.                                  http://forum.xbmc.org/showpost.php?p=946922&postcount=821
-- ensure that the setVolume works well.                          http://forum.xbmc.org/showthread.php?t=83925&page=83
-- checked for long time to start playing on server.              http://forum.xbmc.org/showpost.php?p=951501&postcount=828
-- make compatibility only for eden. recommended by team to Maxoo http://passion-xbmc.org/outils-supplementaires-pour-les-skins/tvtunes-addon/?msg=114902
-- ensure tvtunes run with multiple add-ons on backend.           http://forum.xbmc.org/showpost.php?p=953479&postcount=30
-  NB: very strange! I hacked this probleme with tvtunes+moviesets under skin.confluence.moviesets http://passion-xbmc.org/addons/?Page=View&ID=skin.confluence.moviesets
