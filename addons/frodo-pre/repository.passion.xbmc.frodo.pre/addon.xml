@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="repository.passion.xbmc.frodo.pre" name="Passion-XBMC.org Add-ons Frodo-pre"
+       version="3.0.0" provider-name="Team Passion-XBMC">
+    <extension point="xbmc.addon.repository"
+        name="Google Passion-XBMC Add-on Repository">
+        <info compressed="false">http://passion-xbmc.googlecode.com/svn/trunk/addons/frodo-pre/addons.xml</info>
+        <checksum>http://passion-xbmc.googlecode.com/svn/trunk/addons/frodo-pre/addons.xml.md5</checksum>
+        <datadir zip="false">http://passion-xbmc.googlecode.com/svn/trunk/addons/frodo-pre</datadir>
+        <hashes>true</hashes>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="en">Install Add-ons from passion-xbmc.org for XBMC Frodo-pre</summary>
+        <summary lang="fr">Installez des Add-ons depuis passion-xbmc.org for XBMC Frodo-pre</summary>
+        <description lang="en">Download and install Add-ons from passion-xbmc.org pour XBMC Frodo-pre</description>
+        <description lang="fr">Téléchargez et installez des Add-ons depuis passion-xbmc.org pour XBMC Frodo-pre</description>
+        <platform>all</platform>
+    </extension>
+</addon>

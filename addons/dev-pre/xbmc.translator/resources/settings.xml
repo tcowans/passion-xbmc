@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+  <category label="$LOCALIZE[128]">
+    <setting type="lsep" label="$LOCALIZE[248] [COLOR=33FFFFFF]([B]ENGLISH[/B] sub-folder is required)[/COLOR]" />
+    <setting id="LanguagePath" type="folder" label="$LOCALIZE[21440]" source="auto" mask="/" default="special://xbmc/language/" />
+
+    <setting type="lsep" label="Translator Name [COLOR=33FFFFFF](optional)[/COLOR]" />
+    <setting id="username" type="text" label="Name" default="" />
+    <setting id="usermail" type="text" label="Email" default="" />
+
+    <setting type="lsep" label="Language Tools" />
+    <setting id="LanguageTools" type="enum" label="Translator" values="Google|Babel Fish" default="0" />
+    <setting id="countryBF" type="select" label="Translate from English to" visible="eq(-1,1)" values="Auto|Chinese (Simple)|Chinese (Traditional)|Dutch|French|German|German (Austria)|Greek|Italian|Japanese|Korean|Portuguese|Portuguese (Brazil)|Russian|Spanish|Spanish (Mexico)" default="Auto" />
+    <setting id="country" type="select" label="Translate from English to" visible="eq(-2,0)" values="Auto|Afrikaans|Albanian|Arabic|Armenian|Azerbaijani|Basque|Belarusian|Bulgarian|Catalan|Chinese|Croatian|Czech|Danish|Dutch|English|Estonian|Filipino|Finnish|French|Galician|Georgian|German|Greek|Haitian Creole|Hebrew|Hindi|Hungarian|Icelandic|Indonesian|Irish|Italian|Japanese|Korean|Latin|Latvian|Lithuanian|Macedonian|Malay|Maltese|Norwegian|Persian|Polish|Portuguese|Romanian|Russian|Serbian|Slovak|Slovenian|Spanish|Swahili|Swedish|Thai|Turkish|Ukrainian|Urdu|Vietnamese|Welsh|Yiddish" default="Auto" />
+  </category>
+
+  <category label="$LOCALIZE[14081]">
+    <setting id="viewmode" type="enum" label="$LOCALIZE[582]" values="Side by side|Single-column" default="0" />
+    <setting id="sortmethod" type="enum" label="$LOCALIZE[581]" values="String Id|String Name" default="0" />
+    <setting id="sortorder" type="enum" label="$LOCALIZE[580]" lvalues="584|585" default="0" />
+    <setting id="savefolderviews" type="bool" label="$LOCALIZE[583]" default="true" />
+  </category>
+
+  <category label="Dialog Keyboard">
+    <setting id="BoldKB" type="bool" label="Bold English Strings" default="false" />
+    <setting id="ExtraKB" type="enum" label="Position of English Strings" values="Top|Bottom" default="0" />
+  </category>
+</settings>
