@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!-- strings 32000 thru 32999 reserved for scripts -->
+  <string id="32000">מארזי סרטים</string>
+  <string id="32001">מנהל מארזים</string>
+  <string id="32002">מארזים</string>
+  <string id="32003">[מארז]&#32;</string>
+  <string id="32004">[סרט]&#32;</string>
+
+  <!-- category settings -->
+  <string id="32050">כללי</string>
+  <string id="32051">הצג מצב עסוק כאשר מקבל מידע</string>
+  <string id="32052">מפריד תווית</string>
+  <string id="32053">סדר הסרטים בכל מארז</string>
+
+  <string id="32060">תחזוקה</string>
+  <string id="32061">הצג שינויים</string>
+  <string id="32062">הצג פרטי תוויות</string>
+  <string id="32063">הצג רישיון</string>
+
+  <!-- strings Manager -->
+  <string id="32100">הוסף סרטים...</string>
+  <string id="32101">בחר סרט עבור מארז [%s]</string>
+  <string id="32102">אשר להוספת הסרט למארז</string>
+  <string id="32103">הוסף את הסרט '%s'</string>
+  <string id="32104">למארז זה '%s'</string>
+
+  <string id="32110">הסר ממארז סרטים</string>
+  <string id="32111">הסר סרט ממארז [%s]</string>
+  <string id="32112">אשר להסרת הסרט ממארז</string>
+  <string id="32113">הסר את הסרט '%s'</string>
+  <string id="32114">ממארז זה '%s'</string>
+
+  <string id="32120">הגדר פאנארט למארז</string>
+  <string id="32121">בחר פאנטארט אחד או יותר עבור extrafanart</string>
+  <string id="32122">אשר הורדה...</string>
+  <string id="32123">%i מתוך %i נבחרו!</string>
+  <string id="32124">האם הינך בטוח להורדת קבצים אלו?</string>
+  <string id="32125">מוריד: %i מתוך %i - %i%%</string>
+  <string id="32126">בחר תיקיה עבור&#32;</string>
+  <string id="32127">extrafanart</string>
+  <string id="32128">extrathumb</string>
+  <string id="32129"></string>
+  <string id="32130">הגדר תמונה ממוזערת למארז</string>
+  <string id="32131">בחר תמונה ממוזערת אחת או יותר עבור extrathumb</string>
+
+  <string id="32135">אשר דריסה...</string>
+  <string id="32136">האם ברצונך לדרוס אתהקבצים הקיימים שלך?</string>
+
+  <string id="32140">הסר מארז סרטים זה [%s]</string>
+  <string id="32141">הסר מארז סרטים מהספריה</string>
+
+  <string id="32200">הוסף למארז סרטים</string>
+  <string id="32201">בחר מארז סרטים עבור [%s]</string>
+
+  <string id="32210">הסר סרט ממארז [%s]</string>
+  <string id="32220">ערוך כותרת מיון סרט</string>
+  <string id="32221">ערוך כותרת מארז סרטים</string>
+
+  <string id="32300">הוסף סרטים למארזים קיימים</string>
+  <string id="32301">בחר סרט</string>
+  <string id="32302">בחר מארז עבור הסרט [%s]</string>
+
+  <string id="32310">הסר סרטים עבור מארזים קיימים</string>
+  <string id="32311">בחר מארז סרטים</string>
+
+  <string id="32320">הסר מארז קיים</string>
+  <string id="32321">בחר מארז להסרה</string>
+
+  <string id="32330">צור מארז סרטים חדש</string>
+  <string id="32331">הזן כותרת מארז</string>
+
+  <!-- strings 33000 thru 33999 reserved for common strings used in addons -->
+  <!-- skin strings -->
+  <string id="33000">מנהל מארזים</string>
+  <string id="33001">מארזים</string>
+  <string id="33002">פרטי מארז</string>
+  <string id="33004">[מארז]</string>
+
+  <string id="33100">הצג מידע על מארזי סרטים בספריה</string>
+  <string id="33101">כפתורים נוספים</string>
+  <string id="33102">הפעל אפשרויות מנהל בספריה</string>
+  <string id="33103">הפעל "פרטי מארז" בתפריט המשני</string>
+  <string id="33104">(זמין עם עכבר בלבד!)</string>
+</strings>
