@@ -1,0 +1,265 @@
+# XBMC Media Center language file
+msgid ""
+msgstr ""
+"Project-Id-Version: script.moviesets-Frodo\n"
+"Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
+"POT-Creation-Date: 2012-05-19 20:26+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: pt_BR\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+
+#: id:32000
+msgid "Movie Sets"
+msgstr "Conjuntos de Filmes "
+
+#: id:32001
+msgctxt "Auto context with id 32001"
+msgid "Manager Sets"
+msgstr "Administrar Conjuntos"
+
+#: id:32002
+msgctxt "Auto context with id 32002"
+msgid "Sets"
+msgstr "Conjuntos"
+
+#: id:32003
+msgid "[Set] "
+msgstr "[Conjunto] "
+
+#: id:32004
+msgid "[Movie] "
+msgstr "[filme] "
+
+#: id:32050
+msgid "General"
+msgstr "Geral"
+
+#: id:32051
+msgid "Show busy dialog on retrieving info"
+msgstr "Mostrar diálogo ocupado na obtenção de informações"
+
+#: id:32052
+msgid "Label Separator"
+msgstr "Separador de Etiqueta"
+
+#: id:32053
+msgid "Movies order of each set"
+msgstr "Ordem dos filmes de cada conjunto"
+
+#: id:32060
+msgid "Maintenance"
+msgstr "Manuntenção"
+
+#: id:32061
+msgid "Show Changelog"
+msgstr "Mostrar Changelog"
+
+#: id:32062
+msgid "Show InfoLabels"
+msgstr "Mostrar InfoLabels"
+
+#: id:32063
+msgid "Show License"
+msgstr "Mostrar Licença"
+
+#: id:32100
+msgid "Add Movies..."
+msgstr "Adicionar filmes..."
+
+#: id:32101
+msgid "Select movie for set [%s]"
+msgstr "Selecione filme para o conjunto [%s]"
+
+#: id:32102
+msgid "Confirm add movie to set"
+msgstr "Confirma adição do filme para o conjunto"
+
+#: id:32103
+msgid "Add this movie '%s'"
+msgstr "Adicione este filme '%s'"
+
+#: id:32104
+msgid "To this set '%s'"
+msgstr "Para este conjunto '%s'"
+
+#: id:32110
+msgid "Remove from movieset"
+msgstr "Remover da coleção"
+
+#: id:32111
+msgctxt "Auto context with id 32111"
+msgid "Remove movie of set [%s]"
+msgstr "Remover filme da coleção [%s]"
+
+#: id:32112
+msgid "Confirm remove movie of set"
+msgstr "Confirma remover filme da coleção"
+
+#: id:32113
+msgid "Remove this movie '%s'"
+msgstr "Remover este filme '%s'"
+
+#: id:32114
+msgid "Of this set '%s'"
+msgstr "Deste conjunto '%s'"
+
+#: id:32120
+msgid "Set movieset fanart"
+msgstr "Setar fanart do conjunto"
+
+#: id:32121
+msgid "Select one fanart or more for extrafanart"
+msgstr "Selecione um fanart ou mais para extrafanart"
+
+#: id:32122
+msgid "Confirm Downloading..."
+msgstr "Confirmar Downloading..."
+
+#: id:32123
+msgid "%i of %i have been selected!"
+msgstr "%i de %i foi selecionado!"
+
+#: id:32124
+msgid "Are you sure download this files?"
+msgstr "Você tem certeza que quer baixar estes arquivos?"
+
+#: id:32125
+msgid "Download: %i of %i - %i%%"
+msgstr "Download: %i de %i - %i%%"
+
+#: id:32126
+msgid "Choose folder for "
+msgstr "Escolha pasta para "
+
+#: id:32127
+msgid "extrafanart"
+msgstr "extrafanart"
+
+#: id:32128
+msgid "extrathumb"
+msgstr "extrathumb"
+
+#: id:32130
+msgid "Set movieset thumb"
+msgstr "Setar ícone para o conjunto dos filmes"
+
+#: id:32131
+msgid "Select one thumb or more for extrathumb"
+msgstr "Selecione um ícone ou mais para extrathumb"
+
+#: id:32135
+msgid "Confirm overwrite..."
+msgstr "Confirmar sobreposição..."
+
+#: id:32136
+msgid "Do you want overwrite your existing files?"
+msgstr "Você deseja sobrepor seus arquivos atuais?"
+
+#: id:32140
+msgid "Remove this movieset [%s]"
+msgstr "Remover este conjunto de filmes [%s]"
+
+#: id:32141
+msgid "Remove movieset from library"
+msgstr "Remover Conjunto de filmes da biblioteca"
+
+#: id:32200
+msgid "Add to movieset"
+msgstr "Adicionar para conjuntos"
+
+#: id:32201
+msgid "Select movieset for [%s]"
+msgstr "Selecione conjunto de filmes para [%s]"
+
+#: id:32210
+msgctxt "Auto context with id 32210"
+msgid "Remove movie of set [%s]"
+msgstr "Remover filme do conjunto [%s]"
+
+#: id:32220
+msgid "Edit movie sorttitle"
+msgstr "Editar ordem dos títulos dos filmes"
+
+#: id:32221
+msgid "Edit movieset title"
+msgstr "Editar título do conjunto de filmes"
+
+#: id:32300
+msgid "Add movies to existing movieset"
+msgstr "Adicione filmes para conjunto já existente"
+
+#: id:32301
+msgid "Select movie"
+msgstr "Selecione filme"
+
+#: id:32302
+msgid "Select movieset for movie [%s]"
+msgstr "Selecione conjunto para o filme [%s]"
+
+#: id:32310
+msgid "Remove movies to existing movieset"
+msgstr "Remover filmes de um conjunto já existente"
+
+#: id:32311
+msgid "Select movieset"
+msgstr "Selecione conjunto de filmes"
+
+#: id:32320
+msgid "Remove existing movieset"
+msgstr "Remover existente conjunto de filmes"
+
+#: id:32321
+msgid "Select movieset to remove"
+msgstr "Selecione conjunto de filmes para remover"
+
+#: id:32330
+msgid "Create new movieset"
+msgstr "Criar novo conjunto de filmes"
+
+#: id:32331
+msgid "Enter title of set"
+msgstr "Entre título do conjunto"
+
+#: id:33000
+msgctxt "Auto context with id 33000"
+msgid "Manager Sets"
+msgstr "Administrar Conjuntos"
+
+#: id:33001
+msgctxt "Auto context with id 33001"
+msgid "Sets"
+msgstr "Conjuntos"
+
+#: id:33002
+msgid "Info Set"
+msgstr "Info Conjuntos"
+
+#: id:33004
+msgid "[Set]"
+msgstr "[Conjuntos]"
+
+#: id:33100
+msgid "Show Info of Movie Sets in the library"
+msgstr "Mostrar Info do conjunto de filmes na biblioteca"
+
+#: id:33101
+msgid "Extra Buttons"
+msgstr "Extra Botões"
+
+#: id:33102
+msgid "Enable the manager's options in the library"
+msgstr "Ativar opções de administração na biblioteca"
+
+#: id:33103
+msgid "Enable \"Info Set\" in the context menu"
+msgstr "Ativar \"Info Conjuntos\" no menu de contexto"
+
+#: id:33104
+msgid "(Available with mouse only!)"
+msgstr "(Disponível somente com mouse!)"
+

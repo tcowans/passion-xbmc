@@ -1,0 +1,265 @@
+# XBMC Media Center language file
+msgid ""
+msgstr ""
+"Project-Id-Version: script.moviesets-Frodo\n"
+"Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
+"POT-Creation-Date: 2012-05-19 20:26+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: he\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: id:32000
+msgid "Movie Sets"
+msgstr "מארזי סרטים"
+
+#: id:32001
+msgctxt "Auto context with id 32001"
+msgid "Manager Sets"
+msgstr "מנהל מארזים"
+
+#: id:32002
+msgctxt "Auto context with id 32002"
+msgid "Sets"
+msgstr "מארזים"
+
+#: id:32003
+msgid "[Set] "
+msgstr "[מארז] "
+
+#: id:32004
+msgid "[Movie] "
+msgstr "[סרט] "
+
+#: id:32050
+msgid "General"
+msgstr "כללי"
+
+#: id:32051
+msgid "Show busy dialog on retrieving info"
+msgstr "הצג מצב עסוק כאשר מקבל מידע"
+
+#: id:32052
+msgid "Label Separator"
+msgstr "מפריד תווית"
+
+#: id:32053
+msgid "Movies order of each set"
+msgstr "סדר הסרטים בכל מארז"
+
+#: id:32060
+msgid "Maintenance"
+msgstr "תחזוקה"
+
+#: id:32061
+msgid "Show Changelog"
+msgstr "הצג שינויים"
+
+#: id:32062
+msgid "Show InfoLabels"
+msgstr "הצג פרטי תוויות"
+
+#: id:32063
+msgid "Show License"
+msgstr "הצג רישיון"
+
+#: id:32100
+msgid "Add Movies..."
+msgstr "הוסף סרטים..."
+
+#: id:32101
+msgid "Select movie for set [%s]"
+msgstr "בחר סרט עבור מארז [%s]"
+
+#: id:32102
+msgid "Confirm add movie to set"
+msgstr "אשר להוספת הסרט למארז"
+
+#: id:32103
+msgid "Add this movie '%s'"
+msgstr "הוסף את הסרט '%s'"
+
+#: id:32104
+msgid "To this set '%s'"
+msgstr "למארז זה '%s'"
+
+#: id:32110
+msgid "Remove from movieset"
+msgstr "הסר ממארז סרטים"
+
+#: id:32111
+msgctxt "Auto context with id 32111"
+msgid "Remove movie of set [%s]"
+msgstr "הסר סרט ממארז [%s]"
+
+#: id:32112
+msgid "Confirm remove movie of set"
+msgstr "אשר להסרת הסרט ממארז"
+
+#: id:32113
+msgid "Remove this movie '%s'"
+msgstr "הסר את הסרט '%s'"
+
+#: id:32114
+msgid "Of this set '%s'"
+msgstr "ממארז זה '%s'"
+
+#: id:32120
+msgid "Set movieset fanart"
+msgstr "הגדר פאנארט למארז"
+
+#: id:32121
+msgid "Select one fanart or more for extrafanart"
+msgstr "בחר פאנטארט אחד או יותר עבור extrafanart"
+
+#: id:32122
+msgid "Confirm Downloading..."
+msgstr "אשר הורדה..."
+
+#: id:32123
+msgid "%i of %i have been selected!"
+msgstr "%i מתוך %i נבחרו!"
+
+#: id:32124
+msgid "Are you sure download this files?"
+msgstr "האם הינך בטוח להורדת קבצים אלו?"
+
+#: id:32125
+msgid "Download: %i of %i - %i%%"
+msgstr "מוריד: %i מתוך %i - %i%%"
+
+#: id:32126
+msgid "Choose folder for "
+msgstr "בחר תיקיה עבור "
+
+#: id:32127
+msgid "extrafanart"
+msgstr "extrafanart"
+
+#: id:32128
+msgid "extrathumb"
+msgstr "extrathumb"
+
+#: id:32130
+msgid "Set movieset thumb"
+msgstr "הגדר תמונה ממוזערת למארז"
+
+#: id:32131
+msgid "Select one thumb or more for extrathumb"
+msgstr "בחר תמונה ממוזערת אחת או יותר עבור extrathumb"
+
+#: id:32135
+msgid "Confirm overwrite..."
+msgstr "אשר דריסה..."
+
+#: id:32136
+msgid "Do you want overwrite your existing files?"
+msgstr "האם ברצונך לדרוס אתהקבצים הקיימים שלך?"
+
+#: id:32140
+msgid "Remove this movieset [%s]"
+msgstr "הסר מארז סרטים זה [%s]"
+
+#: id:32141
+msgid "Remove movieset from library"
+msgstr "הסר מארז סרטים מהספריה"
+
+#: id:32200
+msgid "Add to movieset"
+msgstr "הוסף למארז סרטים"
+
+#: id:32201
+msgid "Select movieset for [%s]"
+msgstr "בחר מארז סרטים עבור [%s]"
+
+#: id:32210
+msgctxt "Auto context with id 32210"
+msgid "Remove movie of set [%s]"
+msgstr "הסר סרט ממארז [%s]"
+
+#: id:32220
+msgid "Edit movie sorttitle"
+msgstr "ערוך כותרת מיון סרט"
+
+#: id:32221
+msgid "Edit movieset title"
+msgstr "ערוך כותרת מארז סרטים"
+
+#: id:32300
+msgid "Add movies to existing movieset"
+msgstr "הוסף סרטים למארזים קיימים"
+
+#: id:32301
+msgid "Select movie"
+msgstr "בחר סרט"
+
+#: id:32302
+msgid "Select movieset for movie [%s]"
+msgstr "בחר מארז עבור הסרט [%s]"
+
+#: id:32310
+msgid "Remove movies to existing movieset"
+msgstr "הסר סרטים עבור מארזים קיימים"
+
+#: id:32311
+msgid "Select movieset"
+msgstr "בחר מארז סרטים"
+
+#: id:32320
+msgid "Remove existing movieset"
+msgstr "הסר מארז קיים"
+
+#: id:32321
+msgid "Select movieset to remove"
+msgstr "בחר מארז להסרה"
+
+#: id:32330
+msgid "Create new movieset"
+msgstr "צור מארז סרטים חדש"
+
+#: id:32331
+msgid "Enter title of set"
+msgstr "הזן כותרת מארז"
+
+#: id:33000
+msgctxt "Auto context with id 33000"
+msgid "Manager Sets"
+msgstr "מנהל מארזים"
+
+#: id:33001
+msgctxt "Auto context with id 33001"
+msgid "Sets"
+msgstr "מארזים"
+
+#: id:33002
+msgid "Info Set"
+msgstr "פרטי מארז"
+
+#: id:33004
+msgid "[Set]"
+msgstr "[מארז]"
+
+#: id:33100
+msgid "Show Info of Movie Sets in the library"
+msgstr "הצג מידע על מארזי סרטים בספריה"
+
+#: id:33101
+msgid "Extra Buttons"
+msgstr "כפתורים נוספים"
+
+#: id:33102
+msgid "Enable the manager's options in the library"
+msgstr "הפעל אפשרויות מנהל בספריה"
+
+#: id:33103
+msgid "Enable \"Info Set\" in the context menu"
+msgstr "הפעל \"פרטי מארז\" בתפריט המשני"
+
+#: id:33104
+msgid "(Available with mouse only!)"
+msgstr "(זמין עם עכבר בלבד!)"
+

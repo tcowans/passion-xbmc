@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!--Language file translated with Team XBMC Translator-->
+<!--Date of translation: 03/26/2012-->
+<!--$Revision$-->
+<strings>
+  <string id="32000">시리즈 영화</string>
+  <string id="32001">시리즈 관리</string>
+  <string id="32002">시리즈</string>
+  <string id="32003">[Set] </string>
+  <string id="32004">[Movie] </string>
+  <string id="32050">일반</string>
+  <string id="32051">Show busy dialog on retrieving info</string>
+  <string id="32052">Label Separator</string>
+  <string id="32053">각 시리즈의 영화 순서</string>
+  <string id="32060">유지관리</string>
+  <string id="32061">변경 로그</string>
+  <string id="32062">Show InfoLabels</string>
+  <string id="32063">라이센스</string>
+  <string id="32100">시리즈에 영화 추가...</string>
+  <string id="32101">[%s] 시리즈에 추가할 영화 선택 </string>
+  <string id="32102">시리즈에 영화 추가</string>
+  <string id="32103">'%s' 을(를)</string>
+  <string id="32104">'%s' 시리즈에 추가합니다</string>
+  <string id="32110">시리즈에서 제거</string>
+  <string id="32111">[%s] 시리즈의 영화 제거</string>
+  <string id="32112">시리즈에서 영화 제거</string>
+  <string id="32113">'%s' 을(를)</string>
+  <string id="32114">'%s' 시리즈에서 제거합니다</string>
+  <string id="32120">시리즈 영화 팬아트 설정</string>
+  <string id="32121">한개 선택 : 팬아트로 사용, 여러개 선택 : 추가팬아트(extrafanart)로 사용</string>
+  <string id="32122">다운로드 확인...</string>
+  <string id="32123">%i개를 %i개중에서 선택하셨습니다</string>
+  <string id="32124">선택한 파일을 다운로드 하시겠습니까?</string>
+  <string id="32125">다운로딩 : %i of %i - %i%%</string>
+  <string id="32126">폴더 선택 : </string>
+  <string id="32127">추가팬아트</string>
+  <string id="32128">추가미리보기</string>
+  <string id="32129">
+  </string>
+  <string id="32130">시리즈 영화 미리보기 설정</string>
+  <string id="32131">한개 선택 : 미리보기로 사용, 여러개 선택 : 추가미리보기(extrathumb)로 사용</string>
+  <string id="32135">덮어쓰기 확인...</string>
+  <string id="32136">기존 파일에 덮어 쓰겠습니까?</string>
+  <string id="32140">[%s] 시리즈 제거</string>
+  <string id="32141">라이브러리에서 시리즈 제거</string>
+  <string id="32200">시리즈에 추가</string>
+  <string id="32201">Select movieset for [%s]</string>
+  <string id="32210">Remove movie of set [%s]</string>
+  <string id="32220">정렬용 영화 제목 수정</string>
+  <string id="32221">시리즈 제목 수정</string>
+  <string id="32300">기존 시리즈에 영화 추가</string>
+  <string id="32301">영화 선택</string>
+  <string id="32302">[%s] 을(를) 추가할 영화 시리즈 선택</string>
+  <string id="32310">기존 시리즈에서 영화 제거</string>
+  <string id="32311">시리즈 선택</string>
+  <string id="32320">기존 영화 시리즈 제거</string>
+  <string id="32321">제거할 영화 시리즈 선택</string>
+  <string id="32330">새 시리즈 만들기</string>
+  <string id="32331">영화 시리즈 제목 입력</string>
+  <string id="33000">영화 시리즈 관리</string>
+  <string id="33001">세트</string>
+  <string id="33002">Info Set</string>
+  <string id="33004">[Set]</string>
+  <string id="33100">라이브러리에서 시리즈 정보 보기</string>
+  <string id="33101">Extra Buttons</string>
+  <string id="33102">라이브러리에서 시리즈 관리 옵션 활성화</string>
+  <string id="33103">컨텍스트 메뉴에서 "Info Set" 활성화</string>
+  <string id="33104">(마우스로만 가능!)</string>
+</strings>
