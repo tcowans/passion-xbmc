@@ -16,6 +16,7 @@
   <string id="32021">seit %s Jahren</string>
 
   <string id="32024">Seite</string>
+  <string id="32025">Items</string>
 
   <string id="32030">Film Darsteller</string>
   <string id="32031">Serien Darsteller</string>
@@ -33,8 +34,10 @@
   <string id="32051">Trailer</string>
   <string id="32052">Kein Trailer gefunden!</string>
 
-  <string id="32100">Film Titel und Poster</string>
-  <string id="32101">Zeige Originaltitel</string>
+  <string id="32099">Erotikdarsteller erfassen</string>
+  <string id="32100"></string>
+  
+  <string id="32101"></string>
   <string id="32102">Qualität der wechselnden Fanarts</string>
 
   <string id="32105">Dialog info</string>
@@ -62,4 +65,5 @@
   <string id="32136">Willst Du deine vorhandenen Dateien überschreiben?</string>
 
   <string id="32311">Fanart image[CR][CR]nicht verfügbar[CR][CR] Drücke Knopf zum auswählen</string>
+  <string id="32330">Drück ok zum abspielen[CR][CR]Filmtrailer</string>
 </strings>
