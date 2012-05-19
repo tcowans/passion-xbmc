@@ -1,0 +1,50 @@
+
+<!doctype html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module xbmcart</title>
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>xbmcart</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href="index.html">index</a><br><a href="../lib/xbmcart.py">special://home/addons/script.module.xbmcart/lib/xbmcart.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-getArt"><strong>getArt</strong></a>(mediaId, mediaType)</dt><dd><tt><a href="#-getArt">getArt</a>(mediaId,&nbsp;mediaType)&nbsp;return&nbsp;dictionary&nbsp;&nbsp;{&nbsp;fanart:&nbsp;value,&nbsp;thumb:&nbsp;value&nbsp;}<br>
+&nbsp;<br>
+mediaId&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;integer&nbsp;-&nbsp;media_id&nbsp;for&nbsp;media_type<br>
+mediaType&nbsp;&nbsp;:&nbsp;&nbsp;string&nbsp;&nbsp;-&nbsp;type&nbsp;of&nbsp;media&nbsp;(actor/director/episode/movie/musicvideo/set/tvshow)<br>
+&nbsp;<br>
+Throws:&nbsp;TypeError,&nbsp;if&nbsp;type&nbsp;of&nbsp;media&nbsp;is&nbsp;invalid.<br>
+&nbsp;<br>
+example:<br>
+&nbsp;-&nbsp;art&nbsp;=&nbsp;xbmcart.<a href="#-getArt">getArt</a>(&nbsp;5,&nbsp;"movie"&nbsp;)</tt></dd></dl>
+ <dl><dt><a name="-setArt"><strong>setArt</strong></a>(mediaId, mediaType, artType, url)</dt><dd><tt><a href="#-setArt">setArt</a>(&nbsp;mediaId,&nbsp;mediaType,&nbsp;artType,&nbsp;url&nbsp;)&nbsp;set&nbsp;art,&nbsp;returns&nbsp;true/false.<br>
+&nbsp;<br>
+mediaId&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;integer&nbsp;-&nbsp;media_id&nbsp;for&nbsp;media_type<br>
+mediaType&nbsp;&nbsp;:&nbsp;&nbsp;string&nbsp;&nbsp;-&nbsp;type&nbsp;of&nbsp;media&nbsp;(actor/director/episode/movie/musicvideo/set/tvshow)<br>
+artType&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;string&nbsp;&nbsp;-&nbsp;type&nbsp;of&nbsp;art&nbsp;(fanart/thumb)<br>
+url&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;string&nbsp;&nbsp;-&nbsp;url&nbsp;of&nbsp;art<br>
+&nbsp;<br>
+Throws:&nbsp;TypeError,&nbsp;if&nbsp;media_id&nbsp;or&nbsp;type&nbsp;of&nbsp;art/media&nbsp;is&nbsp;invalid.<br>
+&nbsp;<br>
+example:<br>
+&nbsp;-&nbsp;ok&nbsp;=&nbsp;xbmcart.<a href="#-setArt">setArt</a>(&nbsp;5,&nbsp;"actor",&nbsp;"fanart",&nbsp;"smb://XBMC/movies/The&nbsp;Avengers/Chris&nbsp;Evans-fanart.jpg"&nbsp;)</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>__all__</strong> = ['getArt', 'setArt', 'dbVersion']<br>
+<strong>__package__</strong> = None<br>
+<strong>dbVersion</strong> = 64</td></tr></table>
+</body></html>

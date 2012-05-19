@@ -1,0 +1,38 @@
+Python Library Documentation: module xbmcart
+
+NAME
+    xbmcart
+
+FILE
+    special://home/addons/script.module.xbmcart/lib/xbmcart.py
+
+FUNCTIONS
+    getArt(mediaId, mediaType)
+        getArt(mediaId, mediaType) return dictionary  { fanart: value, thumb: value }
+        
+        mediaId    :  integer - media_id for media_type
+        mediaType  :  string  - type of media (actor/director/episode/movie/musicvideo/set/tvshow)
+        
+        Throws: TypeError, if type of media is invalid.
+        
+        example:
+         - art = xbmcart.getArt( 5, "movie" )
+    
+    setArt(mediaId, mediaType, artType, url)
+        setArt( mediaId, mediaType, artType, url ) set art, returns true/false.
+        
+        mediaId    :  integer - media_id for media_type
+        mediaType  :  string  - type of media (actor/director/episode/movie/musicvideo/set/tvshow)
+        artType    :  string  - type of art (fanart/thumb)
+        url        :  string  - url of art
+        
+        Throws: TypeError, if media_id or type of art/media is invalid.
+        
+        example:
+         - ok = xbmcart.setArt( 5, "actor", "fanart", "smb://XBMC/movies/The Avengers/Chris Evans-fanart.jpg" )
+
+DATA
+    __all__ = ['getArt', 'setArt', 'dbVersion']
+    __package__ = None
+    dbVersion = 64
+
