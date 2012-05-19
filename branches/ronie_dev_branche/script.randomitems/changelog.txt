@@ -5,7 +5,7 @@ v3.0.9
 - updated README.txt
 
 v3.0.8
-- completly rewrited
+- completely rewrites
 - added: episode "RandomEpisode.%d.banner", "RandomEpisode.%d.logo", "RandomEpisode.%d.clearart", "RandomEpisode.%d.poster"
 - changed: script.module.simplejson optional required (use json integration in python)
 
