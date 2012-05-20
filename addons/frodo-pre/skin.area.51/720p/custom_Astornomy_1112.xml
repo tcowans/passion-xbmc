@@ -1,0 +1,163 @@
+<window type="dialog" id="1112">
+	<defaultcontrol>61</defaultcontrol>
+	<onload>ClearProperty(CurrentPhase)</onload>
+	<onload>SetProperty(CurrentPhaseImage,$INFO[Window(Weather).Property(Current.Earth.Phase.Image)])</onload>
+	<onload>SetProperty(CurrentPhaseLabel,What Earth Looks Like Now)</onload>
+	<onload>AlarmClock(CurrentPhase,SetFocus(10),0:10,silent,loop)</onload>
+	<onunload>CancelAlarm(CurrentPhase,true)</onunload>
+	<onunload>ClearProperty(CurrentPhase)</onunload>
+	<controls>
+		<control type="button" id="10">
+			<description>Dummy button</description>
+			<label>-</label>
+			<font>-</font>
+			<texturefocus>-</texturefocus>
+			<texturenofocus>-</texturenofocus>
+			<onfocus condition="!StringCompare(Window.Property(CurrentPhase),1)">SetFocus(11)</onfocus>
+			<onfocus condition="StringCompare(Window.Property(CurrentPhase),1)">SetFocus(12)</onfocus>
+			<onleft>61</onleft>
+			<onright>61</onright>
+			<onup>61</onup>
+			<ondown>61</ondown>
+		</control>
+		<control type="button" id="11">
+			<description>Dummy button</description>
+			<label>-</label>
+			<font>-</font>
+			<texturefocus>-</texturefocus>
+			<texturenofocus>-</texturenofocus>
+			<onfocus>SetProperty(CurrentPhaseImage,$INFO[Window(Weather).Property(Current.Moon.Phase.Image)])</onfocus>
+			<onfocus>SetProperty(CurrentPhaseLabel,What the Moon Looks Like Now)</onfocus>
+			<onfocus>SetProperty(CurrentPhase,1)</onfocus>
+			<onleft>61</onleft>
+			<onright>61</onright>
+			<onup>61</onup>
+			<ondown>61</ondown>
+		</control>
+		<control type="button" id="12">
+			<description>Dummy button</description>
+			<label>-</label>
+			<font>-</font>
+			<texturefocus>-</texturefocus>
+			<texturenofocus>-</texturenofocus>
+			<onfocus>SetProperty(CurrentPhaseImage,$INFO[Window(Weather).Property(Current.Earth.Phase.Image)])</onfocus>
+			<onfocus>SetProperty(CurrentPhaseLabel,What Earth Looks Like Now)</onfocus>
+			<onfocus>ClearProperty(CurrentPhase)</onfocus>
+			<onleft>61</onleft>
+			<onright>61</onright>
+			<onup>61</onup>
+			<ondown>61</ondown>
+		</control>
+		<control type="group">
+			<animation effect="slide" start="1100,0" end="0,0" time="400" tween="quadratic" easing="out">WindowOpen</animation>
+			<animation effect="slide" start="0,0" end="1100,0" time="400" tween="quadratic" easing="out">WindowClose</animation>
+			<control type="image">
+				<posx>180</posx>
+				<posy>0</posy>
+				<width>1100</width>
+				<height>720</height>
+				<texture border="15,0,0,0" flipx="true">MediaBladeSub.png</texture>
+			</control>
+			<control type="image">
+				<posx>190</posx>
+				<posy>0</posy>
+				<width>1080</width>
+				<height>720</height>
+				<fadetime>1000</fadetime>
+				<aspectratio>scale</aspectratio>
+				<texture>$INFO[Window.Property(CurrentPhaseImage)]</texture>
+			</control>
+			<control type="button">
+				<description>Close Window button</description>
+				<posx>200</posx>
+				<posy>0</posy>
+				<width>64</width>
+				<height>32</height>
+				<label>-</label>
+				<font>-</font>
+				<onclick>PreviousMenu</onclick>
+				<texturefocus>DialogCloseButton-focus.png</texturefocus>
+				<texturenofocus>DialogCloseButton.png</texturenofocus>
+				<onleft>61</onleft>
+				<onright>61</onright>
+				<onup>61</onup>
+				<ondown>61</ondown>
+				<visible>system.getbool(input.enablemouse)</visible>
+			</control>
+			<control type="group">
+				<animation effect="fade" delay="400" start="0" end="100" time="200">WindowOpen</animation>
+				<animation effect="fade" start="100" end="0" time="200">WindowClose</animation>
+				<control type="label">
+					<description>header label</description>
+					<posx>210</posx>
+					<posy>40</posy>
+					<width>1000</width>
+					<height>30</height>
+					<font>font24_title</font>
+					<align>center</align>
+					<aligny>center</aligny>
+					<textcolor>selected</textcolor>
+					<shadowcolor>black</shadowcolor>
+					<label>Astronomy[CR]$INFO[Window(Weather).Property(Location)]: $INFO[Window(Weather).Property(Current.Location.LocalTime)]</label>
+				</control>
+				<control type="label">
+					<description>header label</description>
+					<posx>210</posx>
+					<posy>60r</posy>
+					<width>1000</width>
+					<height>30</height>
+					<font>font13_title</font>
+					<align>center</align>
+					<aligny>center</aligny>
+					<textcolor>selected</textcolor>
+					<shadowcolor>black</shadowcolor>
+					<label>$INFO[Window.Property(CurrentPhaseLabel)]</label>
+				</control>
+				<control type="textbox">
+					<description>textarea</description>
+					<posx>210</posx>
+					<posy>110</posy>
+					<width>495</width>
+					<height>600</height>
+					<font>font13_title</font>
+					<align>right</align>
+					<textcolor>blue</textcolor>
+					<shadowcolor>black</shadowcolor>
+					<pagecontrol>61</pagecontrol>
+					<label>[CR]Astro Twilight Start-End:[CR]Nautical Twilight Start-End:[CR]Civil Twilight Start-End:[CR]Sunrise &amp; Sunset:[CR]Sun Azimuth:[CR]Length of day:[CR]Difference:[CR]Solar noon Time:[CR]Solar noon Altitude:[CR]Solar noon Distance:[CR][CR]Moonrise &amp; Moonset:[CR]Moon Azimuth:[CR]Meridian Passing Time:[CR]Meridian Passing Altitude:[CR]Meridian Passing Distance:[CR]Illuminated:[CR]Moon Phase:[CR]</label>
+				</control>
+				<control type="textbox">
+					<description>textarea</description>
+					<posx>715</posx>
+					<posy>110</posy>
+					<width>495</width>
+					<height>600</height>
+					<font>font13_title</font>
+					<align>left</align>
+					<textcolor>grey2</textcolor>
+					<shadowcolor>black</shadowcolor>
+					<pagecontrol>61</pagecontrol>
+					<label>[CR]$INFO[Window(Weather).Property(Current.AstroTwilight.Start)]$INFO[Window(Weather).Property(Current.AstroTwilight.End), - ][CR]$INFO[Window(Weather).Property(Current.NauticTwilight.Start)]$INFO[Window(Weather).Property(Current.NauticTwilight.End), - ][CR]$INFO[Window(Weather).Property(Current.CivilTwilight.Start)]$INFO[Window(Weather).Property(Current.CivilTwilight.End), - ][CR]$INFO[Window(Weather).Property(Current.Sunrise)]$INFO[Window(Weather).Property(Current.Sunset), - ][CR]$INFO[Window(Weather).Property(Current.Sunrise.Azimuth),,°]$INFO[Window(Weather).Property(Current.Sunset.Azimuth), - ,°][CR]$INFO[Window(Weather).Property(Current.Sun.Length)][CR]$INFO[Window(Weather).Property(Current.Sun.Diff)][CR]$INFO[Window(Weather).Property(Current.Solarnoon.Time)][CR]$INFO[Window(Weather).Property(Current.Solarnoon.Altitude),,°][CR]$INFO[Window(Weather).Property(Current.Solarnoon.Distance)][CR][CR]$INFO[Window(Weather).Property(Current.Moonrise)]$INFO[Window(Weather).Property(Current.Moonset), - ][CR]$INFO[Window(Weather).Property(Current.Moonrise.Azimuth),,°]$INFO[Window(Weather).Property(Current.Moonset.Azimuth), - ,°][CR]$INFO[Window(Weather).Property(Current.Moon.Meridian.Time)][CR]$INFO[Window(Weather).Property(Current.Moon.Meridian.Altitude),,°][CR]$INFO[Window(Weather).Property(Current.Moon.Meridian.Distance)][CR]$INFO[Window(Weather).Property(Current.Moon.Meridian.Illuminated)][CR]$INFO[Window(Weather).Property(Current.Moon.Phase)][CR]</label>
+				</control>
+				<control type="scrollbar" id="61">
+					<posx>1220</posx>
+					<posy>90</posy>
+					<width>25</width>
+					<height>600</height>
+					<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
+					<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
+					<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
+					<textureslidernib>ScrollBarNib.png</textureslidernib>
+					<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+					<onleft>61</onleft>
+					<onright>61</onright>
+					<ondown>61</ondown>
+					<onup>61</onup>
+					<showonepage>true</showonepage>
+					<orientation>vertical</orientation>
+				</control>
+			</control>
+		</control>
+		<include>Clock</include>
+	</controls>
+</window>

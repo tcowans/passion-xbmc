@@ -1,0 +1,114 @@
+<window type="dialog" id="1114">
+	<defaultcontrol always="true">10</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+	<onload>SetProperty(showcitieslayout,1)</onload>
+	<onload>RunScript(special://skin/scripts/weatherworld/default.py,time=15&limit=6&mapsize=1280x720&tilesize=360x60&window=11114&windowback=11113)</onload>
+	<onunload>ParentDir</onunload>
+	<controls>
+		<control type="group">
+			<include>Window_OpenClose_Animation</include>
+			<include>WeatherWorldGroup2601</include>
+			<include>WeatherWorldGroup2602</include>
+			<include>WeatherWorldGroup2603</include>
+			<include>WeatherWorldGroup2604</include>
+			<include>WeatherWorldGroup2605</include>
+			<include>WeatherWorldGroup2606</include>
+		</control>
+		<control type="group">
+			<include>Window_OpenClose_Animation</include>
+			<animation effect="slide" start="0,0" end="-90,0" time="0" condition="system.getbool(input.enablemouse)">Conditional</animation>
+			<control type="label">
+				<description>Cities Count Label</description>
+				<posx>40r</posx>
+				<posy>53r</posy>
+				<width>500</width>
+				<height>20</height>
+				<font>font12</font>
+				<textcolor>grey</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<scroll>false</scroll>
+				<align>right</align>
+				<aligny>center</aligny>
+				<label>$INFO[Window.Property(totals),Remaining Cities ([COLOR=blue],[/COLOR])]</label>
+			</control>
+			<control type="label">
+				<description>Duration Label</description>
+				<posx>40r</posx>
+				<posy>32r</posy>
+				<width>500</width>
+				<height>20</height>
+				<font>font12</font>
+				<textcolor>grey</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<scroll>false</scroll>
+				<align>right</align>
+				<aligny>center</aligny>
+				<label>$INFO[Window.Property(runningtime),$LOCALIZE[2050] ([COLOR=blue],[/COLOR])]</label>
+			</control>
+		</control>
+		<include>MainWindowMouseButtons</include>
+		<control type="button" id="10">
+			<description>Dummy button</description>
+			<label>-</label>
+			<font>-</font>
+			<texturefocus>-</texturefocus>
+			<texturenofocus>-</texturenofocus>
+			<onleft>9000</onleft>
+			<onright>9000</onright>
+			<onup>9000</onup>
+			<ondown>9000</ondown>
+		</control>
+		<control type="group">
+			<posx>-250</posx>
+			<include>SideBladeLeft</include>
+			<control type="grouplist" id="9000">
+				<posx>0</posx>
+				<posy>110</posy>
+				<width>250</width>
+				<height>600</height>
+				<onleft>9000</onleft>
+				<onright>10</onright>
+				<onup>9000</onup>
+				<ondown>9000</ondown>
+				<onback>50</onback>
+				<itemgap>0</itemgap>
+				<control type="label" id="200">
+					<width>250</width>
+					<height>35</height>
+					<font>font12</font>
+					<label>31006</label>
+					<textcolor>blue</textcolor>
+					<align>center</align>
+					<aligny>center</aligny>
+				</control>
+				<control type="radiobutton" id="20">
+					<description>View As button</description>
+					<textwidth>235</textwidth>
+					<include>ButtonCommonValues</include>
+					<label>Show Cities</label>
+					<selected>StringCompare(Window(1113).Property(showcities),1)</selected>
+					<onclick condition="StringCompare(Window(1113).Property(showcities),1)">ClearProperty(showcities,1113)</onclick>
+					<onclick condition="!StringCompare(Window(1113).Property(showcities),1)">SetProperty(showcities,1,1113)</onclick>
+				</control>
+				<control type="radiobutton" id="21">
+					<description>View As button</description>
+					<textwidth>235</textwidth>
+					<include>ButtonCommonValues</include>
+					<label>Show Icons</label>
+					<selected>StringCompare(Window(1113).Property(showcitiesicons),1)</selected>
+					<onclick condition="StringCompare(Window(1113).Property(showcitiesicons),1)">ClearProperty(showcitiesicons,1113)</onclick>
+					<onclick condition="!StringCompare(Window(1113).Property(showcitiesicons),1)">SetProperty(showcitiesicons,1,1113)</onclick>
+				</control>
+				<control type="button" id="22">
+					<description>Refresh button</description>
+					<textwidth>235</textwidth>
+					<include>ButtonCommonValues</include>
+					<label>184</label>
+					<onclick>SetProperty(refreshcities,1)</onclick>
+				</control>
+				<include>CommonNowPlaying_Controls</include>
+			</control>
+		</control>
+		<include>Clock</include>
+	</controls>
+</window>
