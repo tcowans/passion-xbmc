@@ -1,0 +1,23 @@
+<window>
+	<defaultcontrol>-</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+	<onload condition="IsEmpty(Window(Home).Property(WidgetsLaunched)) + Skin.HasSetting(Use_Intro_Movie) + System.HasAddon(script.xbmc.intro.movie)">RunScript(script.xbmc.intro.movie)</onload>
+	<onload condition="IsEmpty(Window(Home).Property(WidgetsLaunched)) + !Skin.HasSetting(HomepageHideMostPopularPeoples) + System.HasAddon(script.metadata.actors)">RunScript(script.metadata.actors,borntoday,10)</onload>
+	<onload condition="IsEmpty(Window(Home).Property(WidgetsLaunched))">RunScript(special://skin/scripts/RandomFeaturedAddons.py)</onload>
+	<onload>SetProperty(WidgetsLaunched,1,Home)</onload>
+
+	<onload condition="Skin.HasSetting(Use_Startup_Playlist)">PlayMedia($INFO[Skin.String(Startup_Playlist_Path)])</onload>
+	<!-- Remember: Don't ReplaceWindow(Home) if RunScript(script.xbmc.intro.movie), after play intro the script ReplaceWindow(Home) -->
+	<onload condition="!Skin.HasSetting(Use_Intro_Movie) + System.HasAddon(script.xbmc.intro.movie)">ReplaceWindow(Home)</onload>
+	<onload condition="!System.HasAddon(script.xbmc.intro.movie)">ReplaceWindow(Home)</onload>
+	<controls>
+		<include condition="!Skin.HasSetting(Use_Intro_Movie)">CommonVideoBackground</include>
+		<control type="videowindow">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1280</width>
+			<height>720</height>
+			<visible>Player.HasVideo + System.HasAddon(script.xbmc.intro.movie)</visible>
+		</control>
+	</controls>
+</window>
