@@ -52,13 +52,30 @@
   </extension>
 </addon>
 
+<addon id="script.widget.weatherworld"
+       name="Weather World"
+       version="1.0.0"
+       provider-name="Frost (passion-xbmc.org)">
+  <requires>
+    <import addon="xbmc.python" version="2.0"/>
+  </requires>
+  <extension point="xbmc.python.library"
+             library="default.py" />
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">Weather around the World</summary>
+    <description lang="en">Weather around the World</description>
+    <platform>all</platform>
+  </extension>
+</addon>
+
 <addon
   id="skin.area.51"
-  version="2.1.0"
+  version="2.1.0.1"
   name="Area 51"
   provider-name="Frost (passion-xbmc.org)">
   <requires>
     <import addon="xbmc.gui" version="3.00"/>
+    <import addon="script.widget.weatherworld" version="1.0.0"/>
   </requires>
   <extension
     point="xbmc.gui.skin"

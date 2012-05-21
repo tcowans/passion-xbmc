@@ -15,7 +15,7 @@
 	<onload>SetProperty(WidgetsLaunched,1)</onload>
 
 	<onload>RunScript(special://skin/scripts/AutoMoveWidgets.py)</onload>
-	<onload>RunScript(special://skin/scripts/weatherworld/default.py,time=15&limit=6&mapsize=1280x720&tilesize=360x60&window=10000&condition=Container(9000).Hasfocus(7))</onload>
+	<onload>RunScript(script.widget.weatherworld,time=15&limit=6&mapsize=1280x720&tilesize=360x60&window=10000&condition=Container(9000).Hasfocus(7))</onload>
 
 	<!--<onload condition="!Skin.HasSetting(HomepageHideWidgetView2)">RunScript(special://skin/scripts/LatitudeLongitudeControls.py)</onload>-->
 	<!--<onload condition="!Skin.HasSetting(HomepageHideWidgetView2)">AlarmClock(WeatherAutoNext,RunScript(special://skin/scripts/LatitudeLongitudeControls.py,Weather.LocationNext),3,silent,loop)</onload>-->
