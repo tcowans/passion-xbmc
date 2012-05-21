@@ -2,7 +2,7 @@
 	<defaultcontrol always="true">10</defaultcontrol>
 	<allowoverlay>no</allowoverlay>
 	<onload>SetProperty(showcitieslayout,1)</onload>
-	<onload>RunScript(special://skin/scripts/weatherworld/default.py,time=15&limit=6&mapsize=1280x720&tilesize=360x60&window=11114&windowback=11113)</onload>
+	<onload>RunScript(script.widget.weatherworld,time=15&limit=6&mapsize=1280x720&tilesize=360x60&window=11114&windowback=11113)</onload>
 	<onunload>ParentDir</onunload>
 	<controls>
 		<control type="group">
