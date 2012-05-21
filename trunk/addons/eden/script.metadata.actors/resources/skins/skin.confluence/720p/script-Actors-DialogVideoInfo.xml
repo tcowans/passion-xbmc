@@ -313,13 +313,13 @@
 								<visible>!IsEmpty(ListItem.Year)</visible>
 							</item>
 							<item>
-								<label>Release Date:</label>
+								<label>$ADDON[script.metadata.actors 32022]:</label>
 								<label2>$INFO[ListItem.Date]</label2>
 								<onclick>-</onclick>
 								<visible>!IsEmpty(ListItem.Date)</visible>
 							</item>
 							<item>
-								<label>Release Date:</label>
+								<label>$ADDON[script.metadata.actors 32022]:</label>
 								<label2>$INFO[ListItem.Property(releasedate)]</label2>
 								<onclick>-</onclick>
 								<visible>!IsEmpty(ListItem.Property(releasedate)) + IsEmpty(ListItem.Date)</visible>

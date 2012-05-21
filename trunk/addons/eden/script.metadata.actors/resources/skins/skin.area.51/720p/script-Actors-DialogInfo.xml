@@ -426,7 +426,7 @@
 						<scroll>true</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>[COLOR=blue]Release Date:[/COLOR] $INFO[Container(150).ListItem.Property(releasedate)]</label>
+						<label>[COLOR=blue]$ADDON[script.metadata.actors 32022]:[/COLOR] $INFO[Container(150).ListItem.Property(releasedate)]</label>
 						<visible>!IsEmpty(Container(150).ListItem.Property(releasedate))</visible>
 					</control>
 					<control type="label">
@@ -450,7 +450,7 @@
 						<scroll>true</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>[COLOR=blue]Role:[/COLOR] $INFO[Container(150).ListItem.Property(role)]</label>
+						<label>[COLOR=blue]$ADDON[script.metadata.actors 32018]:[/COLOR] $INFO[Container(150).ListItem.Property(role)]</label>
 						<visible>!IsEmpty(Container(150).ListItem.Property(role))</visible>
 					</control>
 					<control type="label">
@@ -462,7 +462,7 @@
 						<scroll>true</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>[COLOR=blue]Job:[/COLOR] $INFO[Container(150).ListItem.Property(job)]</label>
+						<label>[COLOR=blue]$ADDON[script.metadata.actors 32019]:[/COLOR] $INFO[Container(150).ListItem.Property(job)]</label>
 						<visible>!IsEmpty(Container(150).ListItem.Property(job))</visible>
 					</control>
 				</control>
