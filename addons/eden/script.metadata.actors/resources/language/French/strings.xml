@@ -11,9 +11,11 @@
   <string id="32015">Acteur adulte</string>
   <string id="32016">Alias</string>
   <string id="32017">Homepage</string>
-
+  <string id="32018">Rôle</string>
+  <string id="32019">Job</string>
   <string id="32020">%s ans</string>
   <string id="32021">depuis %s ans</string>
+  <string id="32022">Date de sortie</string>
 
   <string id="32024">Page</string>
   <string id="32025">Objets</string>

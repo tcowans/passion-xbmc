@@ -1,4 +1,9 @@
-﻿v0.9.3
+﻿v0.9.4
+ - updated: Korean language (thanks to piodio)
+ - fixed: hardcoded strings (Release Date, Job and Role)
+ - updated: English and French language for new strings
+
+v0.9.3
  - updated: German language (thanks to Eisi2005)
 
 v0.9.2
