@@ -9,7 +9,7 @@ SET projectversion=Frodo
 :: Set our source of language
 SET sourcelang=language
 :: Set our window title
-SET xml2po=..\tools\xbmc-xml2po\xbmc-xml2po_v091
+SET xml2po=..\tools\xbmc-xml2po\xbmc-xml2po
 
 :: Set our window title
 TITLE %projectname%-%projectversion% Build PO Strings!

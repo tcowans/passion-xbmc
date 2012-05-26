@@ -1,3 +1,6 @@
+3.0.1
+ - changed: language files to modified PO file. Handle new format (id in msgctx field)
+
 3.0.0
  - updated: to frodo-pre (don't use this version on eden)
 

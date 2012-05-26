@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: script.moviesets-Frodo\n"
 "Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
-"POT-Creation-Date: 2012-05-19 20:26+0000\n"
+"POT-Creation-Date: 2012-05-26 13:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -13,253 +13,247 @@ msgstr ""
 "Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: id:32000
+msgctxt "#32000"
 msgid "Movie Sets"
 msgstr "Filmsets"
 
-#: id:32001
-msgctxt "Auto context with id 32001"
+msgctxt "#32001"
 msgid "Manager Sets"
 msgstr "Manager Sets"
 
-#: id:32002
-msgctxt "Auto context with id 32002"
+msgctxt "#32002"
 msgid "Sets"
 msgstr "Sets"
 
-#: id:32003
+msgctxt "#32003"
 msgid "[Set] "
 msgstr "[Set] "
 
-#: id:32004
+msgctxt "#32004"
 msgid "[Movie] "
 msgstr "[Film] "
 
-#: id:32050
+msgctxt "#32050"
 msgid "General"
 msgstr "Allgemein"
 
-#: id:32051
+msgctxt "#32051"
 msgid "Show busy dialog on retrieving info"
 msgstr "Show busy dialog on retrieving info"
 
-#: id:32052
+msgctxt "#32052"
 msgid "Label Separator"
 msgstr "Label Separator"
 
-#: id:32053
+msgctxt "#32053"
 msgid "Movies order of each set"
 msgstr "Filmanordnung in jedem Set"
 
-#: id:32060
+msgctxt "#32060"
 msgid "Maintenance"
 msgstr "Wartung"
 
-#: id:32061
+msgctxt "#32061"
 msgid "Show Changelog"
 msgstr "Changelog anzeigen"
 
-#: id:32062
+msgctxt "#32062"
 msgid "Show InfoLabels"
 msgstr "InfoLabel anzeigen"
 
-#: id:32063
+msgctxt "#32063"
 msgid "Show License"
 msgstr "Lizenz anzeigen"
 
-#: id:32100
+msgctxt "#32100"
 msgid "Add Movies..."
 msgstr "Film hinzufügen..."
 
-#: id:32101
+msgctxt "#32101"
 msgid "Select movie for set [%s]"
 msgstr "Wähle Film für Set [%s]"
 
-#: id:32102
+msgctxt "#32102"
 msgid "Confirm add movie to set"
 msgstr "Film zum Set hinzufügen bestätigen"
 
-#: id:32103
+msgctxt "#32103"
 msgid "Add this movie '%s'"
 msgstr "Hinzufügen des Films '%s'"
 
-#: id:32104
+msgctxt "#32104"
 msgid "To this set '%s'"
 msgstr "zum Set '%s'"
 
-#: id:32110
+msgctxt "#32110"
 msgid "Remove from movieset"
 msgstr "Aus Filmset entfernen"
 
-#: id:32111
-msgctxt "Auto context with id 32111"
+msgctxt "#32111"
 msgid "Remove movie of set [%s]"
 msgstr "Entferne Film aus dem Set [%s]"
 
-#: id:32112
+msgctxt "#32112"
 msgid "Confirm remove movie of set"
 msgstr "Entfernen des Films aus dem Set bestätigen"
 
-#: id:32113
+msgctxt "#32113"
 msgid "Remove this movie '%s'"
 msgstr "Entferne den Film '%s'"
 
-#: id:32114
+msgctxt "#32114"
 msgid "Of this set '%s'"
 msgstr "aus dem Set '%s'"
 
-#: id:32120
+msgctxt "#32120"
 msgid "Set movieset fanart"
 msgstr "Wähle Filmset Fanart"
 
-#: id:32121
+msgctxt "#32121"
 msgid "Select one fanart or more for extrafanart"
 msgstr "Wähle ein oder mehrere Fanart für Extrafanart"
 
-#: id:32122
+msgctxt "#32122"
 msgid "Confirm Downloading..."
 msgstr "Bestätige runterladen.."
 
-#: id:32123
+msgctxt "#32123"
 msgid "%i of %i have been selected!"
 msgstr "%i von %i wurden ausgewählt!"
 
-#: id:32124
+msgctxt "#32124"
 msgid "Are you sure download this files?"
 msgstr "Willst Du diese Dateien runterladen?"
 
-#: id:32125
+msgctxt "#32125"
 msgid "Download: %i of %i - %i%%"
 msgstr "Download: %i von %i - %i%%"
 
-#: id:32126
+msgctxt "#32126"
 msgid "Choose folder for "
 msgstr "Wähle Verzeichnis für "
 
-#: id:32127
+msgctxt "#32127"
 msgid "extrafanart"
 msgstr "Extrafanart"
 
-#: id:32128
+msgctxt "#32128"
 msgid "extrathumb"
 msgstr "Extrabild"
 
-#: id:32130
+msgctxt "#32130"
 msgid "Set movieset thumb"
 msgstr "Filmset Cover auswählen"
 
-#: id:32131
+msgctxt "#32131"
 msgid "Select one thumb or more for extrathumb"
 msgstr "Wähle ein oder mehrere Bild für Extrabild"
 
-#: id:32135
+msgctxt "#32135"
 msgid "Confirm overwrite..."
 msgstr "Überschreiben bestätigen..."
 
-#: id:32136
+msgctxt "#32136"
 msgid "Do you want overwrite your existing files?"
 msgstr "Willst Du deine vorhandenen Dateien überschreiben?"
 
-#: id:32140
+msgctxt "#32140"
 msgid "Remove this movieset [%s]"
 msgstr "Entferne das Filmset [%s]"
 
-#: id:32141
+msgctxt "#32141"
 msgid "Remove movieset from library"
 msgstr "Entferne Filmset aus Sammlung"
 
-#: id:32200
+msgctxt "#32200"
 msgid "Add to movieset"
 msgstr "Hinzufügen zum Filmset"
 
-#: id:32201
+msgctxt "#32201"
 msgid "Select movieset for [%s]"
 msgstr "Wähle Filmset für [%s]"
 
-#: id:32210
-msgctxt "Auto context with id 32210"
+msgctxt "#32210"
 msgid "Remove movie of set [%s]"
 msgstr "Entferne Film aus dem Set [%s]"
 
-#: id:32220
+msgctxt "#32220"
 msgid "Edit movie sorttitle"
 msgstr "Film Sortiertitel ändern"
 
-#: id:32221
+msgctxt "#32221"
 msgid "Edit movieset title"
 msgstr "Filmset Titel ändern"
 
-#: id:32300
+msgctxt "#32300"
 msgid "Add movies to existing movieset"
 msgstr "Füge Filme zu bestehendem Filmset hinzu"
 
-#: id:32301
+msgctxt "#32301"
 msgid "Select movie"
 msgstr "Wähle Film"
 
-#: id:32302
+msgctxt "#32302"
 msgid "Select movieset for movie [%s]"
 msgstr "Wähle Filmset für Film [%s]"
 
-#: id:32310
+msgctxt "#32310"
 msgid "Remove movies to existing movieset"
 msgstr "Remove movies to existing movieset"
 
-#: id:32311
+msgctxt "#32311"
 msgid "Select movieset"
 msgstr "Wähle Filmset"
 
-#: id:32320
+msgctxt "#32320"
 msgid "Remove existing movieset"
 msgstr "Entferne bestehendes Filmset"
 
-#: id:32321
+msgctxt "#32321"
 msgid "Select movieset to remove"
 msgstr "Wähle Filmset zum entfernen"
 
-#: id:32330
+msgctxt "#32330"
 msgid "Create new movieset"
 msgstr "neues Filmset erstellen"
 
-#: id:32331
+msgctxt "#32331"
 msgid "Enter title of set"
 msgstr "Settitel eingeben"
 
-#: id:33000
-msgctxt "Auto context with id 33000"
+msgctxt "#33000"
 msgid "Manager Sets"
 msgstr "Manager Sets"
 
-#: id:33001
-msgctxt "Auto context with id 33001"
+msgctxt "#33001"
 msgid "Sets"
 msgstr "Sets"
 
-#: id:33002
+msgctxt "#33002"
 msgid "Info Set"
 msgstr "Info Set"
 
-#: id:33004
+msgctxt "#33004"
 msgid "[Set]"
 msgstr "[Set]"
 
-#: id:33100
+msgctxt "#33100"
 msgid "Show Info of Movie Sets in the library"
 msgstr "Filmsets Informationen in Sammlung anzeigen"
 
-#: id:33101
+msgctxt "#33101"
 msgid "Extra Buttons"
 msgstr "Extra Buttons"
 
-#: id:33102
+msgctxt "#33102"
 msgid "Enable the manager's options in the library"
 msgstr "Anzeigen von Manager Optionen in der Sammlung"
 
-#: id:33103
+msgctxt "#33103"
 msgid "Enable \"Info Set\" in the context menu"
 msgstr "Anzeigen von \"Info Set\" im Kontextmenü"
 
-#: id:33104
+msgctxt "#33104"
 msgid "(Available with mouse only!)"
 msgstr "(Nur mit Maus verfügbar!)"
 
