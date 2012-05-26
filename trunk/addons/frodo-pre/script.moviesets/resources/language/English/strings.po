@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: script.moviesets-Frodo\n"
 "Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
-"POT-Creation-Date: 2012-05-19 20:26+0000\n"
+"POT-Creation-Date: 2012-05-26 13:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -15,247 +15,243 @@ msgstr ""
 
 #strings 32000 thru 32999 reserved for scripts
 
-#: id:32000
+msgctxt "#32000"
 msgid "Movie Sets"
 msgstr ""
 
-#: id:32001
-msgctxt "Auto context with id 32001"
+msgctxt "#32001"
 msgid "Manager Sets"
 msgstr ""
 
-#: id:32002
-msgctxt "Auto context with id 32002"
+msgctxt "#32002"
 msgid "Sets"
 msgstr ""
 
-#: id:32003
+msgctxt "#32003"
 msgid "[Set] "
 msgstr ""
 
-#: id:32004
+msgctxt "#32004"
 msgid "[Movie] "
 msgstr ""
 
 #category settings
 #empty strings from id 32005 to 32049
 
-#: id:32050
+msgctxt "#32050"
 msgid "General"
 msgstr ""
 
-#: id:32051
+msgctxt "#32051"
 msgid "Show busy dialog on retrieving info"
 msgstr ""
 
-#: id:32052
+msgctxt "#32052"
 msgid "Label Separator"
 msgstr ""
 
-#: id:32053
+msgctxt "#32053"
 msgid "Movies order of each set"
 msgstr ""
 
 #empty strings from id 32054 to 32059
 
-#: id:32060
+msgctxt "#32060"
 msgid "Maintenance"
 msgstr ""
 
-#: id:32061
+msgctxt "#32061"
 msgid "Show Changelog"
 msgstr ""
 
-#: id:32062
+msgctxt "#32062"
 msgid "Show InfoLabels"
 msgstr ""
 
-#: id:32063
+msgctxt "#32063"
 msgid "Show License"
 msgstr ""
 
 #strings Manager
 #empty strings from id 32064 to 32099
 
-#: id:32100
+msgctxt "#32100"
 msgid "Add Movies..."
 msgstr ""
 
-#: id:32101
+msgctxt "#32101"
 msgid "Select movie for set [%s]"
 msgstr ""
 
-#: id:32102
+msgctxt "#32102"
 msgid "Confirm add movie to set"
 msgstr ""
 
-#: id:32103
+msgctxt "#32103"
 msgid "Add this movie '%s'"
 msgstr ""
 
-#: id:32104
+msgctxt "#32104"
 msgid "To this set '%s'"
 msgstr ""
 
 #empty strings from id 32105 to 32109
 
-#: id:32110
+msgctxt "#32110"
 msgid "Remove from movieset"
 msgstr ""
 
-#: id:32111
-msgctxt "Auto context with id 32111"
+msgctxt "#32111"
 msgid "Remove movie of set [%s]"
 msgstr ""
 
-#: id:32112
+msgctxt "#32112"
 msgid "Confirm remove movie of set"
 msgstr ""
 
-#: id:32113
+msgctxt "#32113"
 msgid "Remove this movie '%s'"
 msgstr ""
 
-#: id:32114
+msgctxt "#32114"
 msgid "Of this set '%s'"
 msgstr ""
 
 #empty strings from id 32115 to 32119
 
-#: id:32120
+msgctxt "#32120"
 msgid "Set movieset fanart"
 msgstr ""
 
-#: id:32121
+msgctxt "#32121"
 msgid "Select one fanart or more for extrafanart"
 msgstr ""
 
-#: id:32122
+msgctxt "#32122"
 msgid "Confirm Downloading..."
 msgstr ""
 
-#: id:32123
+msgctxt "#32123"
 msgid "%i of %i have been selected!"
 msgstr ""
 
-#: id:32124
+msgctxt "#32124"
 msgid "Are you sure download this files?"
 msgstr ""
 
-#: id:32125
+msgctxt "#32125"
 msgid "Download: %i of %i - %i%%"
 msgstr ""
 
-#: id:32126
+msgctxt "#32126"
 msgid "Choose folder for "
 msgstr ""
 
-#: id:32127
+msgctxt "#32127"
 msgid "extrafanart"
 msgstr ""
 
-#: id:32128
+msgctxt "#32128"
 msgid "extrathumb"
 msgstr ""
 
 #empty string with id 32129
 
-#: id:32130
+msgctxt "#32130"
 msgid "Set movieset thumb"
 msgstr ""
 
-#: id:32131
+msgctxt "#32131"
 msgid "Select one thumb or more for extrathumb"
 msgstr ""
 
 #empty strings from id 32132 to 32134
 
-#: id:32135
+msgctxt "#32135"
 msgid "Confirm overwrite..."
 msgstr ""
 
-#: id:32136
+msgctxt "#32136"
 msgid "Do you want overwrite your existing files?"
 msgstr ""
 
 #empty strings from id 32137 to 32139
 
-#: id:32140
+msgctxt "#32140"
 msgid "Remove this movieset [%s]"
 msgstr ""
 
-#: id:32141
+msgctxt "#32141"
 msgid "Remove movieset from library"
 msgstr ""
 
 #empty strings from id 32142 to 32199
 
-#: id:32200
+msgctxt "#32200"
 msgid "Add to movieset"
 msgstr ""
 
-#: id:32201
+msgctxt "#32201"
 msgid "Select movieset for [%s]"
 msgstr ""
 
 #empty strings from id 32202 to 32209
 
-#: id:32210
-msgctxt "Auto context with id 32210"
+msgctxt "#32210"
 msgid "Remove movie of set [%s]"
 msgstr ""
 
 #empty strings from id 32211 to 32219
 
-#: id:32220
+msgctxt "#32220"
 msgid "Edit movie sorttitle"
 msgstr ""
 
-#: id:32221
+msgctxt "#32221"
 msgid "Edit movieset title"
 msgstr ""
 
 #empty strings from id 32222 to 32299
 
-#: id:32300
+msgctxt "#32300"
 msgid "Add movies to existing movieset"
 msgstr ""
 
-#: id:32301
+msgctxt "#32301"
 msgid "Select movie"
 msgstr ""
 
-#: id:32302
+msgctxt "#32302"
 msgid "Select movieset for movie [%s]"
 msgstr ""
 
 #empty strings from id 32303 to 32309
 
-#: id:32310
+msgctxt "#32310"
 msgid "Remove movies to existing movieset"
 msgstr ""
 
-#: id:32311
+msgctxt "#32311"
 msgid "Select movieset"
 msgstr ""
 
 #empty strings from id 32312 to 32319
 
-#: id:32320
+msgctxt "#32320"
 msgid "Remove existing movieset"
 msgstr ""
 
-#: id:32321
+msgctxt "#32321"
 msgid "Select movieset to remove"
 msgstr ""
 
 #empty strings from id 32322 to 32329
 
-#: id:32330
+msgctxt "#32330"
 msgid "Create new movieset"
 msgstr ""
 
-#: id:32331
+msgctxt "#32331"
 msgid "Enter title of set"
 msgstr ""
 
@@ -263,45 +259,43 @@ msgstr ""
 #skin strings
 #empty strings from id 32332 to 32999
 
-#: id:33000
-msgctxt "Auto context with id 33000"
+msgctxt "#33000"
 msgid "Manager Sets"
 msgstr ""
 
-#: id:33001
-msgctxt "Auto context with id 33001"
+msgctxt "#33001"
 msgid "Sets"
 msgstr ""
 
-#: id:33002
+msgctxt "#33002"
 msgid "Info Set"
 msgstr ""
 
 #empty string with id 33003
 
-#: id:33004
+msgctxt "#33004"
 msgid "[Set]"
 msgstr ""
 
 #empty strings from id 33005 to 33099
 
-#: id:33100
+msgctxt "#33100"
 msgid "Show Info of Movie Sets in the library"
 msgstr ""
 
-#: id:33101
+msgctxt "#33101"
 msgid "Extra Buttons"
 msgstr ""
 
-#: id:33102
+msgctxt "#33102"
 msgid "Enable the manager's options in the library"
 msgstr ""
 
-#: id:33103
+msgctxt "#33103"
 msgid "Enable \"Info Set\" in the context menu"
 msgstr ""
 
-#: id:33104
+msgctxt "#33104"
 msgid "(Available with mouse only!)"
 msgstr ""
 

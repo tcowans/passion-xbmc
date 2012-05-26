@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: script.moviesets-Frodo\n"
 "Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
-"POT-Creation-Date: 2012-05-19 20:26+0000\n"
+"POT-Creation-Date: 2012-05-26 13:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -13,253 +13,247 @@ msgstr ""
 "Language: el\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: id:32000
+msgctxt "#32000"
 msgid "Movie Sets"
 msgstr "Ομάδες Ταινιών"
 
-#: id:32001
-msgctxt "Auto context with id 32001"
+msgctxt "#32001"
 msgid "Manager Sets"
 msgstr "Ομάδες Διαχειριστή"
 
-#: id:32002
-msgctxt "Auto context with id 32002"
+msgctxt "#32002"
 msgid "Sets"
 msgstr "Ομάδες"
 
-#: id:32003
+msgctxt "#32003"
 msgid "[Set] "
 msgstr "[Ομάδα] "
 
-#: id:32004
+msgctxt "#32004"
 msgid "[Movie] "
 msgstr "[Ταινία] "
 
-#: id:32050
+msgctxt "#32050"
 msgid "General"
 msgstr "Γενικά"
 
-#: id:32051
+msgctxt "#32051"
 msgid "Show busy dialog on retrieving info"
 msgstr "Εμφάνιση παράθυρου κατά τη λήψη πληροφοριών"
 
-#: id:32052
+msgctxt "#32052"
 msgid "Label Separator"
 msgstr "Διαχωριστικό Ετικετών"
 
-#: id:32053
+msgctxt "#32053"
 msgid "Movies order of each set"
 msgstr "Ταξινόμηση ταινιών εκάστοτε ομάδας"
 
-#: id:32060
+msgctxt "#32060"
 msgid "Maintenance"
 msgstr "Συντήρηση"
 
-#: id:32061
+msgctxt "#32061"
 msgid "Show Changelog"
 msgstr "Αρχείο Καταγραφής Αλλαγών"
 
-#: id:32062
+msgctxt "#32062"
 msgid "Show InfoLabels"
 msgstr "Εμφάνιση InfoLabels"
 
-#: id:32063
+msgctxt "#32063"
 msgid "Show License"
 msgstr "Προβολή Άδειας"
 
-#: id:32100
+msgctxt "#32100"
 msgid "Add Movies..."
 msgstr "Προσθήκη Ταινιών..."
 
-#: id:32101
+msgctxt "#32101"
 msgid "Select movie for set [%s]"
 msgstr "Επιλογή ταινίας για ομάδα [%s]"
 
-#: id:32102
+msgctxt "#32102"
 msgid "Confirm add movie to set"
 msgstr "Επιβεβαίωση προσθήκης ταινίας στην ομάδα"
 
-#: id:32103
+msgctxt "#32103"
 msgid "Add this movie '%s'"
 msgstr "Προσθήκη της ταινίας '%s'"
 
-#: id:32104
+msgctxt "#32104"
 msgid "To this set '%s'"
 msgstr "στην ομάδα '%s';"
 
-#: id:32110
+msgctxt "#32110"
 msgid "Remove from movieset"
 msgstr "Αφαίρεση από την ομάδα"
 
-#: id:32111
-msgctxt "Auto context with id 32111"
+msgctxt "#32111"
 msgid "Remove movie of set [%s]"
 msgstr "Αφαίρεση ταινίας από την ομάδα [%s]"
 
-#: id:32112
+msgctxt "#32112"
 msgid "Confirm remove movie of set"
 msgstr "Επιβεβαίωση αφαίρεσης ταινίας από την ομάδα"
 
-#: id:32113
+msgctxt "#32113"
 msgid "Remove this movie '%s'"
 msgstr "Αφαίρεση της ταινίας '%s'"
 
-#: id:32114
+msgctxt "#32114"
 msgid "Of this set '%s'"
 msgstr "από την ομάδα '%s';"
 
-#: id:32120
+msgctxt "#32120"
 msgid "Set movieset fanart"
 msgstr "Ορισμός fanart ομάδας"
 
-#: id:32121
+msgctxt "#32121"
 msgid "Select one fanart or more for extrafanart"
 msgstr "Επιλέξτε μία ή επιπλέον εικόνες fanart (extrafanart)"
 
-#: id:32122
+msgctxt "#32122"
 msgid "Confirm Downloading..."
 msgstr "Επιβεβαίωση Λήψης..."
 
-#: id:32123
+msgctxt "#32123"
 msgid "%i of %i have been selected!"
 msgstr "%i από %i έχουν επιλεγεί!"
 
-#: id:32124
+msgctxt "#32124"
 msgid "Are you sure download this files?"
 msgstr "Επιθυμείτε να κατεβάσετε αυτά τα αρχεία;"
 
-#: id:32125
+msgctxt "#32125"
 msgid "Download: %i of %i - %i%%"
 msgstr "Λήψη: %i από %i - %i%%"
 
-#: id:32126
+msgctxt "#32126"
 msgid "Choose folder for "
 msgstr "Επιλογή φακέλου για "
 
-#: id:32127
+msgctxt "#32127"
 msgid "extrafanart"
 msgstr "επιπλέον fanart (extrafanart)"
 
-#: id:32128
+msgctxt "#32128"
 msgid "extrathumb"
 msgstr "επιπλέον μικρογραφίες (extrathumbs)"
 
-#: id:32130
+msgctxt "#32130"
 msgid "Set movieset thumb"
 msgstr "Ορισμός μικρογραφίας ομάδας"
 
-#: id:32131
+msgctxt "#32131"
 msgid "Select one thumb or more for extrathumb"
 msgstr "Επιλέξτε μία ή επιπλέον μικρογραφίες (extrathumbs)"
 
-#: id:32135
+msgctxt "#32135"
 msgid "Confirm overwrite..."
 msgstr "Επιβεβαίωση αντικατάστασης..."
 
-#: id:32136
+msgctxt "#32136"
 msgid "Do you want overwrite your existing files?"
 msgstr "Να αντικατασταθούν τα υπάρχοντα αρχεία;"
 
-#: id:32140
+msgctxt "#32140"
 msgid "Remove this movieset [%s]"
 msgstr "Αφαίρεση αυτής της ομάδας ταινιών [%s]"
 
-#: id:32141
+msgctxt "#32141"
 msgid "Remove movieset from library"
 msgstr "Αφαίρεση ομάδας από τη συλλογή"
 
-#: id:32200
+msgctxt "#32200"
 msgid "Add to movieset"
 msgstr "Προσθήκη σε ομάδα ταινιών"
 
-#: id:32201
+msgctxt "#32201"
 msgid "Select movieset for [%s]"
 msgstr "Επιλογή ομάδας ταινιών για [%s]"
 
-#: id:32210
-msgctxt "Auto context with id 32210"
+msgctxt "#32210"
 msgid "Remove movie of set [%s]"
 msgstr "Αφαίρεση ταινίας από την ομάδα [%s]"
 
-#: id:32220
+msgctxt "#32220"
 msgid "Edit movie sorttitle"
 msgstr "Όνομα με το οποίο ταξινομείται η ταινία"
 
-#: id:32221
+msgctxt "#32221"
 msgid "Edit movieset title"
 msgstr "Αλλαγή ονόματος ομάδας"
 
-#: id:32300
+msgctxt "#32300"
 msgid "Add movies to existing movieset"
 msgstr "Προσθήκη ταινιών σε υπάρχουσα ομάδα"
 
-#: id:32301
+msgctxt "#32301"
 msgid "Select movie"
 msgstr "Επιλογή ταινίας"
 
-#: id:32302
+msgctxt "#32302"
 msgid "Select movieset for movie [%s]"
 msgstr "Επιλογή ομάδας ταινιών για την ταινία [%s]"
 
-#: id:32310
+msgctxt "#32310"
 msgid "Remove movies to existing movieset"
 msgstr "Μεταφορά ταινιών σε υπάρχουσες ομάδες"
 
-#: id:32311
+msgctxt "#32311"
 msgid "Select movieset"
 msgstr "Επιλογή ομάδας ταινιών"
 
-#: id:32320
+msgctxt "#32320"
 msgid "Remove existing movieset"
 msgstr "Αφαίρεση υπάρχουσας ομάδας ταινιών"
 
-#: id:32321
+msgctxt "#32321"
 msgid "Select movieset to remove"
 msgstr "Επιλογή ομάδας ταινιών για αφαίρεση"
 
-#: id:32330
+msgctxt "#32330"
 msgid "Create new movieset"
 msgstr "Δημιουργία νέας ομάδας"
 
-#: id:32331
+msgctxt "#32331"
 msgid "Enter title of set"
 msgstr "Εισάγετε το όνομα της ομάδας"
 
-#: id:33000
-msgctxt "Auto context with id 33000"
+msgctxt "#33000"
 msgid "Manager Sets"
 msgstr "Ομάδες Διαχειριστή"
 
-#: id:33001
-msgctxt "Auto context with id 33001"
+msgctxt "#33001"
 msgid "Sets"
 msgstr "Ομάδες"
 
-#: id:33002
+msgctxt "#33002"
 msgid "Info Set"
 msgstr "Πληροφορίες Ομάδας"
 
-#: id:33004
+msgctxt "#33004"
 msgid "[Set]"
 msgstr "[Ομάδα]"
 
-#: id:33100
+msgctxt "#33100"
 msgid "Show Info of Movie Sets in the library"
 msgstr "Προβολή Πληροφοριών των Ομάδων Ταινιών της συλλογής"
 
-#: id:33101
+msgctxt "#33101"
 msgid "Extra Buttons"
 msgstr "Επιπλέον Κουμπιά"
 
-#: id:33102
+msgctxt "#33102"
 msgid "Enable the manager's options in the library"
 msgstr "Ενεργοποίηση των επιλογών του διαχειριστή στη συλλογή"
 
-#: id:33103
+msgctxt "#33103"
 msgid "Enable \"Info Set\" in the context menu"
 msgstr "Ενεργοποιήστε τις \"Πληροφορίες Ομάδας\" στο μενού"
 
-#: id:33104
+msgctxt "#33104"
 msgid "(Available with mouse only!)"
 msgstr "(Διαθέσιμο μόνο με ποντίκι!)"
 
