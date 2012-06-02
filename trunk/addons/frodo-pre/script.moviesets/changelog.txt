@@ -1,3 +1,6 @@
+3.0.2
+ - updated: languages files PO
+
 3.0.1
  - changed: language files to modified PO file. Handle new format (id in msgctx field)
 
