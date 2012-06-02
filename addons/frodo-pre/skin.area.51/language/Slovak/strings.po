@@ -1,9 +1,13 @@
 # XBMC Media Center language file
+# Addon Name: Area 51
+# Addon id: skin.area.51
+# Addon version: 2.1.0.3
+# Addon Provider: Frost (passion-xbmc.org)
 msgid ""
 msgstr ""
-"Project-Id-Version: xbmc.skin.area.51-Frodo\n"
+"Project-Id-Version: XBMC-Addons\n"
 "Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
-"POT-Creation-Date: 2012-05-26 13:04+0000\n"
+"POT-Creation-Date: 2012-06-02 17:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -12,6 +16,18 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: sk\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2\n"
+
+msgctxt "Addon Summary"
+msgid "Area 51 is clone of Confluence skin by Jezz_X. (XBMC's default skin)"
+msgstr ""
+
+msgctxt "Addon Description"
+msgid "Area 51 is exactly same skin of Confluence.[CR]Except, the support of the most popular addons of Frost.[CR] • Metadata Actors[CR] • Movie Sets[CR] • TvTunes[CR] • XBMC Intro Movie[CR] • Weather Google"
+msgstr ""
+
+msgctxt "Addon Disclaimer"
+msgid "All credits is for original author Jezz_X, Team XBMC"
+msgstr ""
 
 msgctxt "#31000"
 msgid "Change Your"
@@ -620,4 +636,3 @@ msgstr "Šanca zrážok"
 msgctxt "#31909"
 msgid "Fetching forecast info..."
 msgstr "Zisťujem info o počasí..."
-

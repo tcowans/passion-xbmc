@@ -35,7 +35,7 @@
 </addon>
 
 <addon id="script.moviesets" name="Movie Sets (frodo-pre)"
-       version="3.0.1" provider-name="Frost (passion-xbmc.org)">
+       version="3.0.2" provider-name="Frost (passion-xbmc.org)">
   <requires>
     <import addon="xbmc.python" version="2.0"/>
     <import addon="script.module.pil" version="1.1.7" optional="true" />
@@ -70,7 +70,7 @@
 
 <addon
   id="skin.area.51"
-  version="2.1.0.2"
+  version="2.1.0.3"
   name="Area 51"
   provider-name="Frost (passion-xbmc.org)">
   <requires>

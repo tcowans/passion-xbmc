@@ -1,9 +1,13 @@
 # XBMC Media Center language file
+# Addon Name: Movie Sets (frodo-pre)
+# Addon id: script.moviesets
+# Addon version: 3.0.1
+# Addon Provider: Frost (passion-xbmc.org)
 msgid ""
 msgstr ""
-"Project-Id-Version: script.moviesets-Frodo\n"
+"Project-Id-Version: XBMC-Addons\n"
 "Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
-"POT-Creation-Date: 2012-05-26 13:01+0000\n"
+"POT-Creation-Date: 2012-06-02 17:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -12,6 +16,18 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: el\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+msgctxt "Addon Summary"
+msgid "Movie Sets Library and Manager"
+msgstr ""
+
+msgctxt "Addon Description"
+msgid "Movie Sets Library for skins / skinners and Manager for users"
+msgstr ""
+
+msgctxt "Addon Disclaimer"
+msgid "Comparison of skin features.[CR]http://wiki.xbmc.org/index.php?title=Comparison_of_skin_features"
+msgstr ""
 
 msgctxt "#32000"
 msgid "Movie Sets"
@@ -256,4 +272,3 @@ msgstr "Ενεργοποιήστε τις \"Πληροφορίες Ομάδας\
 msgctxt "#33104"
 msgid "(Available with mouse only!)"
 msgstr "(Διαθέσιμο μόνο με ποντίκι!)"
-
