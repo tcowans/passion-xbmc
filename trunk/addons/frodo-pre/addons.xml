@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addons>
+<addon id="plugin.video.tetesaclaques.tv"
+       name="Têtes à claques"
+       version="1.0.0"
+       provider-name="Thailog">
+  <requires>
+    <import addon="xbmc.python" version="2.0"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource"
+            library="default.py">
+        <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary>Têtes à claques, Série Tv et clips d'animations humoristiques.</summary>
+    <description>Têtes à claques, Série Tv et clips d'animations humoristiques.</description>
+  </extension>
+</addon>
+
 <addon id="repository.passion.xbmc.frodo.pre" name="Passion-XBMC.org Add-ons Frodo-pre"
        version="3.0.0" provider-name="Team Passion-XBMC">
     <extension point="xbmc.addon.repository"
