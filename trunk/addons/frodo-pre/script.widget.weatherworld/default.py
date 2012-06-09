@@ -101,6 +101,7 @@ class WeatherWorld:
         try: params = dict( [ arg.split( "=" ) for arg in sys.argv[ 1 ].replace( "&amp;", "&" ).split( "&" ) ] )
         except: print "Error to parse argv: %r" % repr( sys.argv )
 
+        self.colorDiffuse = params.get( "citycolordiffuse" ) or "FFFFFFFF"
         self.wait    = int( params.get( "time" )   or "10" )
         self.LIMIT   = int( params.get( "limit" )  or "6" )
         self.winID   = int( params.get( "window" ) ) #or "10000"
@@ -337,7 +338,7 @@ class WeatherWorld:
                 try:
                     lat, long = city[ "coords" ][ "lat" ][ 1 ], city[ "coords" ][ "long" ][ 1 ]
                     posx, posy = self.getPosition( float( lat ), float( long ), self.mapwidth, self.mapheight )
-                    self.listimages[ lat+long ] = xbmcgui.ControlImage( posx-4, posy-4, 8, 8, "radiobutton-focus.png" )
+                    self.listimages[ lat+long ] = xbmcgui.ControlImage( posx-4, posy-4, 8, 8, "radiobutton-focus.png", colorDiffuse="0x"+self.colorDiffuse )
 
                     layout = ( posx-10, posy-10, 20, 20 )
                     rect = Rect( *layout )
