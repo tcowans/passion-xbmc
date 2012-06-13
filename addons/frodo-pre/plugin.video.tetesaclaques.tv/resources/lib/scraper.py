@@ -85,13 +85,13 @@ def getClipID( ID=2893 ):
 
 
 def getClip( url ):
-    plot, subtitle, playpath = "", "", ""
+    plot, subtitle, playpath, playpath2 = "", "", "", ""
     html = get_html_source( url )
     try: plot = "".join( re.compile( '<div id="playerInfo">.*?<p>(.*?)</p>', re.S ).findall( html ) ).replace( "\n", " " )
     except: pass
-    try: subtitle, playpath = re.compile( "clip\:.*?captionUrl\:.*?'(.*?)'\,.*?scaling.*?url\:.*?'(.*?)'", re.S ).findall( html )[ 0 ]
+    try: subtitle, playpath, playpath2 = re.compile( "clip\:.*?captionUrl\:.*?'(.*?)'\,.*?bitrates.*?url\:.*?\"(.*?)\".*?url\:.*?\"(.*?)\"", re.S ).findall( html )[ 0 ]
     except: pass
-    return plot, subtitle, playpath
+    return plot, subtitle, playpath, playpath2
 
 
 def getCollection( page="1" ):
@@ -121,8 +121,9 @@ def getCollection( page="1" ):
             "plot":     "",
             "subtitle": "",
             "playpath": "",
+            "playpath2": "",
             }
-        clip[ "plot" ], clip[ "subtitle" ], clip[ "playpath" ] = getClip( item[ 0 ] )
+        clip[ "plot" ], clip[ "subtitle" ], clip[ "playpath" ], clip[ "playpath2" ] = getClip( item[ 0 ] )
 
         yield clip
 
@@ -154,8 +155,9 @@ def getEpisodes():
             "plot":     "",
             "subtitle": "",
             "playpath": "",
+            "playpath2": "",
             }
-        ep[ "plot" ], ep[ "subtitle" ], ep[ "playpath" ] = getClip( item[ 0 ] )
+        ep[ "plot" ], ep[ "subtitle" ], ep[ "playpath" ], ep[ "playpath2" ] = getClip( item[ 0 ] )
 
         yield ep
 
@@ -223,8 +225,9 @@ def getPersonnageClips( url ):
             "plot":     "",
             "subtitle": "",
             "playpath": "",
+            "playpath2": "",
             }
-        clip[ "plot" ], clip[ "subtitle" ], clip[ "playpath" ] = getClip( item[ 0 ] )
+        clip[ "plot" ], clip[ "subtitle" ], clip[ "playpath" ], clip[ "playpath2" ] = getClip( item[ 0 ] )
 
         yield clip
 
@@ -260,8 +263,9 @@ def getExtras():
                 "mp3":      mp3,
                 "subtitle": "",
                 "playpath": "",
+                "playpath2": "",
                 }
-            plot2, extra[ "subtitle" ], extra[ "playpath" ] = getClip( url )
+            plot2, extra[ "subtitle" ], extra[ "playpath" ], extra[ "playpath2" ] = getClip( url )
             if plot2 and not plot: extra[ "plot" ] = plot2
 
             yield extra
@@ -270,7 +274,7 @@ def getExtras():
 if ( __name__ == "__main__" ):
     import time
     t1 = time.time()
-    for item in getExtras():
+    for item in getEpisodes():
         print item
         print "-"*100
     print time.time() - t1
