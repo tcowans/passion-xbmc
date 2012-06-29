@@ -13,8 +13,8 @@ __addonID__      = "plugin.video.M6Replay"
 __author__       = "PECK, mighty_bombero, merindol, Temhil, beenje"
 __url__          = "http://passion-xbmc.org/index.php"
 __credits__      = "Team XBMC Passion"
-__date__         = "05-03-2012"
-__version__      = "2.0.2"
+__date__         = "29-06-2012"
+__version__      = "2.0.3"
 
 import urllib,sys,os,struct
 import base64
@@ -63,7 +63,7 @@ except:
     print_exc()
 
 # Server List
-srv_list = [ {'rtmp': "rtmpe://groupemsix.fcod.llnwd.net/a2883/d1",       'app': "a2883/d1"}]           # International
+srv_list = [ {'rtmp': "rtmpe://m6replayfs.fplive.net/m6replaytoken/streaming", 'app' : "m6replaytoken/streaming"}]
 
 # List of directories to check at startup
 dirCheckList   = ( CACHEDIR, )
@@ -271,8 +271,8 @@ class M6Replay:
                 
         elif ( "stream=" in sys.argv[ 2 ] ): 
             # Resolve URL in order to play a video
-            rtmp, app, playpath, flash_ver = self.get_rtmp_args()
-            url = rtmp + " app=" + app + " swfUrl=http://groupemsix.vo.llnwd.net/o24/u/players/ReplayPlayerV2Hds.swf playpath=" + playpath + " swfvfy=true socks=80.67.172.70:9050 flashVer=" + flash_ver
+            rtmp, app, playpath, flash_ver, swfUrl, filename = self.get_rtmp_args()
+            url = rtmp + " app=" + app + " swfUrl=" + swfUrl + " playpath=" + playpath + " swfvfy=true timeout=10 flashVer=" + flash_ver
             if rtmp =="":
                 url = playpath
 
@@ -290,11 +290,10 @@ class M6Replay:
                 # Hope that rtmpdump is in the path
                 rtmpdump = 'rtmpdump'
             download_path = self.get_download_path()
-            rtmp, app, playpath, flash_ver = self.get_rtmp_args()
-            filename =  os.path.basename(playpath)
+            rtmp, app, playpath, flash_ver, swfUrl, filename = self.get_rtmp_args()
             if self.check_path(download_path, filename):
                 full_filename = os.path.join(download_path, filename)
-                cmd = '%(rtmpdump)s -r %(rtmp)s -a %(app)s -y %(playpath)s -f "%(flash_ver)s" -o %(full_filename)s' % locals()
+                cmd = '%(rtmpdump)s -r "%(rtmp)s" -a "%(app)s" -y "%(playpath)s" -f "%(flash_ver)s" -W "%(swfUrl)s" -o %(full_filename)s' % locals()
                 print cmd
                 self.showNotification(__language__(30205), filename)
                 try:
@@ -317,7 +316,7 @@ class M6Replay:
         xbmc.executebuiltin('XBMC.Notification("%s", "%s")' % (header.encode( "utf-8", "ignore" ), message.encode( "utf-8", "ignore" )))
 
     def get_rtmp_args(self):
-        "Return rtmp args as a tuple (rtmp, app, playpath, flash_ver)"
+        "Return rtmp args as a tuple (rtmp, app, playpath, flash_ver, swfUrl, filename)"
         server_id = int( __settings__.getSetting( 'server' ) )
         if server_id > len(srv_list) - 1:
             print "Server id %d out of range. Server 0 forced." % server_id
@@ -325,8 +324,13 @@ class M6Replay:
         rtmp = srv_list[server_id]['rtmp']
         app = srv_list[server_id]['app']
         playpath = re.sub( "[ ]", "%20", sys.argv[ 2 ].split("=")[1] )
+        filename =  os.path.basename(playpath)
         flash_ver = 'LNX 11,1,102,62'
-        return (rtmp, app, playpath, flash_ver)
+        swfUrl = 'http://l3.player.m6.fr/swf/ReplayPlayerV2Hds.swf'
+        token_url = urllib.urlopen("http://www.m6replay.fr/tokenrtmp.php?cdn=lv3&videoUrl=" + playpath).read()
+        playpath += token_url[token_url.find("?"):]
+        app += token_url[token_url.find("?"):]
+        return (rtmp, app, playpath, flash_ver, swfUrl, filename)
 
     def check_path(self, path, filename):
         if os.path.isdir(path):
