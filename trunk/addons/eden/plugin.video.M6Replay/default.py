@@ -13,8 +13,8 @@ __addonID__      = "plugin.video.M6Replay"
 __author__       = "PECK, mighty_bombero, merindol, Temhil, beenje"
 __url__          = "http://passion-xbmc.org/index.php"
 __credits__      = "Team XBMC Passion"
-__date__         = "29-06-2012"
-__version__      = "2.0.3"
+__date__         = "04-08-2012"
+__version__      = "2.0.4"
 
 import urllib,sys,os,struct
 import base64
@@ -63,7 +63,8 @@ except:
     print_exc()
 
 # Server List
-srv_list = [ {'rtmp': "rtmpe://m6replayfs.fplive.net/m6replaytoken/streaming", 'app' : "m6replaytoken/streaming"}]
+srv_list = [{'rtmp':"rtmpe://groupemsix.fcod.llnwd.net/a2883/e1", 'app':"a2883/e1", 'cdn':'llnw'},
+            {'rtmp':"rtmpe://m6replayfs.fplive.net/m6replaytoken/streaming", 'app':"m6replaytoken/streaming", 'cdn':'lv3'}]
 
 # List of directories to check at startup
 dirCheckList   = ( CACHEDIR, )
@@ -323,11 +324,12 @@ class M6Replay:
             server_id = 0
         rtmp = srv_list[server_id]['rtmp']
         app = srv_list[server_id]['app']
+        cdn = srv_list[server_id]['cdn']
         playpath = re.sub( "[ ]", "%20", sys.argv[ 2 ].split("=")[1] )
         filename =  os.path.basename(playpath)
         flash_ver = 'LNX 11,1,102,62'
         swfUrl = 'http://l3.player.m6.fr/swf/ReplayPlayerV2Hds.swf'
-        token_url = urllib.urlopen("http://www.m6replay.fr/tokenrtmp.php?cdn=lv3&videoUrl=" + playpath).read()
+        token_url = urllib.urlopen("http://www.m6replay.fr/tokenrtmp.php?cdn=%s&videoUrl=%s" % (cdn, playpath)).read()
         playpath += token_url[token_url.find("?"):]
         app += token_url[token_url.find("?"):]
         return (rtmp, app, playpath, flash_ver, swfUrl, filename)
