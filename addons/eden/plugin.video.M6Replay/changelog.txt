@@ -1,3 +1,10 @@
+2.0.4 (04-08-2012) par beenje
++ Ajout d'un ancien serveur toujours compatible avec la librtmp 2.4
+Merci à Guillaume pour les informations!
++ Ce serveur 1 est utilisé par défaut
+Le serveur 3 est toujours disponible et nécessite une librtmp
+avec le support du handshake de type 10
+
 2.0.3 (29-06-2012) par beenje
 + Mise à jour après changement du site web (merci à spixun)
 + Attention: nécessite une librtmp avec le support du handshake de type 10
