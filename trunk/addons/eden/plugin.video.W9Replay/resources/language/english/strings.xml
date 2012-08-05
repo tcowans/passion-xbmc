@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!-- Les strings de 30000 à 30999 sont réservées aux paramètres plug-in -->
+  <!--GENERAL STRINGS -->
+  <string id="30000">W9 Replay</string>
+  <string id="30001">Diffusé le: </string>
+  <string id="30002">Disponible jusqu'au: </string>
+
+  <!--SETTINGS STRINGS -->
+  <string id="30010">Catalog</string>
+  <string id="30011">Catalog refresh delay (sec)</string>
+  
+  <string id="30020">Server</string>
+  <string id="30021">Video Server</string>
+  <string id="30022">Server 1</string>
+  <string id="30023">Server 2</string>
+  <string id="30024">Server 3</string>
+
+  <string id="30030">Debug</string>
+  <string id="30031">Activate Debug mode</string>
+  
+  <string id="30040">Advanced settings</string>
+
+  <string id="30060">Download</string>
+  <string id="30061">Always Ask for Download Location</string>
+  <string id="30062">Download Folder</string>
+  <string id="30063">rtmpdump full path</string>
+
+  <!--DIALOG STRINGS -->
+  <string id="30201">Error!</string>
+  
+  <string id="30205">Download in progress</string>
+  <string id="30206">Download complete</string>
+  <string id="30207">Download failed</string>
+  <string id="30208">Download cancelled</string>
+  <string id="30209">exists</string>
+</strings>
