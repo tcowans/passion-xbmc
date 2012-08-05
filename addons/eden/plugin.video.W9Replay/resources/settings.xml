@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+    <!-- GENERAL -->
+  	<category label="$LOCALIZE[128]">
+	    <!--
+	    <setting label="30010" type="lsep" />
+	    <setting label="30011" type="text" id="catalog_refresh_rate" default="18000" />
+	    -->
+	    <setting label="30020" type="lsep" />
+	    <setting label="30021" type="enum" id="server" lvalues="30024" default="0" />
+	</category>
+
+    <!-- ADVANCED -->
+  	<category label="30040">
+	    <setting label="30030" type="lsep" />
+	    <setting label="30031" type="bool" id="debug" default="false" />
+	</category>
+
+    <!-- DOWNLOAD -->
+	<category label="30060">
+            <setting id="downloadMode" type="bool" default="true" label="30061" />
+            <setting id="downloadPath" type="folder" source="auto" default="" enable="eq(-1,false)" option="writeable" label="30062" />
+            <setting id="rtmpdump" type="file" default="" label="30063" />
+	</category>
+</settings>
