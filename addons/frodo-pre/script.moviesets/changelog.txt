@@ -1,3 +1,11 @@
+3.0.3
+ - Disabled Manager, Get Thumb and Get Fanart
+ - Changed name of add-on to "Movie Sets (Deprecated)"
+ - fixed infos under laster xbmc build (alpha5/nightly)
+ 
+NB: I created a plugin version "plugin.moviesets" please use this.
+
+
 3.0.2
  - updated: languages files PO
 

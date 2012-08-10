@@ -104,6 +104,7 @@ class execNamespace( baseNamespace ):
 
         def handler( *args, **kwargs ):
             postdata = self.createParams( method, args, kwargs )
+            #print postdata
 
             jsonstring = xbmc.executeJSONRPC( postdata )
             try: jsonstring = unicode( jsonstring, 'utf-8', errors='ignore' )

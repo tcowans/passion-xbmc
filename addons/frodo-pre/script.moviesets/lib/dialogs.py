@@ -505,6 +505,8 @@ class MovieSetInfo( xbmcgui.WindowXMLDialog ):
 
 
 def browser( **kwargs ):
+    xbmcgui.Dialog().ok( "Manager Broken", "The manager is broken, due to API change!", "Sorry!" )
+    return
     #xbmc.executebuiltin( "SetFocus(50)" )
     #xbmc.executebuiltin( "Action(contextmenu)" )
     #xbmc.executebuiltin( "sendclick(10106,1008)" )#1007

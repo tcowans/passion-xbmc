@@ -9,6 +9,7 @@ import sys
 
 # Modules XBMC
 import xbmc
+from xbmcgui import Dialog
 from xbmcaddon import Addon
 
 ADDON = Addon( "script.moviesets" )
@@ -31,7 +32,9 @@ def runScript():
         script = "dialogs"
 
     elif ( not args ) or ( "manager" in args ):
-        script = "manager" #"moviesets_mgr"
+        #script = "manager" #"moviesets_mgr"
+        Dialog().ok( "Manager Broken", "The manager is broken, due to API change!", "Sorry!" )
+        return
 
     elif ( "containerid" in args ) and ( not IsTrue( xbmc.getInfoLabel( "Window(VideoLibrary).Property(MovieSets.IsAlive)" ) ) ):
         script = "moviesets"
@@ -51,22 +54,21 @@ def runScript():
         command = "RunScript(%s.py,%s)" % ( os.path.join( ADDON.getAddonInfo( "path" ), "lib", script ), args, )
 
         # cancel last action of moviesets if exists
-        alarm_name = "MovieSets." + script
+        #alarm_name = "MovieSets." + script
         #print alarm_name + " started"
-        if xbmc.getCondVisibility( "System.HasAlarm(%s)" % alarm_name ):
-            xbmc.executebuiltin( "CancelAlarm(%s,true)" % alarm_name )
-        if script == "moviesets" and str( sys.argv[ -1 ] ).lower() != "moviesets.reload":
-            #wait 1or2 seconds for tvtunes load correctly ;)
-            xbmc.executebuiltin( "AlarmClock(%s,%s,0:00,true)" % ( alarm_name, command ) )
-        else:
-            xbmc.executebuiltin( command )
+        #if xbmc.getCondVisibility( "System.HasAlarm(%s)" % alarm_name ):
+        #    xbmc.executebuiltin( "CancelAlarm(%s,true)" % alarm_name )
+        #if script == "moviesets" and str( sys.argv[ -1 ] ).lower() != "moviesets.reload":
+        #    #wait 1or2 seconds for tvtunes load correctly ;)
+        #    xbmc.executebuiltin( "AlarmClock(%s,%s,0:00,true)" % ( alarm_name, command ) )
+        #else:
+        xbmc.executebuiltin( command )
 
 
 
 if ( __name__ == "__main__" ):
     try:
         if not xbmc.getCondVisibility( "Library.HasContent(Movies)" ):
-            from xbmcgui import Dialog
             Dialog().ok( "Movie Sets", "You have no movies in your library!", "Update your library, before use this add-on." )
         else:
             runScript()
