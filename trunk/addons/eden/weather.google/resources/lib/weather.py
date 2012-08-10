@@ -161,7 +161,7 @@ def SetProperties( weather, LocationIndex=1 ):
     SetProperty( "Current.Condition", getData( current_conditions, "condition" ) )
 
     Temperature = getData( current_conditions, "temp_c" )
-    Humidity    = getData( current_conditions, "humidity", True ).strip( "%" )
+    Humidity    = getData( current_conditions, "humidity", True ).strip( "%" ).replace(u"\xa0",u" ")
     Wind        = getData( current_conditions, "wind_condition", True )
     WindDirection, at, curSpeed, gUnit = Wind.split()
     curSpeed, strUnit = ConvertSpeed( curSpeed, gUnit, "kmh" )

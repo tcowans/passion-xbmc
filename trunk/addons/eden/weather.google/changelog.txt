@@ -1,3 +1,6 @@
+2.0.5 (by mikebzh44)
+ - fixed: issue on openelec due to unbreakable space in HTML (character &nbsp; \xa0)
+
 2.0.4 (by frost)
  - added: latitude and longitude of current location. see README.txt
           Properties: Current.Location.Latitude,    Current.Location.Longitude
