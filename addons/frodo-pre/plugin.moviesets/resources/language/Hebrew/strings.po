@@ -1,0 +1,274 @@
+# XBMC Media Center language file
+# Addon Name: Movie Sets (frodo-pre)
+# Addon id: plugin.moviesets
+# Addon version: 3.0.1
+# Addon Provider: Frost (passion-xbmc.org)
+msgid ""
+msgstr ""
+"Project-Id-Version: XBMC-Addons\n"
+"Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
+"POT-Creation-Date: 2012-06-02 17:01+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: he\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+msgctxt "Addon Summary"
+msgid "Movie Sets Library and Manager"
+msgstr ""
+
+msgctxt "Addon Description"
+msgid "Movie Sets Library for skins / skinners and Manager for users"
+msgstr ""
+
+msgctxt "Addon Disclaimer"
+msgid "Comparison of skin features.[CR]http://wiki.xbmc.org/index.php?title=Comparison_of_skin_features"
+msgstr ""
+
+msgctxt "#32000"
+msgid "Movie Sets"
+msgstr "מארזי סרטים"
+
+msgctxt "#32001"
+msgid "Manager Sets"
+msgstr "מנהל מארזים"
+
+msgctxt "#32002"
+msgid "Sets"
+msgstr "מארזים"
+
+msgctxt "#32003"
+msgid "[Set] "
+msgstr "[מארז] "
+
+msgctxt "#32004"
+msgid "[Movie] "
+msgstr "[סרט] "
+
+msgctxt "#32050"
+msgid "General"
+msgstr "כללי"
+
+msgctxt "#32051"
+msgid "Show busy dialog on retrieving info"
+msgstr "הצג מצב עסוק כאשר מקבל מידע"
+
+msgctxt "#32052"
+msgid "Label Separator"
+msgstr "מפריד תווית"
+
+msgctxt "#32053"
+msgid "Movies order of each set"
+msgstr "סדר הסרטים בכל מארז"
+
+msgctxt "#32060"
+msgid "Maintenance"
+msgstr "תחזוקה"
+
+msgctxt "#32061"
+msgid "Show Changelog"
+msgstr "הצג שינויים"
+
+msgctxt "#32062"
+msgid "Show InfoLabels"
+msgstr "הצג פרטי תוויות"
+
+msgctxt "#32063"
+msgid "Show License"
+msgstr "הצג רישיון"
+
+msgctxt "#32100"
+msgid "Add Movies..."
+msgstr "הוסף סרטים..."
+
+msgctxt "#32101"
+msgid "Select movie for set [%s]"
+msgstr "בחר סרט עבור מארז [%s]"
+
+msgctxt "#32102"
+msgid "Confirm add movie to set"
+msgstr "אשר להוספת הסרט למארז"
+
+msgctxt "#32103"
+msgid "Add this movie '%s'"
+msgstr "הוסף את הסרט '%s'"
+
+msgctxt "#32104"
+msgid "To this set '%s'"
+msgstr "למארז זה '%s'"
+
+msgctxt "#32110"
+msgid "Remove from movieset"
+msgstr "הסר ממארז סרטים"
+
+msgctxt "#32111"
+msgid "Remove movie of set [%s]"
+msgstr "הסר סרט ממארז [%s]"
+
+msgctxt "#32112"
+msgid "Confirm remove movie of set"
+msgstr "אשר להסרת הסרט ממארז"
+
+msgctxt "#32113"
+msgid "Remove this movie '%s'"
+msgstr "הסר את הסרט '%s'"
+
+msgctxt "#32114"
+msgid "Of this set '%s'"
+msgstr "ממארז זה '%s'"
+
+msgctxt "#32120"
+msgid "Set movieset fanart"
+msgstr "הגדר פאנארט למארז"
+
+msgctxt "#32121"
+msgid "Select one fanart or more for extrafanart"
+msgstr "בחר פאנטארט אחד או יותר עבור extrafanart"
+
+msgctxt "#32122"
+msgid "Confirm Downloading..."
+msgstr "אשר הורדה..."
+
+msgctxt "#32123"
+msgid "%i of %i have been selected!"
+msgstr "%i מתוך %i נבחרו!"
+
+msgctxt "#32124"
+msgid "Are you sure download this files?"
+msgstr "האם הינך בטוח להורדת קבצים אלו?"
+
+msgctxt "#32125"
+msgid "Download: %i of %i - %i%%"
+msgstr "מוריד: %i מתוך %i - %i%%"
+
+msgctxt "#32126"
+msgid "Choose folder for "
+msgstr "בחר תיקיה עבור "
+
+msgctxt "#32127"
+msgid "extrafanart"
+msgstr "extrafanart"
+
+msgctxt "#32128"
+msgid "extrathumb"
+msgstr "extrathumb"
+
+msgctxt "#32130"
+msgid "Set movieset thumb"
+msgstr "הגדר תמונה ממוזערת למארז"
+
+msgctxt "#32131"
+msgid "Select one thumb or more for extrathumb"
+msgstr "בחר תמונה ממוזערת אחת או יותר עבור extrathumb"
+
+msgctxt "#32135"
+msgid "Confirm overwrite..."
+msgstr "אשר דריסה..."
+
+msgctxt "#32136"
+msgid "Do you want overwrite your existing files?"
+msgstr "האם ברצונך לדרוס אתהקבצים הקיימים שלך?"
+
+msgctxt "#32140"
+msgid "Remove this movieset [%s]"
+msgstr "הסר מארז סרטים זה [%s]"
+
+msgctxt "#32141"
+msgid "Remove movieset from library"
+msgstr "הסר מארז סרטים מהספריה"
+
+msgctxt "#32200"
+msgid "Add to movieset"
+msgstr "הוסף למארז סרטים"
+
+msgctxt "#32201"
+msgid "Select movieset for [%s]"
+msgstr "בחר מארז סרטים עבור [%s]"
+
+msgctxt "#32210"
+msgid "Remove movie of set [%s]"
+msgstr "הסר סרט ממארז [%s]"
+
+msgctxt "#32220"
+msgid "Edit movie sorttitle"
+msgstr "ערוך כותרת מיון סרט"
+
+msgctxt "#32221"
+msgid "Edit movieset title"
+msgstr "ערוך כותרת מארז סרטים"
+
+msgctxt "#32300"
+msgid "Add movies to existing movieset"
+msgstr "הוסף סרטים למארזים קיימים"
+
+msgctxt "#32301"
+msgid "Select movie"
+msgstr "בחר סרט"
+
+msgctxt "#32302"
+msgid "Select movieset for movie [%s]"
+msgstr "בחר מארז עבור הסרט [%s]"
+
+msgctxt "#32310"
+msgid "Remove movies to existing movieset"
+msgstr "הסר סרטים עבור מארזים קיימים"
+
+msgctxt "#32311"
+msgid "Select movieset"
+msgstr "בחר מארז סרטים"
+
+msgctxt "#32320"
+msgid "Remove existing movieset"
+msgstr "הסר מארז קיים"
+
+msgctxt "#32321"
+msgid "Select movieset to remove"
+msgstr "בחר מארז להסרה"
+
+msgctxt "#32330"
+msgid "Create new movieset"
+msgstr "צור מארז סרטים חדש"
+
+msgctxt "#32331"
+msgid "Enter title of set"
+msgstr "הזן כותרת מארז"
+
+msgctxt "#33000"
+msgid "Manager Sets"
+msgstr "מנהל מארזים"
+
+msgctxt "#33001"
+msgid "Sets"
+msgstr "מארזים"
+
+msgctxt "#33002"
+msgid "Info Set"
+msgstr "פרטי מארז"
+
+msgctxt "#33004"
+msgid "[Set]"
+msgstr "[מארז]"
+
+msgctxt "#33100"
+msgid "Show Info of Movie Sets in the library"
+msgstr "הצג מידע על מארזי סרטים בספריה"
+
+msgctxt "#33101"
+msgid "Extra Buttons"
+msgstr "כפתורים נוספים"
+
+msgctxt "#33102"
+msgid "Enable the manager's options in the library"
+msgstr "הפעל אפשרויות מנהל בספריה"
+
+msgctxt "#33103"
+msgid "Enable \"Info Set\" in the context menu"
+msgstr "הפעל \"פרטי מארז\" בתפריט המשני"
+
+msgctxt "#33104"
+msgid "(Available with mouse only!)"
+msgstr "(זמין עם עכבר בלבד!)"

@@ -1,0 +1,5 @@
+<node order="7" type="folder" visible="Library.HasContent(MovieSets) + System.HasAddon(plugin.moviesets)">
+  <label>20434</label>
+  <path>plugin://plugin.moviesets</path>
+  <icon>special://home/addons/plugin.moviesets/icon.png</icon>
+</node>

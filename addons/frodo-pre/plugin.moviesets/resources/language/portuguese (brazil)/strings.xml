@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!-- strings 32000 thru 32999 reserved for scripts -->
+  <string id="32000">Conjuntos de Filmes </string>
+  <string id="32001">Administrar Conjuntos</string>
+  <string id="32002">Conjuntos</string>
+  <string id="32003">[Conjunto]&#32;</string>
+  <string id="32004">[filme]&#32;</string>
+
+  <!-- category settings -->
+  <string id="32050">Geral</string>
+  <string id="32051">Mostrar diálogo ocupado na obtenção de informações</string>
+  <string id="32052">Separador de Etiqueta</string>
+  <string id="32053">Ordem dos filmes de cada conjunto</string>
+
+  <string id="32060">Manuntenção</string>
+  <string id="32061">Mostrar Changelog</string>
+  <string id="32062">Mostrar InfoLabels</string>
+  <string id="32063">Mostrar Licença</string>
+
+  <!-- strings Manager -->
+  <string id="32100">Adicionar filmes...</string>
+  <string id="32101">Selecione filme para o conjunto [%s]</string>
+  <string id="32102">Confirma adição do filme para o conjunto</string>
+  <string id="32103">Adicione este filme '%s'</string>
+  <string id="32104">Para este conjunto '%s'</string>
+
+  <string id="32110">Remover da coleção</string>
+  <string id="32111">Remover filme da coleção [%s]</string>
+  <string id="32112">Confirma remover filme da coleção</string>
+  <string id="32113">Remover este filme '%s'</string>
+  <string id="32114">Deste conjunto '%s'</string>
+
+  <string id="32120">Setar fanart do conjunto</string>
+  <string id="32121">Selecione um fanart ou mais para extrafanart</string>
+  <string id="32122">Confirmar Downloading...</string>
+  <string id="32123">%i de %i foi selecionado!</string>
+  <string id="32124">Você tem certeza que quer baixar estes arquivos?</string>
+  <string id="32125">Download: %i de %i - %i%%</string>
+  <string id="32126">Escolha pasta para&#32;</string>
+  <string id="32127">extrafanart</string>
+  <string id="32128">extrathumb</string>
+  <string id="32129"></string>
+  <string id="32130">Setar ícone para o conjunto dos filmes</string>
+  <string id="32131">Selecione um ícone ou mais para extrathumb</string>
+
+  <string id="32135">Confirmar sobreposição...</string>
+  <string id="32136">Você deseja sobrepor seus arquivos atuais?</string>
+
+  <string id="32140">Remover este conjunto de filmes [%s]</string>
+  <string id="32141">Remover Conjunto de filmes da biblioteca</string>
+
+  <string id="32200">Adicionar para conjuntos</string>
+  <string id="32201">Selecione conjunto de filmes para [%s]</string>
+
+  <string id="32210">Remover filme do conjunto [%s]</string>
+  <string id="32220">Editar ordem dos títulos dos filmes</string>
+  <string id="32221">Editar título do conjunto de filmes</string>
+
+  <string id="32300">Adicione filmes para conjunto já existente</string>
+  <string id="32301">Selecione filme</string>
+  <string id="32302">Selecione conjunto para o filme [%s]</string>
+
+  <string id="32310">Remover filmes de um conjunto já existente</string>
+  <string id="32311">Selecione conjunto de filmes</string>
+
+  <string id="32320">Remover existente conjunto de filmes</string>
+  <string id="32321">Selecione conjunto de filmes para remover</string>
+
+  <string id="32330">Criar novo conjunto de filmes</string>
+  <string id="32331">Entre título do conjunto</string>
+
+  <!-- strings 33000 thru 33999 reserved for common strings used in addons -->
+  <!-- skin strings -->
+  <string id="33000">Administrar Conjuntos</string>
+  <string id="33001">Conjuntos</string>
+  <string id="33002">Info Conjuntos</string>
+  <string id="33004">[Conjuntos]</string>
+
+  <string id="33100">Mostrar Info do conjunto de filmes na biblioteca</string>
+  <string id="33101">Extra Botões</string>
+  <string id="33102">Ativar opções de administração na biblioteca</string>
+  <string id="33103">Ativar "Info Conjuntos" no menu de contexto</string>
+  <string id="33104">(Disponível somente com mouse!)</string>
+</strings>

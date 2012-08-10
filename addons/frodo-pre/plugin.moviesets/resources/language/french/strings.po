@@ -1,0 +1,274 @@
+# XBMC Media Center language file
+# Addon Name: Movie Sets (frodo-pre)
+# Addon id: plugin.moviesets
+# Addon version: 3.0.1
+# Addon Provider: Frost (passion-xbmc.org)
+msgid ""
+msgstr ""
+"Project-Id-Version: XBMC-Addons\n"
+"Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
+"POT-Creation-Date: 2012-06-02 17:01+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+
+msgctxt "Addon Summary"
+msgid "Movie Sets Library and Manager"
+msgstr ""
+
+msgctxt "Addon Description"
+msgid "Movie Sets Library for skins / skinners and Manager for users"
+msgstr ""
+
+msgctxt "Addon Disclaimer"
+msgid "Comparison of skin features.[CR]http://wiki.xbmc.org/index.php?title=Comparison_of_skin_features"
+msgstr ""
+
+msgctxt "#32000"
+msgid "Movie Sets"
+msgstr "Movie Sets"
+
+msgctxt "#32001"
+msgid "Manager Sets"
+msgstr "Saga Manager"
+
+msgctxt "#32002"
+msgid "Sets"
+msgstr "Saga"
+
+msgctxt "#32003"
+msgid "[Set] "
+msgstr "[Saga] "
+
+msgctxt "#32004"
+msgid "[Movie] "
+msgstr "[Film] "
+
+msgctxt "#32050"
+msgid "General"
+msgstr "Général"
+
+msgctxt "#32051"
+msgid "Show busy dialog on retrieving info"
+msgstr "Afficher le dialogue busy lors de la récupération des infos"
+
+msgctxt "#32052"
+msgid "Label Separator"
+msgstr "Séparateur d'étiquette"
+
+msgctxt "#32053"
+msgid "Movies order of each set"
+msgstr "Ordre des films pour chaque saga"
+
+msgctxt "#32060"
+msgid "Maintenance"
+msgstr "Maintenance"
+
+msgctxt "#32061"
+msgid "Show Changelog"
+msgstr "Afficher le Changelog"
+
+msgctxt "#32062"
+msgid "Show InfoLabels"
+msgstr "Afficher les InfoLabels"
+
+msgctxt "#32063"
+msgid "Show License"
+msgstr "Afficher la License"
+
+msgctxt "#32100"
+msgid "Add Movies..."
+msgstr "Ajouter des films..."
+
+msgctxt "#32101"
+msgid "Select movie for set [%s]"
+msgstr "Sélectionner un film pour la saga [%s]"
+
+msgctxt "#32102"
+msgid "Confirm add movie to set"
+msgstr "Confirmer l'ajout du film à la saga"
+
+msgctxt "#32103"
+msgid "Add this movie '%s'"
+msgstr "Ajouter ce film '%s'"
+
+msgctxt "#32104"
+msgid "To this set '%s'"
+msgstr "À cette saga '%s'"
+
+msgctxt "#32110"
+msgid "Remove from movieset"
+msgstr "Retirer de la saga"
+
+msgctxt "#32111"
+msgid "Remove movie of set [%s]"
+msgstr "Retirer un film de la saga [%s]"
+
+msgctxt "#32112"
+msgid "Confirm remove movie of set"
+msgstr "Confirmer la suppression du film de la saga"
+
+msgctxt "#32113"
+msgid "Remove this movie '%s'"
+msgstr "Retirer ce film '%s'"
+
+msgctxt "#32114"
+msgid "Of this set '%s'"
+msgstr "De cette saga '%s'"
+
+msgctxt "#32120"
+msgid "Set movieset fanart"
+msgstr "Définir fanart de la saga"
+
+msgctxt "#32121"
+msgid "Select one fanart or more for extrafanart"
+msgstr "Sélectionnez un fanart ou plus pour extrafanart"
+
+msgctxt "#32122"
+msgid "Confirm Downloading..."
+msgstr "Confirmez Téléchargement..."
+
+msgctxt "#32123"
+msgid "%i of %i have been selected!"
+msgstr "%i sur %i ont été sélectionnés!"
+
+msgctxt "#32124"
+msgid "Are you sure download this files?"
+msgstr "Êtes-vous sûr de vouloir télécharger ce(s) fichier(s)?"
+
+msgctxt "#32125"
+msgid "Download: %i of %i - %i%%"
+msgstr "Téléchargement: %i de %i - %i%%"
+
+msgctxt "#32126"
+msgid "Choose folder for "
+msgstr "Choisir un dossier pour "
+
+msgctxt "#32127"
+msgid "extrafanart"
+msgstr "extrafanart"
+
+msgctxt "#32128"
+msgid "extrathumb"
+msgstr "extrathumb"
+
+msgctxt "#32130"
+msgid "Set movieset thumb"
+msgstr "Définir vignette de la saga"
+
+msgctxt "#32131"
+msgid "Select one thumb or more for extrathumb"
+msgstr "Sélectionnez un poster ou plus pour extrathumb"
+
+msgctxt "#32135"
+msgid "Confirm overwrite..."
+msgstr "Confirmez écrasement..."
+
+msgctxt "#32136"
+msgid "Do you want overwrite your existing files?"
+msgstr "Voulez-vous écraser les fichiers existants?"
+
+msgctxt "#32140"
+msgid "Remove this movieset [%s]"
+msgstr "Supprimer cette saga [%s]"
+
+msgctxt "#32141"
+msgid "Remove movieset from library"
+msgstr "Retirer cette saga de la médiathèque"
+
+msgctxt "#32200"
+msgid "Add to movieset"
+msgstr "Ajouter à une saga"
+
+msgctxt "#32201"
+msgid "Select movieset for [%s]"
+msgstr "Sélectionner une saga pour [%s]"
+
+msgctxt "#32210"
+msgid "Remove movie of set [%s]"
+msgstr "Retirer le film de la saga [%s]"
+
+msgctxt "#32220"
+msgid "Edit movie sorttitle"
+msgstr "Editer titre du trie"
+
+msgctxt "#32221"
+msgid "Edit movieset title"
+msgstr "Editer titre de la saga"
+
+msgctxt "#32300"
+msgid "Add movies to existing movieset"
+msgstr "Ajouter un film à une saga existante"
+
+msgctxt "#32301"
+msgid "Select movie"
+msgstr "Sélectionner un film"
+
+msgctxt "#32302"
+msgid "Select movieset for movie [%s]"
+msgstr "Sélectionner une saga pour [%s]"
+
+msgctxt "#32310"
+msgid "Remove movies to existing movieset"
+msgstr "Supprimer un film d'une saga existante"
+
+msgctxt "#32311"
+msgid "Select movieset"
+msgstr "Sélectionner une saga"
+
+msgctxt "#32320"
+msgid "Remove existing movieset"
+msgstr "Supprimer une saga existante"
+
+msgctxt "#32321"
+msgid "Select movieset to remove"
+msgstr "Sélectionner la saga à supprimer"
+
+msgctxt "#32330"
+msgid "Create new movieset"
+msgstr "Créer une nouvelle saga"
+
+msgctxt "#32331"
+msgid "Enter title of set"
+msgstr "Éditer le titre de la saga"
+
+msgctxt "#33000"
+msgid "Manager Sets"
+msgstr "Saga Manager"
+
+msgctxt "#33001"
+msgid "Sets"
+msgstr "Saga"
+
+msgctxt "#33002"
+msgid "Info Set"
+msgstr "Info Saga"
+
+msgctxt "#33004"
+msgid "[Set]"
+msgstr "[Saga]"
+
+msgctxt "#33100"
+msgid "Show Info of Movie Sets in the library"
+msgstr "Afficher les informations des Sagas dans la médiathèque"
+
+msgctxt "#33101"
+msgid "Extra Buttons"
+msgstr "Boutons supplémentaires"
+
+msgctxt "#33102"
+msgid "Enable the manager's options in the library"
+msgstr "Activer le manager dans les options de la médiathèque"
+
+msgctxt "#33103"
+msgid "Enable \"Info Set\" in the context menu"
+msgstr "Activer \"Info Saga\" dans le contexte menu"
+
+msgctxt "#33104"
+msgid "(Available with mouse only!)"
+msgstr "(Accessible avec la souris!)"

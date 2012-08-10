@@ -1,0 +1,274 @@
+# XBMC Media Center language file
+# Addon Name: Movie Sets (frodo-pre)
+# Addon id: plugin.moviesets
+# Addon version: 3.0.1
+# Addon Provider: Frost (passion-xbmc.org)
+msgid ""
+msgstr ""
+"Project-Id-Version: XBMC-Addons\n"
+"Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
+"POT-Creation-Date: 2012-06-02 17:01+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: el\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+msgctxt "Addon Summary"
+msgid "Movie Sets Library and Manager"
+msgstr ""
+
+msgctxt "Addon Description"
+msgid "Movie Sets Library for skins / skinners and Manager for users"
+msgstr ""
+
+msgctxt "Addon Disclaimer"
+msgid "Comparison of skin features.[CR]http://wiki.xbmc.org/index.php?title=Comparison_of_skin_features"
+msgstr ""
+
+msgctxt "#32000"
+msgid "Movie Sets"
+msgstr "Ομάδες Ταινιών"
+
+msgctxt "#32001"
+msgid "Manager Sets"
+msgstr "Ομάδες Διαχειριστή"
+
+msgctxt "#32002"
+msgid "Sets"
+msgstr "Ομάδες"
+
+msgctxt "#32003"
+msgid "[Set] "
+msgstr "[Ομάδα] "
+
+msgctxt "#32004"
+msgid "[Movie] "
+msgstr "[Ταινία] "
+
+msgctxt "#32050"
+msgid "General"
+msgstr "Γενικά"
+
+msgctxt "#32051"
+msgid "Show busy dialog on retrieving info"
+msgstr "Εμφάνιση παράθυρου κατά τη λήψη πληροφοριών"
+
+msgctxt "#32052"
+msgid "Label Separator"
+msgstr "Διαχωριστικό Ετικετών"
+
+msgctxt "#32053"
+msgid "Movies order of each set"
+msgstr "Ταξινόμηση ταινιών εκάστοτε ομάδας"
+
+msgctxt "#32060"
+msgid "Maintenance"
+msgstr "Συντήρηση"
+
+msgctxt "#32061"
+msgid "Show Changelog"
+msgstr "Αρχείο Καταγραφής Αλλαγών"
+
+msgctxt "#32062"
+msgid "Show InfoLabels"
+msgstr "Εμφάνιση InfoLabels"
+
+msgctxt "#32063"
+msgid "Show License"
+msgstr "Προβολή Άδειας"
+
+msgctxt "#32100"
+msgid "Add Movies..."
+msgstr "Προσθήκη Ταινιών..."
+
+msgctxt "#32101"
+msgid "Select movie for set [%s]"
+msgstr "Επιλογή ταινίας για ομάδα [%s]"
+
+msgctxt "#32102"
+msgid "Confirm add movie to set"
+msgstr "Επιβεβαίωση προσθήκης ταινίας στην ομάδα"
+
+msgctxt "#32103"
+msgid "Add this movie '%s'"
+msgstr "Προσθήκη της ταινίας '%s'"
+
+msgctxt "#32104"
+msgid "To this set '%s'"
+msgstr "στην ομάδα '%s';"
+
+msgctxt "#32110"
+msgid "Remove from movieset"
+msgstr "Αφαίρεση από την ομάδα"
+
+msgctxt "#32111"
+msgid "Remove movie of set [%s]"
+msgstr "Αφαίρεση ταινίας από την ομάδα [%s]"
+
+msgctxt "#32112"
+msgid "Confirm remove movie of set"
+msgstr "Επιβεβαίωση αφαίρεσης ταινίας από την ομάδα"
+
+msgctxt "#32113"
+msgid "Remove this movie '%s'"
+msgstr "Αφαίρεση της ταινίας '%s'"
+
+msgctxt "#32114"
+msgid "Of this set '%s'"
+msgstr "από την ομάδα '%s';"
+
+msgctxt "#32120"
+msgid "Set movieset fanart"
+msgstr "Ορισμός fanart ομάδας"
+
+msgctxt "#32121"
+msgid "Select one fanart or more for extrafanart"
+msgstr "Επιλέξτε μία ή επιπλέον εικόνες fanart (extrafanart)"
+
+msgctxt "#32122"
+msgid "Confirm Downloading..."
+msgstr "Επιβεβαίωση Λήψης..."
+
+msgctxt "#32123"
+msgid "%i of %i have been selected!"
+msgstr "%i από %i έχουν επιλεγεί!"
+
+msgctxt "#32124"
+msgid "Are you sure download this files?"
+msgstr "Επιθυμείτε να κατεβάσετε αυτά τα αρχεία;"
+
+msgctxt "#32125"
+msgid "Download: %i of %i - %i%%"
+msgstr "Λήψη: %i από %i - %i%%"
+
+msgctxt "#32126"
+msgid "Choose folder for "
+msgstr "Επιλογή φακέλου για "
+
+msgctxt "#32127"
+msgid "extrafanart"
+msgstr "επιπλέον fanart (extrafanart)"
+
+msgctxt "#32128"
+msgid "extrathumb"
+msgstr "επιπλέον μικρογραφίες (extrathumbs)"
+
+msgctxt "#32130"
+msgid "Set movieset thumb"
+msgstr "Ορισμός μικρογραφίας ομάδας"
+
+msgctxt "#32131"
+msgid "Select one thumb or more for extrathumb"
+msgstr "Επιλέξτε μία ή επιπλέον μικρογραφίες (extrathumbs)"
+
+msgctxt "#32135"
+msgid "Confirm overwrite..."
+msgstr "Επιβεβαίωση αντικατάστασης..."
+
+msgctxt "#32136"
+msgid "Do you want overwrite your existing files?"
+msgstr "Να αντικατασταθούν τα υπάρχοντα αρχεία;"
+
+msgctxt "#32140"
+msgid "Remove this movieset [%s]"
+msgstr "Αφαίρεση αυτής της ομάδας ταινιών [%s]"
+
+msgctxt "#32141"
+msgid "Remove movieset from library"
+msgstr "Αφαίρεση ομάδας από τη συλλογή"
+
+msgctxt "#32200"
+msgid "Add to movieset"
+msgstr "Προσθήκη σε ομάδα ταινιών"
+
+msgctxt "#32201"
+msgid "Select movieset for [%s]"
+msgstr "Επιλογή ομάδας ταινιών για [%s]"
+
+msgctxt "#32210"
+msgid "Remove movie of set [%s]"
+msgstr "Αφαίρεση ταινίας από την ομάδα [%s]"
+
+msgctxt "#32220"
+msgid "Edit movie sorttitle"
+msgstr "Όνομα με το οποίο ταξινομείται η ταινία"
+
+msgctxt "#32221"
+msgid "Edit movieset title"
+msgstr "Αλλαγή ονόματος ομάδας"
+
+msgctxt "#32300"
+msgid "Add movies to existing movieset"
+msgstr "Προσθήκη ταινιών σε υπάρχουσα ομάδα"
+
+msgctxt "#32301"
+msgid "Select movie"
+msgstr "Επιλογή ταινίας"
+
+msgctxt "#32302"
+msgid "Select movieset for movie [%s]"
+msgstr "Επιλογή ομάδας ταινιών για την ταινία [%s]"
+
+msgctxt "#32310"
+msgid "Remove movies to existing movieset"
+msgstr "Μεταφορά ταινιών σε υπάρχουσες ομάδες"
+
+msgctxt "#32311"
+msgid "Select movieset"
+msgstr "Επιλογή ομάδας ταινιών"
+
+msgctxt "#32320"
+msgid "Remove existing movieset"
+msgstr "Αφαίρεση υπάρχουσας ομάδας ταινιών"
+
+msgctxt "#32321"
+msgid "Select movieset to remove"
+msgstr "Επιλογή ομάδας ταινιών για αφαίρεση"
+
+msgctxt "#32330"
+msgid "Create new movieset"
+msgstr "Δημιουργία νέας ομάδας"
+
+msgctxt "#32331"
+msgid "Enter title of set"
+msgstr "Εισάγετε το όνομα της ομάδας"
+
+msgctxt "#33000"
+msgid "Manager Sets"
+msgstr "Ομάδες Διαχειριστή"
+
+msgctxt "#33001"
+msgid "Sets"
+msgstr "Ομάδες"
+
+msgctxt "#33002"
+msgid "Info Set"
+msgstr "Πληροφορίες Ομάδας"
+
+msgctxt "#33004"
+msgid "[Set]"
+msgstr "[Ομάδα]"
+
+msgctxt "#33100"
+msgid "Show Info of Movie Sets in the library"
+msgstr "Προβολή Πληροφοριών των Ομάδων Ταινιών της συλλογής"
+
+msgctxt "#33101"
+msgid "Extra Buttons"
+msgstr "Επιπλέον Κουμπιά"
+
+msgctxt "#33102"
+msgid "Enable the manager's options in the library"
+msgstr "Ενεργοποίηση των επιλογών του διαχειριστή στη συλλογή"
+
+msgctxt "#33103"
+msgid "Enable \"Info Set\" in the context menu"
+msgstr "Ενεργοποιήστε τις \"Πληροφορίες Ομάδας\" στο μενού"
+
+msgctxt "#33104"
+msgid "(Available with mouse only!)"
+msgstr "(Διαθέσιμο μόνο με ποντίκι!)"

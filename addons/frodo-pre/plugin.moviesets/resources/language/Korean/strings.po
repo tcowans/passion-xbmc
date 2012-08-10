@@ -1,0 +1,274 @@
+# XBMC Media Center language file
+# Addon Name: Movie Sets (frodo-pre)
+# Addon id: plugin.moviesets
+# Addon version: 3.0.1
+# Addon Provider: Frost (passion-xbmc.org)
+msgid ""
+msgstr ""
+"Project-Id-Version: XBMC-Addons\n"
+"Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
+"POT-Creation-Date: 2012-06-02 17:01+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ko\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+
+msgctxt "Addon Summary"
+msgid "Movie Sets Library and Manager"
+msgstr ""
+
+msgctxt "Addon Description"
+msgid "Movie Sets Library for skins / skinners and Manager for users"
+msgstr ""
+
+msgctxt "Addon Disclaimer"
+msgid "Comparison of skin features.[CR]http://wiki.xbmc.org/index.php?title=Comparison_of_skin_features"
+msgstr ""
+
+msgctxt "#32000"
+msgid "Movie Sets"
+msgstr "시리즈 영화"
+
+msgctxt "#32001"
+msgid "Manager Sets"
+msgstr "시리즈 관리"
+
+msgctxt "#32002"
+msgid "Sets"
+msgstr "시리즈"
+
+msgctxt "#32003"
+msgid "[Set] "
+msgstr "[Set] "
+
+msgctxt "#32004"
+msgid "[Movie] "
+msgstr "[Movie] "
+
+msgctxt "#32050"
+msgid "General"
+msgstr "일반"
+
+msgctxt "#32051"
+msgid "Show busy dialog on retrieving info"
+msgstr "Show busy dialog on retrieving info"
+
+msgctxt "#32052"
+msgid "Label Separator"
+msgstr "Label Separator"
+
+msgctxt "#32053"
+msgid "Movies order of each set"
+msgstr "각 시리즈의 영화 순서"
+
+msgctxt "#32060"
+msgid "Maintenance"
+msgstr "유지관리"
+
+msgctxt "#32061"
+msgid "Show Changelog"
+msgstr "변경 로그"
+
+msgctxt "#32062"
+msgid "Show InfoLabels"
+msgstr "Show InfoLabels"
+
+msgctxt "#32063"
+msgid "Show License"
+msgstr "라이센스"
+
+msgctxt "#32100"
+msgid "Add Movies..."
+msgstr "시리즈에 영화 추가..."
+
+msgctxt "#32101"
+msgid "Select movie for set [%s]"
+msgstr "[%s] 시리즈에 추가할 영화 선택 "
+
+msgctxt "#32102"
+msgid "Confirm add movie to set"
+msgstr "시리즈에 영화 추가"
+
+msgctxt "#32103"
+msgid "Add this movie '%s'"
+msgstr "'%s' 을(를)"
+
+msgctxt "#32104"
+msgid "To this set '%s'"
+msgstr "'%s' 시리즈에 추가합니다"
+
+msgctxt "#32110"
+msgid "Remove from movieset"
+msgstr "시리즈에서 제거"
+
+msgctxt "#32111"
+msgid "Remove movie of set [%s]"
+msgstr "[%s] 시리즈의 영화 제거"
+
+msgctxt "#32112"
+msgid "Confirm remove movie of set"
+msgstr "시리즈에서 영화 제거"
+
+msgctxt "#32113"
+msgid "Remove this movie '%s'"
+msgstr "'%s' 을(를)"
+
+msgctxt "#32114"
+msgid "Of this set '%s'"
+msgstr "'%s' 시리즈에서 제거합니다"
+
+msgctxt "#32120"
+msgid "Set movieset fanart"
+msgstr "시리즈 영화 팬아트 설정"
+
+msgctxt "#32121"
+msgid "Select one fanart or more for extrafanart"
+msgstr "한개 선택 : 팬아트로 사용, 여러개 선택 : 추가팬아트(extrafanart)로 사용"
+
+msgctxt "#32122"
+msgid "Confirm Downloading..."
+msgstr "다운로드 확인..."
+
+msgctxt "#32123"
+msgid "%i of %i have been selected!"
+msgstr "%i개를 %i개중에서 선택하셨습니다"
+
+msgctxt "#32124"
+msgid "Are you sure download this files?"
+msgstr "선택한 파일을 다운로드 하시겠습니까?"
+
+msgctxt "#32125"
+msgid "Download: %i of %i - %i%%"
+msgstr "다운로딩 : %i of %i - %i%%"
+
+msgctxt "#32126"
+msgid "Choose folder for "
+msgstr "폴더 선택 : "
+
+msgctxt "#32127"
+msgid "extrafanart"
+msgstr "추가팬아트"
+
+msgctxt "#32128"
+msgid "extrathumb"
+msgstr "추가미리보기"
+
+msgctxt "#32130"
+msgid "Set movieset thumb"
+msgstr "시리즈 영화 미리보기 설정"
+
+msgctxt "#32131"
+msgid "Select one thumb or more for extrathumb"
+msgstr "한개 선택 : 미리보기로 사용, 여러개 선택 : 추가미리보기(extrathumb)로 사용"
+
+msgctxt "#32135"
+msgid "Confirm overwrite..."
+msgstr "덮어쓰기 확인..."
+
+msgctxt "#32136"
+msgid "Do you want overwrite your existing files?"
+msgstr "기존 파일에 덮어 쓰겠습니까?"
+
+msgctxt "#32140"
+msgid "Remove this movieset [%s]"
+msgstr "[%s] 시리즈 제거"
+
+msgctxt "#32141"
+msgid "Remove movieset from library"
+msgstr "라이브러리에서 시리즈 제거"
+
+msgctxt "#32200"
+msgid "Add to movieset"
+msgstr "시리즈에 추가"
+
+msgctxt "#32201"
+msgid "Select movieset for [%s]"
+msgstr "Select movieset for [%s]"
+
+msgctxt "#32210"
+msgid "Remove movie of set [%s]"
+msgstr "Remove movie of set [%s]"
+
+msgctxt "#32220"
+msgid "Edit movie sorttitle"
+msgstr "정렬용 영화 제목 수정"
+
+msgctxt "#32221"
+msgid "Edit movieset title"
+msgstr "시리즈 제목 수정"
+
+msgctxt "#32300"
+msgid "Add movies to existing movieset"
+msgstr "기존 시리즈에 영화 추가"
+
+msgctxt "#32301"
+msgid "Select movie"
+msgstr "영화 선택"
+
+msgctxt "#32302"
+msgid "Select movieset for movie [%s]"
+msgstr "[%s] 을(를) 추가할 영화 시리즈 선택"
+
+msgctxt "#32310"
+msgid "Remove movies to existing movieset"
+msgstr "기존 시리즈에서 영화 제거"
+
+msgctxt "#32311"
+msgid "Select movieset"
+msgstr "시리즈 선택"
+
+msgctxt "#32320"
+msgid "Remove existing movieset"
+msgstr "기존 영화 시리즈 제거"
+
+msgctxt "#32321"
+msgid "Select movieset to remove"
+msgstr "제거할 영화 시리즈 선택"
+
+msgctxt "#32330"
+msgid "Create new movieset"
+msgstr "새 시리즈 만들기"
+
+msgctxt "#32331"
+msgid "Enter title of set"
+msgstr "영화 시리즈 제목 입력"
+
+msgctxt "#33000"
+msgid "Manager Sets"
+msgstr "영화 시리즈 관리"
+
+msgctxt "#33001"
+msgid "Sets"
+msgstr "세트"
+
+msgctxt "#33002"
+msgid "Info Set"
+msgstr "Info Set"
+
+msgctxt "#33004"
+msgid "[Set]"
+msgstr "[Set]"
+
+msgctxt "#33100"
+msgid "Show Info of Movie Sets in the library"
+msgstr "라이브러리에서 시리즈 정보 보기"
+
+msgctxt "#33101"
+msgid "Extra Buttons"
+msgstr "Extra Buttons"
+
+msgctxt "#33102"
+msgid "Enable the manager's options in the library"
+msgstr "라이브러리에서 시리즈 관리 옵션 활성화"
+
+msgctxt "#33103"
+msgid "Enable \"Info Set\" in the context menu"
+msgstr "컨텍스트 메뉴에서 \"Info Set\" 활성화"
+
+msgctxt "#33104"
+msgid "(Available with mouse only!)"
+msgstr "(마우스로만 가능!)"

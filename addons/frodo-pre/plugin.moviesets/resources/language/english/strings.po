@@ -1,0 +1,316 @@
+# XBMC Media Center language file
+# Addon Name: Movie Sets (frodo-pre)
+# Addon id: plugin.moviesets
+# Addon version: 3.0.1
+# Addon Provider: Frost (passion-xbmc.org)
+msgid ""
+msgstr ""
+"Project-Id-Version: XBMC-Addons\n"
+"Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
+"POT-Creation-Date: 2012-06-02 17:01+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+msgctxt "Addon Summary"
+msgid "Movie Sets Library and Manager"
+msgstr ""
+
+msgctxt "Addon Description"
+msgid "Movie Sets Library for skins / skinners and Manager for users"
+msgstr ""
+
+msgctxt "Addon Disclaimer"
+msgid "Comparison of skin features.[CR]http://wiki.xbmc.org/index.php?title=Comparison_of_skin_features"
+msgstr ""
+
+#strings 32000 thru 32999 reserved for scripts
+
+msgctxt "#32000"
+msgid "Movie Sets"
+msgstr ""
+
+msgctxt "#32001"
+msgid "Manager Sets"
+msgstr ""
+
+msgctxt "#32002"
+msgid "Sets"
+msgstr ""
+
+msgctxt "#32003"
+msgid "[Set] "
+msgstr ""
+
+msgctxt "#32004"
+msgid "[Movie] "
+msgstr ""
+
+#category settings
+#empty strings from id 32005 to 32049
+
+msgctxt "#32050"
+msgid "General"
+msgstr ""
+
+msgctxt "#32051"
+msgid "Show busy dialog on retrieving info"
+msgstr ""
+
+msgctxt "#32052"
+msgid "Label Separator"
+msgstr ""
+
+msgctxt "#32053"
+msgid "Movies order of each set"
+msgstr ""
+
+#empty strings from id 32054 to 32059
+
+msgctxt "#32060"
+msgid "Maintenance"
+msgstr ""
+
+msgctxt "#32061"
+msgid "Show Changelog"
+msgstr ""
+
+msgctxt "#32062"
+msgid "Show InfoLabels"
+msgstr ""
+
+msgctxt "#32063"
+msgid "Show License"
+msgstr ""
+
+#strings Manager
+#empty strings from id 32064 to 32099
+
+msgctxt "#32100"
+msgid "Add Movies..."
+msgstr ""
+
+msgctxt "#32101"
+msgid "Select movie for set [%s]"
+msgstr ""
+
+msgctxt "#32102"
+msgid "Confirm add movie to set"
+msgstr ""
+
+msgctxt "#32103"
+msgid "Add this movie '%s'"
+msgstr ""
+
+msgctxt "#32104"
+msgid "To this set '%s'"
+msgstr ""
+
+#empty strings from id 32105 to 32109
+
+msgctxt "#32110"
+msgid "Remove from movieset"
+msgstr ""
+
+msgctxt "#32111"
+msgid "Remove movie of set [%s]"
+msgstr ""
+
+msgctxt "#32112"
+msgid "Confirm remove movie of set"
+msgstr ""
+
+msgctxt "#32113"
+msgid "Remove this movie '%s'"
+msgstr ""
+
+msgctxt "#32114"
+msgid "Of this set '%s'"
+msgstr ""
+
+#empty strings from id 32115 to 32119
+
+msgctxt "#32120"
+msgid "Set movieset fanart"
+msgstr ""
+
+msgctxt "#32121"
+msgid "Select one fanart or more for extrafanart"
+msgstr ""
+
+msgctxt "#32122"
+msgid "Confirm Downloading..."
+msgstr ""
+
+msgctxt "#32123"
+msgid "%i of %i have been selected!"
+msgstr ""
+
+msgctxt "#32124"
+msgid "Are you sure download this files?"
+msgstr ""
+
+msgctxt "#32125"
+msgid "Download: %i of %i - %i%%"
+msgstr ""
+
+msgctxt "#32126"
+msgid "Choose folder for "
+msgstr ""
+
+msgctxt "#32127"
+msgid "extrafanart"
+msgstr ""
+
+msgctxt "#32128"
+msgid "extrathumb"
+msgstr ""
+
+#empty string with id 32129
+
+msgctxt "#32130"
+msgid "Set movieset thumb"
+msgstr ""
+
+msgctxt "#32131"
+msgid "Select one thumb or more for extrathumb"
+msgstr ""
+
+#empty strings from id 32132 to 32134
+
+msgctxt "#32135"
+msgid "Confirm overwrite..."
+msgstr ""
+
+msgctxt "#32136"
+msgid "Do you want overwrite your existing files?"
+msgstr ""
+
+#empty strings from id 32137 to 32139
+
+msgctxt "#32140"
+msgid "Remove this movieset [%s]"
+msgstr ""
+
+msgctxt "#32141"
+msgid "Remove movieset from library"
+msgstr ""
+
+#empty strings from id 32142 to 32199
+
+msgctxt "#32200"
+msgid "Add to movieset"
+msgstr ""
+
+msgctxt "#32201"
+msgid "Select movieset for [%s]"
+msgstr ""
+
+#empty strings from id 32202 to 32209
+
+msgctxt "#32210"
+msgid "Remove movie of set [%s]"
+msgstr ""
+
+#empty strings from id 32211 to 32219
+
+msgctxt "#32220"
+msgid "Edit movie sorttitle"
+msgstr ""
+
+msgctxt "#32221"
+msgid "Edit movieset title"
+msgstr ""
+
+#empty strings from id 32222 to 32299
+
+msgctxt "#32300"
+msgid "Add movies to existing movieset"
+msgstr ""
+
+msgctxt "#32301"
+msgid "Select movie"
+msgstr ""
+
+msgctxt "#32302"
+msgid "Select movieset for movie [%s]"
+msgstr ""
+
+#empty strings from id 32303 to 32309
+
+msgctxt "#32310"
+msgid "Remove movies to existing movieset"
+msgstr ""
+
+msgctxt "#32311"
+msgid "Select movieset"
+msgstr ""
+
+#empty strings from id 32312 to 32319
+
+msgctxt "#32320"
+msgid "Remove existing movieset"
+msgstr ""
+
+msgctxt "#32321"
+msgid "Select movieset to remove"
+msgstr ""
+
+#empty strings from id 32322 to 32329
+
+msgctxt "#32330"
+msgid "Create new movieset"
+msgstr ""
+
+msgctxt "#32331"
+msgid "Enter title of set"
+msgstr ""
+
+#strings 33000 thru 33999 reserved for common strings used in addons
+#skin strings
+#empty strings from id 32332 to 32999
+
+msgctxt "#33000"
+msgid "Manager Sets"
+msgstr ""
+
+msgctxt "#33001"
+msgid "Sets"
+msgstr ""
+
+msgctxt "#33002"
+msgid "Info Set"
+msgstr ""
+
+#empty string with id 33003
+
+msgctxt "#33004"
+msgid "[Set]"
+msgstr ""
+
+#empty strings from id 33005 to 33099
+
+msgctxt "#33100"
+msgid "Show Info of Movie Sets in the library"
+msgstr ""
+
+msgctxt "#33101"
+msgid "Extra Buttons"
+msgstr ""
+
+msgctxt "#33102"
+msgid "Enable the manager's options in the library"
+msgstr ""
+
+msgctxt "#33103"
+msgid "Enable \"Info Set\" in the context menu"
+msgstr ""
+
+msgctxt "#33104"
+msgid "(Available with mouse only!)"
+msgstr ""

@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!-- strings 32000 thru 32999 reserved for scripts -->
+  <string id="32000">Ομάδες Ταινιών</string>
+  <string id="32001">Ομάδες Διαχειριστή</string>
+  <string id="32002">Ομάδες</string>
+  <string id="32003">[Ομάδα]&#32;</string>
+  <string id="32004">[Ταινία]&#32;</string>
+
+  <!-- category settings -->
+  <string id="32050">Γενικά</string>
+  <string id="32051">Εμφάνιση παράθυρου κατά τη λήψη πληροφοριών</string>
+  <string id="32052">Διαχωριστικό Ετικετών</string>
+  <string id="32053">Ταξινόμηση ταινιών εκάστοτε ομάδας</string>
+
+  <string id="32060">Συντήρηση</string>
+  <string id="32061">Αρχείο Καταγραφής Αλλαγών</string>
+  <string id="32062">Εμφάνιση InfoLabels</string>
+  <string id="32063">Προβολή Άδειας</string>
+
+  <!-- strings Manager -->
+  <string id="32100">Προσθήκη Ταινιών...</string>
+  <string id="32101">Επιλογή ταινίας για ομάδα [%s]</string>
+  <string id="32102">Επιβεβαίωση προσθήκης ταινίας στην ομάδα</string>
+  <string id="32103">Προσθήκη της ταινίας '%s'</string>
+  <string id="32104">στην ομάδα '%s';</string>
+
+  <string id="32110">Αφαίρεση από την ομάδα</string>
+  <string id="32111">Αφαίρεση ταινίας από την ομάδα [%s]</string>
+  <string id="32112">Επιβεβαίωση αφαίρεσης ταινίας από την ομάδα</string>
+  <string id="32113">Αφαίρεση της ταινίας '%s'</string>
+  <string id="32114">από την ομάδα '%s';</string>
+
+  <string id="32120">Ορισμός fanart ομάδας</string>
+  <string id="32121">Επιλέξτε μία ή επιπλέον εικόνες fanart (extrafanart)</string>
+  <string id="32122">Επιβεβαίωση Λήψης...</string>
+  <string id="32123">%i από %i έχουν επιλεγεί!</string>
+  <string id="32124">Επιθυμείτε να κατεβάσετε αυτά τα αρχεία;</string>
+  <string id="32125">Λήψη: %i από %i - %i%%</string>
+  <string id="32126">Επιλογή φακέλου για&#32;</string>
+  <string id="32127">επιπλέον fanart (extrafanart)</string>
+  <string id="32128">επιπλέον μικρογραφίες (extrathumbs)</string>
+  <string id="32129"></string>
+  <string id="32130">Ορισμός μικρογραφίας ομάδας</string>
+  <string id="32131">Επιλέξτε μία ή επιπλέον μικρογραφίες (extrathumbs)</string>
+
+  <string id="32135">Επιβεβαίωση αντικατάστασης...</string>
+  <string id="32136">Να αντικατασταθούν τα υπάρχοντα αρχεία;</string>
+
+  <string id="32140">Αφαίρεση αυτής της ομάδας ταινιών [%s]</string>
+  <string id="32141">Αφαίρεση ομάδας από τη συλλογή</string>
+
+  <string id="32200">Προσθήκη σε ομάδα ταινιών</string>
+  <string id="32201">Επιλογή ομάδας ταινιών για [%s]</string>
+
+  <string id="32210">Αφαίρεση ταινίας από την ομάδα [%s]</string>
+  <string id="32220">Όνομα με το οποίο ταξινομείται η ταινία</string>
+  <string id="32221">Αλλαγή ονόματος ομάδας</string>
+
+  <string id="32300">Προσθήκη ταινιών σε υπάρχουσα ομάδα</string>
+  <string id="32301">Επιλογή ταινίας</string>
+  <string id="32302">Επιλογή ομάδας ταινιών για την ταινία [%s]</string>
+
+  <string id="32310">Μεταφορά ταινιών σε υπάρχουσες ομάδες</string>
+  <string id="32311">Επιλογή ομάδας ταινιών</string>
+
+  <string id="32320">Αφαίρεση υπάρχουσας ομάδας ταινιών</string>
+  <string id="32321">Επιλογή ομάδας ταινιών για αφαίρεση</string>
+
+  <string id="32330">Δημιουργία νέας ομάδας</string>
+  <string id="32331">Εισάγετε το όνομα της ομάδας</string>
+
+  <!-- strings 33000 thru 33999 reserved for common strings used in addons -->
+  <!-- skin strings -->
+  <string id="33000">Ομάδες Διαχειριστή</string>
+  <string id="33001">Ομάδες</string>
+  <string id="33002">Πληροφορίες Ομάδας</string>
+  <string id="33004">[Ομάδα]</string>
+
+  <string id="33100">Προβολή Πληροφοριών των Ομάδων Ταινιών της συλλογής</string>
+  <string id="33101">Επιπλέον Κουμπιά</string>
+  <string id="33102">Ενεργοποίηση των επιλογών του διαχειριστή στη συλλογή</string>
+  <string id="33103">Ενεργοποιήστε τις "Πληροφορίες Ομάδας" στο μενού</string>
+  <string id="33104">(Διαθέσιμο μόνο με ποντίκι!)</string>
+</strings>
