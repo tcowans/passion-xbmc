@@ -36,6 +36,12 @@ except: xbmcvfs.mkdir( os.path.dirname( MOVIESET_CACHED_THUMB ) )
 LOGGER = logAPI()
 TBN = Thumbnails()
 
+def check_compatibility( minversion="11.9.3" ):
+    VERSION = Addon( "xbmc.addon" ).getAddonInfo( "version" )
+    return VERSION >= minversion, VERSION
+
+COMPATIBLE, VERSION = check_compatibility()
+
 
 #xbmcdb = executehttpapi
 #executehttpapi cause Crash/SystemExit if backend of movieset/tvtunes is running !!!
@@ -70,7 +76,7 @@ LIST_FIELDS_ALL = [ "title", "artist", "albumartist", "genre", "year", "rating",
 VIDEO_FIELDS_MOVIE = [ "title", "genre", "year", "rating", "director", "trailer",
     "tagline", "plot", "plotoutline", "originaltitle", "lastplayed",
     "playcount", "writer", "studio", "mpaa", "cast", "country",
-    "imdbnumber", "premiered", "productioncode", "runtime", "set",
+    "imdbnumber", "runtime", "set",
     "showlink", "top250", "votes", "streamdetails",
     "fanart", "thumbnail", "file", "resume" ] # "sorttitle" not supported :( !!! and "lastplayed" not returned
 
@@ -111,7 +117,6 @@ def get_cached_thumb( fpath ):
         return ( fpath, temp )[ path_exists( temp ) ]
     except:
         return fpath
-
 
 def getContainerMovieSets( infoSet=None ):
     jsonapi = jsonrpc.jsonrpcAPI()
@@ -215,13 +220,19 @@ def getContainerMovieSets( infoSet=None ):
                     # update genres and years
                     if movie[ "year" ] > 0:
                         years.add( str( movie[ "year" ] ) )
-                    genres.update( movie[ "genre" ].split( " / " ) )
+                    try: genres.update( movie[ "genre" ].split( " / " ) )
+                    except: genres.update( movie[ "genre" ] )
+                    genres.discard( "" )
                     # add country
                     if movie.get( "country" ):
-                        countries.update( movie[ "country" ].split( " / " ) )
+                        try: countries.update( movie[ "country" ].split( " / " ) )
+                        except: countries.update( movie[ "country" ] )
+                    countries.discard( "" )
                     # add studio
                     if movie.get( "studio" ):
-                        studios.update( movie[ "studio" ].split( " / " ) )
+                        try: studios.update( movie[ "studio" ].split( " / " ) )
+                        except: studios.update( movie[ "studio" ] )
+                    studios.discard( "" )
                     # add plot movie to plotset
                     plotset += "[B]%(title)s (%(year)s)[/B][CR]%(plot)s[CR][CR]" % movie
                     # set stack, add movie path and trailer
@@ -378,11 +389,10 @@ class Database( Records ):
 
     def __init__( self, *args, **kwargs ):
         Records.__init__( self )
-        self.idVersion = int( self.fetch( "SELECT idVersion FROM version", index=0 )[ 0 ] )
         self._clean_cached_thumbs()
 
     def _clean_cached_thumbs( self, limit=25 ):
-        if self.idVersion >= 63: return
+        if COMPATIBLE: return
         # clean all images, if set not exists. For prevent bad match with new set.
         try:
             id_moviesets = self.fetch( "SELECT idSet FROM sets" )
@@ -401,7 +411,7 @@ class Database( Records ):
             LOGGER.error.print_exc()
 
     def getArtForItem( self, mediaId, mediaType="set" ):
-        if self.idVersion >= 63:
+        if COMPATIBLE:
             try:
                 sql = "SELECT type,url FROM art WHERE media_id=%i AND media_type='%s'" % ( int( mediaId ), mediaType )
                 return dict( [ ( t, ( "image://" + quote_plus( u ) ) ) for t, u in self.fetch( sql ) ] )
@@ -410,7 +420,7 @@ class Database( Records ):
 
     def setArtForItem( self, mediaId, mediaType, artType, url ):
         OK = False
-        if self.idVersion >= 63:
+        if COMPATIBLE:
             try:
                 # check if exists
                 sql = "SELECT art_id FROM art WHERE media_id=%i AND media_type='%s' AND type='%s'" % ( int( mediaId ), mediaType, artType )
@@ -625,13 +635,47 @@ class Database( Records ):
         try:
             sql = """
                 SELECT actors.idActor, actors.strActor, actorlinkmovie.strRole, movieview.c00
-                FROM movieview JOIN setlinkmovie ON movieview.idMovie=setlinkmovie.idMovie
-                JOIN actorlinkmovie ON movieview.idMovie=actorlinkmovie.idMovie
+                FROM movieview JOIN actorlinkmovie ON movieview.idMovie=actorlinkmovie.idMovie
                 JOIN actors ON actors.idActor=actorlinkmovie.idActor
-                WHERE setlinkmovie.idSet=%i ORDER BY movieview.c07, actorlinkmovie.iOrder
+                WHERE movieview.idSet=%i ORDER BY movieview.c07, actorlinkmovie.iOrder
                 """
             #keys = [ "idActor", "cast", "role", "movie" ]
             castandrole = self.fetch( sql % int( idSet ) )#, keys )
         except:
             LOGGER.error.print_exc()
         return castandrole
+
+'''
+import time
+from datetime import timedelta
+def time_took( t ):
+    return str( timedelta( seconds=( time.time() - t ) ) )
+
+def getContainerMovieSets2( allsets=False ):
+    st = time.time()
+    # GET MOVIESETS
+    jsonapi = jsonrpc.jsonrpcAPI()
+    if not allsets:
+        json = jsonapi.VideoLibrary.GetMovieSets()
+        movie_sets = json.get( 'sets' ) or []
+    else:
+        from xbmcart import DATABASE
+        movie_sets = DATABASE.fetch( "SELECT sets.* FROM sets JOIN setlinkmovie ON setlinkmovie.idSet=sets.idSet GROUP BY sets.idSet" )
+
+    # enum movie sets
+    for countset, movieset in enumerate( movie_sets ):
+        try:
+            if allsets: idSet = movieset[ 0 ]
+            else: idSet = movieset[ "setid" ]
+            
+            ms = jsonapi.VideoLibrary.GetMovieSetDetails(
+                setid=idSet,
+                properties=VIDEO_FIELDS_MOVIESET,
+                movies={ "properties": VIDEO_FIELDS_MOVIE, "sort": SORTTITLE }
+                )
+            print jsonrpc.simplejson.dumps( ms, sort_keys=True, indent=2 )
+        except:
+            LOGGER.error.print_exc()
+    print time_took( st )
+#getContainerMovieSets2(1)
+'''
