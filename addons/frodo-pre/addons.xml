@@ -1,5 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addons>
+<addon id="metadata.passion.xbmc.org" name="Passion-XBMC"
+       version="2.0.4" provider-name="Team Passion-XBMC (passion-xbmc.org)">
+  <requires>
+    <import addon="xbmc.metadata" version="1.0"/>
+  </requires>
+  <extension point="xbmc.metadata.scraper.movies" language="multi" library="passion-xbmc.xml"/>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">Passion-XBMC scraper grabs film's informations in french or in english from Ciné-Passion or Média-Passion.</summary>
+    <summary lang="fr">Le scraper Passion-XBMC récupère les informations des films en français ou en anglais depuis Ciné-Passion ou Média-Passion.</summary>
+    <description lang="en">Passion-XBMC scraper has been created by members of passion-xbmc.org community.</description>
+    <description lang="fr">Le scraper Passion-XBMC est le fruit du travail de développeurs appartenant à la communauté Passion-xbmc.org.</description>
+    <disclaimer lang="en">Passion-XBMC scraper is a community database where everyone is welcome to help.</disclaimer>
+    <disclaimer lang="fr">Le Scraper Passion-XBMC est une base de données communautaire à laquelle tout le monde est invité à participer.</disclaimer>
+    <platform>all</platform>
+  </extension>
+</addon>
+
+<addon id="plugin.moviesets" name="Movie Sets (frodo-pre)"
+       version="11.9.5" provider-name="Frost (passion-xbmc.org)">
+  <requires>
+    <import addon="xbmc.python" version="2.0" />
+    <import addon="script.module.xbmcart" version="1.0.1" />
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="plugin.py">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">Movie Sets Library and Manager</summary>
+    <description lang="en">Movie Sets Library for skins / skinners and Manager for users</description>
+    <disclaimer lang="en">Comparison of skin features.[CR]http://wiki.xbmc.org/index.php?title=Comparison_of_skin_features</disclaimer>
+    <license>GPL</license>
+    <platform>all</platform>
+  </extension>
+</addon>
+
 <addon id="plugin.video.tetesaclaques.tv"
        name="Têtes à claques"
        version="1.0.1"
@@ -52,10 +87,8 @@
   </extension>
 </addon>
 
-<addon id="script.module.xbmcart"
-       name="XBMC Artwork"
-       version="1.0.0"
-       provider-name="Frost">
+<addon id="script.module.xbmcart" name="XBMC Artwork"
+       version="1.0.1" provider-name="Frost (passion-xbmc.org)">
   <requires>
     <import addon="xbmc.python" version="2.0"/>
   </requires>
@@ -68,8 +101,8 @@
   </extension>
 </addon>
 
-<addon id="script.moviesets" name="Movie Sets (frodo-pre)"
-       version="3.0.2" provider-name="Frost (passion-xbmc.org)">
+<addon id="script.moviesets" name="Movie Sets (Deprecated)"
+       version="3.0.3" provider-name="Frost (passion-xbmc.org)">
   <requires>
     <import addon="xbmc.python" version="2.0"/>
     <import addon="script.module.pil" version="1.1.7" optional="true" />
@@ -88,11 +121,13 @@
 
 <addon id="script.widget.weatherworld"
        name="Weather World"
-       version="1.0.1"
+       version="1.0.3"
        provider-name="Frost (passion-xbmc.org)">
   <requires>
     <import addon="xbmc.python" version="2.0"/>
   </requires>
+  <extension point="xbmc.ui.screensaver"
+             library="default.py"/>
   <extension point="xbmc.python.library"
              library="default.py" />
   <extension point="xbmc.addon.metadata">
