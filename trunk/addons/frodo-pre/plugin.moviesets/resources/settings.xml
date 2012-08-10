@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+  <!-- General -->
+  <category label="$LOCALIZE[128]">
+    <setting type="lsep" label="$LOCALIZE[15100]" />
+    <setting id="allsets" type="bool" label="Show collection with single movie" default="false" />
+    <setting type="sep" />
+    <setting id="separator" type="text" label="$ADDON[plugin.moviesets 32052]" default="/" />
+    <setting id="order" type="enum" label="$ADDON[plugin.moviesets 32053]" lvalues="584|585" default="0" />
+    <setting type="sep" />
+    <setting type="action" label="Set moviesets in library movies (Library XML)" action="RunScript(plugin.moviesets,libraryxml)" option="close" default="" />
+  </category>
+
+  <!-- Skinning -->
+  <category label="Skinning">
+    <setting type="lsep" label="Skinners" />
+    <setting type="action" label="$ADDON[plugin.moviesets 32062]" action="RunScript($CWD/resources/lib/viewer.py,infolabels)" default="" />
+    <setting type="sep" />
+    <setting type="action" label="Set [B]Confluence[/B] more compatible" action="RunScript(plugin.moviesets,setconfluence)" option="close" default="" />
+  </category>
+
+  <!-- Misc -->
+  <category label="$ADDON[plugin.moviesets 32060]">
+    <setting type="lsep" label="Supports" />
+    <setting type="action" label="English [COLOR=88FFFFFF]- Forum XBMC.org[/COLOR]" action="RunScript($CWD/resources/lib/viewer.py,webbrowser,http://forum.xbmc.org/showthread.php?t=89163)"  default="" />
+    <setting type="action" label="Français [COLOR=88FFFFFF]- Forum Passion-XBMC.org[/COLOR]" action="RunScript($CWD/resources/lib/viewer.py,webbrowser,http://passion-xbmc.org/outils-supplementaires-pour-les-skins/%28release%29-moviesets-%28saga%29-show-info-saga-pour-skins-skinners/)" default="" />
+
+    <setting type="lsep" label="Repository" />
+    <setting type="action" label="Passion-XBMC.org Add-ons Repo" action="ActivateWindow(AddonBrowser,addons://repository.passion.xbmc.org)" option="close" default="" />
+    <setting type="action" label="Passion-XBMC.org Add-ons Web Repo" action="RunScript($CWD/resources/lib/viewer.py,webbrowser,http://passion-xbmc.org/addons/?Page=View&ID=plugin.moviesets)" default="" />
+
+    <setting type="lsep" label="Infos" />
+    <setting type="action" label="$ADDON[plugin.moviesets 32061]" action="RunScript($CWD/resources/lib/viewer.py,changelog)" default="" />
+    <setting type="action" label="$ADDON[plugin.moviesets 32063]" action="RunScript($CWD/resources/lib/viewer.py,license)" default="" />
+  </category>
+</settings>
