@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+  <!-- General -->
+  <category label="$LOCALIZE[128]">
+    <setting id="time" type="slider" label="Time to change cities" range="5,1,60" option="int" default="15" />
+    <setting id="showcities" type="bool" label="Show cities layout" default="false" />
+    <setting id="showcitiesicons" type="bool" label="Show cities icons" default="false" />
+  </category>
+</settings>
