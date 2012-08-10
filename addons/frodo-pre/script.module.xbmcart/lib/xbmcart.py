@@ -1,13 +1,39 @@
 
-__all__ = [ "getArt", "setArt", "dbVersion" ]
+__all__ = [ "copyArtToCache", "getArt", "setArt", "DATABASE" ]
+
+from os.path import splitext
+
+import xbmc
+import xbmcvfs
+from xbmcaddon import Addon
 
 from artwork import Database
 
 DATABASE    = Database()
-dbVersion   = DATABASE.idVersion
 
 ARTS_TYPE   = "fanart|thumb".split( "|" )
 MEDIAS_TYPE = "actor|director|episode|movie|musicvideo|set|tvshow".split( "|" )
+
+
+def check_compatibility( minversion="11.9.3" ):
+    VERSION = Addon( "xbmc.addon" ).getAddonInfo( "version" )
+    return VERSION >= minversion, VERSION
+
+COMPATIBLE, VERSION = check_compatibility()
+
+
+def copyArtToCache( url ):
+    if COMPATIBLE:
+        c_thumb = xbmc.getCacheThumbName( url )[ :-4 ] + splitext( url )[ 1 ]
+        c_dir   = "special://thumbnails/%s" % c_thumb[ 0 ]
+        c_thumb = "%s/%s" % ( c_dir, c_thumb )
+
+        ok = True
+        if not xbmcvfs.exists( c_thumb ):
+            ok = xbmcvfs.mkdirs( c_dir )
+            ok = xbmcvfs.copy( url, c_thumb )
+
+        return ok and c_thumb
 
 
 def getArt( mediaId, mediaType ):
