@@ -55,17 +55,17 @@ def getXbmcHttpBaseUrl():
     if port and port != "80": xbmcHttp += ":%s" % port
     xbmcHttp += "/xbmcCmds/xbmcHttp"
     return xbmcHttp
-xbmcHttp = getXbmcHttpBaseUrl()
-def xbmcdb( command, *params ):
+
+def xbmcdb( url, command, *params ):
     source = ""
-    url = xbmcHttp
+    #url = xbmcHttp
     try:
         params = ";".join( list( params ) )
         url   += "?command=%s&parameter=%s" % ( command, params )
         source = urlopen( url ).read()
         #source = xbmc.executehttpapi( "%s(%s)" % ( command, params ) )
     except:
-        pass
+        print_exc()
     LOG( "xbmcart.xbmcdb::url: %s" % url )
     LOG( "xbmcart.xbmcdb::response: %r" % source )
     return source
@@ -75,6 +75,7 @@ class Records:
     """ fetch records """
 
     def __init__( self ):
+        self.xbmcHttp  = None
         self.idVersion = self.getVersion()
         if self.idVersion < 63:
             raise Exception( 'xbmcart invalid database version: %r' % self.idVersion )
@@ -82,14 +83,16 @@ class Records:
     def deprecatedCommit( self, sql ):
         done = False
         try:
-            done = ( "done" in xbmcdb( "ExecVideoDatabase", quote_plus( sql ) ).lower() )
+            if self.xbmcHttp is None: self.xbmcHttp = getXbmcHttpBaseUrl()
+            done = ( "done" in xbmcdb( self.xbmcHttp, "ExecVideoDatabase", quote_plus( sql ) ).lower() )
         except: print_exc()
         return done
 
     def deprecatedFetch( self, sql, index=None ):
         fields = []
         try:
-            records = xbmcdb( "QueryVideoDatabase", quote_plus( sql ) )
+            if self.xbmcHttp is None: self.xbmcHttp = getXbmcHttpBaseUrl()
+            records = xbmcdb( self.xbmcHttp, "QueryVideoDatabase", quote_plus( sql ) )
             regexp = "<field>(.*?)</field>"
             if index is None: regexp *= 2
             fields = findall( regexp, records, DOTALL )
@@ -135,7 +138,8 @@ class Records:
         return fields
 
     def getVersion( self ):
-        return int( self.fetch( "SELECT idVersion FROM version", index=0 )[ 0 ] )
+        try: return int( self.fetch( "SELECT idVersion FROM version", index=0 )[ 0 ] )
+        except: return 0
 
 
 class Database( Records ):
