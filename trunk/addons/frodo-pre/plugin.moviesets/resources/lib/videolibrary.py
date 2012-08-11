@@ -89,11 +89,10 @@ def getArtsOfSet( idSet, type="" ):
         c_type = ( "c08", "c20" )[ type == "fanart" ]
     movieset, art = [], {}
     try:
+        from xbmcart import getArt, DATABASE
         #sql = "SELECT c00, c07, %s FROM movieview JOIN setlinkmovie ON movieview.idMovie=setlinkmovie.idMovie WHERE setlinkmovie.idSet=%i ORDER BY c07"
         sql = "SELECT c00, c07, %s FROM movieview WHERE idSet=%i ORDER BY c07"
         movieset = DATABASE.fetch( sql % ( c_type, int( idSet ) ) )
-
-        from xbmcart import getArt, DATABASE
         art      = getArt( idSet, "set" )
     except:
         LOGGER.error.print_exc()
