@@ -1,3 +1,6 @@
+2.1.3
+ - Changed name of add-on to "Movie Sets (Eden)"
+
 2.1.2
  - added: actors info in script-MovieSets-DialogInfo.xml (require: script.metadata.actors for actor info)
  - updated: default skin for actor info
