@@ -1,0 +1,8 @@
+NB: This version work with any skins :)
+
+11.9.5.1
+ - fixed get thumbs or fanarts from database
+
+11.9.5
+ - Plugin version "plugin.moviesets" of deprecated script.moviesets
+ - Initial version (NB: Make sure version of add-on is same of xbmc)

@@ -18,7 +18,7 @@
 </addon>
 
 <addon id="plugin.moviesets" name="Movie Sets (frodo-pre)"
-       version="11.9.5" provider-name="Frost (passion-xbmc.org)">
+       version="11.9.5.1" provider-name="Frost (passion-xbmc.org)">
   <requires>
     <import addon="xbmc.python" version="2.0" />
     <import addon="script.module.xbmcart" version="1.0.1" />
