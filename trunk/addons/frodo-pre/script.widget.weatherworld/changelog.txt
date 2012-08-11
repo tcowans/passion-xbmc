@@ -1,3 +1,6 @@
+v1.0.4
+ - fixed default skin name
+
 v1.0.3
  - xbmc.ui.screensaver function (experimental)
 
