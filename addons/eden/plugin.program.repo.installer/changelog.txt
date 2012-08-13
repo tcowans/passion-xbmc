@@ -1,4 +1,7 @@
-﻿2011-11-26 Version 1.0.4 by Frost
+﻿2012-08-13 Version 1.0.5 by Frost
+- fixed issue 20 (thanks to stacked.xbmc) http://code.google.com/p/passion-xbmc/issues/detail?id=20
+
+2011-11-26 Version 1.0.4 by Frost
 - Update to eden-pre
 - fixed: show infos of current focused repo ( change list view in your skin )
 
