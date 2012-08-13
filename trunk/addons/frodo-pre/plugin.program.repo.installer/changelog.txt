@@ -1,0 +1,31 @@
+﻿2012-08-13 Version 2.0.0 by Frost
+- Update to frodo-pre
+- code reduced in 2 files
+- changed deprecated function, now are in xbmc source code.
+- disabled add-on info (re-added soon!)
+
+
+*************** END OF VERSION 1 ***************
+
+2012-08-13 Version 1.0.5 by Frost
+- fixed issue 20 (thanks to stacked.xbmc) http://code.google.com/p/passion-xbmc/issues/detail?id=20
+
+2011-11-26 Version 1.0.4 by Frost
+- Update to eden-pre
+- fixed: show infos of current focused repo ( change list view in your skin )
+
+2011-03-21 Version 1.0.3 by Temhil
+- Added Repository info window
+- Set default title display option without description
+
+2011-03-17 Version 1.0.2 by Temhil
+- Added option to add or not description from title
+- Added option for activating or not color of description (set it by default)
+- Removed Bold Title
+
+2011-03-15 - Version 1.0.1 by Temhil
+- Added Icon (thank to Willynuisance)
+- Added settings allowing to change color of description
+
+2011-03-13 - Version 1.0.0 by Temhil and Frost
+- Creation  (installation part based on Frost work with script.addon.installer)
