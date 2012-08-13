@@ -1,0 +1,31 @@
+[B]Dépendance :[B]
+- script.module.simple.downloader (v0.9.3)
+
+[B]Fonctionnalités :[B]
+- ARTE+7 : visionner/télécharger les émissions d'Arte des sept(7) derniers jours
+- Évènements : visionner/télécharger les vidéos rattachées aux grands évènements mis en avant par Arte (Berlinade, Festival de Canne ...)
+- Bonus : visionner/télécharger les vidéos Bonus du site Arte+7
+- Programmes : liste des vidéos Arte+7 par programmes
+- Arte Live Web : visionner/télécharger les vidéos de spectacles disponibles sur ARTE Live web
+- Recherches : permet de faire une recherche parmis les vidéos d'Arte+7
+
+[B]Information :[/B]
+-Ce plugin a été développé et testé sous Debian Wheezy/sid.
+-Pour ceux qui veulent s'amuser à mettre les mains dans le code, des fichiers de tests des différents parsers indépendants de xbmc sont inclus dans les sources.
+
+[B]Version 0.1.3[/B]
+- Ajouter un menu de recherche des videos Arte+7
+- Permettre de choisir la qualité des videos
+- Améliorer la qualité des informations récupérées sur les vidéos Arte+7 et Évènement
+
+[B]Version 0.1.2[/B]
+-Changementde version de simple downloader
+-Ajout des menus Bonus et Programmes
+-Ajout d'un système de pagination sur Bonus, Programmes et Evenements
+-Correction de bugs divers
+
+[B]Version 0.1.1[/B]
+-Correction du bug qui empêchait le visionnage des videos Arte Live Web
+
+[B]Version 0.1.0[/B]
+-First try
