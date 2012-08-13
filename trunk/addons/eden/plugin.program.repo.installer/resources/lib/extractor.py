@@ -156,11 +156,11 @@ def unzip( filename, destination=None, report=False ):
         base_dir = os.path.join( destination, root_dir.rstrip( "/" ) )
         if not is_root_dir:#root_dir.endswith( "/" ) and ( zip.getinfo( root_dir ).file_size > 0 ):
             root_dir = os.path.basename( os.path.splitext( filename )[ 0 ] )
-            destination = os.path.join( destination, root_dir )
+            #destination = os.path.join( destination, root_dir )
             base_dir = destination
-        if os.path.isdir( base_dir ):
-            shutil2.rmtree( base_dir )
-        os.makedirs( base_dir )
+        #if os.path.isdir( base_dir ):
+        #    shutil2.rmtree( base_dir )
+        #os.makedirs( base_dir )
         for count, item in enumerate( namelist ):
             percent += diff
             if report:
