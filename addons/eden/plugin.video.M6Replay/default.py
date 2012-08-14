@@ -13,8 +13,8 @@ __addonID__      = "plugin.video.M6Replay"
 __author__       = "PECK, mighty_bombero, merindol, Temhil, beenje"
 __url__          = "http://passion-xbmc.org/index.php"
 __credits__      = "Team XBMC Passion"
-__date__         = "04-08-2012"
-__version__      = "2.0.4"
+__date__         = "14-08-2012"
+__version__      = "2.0.5"
 
 import urllib,sys,os,struct
 import base64
@@ -76,21 +76,18 @@ architecture = ''
 autoplatform = (__settings__.getSetting('autoplatform') == 'true')
 print 'autoplatform: %s' % str(autoplatform)
 if not autoplatform:
-    os_type_list  = ['All', 'Windows', 'mac', 'mac_arm', 'Linux', 'Xbox']
-    cpu_type_list = ['32bit', '64bit']
+    os_type_list  = ['All', 'Windows', 'osx', 'ios', 'Linux', 'Xbox']
+    cpu_type_list = ['32bit', '64bit', 'arm']
     os_type_id  = int( __settings__.getSetting('ostype') )
     cpu_type_id = int( __settings__.getSetting('cputype') )
     print os_type_list[os_type_id]
     print cpu_type_list[cpu_type_id]
-    if os_type_list[os_type_id] in ['Windows', 'Linux']:
+    if os_type_list[os_type_id] in ('Windows', 'Linux'):
         SYSTEM_PLATFORM = os_type_list[os_type_id]
         architecture = cpu_type_list[cpu_type_id]
-    if os_type_list[os_type_id] == 'mac':
+    elif os_type_list[os_type_id] in ('osx', 'ios'):
         SYSTEM_PLATFORM = 'Darwin'
-        architecture = 'osx'
-    elif os_type_list[os_type_id] == 'mac_arm':
-        SYSTEM_PLATFORM = 'Darwin'
-        architecture = 'ios'
+        architecture = os_type_list[os_type_id]
     elif os_type_list[os_type_id] == 'Xbox':
         SYSTEM_PLATFORM = 'Xbox'
         architecture = ''
@@ -105,6 +102,8 @@ else:
         architecture = '32bit'
     if xbmc.getCondVisibility( "system.platform.linux" ):
         SYSTEM_PLATFORM = 'Linux'
+        if 'arm' in os.uname()[4]:
+            architecture = 'arm'
     elif xbmc.getCondVisibility( "system.platform.xbox" ):
         SYSTEM_PLATFORM = 'Xbox'
         # No architecture directory for Xbox
@@ -119,6 +118,11 @@ else:
             # Crypto can be compiled as universal library with multiple
             # architectures for osx
             architecture = 'osx'
+    elif xbmc.getCondVisibility( "system.platform.ios" ):
+        # Need to check system.platform.osx for eden
+        # Changed to system.platform.ios for frodo
+        SYSTEM_PLATFORM = 'Darwin'
+        architecture = 'ios'
 
 CRYPTO_PATH = os.path.join( __addonDir__, "resources", "platform_libraries", SYSTEM_PLATFORM, architecture)
 sys.path.append(CRYPTO_PATH)

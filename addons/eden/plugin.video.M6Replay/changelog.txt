@@ -1,3 +1,7 @@
+2.0.5 (14-08-2012) par beenje
++ Détection automatique de iOS pour frodo-pre
++ Ajout de PyCrypto 2.6 pour Raspberry Pi (Linux arm)
+
 2.0.4 (04-08-2012) par beenje
 + Ajout d'un ancien serveur toujours compatible avec la librtmp 2.4
 Merci à Guillaume pour les informations!
