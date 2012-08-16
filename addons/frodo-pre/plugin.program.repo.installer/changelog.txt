@@ -1,14 +1,19 @@
-﻿2012-08-13 Version 2.0.0 by Frost
+﻿2012-08-16 Version 2.0.1 by Frost
+- Fixed write cached file repos
+- Changed use MediaWiki API for grab repos
+- Re-Added dialog add-on information
+
+2012-08-13 Version 2.0.0 by Frost
 - Update to frodo-pre
-- code reduced in 2 files
-- changed deprecated function, now are in xbmc source code.
-- disabled add-on info (re-added soon!)
+- Code reduced in 2 files
+- Changed deprecated function, now are in xbmc source code.
+- Disabled add-on info (re-added soon!)
 
 
 *************** END OF VERSION 1 ***************
 
 2012-08-13 Version 1.0.5 by Frost
-- fixed issue 20 (thanks to stacked.xbmc) http://code.google.com/p/passion-xbmc/issues/detail?id=20
+- Fixed issue 20 (thanks to stacked.xbmc) http://code.google.com/p/passion-xbmc/issues/detail?id=20
 
 2011-11-26 Version 1.0.4 by Frost
 - Update to eden-pre
