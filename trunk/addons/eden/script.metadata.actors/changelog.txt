@@ -1,4 +1,7 @@
-﻿v0.9.6
+﻿v0.9.7
+ - added: Hebrew language (thanks to BuSHari)
+
+v0.9.6
  - added: Hungarian language (thanks to cortez44)
  - updated: Portuguese (Brazil) language (thanks to Wanilton)
  - added: Lithuanian language (thanks to Artx38)
