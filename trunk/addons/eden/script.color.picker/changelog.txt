@@ -1,3 +1,7 @@
+1.0.4
+ - removed: PIL from dependencies for skins work on openelec (glassnox, aeon nox)
+            if PIL is not installed, color picker exit running.
+
 1.0.3
  - added: Option SetStringInRealTime=true in all view, but require a confirmation OK in main window.
  - added: README.txt

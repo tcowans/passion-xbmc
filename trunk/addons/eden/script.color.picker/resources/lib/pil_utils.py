@@ -84,14 +84,14 @@ class IMAGE:
 
 if ( __name__ == "__main__" ):
     #color = ( 255, 128, 255, 128 )
-    #gradient = r'C:\Documents and Settings\Frost\Application Data\XBMC\addons\script.color.picker\resources\skins\default\media\gradient.png'
+    #gradient = '../skins/default/media/gradient.png'
 
     #img = createGradient( color, gradient )
     #print createPixel( color )
 
     #import time
     #t1 = time.time()
-    im = IMAGE( r"C:\Documents and Settings\Frost\Application Data\XBMC\addons\script.color.picker\resources\palettes\eye.jpg" )
+    im = IMAGE( "../palettes/eye.jpg" )
     colors = im.getColors()
     print len( colors )
     #for count, color in colors:

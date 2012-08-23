@@ -14,6 +14,14 @@ import xbmcgui
 import xbmcvfs
 from xbmcaddon import Addon
 
+try:
+    from resources.lib.pil_utils import Image
+except:
+    xbmcgui.Dialog().ok( Addon( "script.color.picker" ).getAddonInfo( "name" ),
+        "This addon has require module PIL (Python Imaging Library)",
+        "Please Install PIL before!" )
+    raise ImportError( "The PIL module is not installed" )
+
 from resources.lib.pil_utils import *
 
 
