@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="weather.google" name="Google Weather"
-       version="2.0.5" provider-name="Frost, MikeBZH44">
+       version="2.0.6" provider-name="Frost, MikeBZH44">
   <requires>
     <import addon="xbmc.python" version="2.0"/>
   </requires>
@@ -13,5 +13,6 @@
     <description lang="en">Prévisions météorologiques, astronomiques, phases de la terre et de la lune.</description>
     <platform>all</platform>
     <license>GPL</license>
+    <broken>It appears Google has quietly killed its weather API!</broken>
   </extension>
 </addon>

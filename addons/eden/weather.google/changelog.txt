@@ -1,3 +1,6 @@
+2.0.6 (by frost)
+ - broken: It appears Google has quietly killed its weather API!
+
 2.0.5 (by mikebzh44)
  - fixed: issue on openelec due to unbreakable space in HTML (character &nbsp; \xa0)
 
