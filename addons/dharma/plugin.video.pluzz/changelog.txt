@@ -1,3 +1,9 @@
+Version 1.1.1 (02/09/12) par rimram31
+- mise a jour due a un changement du site pluuz.fr
+- mise de PluzzDL faisant planter le programme
+- patch bug encoding dans le notification
+- affiche notification avec le type des videos non supportees et DRM
+
 Version 1.1.0 (04/03/12) par mighty_bombero et Temhil
 - changements faits par mighty_bombero integrant PluzzDl de chaoswizard
 - mise a jour de PluzzDl de chaoswizard

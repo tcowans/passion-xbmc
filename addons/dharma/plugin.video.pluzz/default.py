@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*-
+# -*- coding: cp1252 -*-
 
 __addonID__      = "plugin.video.pluzz"
-__author__       = "mighty_bombero, merindol, Temhil (passion-xbmc.org), tom.net"
+__author__       = "mighty_bombero, merindol, Temhil (passion-xbmc.org), tom.net, rimram31"
 __url__          = "http://passion-xbmc.org/index.php"
 __credits__      = "Team XBMC Passion"
-__date__         = "04-03-2012"
-__version__      = "1.1.0"
+__date__         = "02-09-2012"
+__version__      = "1.1.1"
 
 import xbmcplugin
 import xbmcgui
@@ -40,30 +40,32 @@ WEBSITE = "http://www.pluzz.fr"
 IMAGE_URL = "/layoutftv/arches/catchup/images/logos/"
 
 TYPES = {'categories' :{"Accueil":"/",
-        "JT":"/jt/",
-        "Découverte":"/decouverte/",
-        "Séries - Fictions":"/series---fictions/",
-        "Vie pratique":"/vie-pratique/",
+        "Info":"/info/",
+        "Documentaire":"/documentaire/",
+        "Séries - Fictions":"/serie--fiction/",
+        "Magazine":"/magazine/",
         "Culture":"/culture/",
-        "Actu - Société":"/actu---societe/",
-        "Ludo":"/ludo/",
+        "Jeunesse":"/jeunesse/",
         "Divertissement":"/divertissement/",
-        "Sports":"/sports/"
+        "Sport":"/sport/",
+        "Jeu":"/jeu/",
+        "Autre":"/autre/"
         },
-        'chaines' : {"France 2":"/france2/",
+        'chaines' : {"La 1ere":"/la_1ere/",
+        "France 2":"/france2/",
         "France 3":"/france3/",
         "France 4":"/france4/",
         "France 5":"/france5/",
         "France Ô":"/franceo/"
         }}
 
-IMAGES = {"France 2":"f2.png",
+IMAGES = {"La 1ere":"1ere.png",
+          "France 2":"f2.png",
           "France 3":"f3.png",
           "France 4":"f4.png",
           "France 5":"f5.png",
           "France Ô":"fo.png"
         }
-
 
 
 def get_content_for_type(type):
@@ -74,7 +76,7 @@ def get_content_for_type(type):
 
 def get_category_episodes(url):
     html = urllib.urlopen(WEBSITE + url).read()
-    vignettes = re.findall("""<li class="vignette">\s+<h4 class="_titre">\s+<a class="" href="([^"]+)">([^<]+)</a>\s+</h4>\s+(?:<p class="date">(\d{2}/\d{2}/\d{4})</p>\s+)?<p class="mute pgm_id">[^<]*</p>\s+<img class="illustration" src="([^"]+)"[^<]*/>\s+<img class="chaine" src="([^"]+)"[^<]*/>""",html)
+    vignettes = re.findall("""<li class="vignette">\s+<h4 class="_titre">\s+<a class="" href="([^"]+)">([^<]+)</a>\s+</h4>\s+(?:<p class="date">(\d{2}/\d{2}/\d{4})</p>\s+)?<p class="mute pgm_id">[^<]*</p>\s+<img class="illustration" src="([^"]+)"[^<]*/>\s+<img class="chaine[^"]*" src="([^"]+)"[^<]*/>""",html)
 
     episode_list = list()
     for lien_em,titre,date,path_img,path_logoch in vignettes:
@@ -86,20 +88,31 @@ def get_episode(url):
     pluzzDL = PluzzDL( url, True, None )
     #print "urlFrag" + pluzzDL.urlFrag
     path = None
+    type = "inconnu"
     if pluzzDL.lienRTMP != None:
         path = pluzzDL.lienRTMP
+        type = 'RTMP'
         print "lien RTMP found"
     elif pluzzDL.lienMMS:
         path = pluzzDL.lienMMS
+        type = 'MMS'
         print "lien MMS found"
+    elif pluzzDL.manifestURL:
+        #path = pluzzDL.manifestURL
+        type = "F4M" 
+        print "lien F4M found (manisfest) - not supported"
+    elif pluzzDL.m3u8URL:
+        #path = pluzzDL.m3u8URL
+        type = "M3U8"
+        print "lien M3U8 found - not supported"
     if pluzzDL.drm:
         if pluzzDL.drm == "oui" :
-            showNotification("Vidéo avec DRM", '%s' % (name))
             print "get_episode: La vidéo posséde un DRM ; elle sera sans doute illisible"
+            type = 'DRM'
             
     print "get_episode: path"
-    print path
-    return path , 'wmv'
+    print path # path can be None and cannot be concatenated with a string in this case
+    return path , type
     
 #    #get the id
 #    req = urllib2.Request(url)
@@ -226,12 +239,14 @@ def VIDEO(url, name):
         # Play  video
         if url:
             item = xbmcgui.ListItem(path=url)
+            #if self.debug_mode:
+            #print "Lecture de la video %s with URL: %s"%(name, url)
+            xbmcplugin.setResolvedUrl(handle=int(sys.argv[1]), succeeded=True, listitem=item)
+        elif type == 'DRM':
+            showNotification("Vidéo avec DRM", '%s' % (name))
         else:
-            showNotification("Format video non supporté", '%s' % (name))
+            showNotification("Format video %s non supporté"%type, '%s'%(name))
     
-        #if self.debug_mode:
-        #print "Lecture de la video %s with URL: %s"%(name, url)
-        xbmcplugin.setResolvedUrl(handle=int(sys.argv[1]), succeeded=True, listitem=item)
         
 def get_params():
         param=[]
@@ -269,10 +284,15 @@ def addDir(name,url,mode,iconimage):
         ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=True)
         return ok
     
-def showNotification(header, message):
-    xbmc.executebuiltin('XBMC.Notification("%s", "%s")' % (header.encode( "utf-8", "ignore" ), message.encode( "utf-8", "ignore" )))
+def showNotification(header="", message="", sleep=5000, icon="DefaultVideo.png"):
+    """ 
+       Will display a notification dialog with the specified header and message,
+       In addition you can set the length of time it displays in milliseconds and a icon image. 
+    """
+    print "notification:"
+    print "XBMC.Notification(%s,%s,%i,%s)" % ( header, message, sleep, icon )
+    xbmc.executebuiltin( "XBMC.Notification(%s,%s,%i,%s)" % ( header, message, sleep, icon ) )
         
-
 #######################################################################################################################    
 # BEGIN !
 #######################################################################################################################
