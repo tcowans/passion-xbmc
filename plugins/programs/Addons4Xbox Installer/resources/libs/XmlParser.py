@@ -184,9 +184,9 @@ def parseAddonElt( addonElt, itemInfo ):
                         #TODO: Check case where tag is not present: what is returned?
                         
             requires = addonElt.find("requires")
+            requiredModuleList = []
             if requires:
                 modules2import = requires.findall("import")
-                requiredModuleList = []
                 for module in modules2import:
                     addonId = module.attrib.get( "addon" )
                     if module.attrib.get( "addon" ) != 'xbmc.python': # we ignore default python lib
@@ -194,7 +194,8 @@ def parseAddonElt( addonElt, itemInfo ):
                         moduleInfo [ "id" ]      = addonId
                         moduleInfo [ "version" ] = module.attrib.get( "version" )
                         requiredModuleList.append( moduleInfo )
-                itemInfo [ "required_lib" ] = requiredModuleList
+            itemInfo [ "required_lib" ] = requiredModuleList
+                
                     
                 
             if itemInfo [ "type" ] == TYPE_ADDON:
