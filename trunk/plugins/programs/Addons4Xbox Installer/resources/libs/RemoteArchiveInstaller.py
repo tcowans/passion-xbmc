@@ -32,31 +32,14 @@ _ = sys.modules[ "__main__" ].__language__
 
 
 class Parser:
-    """ Parser Class: grabs all tag versions and urls """
-    # regexpressions
-    revision_regex = re.compile( '<h2>.+?Revision ([0-9]*): ([^<]*)</h2>' )
-    asset_regex = re.compile( '<li><a href="([^"]*)">([^"]*)</a></li>' )
+    """ Parser Class: grabs all urls """
+    asset_regex = re.compile( '<a href="([^"]*)">([^"]*)</a>' )
 
     def __init__( self, htmlSource ):
         # set our initial status
-        self.dict = { "status": "fail", "revision": 0, "assets": [], "url": "" }
-        # fetch revision number
-        self._fetch_revision( htmlSource )
-        # if we were successful, fetch assets
-        if ( self.dict[ "revision" ] != 0 ):
-            self._fetch_assets( htmlSource )
-
-    def _fetch_revision( self, htmlSource ):
-        try:
-            # parse revision and current dir level
-            revision, url = self.revision_regex.findall( htmlSource )[ 0 ]
-            # we succeeded :), set our info
-            urlParts = url.split( "/" )
-            baseUrl = urlParts[len(urlParts)-1]
-            self.dict[ "url" ] = baseUrl
-            self.dict[ "revision" ] = int( revision )
-        except:
-            pass
+        self.dict = { "status": "fail", "assets": []  }
+        # fetch assets
+        self._fetch_assets( htmlSource )
 
     def _fetch_assets( self, htmlSource ):
         try:
@@ -370,9 +353,9 @@ class RemoteDirInstaller(DirItemInstaller):
             if ( forceInstall ):
                 self.dialog.create( self.title, _( 30052 ), _( 30053 ) )
                 asset_files = []
-                
+
                 #TODO: find cleaner solution in order to remove the / at the end of the folder name
-                folders = [ self.itemInfo[ "url" ].replace(self.REPO_URL, "").replace("//", "").replace("/", "").replace( " ", "%20" ) ]  
+                folders = [ self.itemInfo[ "url" ].replace(self.REPO_URL, "").replace( " ", "%20" ) ]  
                 while folders:
                     try:
                         htmlsource = readURL( self.REPO_URL + folders[ 0 ] )
@@ -383,20 +366,12 @@ class RemoteDirInstaller(DirItemInstaller):
                         print files
                         print dirs
                         for file in files:
-                            print "Item url = %s"%items[ "url" ]
-                            print " file = %s"%file
-                            #asset_files.append( "%s/%s" % ( items[ "url" ], file, ) )
-                            asset_files.append( folders[ 0 ] + "/" +  file )
-                            
+                            asset_files.append( folders[ 0 ] + file )
+
                         for folder in dirs:
-                            folders.append( folders[ 0 ] + "/" + folder )
-                        print "_download_item - folders BEFORE:"
-                        print folders
+                            folders.append( folders[ 0 ] + folder )
+
                         folders = folders[ 1 : ]
-                        print "_download_item - asset_files:"
-                        print asset_files
-                        print "_download_item - folders AFTER:"
-                        print folders
                     except:
                         folders = []
                 print 'folders'
@@ -476,7 +451,7 @@ class RemoteDirInstaller(DirItemInstaller):
         files = []
         for item in items[ "assets" ]:
             if ( item.endswith( "/" ) ):
-                folders.append( item[:-1] ) # removing '/' at the end
+                folders.append( item )
             else:
                 files.append( item )
         return files, folders
