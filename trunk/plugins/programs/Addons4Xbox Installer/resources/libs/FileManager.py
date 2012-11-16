@@ -114,7 +114,7 @@ class fileMgr:
 
         return dirList
 
-    def renameItem( self, r_base_path, r_old_name, r_new_name):
+    def renameItem( self, r_base_path, r_old_name, r_new_name, r_force = False ):
         """
         Rename an item (file or directory)
         Return True if success, False otherwise
@@ -122,25 +122,15 @@ class fileMgr:
         result = True
         try:
             if r_base_path == None:
-                # old_name and new_name are path and not just filename
-                #old_name = xbmc.makeLegalFilename( r_old_name ) 
-                #new_name = xbmc.makeLegalFilename( r_new_name ) 
                 old_name = r_old_name 
                 new_name = r_new_name
-                if ( os.path.exists( old_name ) ):
-                    if ( not os.path.exists( new_name ) ):
-                        os.rename( old_name, new_name ) 
-                    else:
-                        result = False  
-                else:
-                    result = False  
             else:
-                # old_name and new_name are just filename
-                # concatenating with base path
-                print "renameItem - base_path != None"
-                #base_path = xbmc.makeLegalFilename( r_base_path )
-                base_path = r_base_path
-                os.rename( os.path.join(base_path, old_name), os.path.join(base_path, new_name) )
+                old_name = os.path.join( r_base_path, r_old_name )
+                new_name = os.path.join( r_base_path, r_new_name )
+            # if doing a force rename, then remove the destination if it exists
+            if ( r_force and os.path.exists( new_name ) ):
+                self.deleteItem( new_name )
+            os.rename( old_name, new_name )
         except OSError, err:
             result = False  
             print "renameItem - Couldn't rename"
