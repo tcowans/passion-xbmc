@@ -77,19 +77,16 @@ class InstallMgr:
         status = "CANCELED"
         destination = None
         addonInstaller = None
-        dp = RecursiveDialogProgress(__language__( 137 ), __language__( 138 ))
         
-        #if ( xbmcgui.Dialog().yesno( addonName, __language__( 30050 ), "", "" ) ):
-        # install from zip file
         if addonFormat == "zip":
+            # install from zip file
             addonInstaller = RemoteArchiveInstaller.RemoteArchiveInstaller( addonName, addonUrl )
         else:
             # Remote dir installer
             addonInstaller = RemoteArchiveInstaller.RemoteDirInstaller( addonName, addonUrl, repoUrl )
-        #dp = xbmcgui.DialogProgress()
-        #dp.create(__language__( 137 ))
-        status, destination = addonInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )
 
+        dp = RecursiveDialogProgress(__language__( 137 ), __language__( 138 ))
+        status, destination = addonInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )
         dp.close()
         del dp
         return status, addonName, destination, addonInstaller
