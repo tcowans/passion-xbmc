@@ -283,7 +283,7 @@ class ItemInstaller:
             oldLogoPath = os.path.join( item[ "temp_item_path" ], "icon.png" )
             newLogoPath = os.path.join( item[ "temp_item_path" ], "default.tbn" )
             if ( oldLogoPath != newLogoPath and os.path.exists( oldLogoPath ) ):
-                result = self.fileMgr.renameItem( None, oldLogoPath, newLogoPath )
+                result = self.fileMgr.renameItem( None, oldLogoPath, newLogoPath, True )
                 if result == False:
                     status = "ERROR"
                     print "Error renaming %s to %s"%(oldLogoPath, newLogoPath)
