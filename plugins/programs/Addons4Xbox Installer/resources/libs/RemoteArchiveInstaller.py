@@ -46,7 +46,8 @@ class Parser:
             assets = self.asset_regex.findall( htmlSource )
             if ( len( assets ) ):
                 for asset in assets:
-                    if ( asset[ 0 ] != "../" ):
+                    # we don't want to include parent folder or any header/footer urls
+                    if ( asset[ 0 ] != "../"  and asset[ 0 ].find("://") == -1 ):
                         self.dict[ "assets" ] += [ unescape( asset[ 0 ] ) ]
                 self.dict[ "status" ] = "ok"
             print self.dict[ "assets" ]
