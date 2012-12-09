@@ -131,8 +131,8 @@ class InstallMgr:
         
         # List of repositories within we will look in order to find the required modules
         if repoId:
-            repoList = [ getInstalledAddonInfo( os.path.join( DIR_ADDON_REPO, OFFICIAL_REPO_ID) ), 
-                         getInstalledAddonInfo( os.path.join( DIR_ADDON_REPO, repoId) ) ]
+            repoList = [ getInstalledAddonInfo( os.path.join( DIR_ADDON_REPO, repoId) ),
+                         getInstalledAddonInfo( os.path.join( DIR_ADDON_REPO, OFFICIAL_REPO_ID) ) ]
         else:
             # if repoId is unknow (i.e install form zip) we will parse only official repo
             repoList = [ getInstalledAddonInfo( os.path.join( DIR_ADDON_REPO, OFFICIAL_REPO_ID) )]
@@ -292,7 +292,7 @@ class InstallMgr:
                             keepParsingCurrentRepo = False
                 if not allLibsFound:
                     # all libs found, no need to go to parse next repo
-                    break            
+                    continue          
             if len(addonIdList) > 0:
                 print "Not all required lib has been installed"
                 print addonIdList
