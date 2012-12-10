@@ -260,13 +260,11 @@ class InstallMgr:
                                             # Install lib
                                             installMgr = InstallMgr()
                                             status, itemName, destination, addonInstaller = installMgr.install_from_repo( item['name'].encode('utf8'), downloadUrl, repoInfo[ "repo_format" ], repoInfo[ "repo_datadir" ] )
-                                            
-                                            #Check if install went well
-                                            #status, destination = installMgr.check_install(status, itemName, destination, addonInstaller)
-                                            #TODO: Check delete has been done
+                                            # force install/overwrite
+                                            if status != "OK":
+                                                status, destination = addonInstaller.installItem()
                                             if status == "OK":
-                                                #self.saveLocalAddonInfo(OFFICIAL_REPO_ID, destination, addonInstaller)
-                                                saveLocalAddonInfo(OFFICIAL_REPO_ID, destination, addonInstaller)
+                                                saveLocalAddonInfo(repoInfo[ "id" ], destination, addonInstaller)
                                             else:
                                                 #missingModulesFile = open(MISSING_MODULES_PATH, "a")
                                                 #missingModulesFile.write("%s|%s/n"%(lib["id"], lib["version"]))
