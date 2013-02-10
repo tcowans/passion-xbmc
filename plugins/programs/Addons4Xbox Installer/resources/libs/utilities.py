@@ -40,7 +40,6 @@ import re
 import sys
 import time
 import htmllib
-import urllib
 import pickle
 
 from traceback import print_exc
@@ -97,21 +96,23 @@ def copy_inside_dir( dirname, destination, overwrite=True, progressBar=None, per
 
 def readURL( url, save=False, localPath=None ):
     print"readURL() url=%s"%url
-    urlData = ""
-    if url:
-        try:
-            urlData = urllib.urlopen(url).read()
-            if ( "404 Not Found" in urlData ):
-                print "readURL() 404, Not found"
-                urlData = ""
-            if save:
-                open(localPath,"w").write(urlData)
-        except:
-            print("readURL() %s" % sys.exc_info()[ 1 ])
-    return urlData
 
+    if (not url):
+        return ""
 
+    body = ""
+    req = urllib2.Request(url)
+    try:
+        resp = urllib2.urlopen(req)
+        body = resp.read()
+        if save:
+            open(localPath,"w").write(body)
+    except urllib2.HTTPError, e:
+        print "readURL() HTTP Error %s" % e.code
+    except:
+        print("readURL() %s" % sys.exc_info()[ 1 ])
 
+    return body
 
 def set_cache_thumb_name( path ):
     try:
