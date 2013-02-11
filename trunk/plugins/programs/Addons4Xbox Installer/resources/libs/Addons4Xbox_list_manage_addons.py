@@ -46,7 +46,6 @@ class Main:
 
             self._createManageAddonsDir()
 
-        print "_end_of_directory"
         self.pluginMgr.add_sort_methods( False )
         self.pluginMgr.end_of_directory( True, update=False )
 

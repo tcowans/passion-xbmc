@@ -46,7 +46,6 @@ class Main:
         # Install from zip file
         status = self._install_addon_zip()
 
-        print "_end_of_directory"
         self.pluginMgr.end_of_directory( True, update=False )
 
 

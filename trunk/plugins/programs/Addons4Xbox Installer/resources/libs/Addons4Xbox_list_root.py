@@ -69,7 +69,6 @@ class Main:
             else:
                 self._createRootDir()
 
-        print "_end_of_directory"
         self.pluginMgr.add_sort_methods( False )
         self.pluginMgr.end_of_directory( True, update=False )
 

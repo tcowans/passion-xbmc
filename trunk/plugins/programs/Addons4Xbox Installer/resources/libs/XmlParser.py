@@ -95,8 +95,6 @@ def parseAddonXml( xmlData, itemInfo ):
     try:
         if ( xmlData ):
             xmlElt = ET.parse( xmlData ).getroot()
-            print 'xmlElt'
-            print xmlElt
             status = parseAddonElt( xmlElt, itemInfo )
     except:
         status = 'ERROR'
@@ -209,8 +207,6 @@ def parseAddonElt( addonElt, itemInfo ):
         #status = 'ERROR'
         print_exc()
 
-    print itemInfo
-
     return status
 
 def _getType(id, extension):
@@ -263,8 +259,6 @@ def createItemListFromXml( xmlData ):
     try:
         if ( xmlData ):
             xmlElt = ET.parse( xmlData ).getroot() # root: <addons>
-            print 'xmlElt'
-            print xmlElt
             if ( xmlElt ):
                 addons = xmlElt.findall("addon")
                 for addon in addons:
@@ -287,8 +281,6 @@ class ListItemFromXML:
             if ( xmlData ):
                 #print xmlData
                 rootXmlElt = ET.parse( xmlData ).getroot() # root: <addons>
-                print 'rootXmlElt'
-                print rootXmlElt
 
                 if ( rootXmlElt ):
                     self.addons = rootXmlElt.findall("addon")
@@ -309,12 +301,7 @@ class ListItemFromXML:
             itemInfo = {}
             status = self._parseAddonElement( self.addons[self.currentParseIdx], itemInfo )
             self.currentParseIdx = self.currentParseIdx + 1
-            print "status = %s"%status
-#            if status == 'OK':
-#                result = itemInfo
             result = itemInfo
-        print "getNextItem - result:"
-        print result
         return result
 
 

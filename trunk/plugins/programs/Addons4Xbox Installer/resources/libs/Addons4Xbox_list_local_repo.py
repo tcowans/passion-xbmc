@@ -58,12 +58,10 @@ class Main:
         List of installed repositories
         """
         for repoId in os.listdir( DIR_ADDON_REPO ):
-            print "Repo ID = %s"%repoId
 
             # Retrieve info from  addon.xml
             #itemInfo = self._getInstalledAddInfo( os.path.join( DIR_ADDON_REPO, repoId ) )
             itemInfo = getInstalledAddonInfo( os.path.join( DIR_ADDON_REPO, repoId) )
-            print itemInfo
             if itemInfo:
                 # Dic Not empty
                 paramsRepo = {}
