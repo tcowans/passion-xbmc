@@ -51,10 +51,10 @@ class Main:
             self.fileMgr.verifrep( DIR_ADDON_REPO )
             self.fileMgr.verifrep( DIR_CACHE )
             self.fileMgr.verifrep( DIR_CACHE_ADDONS )
-                       
+
             # Check settings
             if xbmcplugin.getSetting('first_run') == 'true':
-                # Check (only the 1st time) is xbmcaddon module is available 
+                # Check (only the 1st time) is xbmcaddon module is available
                 print( "     **First run")
                 if self._check_addon_lib():
                     print( "         XBMC Addon 4 XBOX Addon Library already installed")
@@ -65,10 +65,10 @@ class Main:
                 else:
                     print( "         ERROR - XBMC Addon 4 XBOX Addon Library MISSING")
                     dialog = xbmcgui.Dialog()
-                    dialog.ok( __language__(30000), __language__(30091) ,__language__(30092))                   
+                    dialog.ok( __language__(30000), __language__(30091) ,__language__(30092))
             else:
                 self._createRootDir()
-                
+
         print "_end_of_directory"
         self.pluginMgr.add_sort_methods( False )
         self.pluginMgr.end_of_directory( True, update=False )
@@ -85,7 +85,7 @@ class Main:
         except ImportError:
             ok = 0
         return ok
-    
+
 
     def _check_compatible(self):
         """
@@ -143,7 +143,7 @@ class Main:
             dialog = xbmcgui.Dialog()
             dialog.ok( __language__(30000), __language__(30006), __language__(30007) )
             print "ERROR: impossible to copy repositories to %s"%DIR_ADDON_REPO
-            print_exc()            
+            print_exc()
         return ok
 
 
@@ -156,23 +156,23 @@ class Main:
         urlRepo = self.pluginMgr.create_param_url( paramsDicRepo )
         if urlRepo:
             self.pluginMgr.addDir( __language__( 30202 ), urlRepo )
-        
+
         paramsDicZip = {}
         paramsDicZip[PARAM_INSTALL_FROM_ZIP] = "true"
         urlZip = self.pluginMgr.create_param_url( paramsDicZip )
         if urlZip:
             self.pluginMgr.addLink( __language__( 30203 ), urlZip )
-        
+
         paramsDicRepo = {}
         paramsDicRepo[PARAM_LISTTYPE] = VALUE_LIST_WIKI_REPOS
         urlRepo = self.pluginMgr.create_param_url( paramsDicRepo )
         if urlRepo:
             self.pluginMgr.addDir( __language__( 30204 ), urlRepo )
-        
+
         paramsDicRepo = {}
         paramsDicRepo[PARAM_LISTTYPE] = VALUE_LIST_MANAGE_ADDONS
         urlRepo = self.pluginMgr.create_param_url( paramsDicRepo )
         if urlRepo:
             self.pluginMgr.addDir( __language__( 30205 ), urlRepo )
-        
-    
+
+

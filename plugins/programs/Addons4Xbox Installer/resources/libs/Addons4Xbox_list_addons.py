@@ -44,10 +44,10 @@ class Main:
     """
 
     def __init__( self, *args, **kwargs ):
-        
+
         self.pluginMgr = PluginMgr()
         self.parameters = self.pluginMgr.parse_params()
-        
+
         print "List of Add-ons"
         repoId = self.parameters[ PARAM_REPO_ID ]
         addonCat = self.parameters[ PARAM_TYPE ]
@@ -66,10 +66,10 @@ class Main:
         # Retrieve info from  addon.xml for the repository
         #repoInfo = self._getInstalledAddInfo( os.path.join( DIR_ADDON_REPO, repoId) )
         repoInfo = getInstalledAddonInfo( os.path.join( DIR_ADDON_REPO, repoId) )
-        
+
         #TODO: add repo ID to persist data
-        addonDic = {}     
-              
+        addonDic = {}
+
         # Retrieving addons.xml from remote repository
         xmlInfofPath = os.path.join( DIR_CACHE, "addons.xml")
         if os.path.isfile(xmlInfofPath):
@@ -81,8 +81,8 @@ class Main:
                 listAddonsXml = ListItemFromXML(xmlData)
                 xmlData.close()
             except:
-                print_exc()            
-            
+                print_exc()
+
             filter = "False"
             if cat == VALUE_LIST_ALL_ADDONS:
                 filter = "item['type'] in supportedAddonList"
@@ -99,18 +99,18 @@ class Main:
                         endRepoChar = "/"
                         if repoInfo [ "repo_datadir" ].endswith( "/" ):
                             endRepoChar = ""
-                        
+
                         if repoInfo [ "repo_format" ] ==  'zip':
                             downloadUrl = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/' + item["id"]  + '-' + item["version"] + ".zip").replace(' ', '%20')
-                            changelog   = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/' + "changelog" + '-' + item["version"] + ".txt").replace(' ', '%20') 
-                            iconimage   = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/' + "icon.png").replace(' ', '%20')                             
+                            changelog   = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/' + "changelog" + '-' + item["version"] + ".txt").replace(' ', '%20')
+                            iconimage   = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/' + "icon.png").replace(' ', '%20')
                         else:
-                            downloadUrl = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/').replace(' ', '%20') 
-                            changelog   = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/' + "changelog" + ".txt").replace(' ', '%20') 
+                            downloadUrl = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/').replace(' ', '%20')
+                            changelog   = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/' + "changelog" + ".txt").replace(' ', '%20')
                             iconimage   = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/' + "icon.png").replace(' ', '%20')
                         item["ImageUrl"] = iconimage
                         item["changelog"] = changelog
-                            
+
                         print downloadUrl
                         paramsAddons = {}
                         paramsAddons[PARAM_INSTALL_FROM_REPO]   = "true"
@@ -132,7 +132,6 @@ class Main:
                 else:
                     keepParsing = False
             # Save the list of addons
-            print addonDic        
+            print addonDic
             PersistentDataCreator( addonDic, os.path.join( DIR_CACHE, "addon_list.txt" ) )
 
-        

@@ -68,7 +68,7 @@ def getInstalledAddonInfo( addonpath ):
     Get metadata from addon.xml of an installed addon
     """
     itemInfo = {}
-    
+
     # Open addon.xml
     print "getInstalledAddonInfo: Addon path: %s"%addonpath
     xmlInfofPath = os.path.join( addonpath, "addon.xml")
@@ -78,7 +78,7 @@ def getInstalledAddonInfo( addonpath ):
             statusGetInfo = parseAddonXml( xmlData, itemInfo )
             xmlData.close()
         except:
-            print_exc()            
+            print_exc()
         if statusGetInfo == "OK":
             iconPath = os.path.join( xmlInfofPath, "icon.png")
             if os.path.exists( iconPath ):
@@ -101,8 +101,8 @@ def isLibInstalled(id):
         # Get version
         libInfo = getInstalledAddonInfo( os.path.join( libpath ) )
         libVersion = libInfo[ "version" ]
-    
-    print "isLibInstalled: %s installed version: %s"%( id, libVersion )        
+
+    print "isLibInstalled: %s installed version: %s"%( id, libVersion )
     return libVersion
 
 
@@ -113,7 +113,7 @@ def addMissingModules2DB(addonIdList):
     # Update list of module which fail to install
     missingModules = []
     if os.path.exists(MISSING_MODULES_PATH):
-        pdr = PersistentDataRetriever( MISSING_MODULES_PATH ) 
+        pdr = PersistentDataRetriever( MISSING_MODULES_PATH )
         missingModules = pdr.get_data()
 
     print 'missingModules:'
@@ -124,7 +124,7 @@ def addMissingModules2DB(addonIdList):
         if len(missingModules) > 0:
             for module in missingModules:
                 if module['id'] == lib['id']:
-                    print "Module already in missing module list - checking version ..." 
+                    print "Module already in missing module list - checking version ..."
                     if versionsCmp( module['version'], lib["version"] ) < 0:
                         print "module version in list older than lib required - updating version ..."
                         module['version'] = lib["version"]
@@ -135,7 +135,7 @@ def addMissingModules2DB(addonIdList):
         else:
             print "module not found in missing module list - adding it"
             missingModules.append(lib)
-            
+
     PersistentDataCreator( missingModules, MISSING_MODULES_PATH )
 
 
@@ -147,7 +147,7 @@ def removeMissingModule2DB(item):
     # Update list of module which fail to install
     missingModules = []
     if os.path.exists(MISSING_MODULES_PATH):
-        pdr = PersistentDataRetriever( MISSING_MODULES_PATH ) 
+        pdr = PersistentDataRetriever( MISSING_MODULES_PATH )
         missingModules = pdr.get_data()
 
     print 'missingModules:'
@@ -155,7 +155,7 @@ def removeMissingModule2DB(item):
     if len(missingModules) > 0:
         for module in missingModules:
             if module['id'] == item['id']:
-                print "Module already in missing module list - checking version ..." 
+                print "Module already in missing module list - checking version ..."
                 if module['version'] == item["version"] or versionsCmp( module['version'], item["version"] ) < 0:
                     print "module version in list identical or older than installed module - removing it form list ..."
                     missingModules.remove(item)
@@ -163,7 +163,7 @@ def removeMissingModule2DB(item):
             else:
                 print "module not found in missing module list"
     else:
-        print "No missing modules"            
+        print "No missing modules"
     PersistentDataCreator( missingModules, MISSING_MODULES_PATH )
 
 
@@ -178,14 +178,14 @@ def saveLocalAddonInfo( repoId, destination, addonInstaller ):
     addonId          = addonInstaller.getItemId()
     addonVersion     = addonInstaller.getItemVersion()
     addonType        = addonInstaller.getItemType()
-    
+
     addonInfo         = {}
     addonInfo['id']   = addonId
     addonInfo['name'] = addonInstallName
     addonInfo['date'] = datetime.now()
     addonInfo['version'] = addonVersion
     if addonType == TYPE_ADDON_REPO:
-        addonInfo['repository'] = addonId            
+        addonInfo['repository'] = addonId
     else:
         addonInfo['repository'] = repoId
     addonInfo['installer_version'] = __version__
@@ -207,7 +207,7 @@ class AddonsMgr:
         Get metadata from addon.xml of an installed addon
         """
         itemInfo = {}
-        
+
         # Open addon.xml
         print "Addon path: %s"%addonpath
         xmlInfofPath = os.path.join( addonpath, "addon.xml")
@@ -217,7 +217,7 @@ class AddonsMgr:
                 statusGetInfo = parseAddonXml( xmlData, itemInfo )
                 xmlData.close()
             except:
-                print_exc()            
+                print_exc()
             if statusGetInfo == "OK":
                 iconPath = os.path.join( xmlInfofPath, "icon.png")
                 if os.path.exists( iconPath ):
@@ -238,7 +238,7 @@ class AddonsMgr:
             #command = "XBMC.ActivateWindow(10025,plugin://addons/%s/)" % ( addon_basename, )
             #command = "RunPlugin(%s)" % ( os.path.join( get_install_path( type ), addon_basename ))
             command = "XBMC.ActivateWindow(10025,%s/)" % ( os.path.join( get_install_path( type ), addon_basename) )
-            
+
         elif ( type == TYPE_ADDON_MUSIC ):
             command = "XBMC.ActivateWindow(10502,plugin://addons/%s/)" % ( addon_basename, )
         elif ( type == TYPE_ADDON_PROGRAMS ):
@@ -254,7 +254,7 @@ class AddonsMgr:
             print_exc()
             result = False
         return result
-    
+
     def message_cb(self, msgType, title, message1, message2="", message3=""):
         """
         Callback function for sending a message to the UI
@@ -277,7 +277,7 @@ class AddonsMgr:
         return result
 
 #class AddonLocalInfo:
-#    import md5        
+#    import md5
 #    def _load_downloaded_property( self ):
 #        self.downloaded_property = set()
 #        try:
@@ -299,5 +299,4 @@ class AddonsMgr:
 #        else:
 #            self.getListItem( self.getCurrentListPosition() ).setProperty( "Downloaded", "isDownloaded" )
 
-    
-    
+

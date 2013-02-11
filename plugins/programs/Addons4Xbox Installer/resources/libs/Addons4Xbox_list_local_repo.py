@@ -43,12 +43,12 @@ class Main:
     """
 
     def __init__( self, *args, **kwargs ):
-        
+
         self.pluginMgr = PluginMgr()
         self.parameters = self.pluginMgr.parse_params()
-        
+
         self._createLocalRepoDir()
-        
+
         self.pluginMgr.add_sort_methods( True )
         self.pluginMgr.end_of_directory( True, update=False )
 
@@ -59,7 +59,7 @@ class Main:
         """
         for repoId in os.listdir( DIR_ADDON_REPO ):
             print "Repo ID = %s"%repoId
-            
+
             # Retrieve info from  addon.xml
             #itemInfo = self._getInstalledAddInfo( os.path.join( DIR_ADDON_REPO, repoId ) )
             itemInfo = getInstalledAddonInfo( os.path.join( DIR_ADDON_REPO, repoId) )
@@ -72,4 +72,4 @@ class Main:
                 urlRepo = self.pluginMgr.create_param_url( paramsRepo )
                 if urlRepo:
                     self.pluginMgr.addDir( itemInfo [ "name" ], urlRepo, iconimage=itemInfo [ "icon" ] )
-         
+

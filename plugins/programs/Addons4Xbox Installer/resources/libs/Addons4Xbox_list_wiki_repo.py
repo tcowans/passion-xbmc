@@ -51,10 +51,10 @@ class Main:
     """
 
     def __init__( self, *args, **kwargs ):
-        
+
         self.pluginMgr = PluginMgr()
         self.parameters = self.pluginMgr.parse_params()
-        
+
         print "List of repositories from XBMC wiki page"
         self._createRepo2InstallListDir()
 
@@ -65,12 +65,12 @@ class Main:
 
     def _createRepo2InstallListDir( self ):
         """
-        Creates list for install of the Unofficial repositories available on XBMC wiki 
+        Creates list for install of the Unofficial repositories available on XBMC wiki
         """
-        
+
         print "createRepo2InstallListDir"
         #xbmcplugin.setPluginCategory( handle=int( sys.argv[ 1 ] ), category=__language__( 30001 ) )
-        
+
         print 'wiki_server:'
         print __settings__( 'wiki_server' )
         wiki_server_id = int( __settings__( 'wiki_server' ) )
@@ -90,18 +90,17 @@ class Main:
                     paramsAddons[PARAM_DATADIR]             = 'None'
                     paramsAddons[PARAM_TYPE]                = 'zip'
                     paramsAddons[PARAM_REPO_ID]             = 'None'
-    
+
                     url = self.pluginMgr.create_param_url( paramsAddons )
-    
+
                     if ( url ):
                         item['PluginUrl'] = url
                         self.pluginMgr.addItemLink( item )
                         print "Link added"
             else:
                 keepParsing = False
-                
+
         # Save list to a file
         #PersistentDataCreator( list, PERSIT_REPO_LIST )
 
 
-        

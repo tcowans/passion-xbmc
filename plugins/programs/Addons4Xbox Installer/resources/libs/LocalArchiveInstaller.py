@@ -31,7 +31,7 @@ class LocalArchiveInstaller(ArchItemInstaller):
     #def __init__( self , name, type ):
     def __init__( self , path ):
         ArchItemInstaller.__init__( self )
-        
+
         self.itemInfo [ "raw_item_path" ] = path
 
         #TODO: support progress bar display
@@ -44,9 +44,9 @@ class LocalArchiveInstaller(ArchItemInstaller):
         Returns the status of the retrieval attempt : OK | ERROR
         """
         status      = "ERROR" # Status of download :[OK | ERROR | CANCELED | ERRORFILENAME]
-        
+
         print("LocalArchiveInstaller::GetRawItem - Item to install path: %s"%self.itemInfo [ "raw_item_path" ])
-        
+
         if self.itemInfo [ "raw_item_path" ].endswith( 'zip' ) or self.itemInfo [ "raw_item_path" ].endswith( 'rar' ):
             status      = "OK"
             self.itemInfo [ "name" ]   = os.path.basename( self.itemInfo [ "raw_item_path" ] )
@@ -57,4 +57,4 @@ class LocalArchiveInstaller(ArchItemInstaller):
 
 
 
-        
+

@@ -44,9 +44,9 @@ class Main:
         if True: #self._check_compatible():
             self.pluginMgr = PluginMgr()
             self.parameters = self.pluginMgr.parse_params()
-                      
+
             self._createMissingModulesDir()
-                
+
         print "_end_of_directory"
         self.pluginMgr.add_sort_methods( False )
         self.pluginMgr.end_of_directory( True, update=False )
@@ -63,35 +63,35 @@ class Main:
         except ImportError:
             ok = 0
         return ok
-    
+
 
     def _createMissingModulesDir ( self ):
         """
         Creates list of missing modules
         For now this is retrieve from local DB (persistent file)
-        TODO: implement option in order to check each installed addon  
+        TODO: implement option in order to check each installed addon
         """
 #        paramsDicRepo = {}
 #        paramsDicRepo[PARAM_LISTTYPE] = VALUE_LIST_MISSING_MODULES
 #        urlRepo = self.pluginMgr.create_param_url( paramsDicRepo )
 #        if urlRepo:
 #            self.pluginMgr.addDir( __language__( 30250 ), urlRepo )
-        
+
         if os.path.exists(MISSING_MODULES_PATH):
-            pdr = PersistentDataRetriever( MISSING_MODULES_PATH ) 
+            pdr = PersistentDataRetriever( MISSING_MODULES_PATH )
             missingModules = pdr.get_data()
             print missingModules
-            
+
             for lib in missingModules:
                 #lib["name"]  = lib["id"]
                 #lib["PluginUrl"] = None
                 #lib["ImageUrl"]  = None
                 #self.pluginMgr.addItemLink( lib )
                 self.pluginMgr.addLink( lib["id"], "" )
-                
-                
+
+
         else:
             print "No missing modules found"
-                
-    
-    
+
+
+

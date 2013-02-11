@@ -4,7 +4,7 @@
    Please read changelog
 """
 
-REMOTE_DBG       = False 
+REMOTE_DBG       = False
 
 
 # Plugin constants
@@ -81,7 +81,7 @@ class Addons4xboxInstallerPlugin:
         self.select()
 
 
-        
+
     def select( self ):
         """
         Decides what to do based on the plugin URL
@@ -89,32 +89,32 @@ class Addons4xboxInstallerPlugin:
         try:
             print "select"
             print self.parameters
-            
+
             #
             # Create root list
             #
             if len(self.parameters) < 1:
                 import resources.libs.Addons4Xbox_list_root as plugin
-                
+
             #
             # Install from remote repository
             #
-            elif PARAM_INSTALL_FROM_REPO in self.parameters.keys():               
+            elif PARAM_INSTALL_FROM_REPO in self.parameters.keys():
                 import resources.libs.Addons4Xbox_install_remote as plugin
-                
+
             #
             # Install from zip
             #
             elif PARAM_INSTALL_FROM_ZIP in self.parameters.keys():
                 import resources.libs.Addons4Xbox_install_zip as plugin
-                
+
             #
             # List of available Add-ons repositories installed
             #
             elif PARAM_LISTTYPE in self.parameters.keys() and VALUE_LIST_LOCAL_REPOS == self.parameters[PARAM_LISTTYPE]:
                 import resources.libs.Addons4Xbox_list_local_repo as plugin
 
-                
+
             #
             # List of available repositories on XBMC wiki page
             #
@@ -135,14 +135,14 @@ class Addons4xboxInstallerPlugin:
 
 
             #
-            # List of options for managing installed Add-ons 
+            # List of options for managing installed Add-ons
             #
             elif PARAM_LISTTYPE in self.parameters.keys() and VALUE_LIST_MANAGE_ADDONS == self.parameters[PARAM_LISTTYPE]:
                 import resources.libs.Addons4Xbox_list_manage_addons as plugin
 
 
             #
-            # List of missing modules (usually not found during the installed of an addon) 
+            # List of missing modules (usually not found during the installed of an addon)
             #
             elif PARAM_LISTTYPE in self.parameters.keys() and VALUE_LIST_MISSING_MODULES == self.parameters[PARAM_LISTTYPE]:
                 import resources.libs.Addons4Xbox_list_missing_libs as plugin
@@ -154,16 +154,16 @@ class Addons4xboxInstallerPlugin:
             elif PARAM_ACTION in self.parameters.keys() and VALUE_DISPLAY_INFO == self.parameters[PARAM_ACTION]:
                 import resources.libs.DialogRepoInfo as plugin
 
-            # Run 
+            # Run
             plugin.Main()
         except:
             print_exc()
             self.pluginMgr.end_of_directory( False )
-        
 
 
 
-#######################################################################################################################    
+
+#######################################################################################################################
 # BEGIN !
 #######################################################################################################################
 

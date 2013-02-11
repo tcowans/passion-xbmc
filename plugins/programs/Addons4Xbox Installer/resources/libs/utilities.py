@@ -45,7 +45,7 @@ import pickle
 from traceback import print_exc
 #from httplib import HTTP
 #from urlparse import urlparse
-import urllib2 
+import urllib2
 import socket
 
 # timeout in seconds
@@ -207,17 +207,17 @@ def unescape(s):
     p.feed(s)
     return p.save_end()
 
-def replaceStrs( s, *args ): 
+def replaceStrs( s, *args ):
     """
     Replace all ``(frm, to)`` tuples in `args` in string `s`.
     By Alexander Schmolck ( http://markmail.org/message/r67z77skcqcbo5nr )
     replaceStrs("nothing is better than warm beer", ... ('nothing','warm beer'), ('warm beer','nothing')) 'warm beer is better than nothing'
-    """ 
-    if args == (): 
-        return s 
-    mapping = dict([(frm, to) for frm, to in args]) 
+    """
+    if args == ():
+        return s
+    mapping = dict([(frm, to) for frm, to in args])
     return re.sub("|".join(map(re.escape, mapping.keys())), lambda match:mapping[match.group(0)], s)
-    
+
 
 
 def get_infos_path( path, get_size=False, report_progress=None ):
@@ -270,7 +270,7 @@ def get_infos_path( path, get_size=False, report_progress=None ):
         size = "0.0 KB"
 
     return size, c_time, last_access, last_modification
-    
+
 
 class RecursiveDialogProgress:
     """
@@ -299,8 +299,8 @@ class RecursiveDialogProgress:
                 self._xbmcdp.create(self._heading, self._line1)
         else:
             self._xbmcdp.create(self._heading)
-            
-        
+
+
     def update( self, percent, itemname, line2=None, line3=None ):
         """
         Met a jour la barre de progression
@@ -313,18 +313,18 @@ class RecursiveDialogProgress:
         except:
             percent = 100
             self._xbmcdp.update( percent )
-            
+
     def iscanceled(self):
         return self._xbmcdp.iscanceled()
-            
+
     def close(self):
         self._xbmcdp.close()
 
 
-def checkURL(url): 
+def checkURL(url):
     """
     Check is a URL exists
-    """  
+    """
     print "Checking URL: %s"%url
     try:
         socket.setdefaulttimeout(timeout)
@@ -332,7 +332,7 @@ def checkURL(url):
         ok = True
     except:
         ok = False
-    print ok    
+    print ok
     return ok
 
     #===========================================================================
@@ -340,9 +340,9 @@ def checkURL(url):
     # h = HTTP(p[1])
     # h.putrequest('HEAD', p[2])
     # h.endheaders()
-    # if h.getreply()[0] == 200: 
+    # if h.getreply()[0] == 200:
     #    return 1
-    # else: 
+    # else:
     #    return 0
     #===========================================================================
 

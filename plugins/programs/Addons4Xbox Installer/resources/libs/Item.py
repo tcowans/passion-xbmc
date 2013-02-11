@@ -78,7 +78,7 @@ TYPE_ADDON_PROGRAMS    = "plugin.program." #"ADDON_PROGRAMS"
 TYPE_ADDON_VIDEO       = "plugin.video." #"ADDON_VIDEO"
 TYPE_ADDON_WEATHER     = "weather"
 TYPE_ADDON_MODULE      = ".module" #"ADDON_SCRIPT"
-TYPE_ADDON_PLUGIN      = "pluginsource" 
+TYPE_ADDON_PLUGIN      = "pluginsource"
 TYPE_ADDON_REPO        = "repository"
 
 #  "xbmc.python.script"         This is the standard Script extension point
@@ -133,40 +133,40 @@ THUMB_NEW              = "IPX-defaultNew.png"
 
 
 item_path = { TYPE_ADDON          : DIR_ADDON,
-              TYPE_ADDON_SCRIPT   : DIR_ADDON_SCRIPT, 
-              TYPE_ADDON_MUSIC    : DIR_ADDON_MUSIC, 
-              TYPE_ADDON_PICTURES : DIR_ADDON_PICTURES, 
-              TYPE_ADDON_PROGRAMS : DIR_ADDON_PROGRAMS, 
+              TYPE_ADDON_SCRIPT   : DIR_ADDON_SCRIPT,
+              TYPE_ADDON_MUSIC    : DIR_ADDON_MUSIC,
+              TYPE_ADDON_PICTURES : DIR_ADDON_PICTURES,
+              TYPE_ADDON_PROGRAMS : DIR_ADDON_PROGRAMS,
               TYPE_ADDON_VIDEO    : DIR_ADDON_VIDEO,
               TYPE_ADDON_WEATHER  : DIR_ADDON_WEATHER,
               TYPE_ADDON_MODULE   : DIR_ADDON_MODULE,
               TYPE_ADDON_REPO     : DIR_ADDON_REPO }
 
 item_thumb = { TYPE_ADDON          : THUMB_ADDON,
-               TYPE_ADDON_SCRIPT   : THUMB_ADDON_SCRIPT, 
-               TYPE_ADDON_MUSIC    : THUMB_ADDON_MUSIC, 
-               TYPE_ADDON_PICTURES : THUMB_ADDON_PICTURES, 
-               TYPE_ADDON_PROGRAMS : THUMB_ADDON_PROGRAMS, 
+               TYPE_ADDON_SCRIPT   : THUMB_ADDON_SCRIPT,
+               TYPE_ADDON_MUSIC    : THUMB_ADDON_MUSIC,
+               TYPE_ADDON_PICTURES : THUMB_ADDON_PICTURES,
+               TYPE_ADDON_PROGRAMS : THUMB_ADDON_PROGRAMS,
                TYPE_ADDON_VIDEO    : THUMB_ADDON_VIDEO,
                TYPE_ADDON_WEATHER  : THUMB_ADDON_WEATHER,
                TYPE_ADDON_MODULE   : THUMB_ADDON_MODULE,
                TYPE_ADDON_REPO     : THUMB_ADDON_REPO }
 
-item_title = { TYPE_ADDON          : TITLE_ADDON, 
-               TYPE_ADDON_SCRIPT   : TITLE_ADDON_SCRIPT, 
-               TYPE_ADDON_MUSIC    : TITLE_ADDON_MUSIC, 
-               TYPE_ADDON_PICTURES : TITLE_ADDON_PICTURES, 
-               TYPE_ADDON_PROGRAMS : TITLE_ADDON_PROGRAMS, 
+item_title = { TYPE_ADDON          : TITLE_ADDON,
+               TYPE_ADDON_SCRIPT   : TITLE_ADDON_SCRIPT,
+               TYPE_ADDON_MUSIC    : TITLE_ADDON_MUSIC,
+               TYPE_ADDON_PICTURES : TITLE_ADDON_PICTURES,
+               TYPE_ADDON_PROGRAMS : TITLE_ADDON_PROGRAMS,
                TYPE_ADDON_VIDEO    : TITLE_ADDON_VIDEO,
                TYPE_ADDON_WEATHER  : TITLE_ADDON_WEATHER,
                TYPE_ADDON_MODULE   : TITLE_ADDON_MODULE,
                TYPE_ADDON_REPO     : TITLE_ADDON_REPO }
 
 item_index = { TYPE_ADDON          : INDEX_ADDON,
-               TYPE_ADDON_SCRIPT   : INDEX_ADDON_SCRIPT, 
-               TYPE_ADDON_MUSIC    : INDEX_ADDON_MUSIC, 
-               TYPE_ADDON_PICTURES : INDEX_ADDON_PICTURES, 
-               TYPE_ADDON_PROGRAMS : INDEX_ADDON_PROGRAMS, 
+               TYPE_ADDON_SCRIPT   : INDEX_ADDON_SCRIPT,
+               TYPE_ADDON_MUSIC    : INDEX_ADDON_MUSIC,
+               TYPE_ADDON_PICTURES : INDEX_ADDON_PICTURES,
+               TYPE_ADDON_PROGRAMS : INDEX_ADDON_PROGRAMS,
                TYPE_ADDON_VIDEO    : INDEX_ADDON_VIDEO,
                TYPE_ADDON_WEATHER  : INDEX_ADDON_WEATHER,
                TYPE_ADDON_MODULE   : INDEX_ADDON_MODULE,
