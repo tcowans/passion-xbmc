@@ -51,7 +51,7 @@ try:
     #from FileManager import fileMgr
     #from Item import *
     from Item import TYPE_ADDON_MODULE, get_install_path
-    import LocalArchiveInstaller 
+    import LocalArchiveInstaller
     import RemoteArchiveInstaller
     from utilities import RecursiveDialogProgress, versionsCmp, readURL
     from AddonsMgr import getInstalledAddonInfo, isLibInstalled, addMissingModules2DB, saveLocalAddonInfo
@@ -77,7 +77,7 @@ class InstallMgr:
         status = "CANCELED"
         destination = None
         addonInstaller = None
-        
+
         if addonFormat == "zip":
             # install from zip file
             addonInstaller = RemoteArchiveInstaller.RemoteArchiveInstaller( addonName, addonUrl )
@@ -94,16 +94,16 @@ class InstallMgr:
     def install_from_zip(self):
         """
         Install an addon from a local zip file
-        """        
+        """
         status = "CANCELED"
         destination = None
         addonInstaller = None
-        
+
         dialog = xbmcgui.Dialog()
         zipPath = dialog.browse(1, 'XBMC', 'files', '', False, False, SPECIAL_HOME_DIR)
         itemName = os.path.basename(zipPath)
         print("_install_from_zip - installing %s"%zipPath)
-        
+
         # install from zip file
         addonInstaller = LocalArchiveInstaller.LocalArchiveInstaller( zipPath )
         #dp = xbmcgui.DialogProgress()
@@ -126,9 +126,9 @@ class InstallMgr:
         #destination = None
         #addonInstaller = None
         #addonInstaller = None
-        
+
         # For time being we will only look in the offcial repo
-        
+
         # List of repositories within we will look in order to find the required modules
         if repoId:
             repoList = [ getInstalledAddonInfo( os.path.join( DIR_ADDON_REPO, repoId) ),
@@ -136,8 +136,8 @@ class InstallMgr:
         else:
             # if repoId is unknow (i.e install form zip) we will parse only official repo
             repoList = [ getInstalledAddonInfo( os.path.join( DIR_ADDON_REPO, OFFICIAL_REPO_ID) )]
-            
-        
+
+
 
         # Check if required lib already exist
         addonIdCheck = [] # Create a copy of addonIdList (We remove an element of the list while looping on it)
@@ -150,13 +150,13 @@ class InstallMgr:
             #doInstall= False
             #localLibVersion = self.isLibInstalled( requiredlib["id"] )
             localLibVersion = isLibInstalled( requiredlib["id"] )
-            
+
             try:
                 if localLibVersion:
                     #Check version
                     if localLibVersion == requiredlib["version"]:
                         print "Already install"
-                        
+
                         # Module already installed - Remove it for the list of libs to install
                         addonIdList.remove(requiredlib)
                     else:
@@ -176,16 +176,16 @@ class InstallMgr:
                 print addonIdList
                 print addonIdCheck
             except:
-                print_exc()            
-        
-              
+                print_exc()
+
+
         # Parse each repository in the list and try to find in it the required module
         if len(addonIdList) > 0:
             allLibsFound = False
             for repoInfo in repoList:
                 # Retrieve info from  addons.xml for the repositories where we will look for the lib addons
                 xmlInfofPath = os.path.join( DIR_CACHE, "addons.xml")
-                
+
                 # Delete old version of addons.xml
                 if os.path.isfile(xmlInfofPath):
                     os.remove(xmlInfofPath)
@@ -196,8 +196,8 @@ class InstallMgr:
                         listAddonsXml = ListItemFromXML(xmlData)
                         xmlData.close()
                     except:
-                        print_exc()            
-                    
+                        print_exc()
+
                     keepParsingCurrentRepo = True
                     while (keepParsingCurrentRepo):
                         item = listAddonsXml.getNextItem()
@@ -208,17 +208,17 @@ class InstallMgr:
                                     if lib["id"] == item['id']:
                                         print "%s module required with version: %s found"%(lib["id"], lib["version"])
                                         # We are going to try to install it even if version does not match (better than nothing)
-                                        
+
                                         # 1 - Look for matching repo
                                         # 2 - install
                                         # 3 - notify user if something when wrong or not
-    
+
     #                                    # Check if remote version is the same as lib['version']
     #                                    doInstall= False
     #                                    localLibVersion = self.isLibInstalled( lib["id"] )
     #                                    if localLibVersion:
     #                                        status = "OK" # For now ...
-    #                                        
+    #
     #                                        #Check version
     #                                        if localLibVersion == item["version"]:
     #                                            print "Already install"
@@ -237,26 +237,26 @@ class InstallMgr:
     #                                    else:
     #                                        # Not already installed
     #                                        doInstall = True
-    
+
                                         doInstall = True
                                         if doInstall:
                                             endRepoChar = "/"
                                             if repoInfo [ "repo_datadir" ].endswith( "/" ):
                                                 endRepoChar = ""
-                                            
+
                                             if repoInfo [ "repo_format" ] ==  'zip':
                                                 downloadUrl = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/' + item["id"]  + '-' + item["version"] + ".zip").replace(' ', '%20')
-                                                changelog   = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/' + "changelog" + '-' + item["version"] + ".txt").replace(' ', '%20') 
-                                                iconimage   = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/' + "icon.png").replace(' ', '%20')                             
+                                                changelog   = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/' + "changelog" + '-' + item["version"] + ".txt").replace(' ', '%20')
+                                                iconimage   = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/' + "icon.png").replace(' ', '%20')
                                             else:
-                                                downloadUrl = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/').replace(' ', '%20') 
-                                                changelog   = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/' + "changelog" + ".txt").replace(' ', '%20') 
+                                                downloadUrl = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/').replace(' ', '%20')
+                                                changelog   = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/' + "changelog" + ".txt").replace(' ', '%20')
                                                 iconimage   = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/' + "icon.png").replace(' ', '%20')
                                             item["ImageUrl"] = iconimage
                                             item["changelog"] = changelog
-                                                
+
                                             print downloadUrl
-                                        
+
                                             # Install lib
                                             installMgr = InstallMgr()
                                             status, itemName, destination, addonInstaller = installMgr.install_from_repo( item['name'].encode('utf8'), downloadUrl, repoInfo[ "repo_format" ], repoInfo[ "repo_datadir" ] )
@@ -290,30 +290,30 @@ class InstallMgr:
                             keepParsingCurrentRepo = False
                 if not allLibsFound:
                     # all libs found, no need to go to parse next repo
-                    continue          
+                    continue
             if len(addonIdList) > 0:
                 print "Not all required lib has been installed"
                 print addonIdList
-                
+
                 if not xbmcgui.Dialog().yesno( lib['id'], __language__( 30070 ), __language__( 30071 ), __language__( 30072 ) ):
                     print "User cancelled due to error of a lib install"
                     allLibsFound = True
                     status = "CANCELED"
                 else:
                     # User wants to continue
-    
+
                     # Update list of module which fail to install
                     #self.addMissingModules(addonIdList)
                     addMissingModules2DB(addonIdList)
-                    
+
                     status = "OK"
         else:
             print "No required libs"
             status = "OK"
-                    
-        return status#, itemName, destination, addonInstaller 
 
-    
+        return status#, itemName, destination, addonInstaller
+
+
     def check_install(self, status, itemName, destination, itemInstaller):
         """
         Check if install went well and if not ask the user what to do
@@ -324,9 +324,9 @@ class InstallMgr:
         msg2  = ""
         loop = True
         # Get Item install name
-        if itemInstaller:      
+        if itemInstaller:
             itemInstallName = itemInstaller.getItemInstallName()
-            
+
         try:
             while loop:
                 if status == "OK":
@@ -336,15 +336,15 @@ class InstallMgr:
                     msg1  = __language__( 142 )%itemName # should we manage only unicode instead of string?
                     #msg1  = _( 142 )%"" + itemName
                     msg2  = __language__( 143 )
-                    loop = False                   
-                    
+                    loop = False
+
                 elif status == "CANCELED":
                     title = __language__( 146 )
                     #msg1  = _( 147 )%(unicode(itemName,'cp1252'))
                     msg1  = __language__( 147 )%itemName
                     msg2  = ""
                     loop = False
-                    
+
                 elif status == "ALREADYINSTALLED":
                     title = __language__( 144 )
                     #msg1  = _( 149 )%(unicode(itemName,'cp1252'))
@@ -363,7 +363,7 @@ class InstallMgr:
                         #msg1  = __language__( 142 )%"" + itemName
                         msg2  = __language__( 143 )
                         if status == "OK":
-                            loop = False                            
+                            loop = False
                     else:
                         #installCancelled = True
                         print "bypass: %s install has been cancelled by the user" % itemName
@@ -375,7 +375,7 @@ class InstallMgr:
                         #dp.create(__language__( 153 ))
                         #dp.update(100)
                         #dp.close()
-                        
+
                 elif status == "INVALIDNAME":
                     keyboard = xbmc.Keyboard( itemInstallName, __language__( 154 ) )
                     keyboard.doModal()
@@ -389,34 +389,34 @@ class InstallMgr:
                             title = __language__( 141 )
                             msg1  = __language__( 142 )%itemName # should we manage only unicode instead of string?
                             msg2  = __language__( 143 )
-                            loop = False                            
+                            loop = False
                     del keyboard
-                    
+
                 elif status == "ALREADYINUSE":
                     print "%s currently used by XBMC, install impossible" % itemName
                     title = __language__( 117 )
                     msg1  = __language__( 117 )
                     msg2  = __language__( 119 )
-                    loop = False       
-                     
+                    loop = False
+
                 elif status == "NOT_SUPPORTED":
                     print "%s install impossible, type of addon not supported" % itemName
                     title = __language__( 144 )
                     msg1  = __language__( 160)
                     msg2  = __language__( 136 )%itemName
-                    loop = False       
-                                          
+                    loop = False
+
                 else:
                     title = __language__( 144 )
                     msg1  = __language__( 136 )%itemName
                     msg2  = ""
-                    loop = False                            
+                    loop = False
         #                else:
         #                    title = "Unknown Error"
         #                    msg1  = "Please check the logs"
         #                    msg2  = ""
                 xbmcgui.Dialog().ok( title, msg1, msg2 )
-        
+
             del itemInstaller
 
         except:
@@ -433,9 +433,9 @@ class InstallMgr:
         continueInstall = True
 
         # Get Item install name
-        if itemInstaller:      
+        if itemInstaller:
             itemInstallName = itemInstaller.getItemInstallName()
-            
+
             exit = False
             while exit == False:
                 menuList = [ __language__( 150 ), __language__( 151 ), __language__( 152 ), __language__( 153 ) ]
@@ -449,7 +449,7 @@ class InstallMgr:
                         exit = True
                     else:
                         xbmcgui.Dialog().ok( __language__(148), __language__( 117) )
-                elif chosenIndex == 1: 
+                elif chosenIndex == 1:
                     # Rename
                     print "Renaming:"
                     #dp = xbmcgui.DialogProgress()
@@ -465,10 +465,10 @@ class InstallMgr:
                             exit = True
                         else:
                             xbmcgui.Dialog().ok( __language__( 148 ), __language__( 117 ) )
-                            
+
                     del keyboard
                     #dp.close()
-                elif chosenIndex == 2: 
+                elif chosenIndex == 2:
                     # Overwrite
                     print "Overwriting:"
                     exit = True
@@ -478,10 +478,10 @@ class InstallMgr:
                     continueInstall = False
         else:
             continueInstall = False
-        
+
         return continueInstall
-        
-    
+
+
     def message_cb(self, msgType, title, message1, message2="", message3=""):
         """
         Callback function for sending a message to the UI
@@ -513,5 +513,5 @@ class InstallMgr:
     #        dp.update( percent )
     #    except:
     #        percent = 100
-    #        dp.update( percent )        
+    #        dp.update( percent )
     #===========================================================================

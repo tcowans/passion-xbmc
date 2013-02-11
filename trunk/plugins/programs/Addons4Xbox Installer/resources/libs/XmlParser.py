@@ -22,7 +22,7 @@ import elementtree.ElementTree as ET
 try:
     #from specialpath import *
     #from utilities import *
-    from Item import TYPE_ADDON, TYPE_ADDON_MUSIC, TYPE_ADDON_PICTURES, TYPE_ADDON_PROGRAMS, TYPE_ADDON_VIDEO, TYPE_ADDON_MODULE, TYPE_ADDON_REPO, TYPE_ADDON_SCRIPT  
+    from Item import TYPE_ADDON, TYPE_ADDON_MUSIC, TYPE_ADDON_PICTURES, TYPE_ADDON_PROGRAMS, TYPE_ADDON_VIDEO, TYPE_ADDON_MODULE, TYPE_ADDON_REPO, TYPE_ADDON_SCRIPT
 except:
     print_exc()
 
@@ -69,7 +69,7 @@ scriptExtList = [ TYPE_EXT_SCRIPT_WEATHER,
 
 def parseAddonXml( xmlData, itemInfo ):
     """
-    Get Item Info from addon.xml and set itemInfo object 
+    Get Item Info from addon.xml and set itemInfo object
     Look at http://wiki.xbmc.org/index.php?title=Add-ons_for_XBMC_(Developement) for XML format description
     """
     # id
@@ -90,7 +90,7 @@ def parseAddonXml( xmlData, itemInfo ):
     # extracted_path
     # provides
     # required_lib
-    
+
     status = 'OK'
     try:
         if ( xmlData ):
@@ -101,15 +101,15 @@ def parseAddonXml( xmlData, itemInfo ):
     except:
         status = 'ERROR'
         print_exc()
-    
+
     return status
-            
+
 
 
 
 def parseAddonElt( addonElt, itemInfo ):
     """
-    Get Item Info from addon.xml and set itemInfo object 
+    Get Item Info from addon.xml and set itemInfo object
     """
     # id
     # name
@@ -129,7 +129,7 @@ def parseAddonElt( addonElt, itemInfo ):
     # extracted_path
     # provides
     # required_lib
-    
+
     status = 'OK'
     try:
         if ( addonElt ):
@@ -155,7 +155,7 @@ def parseAddonElt( addonElt, itemInfo ):
                             itemInfo [ "library" ] = extension.attrib.get( "library" )
                             itemInfo [ "provides" ] = extension.findtext( "provides" )
                             libPoint = extension.attrib.get( "point" )
-                            
+
                         # Get repo info in case of repo:
 #                        <extension point="xbmc.addon.repository"
 #                            name="Passion-XBMC Add-on Repository">
@@ -164,25 +164,25 @@ def parseAddonElt( addonElt, itemInfo ):
 #                            <datadir zip="true">http://passion-xbmc.org/addons/Download.php</datadir>
 #                        </extension>
                         if point == TYPE_EXT_REPO:
-                            itemInfo [ "repo_url" ] = extension.findtext( "info" ) 
+                            itemInfo [ "repo_url" ] = extension.findtext( "info" )
                             datadir = extension.find( "datadir" )
-                            itemInfo [ "repo_datadir" ] = datadir.text 
+                            itemInfo [ "repo_datadir" ] = datadir.text
                             zip = datadir.attrib.get( "zip" )
                             print "Repo format zip attribute: %s"%zip
                             if zip == "true":
                                 itemInfo [ "repo_format" ] = "zip"
                             else:
                                 itemInfo [ "repo_format" ] = "dir"
-                            
+
                     elif point == "xbmc.addon.metadata":
                         # Metadata
-                        itemInfo [ "platform" ]    = extension.findtext( "platform" ) 
-                        itemInfo [ "nofanart" ]    = extension.findtext( "nofanart" ) 
-                        itemInfo [ "description" ] = extension.findtext( "description" ) 
-                        itemInfo [ "disclaimer" ]  = extension.findtext( "disclaimer" ) 
-                        
+                        itemInfo [ "platform" ]    = extension.findtext( "platform" )
+                        itemInfo [ "nofanart" ]    = extension.findtext( "nofanart" )
+                        itemInfo [ "description" ] = extension.findtext( "description" )
+                        itemInfo [ "disclaimer" ]  = extension.findtext( "disclaimer" )
+
                         #TODO: Check case where tag is not present: what is returned?
-                        
+
             requires = addonElt.find("requires")
             requiredModuleList = []
             if requires:
@@ -195,9 +195,9 @@ def parseAddonElt( addonElt, itemInfo ):
                         moduleInfo [ "version" ] = module.attrib.get( "version" )
                         requiredModuleList.append( moduleInfo )
             itemInfo [ "required_lib" ] = requiredModuleList
-                
-                    
-                
+
+
+
             if itemInfo [ "type" ] == TYPE_ADDON:
                 print "Not supported type of Addon"
                 status = 'NOT_SUPPORTED'
@@ -210,7 +210,7 @@ def parseAddonElt( addonElt, itemInfo ):
         print_exc()
 
     print itemInfo
-    
+
     return status
 
 def _getType(id, extension):
@@ -249,8 +249,8 @@ def _getType(id, extension):
         print "_getType - unsupported type: %s"%type
     #print "_getType - Type is: %s"%type
     return type
-                        
-    
+
+
 
 def createItemListFromXml( xmlData ):
     """
@@ -276,7 +276,7 @@ def createItemListFromXml( xmlData ):
     except:
         status = 'ERROR'
         print_exc()
-    
+
     return status, list
 
 class ListItemFromXML:
@@ -289,7 +289,7 @@ class ListItemFromXML:
                 rootXmlElt = ET.parse( xmlData ).getroot() # root: <addons>
                 print 'rootXmlElt'
                 print rootXmlElt
-                
+
                 if ( rootXmlElt ):
                     self.addons = rootXmlElt.findall("addon")
                     #for i in range(len(self.addons)):
@@ -297,12 +297,12 @@ class ListItemFromXML:
         except:
             status = 'ItemList::__init__: ERROR'
             print_exc()
-    
-        
+
+
     def _parseAddonElement(self, addonElt, itemInfo):
         return parseAddonElt( addonElt, itemInfo )
-    
-    
+
+
     def getNextItem(self):
         result = None
         if len(self.addons) > 0 and self.currentParseIdx < len(self.addons):
@@ -316,9 +316,9 @@ class ListItemFromXML:
         print "getNextItem - result:"
         print result
         return result
-    
-    
-#    
+
+
+#
 #    # List the main categories at the root level
 #    for entry in dicdata:
 #        if Item.isSupported( categories[ entry['xbmc_type'] ] ):
@@ -336,7 +336,7 @@ class ListItemFromXML:
 #            else:
 #                item['description']       = self.strip_off_passionCDT( unescape( urllib.unquote( entry['description_en'] ) ) )#.encode("cp1252").decode('string_escape')
 #            if item['description'] == 'None':
-#                item['description'] = _( 604 ) 
+#                item['description'] = _( 604 )
 #            item['language']          = entry['script_language']
 #            item['version']           = entry['version']
 #            item['author']            = entry['author']
@@ -353,7 +353,7 @@ class ListItemFromXML:
 #            item['previewpictureurl'] = entry['image']
 #            item['previewpicture']    = ""#Item.get_thumb( entry )
 #            item['image2retrieve']    = False # Temporary patch for reseting the flag after downlaad (would be better in the thread in charge of the download)
-#            
+#
 #            item['orginalfilename']     = entry['orginalfilename']
 #            #TODO: deprecated??? Check server side
 #            item['fileexternurl']     = "None"
@@ -363,6 +363,6 @@ class ListItemFromXML:
 #        else:
 #            print "Type not supported by the installer:"
 #            print entry
-#        
+#
 #    return list
 

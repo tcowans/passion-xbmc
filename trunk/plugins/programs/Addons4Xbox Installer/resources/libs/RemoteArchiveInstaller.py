@@ -65,7 +65,7 @@ class RemoteArchiveInstaller(ArchItemInstaller):
 
         self.itemInfo [ "name" ] = name
         #self.itemInfo [ "name" ] = unicode( name, 'ISO 8859-1', errors='ignore')
-        
+
         self.itemInfo [ "url" ] = url
         self.itemInfo [ "filename" ] = os.path.basename(url.replace( "%20", " " ))
         self.itemInfo [ "filesize" ] = 0
@@ -81,7 +81,7 @@ class RemoteArchiveInstaller(ArchItemInstaller):
         # Get ItemId
         percent = 0
         status = "OK"
-        
+
         if progressBar != None:
             #progressBar.update( percent, unicode(_( 122 )) % ( self.itemInfo [ "name" ] ), unicode(_( 123 )) % percent )
             progressBar.update( percent, ( self.itemInfo [ "name" ] ), _( 123 ) % percent )
@@ -91,11 +91,11 @@ class RemoteArchiveInstaller(ArchItemInstaller):
             #print type(self.itemInfo[ "name" ])
             #print unicode(self.itemInfo[ "name" ], errors='ignore')
             #print _( 122 )%ustr
-        try:            
+        try:
             print "HTTPInstaller::GetRawItem "
             # Download file (to cache dir) and get destination directory
             status, self.itemInfo [ "raw_item_path" ] = self._downloadFile( progressBar=progressBar )
-        
+
         except Exception, e:
             print "Exception during downlaodItem"
             print e
@@ -137,14 +137,14 @@ class RemoteArchiveInstaller(ArchItemInstaller):
         print("_downloadFile with destination directory = " + destinationDir)
         destination = None
         status     = "OK" # Status of download :[OK | ERROR | CANCELED | ERRORFILENAME]
-        
+
         try:
             # -- Downloading
             print("_downloadFile - Trying to retrieve the file")
             block_size          = 8192
             percent_downloaded  = 0
             num_blocks          = 0
-            
+
             req = urllib2.Request(self.itemInfo [ "url" ]) # Note: downloading item with passion XBMC URL (for download count) even when there is an external URL
             req.add_header('User-Agent','Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.3) Gecko/20070309 Firefox/2.0.0.3')
             connection  = urllib2.urlopen(req)           # Open connection
@@ -163,7 +163,7 @@ class RemoteArchiveInstaller(ArchItemInstaller):
                                     self.itemInfo [ "filename" ] = headers['Content-Disposition'].split('"')[1]
                                 else:
                                     self.itemInfo [ "filename" ] = headers['Content-Disposition'].split('=')[1]
-                                    
+
                             if self.itemInfo [ "filename" ] == '':
                                 # It wasn't possible to read filename within the headers
                                 realURL = connection.geturl().encode('utf-8') # Get URL (possible redirection)
@@ -196,13 +196,13 @@ class RemoteArchiveInstaller(ArchItemInstaller):
                     print(str(e))
                     print_exc()
 
-            
+
             #destination = xbmc.translatePath( os.path.join( destinationDir, self.itemInfo [ "filename" ] ) )
             destination = xbmc.makeLegalFilename( xbmc.translatePath( os.path.join( destinationDir, self.itemInfo [ "filename" ] ) ) )
             print "_downloadFile - file name : %s "%self.itemInfo [ "filename" ]
             print "_downloadFile - file size : %d Octet(s)"%self.itemInfo [ "filesize" ]
             print "_downloadFile: destination %s"%destination
-            
+
 
 
             file = open(destination,'w+b')        # Get ready for writing file
@@ -212,11 +212,11 @@ class RemoteArchiveInstaller(ArchItemInstaller):
                 if (progressBar != None):
                     #progressBar.update(percent_downloaded)
                     progressBar.update( percent_downloaded, _( 122 ) % ( self.itemInfo [ "name" ] ), _( 123 ) % percent_downloaded )
-            except Exception, e:        
+            except Exception, e:
                 print("_downloadFile - Exception calling UI callback for download")
                 print(str(e))
                 print progressBar
-                
+
             ###########
             # Download
             ###########
@@ -234,7 +234,7 @@ class RemoteArchiveInstaller(ArchItemInstaller):
                     file.write(cur_block)
                     # Increment for next block
                     num_blocks = num_blocks + 1
-                except Exception, e:        
+                except Exception, e:
                     print("_downloadFile - Exception during reading of the remote file and writing it locally")
                     print(str(e))
                     print ("_downloadFile: error during reading of the remote file and writing it locally: " + str(sys.exc_info()[0]))
@@ -244,7 +244,7 @@ class RemoteArchiveInstaller(ArchItemInstaller):
                     # Compute percent of download in progress
                     New_percent_downloaded = min((num_blocks*block_size*100)/self.itemInfo [ "filesize" ], 100)
                     #print "_downloadFile - Percent = %d"%New_percent_downloaded
-                except Exception, e:        
+                except Exception, e:
                     print("_downloadFile - Exception computing percentage downloaded")
                     print(str(e))
                     New_percent_downloaded = 0
@@ -280,9 +280,9 @@ class RemoteArchiveInstaller(ArchItemInstaller):
         print status
         print destination
         print("_downloadFile ENDED")
-                
+
         return status, destination
-        
+
 class RemoteDirInstaller(DirItemInstaller):
     """
     Download an directory and its content and install it
@@ -293,17 +293,17 @@ class RemoteDirInstaller(DirItemInstaller):
 
         self.itemInfo [ "name" ] = name
         #self.itemInfo [ "name" ] = unicode( name, 'ISO 8859-1', errors='ignore')
-        
+
         self.itemInfo [ "url" ] = url
         self.itemInfo [ "raw_item_sys_type" ] = TYPE_SYSTEM_DIRECTORY
-        
+
         self._create_title()
         print self.itemInfo
         if repoUrl.endswith( "/" ):
             self.REPO_URL = repoUrl
         else:
             self.REPO_URL = repoUrl + "/"
-        
+
         #TODO: pass progress bar callback instead
         self.dialog = xbmcgui.DialogProgress()
 
@@ -315,16 +315,16 @@ class RemoteDirInstaller(DirItemInstaller):
         # Get ItemId
         percent = 0
         status = "OK"
-        
+
         if progressBar != None:
             #progressBar.update( percent, unicode(_( 122 )) % ( self.itemInfo [ "name" ] ), unicode(_( 123 )) % percent )
             progressBar.update( percent, ( self.itemInfo [ "name" ] ), _( 123 ) % percent )
-        try:            
+        try:
             print "HTTPInstaller::GetRawItem "
             # Download file (to cache dir) and get destination directory
             #status, self.itemInfo [ "raw_item_path" ] = self._downloadFile( progressBar=progressBar )
             status, self.itemInfo [ "raw_item_path" ] = self._download_item( )
-        
+
         except Exception, e:
             print "Exception during downlaodItem"
             print e
@@ -341,7 +341,7 @@ class RemoteDirInstaller(DirItemInstaller):
         #parts = self.itemInfo[ "url" ].split( "/" )
         #version = ""
         #self.title = parts[ -2 ].replace( "%20", " " ) + version
-        
+
         self.title = self.itemInfo [ "name" ]
 
     def _download_item( self, forceInstall=True ):
@@ -356,7 +356,7 @@ class RemoteDirInstaller(DirItemInstaller):
                 asset_files = []
 
                 #TODO: find cleaner solution in order to remove the / at the end of the folder name
-                folders = [ self.itemInfo[ "url" ].replace(self.REPO_URL, "").replace( " ", "%20" ) ]  
+                folders = [ self.itemInfo[ "url" ].replace(self.REPO_URL, "").replace( " ", "%20" ) ]
                 while folders:
                     try:
                         htmlsource = readURL( self.REPO_URL + folders[ 0 ] )
@@ -392,7 +392,7 @@ class RemoteDirInstaller(DirItemInstaller):
             #xbmcgui.Dialog().ok( self.title, _( 30090 ) )
             status = "ERROR"
         return status, finished_path
-        
+
     def _get_files( self, asset_files ):
         """ fetch the files """
         try:
@@ -422,11 +422,11 @@ class RemoteDirInstaller(DirItemInstaller):
                 if ( not os.path.isdir( path ) ): os.makedirs( path )
                 url = self.REPO_URL+ url.replace( " ", "%20" )
                 fpath = os.path.join( path, file )
-                
+
                 print self.REPO_URL
                 print fpath
                 print url
-                
+
                 urllib.urlretrieve( url, fpath )
         except:
             finished_path = ""
@@ -436,7 +436,7 @@ class RemoteDirInstaller(DirItemInstaller):
             raise
 
         return finished_path
-            
+
     def _parse_html_source( self, htmlsource ):
         """ parse html source for tagged version and url """
         try:
@@ -445,7 +445,7 @@ class RemoteDirInstaller(DirItemInstaller):
             return parser.dict
         except:
             return {}
-            
+
     def _parse_items( self, items ):
         """ separates files and folders """
         folders = []

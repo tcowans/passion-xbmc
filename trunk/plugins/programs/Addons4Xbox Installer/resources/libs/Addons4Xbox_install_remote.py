@@ -46,14 +46,14 @@ class Main:
     """
 
     def __init__( self, *args, **kwargs ):
-        
+
         self.fileMgr   = fileMgr()
         self.pluginMgr = PluginMgr()
         self.parameters = self.pluginMgr.parse_params()
-        
+
         # Install from remote server
         status = self._install_addon_remote()
-        
+
         print "_end_of_directory"
         self.pluginMgr.end_of_directory( True, update=False )
 
@@ -61,27 +61,27 @@ class Main:
     def _install_addon_remote( self ):
         """
         Install an addon from a remote/web repository
-        """      
+        """
         print "_install_addon_remote"
         status = "OK"
         installMgr = InstallMgr()
 
         #TODO: solve encoding pb on name
-        
-        addonName = unicode( self.parameters[ PARAM_ADDON_NAME ] , 'ISO 8859-1', errors='ignore' ) 
+
+        addonName = unicode( self.parameters[ PARAM_ADDON_NAME ] , 'ISO 8859-1', errors='ignore' )
         addonId = '%s'%self.parameters[ PARAM_ADDON_ID ]
         addonUrl = self.parameters[ PARAM_URL ].replace( ' ', '%20' )
         addonFormat = self.parameters[ PARAM_TYPE ]
         repoId = self.parameters[ PARAM_REPO_ID ]
         #repoId = self.parameters[ self.PARAM_REPO_ID ]
         dataDir = self.parameters[ PARAM_DATADIR ].replace( ' ', '%20' ) #self.repoList[repoId]['datadir']
-        
+
         if ( xbmcgui.Dialog().yesno( addonName, __language__( 30050 ), "", "" ) ):
-            
+
             # Check if we install repo
             if "None" != repoId:
                 # Retrieve addon info from persitence
-                pdr = PersistentDataRetriever( os.path.join( DIR_CACHE, "addon_list.txt" ) ) 
+                pdr = PersistentDataRetriever( os.path.join( DIR_CACHE, "addon_list.txt" ) )
                 addonDic = pdr.get_data()
                 requiredLibs = addonDic[addonId]['required_lib']
                 print requiredLibs
@@ -92,8 +92,8 @@ class Main:
         #                # 1 - Look for matching repo
         #                # 2 - install
         #                # 3 - notify user if something when wrong or not
-                        
-    
+
+
             if status == "OK":
                 # TODO: check repo ID
                 status, itemName, destination, addonInstaller = installMgr.install_from_repo( addonName, addonUrl, addonFormat, dataDir )
@@ -102,14 +102,14 @@ class Main:
                 itemName       = addonDic[addonId]["name"]
                 destination    = None
                 addonInstaller = None
-                
+
             # Check if install went well
             status, destination = installMgr.check_install(status, itemName, destination, addonInstaller)
-            
+
             if status == "OK": # and "None" != repoId:
                 #self.saveLocalAddonInfo(repoId, destination, addonInstaller)
                 saveLocalAddonInfo(repoId, destination, addonInstaller)
-                
+
                 # Check is addon is a module and if it was part of the missing modules list
                 #addonType    = addonInstaller.getItemType()
                 #addonVersion = addonInstaller.getItemVersion()
@@ -119,8 +119,7 @@ class Main:
                         # We just installed successfully a module
                         # Check if it was part of the missing modules list and remove it if it is the case
                         removeMissingModule2DB(installedModuleItem)
-                    
-                
+
+
         return status
 
-                                

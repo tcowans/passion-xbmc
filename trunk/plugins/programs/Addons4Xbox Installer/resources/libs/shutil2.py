@@ -181,7 +181,7 @@ def copytree(src, dst, symlinks=False, ignore=None, reportcopy=None, overwrite=F
     items_count = len(names)
     localProgress = curPercent
     for name in names:
-        if progressBar and progressBar.iscanceled(): 
+        if progressBar and progressBar.iscanceled():
             print "copytree - User cancelled"
             break
         if name in ignored_names:
@@ -204,7 +204,7 @@ def copytree(src, dst, symlinks=False, ignore=None, reportcopy=None, overwrite=F
         # continue with other files
         except Error, err:
             errors.extend(err.args[0])
-            
+
         # Compute Progress
         if progressBar:
             localProgress = min( localProgress + int( ( 100 )/( items_count * coeff ) ), 100 )

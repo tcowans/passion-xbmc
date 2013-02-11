@@ -43,9 +43,9 @@ class Main:
         if True: #self._check_compatible():
             self.pluginMgr = PluginMgr()
             self.parameters = self.pluginMgr.parse_params()
-                      
+
             self._createManageAddonsDir()
-                
+
         print "_end_of_directory"
         self.pluginMgr.add_sort_methods( False )
         self.pluginMgr.end_of_directory( True, update=False )
@@ -62,7 +62,7 @@ class Main:
         except ImportError:
             ok = 0
         return ok
-    
+
 
     def _createManageAddonsDir ( self ):
         """
@@ -73,6 +73,6 @@ class Main:
         urlRepo = self.pluginMgr.create_param_url( paramsDicRepo )
         if urlRepo:
             self.pluginMgr.addDir( __language__( 30250 ), urlRepo )
-        
-        
-    
+
+
+

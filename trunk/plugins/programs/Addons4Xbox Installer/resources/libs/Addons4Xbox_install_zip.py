@@ -42,18 +42,18 @@ class Main:
 
     def __init__( self, *args, **kwargs ):
         self.pluginMgr = PluginMgr()
-        
+
         # Install from zip file
         status = self._install_addon_zip()
-        
+
         print "_end_of_directory"
         self.pluginMgr.end_of_directory( True, update=False )
 
-    
+
     def _install_addon_zip( self ):
         """
         Install an addon from a local zip file
-        """        
+        """
         installMgr = InstallMgr()
 
         # Install from zip file
@@ -66,7 +66,7 @@ class Main:
 
         #Check if install went well
         status, destination = installMgr.check_install(status, itemName, destination, addonInstaller)
-        
+
         if status == "OK":
             from datetime import datetime
 
@@ -83,4 +83,4 @@ class Main:
 
         return status
 
-         
+

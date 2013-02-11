@@ -122,7 +122,7 @@ class fileMgr:
         result = True
         try:
             if r_base_path == None:
-                old_name = r_old_name 
+                old_name = r_old_name
                 new_name = r_new_name
             else:
                 old_name = os.path.join( r_base_path, r_old_name )
@@ -132,7 +132,7 @@ class fileMgr:
                 self.deleteItem( new_name )
             os.rename( old_name, new_name )
         except OSError, err:
-            result = False  
+            result = False
             print "renameItem - Couldn't rename"
             print err.errno
             print_exc()
@@ -141,7 +141,7 @@ class fileMgr:
             print "renameItem: Exception renaming Item"
             print_exc()
         return result
-    
+
     def deleteItem( self, r_item_path):
         """
         Delete an item (file or directory)
@@ -153,7 +153,7 @@ class fileMgr:
             result = self.deleteDir(item_path)
         else:
             result = self.deleteFile(item_path)
-            
+
         return result
 
     def deleteFile(self, r_file_path):
@@ -211,7 +211,7 @@ class fileMgr:
             result = False
 
         return result
-    
+
     def delDirContent( self, r_path ):
         """
         Delete the content of a directory ( file and sub direstories)
@@ -260,8 +260,8 @@ class fileMgr:
         if not overwrite and os.path.isdir( dir_dest ):
             shutil2.rmtree( dir_dest )
         shutil2.copytree( dir_src, dir_dest, overwrite=overwrite, progressBar=progressBar, curPercent=100 )
-    
-    
+
+
     def copyInsideDir( self, r_dir_src, r_dir_dest, overwrite=True, progressBar=None ):
         """
         Copy the content a directory to a new location

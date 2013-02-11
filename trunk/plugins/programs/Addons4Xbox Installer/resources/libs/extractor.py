@@ -34,7 +34,7 @@ def is_rarfile( filename ):
     RAR_ID = "Rar!\x1a\x07\x00"
     buf = open( filename, "rb" ).read( len( RAR_ID ) )
     return buf == RAR_ID
- 
+
 
 def get_time_sleep( filename ):
     # faut vraiment laisser xbmc le temps d'extraire l'archive environ 1 seconde pour 1 mo
@@ -157,7 +157,7 @@ def unzip( filename, destination=None, report=False ):
                 root_dir = namelist[ 0 ].split("/")[0]
         else:
             is_root_dir = False
-            
+
         # si root_dir n'est pas un dossier ou n'est pas la racine, on se base sur le nom de l'archive
         #print root_dir
         #base_dir = os.path.join( destination, root_dir.rstrip( "/" ) )
@@ -183,7 +183,7 @@ def unzip( filename, destination=None, report=False ):
                 #print root_dir
                 #print root_dir.rstrip( "/" )
                 #print root_dir.rstrip( "/" )[:42]
-                #print root.replace(root_dir.rstrip( "/" ),root_dir.rstrip( "/" )[:42]) 
+                #print root.replace(root_dir.rstrip( "/" ),root_dir.rstrip( "/" )[:42])
                 directory = os.path.normpath( os.path.join( destination, root.replace(root_dir.rstrip( "/" ),root_dir.rstrip( "/" )[:42]) ) )
                 #directory = os.path.normpath( os.path.join( destination, root[:42] ) ) # xbox filename limitation
                 if not os.path.isdir( directory ): os.makedirs( directory )
@@ -201,7 +201,7 @@ def extract_tarfile( filename, destination=None ):
     import tarfile
     base_dir = ""
     try:
-        # is_tarfile, Return True if name is a tar archive file, that the tarfile module can read. 
+        # is_tarfile, Return True if name is a tar archive file, that the tarfile module can read.
         if tarfile.is_tarfile( filename ):
             # if not destination, set destination to current filename
             if destination is None:
