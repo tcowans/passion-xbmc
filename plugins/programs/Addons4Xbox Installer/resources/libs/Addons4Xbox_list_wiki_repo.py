@@ -58,7 +58,6 @@ class Main:
         print "List of repositories from XBMC wiki page"
         self._createRepo2InstallListDir()
 
-        print "end_of_directory"
         #self.pluginMgr.end_of_directory( True, update=False )
         self.pluginMgr.add_sort_methods( True )
         self.pluginMgr.end_of_directory( True )
@@ -71,15 +70,12 @@ class Main:
         print "createRepo2InstallListDir"
         #xbmcplugin.setPluginCategory( handle=int( sys.argv[ 1 ] ), category=__language__( 30001 ) )
 
-        print 'wiki_server:'
-        print __settings__( 'wiki_server' )
         wiki_server_id = int( __settings__( 'wiki_server' ) )
         print "Loading wiki page: %s"%REPO_LIST_URL_LIST[wiki_server_id]
         listRepoWiki = ListItemFromWiki(REPO_LIST_URL_LIST[wiki_server_id])
         keepParsing = True
         while (keepParsing):
             item = listRepoWiki.getNextItem()
-            print item
             if item:
                 if 'repo_url' in item and item['repo_url']:
                     paramsAddons = {}
@@ -96,7 +92,6 @@ class Main:
                     if ( url ):
                         item['PluginUrl'] = url
                         self.pluginMgr.addItemLink( item )
-                        print "Link added"
             else:
                 keepParsing = False
 

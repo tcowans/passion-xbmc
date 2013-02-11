@@ -95,7 +95,6 @@ def copy_inside_dir( dirname, destination, overwrite=True, progressBar=None, per
 
 
 def readURL( url, save=False, localPath=None ):
-    print"readURL() url=%s"%url
 
     if (not url):
         return ""
@@ -108,9 +107,9 @@ def readURL( url, save=False, localPath=None ):
         if save:
             open(localPath,"w").write(body)
     except urllib2.HTTPError, e:
-        print "readURL() HTTP Error %s" % e.code
+        print "readURL() url: %s - HTTP Error %s" % ( url, e.code )
     except:
-        print("readURL() %s" % sys.exc_info()[ 1 ])
+        print "readURL() url: %s - URLError %s" % (url, sys.exc_info()[ 1 ])
 
     return body
 
@@ -376,9 +375,6 @@ class PersistentDataCreator:
     Creates persitent data
     """
     def __init__( self, data, filepath ):
-        print "PersistentDataCreator: filepath = %s"%filepath
-        print "PersistentDataCreator: data:"
-        print data
         self._persit_data( data, filepath )
 
     def _persit_data( self, data, filepath ):

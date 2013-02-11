@@ -5,7 +5,6 @@ ItemInstaller: this module allows download and install of an item (addons: scrip
 # Modules general
 import os
 import sys
-import httplib
 from traceback import print_exc
 from time import sleep
 
@@ -23,8 +22,6 @@ except:
 # XBMC modules
 import xbmc
 import xbmcgui
-
-httplib.HTTPConnection.debuglevel = 1
 
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
 _ = sys.modules[ "__main__" ].__language__
@@ -290,7 +287,6 @@ class ItemInstaller:
         else:
             status = "UNCHANGED"
 
-        print item
         return status
 
 #    def _save_addon_local_info( self ):

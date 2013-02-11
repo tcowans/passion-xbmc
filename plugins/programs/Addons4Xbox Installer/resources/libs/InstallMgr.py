@@ -201,7 +201,6 @@ class InstallMgr:
                     keepParsingCurrentRepo = True
                     while (keepParsingCurrentRepo):
                         item = listAddonsXml.getNextItem()
-                        print item
                         if item:
                             if len(addonIdList) > 0:
                                 for lib in addonIdList:

@@ -186,8 +186,6 @@ def get_install_path( type ):
     """
     Returns the install directory
     """
-    print "get_install_path"
-    print item_path
     try:
         result = item_path[ type ]
     except:

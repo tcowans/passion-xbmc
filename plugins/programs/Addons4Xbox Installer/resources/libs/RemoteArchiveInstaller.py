@@ -5,7 +5,6 @@ ItemInstaller: this module allows download and install an item from Passion XBMC
 # Modules general
 import os
 import sys
-import httplib
 import urllib2
 from traceback import print_exc
 import urllib
@@ -24,8 +23,6 @@ try:
     from utilities import readURL, unescape
 except:
     print_exc()
-
-httplib.HTTPConnection.debuglevel = 1
 
 #FONCTION POUR RECUPERER LES LABELS DE LA LANGUE.
 _ = sys.modules[ "__main__" ].__language__
@@ -375,10 +372,6 @@ class RemoteDirInstaller(DirItemInstaller):
                         folders = folders[ 1 : ]
                     except:
                         folders = []
-                print 'folders'
-                print folders
-                print 'asset_files'
-                print asset_files
                 finished_path = self._get_files( asset_files )
                 self.dialog.close()
                 #if finished_path and not forceInstall:

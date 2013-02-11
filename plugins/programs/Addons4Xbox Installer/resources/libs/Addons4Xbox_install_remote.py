@@ -54,7 +54,6 @@ class Main:
         # Install from remote server
         status = self._install_addon_remote()
 
-        print "_end_of_directory"
         self.pluginMgr.end_of_directory( True, update=False )
 
 
@@ -84,7 +83,6 @@ class Main:
                 pdr = PersistentDataRetriever( os.path.join( DIR_CACHE, "addon_list.txt" ) )
                 addonDic = pdr.get_data()
                 requiredLibs = addonDic[addonId]['required_lib']
-                print requiredLibs
                 status = installMgr._getAddonRequiredLibs( requiredLibs, repoId )
         #        for lib in requiredLibs:
         #            if lib["id"] != REQUIRED_DEFAULT_LIB:

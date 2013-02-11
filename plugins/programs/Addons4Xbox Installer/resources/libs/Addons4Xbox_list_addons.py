@@ -53,8 +53,6 @@ class Main:
         addonCat = self.parameters[ PARAM_TYPE ]
         self._createAddonsDir( repoId, addonCat )
 
-        print "end_of_directory"
-        #self.pluginMgr.end_of_directory( True, update=False )
         self.pluginMgr.add_sort_methods( True )
         self.pluginMgr.end_of_directory( True )
 
@@ -92,9 +90,7 @@ class Main:
             keepParsing = True
             while (keepParsing):
                 item = listAddonsXml.getNextItem()
-                print item
                 if item:
-                    print "filter: %s"%filter
                     if eval(filter):
                         endRepoChar = "/"
                         if repoInfo [ "repo_datadir" ].endswith( "/" ):
@@ -111,7 +107,6 @@ class Main:
                         item["ImageUrl"] = iconimage
                         item["changelog"] = changelog
 
-                        print downloadUrl
                         paramsAddons = {}
                         paramsAddons[PARAM_INSTALL_FROM_REPO]   = "true"
                         paramsAddons[PARAM_ADDON_ID]            = item[ "id" ]
@@ -128,10 +123,8 @@ class Main:
                             self.pluginMgr.addItemLink( item )
                             #addonList.append( item )
                             addonDic[ item[ "id" ]] = item
-                            print "Link added"
                 else:
                     keepParsing = False
             # Save the list of addons
-            print addonDic
             PersistentDataCreator( addonDic, os.path.join( DIR_CACHE, "addon_list.txt" ) )
 
