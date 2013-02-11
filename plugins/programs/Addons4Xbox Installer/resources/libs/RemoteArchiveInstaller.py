@@ -47,7 +47,6 @@ class Parser:
                     if ( asset[ 0 ] != "../"  and asset[ 0 ].find("://") == -1 ):
                         self.dict[ "assets" ] += [ unescape( asset[ 0 ] ) ]
                 self.dict[ "status" ] = "ok"
-            print self.dict[ "assets" ]
         except:
             pass
 
@@ -80,16 +79,8 @@ class RemoteArchiveInstaller(ArchItemInstaller):
         status = "OK"
 
         if progressBar != None:
-            #progressBar.update( percent, unicode(_( 122 )) % ( self.itemInfo [ "name" ] ), unicode(_( 123 )) % percent )
             progressBar.update( percent, ( self.itemInfo [ "name" ] ), _( 123 ) % percent )
-            #print _( 122 )
-            #print self.itemInfo[ "name" ]
-            #from types import *
-            #print type(self.itemInfo[ "name" ])
-            #print unicode(self.itemInfo[ "name" ], errors='ignore')
-            #print _( 122 )%ustr
         try:
-            print "HTTPInstaller::GetRawItem "
             # Download file (to cache dir) and get destination directory
             status, self.itemInfo [ "raw_item_path" ] = self._downloadFile( progressBar=progressBar )
 
@@ -101,10 +92,7 @@ class RemoteArchiveInstaller(ArchItemInstaller):
             status = "ERROR"
         if progressBar != None:
             progressBar.update( percent, ( self.itemInfo [ "name" ] ), _( 134 ) )
-        #return status, self.itemInfo [ "raw_item_path" ]
         return status
-
-
 
     def getFileSize(self, sourceurl):
         """
@@ -149,9 +137,6 @@ class RemoteArchiveInstaller(ArchItemInstaller):
                 # Try to retrieve file name / file size
                 try:
                     headers = connection.info()# Get Headers
-                    print "_downloadFile: headers:"
-                    print headers
-                    print "---"
                     if self.itemInfo [ "filename" ] == '':
                         try:
                             if 'Content-Disposition' in headers:
@@ -352,7 +337,6 @@ class RemoteDirInstaller(DirItemInstaller):
                 self.dialog.create( self.title, _( 30052 ), _( 30053 ) )
                 asset_files = []
 
-                #TODO: find cleaner solution in order to remove the / at the end of the folder name
                 folders = [ self.itemInfo[ "url" ].replace(self.REPO_URL, "").replace( " ", "%20" ) ]
                 while folders:
                     try:
@@ -361,8 +345,6 @@ class RemoteDirInstaller(DirItemInstaller):
                         items = self._parse_html_source( htmlsource )
                         if ( not items or items[ "status" ] == "fail" ): raise
                         files, dirs = self._parse_items( items )
-                        print files
-                        print dirs
                         for file in files:
                             asset_files.append( folders[ 0 ] + file )
 
