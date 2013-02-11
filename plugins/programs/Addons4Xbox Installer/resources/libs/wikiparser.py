@@ -4,7 +4,6 @@
 """
 __all__ = [
     # public names
-    "getRepoList",
     "ListItemFromWiki"
     ]
 
@@ -19,66 +18,8 @@ import urllib
 #__language__ = sys.modules[ "__main__" ].__language__
 
 # Custom modules
-try:
+if ( __name__ != "__main__" ):
     from Item import TYPE_ADDON_REPO
-except:
-    print_exc()
-
-
-def getRepoList(pageUrl, destination=None, addItemFunc=None, progressBar=None,  msgFunc=None ):
-    """
-    Retrieve Blogs list passing each item to the cb addItemFunc
-    return Next page URL
-    """
-    #print "getRepoList"
-    result = "OK"
-
-    # Get HTML page...
-    htmlSource = urllib.urlopen( pageUrl ).read()
-    #print htmlSource
-
-    # Parse response...
-    beautifulSoup = BeautifulSoup( htmlSource )
-    itemRepoList = beautifulSoup.findAll("tr")
-    print itemRepoList
-    for repo in itemRepoList:
-        try:
-            #print repo
-            #print "----"
-            repoInfo = {}
-            tdList = repo.findAll("td")
-            if tdList:
-                repoInfo[ "name" ]        = tdList[0].a.string.strip()
-                repoInfo[ "description" ] = tdList[1].string.strip()
-                repoInfo[ "author" ]      = tdList[2].string.strip()
-                try:
-                    repoInfo[ "repo_url" ] = tdList[3].a["href"]
-                except:
-                    repoInfo[ "repo_url" ] = None
-
-                repoInfo[ "version" ]     = None
-                repoInfo[ "type" ]        = TYPE_ADDON_REPO
-
-                try:
-                    repoInfo["ImageUrl"] = tdList[4].a["href"]
-                except:
-                    repoInfo["ImageUrl"] = None
-
-                #if progressBar != None:
-                if addItemFunc:
-                    if repoInfo["repo_url"] and repoInfo["repoUrl"].endswith("zip"):
-                        addItemFunc( repoInfo )
-                    else:
-                        print "Invalid URL for the repository %s - URL=%s"%(repoInfo["name"], repoInfo["repoUrl"])
-            else:
-                print "Impossible to repository entry - No <td> list- Invalid format"
-        except:
-            print "getRepoList - Exception parsing Wiki page - impossible to retrieve Repo info"
-            print_exc()
-            result = "ERROR"
-    return result
-
-
 
 class ListItemFromWiki:
     currentParseIdx = 1
@@ -89,13 +30,9 @@ class ListItemFromWiki:
                 # Get HTML page...
                 htmlSource = urllib.urlopen( pageUrl ).read()
 
-                #print htmlSource
-
                 # Parse response...
                 beautifulSoup = BeautifulSoup( htmlSource )
                 self.itemRepoList = beautifulSoup.findAll("tr")
-                print self.itemRepoList
-                print
         except:
             status = 'ERROR'
             print_exc()
@@ -104,8 +41,6 @@ class ListItemFromWiki:
     def _parseRepoElement(self, repoElt, repoInfo):
         status = 'OK'
         try:
-            #print repo
-            #print "----"
             tdList = repoElt.findAll("td")
             if tdList:
                 repoInfo[ "name" ]        = tdList[0].a.string.strip()
@@ -125,7 +60,6 @@ class ListItemFromWiki:
                     repoInfo[ "ImageUrl" ] = tdList[4].a[ "href" ]
                 except:
                     repoInfo[ "ImageUrl" ] = None
-                    print "No image found for the repository %s"%(repoInfo["name"])
         except:
             print "_parseRepoElement - error parsing html - impossible to retrieve Repos info"
             print_exc()
@@ -143,25 +77,18 @@ class ListItemFromWiki:
             itemInfo = {}
             status = self._parseRepoElement( self.itemRepoList[self.currentParseIdx], itemInfo )
             self.currentParseIdx = self.currentParseIdx + 1
-            print "status = %s"%status
             if status == 'OK':
                 result = itemInfo
-        #else:
-        #    result = None
-            #itemInfo = {}
-            #result = itemInfo
-        print "getNextItem - result:"
-        print result
         return result
 
 
 
 if ( __name__ == "__main__" ):
+    TYPE_ADDON_REPO = "repository"
     print "Wiki parser test"
 
     repoListUrl = "http://wiki.xbmc.org/index.php?title=Unofficial_Add-on_Repositories"
     print repoListUrl
-    #getRepoList(repoListUrl)
 
     listRepoWiki = ListItemFromWiki(repoListUrl)
     keepParsing = True
