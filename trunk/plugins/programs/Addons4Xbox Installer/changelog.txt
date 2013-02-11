@@ -1,4 +1,10 @@
-﻿2012-03-13 Version 0.9.3 by Temhil
+﻿2013-02-11 Version 0.10 by BuZz
+- Added new addons4xbox repository
+- Cleanups and less verbosity
+- Fix up installing of dependant addons (not recursive yet)
+- Other misc bug fixes and improvements
+
+2012-03-13 Version 0.9.3 by Temhil
 - Added alternative source for repositories list and selection of the source in the plugin settings
 
 2011-08-21 Version 0.9.2 by Temhil

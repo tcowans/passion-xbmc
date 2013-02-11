@@ -15,8 +15,8 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/programs/Addons4xbox/"
 __credits__      = "Team XBMC Passion"
 __platform__     = "xbmc media center [XBOX]"
-__date__         = "03-13-2012"
-__version__      = "0.9.3"
+__date__         = "2012-02-11"
+__version__      = "0.10"
 __svn_revision__ = 0
 __XBMC_Revision__= 30805
 
