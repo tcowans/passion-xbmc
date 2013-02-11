@@ -1,6 +1,6 @@
 """
    Module retrieving repositories info from XBMC Wiki
-   by Temhil 
+   by Temhil
 """
 __all__ = [
     # public names
@@ -14,7 +14,7 @@ import re
 import urllib
 #
 # Constants
-# 
+#
 #__settings__ = sys.modules[ "__main__" ].__settings__
 #__language__ = sys.modules[ "__main__" ].__language__
 
@@ -34,12 +34,12 @@ def getRepoList(pageUrl, destination=None, addItemFunc=None, progressBar=None,  
     result = "OK"
 
     # Get HTML page...
-    htmlSource = urllib.urlopen( pageUrl ).read()    
+    htmlSource = urllib.urlopen( pageUrl ).read()
     #print htmlSource
-    
+
     # Parse response...
     beautifulSoup = BeautifulSoup( htmlSource )
-    itemRepoList = beautifulSoup.findAll("tr") 
+    itemRepoList = beautifulSoup.findAll("tr")
     print itemRepoList
     for repo in itemRepoList:
         try:
@@ -55,15 +55,15 @@ def getRepoList(pageUrl, destination=None, addItemFunc=None, progressBar=None,  
                     repoInfo[ "repo_url" ] = tdList[3].a["href"]
                 except:
                     repoInfo[ "repo_url" ] = None
-                    
+
                 repoInfo[ "version" ]     = None
                 repoInfo[ "type" ]        = TYPE_ADDON_REPO
-                
+
                 try:
                     repoInfo["ImageUrl"] = tdList[4].a["href"]
                 except:
                     repoInfo["ImageUrl"] = None
-            
+
                 #if progressBar != None:
                 if addItemFunc:
                     if repoInfo["repo_url"] and repoInfo["repoUrl"].endswith("zip"):
@@ -75,7 +75,7 @@ def getRepoList(pageUrl, destination=None, addItemFunc=None, progressBar=None,  
         except:
             print "getRepoList - Exception parsing Wiki page - impossible to retrieve Repo info"
             print_exc()
-            result = "ERROR"  
+            result = "ERROR"
     return result
 
 
@@ -87,20 +87,20 @@ class ListItemFromWiki:
         try:
             if ( pageUrl ):
                 # Get HTML page...
-                htmlSource = urllib.urlopen( pageUrl ).read()    
-                
+                htmlSource = urllib.urlopen( pageUrl ).read()
+
                 #print htmlSource
-                
+
                 # Parse response...
                 beautifulSoup = BeautifulSoup( htmlSource )
-                self.itemRepoList = beautifulSoup.findAll("tr") 
+                self.itemRepoList = beautifulSoup.findAll("tr")
                 print self.itemRepoList
-                print               
+                print
         except:
             status = 'ERROR'
             print_exc()
-    
-        
+
+
     def _parseRepoElement(self, repoElt, repoInfo):
         status = 'OK'
         try:
@@ -111,16 +111,16 @@ class ListItemFromWiki:
                 repoInfo[ "name" ]        = tdList[0].a.string.strip()
                 repoInfo[ "description" ] = tdList[1].string.strip()
                 repoInfo[ "author" ]      = tdList[2].string.strip()
-                
+
                 try:
                     repoInfo[ "repo_url" ] = tdList[3].a["href"]
                 except:
                     repoInfo[ "repo_url" ] = None
                     print "Invalid URL for the repository %s"%(repoInfo["name"])
-                    
+
                 repoInfo[ "version" ]     = None
                 repoInfo[ "type" ]        = TYPE_ADDON_REPO
-                
+
                 try:
                     repoInfo[ "ImageUrl" ] = tdList[4].a[ "href" ]
                 except:
@@ -129,11 +129,11 @@ class ListItemFromWiki:
         except:
             print "_parseRepoElement - error parsing html - impossible to retrieve Repos info"
             print_exc()
-            result = "ERROR"  
-        
+            result = "ERROR"
+
         return status
-    
-    
+
+
     def getNextItem(self):
         """
         return the next Repository in the list or return 'None' when no repository is left
@@ -153,16 +153,16 @@ class ListItemFromWiki:
         print "getNextItem - result:"
         print result
         return result
-    
 
-    
+
+
 if ( __name__ == "__main__" ):
     print "Wiki parser test"
-    
+
     repoListUrl = "http://wiki.xbmc.org/index.php?title=Unofficial_Add-on_Repositories"
     print repoListUrl
     #getRepoList(repoListUrl)
-    
+
     listRepoWiki = ListItemFromWiki(repoListUrl)
     keepParsing = True
     while (keepParsing):
