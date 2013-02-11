@@ -410,7 +410,7 @@ class RemoteDirInstaller(DirItemInstaller):
                 #file = items[ 1 ].replace( "%20", " " )
                 file = os.path.basename(url).replace( "%20", " " )
                 pct = int( ( float( cnt ) / len( asset_files ) ) * 100 )
-                self.dialog.update( pct, "%s %s" % ( _( 30055 ), url, ), "%s %s" % ( _( 30056 ), path, ), "%s %s" % ( _( 30007 ), file, ) )
+                self.dialog.update( pct, "%s %s" % ( _( 30055 ), url, ), "%s %s" % ( _( 30056 ), path, ), "%s %s" % ( _( 30057 ), file, ) )
                 if ( self.dialog.iscanceled() ): raise
                 if ( not os.path.isdir( path ) ): os.makedirs( path )
                 url = self.REPO_URL+ url.replace( " ", "%20" )
