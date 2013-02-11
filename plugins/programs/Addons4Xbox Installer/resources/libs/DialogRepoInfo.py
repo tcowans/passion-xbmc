@@ -64,20 +64,20 @@ class Main:
     """
 
     def __init__( self, *args, **kwargs ):
-        
+
         self.pluginMgr = PluginMgr()
         self.parameters = self.pluginMgr.parse_params()
-        
+
         try:
             #repoWindow = DialogRepoInfo( "DialogRepoInfo.xml", os.getcwd(), "Default", "720p" )
             repoWindow = DialogRepoInfo( "DialogRepoInfo.xml", ROOTDIR, "Default", "720p" )
-            
+
             del repoWindow
         except:
             print_exc()
         #TODO: call DialogRepoInfo
         #status = self._install_addon_remote()
-        
+
         print "_end_of_directory"
         self.pluginMgr.end_of_directory( False )
 
@@ -86,11 +86,11 @@ class DialogRepoInfo( xbmcgui.WindowXMLDialog ):
 
     #Addon = Addon( id=os.path.basename( os.getcwd() ) )
     ACTION_CLOSE_DIALOG_LIST = [ ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, ACTION_CONTEXT_MENU ]
-    
+
     def __init__( self, *args, **kwargs ):
         print "Creating DialogRepoInfo"
         xbmcgui.WindowXMLDialog.__init__( self, *args, **kwargs )
-        
+
         # Get information about the repository
         self._get_repo_info()
         # show dialog
@@ -99,7 +99,7 @@ class DialogRepoInfo( xbmcgui.WindowXMLDialog ):
     def onInit( self ):
         # Show repo info
         self._show_repo_info()
-    
+
     def onFocus( self, controlID ):
         pass
 
@@ -130,7 +130,7 @@ class DialogRepoInfo( xbmcgui.WindowXMLDialog ):
         self.repo[ "Creator" ] = unicode( xbmc.getInfoLabel( "ListItem.Property(Addon.Creator)" ), "utf-8" )
         self.repo[ "Version" ] = unicode( xbmc.getInfoLabel( "ListItem.Property(Addon.Version)" ), "utf-8" )
         #self.repo[ "Version" ] = None
-        
+
         print self.repo[ "Name" ]
         print self.repo
 
@@ -147,8 +147,8 @@ class DialogRepoInfo( xbmcgui.WindowXMLDialog ):
     def _set_repo_info( self, name="", description="", creator="", type="", version="", icon="" ):
         # grab the window
         wId = xbmcgui.Window( xbmcgui.getCurrentWindowDialogId() )
-        
-        # set our info       
+
+        # set our info
         wId.setProperty( "Addon.Name", name )
         if version:
             wId.setProperty( "Addon.Version", version )
@@ -162,7 +162,7 @@ class DialogRepoInfo( xbmcgui.WindowXMLDialog ):
         #wId.setProperty( "Addon.Broken", "Stable")
         #wId.setProperty( "Addon.Path","")
         wId.setProperty( "Addon.Icon", icon )
-        
+
         #wId.setProperty( "Name", name )
         #wId.setProperty( "Description", description )
         #wId.setProperty( "Creator", creator )
