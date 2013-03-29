@@ -1,3 +1,7 @@
+2.0.2 (29-03-2013) Temhil
++ Broken: Cet addon est désormais obsolète et remplacé par l'addon M6 Groupe disponible sur le repository officiel d'XBMC. 
+          Merci a Beenje pour son aide sur cet addon et de continuer avec son nouvel addon M6 Groupe.
+          
 2.0.1 (01-10-2012) par beenje
 + Correction après changement du site web (ajout de encode_rtmp
 pour remplacer tokenrtmp.php)
