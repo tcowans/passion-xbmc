@@ -14,7 +14,7 @@ __author__       = "PECK, mighty_bombero, merindol, Temhil (passion-xbmc.org)"
 __url__          = "http://passion-xbmc.org/index.php"
 __credits__      = "Team XBMC Passion"
 __date__         = "01-10-2012"
-__version__      = "2.0.1"
+__version__      = "2.0.2"
 
 import urllib,sys,os,platform
 import string
