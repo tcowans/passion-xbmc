@@ -59,8 +59,11 @@ class Arte7Plugin:
     lang    = [ "fr","de" ][ lang_id ]
 
     quality = int( __settings__.getSetting( 'vid_quality' ) )
+
     if quality == 0:
         is_HD = True
+    else:
+        is_HD = False
 
     #Initialisation des principales variables
     ARTE_CATEGORIE = None
@@ -315,7 +318,7 @@ class Arte7Plugin:
 
         else:
             hd, sd = self.PARSER.fetch_stream_links( link )
-            if self.is_HD:
+            if not self.is_HD:
                 hd = sd
         return hd        
 
