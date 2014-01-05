@@ -14,7 +14,8 @@ DEBUG = False
 API_SERVICE_URL         = "http://api.tou.tv/v1/toutvapiservice.svc/json/"
 THEPLATFORM_CONTENT_URL = "http://release.theplatform.com/content.select?pid=%s&format=SMIL" #+"&mbr=true"
 VALIDATION_MEDIA_URL    = "http://api.radio-canada.ca/validationMedia/v1/Validation.html?appCode=thePlatform&connectionType=broadband&output=json&"
-VALIDATION_MEDIA_URL2    = "http://api.radio-canada.ca/validationMedia/v1/Validation.html?output=json&appCode=thePlatform&deviceType=LGTV&connectionType=broadband&idMedia=%s"
+#VALIDATION_MEDIA_URL2    = "http://api.radio-canada.ca/validationMedia/v1/Validation.html?output=json&appCode=thePlatform&deviceType=LGTV&connectionType=broadband&idMedia=%s"
+VALIDATION_MEDIA_URL2    = "http://api.radio-canada.ca/validationMedia/v1/Validation.html?output=json&appCode=thePlatform&deviceType=Android&connectionType=wifi&idMedia=%s"
 
 HTTP_USER_AGENT         = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.1.1) Gecko/20090715 Firefox/3.5.1"
 #HTTP_USER_AGENT         = "Mozilla/5.0 (Windows NT 5.1; rv:7.0.1) Gecko/20100101 Firefox/7.0.1"
@@ -45,6 +46,8 @@ def get_html_source( url, refresh=False, uselocal=False ):
     """ fetch the html source """
     source = ""
     try:
+        print "getting html source: %s"%url
+
         # set cached filename
         source, sock, c_filename = get_cached_source( url, refresh, uselocal, debug=_print )
 
@@ -69,6 +72,7 @@ urllib._urlopener = _urlopener()
 class TouTvApi:
     def __init__( self ):
         self.__handler_cache = {}
+        #setDebug( True )
 
     def __getattr__( self, method ):
         if method in self.__handler_cache:
@@ -109,26 +113,18 @@ class TouTvApi:
         json_dumps( data )
         return data
 
-    '''def content_select( self, PID, refresh=True ):
-        start_time = time.time()
-        content = get_html_source( THEPLATFORM_CONTENT_URL % PID, refresh )
-        rtmp, playpath = re.search( '<ref src="(rtmp:.+?)(mp4:.+?)"', content ).groups()
-        #
-        _print( "[TouTvApi] thePlatform took %s" % time_took( start_time ) )
-        json_dumps( ( rtmp, playpath ) )
-        return rtmp, playpath'''
-        
     def content_select( self, PID, refresh=True ):
         start_time = time.time()
         content = get_html_source( VALIDATION_MEDIA_URL2 % PID, refresh )
-        rtmp, playpath, other = re.search( '{"url":"(rtmp:.+?)/ondemand/(mp4:.+?)(\?.+?)",', content ).groups()
-        playpath = playpath.replace('\u0026', '&')
-        other = other.replace('\u0026', '&')
-        #rtmp += other
-        #playpath +=other
+
+        jdata = json.loads(content)
+        rtsp_url = jdata['url']
+        rtsp_url = re.compile('(.+?)\\?').findall(rtsp_url)[0]    # Find the mp4 rtsp link
+        rtsp_url = rtsp_url.replace('_800.', '_1200.');           # We want the best quality...
+
         _print( "[TouTvApi] thePlatform took %s" % time_took( start_time ) )
-        json_dumps( ( rtmp, playpath ) )
-        return rtmp, playpath, other
+        json_dumps( jdata )
+        return rtsp_url
 
     def validation( self, **kwargs ):
         start_time = time.time()
@@ -148,7 +144,7 @@ class TouTvApi:
 if ( __name__ == "__main__" ):
     setDebug( True )
     toutvapi = TouTvApi()
-    
+
     toutvapi.GetPays()
 
     #toutvapi.GetPageRepertoire()
