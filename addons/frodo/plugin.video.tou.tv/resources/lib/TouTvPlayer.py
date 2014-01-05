@@ -72,15 +72,14 @@ def playVideo( PID, startoffset=None, strwatched=None, listitem=None ):
         g_strwatched = strwatched
 
     # set our play path
-    rtmp_url, playpath, other = getVideo( PID )
-    rtmp_url += " playpath=" + playpath + " app=ondemand/" + other
+    rtsp_url = getVideo( PID )
 
     #set listitem
     if listitem is None:
         listitem = xbmcgui.ListItem( infoLabels[ "title" ], '', "DefaultVideo.png", g_thumbnail )
         listitem.setInfo( "Video", infoLabels )
 
-    listitem.setProperty( "PlayPath", playpath )
+    #listitem.setProperty( "PlayPath", playpath )
     listitem.setProperty( "swfUrl", "http://lg.tou.tv/SSRtmpPlayer.swf" )
     listitem.setProperty( "PID", PID )
 
@@ -89,10 +88,9 @@ def playVideo( PID, startoffset=None, strwatched=None, listitem=None ):
 
     # play media
     #player = TouTvPlayer( xbmc.PLAYER_CORE_DVDPLAYER )
-    #player._play( rtmp_url, listitem )
     setWatched( listitem )
     player = xbmc.Player( xbmc.PLAYER_CORE_DVDPLAYER )
-    player.play( rtmp_url, listitem )
+    player.play( rtsp_url, listitem )
 
 
 if ( __name__ == "__main__" ):

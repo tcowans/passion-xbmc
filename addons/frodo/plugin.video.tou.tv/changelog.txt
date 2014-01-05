@@ -1,3 +1,9 @@
+1.0.6
+ - Changed streaming protocol, now using RTSP (thanks to bfrigon - tou-tv-xmbc)
+
+1.0.5
+ - version by infologique.net
+
 1.0.4
  - fixed: possible error to parse myfavorites is episode outdated
 

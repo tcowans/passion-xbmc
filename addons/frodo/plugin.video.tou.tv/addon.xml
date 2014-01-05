@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="plugin.video.tou.tv" name="TouTv"
-       version="1.0.5" provider-name="Frost/infologique.net (passion-xbmc.org)">
+       version="1.0.6" provider-name="Frost/infologique.net (passion-xbmc.org)">
   <requires>
     <import addon="xbmc.python" version="2.0"/>
   </requires>
@@ -11,6 +11,6 @@
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>
     <summary>Tou.tv est une webtélé de divertissement axée sur la vidéo sur demande.</summary>
-    <description>Tou.tv est une webtélé de divertissement axée sur la vidéo sur demande. Les vidéos sont offertes gratuitement par Radio-Canada ainsi que par une vingtaine de diffuseurs et de producteurs partenaires. Tou.tv est la plus importante webtélé de divertissement.</description>
+    <description>Tou.tv est une webtélé de divertissement axée sur la vidéo sur demande. Les vidéos sont offertes gratuitement par Radio-Canada ainsi que par une vingtaine de diffuseurs et de producteurs partenaires. Tou.tv est la plus importante webtélé de divertissement. La plupart du contenu est disponible seulement au Canada</description>
   </extension>
 </addon>
