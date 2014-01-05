@@ -1,0 +1,15 @@
+1.0.4
+ - fixed: possible error to parse myfavorites is episode outdated
+
+1.0.3
+ - fixed: possible error to parse myfavorites is tvshow outdated
+
+1.0.2
+ - fixed: bad import modules, under ATV and/or OSX
+
+1.0.1
+ - added fanart toutv in root
+ - fixed: typo, ajouer to ajouter
+
+1.0.0
+ - Initial version

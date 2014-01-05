@@ -1,0 +1,86 @@
+= Introduction =
+
+This is a description of the tou.tv api. 
+
+= Repertoire = 
+== GetEmissions ==
+
+*Request*
+{{{
+http://api.tou.tv/v1/toutvapiservice.svc/json/GetEmissions
+}}}
+
+*Response*
+{{{
+{
+  "d": [
+    {
+      "CategoryURL": "1_jour_24_heures_34_millions_de_vies", 
+      "ClassCategory": "bleu", 
+      "ContainsAds": false, 
+      "Country": null, 
+      "DateRetraitOuEmbargo": "/Date(-62135578800000-0500)/", 
+      "Description": "", 
+      "DescriptionOffline": null, 
+      "DescriptionUnavailable": null, 
+      "DescriptionUnavailableText": null, 
+      "DescriptionUpcoming": null, 
+      "DescriptionUpcomingText": null, 
+      "EstContenuJeunesse": false, 
+      "EstExclusiviteRogers": false, 
+      "Genre": {
+        "CategoryURL": "films-documentaires", 
+        "ClassCategory": "gris", 
+        "Description": "", 
+        "Id": 1360668651, 
+        "ImageBackground": "http://static.tou.tv/images/backgrounds/BG_FILM.jpg", 
+        "ParentId": 0, 
+        "Title": "Films et documentaires", 
+        "Url": "films-documentaires", 
+        "__type": "GenreDTO:#RC.Svc.Web.TouTV"
+      }, 
+      "GeoTargeting": true, 
+      "Id": 2096989778, 
+      "ImageBackground": null, 
+      "ImagePromoLargeI": null, 
+      "ImagePromoLargeJ": null, 
+      "ImagePromoNormalK": null, 
+      "Network": "CBFT", 
+      "Network2": null, 
+      "Network3": null, 
+      "ParentId": 1360668651, 
+      "Partner": null, 
+      "PlaylistExist": false, 
+      "PromoDescription": null, 
+      "PromoTitle": null, 
+      "RelatedURL1": null, 
+      "RelatedURL2": null, 
+      "RelatedURL3": null, 
+      "RelatedURL4": null, 
+      "RelatedURL5": null, 
+      "RelatedURLImage1": null, 
+      "RelatedURLImage2": null, 
+      "RelatedURLImage3": null, 
+      "RelatedURLImage4": null, 
+      "RelatedURLImage5": null, 
+      "RelatedURLText1": null, 
+      "RelatedURLText2": null, 
+      "RelatedURLText3": null, 
+      "RelatedURLText4": null, 
+      "RelatedURLText5": null, 
+      "SeasonNumber": null, 
+      "Show": "1 jour 24 heures 34 millions de vies", 
+      "ShowSearch": "1 jour 24 heures 34 millions de vies", 
+      "SortField": "airdate", 
+      "SortOrder": "Desc", 
+      "SubCategoryType": "Year", 
+      "Title": "1 jour 24 heures 34 millions de vies", 
+      "TitleIndex": "1 jour 24 heures 34 millions de vies", 
+      "Url": "1_jour_24_heures_34_millions_de_vies", 
+      "Year": "2011", 
+      "__type": "EmissionDTO:#RC.Svc.Web.TouTV"
+    }, 
+    ...
+  ]
+}
+}}}
