@@ -1,0 +1,31 @@
+= Introduction =
+
+This is a description of the tou.tv api. 
+
+= Repertoire = 
+== GetGenres ==
+
+*Request*
+{{{
+http://api.tou.tv/v1/toutvapiservice.svc/json/GetGenres
+}}}
+
+*Response*
+{{{
+{
+  "d": [
+    {
+      "CategoryURL": "animation", 
+      "ClassCategory": "gris", 
+      "Description": "", 
+      "Id": 1360666537, 
+      "ImageBackground": "http://static.tou.tv/images/backgrounds/BG_ANIMATION.jpg", 
+      "ParentId": 0, 
+      "Title": "Animation", 
+      "Url": "animation", 
+      "__type": "GenreDTO:#RC.Svc.Web.TouTV"
+    }, 
+    ...
+  ]
+}
+}}}
