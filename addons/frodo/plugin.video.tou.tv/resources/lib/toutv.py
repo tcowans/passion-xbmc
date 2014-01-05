@@ -34,7 +34,7 @@ G_GENRE     = unicode( xbmc.getInfoLabel( "ListItem.Genre" ), "utf-8" )
 WINDOW_PROGRESS = None
 CONTROLS_PROGRESS = {}
 def getDialogProgress():
-    global WINDOW_PROGRESS, CONTROLS_PROGRESS
+    '''global WINDOW_PROGRESS, CONTROLS_PROGRESS
     try:
         # get window
         WINDOW_PROGRESS = xbmcgui.Window( 10101 )
@@ -49,7 +49,7 @@ def getDialogProgress():
     except TypeError:
         pass #Non-Existent Control
     except:
-        print_exc()
+        print_exc()'''
 
 
 def progressUpdate( **kwargs ):
@@ -137,7 +137,7 @@ def setWatched( strwatched, remove=False, all=False, refresh=True ):
 class Info:
     def __init__( self, *args, **kwargs ):
         # update dict with our formatted argv
-        try: exec "self.__dict__.update(%s)" % ( sys.argv[ 2 ][ 1: ].replace( "&", ", " ), )
+        try: exec "self.__dict__.update(%s)" % ( sys.argv[ 2 ][ 1: ].replace( "&", ", " ).replace("%22",'"'), )
         except: print_exc()
         # update dict with custom kwargs
         self.__dict__.update( kwargs )

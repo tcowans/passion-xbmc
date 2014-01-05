@@ -72,8 +72,8 @@ def playVideo( PID, startoffset=None, strwatched=None, listitem=None ):
         g_strwatched = strwatched
 
     # set our play path
-    rtmp_url, playpath = getVideo( PID )
-    rtmp_url += " playpath=" + playpath
+    rtmp_url, playpath, other = getVideo( PID )
+    rtmp_url += " playpath=" + playpath + " app=ondemand/" + other
 
     #set listitem
     if listitem is None:
@@ -81,6 +81,7 @@ def playVideo( PID, startoffset=None, strwatched=None, listitem=None ):
         listitem.setInfo( "Video", infoLabels )
 
     listitem.setProperty( "PlayPath", playpath )
+    listitem.setProperty( "swfUrl", "http://lg.tou.tv/SSRtmpPlayer.swf" )
     listitem.setProperty( "PID", PID )
 
     if str( startoffset ).isdigit():
