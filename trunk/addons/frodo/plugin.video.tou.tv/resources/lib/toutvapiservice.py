@@ -1,4 +1,3 @@
-
 import os
 import re
 import urllib
@@ -14,7 +13,8 @@ DEBUG = False
 
 API_SERVICE_URL         = "http://api.tou.tv/v1/toutvapiservice.svc/json/"
 THEPLATFORM_CONTENT_URL = "http://release.theplatform.com/content.select?pid=%s&format=SMIL" #+"&mbr=true"
-VALIDATION_MEDIA_URL    = "http://api.radio-canada.ca/validationMedia/v1/Validation.html?appCode=thePlatform&connectionType=wifi&output=json&"
+VALIDATION_MEDIA_URL    = "http://api.radio-canada.ca/validationMedia/v1/Validation.html?appCode=thePlatform&connectionType=broadband&output=json&"
+VALIDATION_MEDIA_URL2    = "http://api.radio-canada.ca/validationMedia/v1/Validation.html?output=json&appCode=thePlatform&deviceType=LGTV&connectionType=broadband&idMedia=%s"
 
 HTTP_USER_AGENT         = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.1.1) Gecko/20090715 Firefox/3.5.1"
 #HTTP_USER_AGENT         = "Mozilla/5.0 (Windows NT 5.1; rv:7.0.1) Gecko/20100101 Firefox/7.0.1"
@@ -109,14 +109,26 @@ class TouTvApi:
         json_dumps( data )
         return data
 
-    def content_select( self, PID, refresh=True ):
+    '''def content_select( self, PID, refresh=True ):
         start_time = time.time()
         content = get_html_source( THEPLATFORM_CONTENT_URL % PID, refresh )
         rtmp, playpath = re.search( '<ref src="(rtmp:.+?)(mp4:.+?)"', content ).groups()
         #
         _print( "[TouTvApi] thePlatform took %s" % time_took( start_time ) )
         json_dumps( ( rtmp, playpath ) )
-        return rtmp, playpath
+        return rtmp, playpath'''
+        
+    def content_select( self, PID, refresh=True ):
+        start_time = time.time()
+        content = get_html_source( VALIDATION_MEDIA_URL2 % PID, refresh )
+        rtmp, playpath, other = re.search( '{"url":"(rtmp:.+?)/ondemand/(mp4:.+?)(\?.+?)",', content ).groups()
+        playpath = playpath.replace('\u0026', '&')
+        other = other.replace('\u0026', '&')
+        #rtmp += other
+        #playpath +=other
+        _print( "[TouTvApi] thePlatform took %s" % time_took( start_time ) )
+        json_dumps( ( rtmp, playpath ) )
+        return rtmp, playpath, other
 
     def validation( self, **kwargs ):
         start_time = time.time()
