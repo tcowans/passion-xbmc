@@ -1,3 +1,8 @@
+06-04-2014 Version 3.2 par Temhil et frarev
+    - Compatible Gotham (merci a frarev)
+    - Affiche de nouveau les couleurs des categories qui ne fonctionnait plus depuis un certians temps
+    - Ajout le support des favoris qui ne fonctionnaient pas
+
 25-01-2011 Version 3.1 par Temhil
 	- Ajout function de recherche
 	- Ajout gestion des favoris
@@ -8,7 +13,7 @@
     - Reorganisation du code
      (on recupere l'URL de la video lors d'une 2eme etape invisble pour l'utilsateur)
     - Suppression des threads (plus necessaire desormais)
-    - Amelioration du chargement des listes de videos 
+    - Amelioration du chargement des listes de videos
     - Affiche les couleurs correspondant aux rubriques (provenant de www.color-hex.com)
 
 11-10-2010 Version 2.2 par Temhil
@@ -21,12 +26,12 @@
 23-10-2009 Version 2.0 par Temhil
     - Replaced XML parser BeautifulSoup by ElementTree (needed because some XML were not correctly formed)
     - Added support of new video stream URL, now http and rtmp urls are both supported
-    
+
 23-10-2009 Version Pre2.0b par Temhil
     - Replaced separator in the URL "&" by "#" (broken due to change made in XBMC)
     - Added plugin variable for SVN repo installer infos
-    
-13-05-2009 Version Pre2.0 par Temhil 
+
+13-05-2009 Version Pre2.0 par Temhil
     - Adpatation du plugin suite a des modifications sur le site de Canal+
     - Ajout du menu option
     - Ajout du choix de visionnage (HD ou SD) des videos (via les options)
@@ -34,11 +39,11 @@
     - Ajout description video via menu info
     - Les images sont desormais automatiquement telechargees par le plugin lui meme
     - Adaptation de la fonction de recherche au modifications du site
-    
+
 19-11-2008 Version 1.0 par Alexsolex
     - Creation
-    
-    
-    
-    
+
+
+
+
 
