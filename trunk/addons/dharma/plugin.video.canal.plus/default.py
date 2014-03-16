@@ -14,8 +14,8 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/addons/plugin.video.canal.plus/"
 __credits__      = "Team XBMC Passion"
 __platform__     = "xbmc media center"
-__date__         = "23-01-2011"
-__version__      = "3.1"
+__date__         = "16-03-2014"
+__version__      = "3.3"
 __svn_revision__ = 0
 
 
@@ -38,6 +38,8 @@ __settings__ = __addon__
 __language__ = __addon__.getLocalizedString
 __addonDir__ = __settings__.getAddonInfo( "path" )
 
+MEDIA_PATH = os.path.join(__addonDir__, 'resources', 'media')
+
 
 
 # Remote debugger using Eclipse and Pydev
@@ -58,7 +60,8 @@ ADDON_DATA              = xbmc.translatePath( "special://profile/addon_data/%s/"
 DOWNLOADDIR             = os.path.join( ADDON_DATA, "downloads")
 CACHEDIR                = os.path.join( ADDON_DATA, "cache")
 #COLOR_IMG_URL           = "http://www.color-hex.com/colorimg.php?color="
-COLOR_IMG_URL           = "http://www.colorhexa.com/%s.png"
+#COLOR_IMG_URL           = "http://www.colorhexa.com/%s.png"
+COLOR_IMG_URL           = os.path.join( MEDIA_PATH, "%s.png")
 BOOKMARKS_DB_PATH       = os.path.join( CACHEDIR, "sb.txt" )
 #BASE_THUMBS_PATH = os.path.join( xbmc.translatePath( "special://profile/" ), "Thumbnails", "Video" )
 
@@ -312,7 +315,7 @@ class CanalPlusMosaicPlugin:
         try:
             lstItem=xbmcgui.ListItem( label=name, label2=name2, iconImage=iconimage, thumbnailImage=iconimage )
             if c_items :
-                lstItem.addContextMenuItems( c_items, replaceItems=True )
+                lstItem.addContextMenuItems( c_items, replaceItems=False )
 
             if itemInfoLabels:
                 iLabels = itemInfoLabels
@@ -331,7 +334,6 @@ class CanalPlusMosaicPlugin:
         #u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)
         ok=True
         if self.debug_mode:
-            print "_addDir - name: %s"%name
             print "_addDir - iconimage: %s"%iconimage
             print itemInfoLabels
             print c_items
@@ -340,7 +342,7 @@ class CanalPlusMosaicPlugin:
             lstItem=xbmcgui.ListItem( label=name, label2=name2, iconImage=iconimage, thumbnailImage=iconimage )
 
             if c_items :
-                lstItem.addContextMenuItems( c_items, replaceItems=True )
+                lstItem.addContextMenuItems( c_items, replaceItems=False )
 
             if itemInfoLabels:
                 iLabels = itemInfoLabels
@@ -434,7 +436,7 @@ class CanalPlusMosaicPlugin:
         paramsGetBookmarks = {}
         paramsGetBookmarks[self.PARAM_LIST_BOOKMARKS] = "True"
         urlGetBookmarks = self._create_param_url( paramsGetBookmarks )
-        self._addDir( __language__ ( 30003 ), url=urlGetBookmarks )
+        self._addDir( __language__ ( 30003 ), url=urlGetBookmarks, iconimage=os.path.join( MEDIA_PATH, "favorites.png") )
 
         # Recherche
         #url = sys.argv[0]+"?search=&theme_id=%s&subtheme_id=%s&referer=%s"%("Rechercher dans toutes les catégories :",
