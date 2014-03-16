@@ -1,4 +1,10 @@
-06-04-2014 Version 3.2 par Temhil et frarev
+16-03-2014 Version 3.3 par Temhil
+    - Affiche de nouveau les couleurs des categories pour de vrai cette fois
+    - permet l'ajout aux favoruis de XBMC
+    - ajout icones
+    - empeche un crash du a un log lorsque le mode debug est active
+
+06-03-2014 Version 3.2 par Temhil et frarev
     - Compatible Gotham (merci a frarev)
     - Affiche de nouveau les couleurs des categories qui ne fonctionnait plus depuis un certians temps
     - Ajout le support des favoris qui ne fonctionnaient pas

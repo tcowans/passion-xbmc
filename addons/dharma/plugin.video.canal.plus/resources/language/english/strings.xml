@@ -18,7 +18,7 @@
     <string id="30020">Video Quality</string>
     <string id="30021">High</string>
     <string id="30022">Low</string>
-    
+
     <string id="30030">Debug</string>
     <string id="30031">Activate Debug mode</string>
 
@@ -32,9 +32,9 @@
     <!--CONTEXT MENU STRINGS -->
     <string id="30100">Save (HQ)</string>
     <string id="30101">Save (LQ)</string>
-    <string id="30110">Add current page to Favorites</string>
-    <string id="30111">Add selected item to Favorites</string>
-    <string id="30112">Delete from Favorites</string>
+    <string id="30110">Add this page to Addon's Favorites</string>
+    <string id="30111">Add this item to Addon's Favorites</string>
+    <string id="30112">Delete from Addon's Favorites</string>
 
     <!--DIALOG STRINGS -->
     <string id="30200">Loading informations...</string>

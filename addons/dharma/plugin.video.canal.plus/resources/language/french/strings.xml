@@ -32,9 +32,9 @@
     <!--CONTEXT MENU STRINGS -->
     <string id="30100">Enregistrer (Haute Qualité)</string>
     <string id="30101">Enregistrer (Basse Qualité)</string>
-    <string id="30110">Ajouter la page courante aux Favoris</string>
-    <string id="30111">Ajouter l'élément selectionné aux Favoris</string>
-    <string id="30112">Supprimer des Favoris</string>
+    <string id="30110">Ajouter cette page aux Favoris de l'Addon</string>
+    <string id="30111">Ajouter cet élément aux Favoris de l'Addon</string>
+    <string id="30112">Supprimer des Favoris de l'Addon</string>
 
     <!--DIALOG STRINGS -->
     <string id="30200">Chargement des informations...</string>

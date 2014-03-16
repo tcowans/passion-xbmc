@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="plugin.video.canal.plus"
        name="Canal+"
-       version="3.2"
+       version="3.3"
        provider-name="Alexsolex / Temhil (passion-xbmc.org)">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
@@ -14,7 +14,7 @@
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>
     <summary>Plugin vidéo donnant acces a toutes les vidéos de la mosaique Canal+</summary>
-    <description>Ce plugin vous donne acces a toutes les vidéos de la mosaique Canal+. 
+    <description>Ce plugin vous donne acces a toutes les vidéos de la mosaique Canal+.
 Vous choisissez une catégorie, puis une sous catégorie et à vous les videos de Canal+ en visualisation en haute ou basse qualité.
     </description>
     <platform>all</platform>
