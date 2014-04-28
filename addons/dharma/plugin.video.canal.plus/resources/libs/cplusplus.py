@@ -30,7 +30,7 @@ if os.path.isfile(COOKIEFILE):
     # si nous avons un fichier cookie deja sauvegarde
     #  alors charger les cookies dans le Cookie Jar
     cj.load(COOKIEFILE)
-         
+
 xmlParam = "14-1-18/06/2008-0"
 videoplayerURL = "http://webservice.canal-plus.com/rest/bigplayer/"
 GetMosaicPage = "getMEAs/"
@@ -39,7 +39,7 @@ ThemesPage = "initPlayer/"
 # TODO : add old base url
 VideoInfoPage = "getVideoInformation.php"
 SearchPage = "search/"
-    
+
 def get_page(url,params={},savehtml=True,filename="defaut.html",check_connexion=True,debuglevel=1,nocookie=True,stream=False):
     """
     telecharge la page avec les parametres fournis :
@@ -106,7 +106,7 @@ def get_themes():
             theme_id = int( theme.findtext( "ID" ) )
             theme_nom = theme.findtext( "NOM" )
             theme_color = theme.findtext( "COULEUR" ).replace("#","")
-            
+
             themes.append( [theme_id, theme_nom.strip(), theme_color] )
         except:
             print "get_themes- Erreur durant le parcorus des themes"
@@ -132,7 +132,7 @@ def get_subthemes(theme_id):
         try:
             cur_id = int( theme.findtext( "ID" ) )
             if int( cur_id ) == int( theme_id ):
-                for subtheme in theme.find("SELECTIONS").findall("SELECTION"): 
+                for subtheme in theme.find("SELECTIONS").findall("SELECTION"):
                     subtheme_id = int( subtheme.findtext( "ID" ) )
                     subtheme_nom = subtheme.findtext( "NOM" )
                     subthemes.append( [subtheme_id, subtheme_nom.strip()] )
@@ -143,7 +143,7 @@ def get_subthemes(theme_id):
     #print 'subthemes'
     #print subthemes
     return subthemes
-    
+
 
 def get_videos( subtheme_id,keyword='' ):
     """
@@ -163,7 +163,7 @@ def get_videos( subtheme_id,keyword='' ):
     else:
         urlxml = videoplayerURL + GetMosaicPage + subtheme_id
         firstTag = "MEA"
-        
+
 
     elems = ET.parse( urllib.urlopen( urlxml ) ).getroot()
     #print ET.tostring(elems)
@@ -178,7 +178,7 @@ def get_videos( subtheme_id,keyword='' ):
             description     = vid.find( "INFOS" ).findtext( "DESCRIPTION" ).strip()
             note            = float( vid.find( "INFOS" ).find( "NOTE" ).findtext( "MOYENNE" ).replace(",", ".") )
             imageURL        = vid.find( "MEDIA" ).find( "IMAGES" ).findtext( "GRAND" )
-            
+
             videos.append( { 'videoID' : videoID,
                              'title': title,
                              'publication_date': publicationDate,
@@ -199,7 +199,7 @@ def get_info( videoID ):
     retrouve les informations de l'ID de video fourni
     """
     print "get_videos called for video ID: %d"%videoID
-    
+
     #print "get_info - Retrieving page:" + videoplayerURL +"getVideosLiees/%d"%videoID
 
     elems = ET.parse(urllib.urlopen(videoplayerURL +"getVideosLiees/%d"%videoID)).getroot()
@@ -211,16 +211,19 @@ def get_info( videoID ):
     #print ET.tostring(elems)
     #print elems.find( "VIDEO" )
     for videoinfos in elems.findall( "VIDEO" ):
-        videoinfos_id = int ( videoinfos.findtext( "ID" ) )
-        videoinfos_type = videoinfos.findtext( "TYPE" )
-        videoinfos_title = videoinfos.findtext( "INFOS/TITRAGE/TITRE" )#.encode("cp1252")
+        videoinfos_id          = int ( videoinfos.findtext( "ID" ) )
+        videoinfos_type        = videoinfos.findtext( "TYPE" )
+        videoinfos_title       = videoinfos.findtext( "INFOS/TITRAGE/TITRE" )#.encode("cp1252")
         videoinfos_description = videoinfos.findtext( "INFOS/DESCRIPTION" )#.encode("cp1252")
-        videoinfos_videoHD = videoinfos.findtext( "MEDIA/VIDEOS/HAUT_DEBIT" )
-        videoinfos_videoBD = videoinfos.findtext( "MEDIA/VIDEOS/BAS_DEBIT" )
+        videoinfos_videoHD     = videoinfos.findtext( "MEDIA/VIDEOS/HAUT_DEBIT" )
+        videoinfos_videoBD     = videoinfos.findtext( "MEDIA/VIDEOS/BAS_DEBIT" )
+        videoinfos_videoHLS    = videoinfos.findtext( "MEDIA/VIDEOS/HLS" )
+        videoinfos_videoHDS    = videoinfos.findtext( "MEDIA/VIDEOS/HDS" )
+        videoinfos_videoMOBILE = videoinfos.findtext( "MEDIA/VIDEOS/MOBILE" )
         videoinfos_publication_date = videoinfos.findtext( "INFOS/PUBLICATION/DATE" )
-        videoinfos_image = videoinfos.findtext( "MEDIA/IMAGES/GRAND" )
-        videoinfos_smallimage = videoinfos.findtext( "MEDIA/IMAGES/PETIT" )
-        videoinfos_categorie = videoinfos.findtext( "RUBRIQUAGE/CATEGORIE" )
+        videoinfos_image       = videoinfos.findtext( "MEDIA/IMAGES/GRAND" )
+        videoinfos_smallimage  = videoinfos.findtext( "MEDIA/IMAGES/PETIT" )
+        videoinfos_categorie   = videoinfos.findtext( "RUBRIQUAGE/CATEGORIE" )
         if videoinfos_id == videoID:
             # Found
             print "Video ID found"
@@ -232,7 +235,7 @@ def get_info( videoID ):
                 type = 'rtmp'
                 videoHD_URL = videoinfos_videoHD.replace("rtmp://vod-fms.canalplus.fr","rtmp://vod-fms.canalplus.fr:1935").replace(".flv","")
                 videoBD_URL = videoinfos_videoBD.replace("rtmp://vod-fms.canalplus.fr","rtmp://vod-fms.canalplus.fr:1935").replace(".flv","")
-            
+
             #print "videoHD_URL = %s"%videoHD_URL
             #print "videoBD_URL = %s"%videoBD_URL
             return {'title' : videoinfos_title,
@@ -243,7 +246,10 @@ def get_info( videoID ):
                     'theme' : videoinfos_categorie,
                     'video.stream_server' : "",
                     'video.hi' : videoHD_URL,
-                    'video.low' : videoBD_URL
+                    'video.low' : videoBD_URL,
+                    'video.mobile' : videoinfos_videoMOBILE,
+                    'video.hds' : videoinfos_videoHDS,
+                    'video.hls' : videoinfos_videoHLS,
                     }
     print "get_info - video info not FOUND - ERROR"
     return None
@@ -256,8 +262,8 @@ def Cache_Pic(url,filename):
             pass
     except:
         pass
-    
-    
+
+
 def DL_video(url,fichier,ProgressUpdate=None,ProgressObject=None,debuglevel=0):
     """
     telecharge la video a l'url mentionnee

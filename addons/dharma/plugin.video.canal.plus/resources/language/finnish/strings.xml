@@ -18,6 +18,9 @@
     <string id="30020">Video Quality</string>
     <string id="30021">Korkea</string>
     <string id="30022">Matala</string>
+    <string id="30023">Mobile</string>
+    <string id="30024">HDS</string>
+    <string id="30025">HLS</string>
 
     <string id="30030">Debug</string>
     <string id="30031">Activate Debug mode</string>

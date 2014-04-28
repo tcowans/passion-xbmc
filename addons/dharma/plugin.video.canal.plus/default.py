@@ -14,8 +14,8 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/addons/plugin.video.canal.plus/"
 __credits__      = "Team XBMC Passion"
 __platform__     = "xbmc media center"
-__date__         = "16-03-2014"
-__version__      = "3.3"
+__date__         = "28-04-2014"
+__version__      = "3.3.1"
 __svn_revision__ = 0
 
 
@@ -211,11 +211,14 @@ class CanalPlusMosaicPlugin:
             elif self.PARAM_PLAY_VIDEO in self.parameters.keys():
                 # On lance la video
                 video_id = int(self.parameters[self.PARAM_VIDEO_ID])
-                url_video_LQ, url_video_HQ = self.get_video_urls(video_id)
-                if int(__settings__.getSetting('video_quality') ) == 1: # Basse qualite
-                    url=url_video_LQ
-                else:
-                    url=url_video_HQ
+                urls_videos = []
+                urls_videos = self.get_video_urls(video_id)
+                print "urls_videos :"
+                print str(urls_videos)
+                print str(int(__settings__.getSetting('video_quality')))
+                url = urls_videos[int(__settings__.getSetting('video_quality'))]
+                print 'url :'
+                print str(url)
 
                 # Play  video
                 item = xbmcgui.ListItem(path=url)
@@ -334,7 +337,8 @@ class CanalPlusMosaicPlugin:
         #u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)
         ok=True
         if self.debug_mode:
-            print "_addDir - iconimage: %s"%iconimage
+            print "_addDir - name: %s"%name.encode('utf-8')
+            print "_addDir - iconimage: %s"%iconimage.encode('utf-8')
             print itemInfoLabels
             print c_items
             print totalItems
@@ -414,7 +418,7 @@ class CanalPlusMosaicPlugin:
         Retrieve  video URL
         """
         infos = cpp.get_info(video_id)
-        return infos["video.low"], infos["video.hi"]
+        return [infos["video.low"], infos["video.hi"], infos["video.mobile"], infos["video.hds"], infos["video.hls"]]
 
 
     def show_themes(self):

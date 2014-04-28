@@ -1,3 +1,10 @@
+28-04-2014 Version 3.3.1 par Temhil et JUL1EN094
+    - Integration du patch fait par JUL1EN094 dans la version 3.2.1, merci a lui
+        * Modification de la librairie cplusplus.py (ajout des infos MOBILE, HDS et HLS)
+        * Ajout des qualites MOBILE, HDS et HLS dans les options de l'addon
+        * default.py : Modification des fonctions get_video_urls() et select() afin de prendre en compte les nouvelles options
+        * Resolution d'un pb d'encodage en mode debug qui empechait l'affichage de certaines rubriques
+
 16-03-2014 Version 3.3 par Temhil
     - Affiche de nouveau les couleurs des categories pour de vrai cette fois
     - permet l'ajout aux favoruis de XBMC
