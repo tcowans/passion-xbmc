@@ -14,8 +14,8 @@ __url__          = "http://passion-xbmc.org/index.php"
 __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/addons/plugin.video.canal.plus/"
 __credits__      = "Team XBMC Passion"
 __platform__     = "xbmc media center"
-__date__         = "28-04-2014"
-__version__      = "3.3.1"
+__date__         = "29-04-2014"
+__version__      = "3.4.1"
 __svn_revision__ = 0
 
 
@@ -182,10 +182,6 @@ class CanalPlusMosaicPlugin:
 
             elif self.PARAM_ADD_BOOKMARK in self.parameters.keys():
                 ok = self.add_bookmark( self.parameters[self.PARAM_ADD_BOOKMARK], self.parameters[self.PARAM_BOOKMARK_URL] )
-                #if ok == "OK":
-#                dialog = xbmcgui.Dialog()
-#                ok = dialog.ok( __language__( 30000 ), __language__( 30004 ) )
-                #TODO: add  error dialog
 
                 # To prevent to re-save bm after video playback
                 xbmc.executebuiltin('XBMC.Container.Update(%s)' % (self.parameters[self.PARAM_BOOKMARK_URL]))
@@ -213,17 +209,16 @@ class CanalPlusMosaicPlugin:
                 video_id = int(self.parameters[self.PARAM_VIDEO_ID])
                 urls_videos = []
                 urls_videos = self.get_video_urls(video_id)
-                print "urls_videos :"
-                print str(urls_videos)
-                print str(int(__settings__.getSetting('video_quality')))
+                if self.debug_mode:
+                    print "urls_videos :"
+                    print str(urls_videos)
+                    print str(int(__settings__.getSetting('video_quality')))
                 url = urls_videos[int(__settings__.getSetting('video_quality'))]
-                print 'url :'
-                print str(url)
 
                 # Play  video
                 item = xbmcgui.ListItem(path=url)
 
-                print "Canal+: Lecture de la video: %s"%url
+                print "Canal+: Lecture de la video: %s"%str(url)
                 xbmcplugin.setResolvedUrl(handle=int(sys.argv[1]), succeeded=True, listitem=item)
                 self._end_of_directory( True )
 
@@ -337,8 +332,8 @@ class CanalPlusMosaicPlugin:
         #u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)
         ok=True
         if self.debug_mode:
-            print "_addDir - name: %s"%name.encode('utf-8')
-            print "_addDir - iconimage: %s"%iconimage.encode('utf-8')
+            #print "_addDir - name: %s"%str(name)
+            print "_addDir - iconimage: %s"%iconimage
             print itemInfoLabels
             print c_items
             print totalItems
@@ -403,8 +398,9 @@ class CanalPlusMosaicPlugin:
                 urlSearch = self._create_param_url( paramsAddonsSearch )
                 xbmc.executebuiltin('XBMC.Container.Update(%s)' % (urlSearch))
             else:
-                dialogError = xbmcgui.Dialog()
-                ok = dialogError.ok( __language__( 30204 ), __language__( 30205 ), __language__( 30206 ) )
+                #dialogError = xbmcgui.Dialog()
+                #ok = dialogError.ok( __language__( 30204 ), __language__( 30205 ), __language__( 30206 ) )
+                xbmc.executebuiltin( "XBMC.Notification(%s,%s %s,5000,DefaultIconError.png)" % (  __language__( 30000 ), __language__( 30205 ), __language__( 30206 ) ) )
 
     def show_search(self, motcle, th_id, subth_id):
         """
@@ -727,27 +723,30 @@ class CanalPlusMosaicPlugin:
         if self.debug_mode:
             print 'add_bookmark - bookmarks before:'
             print bookmarks
-        dialog = xbmcgui.Dialog()
+        bmFound = False
         for key in bookmarks:
             if bookmarks[key] == url:
+                # This links is already in the bookmarks
+                bmFound = True
                 print "bookmark %s already saved"%name
                 if self.debug_mode:
                     print "url: %s"%url
-                ok = dialog.ok( __language__( 30000 ), __language__( 30005 ) )
+                icon = os.path.join( MEDIA_PATH, "favorites.png")
+                xbmc.executebuiltin( "XBMC.Notification(%s,%s,5000,DefaultIconError.png)" % ( __language__( 30000 ), __language__( 30005 ) ) )
                 break
-        else:
-            print "url not found in bookmarks - adding it"
-            kb = xbmc.Keyboard(name, __language__( 30208 ), False) #Recherche sur Canal Plus Videos
+
+        if not bmFound:
+            print "url not found in bookmarks - adding it ..."
+            kb = xbmc.Keyboard(name, __language__( 30208 ), False) #Bookmark name to save
             kb.doModal()
             if kb.isConfirmed():
                 motcle = kb.getText()
-                if ( len(motcle) > 2): # Taille mini pour une recherche
+                if ( len(motcle) > 2): # Minimum size for bookmark name must be > 2 chars
                     if bookmarks.has_key(motcle):
-                        dialogError = xbmcgui.Dialog()
-                        ok = dialogError.ok( __language__( 30204 ), __language__( 30209 ) )
-
+                        # bookmark name already used, we won't save this bookmark
+                        xbmc.executebuiltin( "XBMC.Notification(%s,%s,5000,DefaultIconError.png)" % (  __language__( 30000 ), __language__( 30209 ) ) )
                     else:
-                        # Sauvergardons le favoris
+                        # Saving bookmark
                         bookmarks[motcle] = url
                         if self.debug_mode:
                             print 'add_bookmark - bookmarks after:'
@@ -755,10 +754,14 @@ class CanalPlusMosaicPlugin:
 
                         # Update bookmarks files
                         PersistentDataCreator( bookmarks, BOOKMARKS_DB_PATH )
-                        ok = dialog.ok( __language__( 30000 ), __language__( 30004 ) )
+
+                        # notify user of success
+                        icon = os.path.join( MEDIA_PATH, "favorites.png")
+                        xbmc.executebuiltin( "XBMC.Notification(%s,%s,5000,%s)" % ( __language__( 30000 ), __language__( 30004 ), icon ) )
+
                 else:
-                    dialogError = xbmcgui.Dialog()
-                    ok = dialogError.ok( __language__( 30204 ), __language__( 30207 ), __language__( 30206 ) )
+                    # String t0o short, we won't save this bookmark
+                    xbmc.executebuiltin( "XBMC.Notification(%s,%s %s,5000,DefaultIconError.png)" % (  __language__( 30000 ), __language__( 30207 ), __language__( 30206 ) ) )
 
 
     def delete_search_bookmark( self, name ):
