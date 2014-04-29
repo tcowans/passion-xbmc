@@ -1,3 +1,8 @@
+29-04-2014 Version 3.4.1 par Temhil et JUL1EN094
+    - Mise a jour de du numero de version
+    - nettoyage des logs
+    - remplacement des boites de dialogs par des notifications
+
 28-04-2014 Version 3.3.1 par Temhil et JUL1EN094
     - Integration du patch fait par JUL1EN094 dans la version 3.2.1, merci a lui
         * Modification de la librairie cplusplus.py (ajout des infos MOBILE, HDS et HLS)
