@@ -120,7 +120,7 @@ class InstallMgr:
         """
         Display the addons to install for a repository
         """
-        status = "CANCELED"
+        status = "OK"
         #destination = None
         #addonInstaller = None
         #addonInstaller = None
