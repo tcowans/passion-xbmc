@@ -48,7 +48,7 @@ __language__ = xbmc.Language( ROOTDIR ).getLocalizedString
 # Custom modules
 try:
     from globalvars import SPECIAL_HOME_DIR, REPO_ID_XBMC4XBOX, REPO_ID_XBMC, DIR_CACHE, DIR_ADDON_REPO
-    #from FileManager import fileMgr
+    from FileManager import fileMgr
     #from Item import *
     from Item import TYPE_ADDON_MODULE, get_install_path
     import LocalArchiveInstaller
@@ -139,18 +139,20 @@ class InstallMgr:
             if localLibVersion:
                 if versionsCmp( localLibVersion, requiredlib["version"] ) >= 0:
                     addonIdList.remove(requiredlib)
+                else:
+                    installPath = get_install_path( TYPE_ADDON_MODULE )
+                    fileMgr().deleteDir( os.path.join( installPath, requiredlib['id'] ) )
 
         if len(addonIdList) == 0:
             print "No required libs"
-            status = "OK"
-            return status
+            return "OK"
 
         # Parse each repository in the list and try to find in it the required module
         if len(addonIdList) > 0:
             allLibsFound = False
             for repoInfo in repoList:
                 # Retrieving addons.xml from remote repository
-                xmlInfofPath = os.path.join( DIR_CACHE, repoId + "-addons.xml")
+                xmlInfofPath = os.path.join( DIR_CACHE, repoInfo [ "id" ] + "-addons.xml")
                 if fileOlderThan(xmlInfofPath, 60 * 30):
                     os.remove(xmlInfofPath)
                     data = readURL( repoInfo [ "repo_url" ], save=True, localPath=xmlInfofPath )
@@ -173,9 +175,14 @@ class InstallMgr:
                                         localLibVersion = isLibInstalled( item['id'], item['type'], item['name'] )
                                         if localLibVersion:
                                             if versionsCmp( localLibVersion, lib["version"] ) >= 0:
-                                                print "localLibVersion more recent than lib[\"version\"]"
                                                 addonIdList.remove(lib)
                                                 continue
+                                            else:
+                                                name = item['name']
+                                                if item['type'] == TYPE_ADDON_MODULE:
+                                                    name = item['id']
+                                                installPath = get_install_path( item['type'] )
+                                                fileMgr().deleteDir( os.path.join( installPath, name ) )
 
                                         endRepoChar = "/"
                                         if repoInfo [ "repo_datadir" ].endswith( "/" ):
@@ -197,11 +204,16 @@ class InstallMgr:
                                         # Install lib
                                         installMgr = InstallMgr()
                                         status, itemName, destination, addonInstaller = installMgr.install_from_repo( item['name'].encode('utf8'), downloadUrl, repoInfo[ "repo_format" ], repoInfo[ "repo_datadir" ] )
-                                        # force install/overwrite
-                                        if status != "OK":
-                                            status, destination = addonInstaller.installItem()
                                         if status == "OK":
-                                            saveLocalAddonInfo(repoInfo[ "id" ], destination, addonInstaller)
+                                            status, destination = addonInstaller.installItem()
+                                            if status == "OK":
+                                                saveLocalAddonInfo(repoInfo[ "id" ], destination, addonInstaller)
+                                            # recursively install further dependencies
+                                            requiredLibs = addonInstaller.itemInfo[ "required_lib" ]
+                                            if len(requiredLibs) > 0:
+                                                status = self._getAddonRequiredLibs ( addonInstaller.itemInfo[ "required_lib" ], repoInfo[ "id" ] )
+                                                if status != "OK":
+                                                    return status
                                         else:
                                             # Notify user it is impossible to install the current kib and check if he want to continue
                                             if not xbmcgui.Dialog().yesno( item['name'].encode('utf8'), __language__( 30070 ), __language__( 30071 ), __language__( 30072 ) ):
