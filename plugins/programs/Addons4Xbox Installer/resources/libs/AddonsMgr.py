@@ -103,7 +103,6 @@ def isLibInstalled(id, type = TYPE_ADDON_MODULE, name = ""):
         libInfo = getInstalledAddonInfo( os.path.join( libpath ) )
         libVersion = libInfo[ "version" ]
 
-    print "isLibInstalled: %s installed version: %s"%( id, libVersion )
     return libVersion
 
 
