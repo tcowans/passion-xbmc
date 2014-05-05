@@ -120,8 +120,6 @@ class InstallMgr:
         """
         Display the addons to install for a repository
         """
-        print "_getAddonRequiredLibs"
-        print addonIdList
         status = "CANCELED"
         #destination = None
         #addonInstaller = None
@@ -137,12 +135,9 @@ class InstallMgr:
         addonIdCheck = [] # Create a copy of addonIdList (We remove an element of the list while looping on it)
         addonIdCheck.extend(addonIdList)
         for requiredlib in addonIdCheck:
-            print addonIdCheck
             print "Checking %s if required module with version is installed: %s"%(requiredlib["id"], requiredlib["version"])
 
             # Check if remote version is the same as requiredlib['version']
-            #doInstall= False
-            #localLibVersion = self.isLibInstalled( requiredlib["id"] )
             localLibVersion = isLibInstalled( requiredlib["id"] )
 
             try:
