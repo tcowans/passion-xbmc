@@ -53,7 +53,7 @@ try:
     from Item import TYPE_ADDON_MODULE, get_install_path
     import LocalArchiveInstaller
     import RemoteArchiveInstaller
-    from utilities import RecursiveDialogProgress, versionsCmp, readURL
+    from utilities import RecursiveDialogProgress, versionsCmp, readURL, fileOlderThan
     from AddonsMgr import getInstalledAddonInfo, isLibInstalled, addMissingModules2DB, saveLocalAddonInfo
     from XmlParser import ListItemFromXML
 except:
@@ -149,13 +149,12 @@ class InstallMgr:
         if len(addonIdList) > 0:
             allLibsFound = False
             for repoInfo in repoList:
-                # Retrieve info from  addons.xml for the repositories where we will look for the lib addons
-                xmlInfofPath = os.path.join( DIR_CACHE, "addons.xml")
-
-                # Delete old version of addons.xml
-                if os.path.isfile(xmlInfofPath):
+                # Retrieving addons.xml from remote repository
+                xmlInfofPath = os.path.join( DIR_CACHE, repoId + "-addons.xml")
+                if fileOlderThan(xmlInfofPath, 60 * 30):
                     os.remove(xmlInfofPath)
-                data = readURL( repoInfo [ "repo_url" ], save=True, localPath=xmlInfofPath )
+                    data = readURL( repoInfo [ "repo_url" ], save=True, localPath=xmlInfofPath )
+
                 if ( os.path.exists( xmlInfofPath ) ):
                     try:
                         xmlData = open( os.path.join( xmlInfofPath ), "r" )

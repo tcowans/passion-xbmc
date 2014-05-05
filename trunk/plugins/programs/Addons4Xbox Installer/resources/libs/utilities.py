@@ -345,6 +345,13 @@ def checkURL(url):
     #    return 0
     #===========================================================================
 
+def fileOlderThan(file, time):
+    ctime = os.path.getctime(file)
+    if os.path.exists(file) and ctime < time:
+        return True
+    else:
+        return False
+
 
 def versionsCmp( version1, version2 ):
     """
@@ -372,7 +379,7 @@ def versionsCmp( version1, version2 ):
 
 class PersistentDataCreator:
     """
-    Creates persitent data
+    Creates persistent data
     """
     def __init__( self, data, filepath ):
         self._persit_data( data, filepath )
@@ -384,7 +391,7 @@ class PersistentDataCreator:
 
 class PersistentDataRetriever:
     """
-    Retrieves persitent data
+    Retrieves persistent data
     """
     import pickle
     def __init__( self, filepath ):
