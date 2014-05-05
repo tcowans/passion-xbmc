@@ -190,7 +190,6 @@ def saveLocalAddonInfo( repoId, destination, addonInstaller ):
     else:
         addonInfo['repository'] = repoId
     addonInfo['installer_version'] = __version__
-    print addonInfo
     PersistentDataCreator( addonInfo, os.path.join( destination, "a4x.psdt" ) )
 
 

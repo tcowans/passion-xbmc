@@ -346,11 +346,12 @@ def checkURL(url):
     #===========================================================================
 
 def fileOlderThan(file, time):
-    ctime = os.path.getctime(file)
-    if os.path.exists(file) and ctime < time:
-        return True
-    else:
-        return False
+    ret = False
+    if os.path.exists(file):
+        ctime = os.path.getctime(file)
+        if ctime < time:
+            ret = True
+    return ret
 
 
 def versionsCmp( version1, version2 ):
