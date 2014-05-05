@@ -131,42 +131,19 @@ class InstallMgr:
             repoList.extend( [ getInstalledAddonInfo( os.path.join( DIR_ADDON_REPO, repoId) ) ] )
         repoList.extend( [ getInstalledAddonInfo( os.path.join( DIR_ADDON_REPO, REPO_ID_XBMC) ) ] )
 
-        # Check if required lib already exist
-        addonIdCheck = [] # Create a copy of addonIdList (We remove an element of the list while looping on it)
+        # Check if required lib already exist - we do an additional check later for non script modules once we have the module name from the addons repo
+        addonIdCheck = []
         addonIdCheck.extend(addonIdList)
         for requiredlib in addonIdCheck:
-            print "Checking %s if required module with version is installed: %s"%(requiredlib["id"], requiredlib["version"])
+            localLibVersion = isLibInstalled( requiredlib['id'] )
+            if localLibVersion:
+                if versionsCmp( localLibVersion, requiredlib["version"] ) >= 0:
+                    addonIdList.remove(requiredlib)
 
-            # Check if remote version is the same as requiredlib['version']
-            localLibVersion = isLibInstalled( requiredlib["id"] )
-
-            try:
-                if localLibVersion:
-                    #Check version
-                    if localLibVersion == requiredlib["version"]:
-                        print "Already install"
-
-                        # Module already installed - Remove it for the list of libs to install
-                        addonIdList.remove(requiredlib)
-                    else:
-                        print "version of lib does not match: %s (local) Vs %s (required)"%( localLibVersion, requiredlib["version"])
-                        if versionsCmp( localLibVersion, requiredlib["version"] ) < 0:
-                            print "localLibVersion older than lib[\"version\"]"
-                            #TODO: delete and brute force install
-                            installPath = get_install_path( TYPE_ADDON_MODULE )
-                            libpath = os.path.join( installPath, os.path.basename( requiredlib['id'] ) )
-                            result = self.fileMgr.deleteItem( libpath )
-                            if result == False:
-                                print "_getAddonRequiredLibs: Impossible to delete one of the element in the item: %s - we won't try to install it" %libpath
-                                addonIdList.remove(requiredlib)
-                        else:
-                            print "localLibVersion more recent than lib[\"version\"]"
-                            addonIdList.remove(requiredlib)
-                print addonIdList
-                print addonIdCheck
-            except:
-                print_exc()
-
+        if len(addonIdList) == 0:
+            print "No required libs"
+            status = "OK"
+            return status
 
         # Parse each repository in the list and try to find in it the required module
         if len(addonIdList) > 0:
@@ -194,82 +171,51 @@ class InstallMgr:
                             if len(addonIdList) > 0:
                                 for lib in addonIdList:
                                     if lib["id"] == item['id']:
-                                        print "%s module required with version: %s found"%(lib["id"], lib["version"])
-                                        # We are going to try to install it even if version does not match (better than nothing)
+                                        localLibVersion = isLibInstalled( item['id'], item['type'], item['name'] )
+                                        if localLibVersion:
+                                            if versionsCmp( localLibVersion, lib["version"] ) >= 0:
+                                                print "localLibVersion more recent than lib[\"version\"]"
+                                                addonIdList.remove(lib)
+                                                continue
 
-                                        # 1 - Look for matching repo
-                                        # 2 - install
-                                        # 3 - notify user if something when wrong or not
+                                        endRepoChar = "/"
+                                        if repoInfo [ "repo_datadir" ].endswith( "/" ):
+                                            endRepoChar = ""
 
-    #                                    # Check if remote version is the same as lib['version']
-    #                                    doInstall= False
-    #                                    localLibVersion = self.isLibInstalled( lib["id"] )
-    #                                    if localLibVersion:
-    #                                        status = "OK" # For now ...
-    #
-    #                                        #Check version
-    #                                        if localLibVersion == item["version"]:
-    #                                            print "Already install"
-    #                                        else:
-    #                                            print "version of lib does not match: %s Vs %s"%( localLibVersion, lib["version"])
-    #                                            if versionsCmp( localLibVersion, item["version"] ) < 0:
-    #                                                print "localLibVersion older than lib[\"version\"]"
-    #                                                #TODO: delete and brute force install
-    #                                                installPath = get_install_path( TYPE_ADDON_MODULE )
-    #                                                libpath = os.path.join( installPath, os.path.basename( id ) )
-    #                                                result = self.fileMgr.deleteItem( libpath )
-    #                                                if result == False:
-    #                                                    print "_getAddonRequiredLibs: Impossible to delete one of the element in the item: %s" %libpath
-    #                                                else:
-    #                                                    doInstall = True
-    #                                    else:
-    #                                        # Not already installed
-    #                                        doInstall = True
+                                        if repoInfo [ "repo_format" ] ==  'zip':
+                                            downloadUrl = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/' + item["id"]  + '-' + item["version"] + ".zip").replace(' ', '%20')
+                                            changelog   = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/' + "changelog" + '-' + item["version"] + ".txt").replace(' ', '%20')
+                                            iconimage   = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/' + "icon.png").replace(' ', '%20')
+                                        else:
+                                            downloadUrl = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/').replace(' ', '%20')
+                                            changelog   = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/' + "changelog" + ".txt").replace(' ', '%20')
+                                            iconimage   = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/' + "icon.png").replace(' ', '%20')
+                                        item["ImageUrl"] = iconimage
+                                        item["changelog"] = changelog
 
-                                        doInstall = True
-                                        if doInstall:
-                                            endRepoChar = "/"
-                                            if repoInfo [ "repo_datadir" ].endswith( "/" ):
-                                                endRepoChar = ""
+                                        print downloadUrl
 
-                                            if repoInfo [ "repo_format" ] ==  'zip':
-                                                downloadUrl = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/' + item["id"]  + '-' + item["version"] + ".zip").replace(' ', '%20')
-                                                changelog   = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/' + "changelog" + '-' + item["version"] + ".txt").replace(' ', '%20')
-                                                iconimage   = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/' + "icon.png").replace(' ', '%20')
+                                        # Install lib
+                                        installMgr = InstallMgr()
+                                        status, itemName, destination, addonInstaller = installMgr.install_from_repo( item['name'].encode('utf8'), downloadUrl, repoInfo[ "repo_format" ], repoInfo[ "repo_datadir" ] )
+                                        # force install/overwrite
+                                        if status != "OK":
+                                            status, destination = addonInstaller.installItem()
+                                        if status == "OK":
+                                            saveLocalAddonInfo(repoInfo[ "id" ], destination, addonInstaller)
+                                        else:
+                                            # Notify user it is impossible to install the current kib and check if he want to continue
+                                            if not xbmcgui.Dialog().yesno( item['name'].encode('utf8'), __language__( 30070 ), __language__( 30071 ), __language__( 30072 ) ):
+                                                keepParsingCurrentRepo = False
+                                                allLibsFound = True
+                                                status = "CANCELED"
+                                                print "User cancelled due to error of a lib install"
                                             else:
-                                                downloadUrl = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/').replace(' ', '%20')
-                                                changelog   = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/' + "changelog" + ".txt").replace(' ', '%20')
-                                                iconimage   = (repoInfo [ "repo_datadir" ] + endRepoChar + item["id"] + '/' + "icon.png").replace(' ', '%20')
-                                            item["ImageUrl"] = iconimage
-                                            item["changelog"] = changelog
-
-                                            print downloadUrl
-
-                                            # Install lib
-                                            installMgr = InstallMgr()
-                                            status, itemName, destination, addonInstaller = installMgr.install_from_repo( item['name'].encode('utf8'), downloadUrl, repoInfo[ "repo_format" ], repoInfo[ "repo_datadir" ] )
-                                            # force install/overwrite
-                                            if status != "OK":
-                                                status, destination = addonInstaller.installItem()
-                                            if status == "OK":
-                                                saveLocalAddonInfo(repoInfo[ "id" ], destination, addonInstaller)
-                                            else:
-                                                #missingModulesFile = open(MISSING_MODULES_PATH, "a")
-                                                #missingModulesFile.write("%s|%s/n"%(lib["id"], lib["version"]))
-                                                #missingModulesFile.close()
-                                                # Notify user it is impossible to install the current kib and check if he want to continue
-                                                if not xbmcgui.Dialog().yesno( item['name'].encode('utf8'), __language__( 30070 ), __language__( 30071 ), __language__( 30072 ) ):
-                                                    keepParsingCurrentRepo = False
-                                                    allLibsFound = True
-                                                    status = "CANCELED"
-                                                    print "User cancelled due to error of a lib install"
-                                                else:
-                                                    # User wants to continue
-                                                    status = "OK"
-                                            print status
-                                            # Module installed or already installed - Remove it for the list of libs to install
-                                            addonIdList.remove(lib)
-                                            print addonIdList
+                                                # User wants to continue
+                                                status = "OK"
+                                        print status
+                                        # Module installed or already installed - Remove it for the list of libs to install
+                                        addonIdList.remove(lib)
                             else:
                                 # No lib to find remaining
                                 keepParsingCurrentRepo = False
@@ -281,7 +227,6 @@ class InstallMgr:
                     continue
             if len(addonIdList) > 0:
                 print "Not all required lib has been installed"
-                print addonIdList
 
                 if not xbmcgui.Dialog().yesno( lib['id'], __language__( 30070 ), __language__( 30071 ), __language__( 30072 ) ):
                     print "User cancelled due to error of a lib install"
@@ -295,9 +240,6 @@ class InstallMgr:
                     addMissingModules2DB(addonIdList)
 
                     status = "OK"
-        else:
-            print "No required libs"
-            status = "OK"
 
         return status#, itemName, destination, addonInstaller
 
