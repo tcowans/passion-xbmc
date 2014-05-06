@@ -197,7 +197,6 @@ def parseAddonElt( addonElt, itemInfo ):
 
 
             if itemInfo [ "type" ] == TYPE_ADDON:
-                print "Not supported type of Addon"
                 status = 'NOT_SUPPORTED'
         else:
             print "addonElt not defined"

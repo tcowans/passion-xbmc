@@ -112,7 +112,7 @@ class Main:
                         paramsAddons = {}
                         paramsAddons[PARAM_INSTALL_FROM_REPO]   = "true"
                         paramsAddons[PARAM_ADDON_ID]            = item[ "id" ]
-                        paramsAddons[PARAM_ADDON_NAME]          = item['name'].encode('utf8')
+                        paramsAddons[PARAM_ADDON_NAME]          = item['name']
                         paramsAddons[PARAM_URL]                 = downloadUrl
                         paramsAddons[PARAM_DATADIR]             = repoInfo[ "repo_datadir" ]
                         paramsAddons[PARAM_TYPE]                = repoInfo[ "repo_format" ]
