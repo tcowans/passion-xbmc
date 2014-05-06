@@ -49,7 +49,6 @@ class Main:
         self.pluginMgr = PluginMgr()
         self.parameters = self.pluginMgr.parse_params()
 
-        print "List of Add-ons"
         repoId = self.parameters[ PARAM_REPO_ID ]
         addonCat = self.parameters[ PARAM_TYPE ]
         self._createAddonsDir( repoId, addonCat )

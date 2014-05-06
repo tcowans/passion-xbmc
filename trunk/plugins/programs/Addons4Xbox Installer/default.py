@@ -76,8 +76,7 @@ class Addons4xboxInstallerPlugin:
     def __init__( self, *args, **kwargs ):
         self.pluginMgr = PluginMgr()
         self.parameters = self.pluginMgr.parse_params()
-        print "Parameters"
-        print self.parameters
+        xbmc.log("Parameters %s"%self.parameters, xbmc.LOGDEBUG)
         self.select()
 
 
@@ -87,8 +86,6 @@ class Addons4xboxInstallerPlugin:
         Decides what to do based on the plugin URL
         """
         try:
-            print "select"
-            print self.parameters
 
             #
             # Create root list
