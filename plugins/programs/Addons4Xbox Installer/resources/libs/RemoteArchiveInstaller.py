@@ -357,6 +357,7 @@ class RemoteDirInstaller(DirItemInstaller):
         """ parse html source for tagged version and url """
         try:
             parser = Parser( htmlsource )
+            return parser.dict
         except:
             return {}
 
