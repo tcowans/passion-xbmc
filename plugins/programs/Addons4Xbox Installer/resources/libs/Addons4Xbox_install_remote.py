@@ -3,7 +3,7 @@
 import os
 #import urllib
 import sys
-#import xbmc
+import xbmc
 #import xbmcplugin
 import xbmcgui
 from traceback import print_exc
@@ -61,7 +61,7 @@ class Main:
         """
         Install an addon from a remote/web repository
         """
-        print "_install_addon_remote"
+        xbmc.log("_install_addon_remote", xbmc.LOGDEBUG)
         status = "OK"
         installMgr = InstallMgr()
 
