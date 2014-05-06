@@ -152,7 +152,7 @@ class InstallMgr:
             allLibsFound = False
             for repoInfo in repoList:
                 # Retrieving addons.xml from remote repository
-                xmlInfofPath = os.path.join( DIR_CACHE, repoInfo [ "id" ] + "-addons.xml")
+                xmlInfofPath = os.path.join( DIR_CACHE, repoInfo [ "id" ] + ".xml")
                 if fileOlderThan(xmlInfofPath, 60 * 30):
                     data = readURL( repoInfo [ "repo_url" ], save=True, localPath=xmlInfofPath )
 
