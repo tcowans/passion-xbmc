@@ -16,7 +16,7 @@ import sys
 
 from traceback import print_exc
 
-import elementtree.ElementTree as ET
+import xml.etree.cElementTree as ET
 
 # Modules custom
 try:
