@@ -16,7 +16,6 @@ import xbmc
 import xbmcgui
 
 # Modules custom
-#from utilities import *
 try:
     from ItemInstaller import ArchItemInstaller, DirItemInstaller, cancelRequest
     from Item import TYPE_SYSTEM_DIRECTORY, TYPE_SYSTEM_ARCHIVE
@@ -264,11 +263,9 @@ class RemoteDirInstaller(DirItemInstaller):
         status = "OK"
 
         if progressBar != None:
-            #progressBar.update( percent, unicode(_( 30122 )) % ( self.itemInfo [ "name" ] ), unicode(_( 30123 )) % percent )
             progressBar.update( percent, ( self.itemInfo [ "name" ] ), _( 30123 ) % percent )
         try:
             # Download file (to cache dir) and get destination directory
-            #status, self.itemInfo [ "raw_item_path" ] = self._downloadFile( progressBar=progressBar )
             status, self.itemInfo [ "raw_item_path" ] = self._download_item( )
 
         except Exception, e:
@@ -279,23 +276,15 @@ class RemoteDirInstaller(DirItemInstaller):
             status = "ERROR"
         if progressBar != None:
             progressBar.update( percent, ( self.itemInfo [ "name" ] ), _( 30134 ) )
-        #return status, self.itemInfo [ "raw_item_path" ]
         return status
 
     def _create_title( self ):
-        # create the script/plugin/skin title
-        #parts = self.itemInfo[ "url" ].split( "/" )
-        #version = ""
-        #self.title = parts[ -2 ].replace( "%20", " " ) + version
-
         self.title = self.itemInfo [ "name" ]
 
     def _download_item( self, forceInstall=True ):
         status = "OK"
         finished_path = None
         try:
-            #if ( forceInstall or xbmcgui.Dialog().yesno( self.title, _( 30050 ), "", "", _( 30020 ), _( 30021 ) ) ):
-            #TODO CHECK why forceInstall?
             if ( forceInstall ):
                 self.dialog.create( self.title, _( 30052 ), _( 30053 ) )
                 asset_files = []
@@ -323,7 +312,6 @@ class RemoteDirInstaller(DirItemInstaller):
             # oops print error message
             print "ERROR: %s::%s (%d) - %s" % ( self.__class__.__name__, sys.exc_info()[ 2 ].tb_frame.f_code.co_name, sys.exc_info()[ 2 ].tb_lineno, sys.exc_info()[ 1 ], )
             self.dialog.close()
-            #xbmcgui.Dialog().ok( self.title, _( 30090 ) )
             status = "ERROR"
         return status, finished_path
 

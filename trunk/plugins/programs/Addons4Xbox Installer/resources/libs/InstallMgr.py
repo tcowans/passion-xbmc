@@ -18,32 +18,10 @@ import xbmcgui
 #import xbmcplugin
 from traceback import print_exc
 
-
-__script__       = sys.modules[ "__main__" ].__script__
-__plugin__       = sys.modules[ "__main__" ].__plugin__
-__author__       = sys.modules[ "__main__" ].__author__
-__url__          = sys.modules[ "__main__" ].__url__
-__svn_url__      = sys.modules[ "__main__" ].__svn_url__
-__credits__      = sys.modules[ "__main__" ].__credits__
-__platform__     = sys.modules[ "__main__" ].__platform__
-__date__         = sys.modules[ "__main__" ].__date__
-__version__      = sys.modules[ "__main__" ].__version__
-__svn_revision__ = sys.modules[ "__main__" ].__svn_revision__
-__XBMC_Revision__= sys.modules[ "__main__" ].__XBMC_Revision__
 __language__     = sys.modules[ "__main__" ].__language__
-
-ROOTDIR            = sys.modules[ "__main__" ].ROOTDIR
-BASE_RESOURCE_PATH = sys.modules[ "__main__" ].BASE_RESOURCE_PATH
-LIBS_PATH          = sys.modules[ "__main__" ].LIBS_PATH
-MEDIA_PATH         = sys.modules[ "__main__" ].MEDIA_PATH
-
 
 # URLs
 REPO_LIST_URL = "http://wiki.xbmc.org/index.php?title=Unofficial_Add-on_Repositories"
-
-__platform__ = "xbmc media center, [%s]" % xbmc.__platform__
-__language__ = xbmc.Language( ROOTDIR ).getLocalizedString
-
 
 # Custom modules
 try:
@@ -121,9 +99,6 @@ class InstallMgr:
         Display the addons to install for a repository
         """
         status = "OK"
-        #destination = None
-        #addonInstaller = None
-        #addonInstaller = None
 
         # List of repositories we will look in order to find the required modules
         repoList = [ getInstalledAddonInfo( os.path.join( DIR_ADDON_REPO, REPO_ID_XBMC4XBOX) ) ]
@@ -272,24 +247,19 @@ class InstallMgr:
         try:
             while loop:
                 if status == "OK":
-                    #self._save_downloaded_property()
                     title = __language__( 30141 )
-                    #msg1  = _( 30142 )%(unicode(itemName,'cp1252')) # should we manage only unicode instead of string?
                     msg1  = __language__( 30142 )%itemName # should we manage only unicode instead of string?
-                    #msg1  = _( 30142 )%"" + itemName
                     msg2  = __language__( 30143 )
                     loop = False
 
                 elif status == "CANCELED":
                     title = __language__( 30146 )
-                    #msg1  = _( 30147 )%(unicode(itemName,'cp1252'))
                     msg1  = __language__( 30147 )%itemName
                     msg2  = ""
                     loop = False
 
                 elif status == "ALREADYINSTALLED":
                     title = __language__( 30144 )
-                    #msg1  = _( 30149 )%(unicode(itemName,'cp1252'))
                     msg1  = __language__( 30149 )%itemName
                     msg2  = ""
                     if self._processOldInstall( itemInstaller ):
@@ -299,24 +269,18 @@ class InstallMgr:
                         status, destination = itemInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )
                         dp.close()
                         del dp
-                        #self._save_downloaded_property()
                         title = __language__( 30141 )
                         msg1  = __language__( 30142 )%itemName # should we manage only unicode instead of string?
-                        #msg1  = __language__( 30142 )%"" + itemName
                         msg2  = __language__( 30143 )
                         if status == "OK":
                             loop = False
                     else:
-                        #installCancelled = True
                         xbmc.log("bypass: %s install has been cancelled by the user" % itemName, xbmc.LOGDEBUG)
                         title = __language__( 30146 )
                         msg1  = __language__( 30147 )%itemName
                         msg2  = ""
                         loop = False
-                        #dp = xbmcgui.DialogProgress()
-                        #dp.create(__language__( 30153 ))
-                        #dp.update(100)
-                        #dp.close()
+
 
                 elif status == "INVALIDNAME":
                     keyboard = xbmc.Keyboard( itemInstallName, __language__( 30154 ) )
@@ -353,10 +317,7 @@ class InstallMgr:
                     msg1  = __language__( 30136 )%itemName
                     msg2  = ""
                     loop = False
-        #                else:
-        #                    title = "Unknown Error"
-        #                    msg1  = "Please check the logs"
-        #                    msg2  = ""
+
                 xbmcgui.Dialog().ok( title, msg1, msg2 )
 
             del itemInstaller
@@ -394,9 +355,6 @@ class InstallMgr:
                 elif chosenIndex == 1:
                     # Rename
                     xbmc.log("Renaming:", xbmc.LOGDEBUG)
-                    #dp = xbmcgui.DialogProgress()
-                    #dp.create(__language__( 30157 ))
-                    #dp.update(50)
                     keyboard = xbmc.Keyboard( itemInstallName, __language__( 30154 ) )
                     keyboard.doModal()
                     if ( keyboard.isConfirmed() ):
@@ -444,16 +402,3 @@ class InstallMgr:
             dialogYesNo = xbmcgui.Dialog()
             result = dialogYesNo.yesno(title, message1, message2, message3)
         return result
-
-    #===========================================================================
-    # def updateProgress_cb( self, percent, dp=None ):
-    #    """
-    #    Met a jour la barre de progression
-    #    """
-    #    #TODO Dans le futur, veut t'on donner la responsabilite a cette fonction le calcul du pourcentage????
-    #    try:
-    #        dp.update( percent )
-    #    except:
-    #        percent = 100
-    #        dp.update( percent )
-    #===========================================================================

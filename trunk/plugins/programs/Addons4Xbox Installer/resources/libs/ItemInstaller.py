@@ -12,10 +12,7 @@ from time import sleep
 try:
     from Item import *
     from FileManager import fileMgr
-    #from utilities import copy_dir, copy_inside_dir
-    #from specialpath import *
     from XmlParser import parseAddonXml
-    #from globalvars import DIR_CACHE
 except:
     print_exc()
 
@@ -116,9 +113,6 @@ class ItemInstaller:
         """
         Return the real name (not the path) of the item
         """
-#        name = None
-#        if hasattr( self.itemInfo, "name" ):
-#            name = self.itemInfo[ "name" ]
         return self.itemInfo[ "name" ]
 
     def getItemId( self ):
@@ -151,8 +145,6 @@ class ItemInstaller:
         #TODO: return path or name in both scenario
 
         paths = []
-        #if hasattr( self.itemInfo, "install_path" ):
-        # Directory case
         paths.append( self.itemInfo[ "install_path" ] )
         return paths
 
@@ -283,14 +275,6 @@ class ItemInstaller:
 
         return status
 
-#    def _save_addon_local_info( self ):
-#        #Install OK so save information for future update
-#        addonInfo = {}
-#        addonInfo['date']
-#        addonInfo['version']
-#        addonInfo['repository']
-
-
     def setItemInfo( self, itemName=None ):
         """
         Get Type, name
@@ -382,10 +366,7 @@ class ArchItemInstaller(ItemInstaller):
     Installer from an archive
     """
 
-    #def __init__( self , itemId, type, filesize ):
-    #def __init__( self , name, type ):
     def __init__( self ):
-        #ItemInstaller.__init__( self, itemId, type, filesize )
         ItemInstaller.__init__( self )
         self.itemInfo [ "install_path" ] = None
 

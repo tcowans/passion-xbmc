@@ -48,8 +48,6 @@ LIBS_PATH          = os.path.join( BASE_RESOURCE_PATH, "libs" )
 MEDIA_PATH         = os.path.join( BASE_RESOURCE_PATH, "media" )
 PERSIT_REPO_LIST   = "repo_list.txt"
 
-# URLs
-#REPO_LIST_URL = "http://wiki.xbmc.org/index.php?title=Unofficial_Add-on_Repositories"
 REPO_LIST_URL_LIST = ["http://wiki.xbmc.org/index.php?title=Unofficial_Add-on_Repositories",
                       "http://home.brantje.com/xbmcrepositories/Unofficial-add-on-repositories-XBMC.htm" ]
 
@@ -63,10 +61,6 @@ try:
     from resources.libs.PluginMgr import PluginMgr
 except:
     print_exc()
-
-# get xbmc run under?
-#platform = os.environ.get( "OS", "xbox" )
-
 
 class Addons4xboxInstallerPlugin:
     """
