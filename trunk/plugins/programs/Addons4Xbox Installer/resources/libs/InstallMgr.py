@@ -85,7 +85,7 @@ class InstallMgr:
             # Remote dir installer
             addonInstaller = RemoteArchiveInstaller.RemoteDirInstaller( addonName, addonUrl, repoUrl )
 
-        dp = RecursiveDialogProgress(__language__( 137 ), __language__( 138 ))
+        dp = RecursiveDialogProgress(__language__( 30137 ), __language__( 30138 ))
         status, destination = addonInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )
         dp.close()
         del dp
@@ -107,8 +107,8 @@ class InstallMgr:
         # install from zip file
         addonInstaller = LocalArchiveInstaller.LocalArchiveInstaller( zipPath )
         #dp = xbmcgui.DialogProgress()
-        #dp.create(__language__( 137 ))
-        dp = RecursiveDialogProgress(__language__( 137 ), __language__( 138 ))
+        #dp.create(__language__( 30137 ))
+        dp = RecursiveDialogProgress(__language__( 30137 ), __language__( 30138 ))
         status, destination = addonInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )
 
         dp.close()
@@ -261,8 +261,8 @@ class InstallMgr:
         Check if install went well and if not ask the user what to do
         """
         # Default message: error
-        title = __language__( 144 )
-        msg1  = __language__( 144 )
+        title = __language__( 30144 )
+        msg1  = __language__( 30144 )
         msg2  = ""
         loop = True
         # Get Item install name
@@ -273,84 +273,84 @@ class InstallMgr:
             while loop:
                 if status == "OK":
                     #self._save_downloaded_property()
-                    title = __language__( 141 )
-                    #msg1  = _( 142 )%(unicode(itemName,'cp1252')) # should we manage only unicode instead of string?
-                    msg1  = __language__( 142 )%itemName # should we manage only unicode instead of string?
-                    #msg1  = _( 142 )%"" + itemName
-                    msg2  = __language__( 143 )
+                    title = __language__( 30141 )
+                    #msg1  = _( 30142 )%(unicode(itemName,'cp1252')) # should we manage only unicode instead of string?
+                    msg1  = __language__( 30142 )%itemName # should we manage only unicode instead of string?
+                    #msg1  = _( 30142 )%"" + itemName
+                    msg2  = __language__( 30143 )
                     loop = False
 
                 elif status == "CANCELED":
-                    title = __language__( 146 )
-                    #msg1  = _( 147 )%(unicode(itemName,'cp1252'))
-                    msg1  = __language__( 147 )%itemName
+                    title = __language__( 30146 )
+                    #msg1  = _( 30147 )%(unicode(itemName,'cp1252'))
+                    msg1  = __language__( 30147 )%itemName
                     msg2  = ""
                     loop = False
 
                 elif status == "ALREADYINSTALLED":
-                    title = __language__( 144 )
-                    #msg1  = _( 149 )%(unicode(itemName,'cp1252'))
-                    msg1  = __language__( 149 )%itemName
+                    title = __language__( 30144 )
+                    #msg1  = _( 30149 )%(unicode(itemName,'cp1252'))
+                    msg1  = __language__( 30149 )%itemName
                     msg2  = ""
                     if self._processOldInstall( itemInstaller ):
                         # Continue install
                         dp = xbmcgui.DialogProgress()
-                        dp.create(__language__( 137 ))
+                        dp.create(__language__( 30137 ))
                         status, destination = itemInstaller.installItem( msgFunc=self.message_cb, progressBar=dp )
                         dp.close()
                         del dp
                         #self._save_downloaded_property()
-                        title = __language__( 141 )
-                        msg1  = __language__( 142 )%itemName # should we manage only unicode instead of string?
-                        #msg1  = __language__( 142 )%"" + itemName
-                        msg2  = __language__( 143 )
+                        title = __language__( 30141 )
+                        msg1  = __language__( 30142 )%itemName # should we manage only unicode instead of string?
+                        #msg1  = __language__( 30142 )%"" + itemName
+                        msg2  = __language__( 30143 )
                         if status == "OK":
                             loop = False
                     else:
                         #installCancelled = True
                         xbmc.log("bypass: %s install has been cancelled by the user" % itemName, xbmc.LOGDEBUG)
-                        title = __language__( 146 )
-                        msg1  = __language__( 147 )%itemName
+                        title = __language__( 30146 )
+                        msg1  = __language__( 30147 )%itemName
                         msg2  = ""
                         loop = False
                         #dp = xbmcgui.DialogProgress()
-                        #dp.create(__language__( 153 ))
+                        #dp.create(__language__( 30153 ))
                         #dp.update(100)
                         #dp.close()
 
                 elif status == "INVALIDNAME":
-                    keyboard = xbmc.Keyboard( itemInstallName, __language__( 154 ) )
+                    keyboard = xbmc.Keyboard( itemInstallName, __language__( 30154 ) )
                     keyboard.doModal()
                     if ( keyboard.isConfirmed() ):
                         inputText = keyboard.getText()
                         dp = xbmcgui.DialogProgress()
-                        dp.create(__language__( 137 ))
+                        dp.create(__language__( 30137 ))
                         status, destination = itemInstaller.installItem( itemName=inputText, msgFunc=self.message_cb, progressBar=dp )
                         dp.close()
                         if status == "OK":
-                            title = __language__( 141 )
-                            msg1  = __language__( 142 )%itemName # should we manage only unicode instead of string?
-                            msg2  = __language__( 143 )
+                            title = __language__( 30141 )
+                            msg1  = __language__( 30142 )%itemName # should we manage only unicode instead of string?
+                            msg2  = __language__( 30143 )
                             loop = False
                     del keyboard
 
                 elif status == "ALREADYINUSE":
                     xbmc.log("%s currently used by XBMC, install impossible" % itemName, xbmc.LOGDEBUG)
-                    title = __language__( 117 )
-                    msg1  = __language__( 117 )
-                    msg2  = __language__( 119 )
+                    title = __language__( 30117 )
+                    msg1  = __language__( 30117 )
+                    msg2  = __language__( 30119 )
                     loop = False
 
                 elif status == "NOT_SUPPORTED":
                     xbmc.log("%s install impossible, type of addon not supported" % itemName, xbmc.LOGDEBUG)
-                    title = __language__( 144 )
-                    msg1  = __language__( 160)
-                    msg2  = __language__( 136 )%itemName
+                    title = __language__( 30144 )
+                    msg1  = __language__( 30160 )
+                    msg2  = __language__( 30136 )%itemName
                     loop = False
 
                 else:
-                    title = __language__( 144 )
-                    msg1  = __language__( 136 )%itemName
+                    title = __language__( 30144 )
+                    msg1  = __language__( 30136 )%itemName
                     msg2  = ""
                     loop = False
         #                else:
@@ -380,9 +380,9 @@ class InstallMgr:
 
             exit = False
             while exit == False:
-                menuList = [ __language__( 150 ), __language__( 151 ), __language__( 152 ), __language__( 153 ) ]
+                menuList = [ __language__( 30150 ), __language__( 30151 ), __language__( 30152 ), __language__( 30153 ) ]
                 dialog = xbmcgui.Dialog()
-                chosenIndex = dialog.select( __language__( 149 ) % itemInstallName, menuList )
+                chosenIndex = dialog.select( __language__( 30149 ) % itemInstallName, menuList )
                 if chosenIndex == 0:
                     # Delete
                     xbmc.log("Deleting:", xbmc.LOGDEBUG)
@@ -395,18 +395,18 @@ class InstallMgr:
                     # Rename
                     xbmc.log("Renaming:", xbmc.LOGDEBUG)
                     #dp = xbmcgui.DialogProgress()
-                    #dp.create(__language__( 157 ))
+                    #dp.create(__language__( 30157 ))
                     #dp.update(50)
-                    keyboard = xbmc.Keyboard( itemInstallName, __language__( 154 ) )
+                    keyboard = xbmc.Keyboard( itemInstallName, __language__( 30154 ) )
                     keyboard.doModal()
                     if ( keyboard.isConfirmed() ):
                         inputText = keyboard.getText()
                         OK = itemInstaller.renameInstalledItem( inputText )
                         if OK == True:
-                            xbmcgui.Dialog().ok( __language__( 155 ), inputText  )
+                            xbmcgui.Dialog().ok( __language__( 30155 ), inputText  )
                             exit = True
                         else:
-                            xbmcgui.Dialog().ok( __language__( 148 ), __language__( 117 ) )
+                            xbmcgui.Dialog().ok( __language__( 30148 ), __language__( 30117 ) )
 
                     del keyboard
                     #dp.close()

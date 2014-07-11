@@ -216,7 +216,7 @@ class ItemInstaller:
         process_error = False
         percent = 0
         if progressBar != None:
-            progressBar.update( percent, _( 176 ), self.itemInfo [ "temp_item_path" ] )
+            progressBar.update( percent, _( 30176 ), self.itemInfo [ "temp_item_path" ] )
         if ( ( self.itemInfo [ "temp_item_path" ] != None ) and ( self.itemInfo [ "install_path" ] != None ) ):
             # Let's get the dir name in the archive
             try:
@@ -234,7 +234,7 @@ class ItemInstaller:
         del extractor
         percent = 100
         if progressBar != None:
-            progressBar.update( percent, _( 176 ), ( self.itemInfo [ "temp_item_path" ] ) )
+            progressBar.update( percent, _( 30176 ), ( self.itemInfo [ "temp_item_path" ] ) )
         return OK
 
     def _renameItem4xbox( self, item, oldpath, newpath, itemName=None ):
@@ -415,7 +415,7 @@ class ArchItemInstaller(ItemInstaller):
 
                 xbmc.log("extractItem - file_path: %s"%file_path, xbmc.LOGDEBUG)
                 if file_path == "":
-                    installError = _( 139 ) % os.path.basename( self.itemInfo[ "raw_item_path" ] )
+                    installError = _( 30139 ) % os.path.basename( self.itemInfo[ "raw_item_path" ] )
                     xbmc.log("ArchItemInstaller - extractItem: Error during the extraction of %s - impossible to extract the name of the directory " % os.path.basename( self.itemInfo [ "raw_item_path" ] ), xbmc.LOGNOTICE)
                     status = "ERROR"
                 else:
@@ -425,7 +425,7 @@ class ArchItemInstaller(ItemInstaller):
 
             percent = 100
             if progressBar != None:
-                progressBar.update( percent, _( 182 ), self.itemInfo [ "name" ] )
+                progressBar.update( percent, _( 30182 ), self.itemInfo [ "name" ] )
         else:
             xbmc.log("extractItem - Archive does not exist - extraction impossible", xbmc.LOGNOTICE)
             status = "ERROR"

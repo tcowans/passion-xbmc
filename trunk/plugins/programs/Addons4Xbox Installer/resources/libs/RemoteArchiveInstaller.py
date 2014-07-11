@@ -77,7 +77,7 @@ class RemoteArchiveInstaller(ArchItemInstaller):
         status = "OK"
 
         if progressBar != None:
-            progressBar.update( percent, ( self.itemInfo [ "name" ] ), _( 123 ) % percent )
+            progressBar.update( percent, ( self.itemInfo [ "name" ] ), _( 30123 ) % percent )
         try:
             # Download file (to cache dir) and get destination directory
             status, self.itemInfo [ "raw_item_path" ] = self._downloadFile( progressBar=progressBar )
@@ -87,7 +87,7 @@ class RemoteArchiveInstaller(ArchItemInstaller):
             self.itemInfo [ "raw_item_path" ] = None
             status = "ERROR"
         if progressBar != None:
-            progressBar.update( percent, ( self.itemInfo [ "name" ] ), _( 134 ) )
+            progressBar.update( percent, ( self.itemInfo [ "name" ] ), _( 30134 ) )
         return status
 
     def getFileSize(self, sourceurl):
@@ -174,7 +174,7 @@ class RemoteArchiveInstaller(ArchItemInstaller):
             try:
                 if (progressBar != None):
                     #progressBar.update(percent_downloaded)
-                    progressBar.update( percent_downloaded, _( 122 ) % ( self.itemInfo [ "name" ] ), _( 123 ) % percent_downloaded )
+                    progressBar.update( percent_downloaded, _( 30122 ) % ( self.itemInfo [ "name" ] ), _( 30123 ) % percent_downloaded )
             except Exception, e:
                 print("_downloadFile - Exception calling UI callback for download")
                 print(str(e))
@@ -214,7 +214,7 @@ class RemoteArchiveInstaller(ArchItemInstaller):
                     # Call UI callback in order to update download progress info
                     if (progressBar != None):
                         #progressBar.update(percent_downloaded)
-                        progressBar.update( percent_downloaded, _( 122 ) % ( self.itemInfo [ "name" ] ), _( 123 ) % percent_downloaded )
+                        progressBar.update( percent_downloaded, _( 30122 ) % ( self.itemInfo [ "name" ] ), _( 30123 ) % percent_downloaded )
 
 
             # Closing the file
@@ -264,8 +264,8 @@ class RemoteDirInstaller(DirItemInstaller):
         status = "OK"
 
         if progressBar != None:
-            #progressBar.update( percent, unicode(_( 122 )) % ( self.itemInfo [ "name" ] ), unicode(_( 123 )) % percent )
-            progressBar.update( percent, ( self.itemInfo [ "name" ] ), _( 123 ) % percent )
+            #progressBar.update( percent, unicode(_( 30122 )) % ( self.itemInfo [ "name" ] ), unicode(_( 30123 )) % percent )
+            progressBar.update( percent, ( self.itemInfo [ "name" ] ), _( 30123 ) % percent )
         try:
             # Download file (to cache dir) and get destination directory
             #status, self.itemInfo [ "raw_item_path" ] = self._downloadFile( progressBar=progressBar )
@@ -278,7 +278,7 @@ class RemoteDirInstaller(DirItemInstaller):
             self.itemInfo [ "raw_item_path" ] = None
             status = "ERROR"
         if progressBar != None:
-            progressBar.update( percent, ( self.itemInfo [ "name" ] ), _( 134 ) )
+            progressBar.update( percent, ( self.itemInfo [ "name" ] ), _( 30134 ) )
         #return status, self.itemInfo [ "raw_item_path" ]
         return status
 
