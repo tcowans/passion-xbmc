@@ -233,13 +233,6 @@ def extract( filename, destination=None, report=False ):
         return unrar( filename, destination, report )
     elif type == "is_tar":
         return extract_tarfile( filename, destination )
-    #elif type == "is_7z":
-    #    # test for future support 7-zip archive, not supported for a moment
-    #    # mais il semblerais que le librairie "pylzma" marche bien, http://www.joachim-bauch.de/projects/python/pylzma/
-    #    # reste a compiler cette lib pour xbmc linux, win32/xbox et osx semble pas etre supporter
-    #    # Note faut compiler cette lib avec python 2.4, sinon elle sera pas compatible avec xbmc, pas certain a 100 pour 100.
-    #    #ok = executebuiltin( 'XBMC.Extract(%s)' % ( filename, ) )
-    #    print "L'archive '%s' n'est pas pris en charge..." % os.path.basename( filename )
     else:
         print "L'archive '%s' n'est pas pris en charge..." % os.path.basename( filename )
 
