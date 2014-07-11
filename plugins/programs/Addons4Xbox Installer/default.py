@@ -16,7 +16,7 @@ __svn_url__      = "http://passion-xbmc.googlecode.com/svn/trunk/plugins/program
 __credits__      = "Team XBMC Passion"
 __platform__     = "xbmc media center [XBOX]"
 __date__         = "2014-05-07"
-__version__      = "0.13.0"
+__version__      = "0.13.1"
 __svn_revision__ = 0
 __XBMC_Revision__= 30805
 
